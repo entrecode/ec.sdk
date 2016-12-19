@@ -3,7 +3,7 @@
 ec.datamanager.list({ filters: 'go', here: '!' })
 .then((dmList) => {
   dmList.get(n); // sync get n'th element
-  return api.datamanager.create({ title: 'new dm' })
+  return api.datamanager.create({ title: 'new dm' });
 })
 .then((dm) =>
   Promise.all([
@@ -28,6 +28,22 @@ ec.datamanager.get(id)
 })
 .then(models => models[0].getHistory())
 .then(history => display(history));
+
+// generics
+ec.any.list(filter)
+.then((list) => {
+  const items = list.items();
+  Array.isArray(items); // true
+  list.map((item) => { // same as ec.any.list(filter).map(…)
+    item.set({ active: true });
+    return item.save();
+  })
+  .map(item => item.delete())
+  .then(() => {
+    console.log('all deleted');
+  })
+  .cath(err => console.error(err));
+});
 
 /*
  * ec.apps(…).list() => {count, total, array}
