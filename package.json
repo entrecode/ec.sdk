@@ -1,0 +1,24 @@
+{
+  "name": "ec.api-sdk",
+  "version": "0.0.1",
+  "description": "SDK for ec.api",
+  "main": "./lib/index.js",
+  "scripts": {
+    "test": "npm run build && mocha -- --recursive",
+    "build": "babel src -d lib --source-maps",
+    "watch": "babel src -d lib --source-maps --watch"
+  },
+  "author": "Simon Scherzinger <scherzinger@entrecode.de>",
+  "license": "ISC",
+  "dependencies": {
+    "ec.datamanager": "^0.11.2",
+    "traverson": "^3.2.0",
+    "traverson-hal": "^4.1.1"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.18.0",
+    "babel-plugin-transform-es2015-modules-commonjs": "^6.18.0",
+    "chai": "^3.5.0",
+    "mocha": "^3.2.0"
+  }
+}
