@@ -12,6 +12,8 @@
   "license": "ISC",
   "dependencies": {
     "ec.datamanager": "^0.11.2",
+    "sinon": "^1.17.6",
+    "sinon-chai": "^2.8.0",
     "traverson": "^3.2.0",
     "traverson-hal": "^4.1.1"
   },
