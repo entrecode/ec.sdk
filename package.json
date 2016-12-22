@@ -23,6 +23,7 @@
     "babel-cli": "^6.18.0",
     "babel-plugin-transform-es2015-modules-commonjs": "^6.18.0",
     "chai": "^3.5.0",
-    "mocha": "^3.2.0"
+    "mocha": "^3.2.0",
+    "mocha-bamboo-reporter": "^1.1.1"
   }
 }
