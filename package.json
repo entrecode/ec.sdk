@@ -1,8 +1,9 @@
 {
-  "name": "ec.api-sdk",
+  "name": "ec.sdk",
   "version": "0.0.1",
   "description": "SDK for ec.api",
   "main": "./lib/index.js",
+  "repository": "entrecode/ec.sdk.git",
   "scripts": {
     "test": "npm run build && mocha -- --recursive",
     "build": "babel src -d lib --source-maps",
