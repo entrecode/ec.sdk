@@ -1,6 +1,8 @@
 # ec.api-sdk
 
 > SDK for most APIs of AppCMS by entrecode. By entrecode.
+> 
+> This is under active development and not yet ready for use!
 
 ## Basic Usage
 
