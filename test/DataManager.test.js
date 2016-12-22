@@ -5,7 +5,7 @@
 const chai = require('chai');
 const sinonChai = require('sinon-chai');
 
-const DataManager = require('../lib/Datamanager').default;
+const DataManager = require('../lib/DataManager').default;
 const ListResource = require('../lib/ListResource').default;
 const Resource = require('../lib/Resource').default;
 
