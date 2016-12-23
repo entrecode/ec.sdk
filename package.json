@@ -4,9 +4,10 @@
   "description": "SDK for ec.api",
   "main": "./lib/index.js",
   "module": "./src/index.js",
+  "jsnext:main": "./src/index.js",
   "repository": "entrecode/ec.sdk.git",
   "scripts": {
-    "test": "npm run build && mocha -- --recursive",
+    "test": "npm run build && mocha --recursive",
     "build": "babel src -d lib --source-maps",
     "watch": "babel src -d lib --source-maps --watch"
   },
