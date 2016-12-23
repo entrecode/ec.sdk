@@ -14,7 +14,6 @@
   "author": "Simon Scherzinger <scherzinger@entrecode.de>",
   "license": "ISC",
   "dependencies": {
-    "ec.datamanager": "^0.11.2",
     "halfred": "^1.0.0",
     "traverson": "^5.0.0",
     "traverson-hal": "^5.0.0"
