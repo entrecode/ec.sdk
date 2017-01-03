@@ -1,3 +1,3 @@
-export * from './DataManager';
-export * from './Resource';
-export * from './ListResource';
+export {default as DataManager} from './DataManager';
+export {default as Resource} from './Resource';
+export {default as ListResource} from './ListResource';
