@@ -78,7 +78,9 @@ This is not necessary since we use webpack for frontend projects
     * ec.apps(…).list() => {count, total, array}
     * ec.app(…).platform(…), ec.dm.model(…).map(…)
     * class App extends Promise{}
-
+* Typings for typescript
+    * *.d.ts for the module
+    * package.json with typings property
 
 Felix' Wunsch Syntax ;):
 
