@@ -126,7 +126,17 @@ datamanager.model('person').entry(id).then(person => {
 [Webpack Author Lib](https://webpack.js.org/guides/author-libraries/)
 
 [Local Storage](https://github.com/capaj/localstorage-polyfill)
+
 [Promise as Parent](http://ibnrubaxa.blogspot.de/2014/07/how-to-inherit-native-promise.html)
+
 [ES6 Module](http://www.2ality.com/2014/09/es6-modules-final.html)
+
 [node vs esm](https://hackernoon.com/node-js-tc-39-and-modules-a1118aecf95e#.euc8pj782)
+
 [ES6M and CJS the right way?](https://github.com/rollup/d3-jsnext/tree/0fcfe6e195f14c07d6b94f67e373e23f3da1cbbc)
+
+[Type Declarations](https://www.typescriptlang.org/docs/handbook/declaration-files/introduction.html)
+
+[Typings](https://medium.com/@mweststrate/how-to-create-strongly-typed-npm-modules-1e1bda23a7f4#.ag1swgmaw)
+
+[Generate Typings](https://github.com/ConquestArrow/dtsmake)
