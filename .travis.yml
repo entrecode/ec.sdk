@@ -1,0 +1,18 @@
+language: node_js
+node_js:
+- '6'
+deploy:
+  provider: npm
+  email: info@entrecode.de
+  api_key:
+    secure: LAoSzJolMBPRafSbu1yZU65rwAw+NIXl9iZ3ouxl4HcV4hmQZoI/bkAcgF7bT3/ACEpw7y4mPO208Ez4fcohrb/qB8vvXhxM00p1rbgH7bAPnoH3XjngFbLiUjdGYD81LXe/Rfyg9C/4iw+dG/cWuPSomgPIuo6Zr6CSy3dqv14jK1xS58AqrANWiv6rPY9GOLSceX/LZx+PazJabL8SIlxIWcaaddsAX0TFO2Z4+wBC8v7TpX7vULeVUWsJD7BzxnueX5UYna0xeAH4Pbcs7wvxFJS5SpDAWmb0unVl9IFE7V944qxM06shLAY1c+agNY7/2ptsvlVMi5np3SozmannMcAnBXXEC430bzIAGooY0H8STrxD+51ASPJ0UQSq591bEoahF4cHaFgKwbdkK+lg9N32NbDnZkK8iRoCa1sIx5286PtSj6osP5/yQGngapZXBOvo66uddH70PB7Cr4xNxLYMLy80TkeEz6NaF5GN6mCFtYo5e+pPl59JRmfWg21q/C/GI8v0g47fbQOJKOt6+dhoRiixKSgF+ZKQtfpqucPkx0DnDlfuAJf4LitklHDzwngaU0UktWb6cRpTQbItM6DOWTAThu2Cy+AtG1ubMi4DkHVvZ8i3uQ1X8gMTX1EbdPyVf+MkfqHRSm0tf8B3Zj+PECLKw1CAQ2KWDUw=
+  on:
+    tags: true
+    onBranch: master
+    skip_cleanup: true
+env:
+  global:
+    secure: oLJoHfs8yeb9pJufqxtKdjfquvMDfxX2nU2v4/yE+znRu0nIhcNoadBUaAzJfDsJIpxoSW6OssWVmkSoI0M2/AC+EGCU6R21VR1nQJ5QDxAHD+dCJ9ie/mTm1zycSLnbFtfWpjQRSnF0kNnJ06LjGysG/sBmScoYACbnjdHzaAfWX41aUoXhjTjeWkRvA1hKvHH75wc5Ij/IDQN5Nw26+sjBxaRCK0Enw56ASjcvttiCc6TxyljJ+6KQtgaWg0b9D5I7j3jjb5VNuiCb5JNWxNMoZ6u9UjwSqeHL8O4Xgcg4if5Y/EFSFvMci80hFq6djNPg9dcrHEUZKUAqWutocIPzGNJXwxSIbUbs7mg5kIV8q5VJV1d6JgYvQNx926ek47Lh3hHW7CI8YcfwmjHGmGKqoLYOfCcgKF8VUJL3Dk4Ny9uejH0BJ8extxldvYmjDhWksfYxSfrVPrfeNKbmXug7iz+eRIIOvHNv0+9Bo2+ey/4hpOCCZVjUQRxQPYdvPOuNd6srsVNrG6dyUop+d54YLzHfe+DpO7H8uiop5GR2YdfLKb3a+0lVCQ9D5qz0g3J2oC2sHcXkiK334idVT6WgiF6qkRzYzW+/7oF7Oh+PisBwfvrBlTNOlCtgTrhxPHxymVyZOByW69HOTQi2gWCMrWXlIldD+M/GS9QOquM=
+before_install:
+- openssl aes-256-cbc -K $encrypted_65386a808bda_key -iv $encrypted_65386a808bda_iv
+  -in token.txt.enc -out test/token.txt -d
