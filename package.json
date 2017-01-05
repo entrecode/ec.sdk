@@ -8,6 +8,8 @@
   "repository": "entrecode/ec.sdk.git",
   "scripts": {
     "test": "npm run build && mocha --recursive",
+    "coveralls": "istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js",
+    "coverage": "istanbul cover ./node_modules/mocha/bin/_mocha -- -R spec",
     "build": "babel src -d lib --source-maps",
     "watch": "babel src -d lib --source-maps --watch"
   },
@@ -21,10 +23,12 @@
   "devDependencies": {
     "babel-cli": "^6.18.0",
     "babel-plugin-transform-es2015-modules-commonjs": "^6.18.0",
-    "sinon": "^1.17.7",
-    "sinon-chai": "^2.8.0",
     "chai": "^3.5.0",
+    "coveralls": "^2.11.15",
+    "istanbul": "^0.4.5",
     "mocha": "^3.2.0",
-    "mocha-bamboo-reporter": "^1.1.1"
+    "mocha-bamboo-reporter": "^1.1.1",
+    "sinon": "^1.17.7",
+    "sinon-chai": "^2.8.0"
   }
 }
