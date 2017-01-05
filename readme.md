@@ -4,6 +4,8 @@
 > 
 > This is under active development and not yet ready for use!
 
+[![Build Status][npm-image]][npm-url]
+
 ## Basic Usage
 
 ```sh
@@ -39,3 +41,6 @@ Good luck :) (maybe we can add browserify build?)
 * [Accounts](./doc/accounts)
 * [AppManager](./doc/appmanager)
 * [DataManager](./doc/datamanager)
+
+[npm-image]: https://travis-ci.org/entrecode/ec.sdk.svg?branch=master
+[npm-url]: https://travis-ci.org/entrecode/ec.sdk
