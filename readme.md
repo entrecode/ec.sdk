@@ -4,7 +4,7 @@
 > 
 > This is under active development and not yet ready for use!
 
-[![Build Status][npm-image]][npm-url]
+[![Build Status][travis-image]][travis-url][![Coverage Status][cover-image]][cover-url]
 
 ## Basic Usage
 
@@ -42,5 +42,7 @@ Good luck :) (maybe we can add browserify build?)
 * [AppManager](./doc/appmanager)
 * [DataManager](./doc/datamanager)
 
-[npm-image]: https://travis-ci.org/entrecode/ec.sdk.svg?branch=master
-[npm-url]: https://travis-ci.org/entrecode/ec.sdk
+[travis-image]: https://travis-ci.org/entrecode/ec.sdk.svg?branch=master
+[travis-url]: https://travis-ci.org/entrecode/ec.sdk
+[cover-image]: https://coveralls.io/repos/github/entrecode/ec.sdk/badge.svg?branch=master
+[cover-url]: https://coveralls.io/github/entrecode/ec.sdk?branch=master
