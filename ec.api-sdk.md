@@ -142,3 +142,5 @@ datamanager.model('person').entry(id).then(person => {
 [Typings](https://medium.com/@mweststrate/how-to-create-strongly-typed-npm-modules-1e1bda23a7f4#.ag1swgmaw)
 
 [Generate Typings](https://github.com/ConquestArrow/dtsmake)
+
+[Sinon Best Practices](https://semaphoreci.com/community/tutorials/best-practices-for-spies-stubs-and-mocks-in-sinon-js)
