@@ -8,7 +8,7 @@
   "repository": "entrecode/ec.sdk.git",
   "scripts": {
     "test": "npm run build && mocha --recursive",
-    "testTravis": "npm run browserify && mocha --resurcive",
+    "testTravis": "npm run browserify && mocha --recursive",
     "coveralls": "istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js",
     "coverage": "istanbul cover ./node_modules/mocha/bin/_mocha -- -R spec",
     "build": "babel src -d lib --source-maps",
