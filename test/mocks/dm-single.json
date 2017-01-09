@@ -1,0 +1,40 @@
+{
+  "created": "2015-10-07T12:09:20.491Z",
+  "dataManagerID": "48e18a34-cf64-4f4a-bc47-45323a7f0e44",
+  "defaultLocale": null,
+  "description": "hier kann alles getestet werden",
+  "config": {
+    "users": {
+      "google": null,
+      "facebook": null,
+      "password": null,
+      "anonymous": true
+    }
+  },
+  "hexColor": "#F1453D",
+  "locales": [],
+  "rights": [],
+  "publicAssetRights": ["get", "getTags"],
+  "shortID": "01bd8e08",
+  "title": "Test DM",
+  "_links": {
+    "self": {
+      "href": "https://datamanager.entrecode.de/?dataManagerID=48e18a34-cf64-4f4a-bc47-45323a7f0e44",
+      "title": "Test DM"
+    },
+    "collection": { "href": "https://datamanager.entrecode.de" },
+    "ec:api": { "href": "https://datamanager.entrecode.de/api/01bd8e08" },
+    "ec:api-doc": { "href": "https://datamanager.entrecode.de/api/doc/01bd8e08" },
+    "ec:assets": { "href": "https://datamanager.entrecode.de/asset?dataManagerID=48e18a34-cf64-4f4a-bc47-45323a7f0e44" },
+    "ec:models": { "href": "https://datamanager.entrecode.de/model?dataManagerID=48e18a34-cf64-4f4a-bc47-45323a7f0e44" },
+    "ec:dm-clients": { "href": "https://datamanager.entrecode.de/client?dataManagerID=48e18a34-cf64-4f4a-bc47-45323a7f0e44" },
+    "ec:dm-accounts": { "href": "https://datamanager.entrecode.de/account?dataManagerID=48e18a34-cf64-4f4a-bc47-45323a7f0e44" },
+    "ec:dm-roles": { "href": "https://datamanager.entrecode.de/role?dataManagerID=48e18a34-cf64-4f4a-bc47-45323a7f0e44" },
+    "ec:datamanager/export": { "href": "https://datamanager.entrecode.de/export?dataManagerID=48e18a34-cf64-4f4a-bc47-45323a7f0e44" },
+    "ec:datamanager/update-from-template": {
+      "href": "https://datamanager.entrecode.de/?dataManagerID=48e18a34-cf64-4f4a-bc47-45323a7f0e44&_templateID={templateID}",
+      "templated": true
+    },
+    "ec:dm-stats": { "href": "https://datamanager.entrecode.de/stats?dataManagerID=48e18a34-cf64-4f4a-bc47-45323a7f0e44" }
+  }
+}
