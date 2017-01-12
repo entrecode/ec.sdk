@@ -55,7 +55,7 @@
     * …
     * is this possible?
     
-This is not necessary since we use webpack for frontend projects
+This ^ is not necessary since we use webpack for frontend projects
     
 * Error Handler - EventEmitter?
     * errors with ec.codes - not http status
@@ -73,7 +73,7 @@ This is not necessary since we use webpack for frontend projects
 * HAL iterator functions
     * map over entries (uses next relation)
     * listResource.map(iterator)
-* Resources as subclasses of promise?
+* Resources as subclasses of promise? <- does not work as we want
     * ec.app(…).then(…), ec.dm.model(…).then()
     * ec.apps(…).list() => {count, total, array}
     * ec.app(…).platform(…), ec.dm.model(…).map(…)
@@ -95,14 +95,6 @@ datamanager.model('person').entry(id).then(person => {
   person.delete();
 });
 ```    
-
-## next steps
-* specify some syntax
-* create prototype with ec.datamanager wrapped
-* test in node, browser, angular, (npm, webpack)
-* je nach testergebnis:
-    * weiter
-    * ändern
 
 
 #### implementation order
