@@ -1,0 +1,12 @@
+/*
+ getAllItems
+ getItem
+ getFirstItem
+ create
+ hasFirstLink
+ followFirstLink
+ hasNextLink
+ followNextLink
+ hasPrevLink
+ followPrevLink
+ */

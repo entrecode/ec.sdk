@@ -1,0 +1,15 @@
+/*
+constructor
+newRequest
+isDirty
+reset
+save
+del
+hasLink
+getLink
+followLink
+get
+set
+getProperty
+setProperty
+ */

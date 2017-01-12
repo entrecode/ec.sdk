@@ -1,2 +1,8 @@
-// test if Problem is Error
-// test if Problem is Problem :D
+// get
+// getUrl
+// post
+// put
+// delete
+// handlerCallback
+
+// Core Class

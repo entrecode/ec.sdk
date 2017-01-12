@@ -33,6 +33,19 @@ describe('DataManager class', () => {
 });
 
 describe('DataManager ListResource', () => {
+  /*
+   getAllItems
+   getItem
+   getFirstItem
+   create
+   hasFirstLink
+   followFirstLink
+   hasNextLink
+   followNextLink
+   hasPrevLink
+   followPrevLink
+   */
+
   let list;
   let stub;
   before((done) => {
@@ -64,6 +77,22 @@ describe('DataManager ListResource', () => {
 });
 
 describe('DataManager Resource', () => {
+  /*
+   constructor
+   newRequest
+   isDirty
+   reset
+   save
+   del
+   hasLink
+   getLink
+   followLink
+   get
+   set
+   getProperty
+   setProperty
+   */
+
   let datamanager;
   let stub;
   before((done) => {
