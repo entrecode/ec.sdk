@@ -18,6 +18,9 @@ export default class ListResource extends Resource {
       throw new Error('Cannot get n\'th item of empty list');
     }
     // TODO what kind of resources is this?
+    // maybe this could be done with a this.ResourceClass/this.ListClass property
+    // those properties could be set by the Object inherited from Core?
+
     // TODO create resource objects when receiving the list
     return new Resource(array[n]);
   }
