@@ -11,8 +11,8 @@ const fs = require('fs');
 
 const DataManager = require('../lib/DataManager').default;
 const core = require('../lib/Core');
-const ListResource = require('../lib/ListResource').default;
-const Resource = require('../lib/Resource').default;
+const ListResource = require('../lib/resources/ListResource').default;
+const Resource = require('../lib/resources/Resource').default;
 
 chai.should();
 chai.use(sinonChai);
@@ -36,7 +36,7 @@ describe('DataManager ListResource', () => {
   let list;
   let stub;
   before((done) => {
-    stub = sinon.stub(core, 'traversonGet');
+    stub = sinon.stub(core, 'get');
     stub.returns(resolver('dm-list.json'));
 
     new DataManager('live', token).list({ size: 2 })
@@ -53,7 +53,7 @@ describe('DataManager ListResource', () => {
     list.should.be.instanceOf(ListResource);
   });
   it('should have next link', () => {
-    list.hasNext().should.be.true;
+    list.hasNextLink().should.be.true;
   });
   it('hasLink should return true', () => {
     list.hasLink('next').should.be.true;
@@ -67,7 +67,7 @@ describe('DataManager Resource', () => {
   let datamanager;
   let stub;
   before((done) => {
-    stub = sinon.stub(core, 'traversonGet');
+    stub = sinon.stub(core, 'get');
     stub.returns(resolver('dm-single.json'));
     new DataManager('live', token).get('48e18a34-cf64-4f4a-bc47-45323a7f0e44')
     .then((dm) => {
@@ -83,10 +83,10 @@ describe('DataManager Resource', () => {
     datamanager.should.be.instanceOf(Resource);
   });
   it('should be clean', () => {
-    datamanager.dirty().should.be.false;
+    datamanager.isDirty().should.be.false;
   });
   it('should be dirty when setProperty was called', () => {
     datamanager.setProperty('description', 'hello');
-    datamanager.dirty().should.be.true;
+    datamanager.isDirty().should.be.true;
   });
 });
