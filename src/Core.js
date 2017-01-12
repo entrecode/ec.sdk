@@ -1,10 +1,23 @@
 import traverson from 'traverson';
 import HalAdapter from 'traverson-hal';
-import halfred from 'halfred';
 
 import Problem from './Problem';
 
 traverson.registerMediaType(HalAdapter.mediaType, HalAdapter);
+
+function handlerCallback(callback) {
+  return function callbackWrapper(err, res, traversal) {
+    if (err) {
+      return callback(err);
+    }
+
+    if (res.statusCode >= 200 && res.statusCode < 300) {
+      return callback(null, [res.body || {}, traversal]);
+    }
+
+    return callback(new Problem(res.body));
+  };
+}
 
 export default class Core {
   constructor(url) {
@@ -12,28 +25,79 @@ export default class Core {
       throw new TypeError('url must be defined');
     }
 
-    this.traverson = traverson.from(url).jsonHal()
-    .parseResponseBodiesWith(body => halfred.parse(JSON.parse(body)))
+    this.traversal = traverson.from(url).jsonHal()
     .addRequestOptions({ headers: { Accept: 'application/hal+json' } });
   }
 
   newRequest() {
-    return this.traverson.newRequest();
+    if (!this.traversal) {
+      throw new Error('Critical: Traversal invalid!');
+    }
+
+    if ({}.hasOwnProperty.call(this.traversal, 'continue')) {
+      return this.traversal.continue().newRequest();
+    }
+
+    return this.traversal.newRequest();
   }
 }
 
-export function traversonGet(t) {
+export function get(t) {
   return new Promise((resolve, reject) => {
-    t.get((err, res, traversal) => {
+    t.get(handlerCallback((err, res) => {
       if (err) {
         return reject(err);
       }
 
-      if (res.statusCode >= 200 && res.statusCode < 300) {
-        return resolve([halfred.parse(JSON.parse(res.body)), traversal]);
+      return resolve(res);
+    }));
+  });
+}
+
+export function getUrl(t) {
+  return new Promise((resolve, reject) => {
+    t.getUrl(handlerCallback((err, res) => {
+      if (err) {
+        return reject(err);
       }
 
-      return reject(new Problem(res));
-    });
+      return resolve(res);
+    }));
+  });
+}
+
+export function post(t, body) {
+  return new Promise((resolve, reject) => {
+    t.post(body, handlerCallback((err, res) => {
+      if (err) {
+        return reject(err);
+      }
+
+      return resolve(res);
+    }));
+  });
+}
+
+export function put(t, body) {
+  return new Promise((resolve, reject) => {
+    t.put(body, handlerCallback((err, res) => {
+      if (err) {
+        return reject(err);
+      }
+
+      return resolve(res);
+    }));
+  });
+}
+
+export function del(t) {
+  return new Promise((resolve, reject) => {
+    t.del(handlerCallback((err, res) => {
+      if (err) {
+        return reject(err);
+      }
+
+      return resolve(res);
+    }));
   });
 }

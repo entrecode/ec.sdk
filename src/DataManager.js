@@ -1,10 +1,10 @@
 'use strict';
 
-import {default as Core, traversonGet} from './Core';
-import ListResource from './ListResource';
-import Resource from './Resource';
+import Core, {get} from './Core';
+import DataManagerResource from './resources/DataManagerResource';
+import DataManagerList from './resources/DataManagerList';
 
-const url = {
+const urls = {
   live: 'https://datamanager.entrecode.de/',
   stage: 'https://datamanager.cachena.entrecode.de/',
   staging: 'https://datamanager.buffalo.entrecode.de/',
@@ -13,9 +13,10 @@ const url = {
 
 export default class DataManager extends Core {
   constructor(environment, token) {
-    super(url[environment]);
+    super(urls[environment]);
+    this.resourceName = 'ec:datamanager';
     if (token) {
-      this.traverson.addRequestOptions({ headers: { Authorization: `Bearer ${token}` } });
+      this.traversal.addRequestOptions({ headers: { Authorization: `Bearer ${token}` } });
     }
   }
 
@@ -25,9 +26,9 @@ export default class DataManager extends Core {
       const request = this.newRequest()
       .follow('ec:datamanagers/options')
       .withTemplateParameters(filters);
-      return traversonGet(request);
+      return get(request);
     })
-    .then(([res, traversal]) => new ListResource('ec:datamanager', res, traversal));
+    .then(([res, traversal]) => new DataManagerList(res, this.resourceName, traversal));
   }
 
   get(dataManagerID) {
@@ -35,8 +36,8 @@ export default class DataManager extends Core {
     .then(() => {
       const request = this.newRequest().follow('ec:datamanager/by-id')
       .withTemplateParameters({ dataManagerID });
-      return traversonGet(request);
+      return get(request);
     })
-    .then(([res, traversal]) => new Resource('ec:datamanager', res, traversal));
+    .then(([res, traversal]) => new DataManagerResource(res, this.resourceName, traversal));
   }
 }
