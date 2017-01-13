@@ -8,8 +8,7 @@ export default class ListResource extends Resource {
     const array = this.resource.embeddedArray(this.name) || [];
     // TODO what kind of resource is this?
     // TODO create resource objects when receiving the list
-    array.map(resource => new Resource(resource));
-    return array;
+    return array.map(resource => new Resource(resource));
   }
 
   getItem(n) {

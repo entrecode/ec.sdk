@@ -7,12 +7,13 @@ const chaiAsPromised = require('chai-as-promised');
 const fs = require('fs');
 const sinon = require('sinon');
 const sinonChai = require('sinon-chai');
-const should = chai.should();
 
 const core = require('../lib/Core');
 const traverson = require('traverson');
 const resolver = require('./mocks/resolver');
 const Resource = require('../lib/resources/Resource').default;
+
+const should = chai.should();
 
 chai.should();
 chai.use(sinonChai);
