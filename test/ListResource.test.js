@@ -161,10 +161,3 @@ describe('ListResource', () => {
     });
   });
 });
-
-
-/*
- followFirstLink
- followNextLink
- followPrevLink
- */
