@@ -10,7 +10,7 @@
     "test": "npm run build && mocha --recursive",
     "testTravis": "npm run browserify && mocha --recursive",
     "coveralls": "istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js",
-    "coverage": "istanbul cover ./node_modules/mocha/bin/_mocha -- -R spec",
+    "coverage": "istanbul cover ./node_modules/mocha/bin/_mocha -- -R spec && open ./coverage/lcov-report/index.html",
     "build": "babel src -d lib --source-maps",
     "browserify": "npm run build && browserify lib/index.js -o dist/ec.sdk.js -t [ babelify --presets [ es2015 ] ] && uglifyjs dist/ec.sdk.js --screw-ie8 --compress --mangle  -o dist/ec.sdk.min.js",
     "watch": "babel src -d lib --source-maps --watch"
@@ -29,6 +29,7 @@
     "babelify": "^7.3.0",
     "browserify": "^13.3.0",
     "chai": "^3.5.0",
+    "chai-as-promised": "^6.0.0",
     "coveralls": "^2.11.15",
     "istanbul": "^0.4.5",
     "mocha": "^3.2.0",

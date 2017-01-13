@@ -17,13 +17,16 @@ export default class Resource {
     if (traversal) {
       this._traversal = traversal;
     } else {
-      traverson.from(this.resource.link('self').href).jsonHal()
+      this._traversal = traverson.from(this.resource.link('self').href).jsonHal()
       .addRequestOptions({ headers: { Accept: 'application/hal+json' } });
     }
   }
 
   newRequest() {
-    return this._traversal.continue().newRequest();
+    if ({}.hasOwnProperty.call(this._traversal, 'continue')) {
+      return this._traversal.continue().newRequest();
+    }
+    return this._traversal.newRequest();
   }
 
   isDirty() {
@@ -46,6 +49,8 @@ export default class Resource {
     .then(([res, traversal]) => {
       this.resource = halfred.parse(res);
       this.traversal = traversal;
+      this.dirty = false;
+      return this;
     });
   }
 
@@ -69,8 +74,15 @@ export default class Resource {
     });
   }
 
-  get() {
-    return this.resource;
+  get(properties) {
+    if (!properties) {
+      return Object.assign({}, this.resource);
+    }
+    const out = {};
+    properties.forEach((property) => {
+      out[property] = this.getProperty(property);
+    });
+    return out;
   }
 
   set(resource) {
