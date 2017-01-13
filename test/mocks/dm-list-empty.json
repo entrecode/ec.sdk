@@ -1,0 +1,33 @@
+{
+  "msg": "Welcome to entrecode Data Manager v0.11.4 (w19247)",
+  "count": 0,
+  "total": 0,
+  "_links": {
+    "self": {
+      "href": "https://datamanager.entrecode.de/?title~=asdfasdf"
+    },
+    "curies": {
+      "href": "https://doc.entrecode.de/data_manager/#relation-{rel}",
+      "templated": true
+    },
+    "ec:datamanager/by-id": {
+      "href": "https://datamanager.entrecode.de/{?dataManagerID}",
+      "templated": true
+    },
+    "ec:datamanagers/new-from-template": {
+      "href": "https://datamanager.entrecode.de/?_templateID={templateID}",
+      "templated": true
+    },
+    "ec:dm-stats": {
+      "href": "https://datamanager.entrecode.de/stats{?dataManagerID}",
+      "templated": true
+    },
+    "ec:dm-templates": {
+      "href": "https://datamanager.entrecode.de/template"
+    },
+    "ec:datamanagers/options": {
+      "href": "https://datamanager.entrecode.de/{?created,createdFrom,createdTo,created~,datamanagerid,datamanagerid~,description~,page,size,sort,title,title~}",
+      "templated": true
+    }
+  }
+}

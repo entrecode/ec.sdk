@@ -1,7 +1,7 @@
 'use strict';
 
 import Resource from './Resource';
-import {put} from '../Core';
+import {post} from '../Core';
 
 export default class ListResource extends Resource {
   getAllItems() {
@@ -12,9 +12,12 @@ export default class ListResource extends Resource {
   }
 
   getItem(n) {
+    if (n === undefined) { // undefined check
+      throw new Error('Index must be defined.');
+    }
     const array = this.resource.embeddedArray(this.name);
     if (!array || array.length === 0) {
-      throw new Error('Cannot get n\'th item of empty list');
+      throw new Error('Cannot get n\'th item of empty list.');
     }
     // TODO what kind of resources is this?
     // maybe this could be done with a this.ResourceClass/this.ListClass property
@@ -33,7 +36,7 @@ export default class ListResource extends Resource {
       throw new Error('Cannot create resource with undefined object.');
     }
     // TODO schema validation
-    return put(this.newRequest().follow('self'), item);
+    return post(this.newRequest().follow('self'), item);
   }
 
   hasFirstLink() {

@@ -19,7 +19,7 @@ chai.should();
 chai.use(sinonChai);
 chai.use(chaiAsPromised);
 
-describe('DataManager Resource', () => {
+describe('Resource', () => {
   let resourceJson;
   let resource;
   before((done) => {
@@ -63,7 +63,7 @@ describe('DataManager Resource', () => {
   });
   it('should call put on save', () => {
     const stub = sinon.stub(core, 'put');
-    stub.returns(resolver('dm-single.json'), resource._traversal);
+    stub.returns(resolver('dm-single.json', resource._traversal));
 
     return resource.save()
     .then(() => {

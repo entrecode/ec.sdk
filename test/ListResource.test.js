@@ -1,4 +1,4 @@
-'use strict';
+
 
 /* eslint no-unused-expressions: "off" */
 
@@ -20,7 +20,7 @@ chai.should();
 chai.use(sinonChai);
 chai.use(chaiAsPromised);
 
-describe('DataManager Resource', () => {
+describe('ListResource', () => {
   let listJson;
   let list;
   before((done) => {
@@ -46,44 +46,125 @@ describe('DataManager Resource', () => {
     items.should.be.an.array;
     items.map(item => item.should.be.instanceOf(Resource));
   });
+  it('should return empty array on getAllItems', () => {
+    return new Promise((resolve, reject) => {
+      fs.readFile(`${__dirname}/mocks/dm-list-empty.json`, 'utf-8', (err, res) => {
+        if (err) {
+          return reject(err);
+        }
+        return resolve(JSON.parse(res));
+      });
+    })
+    .then((emptyList) => {
+      list = new ListResource(emptyList);
+      const items = list.getAllItems();
+      items.should.be.an.array;
+      items.length.should.be.equal(0);
+    });
+  });
   it('should return single Resource on getItem', () => {
     const resource = list.getItem(1);
     resource.should.be.instanceOf(Resource);
     resource.getProperty('title').should.be.equal('ec.datamanager-sdk-tests-2');
+  });
+  it('should throw on getItem with undefined index', () => {
+    const throws = () => list.getItem();
+    throws.should.throw(Error);
+  });
+  it('should throw on getItem with empty list', () => {
+    return new Promise((resolve, reject) => {
+      fs.readFile(`${__dirname}/mocks/dm-list-empty.json`, 'utf-8', (err, res) => {
+        if (err) {
+          return reject(err);
+        }
+        return resolve(JSON.parse(res));
+      });
+    })
+    .then((emptyList) => {
+      list = new ListResource(emptyList);
+      const throws = () => list.getItem(0);
+      throws.should.throw(Error);
+    });
   });
   it('should return first Resource on getFirtItem', () => {
     const resource = list.getFirstItem();
     resource.should.be.instanceOf(Resource);
     resource.getProperty('title').should.be.equal('ec.datamanager-sdk-tests-3');
   });
-  it('should call put on create', () => {
-
+  it('should call post on create', () => {
+    const stub = sinon.stub(core, 'post');
+    return new Promise((resolve, reject) => {
+      fs.readFile(`${__dirname}/mocks/dm-single.json`, 'utf-8', (err, res) => {
+        if (err) {
+          return reject(err);
+        }
+        return resolve(JSON.parse(res));
+      });
+    })
+    .then((resource) => {
+      stub.returns([resource, list._traversal]);
+      const create = Object.assign({}, {
+        title: resource.title,
+        description: resource.description,
+        config: resource.config,
+        hexColor: resource.hexColor,
+        locales: resource.locales,
+      });
+      return list.create(create);
+    })
+    .then(() => {
+      stub.should.be.called.once;
+      stub.restore();
+    });
   });
   it('should throw on create with undefined', () => {
-
+    const throws = () => list.create();
+    throws.should.throw(Error);
   });
-  it('should return true on hasFirstLink', () => {
-
+  it('should return false on hasFirstLink', () => {
+    list.hasFirstLink().should.be.false;
   });
   it('should return true on hasNextLink', () => {
-
+    list.hasNextLink().should.be.true;
   });
   it('should return false on hasPrevLink', () => {
-
+    list.hasPrevLink().should.be.false;
   });
+  it('should follow first link', () => {
+    const stub = sinon.stub(core, 'get');
+    stub.returns(resolver('dm-list.json'), list._traversal);
 
+    return list.followFirstLink()
+    .then(() => {
+      stub.should.be.called.once;
+      stub.restore();
+    });
+  });
+  it('should follow next link', () => {
+    const stub = sinon.stub(core, 'get');
+    stub.returns(resolver('dm-list.json'), list._traversal);
+
+    return list.followNextLink()
+    .then(() => {
+      stub.should.be.called.once;
+      stub.restore();
+    });
+  });
+  it('should follow prev link', () => {
+    const stub = sinon.stub(core, 'get');
+    stub.returns(resolver('dm-list.json'), list._traversal);
+
+    return list.followPrevLink()
+    .then(() => {
+      stub.should.be.called.once;
+      stub.restore();
+    });
+  });
 });
 
 
 /*
- getAllItems
- getItem
- getFirstItem
- create
- hasFirstLink
  followFirstLink
- hasNextLink
  followNextLink
- hasPrevLink
  followPrevLink
  */
