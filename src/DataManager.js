@@ -32,6 +32,9 @@ export default class DataManager extends Core {
   }
 
   get(dataManagerID) {
+    if (!dataManagerID) {
+      throw new Error('dataManagerID must be defined');
+    }
     return Promise.resolve()
     .then(() => {
       const request = this.newRequest().follow('ec:datamanager/by-id')

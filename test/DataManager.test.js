@@ -8,6 +8,9 @@ const sinonChai = require('sinon-chai');
 
 const fs = require('fs');
 
+const resolver = require('./mocks/resolver');
+const core = require('../lib/Core');
+
 const DataManager = require('../lib/DataManager').default;
 const ListResource = require('../lib/resources/ListResource').default;
 const DataManagerList = require('../lib/resources/DataManagerList').default;
@@ -25,12 +28,50 @@ describe('DataManager class', () => {
   it('instantiate', () => {
     new DataManager('live').should.be.instanceOf(DataManager);
   });
-  it('should throw error', () => {
+  it('instantiate with token', () => {
+    const dm = new DataManager('live', 'token');
+    dm.traversal.getRequestOptions().should.have.deep.property('headers.Authorization', 'Bearer token');
+  });
+  it('should throw error on undefined environment', () => {
     const fn = () => {
       /* eslint no-new:0 */
       new DataManager();
     };
     fn.should.throw(TypeError);
+  });
+  it('should return list on list', () => {
+    const dm = new DataManager('live');
+    const stub = sinon.stub(core, 'get');
+    stub.returns(resolver('dm-list.json'));
+
+    return dm.list()
+    .then((list) => {
+      list.should.be.instanceof(DataManagerList);
+      stub.restore();
+    })
+    .catch((err) => {
+      stub.restore();
+      throw err;
+    });
+  });
+  it('should return resource on get', () => {
+    const dm = new DataManager('live');
+    const stub = sinon.stub(core, 'get');
+    stub.returns(resolver('dm-list.json'));
+
+    return dm.get('aID')
+    .then((list) => {
+      list.should.be.instanceof(DataManagerResource);
+      stub.restore();
+    })
+    .catch((err) => {
+      stub.restore();
+      throw err;
+    });
+  });
+  it('should throws on get with undefined id', () => {
+    const throws = () => new DataManager('live').get();
+    throws.should.throw(Error);
   });
 });
 
