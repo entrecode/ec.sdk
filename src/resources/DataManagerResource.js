@@ -24,7 +24,7 @@ export default class DataManagerResource extends Resource {
   }
 
   getDescription() {
-    return this.getProperty('title');
+    return this.getProperty('description');
   }
 
   setConfig(value) {
@@ -53,7 +53,7 @@ export default class DataManagerResource extends Resource {
 
   setLocales(value) {
     if (!value || !Array.isArray(value)) {
-      throw new Error('HexColor must be defined and an array');
+      throw new Error('locales must be defined and an array');
     }
 
     this.setProperty('locales', value);

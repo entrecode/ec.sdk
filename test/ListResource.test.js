@@ -9,12 +9,9 @@ const sinon = require('sinon');
 const sinonChai = require('sinon-chai');
 
 const core = require('../lib/Core');
-const traverson = require('traverson');
 const resolver = require('./mocks/resolver');
 const Resource = require('../lib/resources/Resource').default;
 const ListResource = require('../lib/resources/ListResource').default;
-
-const should = chai.should();
 
 chai.should();
 chai.use(sinonChai);
