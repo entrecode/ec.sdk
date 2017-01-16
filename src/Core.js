@@ -14,7 +14,7 @@ function handlerCallback(callback) {
     }
 
     if (res.statusCode >= 200 && res.statusCode < 300) {
-      return callback(null, [res.body || {}, traversal]);
+      return callback(null, [res.body ? JSON.parse(res.body) : {}, traversal]);
     }
 
     return callback(new Problem(JSON.parse(res.body)));
