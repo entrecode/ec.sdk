@@ -4,15 +4,10 @@
 
 const chai = require('chai');
 const chaiAsPromised = require('chai-as-promised');
-const sinon = require('sinon');
-const sinonChai = require('sinon-chai');
-
-const should = chai.should();
 
 const Problem = require('../lib/Problem').default;
 
 chai.should();
-chai.use(sinonChai);
 chai.use(chaiAsPromised);
 
 describe('Problem', () => {

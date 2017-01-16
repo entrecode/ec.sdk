@@ -3,14 +3,12 @@
 /* eslint no-unused-expressions: "off" */
 
 const chai = require('chai');
+const fs = require('fs');
+const resolver = require('./mocks/resolver');
 const sinon = require('sinon');
 const sinonChai = require('sinon-chai');
 
-const fs = require('fs');
-
-const resolver = require('./mocks/resolver');
 const core = require('../lib/Core');
-
 const DataManager = require('../lib/DataManager').default;
 const ListResource = require('../lib/resources/ListResource').default;
 const DataManagerList = require('../lib/resources/DataManagerList').default;

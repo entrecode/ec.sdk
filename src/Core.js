@@ -1,3 +1,5 @@
+'use strict';
+
 import traverson from 'traverson';
 import HalAdapter from 'traverson-hal';
 

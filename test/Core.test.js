@@ -5,11 +5,7 @@
 const chai = require('chai');
 const chaiAsPromised = require('chai-as-promised');
 const nock = require('nock');
-const sinon = require('sinon');
-const sinonChai = require('sinon-chai');
 const fs = require('fs');
-
-const should = chai.should();
 
 const Core = require('../lib/Core');
 const traverson = require('traverson');
@@ -17,7 +13,6 @@ const traversonHal = require('traverson-hal');
 const Problem = require('../lib/Problem').default;
 
 chai.should();
-chai.use(sinonChai);
 chai.use(chaiAsPromised);
 traverson.registerMediaType(traversonHal.mediaType, traversonHal);
 
@@ -54,7 +49,6 @@ describe('Core', () => {
 
 describe('Traverson Helper', () => {
   let dmList;
-  let dmSingle;
   let mock;
   let traversal;
   before((done) => {
@@ -63,15 +57,7 @@ describe('Traverson Helper', () => {
         return done(err);
       }
       dmList = JSON.parse(res);
-
-      return fs.readFile(`${__dirname}/mocks/dm-single.json`, 'utf8', (e, r) => {
-        if (e) {
-          return done(e);
-        }
-        dmSingle = JSON.parse(r);
-
-        return done();
-      });
+      return done();
     });
   });
   beforeEach(() => {
