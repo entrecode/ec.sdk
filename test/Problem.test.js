@@ -15,7 +15,7 @@ chai.should();
 chai.use(sinonChai);
 chai.use(chaiAsPromised);
 
-describe('Resource', () => {
+describe('Problem', () => {
   let error;
   beforeEach(() => {
     error = new Problem({
