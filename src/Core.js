@@ -15,7 +15,7 @@ function handlerCallback(callback) {
       return callback(null, [res.body || {}, traversal]);
     }
 
-    return callback(new Problem(res.body));
+    return callback(new Problem(JSON.parse(res.body)));
   };
 }
 
@@ -56,13 +56,13 @@ export function get(t) {
 
 export function getUrl(t) {
   return new Promise((resolve, reject) => {
-    t.getUrl(handlerCallback((err, res) => {
+    t.getUrl((err, res) => {
       if (err) {
         return reject(err);
       }
 
       return resolve(res);
-    }));
+    });
   });
 }
 
