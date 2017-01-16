@@ -102,7 +102,8 @@ describe('ListResource', () => {
     stub.returns(resolver('dm-list.json'), list._traversal);
 
     return list.followFirstLink()
-    .then(() => {
+    .then((l) => {
+      l.should.be.instanceOf(ListResource);
       stub.should.be.called.once;
       stub.restore();
     });

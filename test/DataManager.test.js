@@ -101,6 +101,9 @@ describe('DataManager ListResource', () => {
   it('should be instance of DataManagerList', () => {
     list.should.be.instanceOf(DataManagerList);
   });
+  it('should have DataManagerResource items', () => {
+    list.getAllItems().forEach(item => item.should.be.instanceOf(DataManagerResource));
+  });
   it('should call post on create', () => {
     const stub = sinon.stub(core, 'post');
     return new Promise((resolve, reject) => {

@@ -66,10 +66,12 @@ export default class Resource {
     return this.resource.link(link);
   }
 
-  followLink(link) {
+  followLink(link, ResourceClass) {
     return get(this.newRequest().follow(link))
     .then(([res, traversal]) => {
-      // TODO what kind of resource is this? should be possible with profile info of self link
+      if (ResourceClass) {
+        return new ResourceClass(res, null, traversal);
+      }
       return new Resource(res, null, traversal);
     });
   }

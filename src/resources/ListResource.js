@@ -3,11 +3,15 @@
 import Resource from './Resource';
 
 export default class ListResource extends Resource {
+  constructor(resource, name, traversal) {
+    super(resource, name, traversal);
+    this.ListClass = ListResource;
+    this.ItemClass = Resource;
+  }
+
   getAllItems() {
     const array = this.resource.embeddedArray(this.name) || [];
-    // TODO what kind of resource is this?
-    // TODO create resource objects when receiving the list
-    return array.map(resource => new Resource(resource));
+    return array.map(resource => new this.ItemClass(resource));
   }
 
   getItem(n) {
@@ -18,12 +22,7 @@ export default class ListResource extends Resource {
     if (!array || array.length === 0) {
       throw new Error('Cannot get n\'th item of empty list.');
     }
-    // TODO what kind of resources is this?
-    // maybe this could be done with a this.ResourceClass/this.ListClass property
-    // those properties could be set by the Object inherited from Core?
-
-    // TODO create resource objects when receiving the list
-    return new Resource(array[n]);
+    return new this.ItemClass(array[n]);
   }
 
   getFirstItem() {
@@ -36,7 +35,7 @@ export default class ListResource extends Resource {
 
   followFirstLink() {
     // TODO convert to list resouce
-    return this.followLink('first');
+    return this.followLink('first', this.ListClass);
   }
 
   hasNextLink() {
@@ -45,7 +44,7 @@ export default class ListResource extends Resource {
 
   followNextLink() {
     // TODO convert to list resouce
-    return this.followLink('next');
+    return this.followLink('next', this.ListClass);
   }
 
   hasPrevLink() {
@@ -54,6 +53,6 @@ export default class ListResource extends Resource {
 
   followPrevLink() {
     // TODO convert to list resouce
-    return this.followLink('prev');
+    return this.followLink('prev', this.ListClass);
   }
 }
