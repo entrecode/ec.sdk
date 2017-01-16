@@ -88,36 +88,6 @@ describe('ListResource', () => {
     resource.should.be.instanceOf(Resource);
     resource.getProperty('title').should.be.equal('ec.datamanager-sdk-tests-3');
   });
-  it('should call post on create', () => {
-    const stub = sinon.stub(core, 'post');
-    return new Promise((resolve, reject) => {
-      fs.readFile(`${__dirname}/mocks/dm-single.json`, 'utf-8', (err, res) => {
-        if (err) {
-          return reject(err);
-        }
-        return resolve(JSON.parse(res));
-      });
-    })
-    .then((resource) => {
-      stub.returns([resource, list._traversal]);
-      const create = Object.assign({}, {
-        title: resource.title,
-        description: resource.description,
-        config: resource.config,
-        hexColor: resource.hexColor,
-        locales: resource.locales,
-      });
-      return list.create(create);
-    })
-    .then(() => {
-      stub.should.be.called.once;
-      stub.restore();
-    });
-  });
-  it('should throw on create with undefined', () => {
-    const throws = () => list.create();
-    throws.should.throw(Error);
-  });
   it('should return false on hasFirstLink', () => {
     list.hasFirstLink().should.be.false;
   });

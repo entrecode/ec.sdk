@@ -1,7 +1,6 @@
 'use strict';
 
 import Resource from './Resource';
-import {post} from '../Core';
 
 export default class ListResource extends Resource {
   getAllItems() {
@@ -29,14 +28,6 @@ export default class ListResource extends Resource {
 
   getFirstItem() {
     return this.getItem(0);
-  }
-
-  create(item) {
-    if (!item) {
-      throw new Error('Cannot create resource with undefined object.');
-    }
-    // TODO schema validation
-    return post(this.newRequest().follow('self'), item);
   }
 
   hasFirstLink() {
