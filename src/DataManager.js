@@ -1,6 +1,6 @@
 'use strict';
 
-import Core, {get} from './Core';
+import Core, {get, optionsToQuery} from './Core';
 import DataManagerResource from './resources/DataManagerResource';
 import DataManagerList from './resources/DataManagerList';
 
@@ -20,12 +20,12 @@ export default class DataManager extends Core {
     }
   }
 
-  list(filters) {
+  list(options) {
     return Promise.resolve()
     .then(() => {
       const request = this.newRequest()
       .follow('ec:datamanagers/options')
-      .withTemplateParameters(filters);
+      .withTemplateParameters(optionsToQuery(options));
       return get(request);
     })
     .then(([res, traversal]) => new DataManagerList(res, this.resourceName, traversal));

@@ -144,3 +144,128 @@ describe('Traverson Helper', () => {
     });
   });
 });
+
+describe('optionsToQuery', () => {
+  it('should have size', () => {
+    const obj = {
+      size: 1,
+    };
+    Core.optionsToQuery(obj).should.have.property('size', 1);
+  });
+  it('should have page', () => {
+    const obj = {
+      page: 1,
+    };
+    Core.optionsToQuery(obj).should.have.property('page', 1);
+  });
+  it('should sort one item', () => {
+    const obj = {
+      sort: 'name',
+    };
+    Core.optionsToQuery(obj).should.have.property('sort', 'name');
+  });
+  it('should sort multiple items', () => {
+    const obj = {
+      sort: ['name', '-date'],
+    };
+    Core.optionsToQuery(obj).should.have.property('sort', 'name,-date');
+  });
+  it('should throw on invalid sort', () => {
+    const throws = () => {
+      Core.optionsToQuery({ sort: 1 });
+    };
+    throws.should.throw(Error);
+  });
+  it('should have exact filter on string property', () => {
+    const obj = {
+      filter: {
+        property: 'exact',
+      },
+    };
+    Core.optionsToQuery(obj).should.have.property('property', 'exact');
+  });
+  it('should have exact filter', () => {
+    const obj = {
+      filter: {
+        property: {
+          exact: 'value',
+        },
+      },
+    };
+    Core.optionsToQuery(obj).should.have.property('property', 'value');
+  });
+  it('should have search filter', () => {
+    const obj = {
+      filter: {
+        property: {
+          search: 'value',
+        },
+      },
+    };
+    Core.optionsToQuery(obj).should.have.property('property~', 'value');
+  });
+  it('should have from filter', () => {
+    const obj = {
+      filter: {
+        property: {
+          from: 'value',
+        },
+      },
+    };
+    Core.optionsToQuery(obj).should.have.property('propertyFrom', 'value');
+  });
+  it('should have to filter', () => {
+    const obj = {
+      filter: {
+        property: {
+          to: 'value',
+        },
+      },
+    };
+    Core.optionsToQuery(obj).should.have.property('propertyTo', 'value');
+  });
+  it('should have any filter', () => {
+    const obj = {
+      filter: {
+        property: {
+          any: ['value1', 'value2'],
+        },
+      },
+    };
+    Core.optionsToQuery(obj).should.have.property('property', 'value1,value2');
+  });
+  it('should throw on any filter not an array', () => {
+    const throws = () => {
+      Core.optionsToQuery({ filter: { property: { any: 'string' } } });
+    };
+    throws.should.throw(Error);
+  });
+  it('should have all filter', () => {
+    const obj = {
+      filter: {
+        property: {
+          all: ['value1', 'value2'],
+        },
+      },
+    };
+    Core.optionsToQuery(obj).should.have.property('property', 'value1+value2');
+  });
+  it('should throw on all filter not an array', () => {
+    const throws = () => {
+      Core.optionsToQuery({ filter: { property: { all: 'string' } } });
+    };
+    throws.should.throw(Error);
+  });
+  it('should throw on invalid filter object', () => {
+    const throws = () => {
+      Core.optionsToQuery({ filter: 1 });
+    };
+    throws.should.throw(Error);
+  });
+  it('should throw on invalid filter property value', () => {
+    const throws = () => {
+      Core.optionsToQuery({ filter: { property: 1 } });
+    };
+    throws.should.throw(Error);
+  });
+});

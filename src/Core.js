@@ -103,3 +103,67 @@ export function del(t) {
     }));
   });
 }
+
+export function optionsToQuery(options) {
+  const out = {};
+
+  if (options) {
+    if ({}.hasOwnProperty.call(options, 'size')) {
+      out.size = options.size;
+    }
+    if ({}.hasOwnProperty.call(options, 'page')) {
+      out.page = options.page;
+    }
+
+    if ({}.hasOwnProperty.call(options, 'sort')) {
+      if (Array.isArray(options.sort)) {
+        out.sort = options.sort.join(',');
+      } else if (typeof options.sort === 'string') {
+        out.sort = options.sort;
+      } else {
+        throw new Error('sort must be either Array or String.');
+      }
+    }
+
+    if ({}.hasOwnProperty.call(options, 'filter')) {
+      if (typeof options.filter !== 'object') {
+        throw new Error('filter must by an Object.');
+      }
+      Object.keys(options.filter).forEach((property) => {
+        if (typeof options.filter[property] === 'string') {
+          out[property] = options.filter[property];
+        } else if (typeof options.filter[property] === 'object') {
+          if ({}.hasOwnProperty.call(options.filter[property], 'exact')) {
+            out[property] = options.filter[property].exact;
+          }
+          if ({}.hasOwnProperty.call(options.filter[property], 'search')) {
+            out[`${property}~`] = options.filter[property].search;
+          }
+          if ({}.hasOwnProperty.call(options.filter[property], 'from')) {
+            out[`${property}From`] = options.filter[property].from;
+          }
+          if ({}.hasOwnProperty.call(options.filter[property], 'to')) {
+            out[`${property}To`] = options.filter[property].to;
+          }
+
+          if ({}.hasOwnProperty.call(options.filter[property], 'any')) {
+            if (!Array.isArray(options.filter[property].any)) {
+              throw new Error(`filter.${property}.any must be an Array.`);
+            }
+            out[`${property}`] = options.filter[property].any.join(',');
+          }
+          if ({}.hasOwnProperty.call(options.filter[property], 'all')) {
+            if (!Array.isArray(options.filter[property].all)) {
+              throw new Error(`filter.${property}.all must be an Array.`);
+            }
+            out[`${property}`] = options.filter[property].all.join('+');
+          }
+        } else {
+          throw new Error(`filter.${property} must be either Object or String.`);
+        }
+      });
+    }
+  }
+
+  return out;
+}

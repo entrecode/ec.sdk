@@ -82,6 +82,32 @@ This ^ is not necessary since we use webpack for frontend projects
     * *.d.ts for the module
     * package.json with typings property
 
+
+```js
+filter = {
+  size: 5,
+  page: 2,
+  sort: ['asc', '+alsoasc', '-desc'],
+  filter: {
+    <property>: {
+      exact: 'value',
+      search: 'value',
+      from: 'value',
+      to: 'value',
+      any: [
+        'value1',
+        'value2'
+      ],
+      all: [
+        'value1',
+        'value2'
+      ]
+    },
+    <property>: ‘value’ // exact filter
+  }
+}
+```
+
 Felix' Wunsch Syntax ;):
 
 ```js
