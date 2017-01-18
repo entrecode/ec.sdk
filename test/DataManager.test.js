@@ -115,7 +115,7 @@ describe('DataManager ListResource', () => {
       });
     })
     .then((resource) => {
-      stub.returns([resource, list._traversal]);
+      stub.returns(Promise.resolve([resource, list._traversal]));
       const create = Object.assign({}, {
         title: resource.title,
         description: resource.description,
