@@ -1,5 +1,8 @@
 lib
 test/token.txt
+docs/
+CHANGELOG.md
+DOCUMENTATION.md
 
 # Created by https://www.gitignore.io/api/node,intellij
 
