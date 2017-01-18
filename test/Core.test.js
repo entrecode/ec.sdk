@@ -5,15 +5,19 @@
 const chai = require('chai');
 const chaiAsPromised = require('chai-as-promised');
 const nock = require('nock');
+const sinon = require('sinon');
+const sinonChai = require('sinon-chai');
 const fs = require('fs');
 
 const Core = require('../lib/Core');
 const traverson = require('traverson');
 const traversonHal = require('traverson-hal');
 const Problem = require('../lib/Problem').default;
+const events = require('../lib/EventEmitter').default;
 
 chai.should();
 chai.use(chaiAsPromised);
+chai.use(sinonChai);
 traverson.registerMediaType(traversonHal.mediaType, traversonHal);
 
 describe('Core', () => {
@@ -44,6 +48,10 @@ describe('Core', () => {
       core.newRequest();
     };
     throws.should.throw(Error);
+  });
+  it('should have event emitter', () => {
+    core.should.have.property('events', events);
+    core.events.should.have.property('on');
   });
 });
 
@@ -86,6 +94,16 @@ describe('Traverson Helper', () => {
       mock.get('/').replyWithError('mocked error');
       return Core.get(traversal).should.be.rejectedWith(Error);
     });
+    it('should fire error event', () => {
+      mock.get('/').replyWithError('mocked error');
+      const spy = sinon.spy();
+      events.on('error', spy);
+
+      return Core.get(traversal).catch((err) => {
+        err.should.be.defined;
+        spy.should.be.called.once;
+      });
+    });
   });
   describe('getUrl', () => {
     it('should be resolved', () => {
@@ -96,6 +114,16 @@ describe('Traverson Helper', () => {
       mock.get('/').reply(200, dmList)
       .get('/stats').replyWithError('mocked error');
       return Core.getUrl(traversal.follow('ec:dm-stats')).should.be.eventually.rejectedWith(Error);
+    });
+    it('should fire error event', () => {
+      mock.get('/').replyWithError('mocked error');
+      const spy = sinon.spy();
+      events.on('error', spy);
+
+      return Core.getUrl(traversal.follow('ec:dm-stats')).catch((err) => {
+        err.should.be.defined;
+        spy.should.be.called.once;
+      });
     });
   });
   describe('post', () => {
@@ -112,6 +140,16 @@ describe('Traverson Helper', () => {
       });
       return Core.post(traversal).should.be.rejectedWith(Problem);
     });
+    it('should fire error event', () => {
+      mock.post('/').replyWithError('mocked error');
+      const spy = sinon.spy();
+      events.on('error', spy);
+
+      return Core.post(traversal).catch((err) => {
+        err.should.be.defined;
+        spy.should.be.called.once;
+      });
+    });
   });
   describe('put', () => {
     it('should be resolved', () => {
@@ -127,6 +165,16 @@ describe('Traverson Helper', () => {
       });
       return Core.put(traversal).should.be.rejectedWith(Problem);
     });
+    it('should fire error event', () => {
+      mock.put('/').replyWithError('mocked error');
+      const spy = sinon.spy();
+      events.on('error', spy);
+
+      return Core.put(traversal).catch((err) => {
+        err.should.be.defined;
+        spy.should.be.called.once;
+      });
+    });
   });
   describe('delete', () => {
     it('should be resolved', () => {
@@ -141,6 +189,16 @@ describe('Traverson Helper', () => {
         detail: 'title',
       });
       return Core.del(traversal).should.be.rejectedWith(Problem);
+    });
+    it('should fire error event', () => {
+      mock.delete('/').replyWithError('mocked error');
+      const spy = sinon.spy();
+      events.on('error', spy);
+
+      return Core.del(traversal).catch((err) => {
+        err.should.be.defined;
+        spy.should.be.called.once;
+      });
     });
   });
 });

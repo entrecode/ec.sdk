@@ -4,6 +4,7 @@ import traverson from 'traverson';
 import HalAdapter from 'traverson-hal';
 
 import Problem from './Problem';
+import events from './EventEmitter';
 
 traverson.registerMediaType(HalAdapter.mediaType, HalAdapter);
 
@@ -27,6 +28,8 @@ export default class Core {
       throw new TypeError('url must be defined');
     }
 
+    this.events = events;
+
     this.traversal = traverson.from(url).jsonHal()
     .addRequestOptions({ headers: { Accept: 'application/hal+json' } });
   }
@@ -48,6 +51,7 @@ export function get(t) {
   return new Promise((resolve, reject) => {
     t.get(handlerCallback((err, res) => {
       if (err) {
+        events.emit('error', err);
         return reject(err);
       }
 
@@ -60,6 +64,7 @@ export function getUrl(t) {
   return new Promise((resolve, reject) => {
     t.getUrl((err, res) => {
       if (err) {
+        events.emit('error', err);
         return reject(err);
       }
 
@@ -72,6 +77,7 @@ export function post(t, body) {
   return new Promise((resolve, reject) => {
     t.post(body, handlerCallback((err, res) => {
       if (err) {
+        events.emit('error', err);
         return reject(err);
       }
 
@@ -84,6 +90,7 @@ export function put(t, body) {
   return new Promise((resolve, reject) => {
     t.put(body, handlerCallback((err, res) => {
       if (err) {
+        events.emit('error', err);
         return reject(err);
       }
 
@@ -96,6 +103,7 @@ export function del(t) {
   return new Promise((resolve, reject) => {
     t.del(handlerCallback((err, res) => {
       if (err) {
+        events.emit('error', err);
         return reject(err);
       }
 
