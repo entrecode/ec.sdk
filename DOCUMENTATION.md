@@ -70,7 +70,7 @@ Core class for connecting to any entrecode API.
 
 ### events
 
-Global event emitter.
+Global [EventEmitter](#eventemitter).
 
 ## filter
 
@@ -445,7 +445,7 @@ Creates a new [Resource](#resource).
 
 ### events
 
-Global event emitter.
+Global [EventEmitter](#eventemitter).
 
 ### isDirty
 
