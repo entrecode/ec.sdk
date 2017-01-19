@@ -4,6 +4,7 @@ import * as traverson from 'traverson';
 import HalAdapter from 'traverson-hal';
 import halfred from 'halfred';
 import { get, put, del } from '../Core';
+import events from '../EventEmitter';
 
 traverson.registerMediaType(HalAdapter.mediaType, HalAdapter);
 
@@ -27,6 +28,12 @@ export default class Resource {
   constructor(resource, traversal) {
     this.dirty = false;
     this.resource = halfred.parse(resource);
+
+    /**
+     * Global event emitter.
+     * @type {EventEmitter}
+     */
+    this.events = events;
 
     if (traversal) {
       this._traversal = traversal;

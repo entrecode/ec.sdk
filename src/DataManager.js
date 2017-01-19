@@ -3,6 +3,7 @@
 import Core, { get, optionsToQuery } from './Core';
 import DataManagerResource from './resources/DataManagerResource';
 import DataManagerList from './resources/DataManagerList';
+import events from './EventEmitter';
 
 const urls = {
   live: 'https://datamanager.entrecode.de/',
@@ -32,6 +33,13 @@ export default class DataManager extends Core {
     }
 
     super(urls[environment]);
+
+    /**
+     * Global event emitter.
+     * @type {EventEmitter}
+     */
+    this.events = events;
+
     this.resourceName = 'ec:datamanager';
     if (token) {
       this.traversal.addRequestOptions({ headers: { Authorization: `Bearer ${token}` } });
