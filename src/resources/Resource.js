@@ -4,7 +4,7 @@ import * as traverson from 'traverson';
 import HalAdapter from 'traverson-hal';
 import halfred from 'halfred';
 
-import {get, put, del} from '../Core';
+import { get, put, del } from '../Core';
 
 traverson.registerMediaType(HalAdapter.mediaType, HalAdapter);
 

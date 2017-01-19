@@ -1,6 +1,6 @@
 'use strict';
 
-import Core, {get} from './Core';
+import Core, { get } from './Core';
 import ListResource from './resources/ListResource';
 import Resource from './resources/Resource';
 
