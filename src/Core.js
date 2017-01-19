@@ -8,6 +8,17 @@ import events from './EventEmitter';
 
 traverson.registerMediaType(HalAdapter.mediaType, HalAdapter);
 
+/**
+ * Creates a callback which wraps a traverson repsonse from `get`, `post`, `put`, `delete` and
+ * handles http status codes.
+ * The callback will only handle status codes 200-299 as success. All
+ * other codes are handled as errors. The resulting errors will be of type Problem.
+ *
+ * @access private
+ *
+ * @param {function} callback the callback which should be wrapped.
+ * @returns {function}  function whichs wraps the given callback.
+ */
 function handlerCallback(callback) {
   return function callbackWrapper(err, res, traversal) {
     if (err) {
@@ -22,12 +33,22 @@ function handlerCallback(callback) {
   };
 }
 
+/**
+ * Core class for connecting to any entrecode API.
+ *
+ * @interface
+ * @class
+ */
 export default class Core {
   constructor(url) {
     if (!url) {
       throw new TypeError('url must be defined');
     }
 
+    /**
+     * Global {@link EventEmitter}.
+     * @type {EventEmitter}
+     */
     this.events = events;
 
     this.traversal = traverson.from(url).jsonHal()
@@ -47,6 +68,20 @@ export default class Core {
   }
 }
 
+/**
+ * Wraps a {@link
+  * https://github.com/basti1302/traverson traverson} get request with a {@link Promise}
+ * Parameter t must be a {@link
+  * https://github.com/basti1302/traverson/blob/master/api.markdown#request-builder
+     * traverson request builder}.
+ * Only http status codes >200 <=299 will resolve, all others will
+ * reject.
+ *
+ * @access private
+ *
+ * @param {object} t request builder
+ * @returns {Promise} resolves to the response from the API.
+ */
 export function get(t) {
   return new Promise((resolve, reject) => {
     t.get(handlerCallback((err, res) => {
@@ -60,6 +95,18 @@ export function get(t) {
   });
 }
 
+/**
+ * Wraps a {@link
+  * https://github.com/basti1302/traverson traverson} getUrl request with a {@link Promise}
+ * Parameter t must be a {@link
+  * https://github.com/basti1302/traverson/blob/master/api.markdown#request-builder
+     * traverson request builder}.
+ *
+ * @access private
+ *
+ * @param {object} t request builder
+ * @returns {Promise.string} resolves to the url.
+ */
 export function getUrl(t) {
   return new Promise((resolve, reject) => {
     t.getUrl((err, res) => {
@@ -73,6 +120,20 @@ export function getUrl(t) {
   });
 }
 
+/**
+ * Wraps a {@link
+  * https://github.com/basti1302/traverson traverson} post request with a {@link Promise}
+ * Parameter t must be a {@link
+  * https://github.com/basti1302/traverson/blob/master/api.markdown#request-builder
+     * traverson request builder}.
+ * Only http status codes >200 <=299 will resolve, all others will
+ * reject.
+ *
+ * @access private
+ *
+ * @param {object} t request builder
+ * @returns {Promise} resolves to the response from the API.
+ */
 export function post(t, body) {
   return new Promise((resolve, reject) => {
     t.post(body, handlerCallback((err, res) => {
@@ -86,6 +147,20 @@ export function post(t, body) {
   });
 }
 
+/**
+ * Wraps a {@link
+  * https://github.com/basti1302/traverson traverson} put request with a {@link Promise}
+ * Parameter t must be a {@link
+  * https://github.com/basti1302/traverson/blob/master/api.markdown#request-builder
+     * traverson request builder}.
+ * Only http status codes >200 <=299 will resolve, all others will
+ * reject.
+ *
+ * @access private
+ *
+ * @param {object} t request builder
+ * @returns {Promise} resolves to the response from the API.
+ */
 export function put(t, body) {
   return new Promise((resolve, reject) => {
     t.put(body, handlerCallback((err, res) => {
@@ -99,6 +174,20 @@ export function put(t, body) {
   });
 }
 
+/**
+ * Wraps a {@link
+  * https://github.com/basti1302/traverson traverson} delete request with a {@link Promise}
+ * Parameter t must be a {@link
+  * https://github.com/basti1302/traverson/blob/master/api.markdown#request-builder
+     * traverson request builder}.
+ * Only http status codes >200 <=299 will resolve, all others will
+ * reject.
+ *
+ * @access private
+ *
+ * @param {object} t request builder
+ * @returns {Promise} resolves to the response from the API.
+ */
 export function del(t) {
   return new Promise((resolve, reject) => {
     t.del(handlerCallback((err, res) => {
@@ -112,6 +201,15 @@ export function del(t) {
   });
 }
 
+/**
+ * Translates {@link filter} objects into querystring objects used by {@link
+  * https://github.com/basti1302/traverson traverson}.
+ *
+ * @access private
+ *
+ * @param {filter} options filter options
+ * @returns {object} translated querystring object
+ */
 export function optionsToQuery(options) {
   const out = {};
 

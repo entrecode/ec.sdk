@@ -30,7 +30,7 @@ export default class Resource {
     this.resource = halfred.parse(resource);
 
     /**
-     * Global event emitter.
+     * Global {@link EventEmitter}.
      * @type {EventEmitter}
      */
     this.events = events;
