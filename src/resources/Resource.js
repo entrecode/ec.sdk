@@ -3,7 +3,6 @@
 import * as traverson from 'traverson';
 import HalAdapter from 'traverson-hal';
 import halfred from 'halfred';
-
 import { get, put, del } from '../Core';
 
 traverson.registerMediaType(HalAdapter.mediaType, HalAdapter);
@@ -43,7 +42,7 @@ export default class Resource {
      * traverson request builder}
    *  which can be used for a new request to the API.
    *
-   * @private
+   * @access private
    *
    * @returns {Object} traverson request builder instance.
    */
@@ -142,7 +141,7 @@ export default class Resource {
       if (ResourceClass) {
         return new ResourceClass(res, null, traversal);
       }
-      return new Resource(res, null, traversal);
+      return new Resource(res, traversal);
     });
   }
 
@@ -156,7 +155,7 @@ export default class Resource {
    * @returns {object} object containing selected properties.
    */
   get(properties) {
-    if (!properties || properties.length === 0) {
+    if (!properties || !Array.isArray(properties) || properties.length === 0) {
       return Object.assign({}, this.resource);
     }
     const out = {};

@@ -10,7 +10,7 @@ import Resource from './Resource';
 export default class DataManagerResource extends Resource {
   /**
    * Set a new value to title property.
-   * @param {strung} value the value to assign.
+   * @param {string} value the value to assign.
    * @returns {Resource} this Resource for chainability
    */
   setTitle(value) {

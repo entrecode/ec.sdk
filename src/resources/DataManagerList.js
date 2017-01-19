@@ -27,7 +27,7 @@ export default class DataManagerList extends ListResource {
    * Create a new DataManager.
    *
    * @param {object} datamanager object representing the datamanager.
-   * @returns {DataManagerResource}
+   * @returns {DataManagerResource} the newly created DataManagerResource
    */
   create(datamanager) {
     if (!datamanager) {
@@ -38,4 +38,3 @@ export default class DataManagerList extends ListResource {
     .then(([dm, traversal]) => new DataManagerResource(dm, traversal));
   }
 }
-

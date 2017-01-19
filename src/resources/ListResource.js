@@ -100,7 +100,6 @@ export default class ListResource extends Resource {
    * @returns {Promise.<Resource|ResourceClass>} the resource identified by the link.
    */
   followFirstLink() {
-    // TODO convert to list resouce
     return this.followLink('first', this.ListClass);
   }
 
@@ -122,7 +121,6 @@ export default class ListResource extends Resource {
    * @returns {Promise.<Resource|ResourceClass>} the resource identified by the link.
    */
   followNextLink() {
-    // TODO convert to list resouce
     return this.followLink('next', this.ListClass);
   }
 
@@ -144,7 +142,6 @@ export default class ListResource extends Resource {
    * @returns {Promise.<Resource|ResourceClass>} the resource identified by the link.
    */
   followPrevLink() {
-    // TODO convert to list resouce
     return this.followLink('prev', this.ListClass);
   }
 }
