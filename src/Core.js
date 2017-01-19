@@ -42,7 +42,7 @@ function handlerCallback(callback) {
 export default class Core {
   constructor(url) {
     if (!url) {
-      throw new TypeError('url must be defined');
+      throw new Error('url must be defined');
     }
 
     /**

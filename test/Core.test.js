@@ -32,7 +32,7 @@ describe('Core', () => {
     core.should.be.instanceOf(Core.default);
   });
   it('should throw on missing url', () => {
-    const throws = () => new Core();
+    const throws = () => new Core.default();
     throws.should.throw(Error);
   });
   it('should return traverson Builder', () => {

@@ -35,7 +35,7 @@ describe('DataManager class', () => {
       /* eslint no-new:0 */
       new DataManager();
     };
-    fn.should.throw(TypeError);
+    fn.should.throw(Error);
   });
   it('should return list on list', () => {
     const dm = new DataManager('live');
