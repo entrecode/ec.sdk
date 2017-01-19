@@ -9,7 +9,6 @@
   "module": "./src/index.js",
   "jsnext:main": "./src/index.js",
   "scripts": {
-    "afterTravis": "npm run coveralls && npm run docs && npm run changelog",
     "build": "npm run buildNode && npm run buildBrowser",
     "buildNode": "babel src -d lib --source-maps",
     "buildBrowser": "browserify lib/index.js -o dist/ec.sdk.js -t [ babelify --presets [ es2015 ] ] && uglifyjs dist/ec.sdk.js --screw-ie8 --compress --mangle  -o dist/ec.sdk.min.js",
