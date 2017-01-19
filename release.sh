@@ -2,6 +2,7 @@
 
 set -e
 
+npm test
 git diff-index --quiet HEAD --
 git checkout develop
 git checkout -b release/$1
