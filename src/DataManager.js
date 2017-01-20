@@ -70,7 +70,8 @@ export default class DataManager extends Core {
     }
     return Promise.resolve()
     .then(() => {
-      const request = this.newRequest().follow('ec:datamanager/by-id')
+      const request = this.newRequest()
+      .follow('ec:datamanager/by-id')
       .withTemplateParameters({ dataManagerID });
       return get(request);
     })

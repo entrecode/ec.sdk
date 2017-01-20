@@ -326,4 +326,10 @@ describe('optionsToQuery', () => {
     };
     throws.should.throw(Error);
   });
+  it('should throw on unknown filter type', () => {
+    const throws = () => {
+      Core.optionsToQuery({ filter: { property: { unknown: '1' } } });
+    };
+    throws.should.throw(Error);
+  });
 });
