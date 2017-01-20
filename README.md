@@ -4,7 +4,7 @@
 > 
 > This is under active development and not yet ready for use!
 
-[![Build Status][travis-image]][travis-url][![Coverage Status][cover-image]][cover-url]
+[![Build Status][travis-image]][travis-url] [![Coverage Status][cover-image]][cover-url]
 
 ## Basic Usage
 
@@ -12,35 +12,45 @@
 npm i --save ec.api
 ```
 
+###### ES6 / Webpack
+
+```js
+import {DataManager, Accounts} from 'ec.api';
+
+const dataManager = new DataManager('live', accessToken);
+
+dataManager.list()
+.then(list => doSomthingWith(list))
+.catch(console.log);
+```
+
 ##### Node
 
 ```js
 const ec = require('ec.api');
+const dataManager = new ec.DataManager('live', accessToken);
 
-ec.datamanager.list( {size: 20, page:3 } )
-.then(list => doSomething(list));
+dataManager.list()
+.then(list => doSomthingWith(list))
+.catch(console.log);
 ```
 
-##### Browser
+###### Browsers
+> This is not officially supported. Mainly exists for usage in jsfiddles or similar.
 
-###### Webpack
+```html
+<!-- Good Luck :D - We have a browserified build in ./dist/ -->
+<script src="https://unpkg.com/ec.sdk/dist/ec.sdk.min.js"></script>
+<script>
+    console.log('My development stack is bad and I should feel bad');
+    
+    var dataManager = new ec.DataManager('live', accessToken);
+    dataManager.list()
+    .then(list => doSomthingWith(list))
+    .catch(console.log);
+</script>
 
-```js
-import {datamanager, apps} from 'ec.api';
-
-ec.datamanager.list( {size: 20, page:3 } )
-.then(list => doSomething(list));
 ```
-
-###### Other
-
-Good luck :) (maybe we can add browserify build?)
-
-## APIs
-
-* [Accounts](./doc/accounts)
-* [AppManager](./doc/appmanager)
-* [DataManager](./doc/datamanager)
 
 [travis-image]: https://travis-ci.org/entrecode/ec.sdk.svg?branch=master
 [travis-url]: https://travis-ci.org/entrecode/ec.sdk
