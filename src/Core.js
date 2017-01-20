@@ -80,19 +80,21 @@ export default class Core {
  */
 function traversonWrapper(func, t, body) {
   return new Promise((resolve, reject) => {
-    const cb = handlerCallback((err, res) => {
+    const cb = (err, res) => {
       if (err) {
         events.emit('error', err);
         return reject(err);
       }
 
       return resolve(res);
-    });
+    };
 
-    if (func === 'post' || func === 'put') {
-      t[func](body, cb);
-    } else {
+    if (func === 'getUrl') {
       t[func](cb);
+    } else if (func === 'post' || func === 'put') {
+      t[func](body, handlerCallback(cb));
+    } else {
+      t[func](handlerCallback(cb));
     }
   });
 }
@@ -128,16 +130,7 @@ export function get(t) {
  * @returns {Promise.string} resolves to the url.
  */
 export function getUrl(t) {
-  return new Promise((resolve, reject) => {
-    t.getUrl((err, res) => {
-      if (err) {
-        events.emit('error', err);
-        return reject(err);
-      }
-
-      return resolve(res);
-    });
-  });
+  return traversonWrapper('getUrl', t);
 }
 
 /**
