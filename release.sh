@@ -17,6 +17,7 @@ git add CHANGELOG.md
 git commit --amend -m "merge release/$1 into master" 
 git tag v$1
 git push
+git push origin v$1
 git checkout develop
 git merge --no-ff -m "merge release/$1 into develop" release/$1
 git diff develop master -- CHANGELOG.md > patchfile
