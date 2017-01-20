@@ -4,7 +4,7 @@
 > 
 > This is under active development and not yet ready for use!
 
-[![Build Status][travis-image]][travis-url] [![Coverage Status][cover-image]][cover-url]
+[![npm version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Coverage Status][cover-image]][cover-url] [![NSP Status][nsp-image]][nsp-url] [![Code Climate][cc-image]][cc-url] [![Inline docs][doc-image]][doc-url]
 
 ## Basic Usage
 
@@ -56,3 +56,12 @@ dataManager.list()
 [travis-url]: https://travis-ci.org/entrecode/ec.sdk
 [cover-image]: https://coveralls.io/repos/github/entrecode/ec.sdk/badge.svg?branch=master
 [cover-url]: https://coveralls.io/github/entrecode/ec.sdk?branch=master
+[npm-image]: https://badge.fury.io/js/ec.sdk.svg
+[npm-url]: https://www.npmjs.com/package/ec.sdk
+[nsp-image]: https://nodesecurity.io/orgs/entrecode/projects/1cb6afc6-44bf-4cbc-8ea9-b2dcaf599609/badge
+[nsp-url]: https://nodesecurity.io/orgs/entrecode/projects/1cb6afc6-44bf-4cbc-8ea9-b2dcaf599609
+[cc-image]: https://codeclimate.com/github/entrecode/ec.sdk/badges/gpa.svg
+[cc-url]: https://codeclimate.com/github/entrecode/ec.sdk
+[doc-image]: http://inch-ci.org/github/entrecode/ec.sdk.svg?branch=master
+[doc-url]: http://inch-ci.org/github/entrecode/ec.sdk
+
