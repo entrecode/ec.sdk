@@ -9,6 +9,22 @@ import events from './EventEmitter';
 traverson.registerMediaType(HalAdapter.mediaType, HalAdapter);
 
 /**
+ * Modifier for filter object to query convertion.
+ *
+ * @access private
+ *
+ * @type {{exact: string, search: string, from: string, to: string, any: string, all: string}}
+ */
+const modifier = {
+  exact: '',
+  search: '~',
+  from: 'From',
+  to: 'To',
+  any: ',',
+  all: '+',
+};
+
+/**
  * Creates a callback which wraps a traverson repsonse from `get`, `post`, `put`, `delete` and
  * handles http status codes.
  * The callback will only handle status codes 200-299 as success. All
@@ -226,29 +242,25 @@ export function optionsToQuery(options) {
         if (typeof options.filter[property] === 'string') {
           out[property] = options.filter[property];
         } else if (typeof options.filter[property] === 'object') {
-          [
-            { name: 'exact', modifier: '' },
-            { name: 'search', modifier: '~' },
-            { name: 'from', modifier: 'From' },
-            { name: 'to', modifier: 'To' },
-          ].forEach((p) => {
-            if ({}.hasOwnProperty.call(options.filter[property], p.name)) {
-              out[`${property}${p.modifier}`] = options.filter[property][p.name];
-            }
-          });
-
-          [
-            { name: 'any', join: ',' },
-            { name: 'all', join: '+' },
-          ].forEach((p) => {
-            if ({}.hasOwnProperty.call(options.filter[property], p.name)) {
-              if (!Array.isArray(options.filter[property][p.name])) {
-                throw new Error(`filter.${property}.${p.name} must be an Array.`);
+          Object.keys(options.filter[property]).forEach((key) => {
+            switch (key) {
+            case 'exact':
+            case 'search':
+            case 'from':
+            case 'to':
+              out[`${property}${modifier[key]}`] = options.filter[property][key];
+              break;
+            case 'any':
+            case 'all':
+              if (!Array.isArray(options.filter[property][key])) {
+                throw new Error(`filter.${property}.${key} must be an Array.`);
               }
-              out[property] = options.filter[property][p.name].join(p.join);
+              out[property] = options.filter[property][key].join(modifier[key]);
+              break;
+            default:
+              throw new Error(`No handling of ${property}.${key} filter supported.`);
             }
           });
-
         } else {
           throw new Error(`filter.${property} must be either Object or String.`);
         }
