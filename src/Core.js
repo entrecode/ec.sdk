@@ -69,6 +69,35 @@ export default class Core {
 }
 
 /**
+ * Generic Promise wrapper for traverson functions.
+ *
+ * @access private
+ *
+ * @param {string} func traverson function which should be called
+ * @param {object} t traverson build on which func should be called
+ * @param {object?} body optional post/put body
+ * @returns {Promise} resolves to the response from the API.
+ */
+function traversonWrapper(func, t, body) {
+  return new Promise((resolve, reject) => {
+    const cb = handlerCallback((err, res) => {
+      if (err) {
+        events.emit('error', err);
+        return reject(err);
+      }
+
+      return resolve(res);
+    });
+
+    if (func === 'post' || func === 'put') {
+      t[func](body, cb);
+    } else {
+      t[func](cb);
+    }
+  });
+}
+
+/**
  * Wraps a {@link
   * https://github.com/basti1302/traverson traverson} get request with a {@link Promise}
  * Parameter t must be a {@link
@@ -83,16 +112,7 @@ export default class Core {
  * @returns {Promise} resolves to the response from the API.
  */
 export function get(t) {
-  return new Promise((resolve, reject) => {
-    t.get(handlerCallback((err, res) => {
-      if (err) {
-        events.emit('error', err);
-        return reject(err);
-      }
-
-      return resolve(res);
-    }));
-  });
+  return traversonWrapper('get', t);
 }
 
 /**
@@ -132,19 +152,11 @@ export function getUrl(t) {
  * @access private
  *
  * @param {object} t request builder
+ * @param {object} body post body
  * @returns {Promise} resolves to the response from the API.
  */
 export function post(t, body) {
-  return new Promise((resolve, reject) => {
-    t.post(body, handlerCallback((err, res) => {
-      if (err) {
-        events.emit('error', err);
-        return reject(err);
-      }
-
-      return resolve(res);
-    }));
-  });
+  return traversonWrapper('post', t, body);
 }
 
 /**
@@ -159,19 +171,11 @@ export function post(t, body) {
  * @access private
  *
  * @param {object} t request builder
+ * @param {object} body post body
  * @returns {Promise} resolves to the response from the API.
  */
 export function put(t, body) {
-  return new Promise((resolve, reject) => {
-    t.put(body, handlerCallback((err, res) => {
-      if (err) {
-        events.emit('error', err);
-        return reject(err);
-      }
-
-      return resolve(res);
-    }));
-  });
+  return traversonWrapper('put', t, body);
 }
 
 /**
@@ -189,16 +193,7 @@ export function put(t, body) {
  * @returns {Promise} resolves to the response from the API.
  */
 export function del(t) {
-  return new Promise((resolve, reject) => {
-    t.del(handlerCallback((err, res) => {
-      if (err) {
-        events.emit('error', err);
-        return reject(err);
-      }
-
-      return resolve(res);
-    }));
-  });
+  return traversonWrapper('delete', t);
 }
 
 /**
@@ -214,12 +209,11 @@ export function optionsToQuery(options) {
   const out = {};
 
   if (options) {
-    if ({}.hasOwnProperty.call(options, 'size')) {
-      out.size = options.size;
-    }
-    if ({}.hasOwnProperty.call(options, 'page')) {
-      out.page = options.page;
-    }
+    ['size', 'page'].forEach((property) => {
+      if ({}.hasOwnProperty.call(options, property)) {
+        out[property] = options[property];
+      }
+    });
 
     if ({}.hasOwnProperty.call(options, 'sort')) {
       if (Array.isArray(options.sort)) {
@@ -239,31 +233,29 @@ export function optionsToQuery(options) {
         if (typeof options.filter[property] === 'string') {
           out[property] = options.filter[property];
         } else if (typeof options.filter[property] === 'object') {
-          if ({}.hasOwnProperty.call(options.filter[property], 'exact')) {
-            out[property] = options.filter[property].exact;
-          }
-          if ({}.hasOwnProperty.call(options.filter[property], 'search')) {
-            out[`${property}~`] = options.filter[property].search;
-          }
-          if ({}.hasOwnProperty.call(options.filter[property], 'from')) {
-            out[`${property}From`] = options.filter[property].from;
-          }
-          if ({}.hasOwnProperty.call(options.filter[property], 'to')) {
-            out[`${property}To`] = options.filter[property].to;
-          }
+          [
+            { name: 'exact', modifier: '' },
+            { name: 'search', modifier: '~' },
+            { name: 'from', modifier: 'From' },
+            { name: 'to', modifier: 'To' },
+          ].forEach((p) => {
+            if ({}.hasOwnProperty.call(options.filter[property], p.name)) {
+              out[`${property}${p.modifier}`] = options.filter[property][p.name];
+            }
+          });
 
-          if ({}.hasOwnProperty.call(options.filter[property], 'any')) {
-            if (!Array.isArray(options.filter[property].any)) {
-              throw new Error(`filter.${property}.any must be an Array.`);
+          [
+            { name: 'any', join: ',' },
+            { name: 'all', join: '+' },
+          ].forEach((p) => {
+            if ({}.hasOwnProperty.call(options.filter[property], p.name)) {
+              if (!Array.isArray(options.filter[property][p.name])) {
+                throw new Error(`filter.${property}.${p.name} must be an Array.`);
+              }
+              out[property] = options.filter[property][p.name].join(p.join);
             }
-            out[`${property}`] = options.filter[property].any.join(',');
-          }
-          if ({}.hasOwnProperty.call(options.filter[property], 'all')) {
-            if (!Array.isArray(options.filter[property].all)) {
-              throw new Error(`filter.${property}.all must be an Array.`);
-            }
-            out[`${property}`] = options.filter[property].all.join('+');
-          }
+          });
+
         } else {
           throw new Error(`filter.${property} must be either Object or String.`);
         }
