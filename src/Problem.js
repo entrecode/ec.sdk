@@ -46,17 +46,28 @@ export default class Problem extends Error {
   }
 
   /**
+   * Creates short string representation of all sub errors.
+   *
+   * @access private
+   *
+   * @returns {string} short representation of all sub errors.
+   */
+  sub() {
+    let out = '\nSubErrors:\n';
+    this.subErrors.forEach((e) => {
+      out += `  ${e.short().split('\n').join('  \n')}\n`;
+    });
+    return out;
+  }
+
+  /**
    * Get short string representation for this and all sub errors. Will contain newlines for each
    * sub error.
    *
    * @returns {string} short string representation
    */
   shortAll() {
-    let out = `${this.short()}\nSubErrors:\n`;
-    this.subErrors.forEach((e) => {
-      out += `  ${e.short().split('\n').join('  \n')}\n`;
-    });
-    return out;
+    return `${this.short()}${this.sub()}`;
   }
 
   /**
@@ -76,11 +87,7 @@ ${this.detail}${this.verbose ? ` - ${this.verbose}` : ''}${this.requestID ? ` ($
    * @returns {string} detailed string representation.
    */
   longAll() {
-    let out = `${this.long()}\nSubErrors:\n`;
-    this.subErrors.forEach((e) => {
-      out += `  ${e.short().split('\n').join('  \n')}\n`;
-    });
-    return out;
+    return `${this.long()}${this.sub()}`;
   }
 
   /**

@@ -9,6 +9,22 @@ import events from './EventEmitter';
 traverson.registerMediaType(HalAdapter.mediaType, HalAdapter);
 
 /**
+ * Modifier for filter object to query convertion.
+ *
+ * @access private
+ *
+ * @type {{exact: string, search: string, from: string, to: string, any: string, all: string}}
+ */
+const modifier = {
+  exact: '',
+  search: '~',
+  from: 'From',
+  to: 'To',
+  any: ',',
+  all: '+',
+};
+
+/**
  * Creates a callback which wraps a traverson repsonse from `get`, `post`, `put`, `delete` and
  * handles http status codes.
  * The callback will only handle status codes 200-299 as success. All
@@ -55,6 +71,16 @@ export default class Core {
     .addRequestOptions({ headers: { Accept: 'application/hal+json' } });
   }
 
+  /**
+   * Creates a new {@link
+    * https://github.com/basti1302/traverson/blob/master/api.markdown#request-builder
+     * traverson request builder}
+   *  which can be used for a new request to the API.
+   *
+   * @access private
+   *
+   * @returns {Object} traverson request builder instance.
+   */
   newRequest() {
     if (!this.traversal) {
       throw new Error('Critical: Traversal invalid!');
@@ -66,6 +92,37 @@ export default class Core {
 
     return this.traversal.newRequest();
   }
+}
+
+/**
+ * Generic Promise wrapper for traverson functions.
+ *
+ * @access private
+ *
+ * @param {string} func traverson function which should be called
+ * @param {object} t traverson build on which func should be called
+ * @param {object?} body optional post/put body
+ * @returns {Promise} resolves to the response from the API.
+ */
+function traversonWrapper(func, t, body) {
+  return new Promise((resolve, reject) => {
+    const cb = (err, res) => {
+      if (err) {
+        events.emit('error', err);
+        return reject(err);
+      }
+
+      return resolve(res);
+    };
+
+    if (func === 'getUrl') {
+      t[func](cb);
+    } else if (func === 'post' || func === 'put') {
+      t[func](body, handlerCallback(cb));
+    } else {
+      t[func](handlerCallback(cb));
+    }
+  });
 }
 
 /**
@@ -83,16 +140,7 @@ export default class Core {
  * @returns {Promise} resolves to the response from the API.
  */
 export function get(t) {
-  return new Promise((resolve, reject) => {
-    t.get(handlerCallback((err, res) => {
-      if (err) {
-        events.emit('error', err);
-        return reject(err);
-      }
-
-      return resolve(res);
-    }));
-  });
+  return traversonWrapper('get', t);
 }
 
 /**
@@ -108,16 +156,7 @@ export function get(t) {
  * @returns {Promise.string} resolves to the url.
  */
 export function getUrl(t) {
-  return new Promise((resolve, reject) => {
-    t.getUrl((err, res) => {
-      if (err) {
-        events.emit('error', err);
-        return reject(err);
-      }
-
-      return resolve(res);
-    });
-  });
+  return traversonWrapper('getUrl', t);
 }
 
 /**
@@ -132,19 +171,11 @@ export function getUrl(t) {
  * @access private
  *
  * @param {object} t request builder
+ * @param {object} body post body
  * @returns {Promise} resolves to the response from the API.
  */
 export function post(t, body) {
-  return new Promise((resolve, reject) => {
-    t.post(body, handlerCallback((err, res) => {
-      if (err) {
-        events.emit('error', err);
-        return reject(err);
-      }
-
-      return resolve(res);
-    }));
-  });
+  return traversonWrapper('post', t, body);
 }
 
 /**
@@ -159,19 +190,11 @@ export function post(t, body) {
  * @access private
  *
  * @param {object} t request builder
+ * @param {object} body post body
  * @returns {Promise} resolves to the response from the API.
  */
 export function put(t, body) {
-  return new Promise((resolve, reject) => {
-    t.put(body, handlerCallback((err, res) => {
-      if (err) {
-        events.emit('error', err);
-        return reject(err);
-      }
-
-      return resolve(res);
-    }));
-  });
+  return traversonWrapper('put', t, body);
 }
 
 /**
@@ -189,16 +212,7 @@ export function put(t, body) {
  * @returns {Promise} resolves to the response from the API.
  */
 export function del(t) {
-  return new Promise((resolve, reject) => {
-    t.del(handlerCallback((err, res) => {
-      if (err) {
-        events.emit('error', err);
-        return reject(err);
-      }
-
-      return resolve(res);
-    }));
-  });
+  return traversonWrapper('delete', t);
 }
 
 /**
@@ -214,12 +228,11 @@ export function optionsToQuery(options) {
   const out = {};
 
   if (options) {
-    if ({}.hasOwnProperty.call(options, 'size')) {
-      out.size = options.size;
-    }
-    if ({}.hasOwnProperty.call(options, 'page')) {
-      out.page = options.page;
-    }
+    ['size', 'page'].forEach((property) => {
+      if ({}.hasOwnProperty.call(options, property)) {
+        out[property] = options[property];
+      }
+    });
 
     if ({}.hasOwnProperty.call(options, 'sort')) {
       if (Array.isArray(options.sort)) {
@@ -239,31 +252,25 @@ export function optionsToQuery(options) {
         if (typeof options.filter[property] === 'string') {
           out[property] = options.filter[property];
         } else if (typeof options.filter[property] === 'object') {
-          if ({}.hasOwnProperty.call(options.filter[property], 'exact')) {
-            out[property] = options.filter[property].exact;
-          }
-          if ({}.hasOwnProperty.call(options.filter[property], 'search')) {
-            out[`${property}~`] = options.filter[property].search;
-          }
-          if ({}.hasOwnProperty.call(options.filter[property], 'from')) {
-            out[`${property}From`] = options.filter[property].from;
-          }
-          if ({}.hasOwnProperty.call(options.filter[property], 'to')) {
-            out[`${property}To`] = options.filter[property].to;
-          }
-
-          if ({}.hasOwnProperty.call(options.filter[property], 'any')) {
-            if (!Array.isArray(options.filter[property].any)) {
-              throw new Error(`filter.${property}.any must be an Array.`);
+          Object.keys(options.filter[property]).forEach((key) => {
+            switch (key) {
+            case 'exact':
+            case 'search':
+            case 'from':
+            case 'to':
+              out[`${property}${modifier[key]}`] = options.filter[property][key];
+              break;
+            case 'any':
+            case 'all':
+              if (!Array.isArray(options.filter[property][key])) {
+                throw new Error(`filter.${property}.${key} must be an Array.`);
+              }
+              out[property] = options.filter[property][key].join(modifier[key]);
+              break;
+            default:
+              throw new Error(`No handling of ${property}.${key} filter supported.`);
             }
-            out[`${property}`] = options.filter[property].any.join(',');
-          }
-          if ({}.hasOwnProperty.call(options.filter[property], 'all')) {
-            if (!Array.isArray(options.filter[property].all)) {
-              throw new Error(`filter.${property}.all must be an Array.`);
-            }
-            out[`${property}`] = options.filter[property].all.join('+');
-          }
+          });
         } else {
           throw new Error(`filter.${property} must be either Object or String.`);
         }
