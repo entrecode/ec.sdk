@@ -71,6 +71,16 @@ export default class Core {
     .addRequestOptions({ headers: { Accept: 'application/hal+json' } });
   }
 
+  /**
+   * Creates a new {@link
+    * https://github.com/basti1302/traverson/blob/master/api.markdown#request-builder
+     * traverson request builder}
+   *  which can be used for a new request to the API.
+   *
+   * @access private
+   *
+   * @returns {Object} traverson request builder instance.
+   */
   newRequest() {
     if (!this.traversal) {
       throw new Error('Critical: Traversal invalid!');
