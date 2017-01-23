@@ -4,7 +4,7 @@ import { DataManagerList } from './resource/DataManagerList';
 import { filterOptions } from './interfaces';
 
 export declare class DataManager extends Core {
-  constructor(environment: string, token?: string);
+  constructor(environment?: string);
 
   list(options?: filterOptions): Promise<DataManagerList>;
 

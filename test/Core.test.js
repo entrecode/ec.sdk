@@ -35,6 +35,19 @@ describe('Core', () => {
     const throws = () => new Core.default();
     throws.should.throw(Error);
   });
+  it('should set token', () => {
+    core.setToken('test');
+    core.should.have.deep.property('traversal.requestOptions.headers.Authorization', 'Bearer test');
+  });
+  it('should throw on undefined token', () => {
+    const throws = () => core.setToken();
+    throws.should.throw(Error);
+  });
+  it('should only add one header', () => {
+    core.setToken('test');
+    core.setToken('der zweite');
+    core.should.have.deep.property('traversal.requestOptions.headers.Authorization', 'Bearer der zweite');
+  });
   it('should return traverson Builder', () => {
     core.newRequest().should.be.instanceOf(traverson._Builder);
   });

@@ -22,21 +22,15 @@ export default class DataManager extends Core {
    * Creates a new instance of {@link DataManager} module. Can be used to work with DataManager
    * API.
    *
-   * @param {string} environment the environment to connect to. 'live', 'stage', 'nightly', or
+   * @param {?string} environment the environment to connect to. 'live', 'stage', 'nightly', or
    *   'develop'.
-   * @param {?string} token optionally a jwt token to use for authentication.
    */
-  constructor(environment, token) {
-    if (!{}.hasOwnProperty.call(urls, environment)) {
+  constructor(environment) {
+    if (environment && !{}.hasOwnProperty.call(urls, environment)) {
       throw new Error('invalid environment specified');
     }
 
-    super(urls[environment]);
-
-    this.resourceName = 'ec:datamanager';
-    if (token) {
-      this.traversal.addRequestOptions({ headers: { Authorization: `Bearer ${token}` } });
-    }
+    super(urls[environment || 'live']);
   }
 
   /**
