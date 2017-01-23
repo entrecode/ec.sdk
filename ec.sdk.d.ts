@@ -1,12 +1,12 @@
-declare class DataManager extends Core {
+export declare class DataManager extends Core {
     constructor(environment: string, token?: string);
 
-    list(options: filterOptions): Promise<DataManagerList>;
+    list(options?: filterOptions): Promise<DataManagerList>;
 
     get(dataManagerID: string): Promise<DataManagerResource>;
 }
 
-declare class Accounts extends Core {
+export declare class Accounts extends Core {
 
 }
 
@@ -16,7 +16,7 @@ declare class Core {
     newRequest(): any;
 }
 
-declare class DataManagerList {
+declare class DataManagerList extends ListResource {
     constructor(resource: any, name?: string, traversal?: any);
 
     create(dataManager: any): Promise<DataManagerResource>;
@@ -93,7 +93,7 @@ declare class Resource {
     setProperty(property: string, value: any): Resource;
 }
 
-interface filterOptions {{
+interface filterOptions {
     size?: number,
     page?: number,
     sort?: Array<string>,
