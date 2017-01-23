@@ -27,7 +27,7 @@ export default class Resource {
    */
   constructor(resource, traversal) {
     this.dirty = false;
-    this.resource = halfred.parse(resource);
+    this.resource = halfred.parse(JSON.parse(JSON.stringify(resource)));
 
     /**
      * Global {@link EventEmitter}.
