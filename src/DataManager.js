@@ -72,23 +72,3 @@ export default class DataManager extends Core {
     .then(([res, traversal]) => new DataManagerResource(res, this.resourceName, traversal));
   }
 }
-
-/**
- *
- * This object should contain key value pairs with filter options. These object will be applied
- * when loading a {@link ListResource}.
- *
- * @example
- * {
- *   title: 'Recipe Book',
- *   created: {
- *     to: new Date().toISOString()
- *   },
- *   description: {
- *     search: 'desserts'
- *   }
- * }
- *
- * @typedef {{propertyNames: (string|{exact: string, search: string, from: string, to: string, any:
- *   array<string>, all: array<string>})}} filter
- */
