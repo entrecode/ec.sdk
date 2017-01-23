@@ -1,5 +1,3 @@
-'use strict';
-
 import Core, { get, optionsToQuery } from './Core';
 import DataManagerResource from './resources/DataManagerResource';
 import DataManagerList from './resources/DataManagerList';

@@ -1,5 +1,3 @@
-'use stict';
-
 const chai = require('chai');
 const sinonChai = require('sinon-chai');
 

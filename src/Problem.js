@@ -1,5 +1,3 @@
-'use strict';
-
 /**
  * Class representing Errors sent by all entrecode APIs. Complies to {@link
   * https://tools.ietf.org/html/draft-nottingham-http-problem-07 | Problem Details for HTTP APIs}.

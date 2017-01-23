@@ -1,5 +1,3 @@
-'use strict';
-
 import Resource from './Resource';
 
 /**
@@ -11,7 +9,7 @@ export default class DataManagerResource extends Resource {
   /**
    * Set a new value to title property.
    * @param {string} value the value to assign.
-   * @returns {Resource} this Resource for chainability
+   * @returns {DataManagerResource} this Resource for chainability
    */
   setTitle(value) {
     if (!value) {
@@ -33,7 +31,7 @@ export default class DataManagerResource extends Resource {
   /**
    * Set a new value to description property.
    * @param {string} value the value to assign.
-   * @returns {Resource} this Resource for chainability
+   * @returns {DataManagerResource} this Resource for chainability
    */
   setDescription(value) {
     if (!value) {
@@ -55,7 +53,7 @@ export default class DataManagerResource extends Resource {
   /**
    * Set a new value to config property.
    * @param {object} value the value to assign.
-   * @returns {Resource} this Resource for chainability
+   * @returns {DataManagerResource} this Resource for chainability
    */
   setConfig(value) {
     if (!value) {
@@ -77,7 +75,7 @@ export default class DataManagerResource extends Resource {
   /**
    * Set a new value to hexColor property.
    * @param {any} value the value to assign. Format '#ffffff'
-   * @returns {Resource} this Resource for chainability
+   * @returns {DataManagerResource} this Resource for chainability
    */
   setHexColor(value) {
     if (!value) {
@@ -99,7 +97,7 @@ export default class DataManagerResource extends Resource {
   /**
    * Set a new value to locales property.
    * @param {array<string>} value the value to assign.
-   * @returns {Resource} this Resource for chainability
+   * @returns {DataManagerResource} this Resource for chainability
    */
   setLocales(value) {
     if (!value || !Array.isArray(value)) {

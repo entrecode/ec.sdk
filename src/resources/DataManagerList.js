@@ -1,5 +1,3 @@
-'use strict';
-
 import ListResource from './ListResource';
 import DataManagerResource from './DataManagerResource';
 import { post } from '../Core';
