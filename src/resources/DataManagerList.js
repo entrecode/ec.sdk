@@ -14,12 +14,11 @@ export default class DataManagerList extends ListResource {
    * Creates a new {@link DataManagerList}.
    *
    * @param {object} resource resource loaded from the API.
-   * @param {?string} name name of the embedded resources.
    * @param {?object} traversal traversal from which traverson can continue.
    */
-  constructor(resource, name, traversal) {
-    super(resource, name, traversal);
-    this.ListClass = ListResource;
+  constructor(resource, traversal) {
+    super(resource, 'ec:datamanager', traversal);
+    this.ListClass = DataManagerList;
     this.ItemClass = DataManagerResource;
   }
 
