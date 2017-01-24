@@ -1,3 +1,20 @@
+<a name="0.1.3"></a>
+## 0.1.3 (2017-01-24)
+
+* adds typings for account resources ([db32ffe](https://github.com/entrecode/ec.sdk/commit/db32ffe))
+* clone input on resource create ([b54b173](https://github.com/entrecode/ec.sdk/commit/b54b173))
+* fixed missing > in accounts typings ([8420ab4](https://github.com/entrecode/ec.sdk/commit/8420ab4))
+* fixed wrong describe ([de22537](https://github.com/entrecode/ec.sdk/commit/de22537))
+* implement simple account resource CMS-2575 ([fc0c65b](https://github.com/entrecode/ec.sdk/commit/fc0c65b))
+* jsdoc and typings fixes ([ee253f0](https://github.com/entrecode/ec.sdk/commit/ee253f0))
+* moved filter typedef to list resource ([489d195](https://github.com/entrecode/ec.sdk/commit/489d195))
+* release version 0.1.3 ([ee05477](https://github.com/entrecode/ec.sdk/commit/ee05477))
+* removed constructor value name from DataManagerList and ~Resource ([86ff6d4](https://github.com/entrecode/ec.sdk/commit/86ff6d4))
+* removed use strict ([79691b7](https://github.com/entrecode/ec.sdk/commit/79691b7))
+* setToken now function of Core instead of constructor option ([dce46dd](https://github.com/entrecode/ec.sdk/commit/dce46dd))
+
+
+
 <a name="0.1.2"></a>
 ## 0.1.2 (2017-01-23)
 
