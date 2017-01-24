@@ -6,11 +6,15 @@ import { filterOptions } from './interfaces';
 export declare class Accounts extends Core {
   constructor(environment?: string);
 
+  setClientID(clientID: string): Accounts;
+
   list(options?: filterOptions): Promise<AccountList>;
 
   get(accountID: string): Promise<AccountResource>;
 
   createApiToken(): tokenResponse;
+
+  login(email: string, password: string): Promise<string>;
 }
 
 interface tokenResponse {
