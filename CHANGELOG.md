@@ -1,3 +1,14 @@
+<a name="0.1.4"></a>
+## 0.1.4 (2017-01-24)
+
+* release version 0.1.4 ([7c8f40e](https://github.com/entrecode/ec.sdk/commit/7c8f40e))
+* feat: create API tokens in Accounts CMS-2577 ([775e946](https://github.com/entrecode/ec.sdk/commit/775e946))
+* feat: login with rest clientID and body post credentials ([7b0a7ac](https://github.com/entrecode/ec.sdk/commit/7b0a7ac))
+* fix: comma dangle in method call throws in browser ([39c7403](https://github.com/entrecode/ec.sdk/commit/39c7403))
+* fix: updated typings for ListResource ([2e07a3c](https://github.com/entrecode/ec.sdk/commit/2e07a3c))
+
+
+
 <a name="0.1.3"></a>
 ## 0.1.3 (2017-01-24)
 
