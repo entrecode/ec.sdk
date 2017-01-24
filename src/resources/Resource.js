@@ -92,7 +92,7 @@ export default class Resource {
       this.newRequest().follow('self'),
       // TODO does this Object.assign work how I want it to?
       // or do we need for(key in obj) loop?
-      Object.assign(this.resource.original(), this.resource),
+      Object.assign(this.resource.original(), this.resource)
     )
     .then(([res, traversal]) => {
       this.resource = halfred.parse(res);
