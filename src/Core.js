@@ -1,8 +1,5 @@
-'use strict';
-
 import traverson from 'traverson';
 import HalAdapter from 'traverson-hal';
-
 import Problem from './Problem';
 import events from './EventEmitter';
 
@@ -69,6 +66,21 @@ export default class Core {
 
     this.traversal = traverson.from(url).jsonHal()
     .addRequestOptions({ headers: { Accept: 'application/hal+json' } });
+  }
+
+  /**
+   * Set an existing accessToken
+   *
+   * @param {string} token the existing token
+   * @returns {Core} this for chainability
+   */
+  setToken(token) {
+    if (!token) {
+      throw new Error('Token must be defined');
+    }
+
+    this.traversal.addRequestOptions({ headers: { Authorization: `Bearer ${token}` } });
+    return this;
   }
 
   /**

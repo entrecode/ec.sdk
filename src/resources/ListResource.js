@@ -1,5 +1,3 @@
-'use strict';
-
 import Resource from './Resource';
 
 /**
@@ -97,7 +95,7 @@ export default class ListResource extends Resource {
    * Loads the first {@link https://tools.ietf.org/html/draft-kelly-json-hal-08#section-5 link} and
    * returns a {@link ListResource} with the loaded result.
    *
-   * @returns {Promise.<Resource|ResourceClass>} the resource identified by the link.
+   * @returns {Promise<Resource|ResourceClass>} the resource identified by the link.
    */
   followFirstLink() {
     return this.followLink('first', this.ListClass);
@@ -118,7 +116,7 @@ export default class ListResource extends Resource {
    * Loads the next {@link https://tools.ietf.org/html/draft-kelly-json-hal-08#section-5 link} and
    * returns a {@link ListResource} with the loaded result.
    *
-   * @returns {Promise.<Resource|ResourceClass>} the resource identified by the link.
+   * @returns {Promise<Resource|ResourceClass>} the resource identified by the link.
    */
   followNextLink() {
     return this.followLink('next', this.ListClass);
@@ -139,9 +137,29 @@ export default class ListResource extends Resource {
    * Loads the prev {@link https://tools.ietf.org/html/draft-kelly-json-hal-08#section-5 link} and
    * returns a {@link ListResource} with the loaded result.
    *
-   * @returns {Promise.<Resource|ResourceClass>} the resource identified by the link.
+   * @returns {Promise<Resource|ResourceClass>} the resource identified by the link.
    */
   followPrevLink() {
     return this.followLink('prev', this.ListClass);
   }
 }
+
+/**
+ *
+ * This object should contain key value pairs with filter options. These object will be applied
+ * when loading a {@link ListResource}.
+ *
+ * @example
+ * {
+ *   title: 'Recipe Book',
+ *   created: {
+ *     to: new Date().toISOString()
+ *   },
+ *   description: {
+ *     search: 'desserts'
+ *   }
+ * }
+ *
+ * @typedef {{propertyNames: (string|{exact: string, search: string, from: string, to: string, any:
+ *   array<string>, all: array<string>})}} filter
+ */

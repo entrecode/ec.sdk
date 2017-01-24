@@ -1,5 +1,3 @@
-'use strict';
-
 /* eslint no-unused-expressions: "off" */
 
 const chai = require('chai');
@@ -11,7 +9,7 @@ const emitter = require('../lib/EventEmitter').default;
 chai.should();
 chai.use(sinonChai);
 
-describe('Core', () => {
+describe('Event Emitter', () => {
   let spy;
   beforeEach(() => {
     spy = sinon.spy();

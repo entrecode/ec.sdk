@@ -1,5 +1,3 @@
-'use strict';
-
 import Core, { get, optionsToQuery } from './Core';
 import DataManagerResource from './resources/DataManagerResource';
 import DataManagerList from './resources/DataManagerList';
@@ -22,21 +20,15 @@ export default class DataManager extends Core {
    * Creates a new instance of {@link DataManager} module. Can be used to work with DataManager
    * API.
    *
-   * @param {string} environment the environment to connect to. 'live', 'stage', 'nightly', or
+   * @param {?string} environment the environment to connect to. 'live', 'stage', 'nightly', or
    *   'develop'.
-   * @param {?string} token optionally a jwt token to use for authentication.
    */
-  constructor(environment, token) {
-    if (!{}.hasOwnProperty.call(urls, environment)) {
+  constructor(environment) {
+    if (environment && !{}.hasOwnProperty.call(urls, environment)) {
       throw new Error('invalid environment specified');
     }
 
-    super(urls[environment]);
-
-    this.resourceName = 'ec:datamanager';
-    if (token) {
-      this.traversal.addRequestOptions({ headers: { Authorization: `Bearer ${token}` } });
-    }
+    super(urls[environment || 'live']);
   }
 
   /**
@@ -45,7 +37,7 @@ export default class DataManager extends Core {
    *
    * @param {{size: number, page: number, sort: array<string>, filter: filter}} options the
    *   filter options.
-   * @returns {Promise.<DataManagerList>} resolves to datamanager list with applied filters.
+   * @returns {Promise<DataManagerList>} resolves to datamanager list with applied filters.
    */
   list(options) {
     return Promise.resolve()
@@ -55,14 +47,14 @@ export default class DataManager extends Core {
       .withTemplateParameters(optionsToQuery(options));
       return get(request);
     })
-    .then(([res, traversal]) => new DataManagerList(res, this.resourceName, traversal));
+    .then(([res, traversal]) => new DataManagerList(res, traversal));
   }
 
   /**
    * Get a single {@link DataManagerResource} identified by dataManagerID.
    *
    * @param {string} dataManagerID id of the DataManager.
-   * @returns {Promise.<DataManagerResource>} resolves to the DataManager which should be loaded.
+   * @returns {Promise<DataManagerResource>} resolves to the DataManager which should be loaded.
    */
   get(dataManagerID) {
     if (!dataManagerID) {
@@ -75,26 +67,6 @@ export default class DataManager extends Core {
       .withTemplateParameters({ dataManagerID });
       return get(request);
     })
-    .then(([res, traversal]) => new DataManagerResource(res, this.resourceName, traversal));
+    .then(([res, traversal]) => new DataManagerResource(res, traversal));
   }
 }
-
-/**
- *
- * This object should contain key value pairs with filter options. These object will be applied
- * when loading a {@link ListResource}.
- *
- * @example
- * {
- *   title: 'Recipe Book',
- *   created: {
- *     to: new Date().toISOString()
- *   },
- *   description: {
- *     search: 'desserts'
- *   }
- * }
- *
- * @typedef {{propertyNames: (string|{exact: string, search: string, from: string, to: string, any:
- *   array<string>, all: array<string>})}} filter
- */

@@ -7,7 +7,7 @@ export declare class Resource {
 
   reset(): void;
 
-  save(): Promise<Resource>
+  save(): Promise<any>
 
   del(): Promise<void>;
 
@@ -17,9 +17,9 @@ export declare class Resource {
 
   get(properties: any): any;
 
-  set(resource: any): Resource;
+  set(resource: any): any;
 
   getProperty(property: string): any;
 
-  setProperty(property: string, value: any): Resource;
+  setProperty(property: string, value: any): any;
 }

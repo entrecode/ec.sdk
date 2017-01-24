@@ -27,7 +27,7 @@ export default class Resource {
    */
   constructor(resource, traversal) {
     this.dirty = false;
-    this.resource = halfred.parse(resource);
+    this.resource = halfred.parse(JSON.parse(JSON.stringify(resource)));
 
     /**
      * Global {@link EventEmitter}.
@@ -83,7 +83,7 @@ export default class Resource {
   /**
    * Saves this {@link Resource}.
    *
-   * @returns {Promise.<Resource>} Promise will resolve to the saved Resource. Will
+   * @returns {Promise<Resource>} Promise will resolve to the saved Resource. Will
    *   be the same object but with refreshed data.
    */
   save() {
@@ -105,7 +105,7 @@ export default class Resource {
   /**
    * Deletes this {@link Resource}.
    *
-   * @returns {Promise.<undefined>} Promise will resolve on success and reject otherwise.
+   * @returns {Promise<undefined>} Promise will resolve on success and reject otherwise.
    */
   del() {
     return del(this.newRequest().follow('self'));
@@ -140,7 +140,7 @@ export default class Resource {
    *
    * @param {string} link the link name.
    * @param {class} ResourceClass override the default resource class ({@link Resource}).
-   * @returns {Promise.<Resource|ResourceClass>} the resource identified by the link.
+   * @returns {Promise<Resource|ResourceClass>} the resource identified by the link.
    */
   followLink(link, ResourceClass) {
     return get(this.newRequest().follow(link))

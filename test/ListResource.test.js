@@ -1,5 +1,3 @@
-
-
 /* eslint no-unused-expressions: "off" */
 
 const chai = require('chai');

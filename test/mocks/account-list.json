@@ -1,0 +1,167 @@
+{
+  "count": 2,
+  "total": 45,
+  "_links": {
+    "self": {
+      "profile": "https://entrecode.de/schema/accounts",
+      "href": "https://accounts.entrecode.de/account?size=2"
+    },
+    "curies": {
+      "href": "https://doc.entrecode.de/account_server/#relation-{rel}",
+      "templated": true
+    },
+    "ec:accounts/options": {
+      "href": "https://accounts.entrecode.de/account{?accountid,accountid~,created,createdFrom,createdTo,created~,email,email~,isprincess,language,language~,page,size,sort,state}",
+      "templated": true
+    },
+    "ec:account/by-id": {
+      "profile": "https://entrecode.de/schema/account",
+      "href": "https://accounts.entrecode.de/account?accountID={accountID}",
+      "templated": true
+    },
+    "ec:auth": {
+      "href": "https://accounts.entrecode.de"
+    },
+    "ec:account/create-anonymous": {
+      "profile": "https://entrecode.de/schema/account-template",
+      "href": "https://accounts.entrecode.de/auth/account"
+    },
+    "next": {
+      "href": "https://accounts.entrecode.de/account?size=2&page=2"
+    }
+  },
+  "_embedded": {
+    "ec:account": [
+      {
+        "accountID": "0a23eb0f-b50b-49a3-b428-ea690a8bbf9a",
+        "name": "andre@entrecode.de",
+        "created": "2015-03-11T09:46:49.907Z",
+        "email": "andre@entrecode.de",
+        "hasPassword": true,
+        "hasPendingEmail": false,
+        "language": "en",
+        "openID": [
+          {
+            "email": "andre.code@gmail.com",
+            "sub": "0123456789101112",
+            "iss": "google",
+            "name": "Andrè Code",
+            "pending": false
+          },
+          {
+            "email": "andre.code@googlemail.com",
+            "sub": "0123456789101112",
+            "iss": "facebook",
+            "name": "André Code",
+            "pending": false
+          }
+        ],
+        "state": "active",
+        "permissions": [
+          "acc:permissions:dm:5510a8f9-67ce-4d4d-b5a1-a9fe6b7d8d72"
+        ],
+        "groups": [
+          {
+            "groupID": "260cb6b2-4fef-40e1-866a-659f2feb2500",
+            "name": "Princesses",
+            "permissions": [
+              "acc:list,view,group,group-create,permissions,set-permissions,invite",
+              "dm:35b4f503-f361-4198-a11a-b2f24113731f",
+              "dm-stats,app-stats",
+              "dm-template-create,dm-template",
+              "acc:invalid-permissions",
+              "acc:client,client-create",
+              "mail"
+            ]
+          }
+        ],
+        "_links": {
+          "self": {
+            "profile": "https://entrecode.de/schema/account",
+            "href": "https://accounts.entrecode.de/account?accountID=ddd29fd1-7417-4894-a546-5c12b11c0186"
+          },
+          "curies": {
+            "href": "https://doc.entrecode.de/account_server/#relation-{rel}",
+            "templated": true
+          },
+          "ec:account/tokens": {
+            "profile": "https://entrecode.de/schema/account-tokens",
+            "href": "https://accounts.entrecode.de/account/tokens?accountID=ddd29fd1-7417-4894-a546-5c12b11c0186"
+          },
+          "ec:auth": {
+            "href": "https://accounts.entrecode.de"
+          },
+          "collection": {
+            "profile": "https://entrecode.de/schema/accounts",
+            "href": "https://accounts.entrecode.de/accounts"
+          }
+        }
+      },
+      {
+        "accountID": "0a23eb0f-b50b-49a3-b428-ea690a8bbf9a",
+        "name": "andre2@entrecode.de",
+        "created": "2015-03-11T09:46:49.907Z",
+        "email": "andre2@entrecode.de",
+        "hasPassword": true,
+        "hasPendingEmail": false,
+        "language": "en",
+        "openID": [
+          {
+            "email": "andre2.code@gmail.com",
+            "sub": "0123456789101112",
+            "iss": "google",
+            "name": "André Code2",
+            "pending": false
+          },
+          {
+            "email": "andre2.code@googlemail.com",
+            "sub": "0123456789101112",
+            "iss": "facebook",
+            "name": "André2 Code",
+            "pending": false
+          }
+        ],
+        "state": "active",
+        "permissions": [
+          "acc:permissions:dm:5510a8f9-67ce-4d4d-b5a1-a9fe6b7d8d72"
+        ],
+        "groups": [
+          {
+            "groupID": "260cb6b2-4fef-40e1-866a-659f2feb2500",
+            "name": "Princesses",
+            "permissions": [
+              "acc:list,view,group,group-create,permissions,set-permissions,invite",
+              "dm:35b4f503-f361-4198-a11a-b2f24113731f",
+              "dm-stats,app-stats",
+              "dm-template-create,dm-template",
+              "acc:invalid-permissions",
+              "acc:client,client-create",
+              "mail"
+            ]
+          }
+        ],
+        "_links": {
+          "self": {
+            "profile": "https://entrecode.de/schema/account",
+            "href": "https://accounts.entrecode.de/account?accountID=ddd29fd1-7417-4894-a546-5c12b11c0186"
+          },
+          "curies": {
+            "href": "https://doc.entrecode.de/account_server/#relation-{rel}",
+            "templated": true
+          },
+          "ec:account/tokens": {
+            "profile": "https://entrecode.de/schema/account-tokens",
+            "href": "https://accounts.entrecode.de/account/tokens?accountID=ddd29fd1-7417-4894-a546-5c12b11c0186"
+          },
+          "ec:auth": {
+            "href": "https://accounts.entrecode.de"
+          },
+          "collection": {
+            "profile": "https://entrecode.de/schema/accounts",
+            "href": "https://accounts.entrecode.de/accounts"
+          }
+        }
+      }
+    ]
+  }
+}

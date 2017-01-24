@@ -1,5 +1,3 @@
-'use strict';
-
 /* eslint no-unused-expressions: "off" */
 
 const chai = require('chai');
@@ -23,17 +21,21 @@ function capitalizeFirstLetter(string) {
 }
 
 describe('DataManager class', () => {
-  it('instantiate', () => {
+  it('should instantiate', () => {
     new DataManager('live').should.be.instanceOf(DataManager);
   });
-  it('instantiate with token', () => {
-    const dm = new DataManager('live', 'token');
+  it('should instantiate with empty environment', () => {
+    new DataManager().should.be.instanceOf(DataManager);
+  });
+  it('should set token with token', () => {
+    const dm = new DataManager('live');
+    dm.setToken('token');
     dm.traversal.getRequestOptions().should.have.deep.property('headers.Authorization', 'Bearer token');
   });
-  it('should throw error on undefined environment', () => {
+  it('should throw error on invalid environment', () => {
     const fn = () => {
       /* eslint no-new:0 */
-      new DataManager();
+      new DataManager('invalid');
     };
     fn.should.throw(Error);
   });
@@ -67,7 +69,7 @@ describe('DataManager class', () => {
       throw err;
     });
   });
-  it('should throws on get with undefined id', () => {
+  it('should throw on get with undefined id', () => {
     const throws = () => new DataManager('live').get();
     throws.should.throw(Error);
   });

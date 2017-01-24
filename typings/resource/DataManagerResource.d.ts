@@ -1,6 +1,7 @@
 import { Resource } from './Resource';
 
 export declare class DataManagerResource extends Resource {
+  constructor(resource: any, traversal?: any);
 
   setTitle(value: string): DataManagerResource;
 
@@ -20,5 +21,5 @@ export declare class DataManagerResource extends Resource {
 
   setLocales(value: Array<string>): DataManagerResource;
 
-  getLocales(): Array<string>
+  getLocales(): Array<string>;
 }

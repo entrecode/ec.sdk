@@ -1,5 +1,3 @@
-'use strict';
-
 /**
  * EventEmitter for emitting all received errors from any API.
  *

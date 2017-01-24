@@ -2,28 +2,52 @@
 
 ### Table of Contents
 
--   [Core](#core)
-    -   [events](#events)
--   [filter](#filter)
--   [DataManager](#datamanager)
+-   [Accounts](#accounts)
     -   [constructor](#constructor)
     -   [list](#list)
     -   [get](#get)
--   [EventEmitter](#eventemitter)
+-   [Core](#core)
+    -   [events](#events)
+    -   [setToken](#settoken)
+-   [DataManager](#datamanager)
     -   [constructor](#constructor-1)
+    -   [list](#list-1)
+    -   [get](#get-1)
+-   [EventEmitter](#eventemitter)
+    -   [constructor](#constructor-2)
     -   [addListener](#addlistener)
     -   [on](#on)
     -   [removeListener](#removelistener)
     -   [removeAllListeners](#removealllisteners)
 -   [Problem](#problem)
-    -   [constructor](#constructor-2)
+    -   [constructor](#constructor-3)
     -   [short](#short)
     -   [shortAll](#shortall)
     -   [long](#long)
     -   [longAll](#longall)
     -   [getAsArray](#getasarray)
+-   [AccountList](#accountlist)
+    -   [constructor](#constructor-4)
+-   [openID](#openid)
+-   [AccountResource](#accountresource)
+    -   [getAccountID](#getaccountid)
+    -   [getName](#getname)
+    -   [getEmail](#getemail)
+    -   [getGroups](#getgroups)
+    -   [getLanguage](#getlanguage)
+    -   [getState](#getstate)
+    -   [getOpenID](#getopenid)
+    -   [getPermissions](#getpermissions)
+    -   [getAllPermissions](#getallpermissions)
+    -   [setLanguage](#setlanguage)
+    -   [setState](#setstate)
+    -   [setOpenID](#setopenid)
+    -   [setPermissions](#setpermissions)
+    -   [addPermission](#addpermission)
+    -   [hasPassword](#haspassword)
+    -   [hasPendingEmail](#haspendingemail)
 -   [DataManagerList](#datamanagerlist)
-    -   [constructor](#constructor-3)
+    -   [constructor](#constructor-5)
     -   [create](#create)
 -   [DataManagerResource](#datamanagerresource)
     -   [setTitle](#settitle)
@@ -37,7 +61,7 @@
     -   [setLocales](#setlocales)
     -   [getLocales](#getlocales)
 -   [ListResource](#listresource)
-    -   [constructor](#constructor-4)
+    -   [constructor](#constructor-6)
     -   [ListClass](#listclass)
     -   [ItemClass](#itemclass)
     -   [getAllItems](#getallitems)
@@ -49,8 +73,9 @@
     -   [followNextLink](#follownextlink)
     -   [hasPrevLink](#hasprevlink)
     -   [followPrevLink](#followprevlink)
+-   [filter](#filter)
 -   [Resource](#resource)
-    -   [constructor](#constructor-5)
+    -   [constructor](#constructor-7)
     -   [events](#events-1)
     -   [isDirty](#isdirty)
     -   [reset](#reset)
@@ -59,10 +84,48 @@
     -   [hasLink](#haslink)
     -   [getLink](#getlink)
     -   [followLink](#followlink)
-    -   [get](#get-1)
+    -   [get](#get-2)
     -   [set](#set)
     -   [getProperty](#getproperty)
     -   [setProperty](#setproperty)
+
+## Accounts
+
+**Extends Core**
+
+Module for working with Accounts API.
+
+### constructor
+
+Creates a new instance of [Accounts](#accounts) module. Can be used to work with Accounts
+API.
+
+**Parameters**
+
+-   `environment` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)?** the environment to connect to. 'live', 'stage', 'nightly', or
+      'develop'.
+
+### list
+
+Load a [AccountList](#accountlist) of [AccountResource](#accountresource) filtered by the values specified
+by the options parameter.
+
+**Parameters**
+
+-   `options` **{size: [number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number), page: [number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number), sort: [array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)>, filter: [filter](#filter)}** the
+      filter options.
+
+Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;[AccountList](#accountlist)>** resolves to account list with applied filters.
+
+### get
+
+Get a single [AccountResource](#accountresource) identified by accountID.
+
+**Parameters**
+
+-   `accountID` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** id of the Account.
+
+Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;[AccountResource](#accountresource)>** resolves to the Account which should be loaded.
 
 ## Core
 
@@ -72,26 +135,15 @@ Core class for connecting to any entrecode API.
 
 Global [EventEmitter](#eventemitter).
 
-## filter
+### setToken
 
-This object should contain key value pairs with filter options. These object will be applied
-when loading a [ListResource](#listresource).
+Set an existing accessToken
 
-Type: {propertyNames: ([string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) | {exact: [string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String), search: [string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String), from: [string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String), to: [string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String), any: [array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)>, all: [array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)>})}
+**Parameters**
 
-**Examples**
+-   `token` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** the existing token
 
-```javascript
-{
-  title: 'Recipe Book',
-  created: {
-    to: new Date().toISOString()
-  },
-  description: {
-    search: 'desserts'
-  }
-}
-```
+Returns **[Core](#core)** this for chainability
 
 ## DataManager
 
@@ -106,9 +158,8 @@ API.
 
 **Parameters**
 
--   `environment` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** the environment to connect to. 'live', 'stage', 'nightly', or
+-   `environment` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)?** the environment to connect to. 'live', 'stage', 'nightly', or
       'develop'.
--   `token` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)?** optionally a jwt token to use for authentication.
 
 ### list
 
@@ -232,6 +283,150 @@ Get all [Problem](#problem)s as an array.
 
 Returns **[array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[Problem](#problem)>** array of all problems.
 
+## AccountList
+
+**Extends ListResource**
+
+Account list resource class.
+
+### constructor
+
+Creates a new [AccountList](#accountlist).
+
+**Parameters**
+
+-   `resource` **[object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)** resource loaded from the API.
+-   `traversal` **[object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)?** traversal from which traverson can continue.
+
+## openID
+
+Object describing openID connections.
+
+Type: {sub: [string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String), iss: [string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String), pending: [boolean](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean), email: [string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String), name: [string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)}
+
+## AccountResource
+
+**Extends Resource**
+
+Account resource class
+
+### getAccountID
+
+Will return accountID property.
+
+Returns **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** the accountID.
+
+### getName
+
+Will return name property.
+
+Returns **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** the name.
+
+### getEmail
+
+Will return email property.
+
+Returns **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** the email.
+
+### getGroups
+
+Will return groups property.
+
+Returns **[array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)>** the groups array.
+
+### getLanguage
+
+Will return language property.
+
+Returns **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** the language.
+
+### getState
+
+Will return stage property.
+
+Returns **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** the state.
+
+### getOpenID
+
+Will return openID property.
+
+Returns **[array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[openID](#openid)>** the openID array.
+
+### getPermissions
+
+Will return permissions property.
+
+Returns **[array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)>** the config.
+
+### getAllPermissions
+
+Returns an array of all permissions of this account. The array will contain the account
+permissions and all group permissions.
+
+Returns **[array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)>** All permissions.
+
+### setLanguage
+
+Set a new value to language property.
+
+**Parameters**
+
+-   `value` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** the value to assign.
+
+Returns **[AccountResource](#accountresource)** this Resource for chainability
+
+### setState
+
+Set a new value to state property.
+
+**Parameters**
+
+-   `value` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** the value to assign.
+
+Returns **[AccountResource](#accountresource)** this Resource for chainability
+
+### setOpenID
+
+Set a new value to openID property.
+
+**Parameters**
+
+-   `value` **[array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[openID](#openid)>** the value to assign.
+
+Returns **[AccountResource](#accountresource)** this Resource for chainability
+
+### setPermissions
+
+Set a new value to permissions property.
+
+**Parameters**
+
+-   `value` **[array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)>** the value to assign.
+
+Returns **[AccountResource](#accountresource)** this Resource for chainability
+
+### addPermission
+
+Adds a new permission to permissions array.
+
+**Parameters**
+
+-   `value` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** the permission to add.
+
+Returns **[AccountResource](#accountresource)** this Resource for chainability
+
+### hasPassword
+
+Check if this account has a password. Will be false on openID only and API key accounts.
+
+Returns **[boolean](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** whether or not this account has a password.
+
+### hasPendingEmail
+
+Check if this account has a pending email.
+
+Returns **[array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[openID](#openid)>** whether or not the account has a pending email.
+
 ## DataManagerList
 
 **Extends ListResource**
@@ -245,7 +440,6 @@ Creates a new [DataManagerList](#datamanagerlist).
 **Parameters**
 
 -   `resource` **[object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)** resource loaded from the API.
--   `name` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)?** name of the embedded resources.
 -   `traversal` **[object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)?** traversal from which traverson can continue.
 
 ### create
@@ -256,7 +450,7 @@ Create a new DataManager.
 
 -   `datamanager` **[object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)** object representing the datamanager.
 
-Returns **[DataManagerResource](#datamanagerresource)** the newly created DataManagerResource
+Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;[DataManagerResource](#datamanagerresource)>** the newly created DataManagerResource
 
 ## DataManagerResource
 
@@ -272,7 +466,7 @@ Set a new value to title property.
 
 -   `value` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** the value to assign.
 
-Returns **[Resource](#resource)** this Resource for chainability
+Returns **[DataManagerResource](#datamanagerresource)** this Resource for chainability
 
 ### getTitle
 
@@ -288,7 +482,7 @@ Set a new value to description property.
 
 -   `value` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** the value to assign.
 
-Returns **[Resource](#resource)** this Resource for chainability
+Returns **[DataManagerResource](#datamanagerresource)** this Resource for chainability
 
 ### getDescription
 
@@ -304,7 +498,7 @@ Set a new value to config property.
 
 -   `value` **[object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)** the value to assign.
 
-Returns **[Resource](#resource)** this Resource for chainability
+Returns **[DataManagerResource](#datamanagerresource)** this Resource for chainability
 
 ### getConfig
 
@@ -320,7 +514,7 @@ Set a new value to hexColor property.
 
 -   `value` **any** the value to assign. Format '#ffffff'
 
-Returns **[Resource](#resource)** this Resource for chainability
+Returns **[DataManagerResource](#datamanagerresource)** this Resource for chainability
 
 ### getHexColor
 
@@ -336,7 +530,7 @@ Set a new value to locales property.
 
 -   `value` **[array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)>** the value to assign.
 
-Returns **[Resource](#resource)** this Resource for chainability
+Returns **[DataManagerResource](#datamanagerresource)** this Resource for chainability
 
 ### getLocales
 
@@ -429,6 +623,27 @@ Loads the prev [link](https://tools.ietf.org/html/draft-kelly-json-hal-08#sectio
 returns a [ListResource](#listresource) with the loaded result.
 
 Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;([Resource](#resource) | ResourceClass)>** the resource identified by the link.
+
+## filter
+
+This object should contain key value pairs with filter options. These object will be applied
+when loading a [ListResource](#listresource).
+
+Type: {propertyNames: ([string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) | {exact: [string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String), search: [string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String), from: [string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String), to: [string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String), any: [array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)>, all: [array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)>})}
+
+**Examples**
+
+```javascript
+{
+  title: 'Recipe Book',
+  created: {
+    to: new Date().toISOString()
+  },
+  description: {
+    search: 'desserts'
+  }
+}
+```
 
 ## Resource
 
