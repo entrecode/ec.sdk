@@ -19,7 +19,7 @@ export declare class AccountResource extends Resource {
 
   getPermissions(): Array<string>;
 
-  getAllPermissions(): Array<string;
+  getAllPermissions(): Array<string>;
 
   setLanguage(value: string): AccountResource;
 
