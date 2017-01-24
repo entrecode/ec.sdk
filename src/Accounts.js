@@ -1,4 +1,4 @@
-import Core, { get, optionsToQuery } from './Core';
+import Core, { get, post, optionsToQuery } from './Core';
 import AccountList from './resources/AccountList';
 import AccountResource from './resources/AccountResource';
 
@@ -29,6 +29,25 @@ export default class Accounts extends Core {
     }
 
     super(urls[environment || 'live']);
+  }
+
+  /**
+   * Set the clientID to use with the Accounts API. Currently only 'rest' is supported.
+   *
+   * @param {string} clientID the clientID.
+   * @returns {Accounts} this object for chainability
+   */
+  setClientID(clientID) {
+    if (!clientID) {
+      throw new Error('ClientID must be defined');
+    }
+
+    if (clientID !== 'rest') {
+      throw new Error('ec.sdk currently only supports client \'rest\'');
+    }
+
+    this.clientID = clientID;
+    return this;
   }
 
   /**
@@ -68,5 +87,45 @@ export default class Accounts extends Core {
       return get(request);
     })
     .then(([res, traversal]) => new AccountResource(res, traversal));
+  }
+
+  /**
+   * Creates a new API token with 100 years validity.
+   *
+   * @returns {Promise<tokenResponse>} the created api
+   *   token response.
+   */
+  createApiToken() {
+    return post(this.newRequest().follow('ec:auth/create-anonymous'), {})
+    .then(([tokenResponse]) => tokenResponse);
+  }
+
+  /**
+   * Response when creating a API token in account server.
+   *
+   * @typedef {{jwt: string, accountID: string, iat: number, exp: number}} tokenResponse
+   */
+
+  /**
+   * Login with email and password. Currently only supports rest clientID with body post of
+   * credentials.
+   *
+   * @param {string} email email address of the user
+   * @param {string} password password of the user
+   * @returns {Promise<string>} Promise resolving to the issued token
+   */
+  login(email, password) {
+    if (!this.clientID) {
+      throw new Error('clientID must be set with Account#setClientID(clientID: string)');
+    }
+    if (!email) {
+      throw new Error('email must be defined');
+    }
+    if (!password) {
+      throw new Error('password must be defined');
+    }
+
+    return post(this.newRequest().follow('ec:auth/login'), { email, password })
+    .then(([token]) => token.token);
   }
 }

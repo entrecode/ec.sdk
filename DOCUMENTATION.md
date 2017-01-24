@@ -4,8 +4,12 @@
 
 -   [Accounts](#accounts)
     -   [constructor](#constructor)
+    -   [setClientID](#setclientid)
     -   [list](#list)
     -   [get](#get)
+    -   [createApiToken](#createapitoken)
+    -   [login](#login)
+    -   [tokenResponse](#tokenresponse)
 -   [Core](#core)
     -   [events](#events)
     -   [setToken](#settoken)
@@ -105,6 +109,16 @@ API.
 -   `environment` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)?** the environment to connect to. 'live', 'stage', 'nightly', or
       'develop'.
 
+### setClientID
+
+Set the clientID to use with the Accounts API. Currently only 'rest' is supported.
+
+**Parameters**
+
+-   `clientID` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** the clientID.
+
+Returns **[Accounts](#accounts)** this object for chainability
+
 ### list
 
 Load a [AccountList](#accountlist) of [AccountResource](#accountresource) filtered by the values specified
@@ -126,6 +140,36 @@ Get a single [AccountResource](#accountresource) identified by accountID.
 -   `accountID` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** id of the Account.
 
 Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;[AccountResource](#accountresource)>** resolves to the Account which should be loaded.
+
+### createApiToken
+
+Creates a new API token with 100 years validity.
+
+Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;tokenResponse>** the created api
+  token response.
+
+### login
+
+Login with email and password. Currently only supports rest clientID with body post of
+credentials.
+
+**Parameters**
+
+-   `email` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** email address of the user
+-   `password` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** password of the user
+
+Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)>** Promise resolving to the issued token
+
+### tokenResponse
+
+Response when creating a API token in account server.
+
+Type: {jwt: [string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String), accountID: [string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String), iat: [number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number), exp: [number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)}
+
+**Parameters**
+
+-   `email`  
+-   `password`  
 
 ## Core
 

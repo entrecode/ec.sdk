@@ -3,21 +3,21 @@ import { Resource } from './Resource';
 export declare class ListResource extends Resource {
   constructor(resource: any, name?: string, traversal?: any);
 
-  getAllItems(): Array<Resource>
+  getAllItems(): Array<any>
 
-  getItem(n: number): Resource;
+  getItem(n: number): any;
 
-  getFirstItem(): Resource;
+  getFirstItem(): any;
 
   hasFirstLink(): boolean;
 
-  followFirstLink(): Promise<ListResource>;
+  followFirstLink(): Promise<any>;
 
   hasNextLink(): boolean;
 
-  followNextLink(): Promise<ListResource>;
+  followNextLink(): Promise<any>;
 
   hasPrevLink(): boolean;
 
-  followPrevLink(): Promise<ListResource>;
+  followPrevLink(): Promise<any>;
 }

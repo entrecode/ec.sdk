@@ -39,6 +39,20 @@ describe('Accounts class', () => {
     accounts.setToken('token');
     accounts.traversal.getRequestOptions().should.have.deep.property('headers.Authorization', 'Bearer token');
   });
+  it('should set clientID', () => {
+    const accounts = new Accounts();
+    accounts.should.not.have.property('clientID');
+    accounts.setClientID('rest');
+    accounts.should.have.property('clientID', 'rest');
+  });
+  it('should throw on undefined clientID', () => {
+    const throws = () => new Accounts().setClientID();
+    throws.should.throw(Error);
+  });
+  it('should throw on not rest clientID', () => {
+    const throws = () => new Accounts().setClientID('notrest');
+    throws.should.throw(Error);
+  });
   it('should throw with undefiend token', () => {
     const throws = () => new Accounts().setToken();
     throws.should.throw(Error);
@@ -75,6 +89,36 @@ describe('Accounts class', () => {
   });
   it('should throw on get in undefiend id', () => {
     const throws = () => new Accounts().get();
+    throws.should.throw(Error);
+  });
+  it('should create API token', () => {
+    const accounts = new Accounts('live');
+    const stub = sinon.stub(core, 'post');
+    stub.returns(resolver('api-token.json'));
+
+    return accounts.createApiToken()
+    .should.eventually.have.property('accountID', '203e9c84-5c78-48ca-b266-405c9220f5d0')
+    .notify(() => stub.restore());
+  });
+  it('should login successfully', () => {
+    const accounts = new Accounts();
+    const stub = sinon.stub(core, 'post');
+    stub.returns(resolver('login-token.json'));
+
+    accounts.setClientID('rest');
+    return accounts.login('andre@entrecode.de', 'mysecret').should.eventually.be.fulfilled
+    .notify(() => stub.restore());
+  });
+  it('should throw on unset clientID', () => {
+    const throws = () => new Accounts().login('user', 'mysecret');
+    throws.should.throw(Error);
+  });
+  it('should throw on undefined email', () => {
+    const throws = () => new Accounts().setClientID('rest').login(null, 'mysecret');
+    throws.should.throw(Error);
+  });
+  it('should throw on undefined password', () => {
+    const throws = () => new Accounts().setClientID('rest').login('user', null);
     throws.should.throw(Error);
   });
 });
