@@ -37,7 +37,7 @@ export default class Accounts extends Core {
    *
    * @param {{size: number, page: number, sort: array<string>, filter: filter}} options the
    *   filter options.
-   * @returns {Promise.<AccountList>} resolves to account list with applied filters.
+   * @returns {Promise<AccountList>} resolves to account list with applied filters.
    */
   list(options) {
     return Promise.resolve()
@@ -54,7 +54,7 @@ export default class Accounts extends Core {
    * Get a single {@link AccountResource} identified by accountID.
    *
    * @param {string} accountID id of the Account.
-   * @returns {Promise.<AccountResource>} resolves to the Account which should be loaded.
+   * @returns {Promise<AccountResource>} resolves to the Account which should be loaded.
    */
   get(accountID) {
     if (!accountID) {

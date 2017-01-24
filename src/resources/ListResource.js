@@ -95,7 +95,7 @@ export default class ListResource extends Resource {
    * Loads the first {@link https://tools.ietf.org/html/draft-kelly-json-hal-08#section-5 link} and
    * returns a {@link ListResource} with the loaded result.
    *
-   * @returns {Promise.<Resource|ResourceClass>} the resource identified by the link.
+   * @returns {Promise<Resource|ResourceClass>} the resource identified by the link.
    */
   followFirstLink() {
     return this.followLink('first', this.ListClass);
@@ -116,7 +116,7 @@ export default class ListResource extends Resource {
    * Loads the next {@link https://tools.ietf.org/html/draft-kelly-json-hal-08#section-5 link} and
    * returns a {@link ListResource} with the loaded result.
    *
-   * @returns {Promise.<Resource|ResourceClass>} the resource identified by the link.
+   * @returns {Promise<Resource|ResourceClass>} the resource identified by the link.
    */
   followNextLink() {
     return this.followLink('next', this.ListClass);
@@ -137,7 +137,7 @@ export default class ListResource extends Resource {
    * Loads the prev {@link https://tools.ietf.org/html/draft-kelly-json-hal-08#section-5 link} and
    * returns a {@link ListResource} with the loaded result.
    *
-   * @returns {Promise.<Resource|ResourceClass>} the resource identified by the link.
+   * @returns {Promise<Resource|ResourceClass>} the resource identified by the link.
    */
   followPrevLink() {
     return this.followLink('prev', this.ListClass);

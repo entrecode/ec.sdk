@@ -24,7 +24,7 @@ export default class DataManagerList extends ListResource {
    * Create a new DataManager.
    *
    * @param {object} datamanager object representing the datamanager.
-   * @returns {DataManagerResource} the newly created DataManagerResource
+   * @returns {Promise<DataManagerResource>} the newly created DataManagerResource
    */
   create(datamanager) {
     if (!datamanager) {

@@ -34,30 +34,60 @@ export default class AccountResource extends Resource {
   }
 
   /**
-   * Check if this account has a password. Will be false on openID only and API key accounts.
-   *
-   * @returns {boolean} whether or not this account has a password.
-   */
-  hasPassword() {
-    return this.getProperty('hasPassword');
-  }
-
-  /**
-   * Check if this account has a pending email.
-   *
-   * @returns {array<openID>} whether or not the account has a pending email.
-   */
-  hasPendingEmail() {
-    return this.getProperty('hasPendingEmail');
-  }
-
-  /**
    * Will return groups property.
    *
    * @returns {array<object>} the groups array.
    */
   getGroups() {
     return this.getProperty('groups');
+  }
+
+  /**
+   * Will return language property.
+   *
+   * @returns {string} the language.
+   */
+  getLanguage() {
+    return this.getProperty('language');
+  }
+
+  /**
+   * Will return stage property.
+   *
+   * @returns {string} the state.
+   */
+  getState() {
+    return this.getProperty('state');
+  }
+
+  /**
+   * Will return openID property.
+   *
+   * @returns {array<openID>} the openID array.
+   */
+  getOpenID() {
+    return this.getProperty('openID');
+  }
+
+  /**
+   * Will return permissions property.
+   *
+   * @returns {array<string>} the config.
+   */
+  getPermissions() {
+    return this.getProperty('permissions');
+  }
+
+  /**
+   * Returns an array of all permissions of this account. The array will contain the account
+   * permissions and all group permissions.
+   *
+   * @returns {array<string>} All permissions.
+   */
+  getAllPermissions() {
+    return this.getProperty('groups')
+    .map(g => g.permissions)
+    .reduce((all, current) => all.concat(current), this.getPermissions());
   }
 
   /**
@@ -75,15 +105,6 @@ export default class AccountResource extends Resource {
   }
 
   /**
-   * Will return language property.
-   *
-   * @returns {string} the language.
-   */
-  getLanguage() {
-    return this.getProperty('language');
-  }
-
-  /**
    * Set a new value to state property.
    *
    * @param {string} value the value to assign.
@@ -98,15 +119,6 @@ export default class AccountResource extends Resource {
   }
 
   /**
-   * Will return stage property.
-   *
-   * @returns {string} the state.
-   */
-  getState() {
-    return this.getProperty('state');
-  }
-
-  /**
    * Set a new value to openID property.
    *
    * @param {array<openID>} value the value to assign.
@@ -118,15 +130,6 @@ export default class AccountResource extends Resource {
     }
 
     return this.setProperty('openID', value);
-  }
-
-  /**
-   * Will return openID property.
-   *
-   * @returns {array<openID>} the openID array.
-   */
-  getOpenID() {
-    return this.getProperty('openID');
   }
 
   /**
@@ -160,24 +163,21 @@ export default class AccountResource extends Resource {
   }
 
   /**
-   * Will return permissions property.
+   * Check if this account has a password. Will be false on openID only and API key accounts.
    *
-   * @returns {array<string>} the config.
+   * @returns {boolean} whether or not this account has a password.
    */
-  getPermissions() {
-    return this.getProperty('permissions');
+  hasPassword() {
+    return this.getProperty('hasPassword');
   }
 
   /**
-   * Returns an array of all permissions of this account. The array will contain the account
-   * permissions and all group permissions.
+   * Check if this account has a pending email.
    *
-   * @returns {array<string>} All permissions.
+   * @returns {array<openID>} whether or not the account has a pending email.
    */
-  getAllPermissions() {
-    return this.getProperty('groups')
-    .map(g => g.permissions)
-    .reduce((all, current) => all.concat(current), this.getPermissions());
+  hasPendingEmail() {
+    return this.getProperty('hasPendingEmail');
   }
 
   // todo change email

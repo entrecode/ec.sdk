@@ -21,5 +21,5 @@ export declare class DataManagerResource extends Resource {
 
   setLocales(value: Array<string>): DataManagerResource;
 
-  getLocales(): Array<string>
+  getLocales(): Array<string>;
 }
