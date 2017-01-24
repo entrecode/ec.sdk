@@ -1,4 +1,4 @@
-import Core, { get, optionsToQuery } from './Core';
+import Core, { get, post, optionsToQuery } from './Core';
 import AccountList from './resources/AccountList';
 import AccountResource from './resources/AccountResource';
 
@@ -69,4 +69,21 @@ export default class Accounts extends Core {
     })
     .then(([res, traversal]) => new AccountResource(res, traversal));
   }
+
+  /**
+   * Creates a new API token with 100 years validity.
+   *
+   * @returns {Promise<tokenResponse>} the created api
+   *   token response.
+   */
+  createApiToken() {
+    return post(this.newRequest().follow('ec:auth/create-anonymous'), {})
+    .then(([tokenResponse]) => tokenResponse);
+  }
+
+  /**
+   * Response when creating a API token in account server.
+   *
+   * @typedef {{jwt: string, accountID: string, iat: number, exp: number}} tokenResponse
+   */
 }

@@ -77,6 +77,15 @@ describe('Accounts class', () => {
     const throws = () => new Accounts().get();
     throws.should.throw(Error);
   });
+  it('should create API token', () => {
+    const accounts = new Accounts('live');
+    const stub = sinon.stub(core, 'post');
+    stub.returns(resolver('api-token.json'));
+
+    return accounts.createApiToken()
+    .should.eventually.have.property('accountID', '203e9c84-5c78-48ca-b266-405c9220f5d0')
+    .notify(() => stub.restore());
+  });
 });
 
 describe('Account ListResource', () => {
