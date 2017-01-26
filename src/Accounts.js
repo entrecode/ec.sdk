@@ -139,6 +139,8 @@ export default class Accounts extends Core {
         });
       }
 
+      this.events.emit('login', token.token);
+
       return token.token;
     });
   }

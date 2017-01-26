@@ -4,13 +4,15 @@ const sinon = require('sinon');
 const sinonChai = require('sinon-chai');
 
 const Accounts = require('../lib/Accounts').default;
+const Resource = require('../lib/resources/Resource').default;
 const Core = require('../lib/Core');
 const resolver = require('./mocks/resolver');
+const emitter = require('../lib/EventEmitter').default;
 
 chai.should();
 chai.use(sinonChai);
 
-describe('Cookie handling', () => {
+describe('Cookie and Token handling', () => {
   beforeEach(() => {
     document = new CookieMock(); // eslint-disable-line no-undef
   });
@@ -33,14 +35,32 @@ describe('Cookie handling', () => {
       throw err;
     });
   });
-  it('should set token on saved cookie', () => {
+  it('should set token on saved cookie Core', () => {
     const expires = new Date(new Date().getTime() + 60000).toUTCString();
     document.cookie = `accessToken=token; expires=${expires}`; // eslint-disable-line no-undef
     const accounts = new Accounts();
     accounts.should.have.deep.property('traversal.requestOptions.headers.Authorization', 'Bearer token');
   });
+  it('should set token on saved cookie Resource', () => {
+    const expires = new Date(new Date().getTime() + 60000).toUTCString();
+    document.cookie = `accessToken=token; expires=${expires}`; // eslint-disable-line no-undef
+    const resource = new Resource({ _links: { self: { href: 'http://entrecode.de' } } });
+    resource.should.have.deep.property('traversal.requestOptions.headers.Authorization', 'Bearer token');
+  });
   it('should do nothing on no cookie', () => {
     const accounts = new Accounts();
     accounts.should.not.have.deep.property('traversal.requestOptions.headers.Authorization');
+  });
+  it('should set token on login event Core', () => {
+    const accounts = new Accounts();
+    accounts.should.not.have.deep.property('traversal.requestOptions.headers.Authorization');
+    emitter.emit('login', 'token');
+    accounts.should.have.deep.property('traversal.requestOptions.headers.Authorization', 'Bearer token');
+  });
+  it('should set token on login event Resource', () => {
+    const resource = new Resource({ _links: { self: { href: 'http://entrecode.de' } } });
+    resource.should.not.have.deep.property('traversal.requestOptions.headers.Authorization');
+    emitter.emit('login', 'token');
+    resource.should.have.deep.property('traversal.requestOptions.headers.Authorization', 'Bearer token');
   });
 });

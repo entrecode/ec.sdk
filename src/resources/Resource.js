@@ -1,5 +1,6 @@
 'use strict';
 
+import cookie from 'browser-cookies';
 import * as traverson from 'traverson';
 import HalAdapter from 'traverson-hal';
 import halfred from 'halfred';
@@ -41,6 +42,17 @@ export default class Resource {
       this.traversal = traverson.from(this.resource.link('self').href).jsonHal()
       .addRequestOptions({ headers: { Accept: 'application/hal+json' } });
     }
+
+    if (typeof document !== 'undefined') {
+      const token = cookie.get('accessToken');
+      if (token) {
+        this.traversal.addRequestOptions({ headers: { Authorization: `Bearer ${token}` } });
+      }
+    }
+
+    this.events.on('login', (token) => {
+      this.traversal.addRequestOptions({ headers: { Authorization: `Bearer ${token}` } });
+    });
   }
 
   /**

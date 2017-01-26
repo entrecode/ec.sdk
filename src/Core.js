@@ -74,6 +74,10 @@ export default class Core {
         this.setToken(token);
       }
     }
+
+    this.events.on('login', (token) => {
+      this.setToken(token);
+    });
   }
 
   /**
