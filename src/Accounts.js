@@ -128,7 +128,10 @@ export default class Accounts extends Core {
       throw new Error('password must be defined');
     }
 
-    return post(this.newRequest().follow('ec:auth/login'), { email, password })
+    const request = this.newRequest().follow('ec:auth/login')
+    .withTemplateParameters({ clientID: this.clientID });
+
+    return post(request, { email, password })
     .then(([token]) => {
       const decoded = jwtDecode(token.token);
 
