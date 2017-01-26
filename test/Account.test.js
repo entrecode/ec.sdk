@@ -110,27 +110,6 @@ describe('Accounts class', () => {
     return accounts.login('andre@entrecode.de', 'mysecret').should.eventually.be.fulfilled
     .notify(() => stub.restore());
   });
-  it('should save cookie', () => {
-    const sandbox = sinon.sandbox.create();
-    document = new CookieMock(); // eslint-disable-line no-undef
-    const accounts = new Accounts();
-    const stub = sandbox.stub(core, 'post');
-    stub.returns(resolver('login-token.json'));
-
-    accounts.setClientID('rest');
-    return accounts.login('andre@entrecode.de', 'mysecret')
-    .then((token) => {
-      token.should.be.defined;
-      document.cookie.indexOf(token).should.be.not.equal(-1); // eslint-disable-line no-undef
-      document = undefined; // eslint-disable-line no-undef
-      sandbox.restore();
-    })
-    .catch((err) => {
-      document = undefined; // eslint-disable-line no-undef
-      sandbox.restore();
-      throw err;
-    });
-  });
   it('should throw on unset clientID', () => {
     const throws = () => new Accounts().login('user', 'mysecret');
     throws.should.throw(Error);

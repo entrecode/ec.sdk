@@ -21,7 +21,7 @@ traverson.registerMediaType(traversonHal.mediaType, traversonHal);
 describe('Core', () => {
   let core;
   beforeEach(() => {
-    core = new Core.default('https://datamanager.entrecode.de');
+    core = new Core.default('https://datamanager.entrecode.de'); // eslint-disable-line new-cap
   });
   afterEach(() => {
     core = null;
