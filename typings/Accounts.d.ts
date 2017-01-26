@@ -1,6 +1,6 @@
 import { Core } from './Core';
-import { AccountList } from './resource/AccountList';
-import { AccountResource } from './resource/AccountResource';
+import { AccountList } from './resources/AccountList';
+import { AccountResource } from './resources/AccountResource';
 import { filterOptions } from './interfaces';
 
 export declare class Accounts extends Core {
