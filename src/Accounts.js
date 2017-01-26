@@ -1,3 +1,6 @@
+import cookie from 'browser-cookies';
+import jwtDecode from 'jwt-decode';
+
 import Core, { get, post, optionsToQuery } from './Core';
 import AccountList from './resources/AccountList';
 import AccountResource from './resources/AccountResource';
@@ -126,6 +129,17 @@ export default class Accounts extends Core {
     }
 
     return post(this.newRequest().follow('ec:auth/login'), { email, password })
-    .then(([token]) => token.token);
+    .then(([token]) => {
+      const decoded = jwtDecode(token.token);
+
+      if (typeof document !== 'undefined') {
+        cookie.set('accessToken', token.token, {
+          secure: true,
+          expires: new Date(decoded.exp * 1000),
+        });
+      }
+
+      return token.token;
+    });
   }
 }
