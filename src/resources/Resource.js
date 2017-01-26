@@ -36,9 +36,9 @@ export default class Resource {
     this.events = events;
 
     if (traversal) {
-      this._traversal = traversal;
+      this.traversal = traversal;
     } else {
-      this._traversal = traverson.from(this.resource.link('self').href).jsonHal()
+      this.traversal = traverson.from(this.resource.link('self').href).jsonHal()
       .addRequestOptions({ headers: { Accept: 'application/hal+json' } });
     }
   }
@@ -54,10 +54,10 @@ export default class Resource {
    * @returns {Object} traverson request builder instance.
    */
   newRequest() {
-    if ({}.hasOwnProperty.call(this._traversal, 'continue')) {
-      return this._traversal.continue().newRequest();
+    if ({}.hasOwnProperty.call(this.traversal, 'continue')) {
+      return this.traversal.continue().newRequest();
     }
-    return this._traversal.newRequest();
+    return this.traversal.newRequest();
   }
 
   /**
