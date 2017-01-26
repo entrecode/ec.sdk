@@ -142,6 +142,7 @@ function traversonWrapper(func, t, body) {
     if (func === 'getUrl') {
       t[func](cb);
     } else if (func === 'post' || func === 'put') {
+      t.addRequestOptions({ headers: { 'Content-Type': 'application/json' } })
       t[func](body, handlerCallback(cb));
     } else {
       t[func](handlerCallback(cb));
