@@ -13,6 +13,7 @@ const ListResource = require('../lib/resources/ListResource').default;
 const AccountList = require('../lib/resources/AccountList').default;
 const AccountResource = require('../lib/resources/AccountResource').default;
 const Resource = require('../lib/resources/Resource').default;
+const emitter = require('../lib/EventEmitter').default;
 
 chai.should();
 chai.use(sinonChai);
@@ -22,6 +23,9 @@ function capitalizeFirstLetter(string) {
 }
 
 describe('Accounts class', () => {
+  afterEach(() => {
+    emitter.removeAllListeners('login');
+  });
   it('should instantiate', () => {
     new Accounts('live').should.be.instanceOf(Accounts);
   });

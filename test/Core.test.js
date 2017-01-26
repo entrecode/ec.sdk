@@ -11,7 +11,7 @@ const Core = require('../lib/Core');
 const traverson = require('traverson');
 const traversonHal = require('traverson-hal');
 const Problem = require('../lib/Problem').default;
-const events = require('../lib/EventEmitter').default;
+const emitter = require('../lib/EventEmitter').default;
 
 chai.should();
 chai.use(chaiAsPromised);
@@ -25,6 +25,7 @@ describe('Core', () => {
   });
   afterEach(() => {
     core = null;
+    emitter.removeAllListeners('login');
   });
   it('should be instance of Core', () => {
     core.should.be.instanceOf(Core.default);
@@ -61,7 +62,7 @@ describe('Core', () => {
     throws.should.throw(Error);
   });
   it('should have event emitter', () => {
-    core.should.have.property('events', events);
+    core.should.have.property('events', emitter);
     core.events.should.have.property('on');
   });
 });
@@ -86,6 +87,7 @@ describe('Traverson Helper', () => {
   });
   afterEach(() => {
     mock = null;
+    emitter.removeAllListeners('error');
   });
   describe('get', () => {
     it('should be resolved', () => {
@@ -108,7 +110,7 @@ describe('Traverson Helper', () => {
     it('should fire error event', () => {
       mock.get('/').replyWithError('mocked error');
       const spy = sinon.spy();
-      events.on('error', spy);
+      emitter.on('error', spy);
 
       return Core.get(traversal).catch((err) => {
         err.should.be.defined;
@@ -129,7 +131,7 @@ describe('Traverson Helper', () => {
     it('should fire error event', () => {
       mock.get('/').replyWithError('mocked error');
       const spy = sinon.spy();
-      events.on('error', spy);
+      emitter.on('error', spy);
 
       return Core.getUrl(traversal.follow('ec:dm-stats')).catch((err) => {
         err.should.be.defined;
@@ -154,7 +156,7 @@ describe('Traverson Helper', () => {
     it('should fire error event', () => {
       mock.post('/').replyWithError('mocked error');
       const spy = sinon.spy();
-      events.on('error', spy);
+      emitter.on('error', spy);
 
       return Core.post(traversal).catch((err) => {
         err.should.be.defined;
@@ -179,7 +181,7 @@ describe('Traverson Helper', () => {
     it('should fire error event', () => {
       mock.put('/').replyWithError('mocked error');
       const spy = sinon.spy();
-      events.on('error', spy);
+      emitter.on('error', spy);
 
       return Core.put(traversal).catch((err) => {
         err.should.be.defined;
@@ -204,7 +206,7 @@ describe('Traverson Helper', () => {
     it('should fire error event', () => {
       mock.delete('/').replyWithError('mocked error');
       const spy = sinon.spy();
-      events.on('error', spy);
+      emitter.on('error', spy);
 
       return Core.del(traversal).catch((err) => {
         err.should.be.defined;
