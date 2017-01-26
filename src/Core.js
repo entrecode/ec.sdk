@@ -1,3 +1,4 @@
+import cookie from 'browser-cookies';
 import traverson from 'traverson';
 import HalAdapter from 'traverson-hal';
 import Problem from './Problem';
@@ -66,6 +67,13 @@ export default class Core {
 
     this.traversal = traverson.from(url).jsonHal()
     .addRequestOptions({ headers: { Accept: 'application/hal+json' } });
+
+    if (typeof document !== 'undefined') {
+      const token = cookie.get('accessToken');
+      if (token) {
+        this.setToken(token);
+      }
+    }
   }
 
   /**

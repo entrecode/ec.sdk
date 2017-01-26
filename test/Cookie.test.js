@@ -33,4 +33,14 @@ describe('Cookie handling', () => {
       throw err;
     });
   });
+  it('should set token on saved cookie', () => {
+    const expires = new Date(new Date().getTime() + 60000).toUTCString();
+    document.cookie = `accessToken=token; expires=${expires}`; // eslint-disable-line no-undef
+    const accounts = new Accounts();
+    accounts.should.have.deep.property('traversal.requestOptions.headers.Authorization', 'Bearer token');
+  });
+  it('should do nothing on no cookie', () => {
+    const accounts = new Accounts();
+    accounts.should.not.have.deep.property('traversal.requestOptions.headers.Authorization');
+  });
 });
