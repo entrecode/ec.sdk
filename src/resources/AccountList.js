@@ -14,7 +14,7 @@ export default class AccountList extends ListResource {
    * @param {?object} traversal traversal from which traverson can continue.
    */
   constructor(resource, traversal) {
-    super(resource, 'ec:accounts', traversal);
+    super(resource, 'ec:account', traversal);
     this.ListClass = AccountList;
     this.ItemClass = AccountResource;
   }
