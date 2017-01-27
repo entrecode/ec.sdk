@@ -147,4 +147,25 @@ export default class Accounts extends Core {
       return token.token;
     });
   }
+
+  /**
+   * Logout with existing token. Will invalidate the token with the Account API and remove any
+   * cookie stored.
+   *
+   * @returns {Promise<undefined>} Promise resolving undefined on success.
+   */
+  logout() {
+    if (!this.token) {
+      return Promise.resolve();
+    }
+
+    const request = this.newRequest().follow('ec:auth/logout')
+    .withTemplateParameters({ clientID: this.clientID, token: this.token });
+
+    return post(request).then(() => {
+      this.events.emit('logout', this.events);
+
+      return Promise.resolve();
+    });
+  }
 }

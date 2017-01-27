@@ -15,6 +15,8 @@ export declare class Accounts extends Core {
   createApiToken(): tokenResponse;
 
   login(email: string, password: string): Promise<string>;
+
+  logout(): Promise<void>;
 }
 
 interface tokenResponse {

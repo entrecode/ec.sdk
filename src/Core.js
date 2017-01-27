@@ -91,6 +91,7 @@ export default class Core {
       throw new Error('Token must be defined');
     }
 
+    this.token = token;
     this.traversal.addRequestOptions({ headers: { Authorization: `Bearer ${token}` } });
     return this;
   }

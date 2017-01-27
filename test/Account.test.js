@@ -5,7 +5,6 @@ const fs = require('fs');
 const resolver = require('./mocks/resolver');
 const sinon = require('sinon');
 const sinonChai = require('sinon-chai');
-const CookieMock = require('ec.cookie-mock');
 
 const core = require('../lib/Core');
 const Accounts = require('../lib/Accounts').default;
@@ -25,6 +24,7 @@ function capitalizeFirstLetter(string) {
 describe('Accounts class', () => {
   afterEach(() => {
     emitter.removeAllListeners('login');
+    emitter.removeAllListeners('logout');
   });
   it('should instantiate', () => {
     new Accounts('live').should.be.instanceOf(Accounts);
@@ -125,6 +125,20 @@ describe('Accounts class', () => {
   it('should throw on undefined password', () => {
     const throws = () => new Accounts().setClientID('rest').login('user', null);
     throws.should.throw(Error);
+  });
+  it('should logout successfully', () => {
+    const accounts = new Accounts();
+    accounts.setToken('token');
+    const stub = sinon.stub(core, 'post');
+    stub.returns(Promise.resolve());
+
+    accounts.logout().should.be.eventually.fullfilled;
+
+    stub.restore();
+  });
+  it('should be successful on no token', () => {
+    const accounts = new Accounts();
+    accounts.logout().should.be.eventually.fullfilled;
   });
 });
 
