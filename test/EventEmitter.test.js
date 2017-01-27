@@ -6,7 +6,7 @@ const sinonChai = require('sinon-chai');
 
 const emitter = require('../lib/EventEmitter').default;
 
-chai.should();
+const should = chai.should();
 chai.use(sinonChai);
 
 describe('Event Emitter', () => {
@@ -38,8 +38,22 @@ describe('Event Emitter', () => {
     emitter.listeners.get('test').length.should.be.equal(0);
   });
   it('should not remove listener', () => {
-    emitter.on('test', () => console.log('do nothing'));
+    emitter.on('test', () => false);
     emitter.removeListener('test', spy).should.be.false;
     emitter.listeners.get('test').length.should.be.equal(1);
+  });
+  it('should remove nothing on unknown label', () => {
+    should.not.exist(emitter.listeners.get('test'));
+    emitter.removeListener('test', () => false);
+    should.not.exist(emitter.listeners.get('test'));
+  });
+  it('should remove listener on true return', () => {
+    emitter.on('test', () => true);
+    emitter.listeners.get('test').length.should.be.equal(1);
+    emitter.emit('test');
+    emitter.listeners.get('test').length.should.be.equal(0);
+  });
+  it('should emit even on no registered', () => {
+    emitter.emit('test').should.be.false;
   });
 });

@@ -46,6 +46,9 @@ class EventEmitter {
    */
   removeListener(label, callback) {
     const listeners = this.listeners.get(label);
+    if (!listeners || listeners.length === 0) {
+      return false;
+    }
     const index = listeners.indexOf(callback);
     let ret;
     if (index > -1) {
