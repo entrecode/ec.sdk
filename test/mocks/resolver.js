@@ -1,7 +1,6 @@
-'use strict';
-
 const fs = require('fs');
 const path = require('path');
+const traverson = require('traverson');
 
 function resolveFile(filePath, obj) {
   return new Promise((resolve, reject) => {
@@ -9,7 +8,7 @@ function resolveFile(filePath, obj) {
       if (err) {
         return reject(err);
       }
-      return resolve([JSON.parse(file), obj || {}]); // TODO traversal?
+      return resolve([JSON.parse(file), obj || traverson.from('http://entrecode.de')]);
     });
   })
   .catch((err) => {
