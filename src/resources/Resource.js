@@ -53,6 +53,9 @@ export default class Resource {
     this.events.on('login', (token) => {
       this.traversal.addRequestOptions({ headers: { Authorization: `Bearer ${token}` } });
     });
+    this.events.on('logout', () => {
+      delete this.traversal.requestOptions.headers.Authorization;
+    });
   }
 
   /**

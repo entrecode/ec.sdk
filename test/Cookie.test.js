@@ -63,4 +63,18 @@ describe('Cookie and Token handling', () => {
     emitter.emit('login', 'token');
     resource.should.have.deep.property('traversal.requestOptions.headers.Authorization', 'Bearer token');
   });
+  it('should delete token on logout event Core', () => {
+    const accounts = new Accounts();
+    accounts.setToken('token');
+    accounts.should.have.deep.property('traversal.requestOptions.headers.Authorization');
+    emitter.emit('logout');
+    accounts.should.not.have.deep.property('traversal.requestOptions.headers.Authorization');
+  });
+  it('should delete token on logout event Resource', () => {
+    const resource = new Resource({ _links: { self: { href: 'http://entrecode.de' } } });
+    emitter.emit('login', 'token');
+    resource.should.have.deep.property('traversal.requestOptions.headers.Authorization', 'Bearer token');
+    emitter.emit('logout');
+    resource.should.not.have.deep.property('traversal.requestOptions.headers.Authorization');
+  });
 });

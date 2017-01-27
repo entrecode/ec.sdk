@@ -78,6 +78,10 @@ export default class Core {
     this.events.on('login', (token) => {
       this.setToken(token);
     });
+    this.events.on('logout', () => {
+      delete this.traversal.requestOptions.headers.Authorization;
+      this.token = undefined;
+    });
   }
 
   /**
