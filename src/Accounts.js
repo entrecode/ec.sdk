@@ -153,9 +153,28 @@ export default class Accounts extends Core {
     const request = this.newRequest().follow('ec:auth/logout')
     .withTemplateParameters({ clientID: this.clientID, token: this.token });
 
-    return post(this.environment, request).then(() => {
+    return post(this.environment, request)
+    .then(() => {
       this.tokenStore.del();
       return Promise.resolve();
     });
+  }
+
+  /**
+   * Will check if the given email is available for login.
+   *
+   * @param {string} email the email to check.
+   * @returns {Promise<boolean>} Whether or not the email is available.
+   */
+  emailAvailable(email) {
+    if (!email) {
+      throw new Error('email must be defined');
+    }
+
+    const request = this.newRequest().follow('ec:auth/email-available')
+    .withTemplateParameters({ email });
+
+    return get(this.environment, request)
+    .then(([a]) => a.available);
   }
 }

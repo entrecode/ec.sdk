@@ -130,6 +130,18 @@ describe('Accounts class', () => {
     const accounts = new Accounts();
     accounts.logout().should.be.eventually.fullfilled;
   });
+  it('should return true on email available', () => {
+    const accounts = new Accounts();
+    const stub = sinon.stub(core, 'get');
+    stub.returns(resolver('email-available.json'));
+
+    accounts.emailAvailable('someone@example.com').should.be.eventually.equal(true);
+    stub.restore();
+  });
+  it('should throw on undefined email', () => {
+    const throws = () => new Accounts().emailAvailable();
+    throws.should.throw(Error);
+  });
 });
 
 describe('Account ListResource', () => {
