@@ -1,7 +1,7 @@
 import { Resource } from './Resource';
 
 export declare class ListResource extends Resource {
-  constructor(resource: any, name?: string, traversal?: any);
+  constructor(resource: any, environment: string, name?: string, traversal?: any);
 
   getAllItems(): Array<any>
 

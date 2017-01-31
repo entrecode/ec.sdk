@@ -12,7 +12,6 @@ const ListResource = require('../lib/resources/ListResource').default;
 const AccountList = require('../lib/resources/AccountList').default;
 const AccountResource = require('../lib/resources/AccountResource').default;
 const Resource = require('../lib/resources/Resource').default;
-const emitter = require('../lib/EventEmitter').default;
 
 chai.should();
 chai.use(sinonChai);
@@ -22,10 +21,6 @@ function capitalizeFirstLetter(string) {
 }
 
 describe('Accounts class', () => {
-  afterEach(() => {
-    emitter.removeAllListeners('login');
-    emitter.removeAllListeners('logout');
-  });
   it('should instantiate', () => {
     new Accounts('live').should.be.instanceOf(Accounts);
   });
@@ -38,11 +33,6 @@ describe('Accounts class', () => {
       new Accounts('invalid');
     };
     fn.should.throw(Error);
-  });
-  it('should set token with token', () => {
-    const accounts = new Accounts();
-    accounts.setToken('token');
-    accounts.traversal.getRequestOptions().should.have.deep.property('headers.Authorization', 'Bearer token');
   });
   it('should set clientID', () => {
     const accounts = new Accounts();
@@ -83,8 +73,8 @@ describe('Accounts class', () => {
     stub.returns(resolver('account-list.json'));
 
     return accounts.get('aID')
-    .then((list) => {
-      list.should.be.instanceof(AccountResource);
+    .then((resource) => {
+      resource.should.be.instanceof(AccountResource);
       stub.restore();
     })
     .catch((err) => {
@@ -128,7 +118,7 @@ describe('Accounts class', () => {
   });
   it('should logout successfully', () => {
     const accounts = new Accounts();
-    accounts.setToken('token');
+    accounts.setToken('eyJhbGciOiJSUzUxMiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNjaGVyemluZ2VyQGVudHJlY29kZS5kZSIsImp0aSI6IjEwODRlMGRmLTg1NzktNGRmMC1hNjc4LTk5M2QwMDNkY2QyNSIsImlhdCI6MTQ4MjUwNTcxMywiZXhwIjoxNDg1MDk3NzEzLCJpc3MiOiJlbnRyZWNvZGUiLCJzdWIiOiJkZGQyOWZkMS03NDE3LTQ4OTQtYTU0Ni01YzEyYjExYzAxODYifQ.Z2UA2EkFUMPvj5AZX5Ox5-pHiQsfw1Jjvq7sqXDT4OfdOFdGMHvKDLsJm1aVWWga5PMLSpKPucYYk_MrDTjYFp1HJhn97B1VwO62psP-Z6BMFgIPpQNB0f-_Mgth4OGucpLajoGgw9PemmHGWvyStC1Gzg9QBdKCch4VNjKvgg33puyZ5DA9YvldjUTQVhl02rHQspf4dfAz7DQHCJJN_tFhXXLpYzg_pQOu6L-yowsEFlLhl9SZoidz9v8T4PMio04g9wauilu0-ZXGRMRHKk2RYqlRaSc4QLSRZnyefdjp1_Xk7q9dG0Fn71YWxClXYlf2hycuzO2bg1-JBElxzQ');
     const stub = sinon.stub(core, 'post');
     stub.returns(Promise.resolve());
 

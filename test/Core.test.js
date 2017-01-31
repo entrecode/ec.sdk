@@ -12,6 +12,7 @@ const traverson = require('traverson');
 const traversonHal = require('traverson-hal');
 const Problem = require('../lib/Problem').default;
 const emitter = require('../lib/EventEmitter').default;
+const TokenStore = require('../lib/TokenStore');
 
 chai.should();
 chai.use(chaiAsPromised);
@@ -23,10 +24,6 @@ describe('Core', () => {
   beforeEach(() => {
     core = new Core.default('https://datamanager.entrecode.de'); // eslint-disable-line new-cap
   });
-  afterEach(() => {
-    core = null;
-    emitter.removeAllListeners('login');
-  });
   it('should be instance of Core', () => {
     core.should.be.instanceOf(Core.default);
   });
@@ -35,17 +32,13 @@ describe('Core', () => {
     throws.should.throw(Error);
   });
   it('should set token', () => {
-    core.setToken('test');
-    core.should.have.deep.property('traversal.requestOptions.headers.Authorization', 'Bearer test');
+    const stub = sinon.stub(core.tokenStore, 'set');
+    core.setToken('token');
+    stub.should.have.been.calledWith('token');
   });
   it('should throw on undefined token', () => {
     const throws = () => core.setToken();
     throws.should.throw(Error);
-  });
-  it('should only add one header', () => {
-    core.setToken('test');
-    core.setToken('der zweite');
-    core.should.have.deep.property('traversal.requestOptions.headers.Authorization', 'Bearer der zweite');
   });
   it('should return traverson Builder', () => {
     core.newRequest().should.be.instanceOf(traverson._Builder);
@@ -61,16 +54,13 @@ describe('Core', () => {
     };
     throws.should.throw(Error);
   });
-  it('should have event emitter', () => {
-    core.should.have.property('events', emitter);
-    core.events.should.have.property('on');
-  });
 });
 
 describe('Traverson Helper', () => {
   let dmList;
   let mock;
   let traversal;
+  let store;
   before((done) => {
     fs.readFile(`${__dirname}/mocks/dm-list.json`, 'utf8', (err, res) => {
       if (err) {
@@ -82,17 +72,27 @@ describe('Traverson Helper', () => {
   });
   beforeEach(() => {
     nock.disableNetConnect();
+    store = TokenStore.default('test');
     mock = nock('https://datamanager.entrecode.de');
     traversal = traverson.from('https://datamanager.entrecode.de').jsonHal();
   });
   afterEach(() => {
     mock = null;
-    emitter.removeAllListeners('error');
+    TokenStore.stores.clear();
   });
   describe('get', () => {
     it('should be resolved', () => {
       mock.get('/').reply(200, dmList);
-      Core.get(traversal).should.be.eventually.resolved;
+      Core.get('live', traversal).should.be.eventually.resolved;
+    });
+    it('should be resolved with token', () => {
+      mock.get('/').reply(200, dmList);
+      const token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJlbnRyZWNvZGVUZXN0IiwiaWF0IjoxNDg1NzgzNTg4LCJleHAiOjQ2NDE0NTcxODgsImF1ZCI6IlRlc3QiLCJzdWIiOiJ0ZXN0QGVudHJlY29kZS5kZSJ9.Vhrq5GR2hNz-RoAhdlnIIWHelPciBPCemEa74s7cXn8';
+      store.set(token);
+      return Core.get('test', traversal)
+      .then(() => {
+        traversal.should.have.deep.property('requestOptions.headers.Authorization', `Bearer ${token}`);
+      });
     });
     it('should be rejected', () => {
       mock.get('/').reply(404, {
@@ -101,18 +101,26 @@ describe('Traverson Helper', () => {
         status: 404,
         detail: 'title',
       });
-      return Core.get(traversal).should.be.rejectedWith(Problem);
+      return Core.get('live', traversal).should.be.rejectedWith(Problem);
     });
     it('should be rejected network error', () => {
       mock.get('/').replyWithError('mocked error');
-      return Core.get(traversal).should.be.rejectedWith(Error);
+      return Core.get('live', traversal).should.be.rejectedWith(Error);
+    });
+    it('should throw missing environment', () => {
+      const throws = () => Core.get('live');
+      throws.should.throw(Error);
+    });
+    it('should throw missing traversal', () => {
+      const throws = () => Core.get(null, {});
+      throws.should.throw(Error);
     });
     it('should fire error event', () => {
       mock.get('/').replyWithError('mocked error');
       const spy = sinon.spy();
       emitter.on('error', spy);
 
-      return Core.get(traversal).catch((err) => {
+      return Core.get('live', traversal).catch((err) => {
         err.should.be.defined;
         spy.should.be.called.once;
       });
@@ -121,19 +129,19 @@ describe('Traverson Helper', () => {
   describe('getUrl', () => {
     it('should be resolved', () => {
       mock.get('/').reply(200, 'https://datamanager.entrecode.de/');
-      return Core.getUrl(traversal).should.be.eventually.resolved;
+      return Core.getUrl('live', traversal).should.be.eventually.resolved;
     });
     it('should be rejected', () => {
       mock.get('/').reply(200, dmList)
       .get('/stats').replyWithError('mocked error');
-      return Core.getUrl(traversal.follow('ec:dm-stats')).should.be.eventually.rejectedWith(Error);
+      return Core.getUrl('live', traversal.follow('ec:dm-stats')).should.be.eventually.rejectedWith(Error);
     });
     it('should fire error event', () => {
       mock.get('/').replyWithError('mocked error');
       const spy = sinon.spy();
       emitter.on('error', spy);
 
-      return Core.getUrl(traversal.follow('ec:dm-stats')).catch((err) => {
+      return Core.getUrl('live', traversal.follow('ec:dm-stats')).catch((err) => {
         err.should.be.defined;
         spy.should.be.called.once;
       });
@@ -142,7 +150,7 @@ describe('Traverson Helper', () => {
   describe('post', () => {
     it('should be resolved', () => {
       mock.post('/').reply(200, dmList);
-      return Core.post(traversal).should.be.eventually.resolved;
+      return Core.post('live', traversal).should.be.eventually.resolved;
     });
     it('should be rejected', () => {
       mock.post('/').reply(404, {
@@ -151,14 +159,14 @@ describe('Traverson Helper', () => {
         status: 404,
         detail: 'title',
       });
-      return Core.post(traversal).should.be.rejectedWith(Problem);
+      return Core.post('live', traversal).should.be.rejectedWith(Problem);
     });
     it('should fire error event', () => {
       mock.post('/').replyWithError('mocked error');
       const spy = sinon.spy();
       emitter.on('error', spy);
 
-      return Core.post(traversal).catch((err) => {
+      return Core.post('live', traversal).catch((err) => {
         err.should.be.defined;
         spy.should.be.called.once;
       });
@@ -167,7 +175,7 @@ describe('Traverson Helper', () => {
   describe('put', () => {
     it('should be resolved', () => {
       mock.put('/').reply(200, dmList);
-      return Core.put(traversal).should.be.eventually.resolved;
+      return Core.put('live', traversal).should.be.eventually.resolved;
     });
     it('should be rejected', () => {
       mock.put('/').reply(404, {
@@ -176,14 +184,14 @@ describe('Traverson Helper', () => {
         status: 404,
         detail: 'title',
       });
-      return Core.put(traversal).should.be.rejectedWith(Problem);
+      return Core.put('live', traversal).should.be.rejectedWith(Problem);
     });
     it('should fire error event', () => {
       mock.put('/').replyWithError('mocked error');
       const spy = sinon.spy();
       emitter.on('error', spy);
 
-      return Core.put(traversal).catch((err) => {
+      return Core.put('live', traversal).catch((err) => {
         err.should.be.defined;
         spy.should.be.called.once;
       });
@@ -192,7 +200,7 @@ describe('Traverson Helper', () => {
   describe('delete', () => {
     it('should be resolved', () => {
       mock.delete('/').reply(204);
-      return Core.del(traversal).should.be.eventually.resolved;
+      return Core.del('live', traversal).should.be.eventually.resolved;
     });
     it('should be rejected', () => {
       mock.delete('/').reply(404, {
@@ -201,14 +209,14 @@ describe('Traverson Helper', () => {
         status: 404,
         detail: 'title',
       });
-      return Core.del(traversal).should.be.rejectedWith(Problem);
+      return Core.del('live', traversal).should.be.rejectedWith(Problem);
     });
     it('should fire error event', () => {
       mock.delete('/').replyWithError('mocked error');
       const spy = sinon.spy();
       emitter.on('error', spy);
 
-      return Core.del(traversal).catch((err) => {
+      return Core.del('live', traversal).catch((err) => {
         err.should.be.defined;
         spy.should.be.called.once;
       });

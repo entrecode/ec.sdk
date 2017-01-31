@@ -27,11 +27,6 @@ describe('DataManager class', () => {
   it('should instantiate with empty environment', () => {
     new DataManager().should.be.instanceOf(DataManager);
   });
-  it('should set token with token', () => {
-    const dm = new DataManager('live');
-    dm.setToken('token');
-    dm.traversal.getRequestOptions().should.have.deep.property('headers.Authorization', 'Bearer token');
-  });
   it('should throw error on invalid environment', () => {
     const fn = () => {
       /* eslint no-new:0 */

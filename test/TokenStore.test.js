@@ -1,0 +1,127 @@
+const chai = require('chai');
+const CookieMock = require('ec.cookie-mock');
+const cookie = require('browser-cookies');
+const sinonChai = require('sinon-chai');
+
+const TokenStore = require('../lib/TokenStore');
+
+const should = chai.should();
+chai.use(sinonChai);
+
+describe('Token handling', () => {
+  const token = 'eyJhbGciOiJSUzUxMiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNjaGVyemluZ2VyQGVudHJlY29kZS5kZSIsImp0aSI6IjEwODRlMGRmLTg1NzktNGRmMC1hNjc4LTk5M2QwMDNkY2QyNSIsImlhdCI6MTQ4MjUwNTcxMywiZXhwIjoxNDg1MDk3NzEzLCJpc3MiOiJlbnRyZWNvZGUiLCJzdWIiOiJkZGQyOWZkMS03NDE3LTQ4OTQtYTU0Ni01YzEyYjExYzAxODYifQ.Z2UA2EkFUMPvj5AZX5Ox5-pHiQsfw1Jjvq7sqXDT4OfdOFdGMHvKDLsJm1aVWWga5PMLSpKPucYYk_MrDTjYFp1HJhn97B1VwO62psP-Z6BMFgIPpQNB0f-_Mgth4OGucpLajoGgw9PemmHGWvyStC1Gzg9QBdKCch4VNjKvgg33puyZ5DA9YvldjUTQVhl02rHQspf4dfAz7DQHCJJN_tFhXXLpYzg_pQOu6L-yowsEFlLhl9SZoidz9v8T4PMio04g9wauilu0-ZXGRMRHKk2RYqlRaSc4QLSRZnyefdjp1_Xk7q9dG0Fn71YWxClXYlf2hycuzO2bg1-JBElxzQ';
+  let store;
+  beforeEach(() => {
+    store = TokenStore.default('test');
+  });
+  afterEach(() => {
+    store = null;
+    TokenStore.stores.clear();
+  });
+  it('should get token store', () => {
+    const store1 = TokenStore.default('live');
+    store1.should.be.defined; // eslint-disable-line no-unused-expressions
+  });
+  it('should get identical token store', () => {
+    const store1 = TokenStore.default();
+    const store2 = TokenStore.default('live');
+    store1.should.be.equal(store2);
+  });
+  it('should get different token stores', () => {
+    const store1 = TokenStore.default('live');
+    const store2 = TokenStore.default('stage');
+    store1.should.not.be.equal(store2);
+  });
+  it('should set token', () => {
+    store.set(token);
+    store.token.should.be.equal(token);
+  });
+  it('should throw on undefined token', () => {
+    const throws = () => store.set();
+    throws.should.throw(Error);
+  });
+  it('should throw on invalid token', () => {
+    const throws = () => store.set('notAJwt');
+    throws.should.throw(Error);
+  });
+  it('should get token', () => {
+    store.set(token);
+    store.get().should.be.equal(token);
+  });
+  it('should return true on has token', () => {
+    store.set(token);
+    store.has().should.be.equal(true);
+  });
+  it('should return false on has token', () => {
+    store.has().should.be.equal(false);
+  });
+  it('should delete token', () => {
+    store.set(token);
+    store.del();
+    should.not.exist(store.token);
+  });
+});
+
+describe('Token handling with cookie store', () => {
+  const token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJlbnRyZWNvZGVUZXN0IiwiaWF0IjoxNDg1NzgzNTg4LCJleHAiOjQ2NDE0NTcxODgsImF1ZCI6IlRlc3QiLCJzdWIiOiJ0ZXN0QGVudHJlY29kZS5kZSJ9.Vhrq5GR2hNz-RoAhdlnIIWHelPciBPCemEa74s7cXn8';
+  let store;
+  beforeEach(() => {
+    document = new CookieMock(); // eslint-disable-line no-undef
+    store = TokenStore.default('test');
+  });
+  afterEach(() => {
+    store = null;
+    document = null; // eslint-disable-line no-undef
+    TokenStore.stores.clear();
+  });
+  it('should get token store', () => {
+    const store1 = TokenStore.default('live');
+    should.exist(store1);
+  });
+  it('should get identical token store', () => {
+    const store1 = TokenStore.default();
+    const store2 = TokenStore.default('live');
+    store1.should.be.equal(store2);
+  });
+  it('should get different token stores', () => {
+    const store1 = TokenStore.default('live');
+    const store2 = TokenStore.default('stage');
+    store1.should.not.be.equal(store2);
+  });
+  it('should set token', () => {
+    store.set(token);
+    cookie.get('testToken').should.be.equal(token);
+    store.token.should.be.equal(token);
+  });
+  it('should throw on undefined token', () => {
+    const throws = () => store.set();
+    throws.should.throw(Error);
+  });
+  it('should throw on invalid token', () => {
+    const throws = () => store.set('notAJwt');
+    throws.should.throw(Error);
+  });
+  it('should get token', () => {
+    store.set(token);
+    store.get().should.be.equal(token);
+  });
+  it('should get token from cookie store', () => {
+    store.set(token);
+    store.token = undefined;
+    store.get().should.be.equal(token);
+    store.token.should.be.equal(token);
+  });
+  it('should return true on has token', () => {
+    store.set(token);
+    store.has().should.be.equal(true);
+  });
+  it('should return false on has token', () => {
+    store.has().should.be.equal(false);
+  });
+  it('should delete token', () => {
+    store.set(token);
+    store.del();
+    should.not.exist(cookie.get('testToken'));
+    should.not.exist(store.token);
+  });
+});

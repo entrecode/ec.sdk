@@ -1,5 +1,5 @@
 export declare class Resource {
-  constructor(resource: any, traversal?: any);
+  constructor(resource: any, environment: string, traversal?: any);
 
   newRequest(): any;
 

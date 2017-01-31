@@ -38,6 +38,14 @@ describe('Resource', () => {
   it('should be instance of Resource', () => {
     resource.should.be.instanceOf(Resource);
   });
+  it('should instantiate with traversal and environment', () => {
+    const resource = new Resource(resourceJson, 'stage', {});
+    resource.environment.should.be.equal('stage');
+    should.exist(resource.traversal);
+  });
+  it('should have environment live', () => {
+    resource.environment.should.be.equal('live');
+  });
   it('should return traverson builder on newRequest call', () => {
     resource.newRequest().should.be.instanceOf(traverson._Builder);
   });

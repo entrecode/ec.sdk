@@ -47,12 +47,6 @@ describe('Event Emitter', () => {
     emitter.removeListener('test', () => false);
     should.not.exist(emitter.listeners.get('test'));
   });
-  it('should remove listener on true return', () => {
-    emitter.on('test', () => true);
-    emitter.listeners.get('test').length.should.be.equal(1);
-    emitter.emit('test');
-    emitter.listeners.get('test').length.should.be.equal(0);
-  });
   it('should emit even on no registered', () => {
     emitter.emit('test').should.be.false;
   });

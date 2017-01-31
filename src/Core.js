@@ -1,8 +1,8 @@
-import cookie from 'browser-cookies';
 import traverson from 'traverson';
 import HalAdapter from 'traverson-hal';
 import Problem from './Problem';
 import events from './EventEmitter';
+import TokenStoreFactory, { stores } from './TokenStore';
 
 traverson.registerMediaType(HalAdapter.mediaType, HalAdapter);
 
@@ -21,6 +21,61 @@ const modifier = {
   any: ',',
   all: '+',
 };
+
+/**
+ * Core class for connecting to any entrecode API.
+ *
+ * @interface
+ * @class
+ */
+export default class Core {
+  constructor(url) {
+    if (!url) {
+      throw new Error('url must be defined');
+    }
+
+    this.tokenStore = TokenStoreFactory('live');
+    this.traversal = traverson.from(url).jsonHal()
+    .addRequestOptions({ headers: { Accept: 'application/hal+json' } });
+  }
+
+  /**
+   * Creates a new {@link
+    * https://github.com/basti1302/traverson/blob/master/api.markdown#request-builder
+     * traverson request builder}
+   *  which can be used for a new request to the API.
+   *
+   * @access private
+   *
+   * @returns {Object} traverson request builder instance.
+   */
+  newRequest() {
+    if (!this.traversal) {
+      throw new Error('Critical: Traversal invalid!');
+    }
+
+    if ({}.hasOwnProperty.call(this.traversal, 'continue')) {
+      return this.traversal.continue().newRequest();
+    }
+
+    return this.traversal.newRequest();
+  }
+
+  /**
+   * Set an existing accessToken
+   *
+   * @param {string} token the existing token
+   * @returns {Core} this for chainability
+   */
+  setToken(token) {
+    if (!token) {
+      throw new Error('Token must be defined');
+    }
+
+    this.tokenStore.set(token);
+    return this;
+  }
+}
 
 /**
  * Creates a callback which wraps a traverson repsonse from `get`, `post`, `put`, `delete` and
@@ -48,92 +103,21 @@ function handlerCallback(callback) {
 }
 
 /**
- * Core class for connecting to any entrecode API.
- *
- * @interface
- * @class
- */
-export default class Core {
-  constructor(url) {
-    if (!url) {
-      throw new Error('url must be defined');
-    }
-
-    /**
-     * Global {@link EventEmitter}.
-     * @type {EventEmitter}
-     */
-    this.events = events;
-
-    this.traversal = traverson.from(url).jsonHal()
-    .addRequestOptions({ headers: { Accept: 'application/hal+json' } });
-
-    if (typeof document !== 'undefined') {
-      const token = cookie.get('accessToken');
-      if (token) {
-        this.setToken(token);
-      }
-    }
-
-    this.events.on('login', (token) => {
-      this.setToken(token);
-    });
-    this.events.on('logout', () => {
-      delete this.traversal.requestOptions.headers.Authorization;
-      this.token = undefined;
-    });
-  }
-
-  /**
-   * Set an existing accessToken
-   *
-   * @param {string} token the existing token
-   * @returns {Core} this for chainability
-   */
-  setToken(token) {
-    if (!token) {
-      throw new Error('Token must be defined');
-    }
-
-    this.token = token;
-    this.traversal.addRequestOptions({ headers: { Authorization: `Bearer ${token}` } });
-    return this;
-  }
-
-  /**
-   * Creates a new {@link
-    * https://github.com/basti1302/traverson/blob/master/api.markdown#request-builder
-     * traverson request builder}
-   *  which can be used for a new request to the API.
-   *
-   * @access private
-   *
-   * @returns {Object} traverson request builder instance.
-   */
-  newRequest() {
-    if (!this.traversal) {
-      throw new Error('Critical: Traversal invalid!');
-    }
-
-    if ({}.hasOwnProperty.call(this.traversal, 'continue')) {
-      return this.traversal.continue().newRequest();
-    }
-
-    return this.traversal.newRequest();
-  }
-}
-
-/**
  * Generic Promise wrapper for traverson functions.
  *
  * @access private
  *
  * @param {string} func traverson function which should be called
+ * @param {string} environment environment from which a token should be used
  * @param {object} t traverson build on which func should be called
  * @param {object?} body optional post/put body
  * @returns {Promise} resolves to the response from the API.
  */
-function traversonWrapper(func, t, body) {
+function traversonWrapper(func, environment, t, body) {
+  if (!environment || !t) {
+    throw new Error('func, environment and t must be defined');
+  }
+
   return new Promise((resolve, reject) => {
     const cb = (err, res) => {
       if (err) {
@@ -143,6 +127,11 @@ function traversonWrapper(func, t, body) {
 
       return resolve(res);
     };
+
+    const store = stores.get(environment);
+    if (store && store.has()) {
+      t.addRequestOptions({ headers: { Authorization: `Bearer ${store.get()}` } });
+    }
 
     if (func === 'getUrl') {
       t[func](cb);
@@ -166,11 +155,12 @@ function traversonWrapper(func, t, body) {
  *
  * @access private
  *
+ * @param {string} environment environment from which a token should be used
  * @param {object} t request builder
  * @returns {Promise} resolves to the response from the API.
  */
-export function get(t) {
-  return traversonWrapper('get', t);
+export function get(environment, t) {
+  return traversonWrapper('get', environment, t);
 }
 
 /**
@@ -182,11 +172,12 @@ export function get(t) {
  *
  * @access private
  *
+ * @param {string} environment environment from which a token should be used
  * @param {object} t request builder
  * @returns {Promise.string} resolves to the url.
  */
-export function getUrl(t) {
-  return traversonWrapper('getUrl', t);
+export function getUrl(environment, t) {
+  return traversonWrapper('getUrl', environment, t);
 }
 
 /**
@@ -200,12 +191,13 @@ export function getUrl(t) {
  *
  * @access private
  *
+ * @param {string} environment environment from which a token should be used
  * @param {object} t request builder
  * @param {object} body post body
  * @returns {Promise} resolves to the response from the API.
  */
-export function post(t, body) {
-  return traversonWrapper('post', t, body);
+export function post(environment, t, body) {
+  return traversonWrapper('post', environment, t, body);
 }
 
 /**
@@ -219,12 +211,13 @@ export function post(t, body) {
  *
  * @access private
  *
+ * @param {string} environment environment from which a token should be used
  * @param {object} t request builder
  * @param {object} body post body
  * @returns {Promise} resolves to the response from the API.
  */
-export function put(t, body) {
-  return traversonWrapper('put', t, body);
+export function put(environment, t, body) {
+  return traversonWrapper('put', environment, t, body);
 }
 
 /**
@@ -238,11 +231,12 @@ export function put(t, body) {
  *
  * @access private
  *
+ * @param {string} environment environment from which a token should be used
  * @param {object} t request builder
  * @returns {Promise} resolves to the response from the API.
  */
-export function del(t) {
-  return traversonWrapper('delete', t);
+export function del(environment, t) {
+  return traversonWrapper('delete', environment, t);
 }
 
 /**

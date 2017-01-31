@@ -1,11 +1,8 @@
-'use strict';
-
 import cookie from 'browser-cookies';
 import * as traverson from 'traverson';
 import HalAdapter from 'traverson-hal';
 import halfred from 'halfred';
 import { get, put, del } from '../Core';
-import events from '../EventEmitter';
 
 traverson.registerMediaType(HalAdapter.mediaType, HalAdapter);
 
@@ -23,18 +20,16 @@ export default class Resource {
   /**
    * Creates a new {@link Resource}.
    *
+   * @access protected
+   *
    * @param {object} resource resource loaded from the API.
+   * @param {string} environment the environment this resource is associated to.
    * @param {?object} traversal traversal from which traverson can continue.
    */
-  constructor(resource, traversal) {
+  constructor(resource, environment, traversal) {
+    this.environment = environment || 'live';
     this.dirty = false;
     this.resource = halfred.parse(JSON.parse(JSON.stringify(resource)));
-
-    /**
-     * Global {@link EventEmitter}.
-     * @type {EventEmitter}
-     */
-    this.events = events;
 
     if (traversal) {
       this.traversal = traversal;
@@ -42,20 +37,6 @@ export default class Resource {
       this.traversal = traverson.from(this.resource.link('self').href).jsonHal()
       .addRequestOptions({ headers: { Accept: 'application/hal+json' } });
     }
-
-    if (typeof document !== 'undefined') {
-      const token = cookie.get('accessToken');
-      if (token) {
-        this.traversal.addRequestOptions({ headers: { Authorization: `Bearer ${token}` } });
-      }
-    }
-
-    this.events.on('login', (token) => {
-      this.traversal.addRequestOptions({ headers: { Authorization: `Bearer ${token}` } });
-    });
-    this.events.on('logout', () => {
-      delete this.traversal.requestOptions.headers.Authorization;
-    });
   }
 
   /**
@@ -104,6 +85,7 @@ export default class Resource {
   save() {
     // TODO add validation
     return put(
+      this.environment,
       this.newRequest().follow('self'),
       // TODO does this Object.assign work how I want it to?
       // or do we need for(key in obj) loop?
@@ -123,7 +105,7 @@ export default class Resource {
    * @returns {Promise<undefined>} Promise will resolve on success and reject otherwise.
    */
   del() {
-    return del(this.newRequest().follow('self'));
+    return del(this.environment, this.newRequest().follow('self'));
   }
 
   /**
@@ -158,7 +140,7 @@ export default class Resource {
    * @returns {Promise<Resource|ResourceClass>} the resource identified by the link.
    */
   followLink(link, ResourceClass) {
-    return get(this.newRequest().follow(link))
+    return get(this.environment, this.newRequest().follow(link))
     .then(([res, traversal]) => {
       if (ResourceClass) {
         return new ResourceClass(res, null, traversal);

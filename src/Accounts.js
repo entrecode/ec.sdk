@@ -1,9 +1,7 @@
-import cookie from 'browser-cookies';
-import jwtDecode from 'jwt-decode';
-
 import Core, { get, post, optionsToQuery } from './Core';
 import AccountList from './resources/AccountList';
 import AccountResource from './resources/AccountResource';
+import TokenStoreFactory from './TokenStore';
 
 const urls = {
   live: 'https://accounts.entrecode.de/',
@@ -32,6 +30,8 @@ export default class Accounts extends Core {
     }
 
     super(urls[environment || 'live']);
+    this.environment = environment;
+    this.tokenStore = TokenStoreFactory(environment || 'live');
   }
 
   /**
@@ -67,7 +67,7 @@ export default class Accounts extends Core {
       const request = this.newRequest()
       .follow('ec:accounts/options')
       .withTemplateParameters(optionsToQuery(options));
-      return get(request);
+      return get(this.environment, request);
     })
     .then(([res, traversal]) => new AccountList(res, traversal));
   }
@@ -87,7 +87,7 @@ export default class Accounts extends Core {
       const request = this.newRequest()
       .follow('ec:account/by-id')
       .withTemplateParameters({ accountID });
-      return get(request);
+      return get(this.environment, request);
     })
     .then(([res, traversal]) => new AccountResource(res, traversal));
   }
@@ -99,7 +99,7 @@ export default class Accounts extends Core {
    *   token response.
    */
   createApiToken() {
-    return post(this.newRequest().follow('ec:auth/create-anonymous'), {})
+    return post(this.environment, this.newRequest().follow('ec:auth/create-anonymous'), {})
     .then(([tokenResponse]) => tokenResponse);
   }
 
@@ -131,18 +131,9 @@ export default class Accounts extends Core {
     const request = this.newRequest().follow('ec:auth/login')
     .withTemplateParameters({ clientID: this.clientID });
 
-    return post(request, { email, password })
+    return post(this.environment, request, { email, password })
     .then(([token]) => {
-      const decoded = jwtDecode(token.token);
-
-      if (typeof document !== 'undefined') {
-        cookie.set('accessToken', token.token, {
-          secure: true,
-          expires: new Date(decoded.exp * 1000),
-        });
-      }
-
-      this.events.emit('login', token.token);
+      this.tokenStore.set(token.token);
 
       return token.token;
     });
@@ -155,16 +146,15 @@ export default class Accounts extends Core {
    * @returns {Promise<undefined>} Promise resolving undefined on success.
    */
   logout() {
-    if (!this.token) {
+    if (!this.tokenStore.has()) {
       return Promise.resolve();
     }
 
     const request = this.newRequest().follow('ec:auth/logout')
     .withTemplateParameters({ clientID: this.clientID, token: this.token });
 
-    return post(request).then(() => {
-      this.events.emit('logout', this.events);
-
+    return post(this.environment, request).then(() => {
+      this.tokenStore.del();
       return Promise.resolve();
     });
   }
