@@ -18,12 +18,15 @@ export default class ListResource extends Resource {
   /**
    * Creates a new {@link ListResource}.
    *
+   * @access protected
+   *
    * @param {object} resource resource loaded from the API.
+   * @param {string} environment the environment this resource is associated to.
    * @param {?string} name name of the embedded resources.
    * @param {?object} traversal traversal from which traverson can continue.
    */
-  constructor(resource, name, traversal) {
-    super(resource, traversal);
+  constructor(resource, environment, name, traversal) {
+    super(resource, environment, traversal);
 
     /**
      * Defines the class this {@link ListResource} has. Is used to support more specified classes

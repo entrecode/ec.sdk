@@ -7,6 +7,7 @@ const sinon = require('sinon');
 const sinonChai = require('sinon-chai');
 
 const core = require('../lib/Core');
+const helper = require('../lib/helper');
 const traverson = require('traverson');
 const resolver = require('./mocks/resolver');
 const Resource = require('../lib/resources/Resource').default;
@@ -38,6 +39,14 @@ describe('Resource', () => {
   it('should be instance of Resource', () => {
     resource.should.be.instanceOf(Resource);
   });
+  it('should instantiate with traversal and environment', () => {
+    const resource = new Resource(resourceJson, 'stage', {});
+    resource.environment.should.be.equal('stage');
+    should.exist(resource.traversal);
+  });
+  it('should have environment live', () => {
+    resource.environment.should.be.equal('live');
+  });
   it('should return traverson builder on newRequest call', () => {
     resource.newRequest().should.be.instanceOf(traverson._Builder);
   });
@@ -60,7 +69,7 @@ describe('Resource', () => {
     resource.isDirty().should.be.false;
   });
   it('should call put on save', () => {
-    const stub = sinon.stub(core, 'put');
+    const stub = sinon.stub(helper, 'put');
     stub.returns(resolver('dm-single.json', resource._traversal));
 
     return resource.save()
@@ -70,7 +79,7 @@ describe('Resource', () => {
     });
   });
   it('should call del on del', () => {
-    const stub = sinon.stub(core, 'del');
+    const stub = sinon.stub(helper, 'del');
     stub.returns(Promise.resolve({}, resource._traversal));
 
     return resource.del()
@@ -96,7 +105,7 @@ describe('Resource', () => {
     should.not.exist(resource.getLink('missing'));
   });
   it('should call get on followLink', () => {
-    const stub = sinon.stub(core, 'get');
+    const stub = sinon.stub(helper, 'get');
     stub.returns(resolver('dm-single.json'), resource._traversal);
 
     return resource.followLink('self')
@@ -106,7 +115,7 @@ describe('Resource', () => {
     });
   });
   it('should throw error on follow missing link', () => {
-    const stub = sinon.stub(core, 'get');
+    const stub = sinon.stub(helper, 'get');
     stub.returns(Promise.reject(new Error('Traverson throws this')));
 
     return resource.followLink('self').should.be.rejected.notify(() => stub.restore());

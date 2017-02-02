@@ -1,6 +1,8 @@
-import Core, { get, post, optionsToQuery } from './Core';
+import Core from './Core';
+import { get, post, getUrl, superagentFormPost, optionsToQuery } from './helper';
 import AccountList from './resources/AccountList';
 import AccountResource from './resources/AccountResource';
+import TokenStoreFactory from './TokenStore';
 
 const urls = {
   live: 'https://accounts.entrecode.de/',
@@ -29,6 +31,8 @@ export default class Accounts extends Core {
     }
 
     super(urls[environment || 'live']);
+    this.environment = environment;
+    this.tokenStore = TokenStoreFactory(environment || 'live');
   }
 
   /**
@@ -64,7 +68,7 @@ export default class Accounts extends Core {
       const request = this.newRequest()
       .follow('ec:accounts/options')
       .withTemplateParameters(optionsToQuery(options));
-      return get(request);
+      return get(this.environment, request);
     })
     .then(([res, traversal]) => new AccountList(res, traversal));
   }
@@ -84,7 +88,7 @@ export default class Accounts extends Core {
       const request = this.newRequest()
       .follow('ec:account/by-id')
       .withTemplateParameters({ accountID });
-      return get(request);
+      return get(this.environment, request);
     })
     .then(([res, traversal]) => new AccountResource(res, traversal));
   }
@@ -96,7 +100,7 @@ export default class Accounts extends Core {
    *   token response.
    */
   createApiToken() {
-    return post(this.newRequest().follow('ec:auth/create-anonymous'), {})
+    return post(this.environment, this.newRequest().follow('ec:auth/create-anonymous'), {})
     .then(([tokenResponse]) => tokenResponse);
   }
 
@@ -125,7 +129,84 @@ export default class Accounts extends Core {
       throw new Error('password must be defined');
     }
 
-    return post(this.newRequest().follow('ec:auth/login'), { email, password })
-    .then(([token]) => token.token);
+    const request = this.newRequest().follow('ec:auth/login')
+    .withTemplateParameters({ clientID: this.clientID });
+
+    return post(this.environment, request, { email, password })
+    .then(([token]) => {
+      this.tokenStore.set(token.token);
+
+      return token.token;
+    });
+  }
+
+  /**
+   * Logout with existing token. Will invalidate the token with the Account API and remove any
+   * cookie stored.
+   *
+   * @returns {Promise<undefined>} Promise resolving undefined on success.
+   */
+  logout() {
+    if (!this.tokenStore.has()) {
+      return Promise.resolve();
+    }
+
+    const request = this.newRequest().follow('ec:auth/logout')
+    .withTemplateParameters({ clientID: this.clientID, token: this.token });
+
+    return post(this.environment, request)
+    .then(() => {
+      this.tokenStore.del();
+      return Promise.resolve();
+    });
+  }
+
+  /**
+   * Will check if the given email is available for login.
+   *
+   * @param {string} email the email to check.
+   * @returns {Promise<boolean>} Whether or not the email is available.
+   */
+  emailAvailable(email) {
+    if (!email) {
+      throw new Error('email must be defined');
+    }
+
+    const request = this.newRequest().follow('ec:auth/email-available')
+    .withTemplateParameters({ email });
+
+    return get(this.environment, request)
+    .then(([a]) => a.available);
+  }
+
+  /**
+   * Signup a new account.
+   *
+   *
+   * @param {string} email email for the new account
+   * @param {string} password password for the new account
+   * @param {string?} invite optional invite. signup can be declined without invite.
+   * @returns {Promise<string>} Promise resolving the newly created {@link AccountResource}
+   */
+  signup(email, password, invite) {
+    if (!email) {
+      throw new Error('email must be defined');
+    }
+
+    if (!password) {
+      throw new Error('password must be defined');
+    }
+
+    const request = this.newRequest().follow('ec:auth/register').withTemplateParameters({
+      clientID: this.clientID,
+      invite,
+    });
+
+    return getUrl(this.environment, request)
+    .then((url) => superagentFormPost(url, { email, password }))
+    .then((token) => {
+      this.tokenStore.set(token.token);
+      return Promise.resolve(token.token);
+    });
   }
 }

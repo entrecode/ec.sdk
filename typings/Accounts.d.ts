@@ -1,6 +1,6 @@
 import { Core } from './Core';
-import { AccountList } from './resource/AccountList';
-import { AccountResource } from './resource/AccountResource';
+import { AccountList } from './resources/AccountList';
+import { AccountResource } from './resources/AccountResource';
 import { filterOptions } from './interfaces';
 
 export declare class Accounts extends Core {
@@ -15,6 +15,12 @@ export declare class Accounts extends Core {
   createApiToken(): tokenResponse;
 
   login(email: string, password: string): Promise<string>;
+
+  logout(): Promise<void>;
+
+  emailAvailable(email: string): Promise<boolean>;
+
+  signup(email: string, password: string, invite: string): Promise<string>
 }
 
 interface tokenResponse {

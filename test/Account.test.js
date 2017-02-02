@@ -6,7 +6,7 @@ const resolver = require('./mocks/resolver');
 const sinon = require('sinon');
 const sinonChai = require('sinon-chai');
 
-const core = require('../lib/Core');
+const helper = require('../lib/helper');
 const Accounts = require('../lib/Accounts').default;
 const ListResource = require('../lib/resources/ListResource').default;
 const AccountList = require('../lib/resources/AccountList').default;
@@ -34,11 +34,6 @@ describe('Accounts class', () => {
     };
     fn.should.throw(Error);
   });
-  it('should set token with token', () => {
-    const accounts = new Accounts();
-    accounts.setToken('token');
-    accounts.traversal.getRequestOptions().should.have.deep.property('headers.Authorization', 'Bearer token');
-  });
   it('should set clientID', () => {
     const accounts = new Accounts();
     accounts.should.not.have.property('clientID');
@@ -59,7 +54,7 @@ describe('Accounts class', () => {
   });
   it('should return list on list', () => {
     const accounts = new Accounts('live');
-    const stub = sinon.stub(core, 'get');
+    const stub = sinon.stub(helper, 'get');
     stub.returns(resolver('account-list.json'));
 
     return accounts.list()
@@ -74,12 +69,12 @@ describe('Accounts class', () => {
   });
   it('should return resource on get', () => {
     const accounts = new Accounts('live');
-    const stub = sinon.stub(core, 'get');
+    const stub = sinon.stub(helper, 'get');
     stub.returns(resolver('account-list.json'));
 
     return accounts.get('aID')
-    .then((list) => {
-      list.should.be.instanceof(AccountResource);
+    .then((resource) => {
+      resource.should.be.instanceof(AccountResource);
       stub.restore();
     })
     .catch((err) => {
@@ -93,7 +88,7 @@ describe('Accounts class', () => {
   });
   it('should create API token', () => {
     const accounts = new Accounts('live');
-    const stub = sinon.stub(core, 'post');
+    const stub = sinon.stub(helper, 'post');
     stub.returns(resolver('api-token.json'));
 
     return accounts.createApiToken()
@@ -102,7 +97,7 @@ describe('Accounts class', () => {
   });
   it('should login successfully', () => {
     const accounts = new Accounts();
-    const stub = sinon.stub(core, 'post');
+    const stub = sinon.stub(helper, 'post');
     stub.returns(resolver('login-token.json'));
 
     accounts.setClientID('rest');
@@ -119,6 +114,60 @@ describe('Accounts class', () => {
   });
   it('should throw on undefined password', () => {
     const throws = () => new Accounts().setClientID('rest').login('user', null);
+    throws.should.throw(Error);
+  });
+  it('should logout successfully', () => {
+    const accounts = new Accounts();
+    accounts.setToken('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJlbnRyZWNvZGVUZXN0IiwiaWF0IjoxNDg1NzgzNTg4LCJleHAiOjQ2NDE0NTcxODgsImF1ZCI6IlRlc3QiLCJzdWIiOiJ0ZXN0QGVudHJlY29kZS5kZSJ9.Vhrq5GR2hNz-RoAhdlnIIWHelPciBPCemEa74s7cXn8');
+    const stub = sinon.stub(helper, 'post');
+    stub.returns(Promise.resolve());
+
+    accounts.logout().should.be.eventually.fullfilled;
+
+    stub.restore();
+  });
+  it('should be successful on no token', () => {
+    const accounts = new Accounts();
+    accounts.logout().should.be.eventually.fullfilled;
+  });
+  it('should return true on email available', () => {
+    const accounts = new Accounts();
+    const stub = sinon.stub(helper, 'get');
+    stub.returns(resolver('email-available.json'));
+
+    accounts.emailAvailable('someone@example.com').should.be.eventually.equal(true);
+    stub.restore();
+  });
+  it('should throw on undefined email', () => {
+    const throws = () => new Accounts().emailAvailable();
+    throws.should.throw(Error);
+  });
+  it('should signup new account', () => {
+    const accounts = new Accounts();
+    accounts.setClientID('rest');
+    const url = sinon.stub(helper, 'getUrl');
+    url.returns(Promise.resolve('https://accounts.entrecode.de/auth/signup?clientID=rest'));
+    const token = sinon.stub(helper, 'superagentFormPost');
+    token.returns(Promise.resolve({ token: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJlbnRyZWNvZGVUZXN0IiwiaWF0IjoxNDg1NzgzNTg4LCJleHAiOjQ2NDE0NTcxODgsImF1ZCI6IlRlc3QiLCJzdWIiOiJ0ZXN0QGVudHJlY29kZS5kZSJ9.Vhrq5GR2hNz-RoAhdlnIIWHelPciBPCemEa74s7cXn8' }));
+
+    return accounts.signup('someone@example.com', 'suchsecurewow')
+    .then((tokenResponse) => {
+      tokenResponse.should.be.equal('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJlbnRyZWNvZGVUZXN0IiwiaWF0IjoxNDg1NzgzNTg4LCJleHAiOjQ2NDE0NTcxODgsImF1ZCI6IlRlc3QiLCJzdWIiOiJ0ZXN0QGVudHJlY29kZS5kZSJ9.Vhrq5GR2hNz-RoAhdlnIIWHelPciBPCemEa74s7cXn8');
+      token.restore();
+      url.restore();
+    })
+    .catch((err) => {
+      token.restore();
+      url.restore();
+      throw err;
+    });
+  });
+  it('should throw on undefined email', () => {
+    const throws = () => new Accounts().signup(null, 'supersecure');
+    throws.should.throw(Error);
+  });
+  it('should throw on undefined password', () => {
+    const throws = () => new Accounts().signup('someone@example.com', null);
     throws.should.throw(Error);
   });
 });

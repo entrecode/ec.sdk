@@ -7,6 +7,7 @@ const sinon = require('sinon');
 const sinonChai = require('sinon-chai');
 
 const core = require('../lib/Core');
+const helper = require('../lib/helper');
 const resolver = require('./mocks/resolver');
 const Resource = require('../lib/resources/Resource').default;
 const ListResource = require('../lib/resources/ListResource').default;
@@ -96,7 +97,7 @@ describe('ListResource', () => {
     list.hasPrevLink().should.be.false;
   });
   it('should follow first link', () => {
-    const stub = sinon.stub(core, 'get');
+    const stub = sinon.stub(helper, 'get');
     stub.returns(resolver('dm-list.json'), list._traversal);
 
     return list.followFirstLink()
@@ -107,7 +108,7 @@ describe('ListResource', () => {
     });
   });
   it('should follow next link', () => {
-    const stub = sinon.stub(core, 'get');
+    const stub = sinon.stub(helper, 'get');
     stub.returns(resolver('dm-list.json'), list._traversal);
 
     return list.followNextLink()
@@ -117,7 +118,7 @@ describe('ListResource', () => {
     });
   });
   it('should follow prev link', () => {
-    const stub = sinon.stub(core, 'get');
+    const stub = sinon.stub(helper, 'get');
     stub.returns(resolver('dm-list.json'), list._traversal);
 
     return list.followPrevLink()

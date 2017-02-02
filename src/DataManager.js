@@ -1,6 +1,8 @@
-import Core, { get, optionsToQuery } from './Core';
+import Core from './Core';
+import { get, optionsToQuery } from './helper';
 import DataManagerResource from './resources/DataManagerResource';
 import DataManagerList from './resources/DataManagerList';
+import TokenStoreFactory from './TokenStore';
 
 const urls = {
   live: 'https://datamanager.entrecode.de/',
@@ -29,6 +31,8 @@ export default class DataManager extends Core {
     }
 
     super(urls[environment || 'live']);
+    this.environment = environment;
+    this.tokenStore = TokenStoreFactory(environment || 'live');
   }
 
   /**
@@ -45,7 +49,7 @@ export default class DataManager extends Core {
       const request = this.newRequest()
       .follow('ec:datamanagers/options')
       .withTemplateParameters(optionsToQuery(options));
-      return get(request);
+      return get(this.environment, request);
     })
     .then(([res, traversal]) => new DataManagerList(res, traversal));
   }

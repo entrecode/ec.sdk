@@ -1,10 +1,7 @@
-'use strict';
-
 import * as traverson from 'traverson';
 import HalAdapter from 'traverson-hal';
 import halfred from 'halfred';
-import { get, put, del } from '../Core';
-import events from '../EventEmitter';
+import { get, put, del } from '../helper';
 
 traverson.registerMediaType(HalAdapter.mediaType, HalAdapter);
 
@@ -22,23 +19,21 @@ export default class Resource {
   /**
    * Creates a new {@link Resource}.
    *
+   * @access protected
+   *
    * @param {object} resource resource loaded from the API.
+   * @param {string} environment the environment this resource is associated to.
    * @param {?object} traversal traversal from which traverson can continue.
    */
-  constructor(resource, traversal) {
+  constructor(resource, environment, traversal) {
+    this.environment = environment || 'live';
     this.dirty = false;
     this.resource = halfred.parse(JSON.parse(JSON.stringify(resource)));
 
-    /**
-     * Global {@link EventEmitter}.
-     * @type {EventEmitter}
-     */
-    this.events = events;
-
     if (traversal) {
-      this._traversal = traversal;
+      this.traversal = traversal;
     } else {
-      this._traversal = traverson.from(this.resource.link('self').href).jsonHal()
+      this.traversal = traverson.from(this.resource.link('self').href).jsonHal()
       .addRequestOptions({ headers: { Accept: 'application/hal+json' } });
     }
   }
@@ -54,10 +49,10 @@ export default class Resource {
    * @returns {Object} traverson request builder instance.
    */
   newRequest() {
-    if ({}.hasOwnProperty.call(this._traversal, 'continue')) {
-      return this._traversal.continue().newRequest();
+    if ({}.hasOwnProperty.call(this.traversal, 'continue')) {
+      return this.traversal.continue().newRequest();
     }
-    return this._traversal.newRequest();
+    return this.traversal.newRequest();
   }
 
   /**
@@ -89,6 +84,7 @@ export default class Resource {
   save() {
     // TODO add validation
     return put(
+      this.environment,
       this.newRequest().follow('self'),
       // TODO does this Object.assign work how I want it to?
       // or do we need for(key in obj) loop?
@@ -108,7 +104,7 @@ export default class Resource {
    * @returns {Promise<undefined>} Promise will resolve on success and reject otherwise.
    */
   del() {
-    return del(this.newRequest().follow('self'));
+    return del(this.environment, this.newRequest().follow('self'));
   }
 
   /**
@@ -143,7 +139,7 @@ export default class Resource {
    * @returns {Promise<Resource|ResourceClass>} the resource identified by the link.
    */
   followLink(link, ResourceClass) {
-    return get(this.newRequest().follow(link))
+    return get(this.environment, this.newRequest().follow(link))
     .then(([res, traversal]) => {
       if (ResourceClass) {
         return new ResourceClass(res, null, traversal);
