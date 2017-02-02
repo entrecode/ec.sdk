@@ -58,103 +58,130 @@ describe('Core', () => {
 });
 
 describe('Network Helper', () => {
-  let dmList;
-  let mock;
   let traversal;
   let store;
   let spy;
-  before((done) => {
+  before(() => {
+    nock.disableNetConnect();
     spy = sinon.spy();
     emitter.on('error', spy);
-    fs.readFile(`${__dirname}/mocks/dm-list.json`, 'utf8', (err, res) => {
-      if (err) {
-        return done(err);
-      }
-      dmList = JSON.parse(res);
-      return done();
-    });
   });
   beforeEach(() => {
     spy.reset();
-    nock.disableNetConnect();
     store = TokenStore.default('test');
-    mock = nock('https://datamanager.entrecode.de');
     traversal = traverson.from('https://datamanager.entrecode.de').jsonHal();
   });
   afterEach(() => {
-    mock = null;
     TokenStore.stores.clear();
   });
   describe('get', () => {
     it('should be resolved', () => {
-      mock.get('/').reply(200, dmList);
-      helper.get('live', traversal).should.be.eventually.fulfilled;
+      nock('https://datamanager.entrecode.de')
+      .get('/').replyWithFile(200, `${__dirname}/mocks/dm-list.json`);
+
+      return helper.get('live', traversal).should.be.eventually.fulfilled;
     });
     it('should be resolved with token', () => {
-      mock.get('/').reply(200, dmList);
+      nock('https://datamanager.entrecode.de')
+      .get('/').replyWithFile(200, `${__dirname}/mocks/dm-list.json`);
       const token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJlbnRyZWNvZGVUZXN0IiwiaWF0IjoxNDg1NzgzNTg4LCJleHAiOjQ2NDE0NTcxODgsImF1ZCI6IlRlc3QiLCJzdWIiOiJ0ZXN0QGVudHJlY29kZS5kZSJ9.Vhrq5GR2hNz-RoAhdlnIIWHelPciBPCemEa74s7cXn8';
       store.set(token);
+
       return helper.get('test', traversal)
       .then(() => {
         traversal.should.have.deep.property('requestOptions.headers.Authorization', `Bearer ${token}`);
       });
     });
     it('should be rejected', () => {
-      mock.get('/').reply(404, {
+      nock('https://datamanager.entrecode.de')
+      .get('/').reply(404, {
         title: 'not found',
         code: 2102,
         status: 404,
         detail: 'title',
       });
+
       return helper.get('live', traversal).should.be.rejectedWith(Problem);
     });
     it('should be rejected network error', () => {
-      mock.get('/').replyWithError('mocked error');
-      return helper.get('live', traversal).should.be.rejectedWith(Error);
+      nock('https://datamanager.entrecode.de')
+      .get('/').replyWithError('mocked error');
+
+      return helper.get('live', traversal)
+      .then(() => {
+        throw new Error('unexpectedly resolved');
+      })
+      .catch((err) => {
+        err.should.have.property('message', 'mocked error');
+      });
     });
     it('should throw missing environment', () => {
       const throws = () => helper.get('live');
+
       throws.should.throw(Error);
     });
     it('should throw missing traversal', () => {
       const throws = () => helper.get(null, {});
+
       throws.should.throw(Error);
     });
     it('should fire error event', () => {
-      mock.get('/').replyWithError('mocked error');
+      nock('https://datamanager.entrecode.de')
+      .get('/').replyWithError('mocked error');
 
-      return helper.get('live', traversal).catch((err) => {
-        err.should.be.defined;
+      return helper.get('live', traversal)
+      .then(() => {
+        throw new Error('unexpectedly resolved');
+      })
+      .catch((err) => {
+        err.should.have.property('message', 'mocked error');
         spy.should.be.called.once;
       });
     });
   });
   describe('getUrl', () => {
     it('should be resolved', () => {
-      mock.get('/').reply(200, 'https://datamanager.entrecode.de/');
-      return helper.getUrl('live', traversal).should.be.eventually.resolved;
+      nock('https://datamanager.entrecode.de')
+      .get('/').replyWithFile(200, `${__dirname}/mocks/dm-list.json`);
+
+      return helper.getUrl('live', traversal.follow('ec:dm-stats')).should.be.eventually.resolved;
     });
     it('should be rejected', () => {
-      mock.get('/').reply(200, dmList)
-      .get('/stats').replyWithError('mocked error');
-      return helper.getUrl('live', traversal.follow('ec:dm-stats')).should.be.eventually.rejectedWith(Error);
+      nock('https://datamanager.entrecode.de')
+      .get('/').replyWithError('mocked error');
+
+      return helper.getUrl('live', traversal.follow('ec:dm-stats'))
+      .then(() => {
+        throw new Error('unexpectedly resolved');
+      })
+      .catch((err) => {
+        err.should.have.property('message', 'mocked error');
+      });
     });
     it('should fire error event', () => {
-      mock.get('/').replyWithError('mocked error');
+      nock('https://datamanager.entrecode.de')
+      .get('/').replyWithError('mocked error');
 
-      return helper.getUrl('live', traversal.follow('ec:dm-stats')).catch((err) => {
-        err.should.be.defined;
+      return helper.getUrl('live', traversal.follow('ec:dm-stats'))
+      .then(() => {
+        throw new Error('unexpectedly resolved');
+      })
+      .catch((err) => {
+        err.should.have.property('message', 'mocked error');
         spy.should.be.called.once;
       });
     });
   });
   describe('post', () => {
     it('should be resolved', () => {
-      mock.post('/').reply(200, dmList);
+      nock('https://datamanager.entrecode.de')
+      .post('/').replyWithFile(200, `${__dirname}/mocks/dm-list.json`);
+
       return helper.post('live', traversal).should.be.eventually.resolved;
     });
     it('should be rejected', () => {
-      mock.post('/').reply(404, {
+      nock('https://datamanager.entrecode.de')
+      .post('/').reply(404, {
         title: 'not found',
         code: 2102,
         status: 404,
@@ -163,83 +190,111 @@ describe('Network Helper', () => {
       return helper.post('live', traversal).should.be.rejectedWith(Problem);
     });
     it('should fire error event', () => {
-      mock.post('/').replyWithError('mocked error');
+      nock('https://datamanager.entrecode.de')
+      .post('/').replyWithError('mocked error');
 
-      return helper.post('live', traversal).catch((err) => {
-        err.should.be.defined;
+      return helper.post('live', traversal)
+      .then(() => {
+        throw new Error('unexpectedly resolved');
+      })
+      .catch((err) => {
+        err.should.have.property('message', 'mocked error');
         spy.should.be.called.once;
       });
     });
   });
   describe('put', () => {
     it('should be resolved', () => {
-      mock.put('/').reply(200, dmList);
+      nock('https://datamanager.entrecode.de')
+      .put('/').replyWithFile(200, `${__dirname}/mocks/dm-list.json`);
+
       return helper.put('live', traversal).should.be.eventually.resolved;
     });
     it('should be rejected', () => {
-      mock.put('/').reply(404, {
+      nock('https://datamanager.entrecode.de')
+      .put('/').reply(404, {
         title: 'not found',
         code: 2102,
         status: 404,
         detail: 'title',
       });
+
       return helper.put('live', traversal).should.be.rejectedWith(Problem);
     });
     it('should fire error event', () => {
-      mock.put('/').replyWithError('mocked error');
+      nock('https://datamanager.entrecode.de')
+      .put('/').replyWithError('mocked error');
 
-      return helper.put('live', traversal).catch((err) => {
-        err.should.be.defined;
+      return helper.put('live', traversal)
+      .then(() => {
+        throw new Error('unexpectedly resolved');
+      })
+      .catch((err) => {
+        err.should.have.property('message', 'mocked error');
         spy.should.be.called.once;
       });
     });
   });
   describe('delete', () => {
     it('should be resolved', () => {
-      mock.delete('/').reply(204);
+      nock('https://datamanager.entrecode.de')
+      .delete('/').reply(204);
+
       return helper.del('live', traversal).should.be.eventually.resolved;
     });
     it('should be rejected', () => {
-      mock.delete('/').reply(404, {
+      nock('https://datamanager.entrecode.de')
+      .delete('/').reply(404, {
         title: 'not found',
         code: 2102,
         status: 404,
         detail: 'title',
       });
+
       return helper.del('live', traversal).should.be.rejectedWith(Problem);
     });
     it('should fire error event', () => {
-      mock.delete('/').replyWithError('mocked error');
+      nock('https://datamanager.entrecode.de')
+      .delete('/').replyWithError('mocked error');
 
-      return helper.del('live', traversal).catch((err) => {
-        err.should.be.defined;
+      return helper.del('live', traversal)
+      .then(() => {
+        throw new Error('unexpectedly resolved');
+      })
+      .catch((err) => {
+        err.should.have.property('message', 'mocked error');
         spy.should.be.called.once;
       });
     });
   });
   describe('superagentFormPost', () => {
     it('should be resolved', () => {
-      mock.post('/').reply(200, { token: 'token' });
+      nock('https://datamanager.entrecode.de')
+      .post('/').reply(200, { token: 'token' });
+
       return helper.superagentFormPost('https://datamanager.entrecode.de', {}).should.be.eventually.fulfilled;
     });
     it('should be rejected', () => {
-      mock.post('/').reply(404, {
+      nock('https://datamanager.entrecode.de')
+      .post('/').reply(404, {
         title: 'not found',
         code: 2102,
         status: 404,
         detail: 'title',
       });
+
       return helper.superagentFormPost('https://datamanager.entrecode.de', {}).should.be.eventually.rejectedWith(Problem);
     });
     it('should fire error event', () => {
-      mock.post('/').replyWithError('mocked error');
+      nock('https://datamanager.entrecode.de')
+      .post('/').replyWithError('mocked error');
 
       return helper.superagentFormPost('https://datamanager.entrecode.de', {})
       .then(() => {
         throw new Error('unexpectedly resolved');
       })
       .catch((err) => {
-        err.should.be.defined;
+        err.should.have.property('message', 'mocked error');
         spy.should.be.called.once;
       });
     });
