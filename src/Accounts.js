@@ -1,5 +1,5 @@
 import Core from './Core';
-import { get, post, getUrl, optionsToQuery } from './helper';
+import { get, post, getUrl, superagentFormPost, optionsToQuery } from './helper';
 import AccountList from './resources/AccountList';
 import AccountResource from './resources/AccountResource';
 import TokenStoreFactory from './TokenStore';
@@ -177,5 +177,36 @@ export default class Accounts extends Core {
 
     return get(this.environment, request)
     .then(([a]) => a.available);
+  }
+
+  /**
+   * Signup a new account.
+   *
+   *
+   * @param {string} email email for the new account
+   * @param {string} password password for the new account
+   * @param {string?} invite optional invite. signup can be declined without invite.
+   * @returns {Promise<string>} Promise resolving the newly created {@link AccountResource}
+   */
+  signup(email, password, invite) {
+    if (!email) {
+      throw new Error('email must be defined');
+    }
+
+    if (!password) {
+      throw new Error('password must be defined');
+    }
+
+    const request = this.newRequest().follow('ec:auth/register').withTemplateParameters({
+      clientID: this.clientID,
+      invite,
+    });
+
+    return getUrl(this.environment, request)
+    .then((url) => superagentFormPost(url, { email, password }))
+    .then((token) => {
+      this.tokenStore.set(token.token);
+      return Promise.resolve(token.token);
+    });
   }
 }

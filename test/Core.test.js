@@ -1,3 +1,5 @@
+/*eslint no-unused-expressions:0*/
+
 const chai = require('chai');
 const chaiAsPromised = require('chai-as-promised');
 const nock = require('nock');
@@ -55,12 +57,15 @@ describe('Core', () => {
   });
 });
 
-describe('Traverson Helper', () => {
+describe('Network Helper', () => {
   let dmList;
   let mock;
   let traversal;
   let store;
+  let spy;
   before((done) => {
+    spy = sinon.spy();
+    emitter.on('error', spy);
     fs.readFile(`${__dirname}/mocks/dm-list.json`, 'utf8', (err, res) => {
       if (err) {
         return done(err);
@@ -70,6 +75,7 @@ describe('Traverson Helper', () => {
     });
   });
   beforeEach(() => {
+    spy.reset();
     nock.disableNetConnect();
     store = TokenStore.default('test');
     mock = nock('https://datamanager.entrecode.de');
@@ -116,8 +122,6 @@ describe('Traverson Helper', () => {
     });
     it('should fire error event', () => {
       mock.get('/').replyWithError('mocked error');
-      const spy = sinon.spy();
-      emitter.on('error', spy);
 
       return helper.get('live', traversal).catch((err) => {
         err.should.be.defined;
@@ -137,8 +141,6 @@ describe('Traverson Helper', () => {
     });
     it('should fire error event', () => {
       mock.get('/').replyWithError('mocked error');
-      const spy = sinon.spy();
-      emitter.on('error', spy);
 
       return helper.getUrl('live', traversal.follow('ec:dm-stats')).catch((err) => {
         err.should.be.defined;
@@ -162,8 +164,6 @@ describe('Traverson Helper', () => {
     });
     it('should fire error event', () => {
       mock.post('/').replyWithError('mocked error');
-      const spy = sinon.spy();
-      emitter.on('error', spy);
 
       return helper.post('live', traversal).catch((err) => {
         err.should.be.defined;
@@ -187,8 +187,6 @@ describe('Traverson Helper', () => {
     });
     it('should fire error event', () => {
       mock.put('/').replyWithError('mocked error');
-      const spy = sinon.spy();
-      emitter.on('error', spy);
 
       return helper.put('live', traversal).catch((err) => {
         err.should.be.defined;
@@ -212,10 +210,35 @@ describe('Traverson Helper', () => {
     });
     it('should fire error event', () => {
       mock.delete('/').replyWithError('mocked error');
-      const spy = sinon.spy();
-      emitter.on('error', spy);
 
       return helper.del('live', traversal).catch((err) => {
+        err.should.be.defined;
+        spy.should.be.called.once;
+      });
+    });
+  });
+  describe('superagentFormPost', () => {
+    it('should be resolved', () => {
+      mock.post('/').reply(200, { token: 'token' });
+      return helper.superagentFormPost('https://datamanager.entrecode.de', {}).should.be.eventually.fulfilled;
+    });
+    it('should be rejected', () => {
+      mock.post('/').reply(404, {
+        title: 'not found',
+        code: 2102,
+        status: 404,
+        detail: 'title',
+      });
+      return helper.superagentFormPost('https://datamanager.entrecode.de', {}).should.be.eventually.rejectedWith(Problem);
+    });
+    it('should fire error event', () => {
+      mock.post('/').replyWithError('mocked error');
+
+      return helper.superagentFormPost('https://datamanager.entrecode.de', {})
+      .then(() => {
+        throw new Error('unexpectedly resolved');
+      })
+      .catch((err) => {
         err.should.be.defined;
         spy.should.be.called.once;
       });

@@ -26,6 +26,7 @@
     "ec.cookie-mock": "^1.0.0",
     "halfred": "^1.0.0",
     "jwt-decode": "^2.1.0",
+    "superagent": "^3.4.1",
     "traverson": "^5.0.0",
     "traverson-hal": "^5.0.0"
   },

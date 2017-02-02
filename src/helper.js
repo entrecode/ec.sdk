@@ -1,3 +1,5 @@
+import superagent from 'superagent';
+
 import Problem from './Problem';
 import events from './EventEmitter';
 import { stores } from './TokenStore';
@@ -99,7 +101,7 @@ export function get(environment, t) {
  *
  * @param {string} environment environment from which a token should be used
  * @param {object} t request builder
- * @returns {Promise.string} resolves to the url.
+ * @returns {Promise} resolves to the url.
  */
 export function getUrl(environment, t) {
   return traversonWrapper('getUrl', environment, t);
@@ -162,6 +164,28 @@ export function put(environment, t, body) {
  */
 export function del(environment, t) {
   return traversonWrapper('delete', environment, t);
+}
+
+/**
+ * Superagent Wrapper for posting forms.
+ *
+ * @param {string} url the url to post to
+ * @param {object} form the form to post as object
+ * @returns {Promise} Promise resolving to response body.
+ */
+export function superagentFormPost(url, form) {
+  return superagent.post(url)
+  .type('form')
+  .send(form)
+  .then(res => Promise.resolve(res.body ? res.body : {}))
+  .catch((err) => {
+    let problem;
+    if ({}.hasOwnProperty.call(err, 'status')) {
+      problem = new Problem(err.response.body);
+    }
+    events.emit('error', problem || err);
+    throw problem || err;
+  });
 }
 
 /**

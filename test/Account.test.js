@@ -118,7 +118,7 @@ describe('Accounts class', () => {
   });
   it('should logout successfully', () => {
     const accounts = new Accounts();
-    accounts.setToken('eyJhbGciOiJSUzUxMiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNjaGVyemluZ2VyQGVudHJlY29kZS5kZSIsImp0aSI6IjEwODRlMGRmLTg1NzktNGRmMC1hNjc4LTk5M2QwMDNkY2QyNSIsImlhdCI6MTQ4MjUwNTcxMywiZXhwIjoxNDg1MDk3NzEzLCJpc3MiOiJlbnRyZWNvZGUiLCJzdWIiOiJkZGQyOWZkMS03NDE3LTQ4OTQtYTU0Ni01YzEyYjExYzAxODYifQ.Z2UA2EkFUMPvj5AZX5Ox5-pHiQsfw1Jjvq7sqXDT4OfdOFdGMHvKDLsJm1aVWWga5PMLSpKPucYYk_MrDTjYFp1HJhn97B1VwO62psP-Z6BMFgIPpQNB0f-_Mgth4OGucpLajoGgw9PemmHGWvyStC1Gzg9QBdKCch4VNjKvgg33puyZ5DA9YvldjUTQVhl02rHQspf4dfAz7DQHCJJN_tFhXXLpYzg_pQOu6L-yowsEFlLhl9SZoidz9v8T4PMio04g9wauilu0-ZXGRMRHKk2RYqlRaSc4QLSRZnyefdjp1_Xk7q9dG0Fn71YWxClXYlf2hycuzO2bg1-JBElxzQ');
+    accounts.setToken('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJlbnRyZWNvZGVUZXN0IiwiaWF0IjoxNDg1NzgzNTg4LCJleHAiOjQ2NDE0NTcxODgsImF1ZCI6IlRlc3QiLCJzdWIiOiJ0ZXN0QGVudHJlY29kZS5kZSJ9.Vhrq5GR2hNz-RoAhdlnIIWHelPciBPCemEa74s7cXn8');
     const stub = sinon.stub(helper, 'post');
     stub.returns(Promise.resolve());
 
@@ -140,6 +140,34 @@ describe('Accounts class', () => {
   });
   it('should throw on undefined email', () => {
     const throws = () => new Accounts().emailAvailable();
+    throws.should.throw(Error);
+  });
+  it('should signup new account', () => {
+    const accounts = new Accounts();
+    accounts.setClientID('rest');
+    const url = sinon.stub(helper, 'getUrl');
+    url.returns(Promise.resolve('https://accounts.entrecode.de/auth/signup?clientID=rest'));
+    const token = sinon.stub(helper, 'superagentFormPost');
+    token.returns(Promise.resolve({ token: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJlbnRyZWNvZGVUZXN0IiwiaWF0IjoxNDg1NzgzNTg4LCJleHAiOjQ2NDE0NTcxODgsImF1ZCI6IlRlc3QiLCJzdWIiOiJ0ZXN0QGVudHJlY29kZS5kZSJ9.Vhrq5GR2hNz-RoAhdlnIIWHelPciBPCemEa74s7cXn8' }));
+
+    return accounts.signup('someone@example.com', 'suchsecurewow')
+    .then((tokenResponse) => {
+      tokenResponse.should.be.equal('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJlbnRyZWNvZGVUZXN0IiwiaWF0IjoxNDg1NzgzNTg4LCJleHAiOjQ2NDE0NTcxODgsImF1ZCI6IlRlc3QiLCJzdWIiOiJ0ZXN0QGVudHJlY29kZS5kZSJ9.Vhrq5GR2hNz-RoAhdlnIIWHelPciBPCemEa74s7cXn8');
+      token.restore();
+      url.restore();
+    })
+    .catch((err) => {
+      token.restore();
+      url.restore();
+      throw err;
+    });
+  });
+  it('should throw on undefined email', () => {
+    const throws = () => new Accounts().signup(null, 'supersecure');
+    throws.should.throw(Error);
+  });
+  it('should throw on undefined password', () => {
+    const throws = () => new Accounts().signup('someone@example.com', null);
     throws.should.throw(Error);
   });
 });
