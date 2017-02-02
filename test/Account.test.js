@@ -149,10 +149,12 @@ describe('Accounts class', () => {
     url.returns(Promise.resolve('https://accounts.entrecode.de/auth/signup?clientID=rest'));
     const token = sinon.stub(helper, 'superagentFormPost');
     token.returns(Promise.resolve({ token: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJlbnRyZWNvZGVUZXN0IiwiaWF0IjoxNDg1NzgzNTg4LCJleHAiOjQ2NDE0NTcxODgsImF1ZCI6IlRlc3QiLCJzdWIiOiJ0ZXN0QGVudHJlY29kZS5kZSJ9.Vhrq5GR2hNz-RoAhdlnIIWHelPciBPCemEa74s7cXn8' }));
+    accounts.tokenStore.has().should.be.false;
 
     return accounts.signup('someone@example.com', 'suchsecurewow')
     .then((tokenResponse) => {
       tokenResponse.should.be.equal('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJlbnRyZWNvZGVUZXN0IiwiaWF0IjoxNDg1NzgzNTg4LCJleHAiOjQ2NDE0NTcxODgsImF1ZCI6IlRlc3QiLCJzdWIiOiJ0ZXN0QGVudHJlY29kZS5kZSJ9.Vhrq5GR2hNz-RoAhdlnIIWHelPciBPCemEa74s7cXn8');
+      accounts.tokenStore.has().should.be.true;
       token.restore();
       url.restore();
     })
