@@ -1,6 +1,6 @@
 import ListResource from './ListResource';
 import DataManagerResource from './DataManagerResource';
-import { post } from '../Core';
+import { post } from '../helper';
 
 /**
  * DataManager list resource class.

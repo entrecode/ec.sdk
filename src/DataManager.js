@@ -1,4 +1,5 @@
-import Core, { get, optionsToQuery } from './Core';
+import Core from './Core';
+import { get, optionsToQuery } from './helper';
 import DataManagerResource from './resources/DataManagerResource';
 import DataManagerList from './resources/DataManagerList';
 import TokenStoreFactory from './TokenStore';

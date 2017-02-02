@@ -1,4 +1,5 @@
-import Core, { get, post, optionsToQuery } from './Core';
+import Core from './Core';
+import { get, post, getUrl, optionsToQuery } from './helper';
 import AccountList from './resources/AccountList';
 import AccountResource from './resources/AccountResource';
 import TokenStoreFactory from './TokenStore';

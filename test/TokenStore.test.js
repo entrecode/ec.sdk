@@ -65,11 +65,11 @@ describe('Token handling', () => {
 describe('Token handling with cookie store', () => {
   const token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJlbnRyZWNvZGVUZXN0IiwiaWF0IjoxNDg1NzgzNTg4LCJleHAiOjQ2NDE0NTcxODgsImF1ZCI6IlRlc3QiLCJzdWIiOiJ0ZXN0QGVudHJlY29kZS5kZSJ9.Vhrq5GR2hNz-RoAhdlnIIWHelPciBPCemEa74s7cXn8';
   let store;
-  beforeEach(() => {
+  before(() => {
     document = new CookieMock(); // eslint-disable-line no-undef
     store = TokenStore.default('test');
   });
-  afterEach(() => {
+  after(() => {
     store = null;
     document = null; // eslint-disable-line no-undef
     TokenStore.stores.clear();
@@ -116,6 +116,7 @@ describe('Token handling with cookie store', () => {
     store.has().should.be.equal(true);
   });
   it('should return false on has token', () => {
+    store.del();
     store.has().should.be.equal(false);
   });
   it('should delete token', () => {

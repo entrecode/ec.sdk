@@ -6,7 +6,7 @@ const resolver = require('./mocks/resolver');
 const sinon = require('sinon');
 const sinonChai = require('sinon-chai');
 
-const core = require('../lib/Core');
+const helper = require('../lib/helper');
 const Accounts = require('../lib/Accounts').default;
 const ListResource = require('../lib/resources/ListResource').default;
 const AccountList = require('../lib/resources/AccountList').default;
@@ -54,7 +54,7 @@ describe('Accounts class', () => {
   });
   it('should return list on list', () => {
     const accounts = new Accounts('live');
-    const stub = sinon.stub(core, 'get');
+    const stub = sinon.stub(helper, 'get');
     stub.returns(resolver('account-list.json'));
 
     return accounts.list()
@@ -69,7 +69,7 @@ describe('Accounts class', () => {
   });
   it('should return resource on get', () => {
     const accounts = new Accounts('live');
-    const stub = sinon.stub(core, 'get');
+    const stub = sinon.stub(helper, 'get');
     stub.returns(resolver('account-list.json'));
 
     return accounts.get('aID')
@@ -88,7 +88,7 @@ describe('Accounts class', () => {
   });
   it('should create API token', () => {
     const accounts = new Accounts('live');
-    const stub = sinon.stub(core, 'post');
+    const stub = sinon.stub(helper, 'post');
     stub.returns(resolver('api-token.json'));
 
     return accounts.createApiToken()
@@ -97,7 +97,7 @@ describe('Accounts class', () => {
   });
   it('should login successfully', () => {
     const accounts = new Accounts();
-    const stub = sinon.stub(core, 'post');
+    const stub = sinon.stub(helper, 'post');
     stub.returns(resolver('login-token.json'));
 
     accounts.setClientID('rest');
@@ -119,7 +119,7 @@ describe('Accounts class', () => {
   it('should logout successfully', () => {
     const accounts = new Accounts();
     accounts.setToken('eyJhbGciOiJSUzUxMiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNjaGVyemluZ2VyQGVudHJlY29kZS5kZSIsImp0aSI6IjEwODRlMGRmLTg1NzktNGRmMC1hNjc4LTk5M2QwMDNkY2QyNSIsImlhdCI6MTQ4MjUwNTcxMywiZXhwIjoxNDg1MDk3NzEzLCJpc3MiOiJlbnRyZWNvZGUiLCJzdWIiOiJkZGQyOWZkMS03NDE3LTQ4OTQtYTU0Ni01YzEyYjExYzAxODYifQ.Z2UA2EkFUMPvj5AZX5Ox5-pHiQsfw1Jjvq7sqXDT4OfdOFdGMHvKDLsJm1aVWWga5PMLSpKPucYYk_MrDTjYFp1HJhn97B1VwO62psP-Z6BMFgIPpQNB0f-_Mgth4OGucpLajoGgw9PemmHGWvyStC1Gzg9QBdKCch4VNjKvgg33puyZ5DA9YvldjUTQVhl02rHQspf4dfAz7DQHCJJN_tFhXXLpYzg_pQOu6L-yowsEFlLhl9SZoidz9v8T4PMio04g9wauilu0-ZXGRMRHKk2RYqlRaSc4QLSRZnyefdjp1_Xk7q9dG0Fn71YWxClXYlf2hycuzO2bg1-JBElxzQ');
-    const stub = sinon.stub(core, 'post');
+    const stub = sinon.stub(helper, 'post');
     stub.returns(Promise.resolve());
 
     accounts.logout().should.be.eventually.fullfilled;
@@ -132,7 +132,7 @@ describe('Accounts class', () => {
   });
   it('should return true on email available', () => {
     const accounts = new Accounts();
-    const stub = sinon.stub(core, 'get');
+    const stub = sinon.stub(helper, 'get');
     stub.returns(resolver('email-available.json'));
 
     accounts.emailAvailable('someone@example.com').should.be.eventually.equal(true);

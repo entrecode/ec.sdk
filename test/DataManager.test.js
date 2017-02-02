@@ -6,7 +6,7 @@ const resolver = require('./mocks/resolver');
 const sinon = require('sinon');
 const sinonChai = require('sinon-chai');
 
-const core = require('../lib/Core');
+const helper = require('../lib/helper');
 const DataManager = require('../lib/DataManager').default;
 const ListResource = require('../lib/resources/ListResource').default;
 const DataManagerList = require('../lib/resources/DataManagerList').default;
@@ -36,7 +36,7 @@ describe('DataManager class', () => {
   });
   it('should return list on list', () => {
     const dm = new DataManager('live');
-    const stub = sinon.stub(core, 'get');
+    const stub = sinon.stub(helper, 'get');
     stub.returns(resolver('dm-list.json'));
 
     return dm.list()
@@ -51,7 +51,7 @@ describe('DataManager class', () => {
   });
   it('should return resource on get', () => {
     const dm = new DataManager('live');
-    const stub = sinon.stub(core, 'get');
+    const stub = sinon.stub(helper, 'get');
     stub.returns(resolver('dm-list.json'));
 
     return dm.get('aID')
@@ -102,7 +102,7 @@ describe('DataManager ListResource', () => {
     list.getAllItems().forEach(item => item.should.be.instanceOf(DataManagerResource));
   });
   it('should call post on create', () => {
-    const stub = sinon.stub(core, 'post');
+    const stub = sinon.stub(helper, 'post');
     return new Promise((resolve, reject) => {
       fs.readFile(`${__dirname}/mocks/dm-single.json`, 'utf-8', (err, res) => {
         if (err) {
