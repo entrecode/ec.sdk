@@ -19,6 +19,8 @@ export declare class Accounts extends Core {
   logout(): Promise<void>;
 
   emailAvailable(email: string): Promise<boolean>;
+
+  signup(email: string, password: string, invite: string): Promise<string>
 }
 
 interface tokenResponse {
