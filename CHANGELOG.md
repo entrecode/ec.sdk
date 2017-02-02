@@ -1,3 +1,35 @@
+<a name="0.1.5"></a>
+## 0.1.5 (2017-02-02)
+
+* release version 0.1.5 ([c7d994e](https://github.com/entrecode/ec.sdk/commit/c7d994e))
+* fix: embedded resource name for AccountList ([dc44fd2](https://github.com/entrecode/ec.sdk/commit/dc44fd2))
+* fix: resolver returns traverson object in tests ([15ba11d](https://github.com/entrecode/ec.sdk/commit/15ba11d))
+* fix: send json body as Content-Type: application/json ([d413e84](https://github.com/entrecode/ec.sdk/commit/d413e84))
+* fix: typings split into two files ([d90dc8b](https://github.com/entrecode/ec.sdk/commit/d90dc8b))
+* fix: use clientID on login ([4659308](https://github.com/entrecode/ec.sdk/commit/4659308))
+* feat: basic logout function ([0453e14](https://github.com/entrecode/ec.sdk/commit/0453e14))
+* feat: CMS-2574 signup ([0b9a2fb](https://github.com/entrecode/ec.sdk/commit/0b9a2fb))
+* feat: email available check CMS-2581 ([6713b10](https://github.com/entrecode/ec.sdk/commit/6713b10))
+* feat: export all Resources ([e916644](https://github.com/entrecode/ec.sdk/commit/e916644))
+* feat: fixed some missbehaving tests ([da29ed7](https://github.com/entrecode/ec.sdk/commit/da29ed7))
+* feat: handle tokens with TokenStore instead of events ([2676d8c](https://github.com/entrecode/ec.sdk/commit/2676d8c))
+* feat: login event with token ([32ab71b](https://github.com/entrecode/ec.sdk/commit/32ab71b))
+* feat: logout events ([70fc8d7](https://github.com/entrecode/ec.sdk/commit/70fc8d7))
+* feat: save cookie on login ([3c9a570](https://github.com/entrecode/ec.sdk/commit/3c9a570))
+* feat: set token when cookie is saved ([c6aa320](https://github.com/entrecode/ec.sdk/commit/c6aa320))
+* feat: typings for signup ([bbde3ad](https://github.com/entrecode/ec.sdk/commit/bbde3ad))
+* chore: moved cookie related tests to own file ([a07578e](https://github.com/entrecode/ec.sdk/commit/a07578e))
+* chore: remove event listeners after tests ([1ca60f9](https://github.com/entrecode/ec.sdk/commit/1ca60f9))
+* chore: remove unused token in travis ([04e0330](https://github.com/entrecode/ec.sdk/commit/04e0330))
+* chore: removed dangling _ from traversal ([0b0ad12](https://github.com/entrecode/ec.sdk/commit/0b0ad12))
+* chore: renamed resources dir in typings ([00b4f1e](https://github.com/entrecode/ec.sdk/commit/00b4f1e))
+* chore: splitted core and helper into two files ([1751292](https://github.com/entrecode/ec.sdk/commit/1751292))
+* chore: typings is source dir ([f5e1052](https://github.com/entrecode/ec.sdk/commit/f5e1052))
+* chore: updated browserify dependency ([d7ea240](https://github.com/entrecode/ec.sdk/commit/d7ea240))
+* test: additional EventEmitter tests ([19703d9](https://github.com/entrecode/ec.sdk/commit/19703d9))
+
+
+
 <a name="0.1.4"></a>
 ## 0.1.4 (2017-01-24)
 
