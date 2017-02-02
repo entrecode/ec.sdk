@@ -10,8 +10,10 @@
     -   [createApiToken](#createapitoken)
     -   [login](#login)
     -   [tokenResponse](#tokenresponse)
+    -   [logout](#logout)
+    -   [emailAvailable](#emailavailable)
+    -   [signup](#signup)
 -   [Core](#core)
-    -   [events](#events)
     -   [setToken](#settoken)
 -   [DataManager](#datamanager)
     -   [constructor](#constructor-1)
@@ -23,6 +25,7 @@
     -   [on](#on)
     -   [removeListener](#removelistener)
     -   [removeAllListeners](#removealllisteners)
+-   [superagentFormPost](#superagentformpost)
 -   [Problem](#problem)
     -   [constructor](#constructor-3)
     -   [short](#short)
@@ -80,7 +83,6 @@
 -   [filter](#filter)
 -   [Resource](#resource)
     -   [constructor](#constructor-7)
-    -   [events](#events-1)
     -   [isDirty](#isdirty)
     -   [reset](#reset)
     -   [save](#save)
@@ -92,6 +94,8 @@
     -   [set](#set)
     -   [getProperty](#getproperty)
     -   [setProperty](#setproperty)
+-   [stores](#stores)
+-   [TokenStoreFactory](#tokenstorefactory)
 
 ## Accounts
 
@@ -171,13 +175,38 @@ Type: {jwt: [string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Ref
 -   `email`  
 -   `password`  
 
+### logout
+
+Logout with existing token. Will invalidate the token with the Account API and remove any
+cookie stored.
+
+Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;[undefined](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/undefined)>** Promise resolving undefined on success.
+
+### emailAvailable
+
+Will check if the given email is available for login.
+
+**Parameters**
+
+-   `email` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** the email to check.
+
+Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;[boolean](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean)>** Whether or not the email is available.
+
+### signup
+
+Signup a new account.
+
+**Parameters**
+
+-   `email` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** email for the new account
+-   `password` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** password for the new account
+-   `invite` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)?** optional invite. signup can be declined without invite.
+
+Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)>** Promise resolving the newly created [AccountResource](#accountresource)
+
 ## Core
 
 Core class for connecting to any entrecode API.
-
-### events
-
-Global [EventEmitter](#eventemitter).
 
 ### setToken
 
@@ -279,6 +308,17 @@ Removes all listeners for a given label.
 
 Returns **[boolean](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** whether or not all listeners got removed.
 
+## superagentFormPost
+
+Superagent Wrapper for posting forms.
+
+**Parameters**
+
+-   `url` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** the url to post to
+-   `form` **[object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)** the form to post as object
+
+Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)** Promise resolving to response body.
+
 ## Problem
 
 **Extends Error**
@@ -340,6 +380,7 @@ Creates a new [AccountList](#accountlist).
 **Parameters**
 
 -   `resource` **[object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)** resource loaded from the API.
+-   `environment` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** the environment this resource is associated to.
 -   `traversal` **[object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)?** traversal from which traverson can continue.
 
 ## openID
@@ -484,6 +525,7 @@ Creates a new [DataManagerList](#datamanagerlist).
 **Parameters**
 
 -   `resource` **[object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)** resource loaded from the API.
+-   `environment` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** the environment this resource is associated to.
 -   `traversal` **[object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)?** traversal from which traverson can continue.
 
 ### create
@@ -595,6 +637,7 @@ Creates a new [ListResource](#listresource).
 **Parameters**
 
 -   `resource` **[object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)** resource loaded from the API.
+-   `environment` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** the environment this resource is associated to.
 -   `name` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)?** name of the embedded resources.
 -   `traversal` **[object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)?** traversal from which traverson can continue.
 
@@ -700,11 +743,8 @@ Creates a new [Resource](#resource).
 **Parameters**
 
 -   `resource` **[object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)** resource loaded from the API.
+-   `environment` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** the environment this resource is associated to.
 -   `traversal` **[object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)?** traversal from which traverson can continue.
-
-### events
-
-Global [EventEmitter](#eventemitter).
 
 ### isDirty
 
@@ -806,3 +846,18 @@ Set a new value to the property identified by property.
 -   `value` **any** the value to assign.
 
 Returns **[Resource](#resource)** this Resource for chainability
+
+## stores
+
+Map for storing all tokenStores.
+
+## TokenStoreFactory
+
+Factory function for creating a [TokenFactory](TokenFactory) for an environment. Will return a
+previously created [TokenStore](TokenStore).
+
+**Parameters**
+
+-   `environment` **environment** the environment for which the token store should be created
+
+Returns **TokenStore** The created token store
