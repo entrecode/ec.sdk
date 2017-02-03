@@ -192,9 +192,11 @@ export default class Accounts extends Core {
     if (!email) {
       throw new Error('email must be defined');
     }
-
     if (!password) {
       throw new Error('password must be defined');
+    }
+    if (!this.clientID) {
+      throw new Error('clientID must be set with Account#setClientID(clientID: string)');
     }
 
     const request = this.newRequest().follow('ec:auth/register').withTemplateParameters({
@@ -208,5 +210,8 @@ export default class Accounts extends Core {
       this.tokenStore.set(token.token);
       return Promise.resolve(token.token);
     });
+  }
+
+  resetPassword(email) {
   }
 }

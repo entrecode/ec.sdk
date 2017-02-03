@@ -172,6 +172,10 @@ describe('Accounts class', () => {
     const throws = () => new Accounts().signup('someone@example.com', null);
     throws.should.throw(Error);
   });
+  it('should throw on undefined clientID', () => {
+    const throws = () => new Accounts().signup('someone@example.com', 'supersecure');
+    throws.should.throw(Error);
+  });
 });
 
 describe('Account ListResource', () => {
