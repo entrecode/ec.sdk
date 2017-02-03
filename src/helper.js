@@ -15,8 +15,8 @@ import { stores } from './TokenStore';
  * @param {function} callback the callback which should be wrapped.
  * @returns {function}  function whichs wraps the given callback.
  */
-function handlerCallback(callback) {
-  return function callbackWrapper(err, res, traversal) {
+function jsonHandler(callback) {
+  return function jsonHandler(err, res, traversal) {
     if (err) {
       return callback(err);
     }
@@ -26,6 +26,31 @@ function handlerCallback(callback) {
     }
 
     return callback(new Problem(JSON.parse(res.body)));
+  };
+}
+
+/**
+ * Creates a callback which wraps a traverson repsonse from `get`, `post`, `put`, `delete` and
+ * handles http status codes.
+ * The callback will only handle status codes 200-299 as success. All
+ * other codes are handled as errors.
+ *
+ * @access private
+ *
+ * @param {function} callback the callback which should be wrapped.
+ * @returns {function}  function whichs wraps the given callback.
+ */
+function unparsedHandler(callback) {
+  return function unparsedHandler(err, res, traversal) {
+    if (err) {
+      return callback(err);
+    }
+
+    if (res.statusCode >= 200 && res.statusCode < 300) {
+      return callback(null, [res.body, traversal]);
+    }
+
+    return callback(new Error(res.body));
   };
 }
 
@@ -62,11 +87,13 @@ function traversonWrapper(func, environment, t, body) {
 
     if (func === 'getUrl') {
       t[func](cb);
+    } else if (func === 'getEmpty') {
+      t.get(unparsedHandler(cb));
     } else if (func === 'post' || func === 'put') {
-      t.addRequestOptions({ headers: { 'Content-Type': 'application/json' } })
-      t[func](body, handlerCallback(cb));
+      t.addRequestOptions({ headers: { 'Content-Type': 'application/json' } });
+      t[func](body, jsonHandler(cb));
     } else {
-      t[func](handlerCallback(cb));
+      t[func](jsonHandler(cb));
     }
   });
 }
@@ -88,6 +115,11 @@ function traversonWrapper(func, environment, t, body) {
  */
 export function get(environment, t) {
   return traversonWrapper('get', environment, t);
+}
+
+export function getEmpty(environment, t) {
+  return traversonWrapper('getEmpty', environment, t)
+  .then(() => Promise.resolve());
 }
 
 /**

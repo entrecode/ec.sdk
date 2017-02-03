@@ -48,10 +48,6 @@ describe('Accounts class', () => {
     const throws = () => new Accounts().setClientID('notrest');
     throws.should.throw(Error);
   });
-  it('should throw with undefiend token', () => {
-    const throws = () => new Accounts().setToken();
-    throws.should.throw(Error);
-  });
   it('should return list on list', () => {
     const accounts = new Accounts('live');
     const stub = sinon.stub(helper, 'get');
@@ -174,6 +170,29 @@ describe('Accounts class', () => {
   });
   it('should throw on undefined clientID', () => {
     const throws = () => new Accounts().signup('someone@example.com', 'supersecure');
+    throws.should.throw(Error);
+  });
+  it('should reset password', () => {
+    const accounts = new Accounts();
+    accounts.setClientID('rest');
+    const stub = sinon.stub(helper, 'getEmpty');
+    stub.returns(Promise.resolve());
+
+    return accounts.resetPassword('someone@entrecode.de')
+    .then(() => {
+      stub.restore();
+    })
+    .catch((err) => {
+      stub.restore();
+      throw err;
+    });
+  });
+  it('should throw on undefined email', () => {
+    const throws = () => new Accounts().resetPassword();
+    throws.should.throw(Error);
+  });
+  it('should throw on undefiend clientID', () => {
+    const throws = () => new Accounts().resetPassword('someone@entrecode.de');
     throws.should.throw(Error);
   });
 });

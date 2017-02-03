@@ -1,5 +1,5 @@
 import Core from './Core';
-import { get, post, getUrl, superagentFormPost, optionsToQuery } from './helper';
+import { get, post, getUrl, getEmpty, superagentFormPost, optionsToQuery } from './helper';
 import AccountList from './resources/AccountList';
 import AccountResource from './resources/AccountResource';
 import TokenStoreFactory from './TokenStore';
@@ -213,5 +213,18 @@ export default class Accounts extends Core {
   }
 
   resetPassword(email) {
+    if (!email) {
+      throw new Error('email must be defined');
+    }
+    if (!this.clientID) {
+      throw new Error('clientID must be set with Account#setClientID(clientID: string)');
+    }
+
+    const request = this.newRequest().follow('ec:auth/assword-reset').withTemplateParameters({
+      clientID: this.clientID,
+      email,
+    });
+
+    return getEmpty(this.environment, request);
   }
 }
