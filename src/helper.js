@@ -89,6 +89,8 @@ function traversonWrapper(func, environment, t, body) {
       t[func](cb);
     } else if (func === 'getEmpty') {
       t.get(unparsedHandler(cb));
+    } else if (func === 'postEmpty') {
+      t.post(body, unparsedHandler(cb));
     } else if (func === 'post' || func === 'put') {
       t.addRequestOptions({ headers: { 'Content-Type': 'application/json' } });
       t[func](body, jsonHandler(cb));
@@ -117,8 +119,44 @@ export function get(environment, t) {
   return traversonWrapper('get', environment, t);
 }
 
+/**
+ * Wraps a {@link
+  * https://github.com/basti1302/traverson traverson} get request with a {@link Promise}
+ * Parameter t must be a {@link
+  * https://github.com/basti1302/traverson/blob/master/api.markdown#request-builder
+     * traverson request builder}.
+ * Only http status codes >200 <=299 will resolve, all others will
+ * reject.
+ *
+ * @access private
+ *
+ * @param {string} environment environment from which a token should be used
+ * @param {object} t request builder
+ * @returns {Promise} resolves to undefined.
+ */
 export function getEmpty(environment, t) {
   return traversonWrapper('getEmpty', environment, t)
+  .then(() => Promise.resolve());
+}
+
+/**
+ * Wraps a {@link
+  * https://github.com/basti1302/traverson traverson} get request with a {@link Promise}
+ * Parameter t must be a {@link
+  * https://github.com/basti1302/traverson/blob/master/api.markdown#request-builder
+     * traverson request builder}.
+ * Only http status codes >200 <=299 will resolve, all others will
+ * reject.
+ *
+ * @access private
+ *
+ * @param {string} environment environment from which a token should be used
+ * @param {object} t request builder
+ * @param {object} body the request body
+ * @returns {Promise} resolves to undefined.
+ */
+export function postEmpty(environment, t, body) {
+  return traversonWrapper('postEmpty', environment, t, body)
   .then(() => Promise.resolve());
 }
 

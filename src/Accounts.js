@@ -1,5 +1,13 @@
 import Core from './Core';
-import { get, post, getUrl, getEmpty, superagentFormPost, optionsToQuery } from './helper';
+import {
+  get,
+  post,
+  getUrl,
+  getEmpty,
+  postEmpty,
+  superagentFormPost,
+  optionsToQuery,
+} from './helper';
 import AccountList from './resources/AccountList';
 import AccountResource from './resources/AccountResource';
 import TokenStoreFactory from './TokenStore';
@@ -31,7 +39,7 @@ export default class Accounts extends Core {
     }
 
     super(urls[environment || 'live']);
-    this.environment = environment;
+    this.environment = environment || 'live';
     this.tokenStore = TokenStoreFactory(environment || 'live');
   }
 
@@ -212,6 +220,12 @@ export default class Accounts extends Core {
     });
   }
 
+  /**
+   * Start a password reset.
+   *
+   * @param {string} email email of the account
+   * @returns {Promise} Promise resolving on success.
+   */
   resetPassword(email) {
     if (!email) {
       throw new Error('email must be defined');
@@ -220,11 +234,31 @@ export default class Accounts extends Core {
       throw new Error('clientID must be set with Account#setClientID(clientID: string)');
     }
 
-    const request = this.newRequest().follow('ec:auth/assword-reset').withTemplateParameters({
+    const request = this.newRequest().follow('ec:auth/password-reset').withTemplateParameters({
       clientID: this.clientID,
       email,
     });
 
     return getEmpty(this.environment, request);
+  }
+
+  /**
+   * Change the logged in account to the given new email address.
+   *
+   * @param {string} email the new email
+   * @returns {Promise} Promise resolving on success.
+   */
+  changeEmail(email) {
+    if (!email) {
+      throw new Error('email must be defined');
+    }
+
+    if (!this.tokenStore.has()) {
+      throw new Error('not logged in.');
+    }
+
+    const request = this.newRequest().follow('ec:auth/change-email');
+
+    return postEmpty(this.environment, request, { email });
   }
 }

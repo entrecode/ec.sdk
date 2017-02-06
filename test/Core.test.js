@@ -205,6 +205,39 @@ describe('Network Helper', () => {
       });
     });
   });
+  describe('postEmpty', () => {
+    it('should be resolved', () => {
+      nock('https://datamanager.entrecode.de')
+      .post('/').reply(204);
+
+      return helper.postEmpty('live', traversal, {}).should.be.eventually.resolved;
+    });
+    it('should be rejected', () => {
+      nock('https://datamanager.entrecode.de')
+      .post('/').reply(404, 'mocked error');
+
+      return helper.postEmpty('live', traversal, {})
+      .then(() => {
+        throw new Error('unexpectedly resolved');
+      })
+      .catch((err) => {
+        err.should.have.property('message', 'mocked error');
+      });
+    });
+    it('should fire error event', () => {
+      nock('https://datamanager.entrecode.de')
+      .post('/').replyWithError('mocked error');
+
+      return helper.postEmpty('live', traversal)
+      .then(() => {
+        throw new Error('unexpectedly resolved');
+      })
+      .catch((err) => {
+        err.should.have.property('message', 'mocked error');
+        spy.should.be.called.once;
+      });
+    });
+  });
   describe('post', () => {
     it('should be resolved', () => {
       nock('https://datamanager.entrecode.de')

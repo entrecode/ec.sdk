@@ -23,6 +23,8 @@ export declare class Accounts extends Core {
   signup(email: string, password: string, invite: string): Promise<string>;
 
   resetPassword(email: string): Promise<undefined>;
+
+  changeEmail(email: string): Promise<undefined>;
 }
 
 interface tokenResponse {
