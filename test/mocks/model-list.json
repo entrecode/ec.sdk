@@ -1,0 +1,648 @@
+{
+  "count": 4,
+  "total": 4,
+  "_links": {
+    "self": {
+      "profile": "https://entrecode.de/schema/models",
+      "href": "https://datamanager.buffalo.entrecode.de/model?dataManagerID=cce541dc-cdd8-4f34-b6e4-20f15d3b8314"
+    },
+    "curies": {
+      "href": "https://doc.entrecode.de/develop/data_manager/#relation-{rel}",
+      "templated": true
+    },
+    "ec:model/by-id": {
+      "profile": "https://entrecode.de/schema/model",
+      "href": "https://datamanager.buffalo.entrecode.de/model?modelID={modelID}",
+      "templated": true
+    },
+    "ec:model/purge/by-id": {
+      "href": "https://datamanager.buffalo.entrecode.de/model/purge?modelID={modelID}",
+      "templated": true
+    },
+    "ec:datamanager": {
+      "profile": "https://entrecode.de/schema/datamanager",
+      "href": "https://datamanager.buffalo.entrecode.de/?dataManagerID=cce541dc-cdd8-4f34-b6e4-20f15d3b8314"
+    },
+    "ec:models/options": {
+      "href": "https://datamanager.buffalo.entrecode.de/model{?dataManagerID,modelID,page,size,sort,title,titleFrom,titleTo,title~}",
+      "templated": true
+    }
+  },
+  "_embedded": {
+    "ec:model": [
+      {
+        "created": "2016-06-30T14:20:55.083Z",
+        "description": "",
+        "hexColor": "#1EAAF1",
+        "fields": [
+          {
+            "title": "_id",
+            "type": "id",
+            "readOnly": true,
+            "required": true,
+            "unique": true,
+            "localizable": false,
+            "mutable": false,
+            "description": "Unique identifier for this entry.",
+            "validation": null,
+            "default": null
+          },
+          {
+            "title": "_created",
+            "type": "datetime",
+            "readOnly": true,
+            "required": true,
+            "unique": false,
+            "localizable": false,
+            "mutable": false,
+            "description": "Timestamp of the creation of this entry.",
+            "validation": null,
+            "default": "1970-01-01T00:00:00.000Z"
+          },
+          {
+            "title": "_modified",
+            "type": "datetime",
+            "readOnly": true,
+            "required": true,
+            "unique": false,
+            "localizable": false,
+            "mutable": false,
+            "description": "Timestamp of the last modification of this entry.",
+            "validation": null,
+            "default": "1970-01-01T00:00:00.000Z"
+          },
+          {
+            "title": "_creator",
+            "type": "id",
+            "readOnly": true,
+            "required": false,
+            "unique": false,
+            "localizable": false,
+            "mutable": false,
+            "description": "User that created this entry.",
+            "validation": null,
+            "default": null
+          },
+          {
+            "type": "email",
+            "title": "sender",
+            "unique": false,
+            "default": null,
+            "mutable": true,
+            "readOnly": false,
+            "required": false,
+            "validation": "",
+            "description": "",
+            "localizable": false
+          },
+          {
+            "type": "email",
+            "title": "recipient",
+            "unique": false,
+            "default": null,
+            "mutable": true,
+            "readOnly": false,
+            "required": false,
+            "validation": "",
+            "description": "",
+            "localizable": false
+          },
+          {
+            "type": "text",
+            "title": "subject",
+            "unique": false,
+            "default": null,
+            "mutable": true,
+            "readOnly": false,
+            "required": false,
+            "validation": "",
+            "description": "",
+            "localizable": false
+          },
+          {
+            "type": "text",
+            "title": "content",
+            "unique": false,
+            "default": null,
+            "mutable": true,
+            "readOnly": false,
+            "required": false,
+            "validation": "",
+            "description": "",
+            "localizable": false
+          }
+        ],
+        "hasEntries": true,
+        "locales": [],
+        "hooks": [
+          {
+            "hook": "event",
+            "type": "mail",
+            "config": {
+              "to": "{{data.recipient}}",
+              "from": "{{data.sender}}",
+              "text": {
+                "__jsonpath": "$.data.content"
+              },
+              "subject": "finally {{data.subject}} "
+            },
+            "methods": [
+              "post"
+            ],
+            "description": "mailtest",
+            "hookID": "af4d38bd-2482-48cf-8754-5c940e9dac12"
+          }
+        ],
+        "sync": null,
+        "modelID": "48e4749d-f44f-499f-87c7-1d73583723f3",
+        "modified": "2016-07-15T09:15:05.863Z",
+        "title": "eventhookmail",
+        "titleField": "_id",
+        "policies": [],
+        "lastSyncs": [],
+        "config": {},
+        "_links": {
+          "self": {
+            "profile": "https://entrecode.de/schema/model",
+            "href": "https://datamanager.buffalo.entrecode.de/model?modelID=48e4749d-f44f-499f-87c7-1d73583723f3"
+          },
+          "collection": {
+            "profile": "https://entrecode.de/schema/models",
+            "href": "https://datamanager.buffalo.entrecode.de/model?dataManagerID=cce541dc-cdd8-4f34-b6e4-20f15d3b8314"
+          },
+          "ec:datamanager": {
+            "profile": "https://entrecode.de/schema/datamanager",
+            "href": "https://datamanager.buffalo.entrecode.de/?dataManagerID=cce541dc-cdd8-4f34-b6e4-20f15d3b8314"
+          },
+          "ec:model/purge": {
+            "href": "https://datamanager.buffalo.entrecode.de/model/purge?modelID=48e4749d-f44f-499f-87c7-1d73583723f3"
+          },
+          "ec:model/entryHistory": {
+            "href": "https://dm-history.buffalo.entrecode.de/api/model?dataManagerID=cce541dc-cdd8-4f34-b6e4-20f15d3b8314&modelID=48e4749d-f44f-499f-87c7-1d73583723f3{&_size}",
+            "templated": true
+          }
+        }
+      },
+      {
+        "created": "2016-06-03T10:12:40.331Z",
+        "description": "",
+        "hexColor": "#E72565",
+        "fields": [
+          {
+            "title": "_id",
+            "type": "id",
+            "readOnly": true,
+            "required": true,
+            "unique": true,
+            "localizable": false,
+            "mutable": false,
+            "description": "Unique identifier for this entry.",
+            "validation": null,
+            "default": null
+          },
+          {
+            "title": "_created",
+            "type": "datetime",
+            "readOnly": true,
+            "required": true,
+            "unique": false,
+            "localizable": false,
+            "mutable": false,
+            "description": "Timestamp of the creation of this entry.",
+            "validation": null,
+            "default": "1970-01-01T00:00:00.000Z"
+          },
+          {
+            "title": "_modified",
+            "type": "datetime",
+            "readOnly": true,
+            "required": true,
+            "unique": false,
+            "localizable": false,
+            "mutable": false,
+            "description": "Timestamp of the last modification of this entry.",
+            "validation": null,
+            "default": "1970-01-01T00:00:00.000Z"
+          },
+          {
+            "title": "_creator",
+            "type": "id",
+            "readOnly": true,
+            "required": false,
+            "unique": false,
+            "localizable": false,
+            "mutable": false,
+            "description": "User that created this entry.",
+            "validation": null,
+            "default": null
+          },
+          {
+            "type": "text",
+            "title": "sender",
+            "unique": false,
+            "default": null,
+            "mutable": true,
+            "readOnly": false,
+            "required": false,
+            "validation": "",
+            "description": "",
+            "localizable": false
+          },
+          {
+            "type": "text",
+            "title": "recipient",
+            "unique": false,
+            "default": null,
+            "mutable": true,
+            "readOnly": false,
+            "required": false,
+            "validation": "",
+            "description": "",
+            "localizable": false
+          },
+          {
+            "type": "text",
+            "title": "subject",
+            "unique": false,
+            "default": null,
+            "mutable": true,
+            "readOnly": false,
+            "required": false,
+            "validation": "",
+            "description": "",
+            "localizable": false
+          },
+          {
+            "type": "text",
+            "title": "text",
+            "unique": false,
+            "default": null,
+            "mutable": true,
+            "readOnly": false,
+            "required": false,
+            "validation": "",
+            "description": "",
+            "localizable": false
+          }
+        ],
+        "hasEntries": true,
+        "locales": [],
+        "hooks": [
+          {
+            "hook": "before",
+            "type": "mailgun",
+            "config": {
+              "to": {
+                "__jsonpath": "request.body.recipient"
+              },
+              "from": {
+                "__jsonpath": "request.body.sender"
+              },
+              "text": "hi {{request.body.recipient}}! {{request.body.text}}",
+              "subject": {
+                "__jsonpath": "request.body.subject"
+              }
+            },
+            "methods": [
+              "post"
+            ],
+            "description": "mailgun",
+            "hookID": "e0c671f0-78a1-41b2-947f-f5d725538598"
+          }
+        ],
+        "sync": null,
+        "modelID": "9051843e-678a-4c46-a6c2-06622ebf48fd",
+        "modified": "2016-06-03T10:18:34.329Z",
+        "title": "mail",
+        "titleField": "_id",
+        "policies": [
+          {
+            "modelID": "9051843e-678a-4c46-a6c2-06622ebf48fd",
+            "modelPolicyID": 4698,
+            "method": "get",
+            "restrictToFields": [],
+            "public": true,
+            "conditions": null,
+            "roles": []
+          },
+          {
+            "modelID": "9051843e-678a-4c46-a6c2-06622ebf48fd",
+            "modelPolicyID": 4699,
+            "method": "post",
+            "restrictToFields": [],
+            "public": true,
+            "conditions": null,
+            "roles": []
+          }
+        ],
+        "lastSyncs": [],
+        "config": {},
+        "_links": {
+          "self": {
+            "profile": "https://entrecode.de/schema/model",
+            "href": "https://datamanager.buffalo.entrecode.de/model?modelID=9051843e-678a-4c46-a6c2-06622ebf48fd"
+          },
+          "collection": {
+            "profile": "https://entrecode.de/schema/models",
+            "href": "https://datamanager.buffalo.entrecode.de/model?dataManagerID=cce541dc-cdd8-4f34-b6e4-20f15d3b8314"
+          },
+          "ec:datamanager": {
+            "profile": "https://entrecode.de/schema/datamanager",
+            "href": "https://datamanager.buffalo.entrecode.de/?dataManagerID=cce541dc-cdd8-4f34-b6e4-20f15d3b8314"
+          },
+          "ec:model/purge": {
+            "href": "https://datamanager.buffalo.entrecode.de/model/purge?modelID=9051843e-678a-4c46-a6c2-06622ebf48fd"
+          },
+          "ec:model/entryHistory": {
+            "href": "https://dm-history.buffalo.entrecode.de/api/model?dataManagerID=cce541dc-cdd8-4f34-b6e4-20f15d3b8314&modelID=9051843e-678a-4c46-a6c2-06622ebf48fd{&_size}",
+            "templated": true
+          }
+        }
+      },
+      {
+        "created": "2016-08-17T15:37:42.970Z",
+        "description": "",
+        "hexColor": "#50AE55",
+        "fields": [
+          {
+            "title": "_id",
+            "type": "id",
+            "readOnly": true,
+            "required": true,
+            "unique": true,
+            "localizable": false,
+            "mutable": false,
+            "description": "Unique identifier for this entry.",
+            "validation": null,
+            "default": null
+          },
+          {
+            "title": "_created",
+            "type": "datetime",
+            "readOnly": true,
+            "required": true,
+            "unique": false,
+            "localizable": false,
+            "mutable": false,
+            "description": "Timestamp of the creation of this entry.",
+            "validation": null,
+            "default": "1970-01-01T00:00:00.000Z"
+          },
+          {
+            "title": "_modified",
+            "type": "datetime",
+            "readOnly": true,
+            "required": true,
+            "unique": false,
+            "localizable": false,
+            "mutable": false,
+            "description": "Timestamp of the last modification of this entry.",
+            "validation": null,
+            "default": "1970-01-01T00:00:00.000Z"
+          },
+          {
+            "title": "_creator",
+            "type": "id",
+            "readOnly": true,
+            "required": false,
+            "unique": false,
+            "localizable": false,
+            "mutable": false,
+            "description": "User that created this entry.",
+            "validation": null,
+            "default": null
+          },
+          {
+            "type": "text",
+            "title": "name",
+            "unique": false,
+            "default": null,
+            "mutable": true,
+            "readOnly": false,
+            "required": false,
+            "validation": "",
+            "description": "",
+            "localizable": false
+          },
+          {
+            "type": "email",
+            "title": "email",
+            "unique": false,
+            "default": null,
+            "mutable": true,
+            "readOnly": false,
+            "required": false,
+            "validation": "",
+            "description": "",
+            "localizable": false
+          },
+          {
+            "type": "location",
+            "title": "loc",
+            "unique": false,
+            "default": null,
+            "mutable": true,
+            "readOnly": false,
+            "required": false,
+            "validation": "",
+            "description": "",
+            "localizable": false
+          }
+        ],
+        "hasEntries": true,
+        "locales": [],
+        "hooks": [],
+        "sync": null,
+        "modelID": "86050390-1465-4fbc-8593-0c9f44e39079",
+        "modified": "2016-08-17T16:04:36.875Z",
+        "title": "member",
+        "titleField": "_id",
+        "policies": [
+          {
+            "modelID": "86050390-1465-4fbc-8593-0c9f44e39079",
+            "modelPolicyID": 4769,
+            "method": "get",
+            "restrictToFields": [],
+            "public": true,
+            "conditions": null,
+            "roles": []
+          },
+          {
+            "modelID": "86050390-1465-4fbc-8593-0c9f44e39079",
+            "modelPolicyID": 4770,
+            "method": "post",
+            "restrictToFields": [],
+            "public": true,
+            "conditions": null,
+            "roles": []
+          }
+        ],
+        "lastSyncs": [],
+        "config": {},
+        "_links": {
+          "self": {
+            "profile": "https://entrecode.de/schema/model",
+            "href": "https://datamanager.buffalo.entrecode.de/model?modelID=86050390-1465-4fbc-8593-0c9f44e39079"
+          },
+          "collection": {
+            "profile": "https://entrecode.de/schema/models",
+            "href": "https://datamanager.buffalo.entrecode.de/model?dataManagerID=cce541dc-cdd8-4f34-b6e4-20f15d3b8314"
+          },
+          "ec:datamanager": {
+            "profile": "https://entrecode.de/schema/datamanager",
+            "href": "https://datamanager.buffalo.entrecode.de/?dataManagerID=cce541dc-cdd8-4f34-b6e4-20f15d3b8314"
+          },
+          "ec:model/purge": {
+            "href": "https://datamanager.buffalo.entrecode.de/model/purge?modelID=86050390-1465-4fbc-8593-0c9f44e39079"
+          },
+          "ec:model/entryHistory": {
+            "href": "https://dm-history.buffalo.entrecode.de/api/model?dataManagerID=cce541dc-cdd8-4f34-b6e4-20f15d3b8314&modelID=86050390-1465-4fbc-8593-0c9f44e39079{&_size}",
+            "templated": true
+          }
+        }
+      },
+      {
+        "created": "2016-06-03T10:23:42.420Z",
+        "description": "",
+        "hexColor": "#F1453D",
+        "fields": [
+          {
+            "title": "_id",
+            "type": "id",
+            "readOnly": true,
+            "required": true,
+            "unique": true,
+            "localizable": false,
+            "mutable": false,
+            "description": "Unique identifier for this entry.",
+            "validation": null,
+            "default": null
+          },
+          {
+            "title": "_created",
+            "type": "datetime",
+            "readOnly": true,
+            "required": true,
+            "unique": false,
+            "localizable": false,
+            "mutable": false,
+            "description": "Timestamp of the creation of this entry.",
+            "validation": null,
+            "default": "1970-01-01T00:00:00.000Z"
+          },
+          {
+            "title": "_modified",
+            "type": "datetime",
+            "readOnly": true,
+            "required": true,
+            "unique": false,
+            "localizable": false,
+            "mutable": false,
+            "description": "Timestamp of the last modification of this entry.",
+            "validation": null,
+            "default": "1970-01-01T00:00:00.000Z"
+          },
+          {
+            "title": "_creator",
+            "type": "id",
+            "readOnly": true,
+            "required": false,
+            "unique": false,
+            "localizable": false,
+            "mutable": false,
+            "description": "User that created this entry.",
+            "validation": null,
+            "default": null
+          },
+          {
+            "type": "text",
+            "title": "name",
+            "unique": false,
+            "default": "no name given",
+            "mutable": true,
+            "readOnly": false,
+            "required": true,
+            "validation": "",
+            "description": "",
+            "localizable": false
+          },
+          {
+            "type": "email",
+            "title": "email",
+            "unique": false,
+            "default": "info@entrecode.de",
+            "mutable": true,
+            "readOnly": false,
+            "required": true,
+            "validation": "",
+            "description": "",
+            "localizable": false
+          },
+          {
+            "type": "text",
+            "title": "message",
+            "unique": false,
+            "default": "no message",
+            "mutable": true,
+            "readOnly": false,
+            "required": true,
+            "validation": "",
+            "description": "",
+            "localizable": false
+          }
+        ],
+        "hasEntries": true,
+        "locales": [],
+        "hooks": [
+          {
+            "hook": "after",
+            "type": "mailgun",
+            "config": {
+              "to": "deyhle@entrecode.de",
+              "from": "{{request.body.name}} <webform-noreply@entrecode.de>",
+              "text": {
+                "__jsonpath": "$.request.body.message"
+              },
+              "subject": "New ec.website contact form message from {{request.body.email}}",
+              "h:reply-to": "{{request.body.name}} <{{request.body.email}}>"
+            },
+            "methods": [
+              "post"
+            ],
+            "description": "mailgun",
+            "hookID": "bf9b068b-53e2-45e2-a4a2-02dadf6be17e"
+          }
+        ],
+        "sync": null,
+        "modelID": "c8c945e7-fa63-42b3-a36b-5b8e3f71fde4",
+        "modified": "2016-06-03T10:37:33.296Z",
+        "title": "websitemessage",
+        "titleField": "_id",
+        "policies": [],
+        "lastSyncs": [],
+        "config": {},
+        "_links": {
+          "self": {
+            "profile": "https://entrecode.de/schema/model",
+            "href": "https://datamanager.buffalo.entrecode.de/model?modelID=c8c945e7-fa63-42b3-a36b-5b8e3f71fde4"
+          },
+          "collection": {
+            "profile": "https://entrecode.de/schema/models",
+            "href": "https://datamanager.buffalo.entrecode.de/model?dataManagerID=cce541dc-cdd8-4f34-b6e4-20f15d3b8314"
+          },
+          "ec:datamanager": {
+            "profile": "https://entrecode.de/schema/datamanager",
+            "href": "https://datamanager.buffalo.entrecode.de/?dataManagerID=cce541dc-cdd8-4f34-b6e4-20f15d3b8314"
+          },
+          "ec:model/purge": {
+            "href": "https://datamanager.buffalo.entrecode.de/model/purge?modelID=c8c945e7-fa63-42b3-a36b-5b8e3f71fde4"
+          },
+          "ec:model/entryHistory": {
+            "href": "https://dm-history.buffalo.entrecode.de/api/model?dataManagerID=cce541dc-cdd8-4f34-b6e4-20f15d3b8314&modelID=c8c945e7-fa63-42b3-a36b-5b8e3f71fde4{&_size}",
+            "templated": true
+          }
+        }
+      }
+    ]
+  }
+}

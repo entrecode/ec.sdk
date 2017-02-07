@@ -11,6 +11,8 @@ const DataManager = require('../lib/DataManager').default;
 const ListResource = require('../lib/resources/ListResource').default;
 const DataManagerList = require('../lib/resources/DataManagerList').default;
 const DataManagerResource = require('../lib/resources/DataManagerResource').default;
+const ModelResource = require('../lib/resources/ModelResource').default;
+const ModelList = require('../lib/resources/ModelList').default;
 const Resource = require('../lib/resources/Resource').default;
 
 chai.should();
@@ -162,6 +164,38 @@ describe('DataManager Resource', () => {
     resource.should.be.instanceOf(DataManagerResource);
   });
 
+  const dateGetter = [
+    'created',
+  ];
+  dateGetter.forEach((name) => {
+    it(`should call resource.getProperty with ${name}`, () => {
+      const spy = sinon.spy(resource, 'getProperty');
+
+      const property = resource[`get${capitalizeFirstLetter(name)}`]();
+      spy.should.have.been.called.once;
+      spy.should.have.been.calledWith(name);
+      property.toISOString().should.be.equal(resource.getProperty(name));
+
+      spy.restore();
+    });
+  });
+
+  const getter = [
+    'dataManagerID',
+  ];
+  getter.forEach((name) => {
+    it(`should call resource.getProperty with ${name}`, () => {
+      const spy = sinon.spy(resource, 'getProperty');
+
+      const property = resource[`get${capitalizeFirstLetter(name)}`]();
+      spy.should.have.been.called.once;
+      spy.should.have.been.calledWith(name);
+      property.should.be.equal(resource.getProperty(name));
+
+      spy.restore();
+    });
+  });
+
   const functions = ['title', 'description', 'config', 'hexColor', 'locales'];
   functions.forEach((name) => {
     it(`should call resource.getProperty with ${name}`, () => {
@@ -187,5 +221,40 @@ describe('DataManager Resource', () => {
       const throws = () => resource[`set${capitalizeFirstLetter(name)}`]();
       throws.should.throw(Error);
     });
+  });
+
+  it('should load model list', () => {
+    const stub = sinon.stub(helper, 'get');
+    stub.returns(resolver('model-list.json'));
+
+    return resource.modelList()
+    .then((model) => {
+      model.should.be.instanceof(ModelList);
+      stub.restore();
+    })
+    .catch(() => stub.restore());
+  });
+  it('should throw on model list filtered with modelID', () => {
+    const throws = () => resource.modelList({ modelID: 'id' });
+    throws.should.throw(Error);
+  });
+  it('should throw on model list filtered with modelID and dataManagerID', () => {
+    const throws = () => resource.modelList({ modelID: 'id' });
+    throws.should.throw(Error);
+  });
+  it('should load model resource', () => {
+    const stub = sinon.stub(helper, 'get');
+    stub.returns(resolver('model-single.json'));
+
+    return resource.model('id')
+    .then((model) => {
+      model.should.be.instanceof(ModelResource);
+      stub.restore();
+    })
+    .catch(() => stub.restore());
+  });
+  it('should throw on undefined modelID', () => {
+    const throws = () => resource.model();
+    throws.should.throw(Error);
   });
 });

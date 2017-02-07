@@ -1,0 +1,153 @@
+{
+  "created": "2016-06-30T14:20:55.083Z",
+  "description": "a description",
+  "hexColor": "#1EAAF1",
+  "fields": [
+    {
+      "title": "_id",
+      "type": "id",
+      "readOnly": true,
+      "required": true,
+      "unique": true,
+      "localizable": false,
+      "mutable": false,
+      "description": "Unique identifier for this entry.",
+      "validation": null,
+      "default": null
+    },
+    {
+      "title": "_created",
+      "type": "datetime",
+      "readOnly": true,
+      "required": true,
+      "unique": false,
+      "localizable": false,
+      "mutable": false,
+      "description": "Timestamp of the creation of this entry.",
+      "validation": null,
+      "default": "1970-01-01T00:00:00.000Z"
+    },
+    {
+      "title": "_modified",
+      "type": "datetime",
+      "readOnly": true,
+      "required": true,
+      "unique": false,
+      "localizable": false,
+      "mutable": false,
+      "description": "Timestamp of the last modification of this entry.",
+      "validation": null,
+      "default": "1970-01-01T00:00:00.000Z"
+    },
+    {
+      "title": "_creator",
+      "type": "id",
+      "readOnly": true,
+      "required": false,
+      "unique": false,
+      "localizable": false,
+      "mutable": false,
+      "description": "User that created this entry.",
+      "validation": null,
+      "default": null
+    },
+    {
+      "type": "email",
+      "title": "sender",
+      "unique": false,
+      "default": null,
+      "mutable": true,
+      "readOnly": false,
+      "required": false,
+      "validation": "",
+      "description": "",
+      "localizable": false
+    },
+    {
+      "type": "email",
+      "title": "recipient",
+      "unique": false,
+      "default": null,
+      "mutable": true,
+      "readOnly": false,
+      "required": false,
+      "validation": "",
+      "description": "",
+      "localizable": false
+    },
+    {
+      "type": "text",
+      "title": "subject",
+      "unique": false,
+      "default": null,
+      "mutable": true,
+      "readOnly": false,
+      "required": false,
+      "validation": "",
+      "description": "",
+      "localizable": false
+    },
+    {
+      "type": "text",
+      "title": "content",
+      "unique": false,
+      "default": null,
+      "mutable": true,
+      "readOnly": false,
+      "required": false,
+      "validation": "",
+      "description": "",
+      "localizable": false
+    }
+  ],
+  "hasEntries": true,
+  "locales": [],
+  "hooks": [
+    {
+      "hook": "event",
+      "type": "mail",
+      "config": {
+        "to": "{{data.recipient}}",
+        "from": "{{data.sender}}",
+        "text": {
+          "__jsonpath": "$.data.content"
+        },
+        "subject": "finally {{data.subject}} "
+      },
+      "methods": [
+        "post"
+      ],
+      "description": "mailtest",
+      "hookID": "575c341a-648d-43d3-82c6-f9188c6a2095"
+    }
+  ],
+  "sync": null,
+  "modelID": "48e4749d-f44f-499f-87c7-1d73583723f3",
+  "modified": "2016-07-15T09:15:05.863Z",
+  "title": "eventhookmail",
+  "titleField": "_id",
+  "policies": [],
+  "lastSyncs": [],
+  "config": {},
+  "_links": {
+    "self": {
+      "profile": "https://entrecode.de/schema/model",
+      "href": "https://datamanager.buffalo.entrecode.de/model?modelID=48e4749d-f44f-499f-87c7-1d73583723f3"
+    },
+    "collection": {
+      "profile": "https://entrecode.de/schema/models",
+      "href": "https://datamanager.buffalo.entrecode.de/model?dataManagerID=cce541dc-cdd8-4f34-b6e4-20f15d3b8314"
+    },
+    "ec:datamanager": {
+      "profile": "https://entrecode.de/schema/datamanager",
+      "href": "https://datamanager.buffalo.entrecode.de/?dataManagerID=cce541dc-cdd8-4f34-b6e4-20f15d3b8314"
+    },
+    "ec:model/purge": {
+      "href": "https://datamanager.buffalo.entrecode.de/model/purge?modelID=48e4749d-f44f-499f-87c7-1d73583723f3"
+    },
+    "ec:model/entryHistory": {
+      "href": "https://dm-history.buffalo.entrecode.de/api/model?dataManagerID=cce541dc-cdd8-4f34-b6e4-20f15d3b8314&modelID=48e4749d-f44f-499f-87c7-1d73583723f3{&_size}",
+      "templated": true
+    }
+  }
+}

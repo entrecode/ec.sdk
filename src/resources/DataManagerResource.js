@@ -1,3 +1,6 @@
+import { get } from '../helper';
+import ModelList from './ModelList';
+import ModelResource from './ModelResource';
 import Resource from './Resource';
 
 /**
@@ -6,6 +9,56 @@ import Resource from './Resource';
  * @class
  */
 export default class DataManagerResource extends Resource {
+  modelList(options) {
+    const o = {};
+    if (options) {
+      Object.assign(o, options);
+    }
+
+    o.dataManagerID = this.getDataManagerID();
+
+    if (Object.keys(o).length === 2 &&
+      {}.hasOwnProperty.call(o, 'dataManagerID') && {}.hasOwnProperty.call(o, 'modelID')) {
+      throw new Error('Cannot filter modelList only by dataManagerID and modelID. Use #model(modelID) instead.');
+    }
+
+    return get(
+      this.environment,
+      this.newRequest().follow('ec:models/options').withTemplateParameters(o)
+    )
+    .then(([resource, traversal]) => new ModelList(resource, this.environment, traversal));
+  }
+
+  model(modelID) {
+    if (!modelID) {
+      throw new Error('modelID must be defined');
+    }
+
+    return get(
+      this.environment,
+      this.newRequest().follow('ec:models/options').withTemplateParameters({ modelID })
+    )
+    .then(([resource, traversal]) => new ModelResource(resource, this.environment, traversal));
+  }
+
+  /**
+   * Will return created getDataManagerID.
+   *
+   * @returns {Date} the getDataManagerID.
+   */
+  getDataManagerID() {
+    return this.getProperty('dataManagerID');
+  }
+
+  /**
+   * Will return created property.
+   *
+   * @returns {Date} the create date.
+   */
+  getCreated() {
+    return new Date(this.getProperty('created'));
+  }
+
   /**
    * Set a new value to title property.
    * @param {string} value the value to assign.

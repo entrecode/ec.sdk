@@ -7,6 +7,15 @@ import Resource from './Resource';
  */
 export default class AccountResource extends Resource {
   /**
+   * Will return created property.
+   *
+   * @returns {Date} the create date.
+   */
+  getCreated() {
+    return new Date(this.getProperty('created'));
+  }
+
+  /**
    * Will return accountID property.
    *
    * @returns {string} the accountID.

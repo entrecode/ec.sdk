@@ -1,7 +1,16 @@
 import { Resource } from './Resource';
+import { filterOptions } from '../interfaces';
+import { ModelList } from './ModelList';
+import { ModelResource } from './ModelResource';
 
 export declare class DataManagerResource extends Resource {
   constructor(resource: any, environment: string, traversal?: any);
+
+  modelList(options: filterOptions): ModelList
+
+  model(modelID: string): ModelResource;
+
+  getDataManagerID(): string;
 
   setTitle(value: string): DataManagerResource;
 

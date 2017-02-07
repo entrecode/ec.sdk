@@ -14,27 +14,77 @@
   "hexColor": "#F1453D",
   "locales": [],
   "rights": [],
-  "publicAssetRights": ["get", "getTags"],
+  "publicAssetRights": [
+    "get",
+    "getTags"
+  ],
   "shortID": "01bd8e08",
   "title": "Test DM",
   "_links": {
     "self": {
+      "profile": "https://entrecode.de/schema/datamanager",
       "href": "https://datamanager.entrecode.de/?dataManagerID=48e18a34-cf64-4f4a-bc47-45323a7f0e44",
       "title": "Test DM"
     },
-    "collection": { "href": "https://datamanager.entrecode.de" },
-    "ec:api": { "href": "https://datamanager.entrecode.de/api/01bd8e08" },
-    "ec:api-doc": { "href": "https://datamanager.entrecode.de/api/doc/01bd8e08" },
-    "ec:assets": { "href": "https://datamanager.entrecode.de/asset?dataManagerID=48e18a34-cf64-4f4a-bc47-45323a7f0e44" },
-    "ec:models": { "href": "https://datamanager.entrecode.de/model?dataManagerID=48e18a34-cf64-4f4a-bc47-45323a7f0e44" },
-    "ec:dm-clients": { "href": "https://datamanager.entrecode.de/client?dataManagerID=48e18a34-cf64-4f4a-bc47-45323a7f0e44" },
-    "ec:dm-accounts": { "href": "https://datamanager.entrecode.de/account?dataManagerID=48e18a34-cf64-4f4a-bc47-45323a7f0e44" },
-    "ec:dm-roles": { "href": "https://datamanager.entrecode.de/role?dataManagerID=48e18a34-cf64-4f4a-bc47-45323a7f0e44" },
-    "ec:datamanager/export": { "href": "https://datamanager.entrecode.de/export?dataManagerID=48e18a34-cf64-4f4a-bc47-45323a7f0e44" },
+    "collection": {
+      "profile": "https://entrecode.de/schema/datamanagers",
+      "href": "https://datamanager.entrecode.de"
+    },
+    "ec:api": {
+      "href": "https://datamanager.entrecode.de/api/01bd8e08"
+    },
+    "ec:api-doc": {
+      "href": "https://datamanager.entrecode.de/api/doc/01bd8e08"
+    },
+    "ec:assets": {
+      "profile": "https://entrecode.de/schema/assets",
+      "href": "https://datamanager.entrecode.de/asset?dataManagerID=48e18a34-cf64-4f4a-bc47-45323a7f0e44"
+    },
+    "ec:assets/options": {
+      "href": "https://datamanager.entrecode.de/asset{?assetID,created,createdFrom,createdTo,created~,creator,dataManagerID,deleted,deletedFrom,deletedTo,deleted~,page,size,sort,tag,title,title~,type,type~}",
+      "templated": true
+    },
+    "ec:models": {
+      "profile": "https://entrecode.de/schema/models",
+      "href": "https://datamanager.entrecode.de/model?dataManagerID=48e18a34-cf64-4f4a-bc47-45323a7f0e44"
+    },
+    "ec:models/options": {
+      "href": "https://datamanager.entrecode.de/model{?dataManagerID,modelID,page,size,sort,title,titleFrom,titleTo,title~}",
+      "templated": true
+    },
+    "ec:dm-clients": {
+      "profile": "https://entrecode.de/schema/dm-clients",
+      "href": "https://datamanager.entrecode.de/client?dataManagerID=48e18a34-cf64-4f4a-bc47-45323a7f0e44"
+    },
+    "ec:dm-clients/options": {
+      "href": "https://datamanager.entrecode.de/client{?callbackURL,callbackURL~,clientID,clientID~,dataManagerID,datamanagerid,page,size,sort}",
+      "templated": true
+    },
+    "ec:dm-accounts": {
+      "profile": "https://entrecode.de/schema/dm-accounts",
+      "href": "https://datamanager.entrecode.de/account?dataManagerID=48e18a34-cf64-4f4a-bc47-45323a7f0e44"
+    },
+    "ec:dm-accounts/options": {
+      "href": "https://datamanager.entrecode.de/account{?accountID,accountID~,dataManagerID,email,email~,hasPassword,page,roles,size,sort}",
+      "templated": true
+    },
+    "ec:dm-roles": {
+      "profile": "https://entrecode.de/schema/dm-roles",
+      "href": "https://datamanager.entrecode.de/role?dataManagerID=48e18a34-cf64-4f4a-bc47-45323a7f0e44"
+    },
+    "ec:dm-roles/options": {
+      "href": "https://datamanager.entrecode.de/role{?accounts,addRegistered,addUnregistered,dataManagerID,label,label~,name,name~,page,roleID,roleID~,size,sort}",
+      "templated": true
+    },
+    "ec:datamanager/export": {
+      "href": "https://datamanager.entrecode.de/export?dataManagerID=48e18a34-cf64-4f4a-bc47-45323a7f0e44"
+    },
     "ec:datamanager/update-from-template": {
       "href": "https://datamanager.entrecode.de/?dataManagerID=48e18a34-cf64-4f4a-bc47-45323a7f0e44&_templateID={templateID}",
       "templated": true
     },
-    "ec:dm-stats": { "href": "https://datamanager.entrecode.de/stats?dataManagerID=48e18a34-cf64-4f4a-bc47-45323a7f0e44" }
+    "ec:dm-stats": {
+      "href": "https://datamanager.entrecode.de/stats?dataManagerID=48e18a34-cf64-4f4a-bc47-45323a7f0e44"
+    }
   }
 }
