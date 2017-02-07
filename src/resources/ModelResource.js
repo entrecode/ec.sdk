@@ -6,6 +6,12 @@ import Resource from './Resource';
  * @class
  */
 export default class ModelResource extends Resource {
+  /**
+   * Set a new value to description property.
+   *
+   * @param {string} value the value to assign.
+   * @returns {AccountResource} this Resource for chainability
+   */
   setDescription(value) {
     if (!value) {
       throw new Error('description must be defined');

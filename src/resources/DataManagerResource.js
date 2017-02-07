@@ -9,6 +9,14 @@ import Resource from './Resource';
  * @class
  */
 export default class DataManagerResource extends Resource {
+  /**
+   * Load a {@link ModelList} of {@link DataManagerResource} filtered by the values specified
+   * by the options parameter.
+   *
+   * @param {{size: number, page: number, sort: array<string>, filter: filter}} options the
+   *   filter options.
+   * @returns {Promise<ModelList>} resolves to model list with applied filters.
+   */
   modelList(options) {
     const o = {};
     if (options) {
@@ -29,6 +37,12 @@ export default class DataManagerResource extends Resource {
     .then(([resource, traversal]) => new ModelList(resource, this.environment, traversal));
   }
 
+  /**
+   * Get a single {@link ModelResource} identified by modelID.
+   *
+   * @param {string} modelID id of the Model.
+   * @returns {Promise<ModelResource>} resolves to the Model which should be loaded.
+   */
   model(modelID) {
     if (!modelID) {
       throw new Error('modelID must be defined');
