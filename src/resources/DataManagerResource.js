@@ -6,6 +6,16 @@ import Resource from './Resource';
  * @class
  */
 export default class DataManagerResource extends Resource {
+
+  /**
+   * Will return created property.
+   *
+   * @returns {Date} the create date.
+   */
+  getCreated() {
+    return new Date(this.getProperty('created'));
+  }
+
   /**
    * Set a new value to title property.
    * @param {string} value the value to assign.

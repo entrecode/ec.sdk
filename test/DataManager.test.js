@@ -162,6 +162,22 @@ describe('DataManager Resource', () => {
     resource.should.be.instanceOf(DataManagerResource);
   });
 
+  const dateGetter = [
+    'created',
+  ];
+  dateGetter.forEach((name) => {
+    it(`should call resource.getProperty with ${name}`, () => {
+      const spy = sinon.spy(resource, 'getProperty');
+
+      const property = resource[`get${capitalizeFirstLetter(name)}`]();
+      spy.should.have.been.called.once;
+      spy.should.have.been.calledWith(name);
+      property.toISOString().should.be.equal(resource.getProperty(name));
+
+      spy.restore();
+    });
+  });
+
   const functions = ['title', 'description', 'config', 'hexColor', 'locales'];
   functions.forEach((name) => {
     it(`should call resource.getProperty with ${name}`, () => {
