@@ -3,6 +3,8 @@ export declare class Resource {
 
   newRequest(): any;
 
+  resolve(): any;
+
   isDirty(): boolean;
 
   reset(): void;

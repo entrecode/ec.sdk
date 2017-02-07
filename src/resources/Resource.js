@@ -56,6 +56,25 @@ export default class Resource {
   }
 
   /**
+   * Reloads this {@link Resource}. Can be used when this resource was loaded from any {@link
+    * ListResource} from _embedded.
+   *
+   * @returns {Promise<Resource>} this resource
+   */
+  resolve() {
+    return get(
+      this.environment,
+      this.newRequest().follow('self')
+    )
+    .then(([res, traversal]) => {
+      this.resource = halfred.parse(res);
+      this.traversal = traversal;
+      this.dirty = false;
+      return this;
+    });
+  }
+
+  /**
    * Check if this {@link Resource} was modified since loading.
    *
    * @returns {boolean} whether or not this Resource was modified

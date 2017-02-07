@@ -191,4 +191,14 @@ describe('Resource', () => {
     resource.setProperty('title', 'New Title');
     resource.getProperty('title').should.be.equal('New Title');
   });
+  it('should call get on resolve', () => {
+    const stub = sinon.stub(helper, 'get');
+    stub.returns(resolver('dm-single.json', resource._traversal));
+
+    return resource.resolve()
+    .then(() => {
+      stub.should.be.called.once;
+      stub.restore();
+    });
+  });
 });
