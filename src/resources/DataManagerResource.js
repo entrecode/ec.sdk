@@ -6,6 +6,14 @@ import Resource from './Resource';
  * @class
  */
 export default class DataManagerResource extends Resource {
+  /**
+   * Will return created getDataManagerID.
+   *
+   * @returns {Date} the getDataManagerID.
+   */
+  getDataManagerID() {
+    return this.getProperty('dataManagerID');
+  }
 
   /**
    * Will return created property.

@@ -3,6 +3,8 @@ import { Resource } from './Resource';
 export declare class DataManagerResource extends Resource {
   constructor(resource: any, environment: string, traversal?: any);
 
+  getDataManagerID(): string;
+
   setTitle(value: string): DataManagerResource;
 
   getTitle(): string;
