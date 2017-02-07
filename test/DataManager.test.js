@@ -11,6 +11,8 @@ const DataManager = require('../lib/DataManager').default;
 const ListResource = require('../lib/resources/ListResource').default;
 const DataManagerList = require('../lib/resources/DataManagerList').default;
 const DataManagerResource = require('../lib/resources/DataManagerResource').default;
+const ModelResource = require('../lib/resources/ModelResource').default;
+const ModelList = require('../lib/resources/ModelList').default;
 const Resource = require('../lib/resources/Resource').default;
 
 chai.should();
@@ -219,5 +221,40 @@ describe('DataManager Resource', () => {
       const throws = () => resource[`set${capitalizeFirstLetter(name)}`]();
       throws.should.throw(Error);
     });
+  });
+
+  it('should load model list', () => {
+    const stub = sinon.stub(helper, 'get');
+    stub.returns(resolver('model-list.json'));
+
+    return resource.modelList()
+    .then((model) => {
+      model.should.be.instanceof(ModelList);
+      stub.restore();
+    })
+    .catch(() => stub.restore());
+  });
+  it('should throw on model list filtered with modelID', () => {
+    const throws = () => resource.modelList({ modelID: 'id' });
+    throws.should.throw(Error);
+  });
+  it('should throw on model list filtered with modelID and dataManagerID', () => {
+    const throws = () => resource.modelList({ modelID: 'id' });
+    throws.should.throw(Error);
+  });
+  it('should load model resource', () => {
+    const stub = sinon.stub(helper, 'get');
+    stub.returns(resolver('model-single.json'));
+
+    return resource.model('id')
+    .then((model) => {
+      model.should.be.instanceof(ModelResource);
+      stub.restore();
+    })
+    .catch(() => stub.restore());
+  });
+  it('should throw on undefined modelID', () => {
+    const throws = () => resource.model();
+    throws.should.throw(Error);
   });
 });
