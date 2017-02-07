@@ -11,7 +11,7 @@ export default class ModelResource extends Resource {
       throw new Error('description must be defined');
     }
 
-    this.setProperty('description', value);
+    return this.setProperty('description', value);
   }
 
   /**
