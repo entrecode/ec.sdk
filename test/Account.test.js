@@ -283,7 +283,7 @@ describe('Account Resource', () => {
     resource.should.be.instanceOf(Resource);
   });
   it('should be instance of AccountResource', () => {
-    resource.should.be.instanceOf(Resource);
+    resource.should.be.instanceOf(AccountResource);
   });
   it('should return boolean on hasPendingEmail', () => {
     resource.hasPendingEmail().should.be.false;
@@ -302,6 +302,22 @@ describe('Account Resource', () => {
   });
   it('should get all permissions', () => {
     resource.getAllPermissions().should.have.property('length', 8);
+  });
+
+  const dateGetter = [
+    'created',
+  ];
+  dateGetter.forEach((name) => {
+    it(`should call resource.getProperty with ${name}`, () => {
+      const spy = sinon.spy(resource, 'getProperty');
+
+      const property = resource[`get${capitalizeFirstLetter(name)}`]();
+      spy.should.have.been.called.once;
+      spy.should.have.been.calledWith(name);
+      property.toISOString().should.be.equal(resource.getProperty(name));
+
+      spy.restore();
+    });
   });
 
   const getter = ['accountID', 'name', 'email', 'groups', 'language', 'state', 'openID', 'permissions'];
