@@ -95,7 +95,7 @@ export default class Accounts extends Core {
     .then(() => {
       const request = this.newRequest()
       .follow('ec:accounts/options')
-      .withTemplateParameters({ accountID });
+      .withTemplateParameters(optionsToQuery({ accountid: accountID }));
       return get(this.environment, request);
     })
     .then(([res, traversal]) => new AccountResource(res, traversal));
