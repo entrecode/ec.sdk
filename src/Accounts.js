@@ -94,7 +94,7 @@ export default class Accounts extends Core {
     return Promise.resolve()
     .then(() => {
       const request = this.newRequest()
-      .follow('ec:account/by-id')
+      .follow('ec:accounts/options')
       .withTemplateParameters({ accountID });
       return get(this.environment, request);
     })
