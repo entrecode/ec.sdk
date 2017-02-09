@@ -100,14 +100,29 @@ describe('Accounts class', () => {
     return accounts.login('andre@entrecode.de', 'mysecret').should.eventually.be.fulfilled
     .and.notify(() => stub.restore());
   });
+  it('should reject when already logged in', () => {
+    const accounts = new Accounts();
+    accounts.tokenStore.set('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJlbnRyZWNvZGVUZXN0IiwiaWF0IjoxNDg1NzgzNTg4LCJleHAiOjQ2NDE0NTcxODgsImF1ZCI6IlRlc3QiLCJzdWIiOiJ0ZXN0QGVudHJlY29kZS5kZSJ9.Vhrq5GR2hNz-RoAhdlnIIWHelPciBPCemEa74s7cXn8');
+    accounts.setClientID('rest');
+
+    return new Accounts().login('user', 'mysecret').should.be.rejectedWith(Error);
+  });
   it('should be rejected on unset clientID', () => {
-    new Accounts().login('user', 'mysecret').should.be.rejectedWith(Error);
+    const accounts = new Accounts();
+    accounts.tokenStore.del();
+    return accounts.login('user', 'mysecret').should.be.rejectedWith(Error);
   });
   it('should be rejected on undefined email', () => {
-    new Accounts().setClientID('rest').login(null, 'mysecret').should.be.rejectedWith(Error);
+    const accounts = new Accounts();
+    accounts.tokenStore.del();
+    accounts.setClientID('rest');
+    return accounts.login(null, 'mysecret').should.be.rejectedWith(Error);
   });
   it('should be rejected on undefined password', () => {
-    new Accounts().setClientID('rest').login('user', null).should.be.rejectedWith(Error);
+    const accounts = new Accounts();
+    accounts.tokenStore.del();
+    accounts.setClientID('rest');
+    return accounts.setClientID('rest').login('user', null).should.be.rejectedWith(Error);
   });
   it('should logout successfully', () => {
     const accounts = new Accounts();

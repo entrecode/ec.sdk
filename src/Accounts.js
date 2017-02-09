@@ -129,6 +129,10 @@ export default class Accounts extends Core {
   login(email, password) {
     return Promise.resolve()
     .then(() => {
+      if (this.tokenStore.has()) {
+        throw new Error('already logged in or old token present. logout first');
+      }
+
       if (!this.clientID) {
         throw new Error('clientID must be set with Account#setClientID(clientID: string)');
       }
