@@ -78,7 +78,7 @@ export default class Accounts extends Core {
       .withTemplateParameters(optionsToQuery(options));
       return get(this.environment, request);
     })
-    .then(([res, traversal]) => new AccountList(res, traversal));
+    .then(([res, traversal]) => new AccountList(res, this.environment, traversal));
   }
 
   /**
@@ -98,7 +98,7 @@ export default class Accounts extends Core {
       .withTemplateParameters({ accountid: accountID });
       return get(this.environment, request);
     })
-    .then(([res, traversal]) => new AccountResource(res, traversal));
+    .then(([res, traversal]) => new AccountResource(res, this.environment, traversal));
   }
 
   /**
