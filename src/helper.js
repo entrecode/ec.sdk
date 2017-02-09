@@ -2,7 +2,7 @@ import superagent from 'superagent';
 
 import Problem from './Problem';
 import events from './EventEmitter';
-import { stores } from './TokenStore';
+import TokenStoreFactory from './TokenStore';
 
 /**
  * Creates a callback which wraps a traverson repsonse from `get`, `post`, `put`, `delete` and
@@ -73,6 +73,12 @@ function traversonWrapper(func, environment, t, body) {
   return new Promise((resolve, reject) => {
     const cb = (err, res) => {
       if (err) {
+        if (TokenStoreFactory(environment) && err instanceof Problem &&
+          (err.code % 1000 === 401 || err.code % 1000 === 402)) {
+          TokenStoreFactory(environment).del();
+          events.emit('loggedOut', err);
+        }
+
         events.emit('error', err);
         return reject(err);
       }
@@ -80,7 +86,7 @@ function traversonWrapper(func, environment, t, body) {
       return resolve(res);
     };
 
-    const store = stores.get(environment);
+    const store = TokenStoreFactory(environment);
     if (store && store.has()) {
       t.addRequestOptions({ headers: { Authorization: `Bearer ${store.get()}` } });
     }
