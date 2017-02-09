@@ -146,7 +146,7 @@ describe('Accounts class', () => {
     .and.notify(() => stub.restore());
   });
   it('should be rejected on undefined email', () => {
-    new Accounts().emailAvailable().should.be.rejectedWith(Error);
+    return new Accounts().emailAvailable().should.be.rejectedWith(Error);
   });
   it('should signup new account', () => {
     const accounts = new Accounts();
@@ -172,10 +172,10 @@ describe('Accounts class', () => {
     });
   });
   it('should be rejected on undefined email', () => {
-    new Accounts().signup(null, 'supersecure').should.be.rejectedWith(Error);
+    return new Accounts().signup(null, 'supersecure').should.be.rejectedWith(Error);
   });
   it('should be rejected on undefined password', () => {
-    new Accounts().signup('someone@example.com', null).should.be.rejectedWith(Error);
+    return new Accounts().signup('someone@example.com', null).should.be.rejectedWith(Error);
   });
   it('should be rejected on undefined clientID', () => {
     new Accounts().signup('someone@example.com', 'supersecure').should.be.rejectedWith(Error);
@@ -196,10 +196,10 @@ describe('Accounts class', () => {
     });
   });
   it('should be rejected on undefined email', () => {
-    new Accounts().resetPassword().should.be.rejectedWith(Error);
+    return new Accounts().resetPassword().should.be.rejectedWith(Error);
   });
   it('should be rejected on undefiend clientID', () => {
-    new Accounts().resetPassword('someone@entrecode.de').should.be.rejectedWith(Error);
+    return new Accounts().resetPassword('someone@entrecode.de').should.be.rejectedWith(Error);
   });
   it('should change email', () => {
     const accounts = new Accounts();
@@ -217,7 +217,7 @@ describe('Accounts class', () => {
     });
   });
   it('should be rejected on undefined email', () => {
-    new Accounts().changeEmail().should.be.rejectedWith(Error);
+    return new Accounts().changeEmail().should.be.rejectedWith(Error);
   });
   it('should be rejected on undefiend token', () => {
     const reject = () => {
@@ -225,7 +225,7 @@ describe('Accounts class', () => {
       accounts.tokenStore.del();
       return accounts.changeEmail('someone@entrecode.de');
     };
-    reject().should.be.rejectedWith(Error);
+    return reject().should.be.rejectedWith(Error);
   });
 });
 

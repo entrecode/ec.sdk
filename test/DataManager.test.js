@@ -234,10 +234,10 @@ describe('DataManager Resource', () => {
     .catch(() => stub.restore());
   });
   it('should throw on model list filtered with modelID', () => {
-    resource.modelList({ modelID: 'id' }).should.be.rejectedWith(Error);
+    return resource.modelList({ modelID: 'id' }).should.be.rejectedWith(Error);
   });
   it('should be rejected on model list filtered with modelID and dataManagerID', () => {
-    resource.modelList({ modelID: 'id' }).should.be.rejectedWith(Error);
+    return resource.modelList({ modelID: 'id' }).should.be.rejectedWith(Error);
   });
   it('should load model resource', () => {
     const stub = sinon.stub(helper, 'get');
@@ -251,6 +251,6 @@ describe('DataManager Resource', () => {
     .catch(() => stub.restore());
   });
   it('should be rejected on undefined modelID', () => {
-    resource.model().should.be.rejectedWith(Error);
+    return resource.model().should.be.rejectedWith(Error);
   });
 });
