@@ -30,6 +30,10 @@ export default class Resource {
     this.dirty = false;
     this.resource = halfred.parse(JSON.parse(JSON.stringify(resource)));
 
+    if (typeof this.environment !== 'string') {
+      throw new Error('environment must be a string');
+    }
+
     if (traversal) {
       this.traversal = traversal;
     } else {

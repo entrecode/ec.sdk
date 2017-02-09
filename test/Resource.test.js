@@ -47,6 +47,10 @@ describe('Resource', () => {
   it('should have environment live', () => {
     resource.environment.should.be.equal('live');
   });
+  it('should throw on non string environment', () => {
+    const throws = () => new Resource(resourceJson, {});
+    throws.should.throw();
+  });
   it('should return traverson builder on newRequest call', () => {
     resource.newRequest().should.be.instanceOf(traverson._Builder);
   });
