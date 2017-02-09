@@ -69,7 +69,7 @@ export default class DataManager extends Core {
       const request = this.newRequest()
       .follow('ec:datamanager/by-id')
       .withTemplateParameters({ dataManagerID });
-      return get(request);
+      return get(this.environment, request);
     })
     .then(([res, traversal]) => new DataManagerResource(res, traversal));
   }
