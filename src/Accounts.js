@@ -127,20 +127,23 @@ export default class Accounts extends Core {
    * @returns {Promise<string>} Promise resolving to the issued token
    */
   login(email, password) {
-    if (!this.clientID) {
-      throw new Error('clientID must be set with Account#setClientID(clientID: string)');
-    }
-    if (!email) {
-      throw new Error('email must be defined');
-    }
-    if (!password) {
-      throw new Error('password must be defined');
-    }
+    return Promise.resolve()
+    .then(() => {
+      if (!this.clientID) {
+        throw new Error('clientID must be set with Account#setClientID(clientID: string)');
+      }
+      if (!email) {
+        throw new Error('email must be defined');
+      }
+      if (!password) {
+        throw new Error('password must be defined');
+      }
 
-    const request = this.newRequest().follow('ec:auth/login')
-    .withTemplateParameters({ clientID: this.clientID });
+      const request = this.newRequest().follow('ec:auth/login')
+      .withTemplateParameters({ clientID: this.clientID });
 
-    return post(this.environment, request, { email, password })
+      return post(this.environment, request, { email, password });
+    })
     .then(([token]) => {
       this.tokenStore.set(token.token);
 
@@ -155,14 +158,17 @@ export default class Accounts extends Core {
    * @returns {Promise<undefined>} Promise resolving undefined on success.
    */
   logout() {
-    if (!this.tokenStore.has()) {
-      return Promise.resolve();
-    }
+    return Promise.resolve()
+    .then(() => {
+      if (!this.tokenStore.has()) {
+        return Promise.resolve();
+      }
 
-    const request = this.newRequest().follow('ec:auth/logout')
-    .withTemplateParameters({ clientID: this.clientID, token: this.token });
+      const request = this.newRequest().follow('ec:auth/logout')
+      .withTemplateParameters({ clientID: this.clientID, token: this.token });
 
-    return post(this.environment, request)
+      return post(this.environment, request);
+    })
     .then(() => {
       this.tokenStore.del();
       return Promise.resolve();
@@ -176,14 +182,17 @@ export default class Accounts extends Core {
    * @returns {Promise<boolean>} Whether or not the email is available.
    */
   emailAvailable(email) {
-    if (!email) {
-      throw new Error('email must be defined');
-    }
+    return Promise.resolve()
+    .then(() => {
+      if (!email) {
+        throw new Error('email must be defined');
+      }
 
-    const request = this.newRequest().follow('ec:auth/email-available')
-    .withTemplateParameters({ email });
+      const request = this.newRequest().follow('ec:auth/email-available')
+      .withTemplateParameters({ email });
 
-    return get(this.environment, request)
+      return get(this.environment, request)
+    })
     .then(([a]) => a.available);
   }
 
@@ -197,23 +206,26 @@ export default class Accounts extends Core {
    * @returns {Promise<string>} Promise resolving the newly created {@link AccountResource}
    */
   signup(email, password, invite) {
-    if (!email) {
-      throw new Error('email must be defined');
-    }
-    if (!password) {
-      throw new Error('password must be defined');
-    }
-    if (!this.clientID) {
-      throw new Error('clientID must be set with Account#setClientID(clientID: string)');
-    }
+    return Promise.resolve()
+    .then(() => {
+      if (!email) {
+        throw new Error('email must be defined');
+      }
+      if (!password) {
+        throw new Error('password must be defined');
+      }
+      if (!this.clientID) {
+        throw new Error('clientID must be set with Account#setClientID(clientID: string)');
+      }
 
-    const request = this.newRequest().follow('ec:auth/register').withTemplateParameters({
-      clientID: this.clientID,
-      invite,
-    });
+      const request = this.newRequest().follow('ec:auth/register').withTemplateParameters({
+        clientID: this.clientID,
+        invite,
+      });
 
-    return getUrl(this.environment, request)
-    .then((url) => superagentFormPost(url, { email, password }))
+      return getUrl(this.environment, request);
+    })
+    .then(url => superagentFormPost(url, { email, password }))
     .then((token) => {
       this.tokenStore.set(token.token);
       return Promise.resolve(token.token);
@@ -227,19 +239,22 @@ export default class Accounts extends Core {
    * @returns {Promise} Promise resolving on success.
    */
   resetPassword(email) {
-    if (!email) {
-      throw new Error('email must be defined');
-    }
-    if (!this.clientID) {
-      throw new Error('clientID must be set with Account#setClientID(clientID: string)');
-    }
+    return Promise.resolve()
+    .then(() => {
+      if (!email) {
+        throw new Error('email must be defined');
+      }
+      if (!this.clientID) {
+        throw new Error('clientID must be set with Account#setClientID(clientID: string)');
+      }
 
-    const request = this.newRequest().follow('ec:auth/password-reset').withTemplateParameters({
-      clientID: this.clientID,
-      email,
+      const request = this.newRequest().follow('ec:auth/password-reset').withTemplateParameters({
+        clientID: this.clientID,
+        email,
+      });
+
+      return getEmpty(this.environment, request);
     });
-
-    return getEmpty(this.environment, request);
   }
 
   /**
@@ -249,6 +264,8 @@ export default class Accounts extends Core {
    * @returns {Promise} Promise resolving on success.
    */
   changeEmail(email) {
+    return Promise.resolve()
+    .then(() => {
     if (!email) {
       throw new Error('email must be defined');
     }
@@ -260,5 +277,6 @@ export default class Accounts extends Core {
     const request = this.newRequest().follow('ec:auth/change-email');
 
     return postEmpty(this.environment, request, { email });
+    });
   }
 }

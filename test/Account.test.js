@@ -89,7 +89,7 @@ describe('Accounts class', () => {
 
     return accounts.createApiToken()
     .should.eventually.have.property('accountID', '203e9c84-5c78-48ca-b266-405c9220f5d0')
-    .notify(() => stub.restore());
+    .and.notify(() => stub.restore());
   });
   it('should login successfully', () => {
     const accounts = new Accounts();
@@ -98,19 +98,16 @@ describe('Accounts class', () => {
 
     accounts.setClientID('rest');
     return accounts.login('andre@entrecode.de', 'mysecret').should.eventually.be.fulfilled
-    .notify(() => stub.restore());
+    .and.notify(() => stub.restore());
   });
-  it('should throw on unset clientID', () => {
-    const throws = () => new Accounts().login('user', 'mysecret');
-    throws.should.throw(Error);
+  it('should be rejected on unset clientID', () => {
+    new Accounts().login('user', 'mysecret').should.be.rejectedWith(Error);
   });
-  it('should throw on undefined email', () => {
-    const throws = () => new Accounts().setClientID('rest').login(null, 'mysecret');
-    throws.should.throw(Error);
+  it('should be rejected on undefined email', () => {
+    new Accounts().setClientID('rest').login(null, 'mysecret').should.be.rejectedWith(Error);
   });
-  it('should throw on undefined password', () => {
-    const throws = () => new Accounts().setClientID('rest').login('user', null);
-    throws.should.throw(Error);
+  it('should be rejected on undefined password', () => {
+    new Accounts().setClientID('rest').login('user', null).should.be.rejectedWith(Error);
   });
   it('should logout successfully', () => {
     const accounts = new Accounts();
@@ -118,25 +115,23 @@ describe('Accounts class', () => {
     const stub = sinon.stub(helper, 'post');
     stub.returns(Promise.resolve());
 
-    accounts.logout().should.be.eventually.fullfilled;
-
-    stub.restore();
+    return accounts.logout().should.be.eventually.fulfilled
+    .and.notify(() => stub.restore());
   });
   it('should be successful on no token', () => {
     const accounts = new Accounts();
-    accounts.logout().should.be.eventually.fullfilled;
+    return accounts.logout().should.be.eventually.fullfilled;
   });
   it('should return true on email available', () => {
     const accounts = new Accounts();
     const stub = sinon.stub(helper, 'get');
     stub.returns(resolver('email-available.json'));
 
-    accounts.emailAvailable('someone@example.com').should.be.eventually.equal(true);
-    stub.restore();
+    return accounts.emailAvailable('someone@example.com').should.be.eventually.equal(true)
+    .and.notify(() => stub.restore());
   });
-  it('should throw on undefined email', () => {
-    const throws = () => new Accounts().emailAvailable();
-    throws.should.throw(Error);
+  it('should be rejected on undefined email', () => {
+    new Accounts().emailAvailable().should.be.rejectedWith(Error);
   });
   it('should signup new account', () => {
     const accounts = new Accounts();
@@ -145,6 +140,7 @@ describe('Accounts class', () => {
     url.returns(Promise.resolve('https://accounts.entrecode.de/auth/signup?clientID=rest'));
     const token = sinon.stub(helper, 'superagentFormPost');
     token.returns(Promise.resolve({ token: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJlbnRyZWNvZGVUZXN0IiwiaWF0IjoxNDg1NzgzNTg4LCJleHAiOjQ2NDE0NTcxODgsImF1ZCI6IlRlc3QiLCJzdWIiOiJ0ZXN0QGVudHJlY29kZS5kZSJ9.Vhrq5GR2hNz-RoAhdlnIIWHelPciBPCemEa74s7cXn8' }));
+    accounts.tokenStore.del();
     accounts.tokenStore.has().should.be.false;
 
     return accounts.signup('someone@example.com', 'suchsecurewow')
@@ -160,17 +156,14 @@ describe('Accounts class', () => {
       throw err;
     });
   });
-  it('should throw on undefined email', () => {
-    const throws = () => new Accounts().signup(null, 'supersecure');
-    throws.should.throw(Error);
+  it('should be rejected on undefined email', () => {
+    new Accounts().signup(null, 'supersecure').should.be.rejectedWith(Error);
   });
-  it('should throw on undefined password', () => {
-    const throws = () => new Accounts().signup('someone@example.com', null);
-    throws.should.throw(Error);
+  it('should be rejected on undefined password', () => {
+    new Accounts().signup('someone@example.com', null).should.be.rejectedWith(Error);
   });
-  it('should throw on undefined clientID', () => {
-    const throws = () => new Accounts().signup('someone@example.com', 'supersecure');
-    throws.should.throw(Error);
+  it('should be rejected on undefined clientID', () => {
+    new Accounts().signup('someone@example.com', 'supersecure').should.be.rejectedWith(Error);
   });
   it('should reset password', () => {
     const accounts = new Accounts();
@@ -187,13 +180,11 @@ describe('Accounts class', () => {
       throw err;
     });
   });
-  it('should throw on undefined email', () => {
-    const throws = () => new Accounts().resetPassword();
-    throws.should.throw(Error);
+  it('should be rejected on undefined email', () => {
+    new Accounts().resetPassword().should.be.rejectedWith(Error);
   });
-  it('should throw on undefiend clientID', () => {
-    const throws = () => new Accounts().resetPassword('someone@entrecode.de');
-    throws.should.throw(Error);
+  it('should be rejected on undefiend clientID', () => {
+    new Accounts().resetPassword('someone@entrecode.de').should.be.rejectedWith(Error);
   });
   it('should change email', () => {
     const accounts = new Accounts();
@@ -210,17 +201,16 @@ describe('Accounts class', () => {
       throw err;
     });
   });
-  it('should throw on undefined email', () => {
-    const throws = () => new Accounts().changeEmail();
-    throws.should.throw(Error);
+  it('should be rejected on undefined email', () => {
+    new Accounts().changeEmail().should.be.rejectedWith(Error);
   });
-  it('should throw on undefiend token', () => {
-    const throws = () => {
+  it('should be rejected on undefiend token', () => {
+    const reject = () => {
       const accounts = new Accounts();
       accounts.tokenStore.del();
-      accounts.changeEmail('someone@entrecode.de');
+      return accounts.changeEmail('someone@entrecode.de');
     };
-    throws.should.throw(Error);
+    reject().should.be.rejectedWith(Error);
   });
 });
 

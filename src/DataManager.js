@@ -61,16 +61,16 @@ export default class DataManager extends Core {
    * @returns {Promise<DataManagerResource>} resolves to the DataManager which should be loaded.
    */
   get(dataManagerID) {
-    if (!dataManagerID) {
-      throw new Error('dataManagerID must be defined');
-    }
     return Promise.resolve()
     .then(() => {
+      if (!dataManagerID) {
+        throw new Error('dataManagerID must be defined');
+      }
       const request = this.newRequest()
       .follow('ec:datamanager/by-id')
       .withTemplateParameters({ dataManagerID });
       return get(this.environment, request);
     })
-    .then(([res, traversal]) => new DataManagerResource(res, this.environment,  traversal));
+    .then(([res, traversal]) => new DataManagerResource(res, this.environment, traversal));
   }
 }

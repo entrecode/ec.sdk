@@ -123,7 +123,8 @@ describe('Resource', () => {
     const stub = sinon.stub(helper, 'get');
     stub.returns(Promise.reject(new Error('Traverson throws this')));
 
-    return resource.followLink('self').should.be.rejected.notify(() => stub.restore());
+    return resource.followLink('self').should.be.rejected
+    .and.notify(() => stub.restore());
   });
   it('should return resource on get', () => {
     const obj = resource.get();

@@ -66,9 +66,8 @@ describe('DataManager class', () => {
       throw err;
     });
   });
-  it('should throw on get with undefined id', () => {
-    const throws = () => new DataManager('live').get();
-    throws.should.throw(Error);
+  it('should be rejected on get with undefined id', () => {
+    new DataManager('live').get().should.be.rejectedWith(Error);
   });
 });
 
@@ -235,12 +234,10 @@ describe('DataManager Resource', () => {
     .catch(() => stub.restore());
   });
   it('should throw on model list filtered with modelID', () => {
-    const throws = () => resource.modelList({ modelID: 'id' });
-    throws.should.throw(Error);
+    resource.modelList({ modelID: 'id' }).should.be.rejectedWith(Error);
   });
-  it('should throw on model list filtered with modelID and dataManagerID', () => {
-    const throws = () => resource.modelList({ modelID: 'id' });
-    throws.should.throw(Error);
+  it('should be rejected on model list filtered with modelID and dataManagerID', () => {
+    resource.modelList({ modelID: 'id' }).should.be.rejectedWith(Error);
   });
   it('should load model resource', () => {
     const stub = sinon.stub(helper, 'get');
@@ -253,8 +250,7 @@ describe('DataManager Resource', () => {
     })
     .catch(() => stub.restore());
   });
-  it('should throw on undefined modelID', () => {
-    const throws = () => resource.model();
-    throws.should.throw(Error);
+  it('should be rejected on undefined modelID', () => {
+    resource.model().should.be.rejectedWith(Error);
   });
 });

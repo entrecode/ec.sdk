@@ -1,6 +1,6 @@
 import traverson from 'traverson';
 import HalAdapter from 'traverson-hal';
-import TokenStoreFactory, { stores } from './TokenStore';
+import TokenStoreFactory  from './TokenStore';
 
 traverson.registerMediaType(HalAdapter.mediaType, HalAdapter);
 

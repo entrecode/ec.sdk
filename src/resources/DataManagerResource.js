@@ -13,27 +13,30 @@ export default class DataManagerResource extends Resource {
    * Load a {@link ModelList} of {@link DataManagerResource} filtered by the values specified
    * by the options parameter.
    *
-   * @param {{size: number, page: number, sort: array<string>, filter: filter}} options the
+   * @param {{size: number, page: number, sort: array<string>, filter: filter}} options? the
    *   filter options.
    * @returns {Promise<ModelList>} resolves to model list with applied filters.
    */
   modelList(options) {
-    const o = {};
-    if (options) {
-      Object.assign(o, options);
-    }
+    return Promise.resolve()
+    .then(() => {
+      const o = {};
+      if (options) {
+        Object.assign(o, options);
+      }
 
-    o.dataManagerID = this.getDataManagerID();
+      o.dataManagerID = this.getDataManagerID();
 
-    if (Object.keys(o).length === 2 &&
-      {}.hasOwnProperty.call(o, 'dataManagerID') && {}.hasOwnProperty.call(o, 'modelID')) {
-      throw new Error('Cannot filter modelList only by dataManagerID and modelID. Use #model(modelID) instead.');
-    }
+      if (Object.keys(o).length === 2 &&
+        {}.hasOwnProperty.call(o, 'dataManagerID') && {}.hasOwnProperty.call(o, 'modelID')) {
+        throw new Error('Cannot filter modelList only by dataManagerID and modelID. Use #model(modelID) instead.');
+      }
 
-    return get(
-      this.environment,
-      this.newRequest().follow('ec:models/options').withTemplateParameters(o)
-    )
+      return get(
+        this.environment,
+        this.newRequest().follow('ec:models/options').withTemplateParameters(o)
+      );
+    })
     .then(([resource, traversal]) => new ModelList(resource, this.environment, traversal));
   }
 
@@ -44,14 +47,17 @@ export default class DataManagerResource extends Resource {
    * @returns {Promise<ModelResource>} resolves to the Model which should be loaded.
    */
   model(modelID) {
-    if (!modelID) {
-      throw new Error('modelID must be defined');
-    }
+    return Promise.resolve()
+    .then(() => {
+      if (!modelID) {
+        throw new Error('modelID must be defined');
+      }
 
-    return get(
-      this.environment,
-      this.newRequest().follow('ec:models/options').withTemplateParameters({ modelID })
-    )
+      return get(
+        this.environment,
+        this.newRequest().follow('ec:models/options').withTemplateParameters({ modelID })
+      );
+    })
     .then(([resource, traversal]) => new ModelResource(resource, this.environment, traversal));
   }
 
