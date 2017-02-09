@@ -161,9 +161,9 @@ export default class Resource {
     return get(this.environment, this.newRequest().follow(link))
     .then(([res, traversal]) => {
       if (ResourceClass) {
-        return new ResourceClass(res, null, traversal);
+        return new ResourceClass(res, this.environment, traversal);
       }
-      return new Resource(res, traversal);
+      return new Resource(res, this.environment, traversal);
     });
   }
 

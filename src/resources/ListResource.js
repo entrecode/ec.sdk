@@ -52,7 +52,7 @@ export default class ListResource extends Resource {
    */
   getAllItems() {
     const array = this.resource.embeddedArray(this.name) || [];
-    return array.map(resource => new this.ItemClass(resource));
+    return array.map(resource => new this.ItemClass(resource, this.environment));
   }
 
   /**
@@ -70,7 +70,7 @@ export default class ListResource extends Resource {
     if (!array || array.length === 0) {
       throw new Error('Cannot get n\'th item of empty list.');
     }
-    return new this.ItemClass(array[n]);
+    return new this.ItemClass(array[n], this.environment);
   }
 
   /**

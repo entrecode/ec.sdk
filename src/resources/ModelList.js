@@ -15,7 +15,7 @@ export default class ModelList extends ListResource {
    * @param {?object} traversal traversal from which traverson can continue.
    */
   constructor(resource, environment, traversal) {
-    super(resource, environment, 'ec:account', traversal);
+    super(resource, environment, 'ec:model', traversal);
     this.ListClass = ModelList;
     this.ItemClass = ModelResource;
   }

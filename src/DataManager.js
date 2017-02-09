@@ -51,7 +51,7 @@ export default class DataManager extends Core {
       .withTemplateParameters(optionsToQuery(options));
       return get(this.environment, request);
     })
-    .then(([res, traversal]) => new DataManagerList(res, traversal));
+    .then(([res, traversal]) => new DataManagerList(res, this.environment, traversal));
   }
 
   /**
@@ -71,6 +71,6 @@ export default class DataManager extends Core {
       .withTemplateParameters({ dataManagerID });
       return get(this.environment, request);
     })
-    .then(([res, traversal]) => new DataManagerResource(res, traversal));
+    .then(([res, traversal]) => new DataManagerResource(res, this.environment,  traversal));
   }
 }

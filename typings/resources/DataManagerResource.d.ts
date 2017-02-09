@@ -6,7 +6,7 @@ import { ModelResource } from './ModelResource';
 export declare class DataManagerResource extends Resource {
   constructor(resource: any, environment: string, traversal?: any);
 
-  modelList(options: filterOptions): ModelList
+  modelList(options?: filterOptions): ModelList
 
   model(modelID: string): ModelResource;
 
