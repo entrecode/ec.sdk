@@ -150,6 +150,7 @@ export default class Accounts extends Core {
     })
     .then(([token]) => {
       this.tokenStore.set(token.token);
+      this.events.emit('login', token.token);
 
       return token.token;
     });
@@ -174,6 +175,7 @@ export default class Accounts extends Core {
       return post(this.environment, request);
     })
     .then(() => {
+      this.events.emit('logout');
       this.tokenStore.del();
       return Promise.resolve();
     });

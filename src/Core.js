@@ -1,6 +1,7 @@
 import traverson from 'traverson';
 import HalAdapter from 'traverson-hal';
-import TokenStoreFactory  from './TokenStore';
+import TokenStoreFactory from './TokenStore';
+import events from './EventEmitter';
 
 traverson.registerMediaType(HalAdapter.mediaType, HalAdapter);
 
@@ -16,6 +17,7 @@ export default class Core {
       throw new Error('url must be defined');
     }
 
+    this.events = events;
     this.tokenStore = TokenStoreFactory('live');
     this.traversal = traverson.from(url).jsonHal()
     .addRequestOptions({ headers: { Accept: 'application/hal+json' } });
@@ -56,5 +58,27 @@ export default class Core {
 
     this.tokenStore.set(token);
     return this;
+  }
+
+  /**
+   * Attaches a listener on the underlying EventEmitter.
+   *
+   * @param {string} label the event type
+   * @param {function} listener the listener
+   * @returns {undefined}
+   */
+  on(label, listener) {
+    return this.events.on(label, listener);
+  }
+
+  /**
+   * Removes a previously attached listener from the underlying EventEmitter.
+   *
+   * @param {string} label the event type
+   * @param {function} listener the listener
+   * @returns {boolean} whether or not the listener was removed
+   */
+  removeListener(label, listener) {
+    return this.events.removeListener(label, listener);
   }
 }

@@ -76,7 +76,7 @@ function traversonWrapper(func, environment, t, body) {
         if (TokenStoreFactory(environment) && err instanceof Problem &&
           (err.code % 1000 === 401 || err.code % 1000 === 402)) {
           TokenStoreFactory(environment).del();
-          events.emit('loggedOut', err);
+          events.emit('logout', err);
         }
 
         events.emit('error', err);

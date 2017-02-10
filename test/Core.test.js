@@ -55,6 +55,17 @@ describe('Core', () => {
     };
     throws.should.throw(Error);
   });
+  it('should attach listener', () => {
+    core.on('attachTest', () => undefined);
+    emitter.listeners.get('attachTest').length.should.be.equal(1);
+  });
+  it('should remove listener', () => {
+    const listener = () => undefined;
+    core.on('removeTest', listener);
+    emitter.listeners.get('removeTest').length.should.be.equal(1);
+    core.removeListener('removeTest', listener);
+    emitter.listeners.get('removeTest').length.should.be.equal(0);
+  });
 });
 
 describe('Network Helper', () => {
@@ -67,7 +78,7 @@ describe('Network Helper', () => {
     errorSpy = sinon.spy();
     loggedOutSpy = sinon.spy();
     emitter.on('error', errorSpy);
-    emitter.on('loggedOut', loggedOutSpy);
+    emitter.on('logout', loggedOutSpy);
   });
   beforeEach(() => {
     errorSpy.reset();
