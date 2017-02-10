@@ -10,6 +10,7 @@ import {
 } from './helper';
 import AccountList from './resources/AccountList';
 import AccountResource from './resources/AccountResource';
+import InvitesResource from './resources/InvitesResource';
 import TokenStoreFactory from './TokenStore';
 
 const urls = {
@@ -283,6 +284,41 @@ export default class Accounts extends Core {
     const request = this.newRequest().follow('ec:auth/change-email');
 
     return postEmpty(this.environment, request, { email });
+    });
+  }
+
+  /**
+   * Create new invites. Specify number of invites to create with count.
+   *
+   * @param {number} count the number of invites to create
+   * @returns {Promise<InvitesResource>} Promise resolving to the invites resource
+   */
+  createInvites(count) {
+    return Promise.resolve()
+    .then(() => {
+      if (count && typeof count !== 'number') {
+        throw new Error('count must be a number');
+      }
+
+      const request = this.newRequest().follow('ec:invites');
+
+      return post(this.environment, request, { count: count || 1 })
+      .then(([invites, traversal]) => new InvitesResource(invites, this.environment, traversal));
+    });
+  }
+
+  /**
+   * Load the {@link InvitesResource}.
+   *
+   * @returns {Promise.<InvitesResource>} Promise resolving to the invites resource
+   */
+  invites() {
+    return Promise.resolve()
+    .then(() => {
+      const request = this.newRequest().follow('ec:invites');
+
+      return get(this.environment, request)
+      .then(([invites, traversal]) => new InvitesResource(invites, this.environment, traversal));
     });
   }
 }

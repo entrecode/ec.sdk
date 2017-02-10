@@ -14,7 +14,6 @@ const Resource = require('../lib/resources/Resource').default;
 
 const should = chai.should();
 
-chai.should();
 chai.use(sinonChai);
 chai.use(chaiAsPromised);
 
@@ -40,9 +39,9 @@ describe('Resource', () => {
     resource.should.be.instanceOf(Resource);
   });
   it('should instantiate with traversal and environment', () => {
-    const resource = new Resource(resourceJson, 'stage', {});
-    resource.environment.should.be.equal('stage');
-    should.exist(resource.traversal);
+    const res = new Resource(resourceJson, 'stage', {});
+    res.environment.should.be.equal('stage');
+    should.exist(res.traversal);
   });
   it('should have environment live', () => {
     resource.environment.should.be.equal('live');

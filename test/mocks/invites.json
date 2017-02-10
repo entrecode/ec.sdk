@@ -1,0 +1,26 @@
+{
+  "invites": [
+    "375476f6-4732-4dfe-bd4c-0fe0dc57e19b",
+    "26e1e48f-a11d-427f-8392-4aee6371e95e",
+    "dcc4bafd-5fc4-47d1-b90b-2efe67be49f9",
+    "6614ab11-14e1-40d8-8ed0-50693ef2113e",
+    "7d04e725-e113-4e0d-8e33-2192a0f832f0",
+    "4e8076c0-2e5a-423e-9a86-c4abdc283c21",
+    "c3ec6ea9-8c84-43d7-9fa0-e0a1ee5d6214",
+    "70b85711-d6ee-46b8-9a5b-8af2c7502df2",
+    "ef5fa711-884a-40d2-9754-311b8b4bb309",
+    "fbbdc462-7774-40f5-9d57-4148a395d472"
+  ],
+  "_links": {
+    "self": {
+      "href": "https://accounts.entrecode.de/invite"
+    },
+    "curies": {
+      "href": "https://entrecode.de/doc/rel/{rel}",
+      "templated": true
+    },
+    "collection": {
+      "href": "https://accounts.entrecode.de/"
+    }
+  }
+}

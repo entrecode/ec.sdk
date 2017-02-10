@@ -11,6 +11,7 @@ const Accounts = require('../lib/Accounts').default;
 const ListResource = require('../lib/resources/ListResource').default;
 const AccountList = require('../lib/resources/AccountList').default;
 const AccountResource = require('../lib/resources/AccountResource').default;
+const InvitesResource = require('../lib/resources/InvitesResource').default;
 const Resource = require('../lib/resources/Resource').default;
 
 chai.should();
@@ -226,6 +227,54 @@ describe('Accounts class', () => {
       return accounts.changeEmail('someone@entrecode.de');
     };
     return reject().should.be.rejectedWith(Error);
+  });
+  it('should create invites', () => {
+    const accounts = new Accounts();
+    const stub = sinon.stub(helper, 'post');
+    stub.returns(resolver('invites.json'), accounts.traversal);
+
+    return accounts.createInvites(5)
+    .then((invites) => {
+      invites.should.be.instanceOf(InvitesResource);
+      stub.restore();
+    })
+    .catch((err) => {
+      stub.restore();
+      throw err;
+    });
+  });
+  it('should create invite', () => {
+    const accounts = new Accounts();
+    const stub = sinon.stub(helper, 'post');
+    stub.returns(resolver('invites.json'), accounts.traversal);
+
+    return accounts.createInvites()
+    .then((invites) => {
+      invites.should.be.instanceOf(InvitesResource);
+      stub.restore();
+    })
+    .catch((err) => {
+      stub.restore();
+      throw err;
+    });
+  });
+  it('should be rejected in count not a number', () => {
+    return new Accounts().createInvites('notANumber').should.be.rejectedWith(Error);
+  });
+  it('should load invites', () => {
+    const accounts = new Accounts();
+    const stub = sinon.stub(helper, 'get');
+    stub.returns(resolver('invites.json'), accounts.traversal);
+
+    return accounts.invites()
+    .then((invites) => {
+      invites.should.be.instanceOf(InvitesResource);
+      stub.restore();
+    })
+    .catch((err) => {
+      stub.restore();
+      throw err;
+    });
   });
 });
 

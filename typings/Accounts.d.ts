@@ -2,6 +2,7 @@ import { Core } from './Core';
 import { AccountList } from './resources/AccountList';
 import { AccountResource } from './resources/AccountResource';
 import { filterOptions } from './interfaces';
+import { InvitesResource } from './resources/InvitesResource';
 
 export declare class Accounts extends Core {
   constructor(environment?: environment);
@@ -25,6 +26,10 @@ export declare class Accounts extends Core {
   resetPassword(email: string): Promise<undefined>;
 
   changeEmail(email: string): Promise<undefined>;
+
+  createInvites(count: number): Promise<InvitesResource>;
+
+  invites(): Promise<InvitesResource>
 }
 
 interface tokenResponse {
