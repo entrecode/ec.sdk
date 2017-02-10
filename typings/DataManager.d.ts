@@ -4,9 +4,11 @@ import { DataManagerList } from './resources/DataManagerList';
 import { filterOptions } from './interfaces';
 
 export declare class DataManager extends Core {
-  constructor(environment?: string);
+  constructor(environment?: environment);
 
   list(options?: filterOptions): Promise<DataManagerList>;
 
   get(dataManagerID: string): Promise<DataManagerResource>;
 }
+
+type environment = 'live' | 'stage' | 'nightly' | 'develop';

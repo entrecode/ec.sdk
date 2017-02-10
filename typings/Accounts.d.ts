@@ -4,7 +4,7 @@ import { AccountResource } from './resources/AccountResource';
 import { filterOptions } from './interfaces';
 
 export declare class Accounts extends Core {
-  constructor(environment?: string);
+  constructor(environment?: environment);
 
   setClientID(clientID: string): Accounts;
 
@@ -33,3 +33,5 @@ interface tokenResponse {
   iat: number;
   exp: number
 }
+
+type environment = 'live' | 'stage' | 'nightly' | 'develop';
