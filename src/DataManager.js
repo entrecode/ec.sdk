@@ -1,5 +1,5 @@
 import Core from './Core';
-import { get, optionsToQuery } from './helper';
+import { get, post, optionsToQuery } from './helper';
 import DataManagerResource from './resources/DataManagerResource';
 import DataManagerList from './resources/DataManagerList';
 import TokenStoreFactory from './TokenStore';
@@ -33,6 +33,24 @@ export default class DataManager extends Core {
     super(urls[environment || 'live']);
     this.environment = environment;
     this.tokenStore = TokenStoreFactory(environment || 'live');
+  }
+
+  /**
+   * Create a new DataManager.
+   *
+   * @param {object} datamanager object representing the datamanager.
+   * @returns {Promise<DataManagerResource>} the newly created DataManagerResource
+   */
+  create(datamanager) {
+    return Promise.resolve()
+    .then(() => {
+      if (!datamanager) {
+        throw new Error('Cannot create resource with undefined object.');
+      }
+      // TODO schema validation
+      return post(this.newRequest(), datamanager);
+    })
+    .then(([dm, traversal]) => new DataManagerResource(dm, this.environment, traversal));
   }
 
   /**

@@ -6,6 +6,8 @@ import { filterOptions } from './interfaces';
 export declare class DataManager extends Core {
   constructor(environment?: environment);
 
+  create(dataManager: any): Promise<DataManagerResource>;
+
   list(options?: filterOptions): Promise<DataManagerList>;
 
   get(dataManagerID: string): Promise<DataManagerResource>;

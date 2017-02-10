@@ -69,6 +69,36 @@ describe('DataManager class', () => {
   it('should be rejected on get with undefined id', () => {
     new DataManager('live').get().should.be.rejectedWith(Error);
   });
+  it('should call post on create', () => {
+    const stub = sinon.stub(helper, 'post');
+    return new Promise((resolve, reject) => {
+      fs.readFile(`${__dirname}/mocks/dm-single.json`, 'utf-8', (err, res) => {
+        if (err) {
+          return reject(err);
+        }
+        return resolve(JSON.parse(res));
+      });
+    })
+    .then((resource) => {
+      const dm = new DataManager('live');
+      stub.returns(Promise.resolve([resource, dm.traversal]));
+      const create = Object.assign({}, {
+        title: resource.title,
+        description: resource.description,
+        config: resource.config,
+        hexColor: resource.hexColor,
+        locales: resource.locales,
+      });
+      return dm.create(create);
+    })
+    .then(() => {
+      stub.should.be.called.once;
+      stub.restore();
+    });
+  });
+  it('should be rejected on create with undefined', () => {
+    return new DataManager('live').create().should.be.rejectedWith(Error);
+  });
 });
 
 describe('DataManager ListResource', () => {
@@ -101,36 +131,6 @@ describe('DataManager ListResource', () => {
   });
   it('should have DataManagerResource items', () => {
     list.getAllItems().forEach(item => item.should.be.instanceOf(DataManagerResource));
-  });
-  it('should call post on create', () => {
-    const stub = sinon.stub(helper, 'post');
-    return new Promise((resolve, reject) => {
-      fs.readFile(`${__dirname}/mocks/dm-single.json`, 'utf-8', (err, res) => {
-        if (err) {
-          return reject(err);
-        }
-        return resolve(JSON.parse(res));
-      });
-    })
-    .then((resource) => {
-      stub.returns(Promise.resolve([resource, list._traversal]));
-      const create = Object.assign({}, {
-        title: resource.title,
-        description: resource.description,
-        config: resource.config,
-        hexColor: resource.hexColor,
-        locales: resource.locales,
-      });
-      return list.create(create);
-    })
-    .then(() => {
-      stub.should.be.called.once;
-      stub.restore();
-    });
-  });
-  it('should throw on create with undefined', () => {
-    const throws = () => list.create();
-    throws.should.throw(Error);
   });
 });
 
