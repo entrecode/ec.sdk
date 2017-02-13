@@ -13,6 +13,8 @@ const AccountList = require('../lib/resources/AccountList').default;
 const AccountResource = require('../lib/resources/AccountResource').default;
 const ClientList = require('../lib/resources/ClientList').default;
 const ClientResource = require('../lib/resources/ClientResource').default;
+const GroupList = require('../lib/resources/GroupList').default;
+const GroupResource = require('../lib/resources/GroupResource').default;
 const InvitesResource = require('../lib/resources/InvitesResource').default;
 const InvalidPermissionsResource = require('../lib/resources/InvalidPermissionsResource').default;
 const Resource = require('../lib/resources/Resource').default;
@@ -346,6 +348,42 @@ describe('Accounts class', () => {
       stub.restore();
       throw err;
     });
+  });
+  it('should return list on clientList', () => {
+    const accounts = new Accounts('live');
+    const stub = sinon.stub(helper, 'get');
+    stub.returns(resolver('group-list.json'));
+
+    return accounts.groupList()
+    .then((list) => {
+      list.should.be.instanceof(GroupList);
+      stub.restore();
+    })
+    .catch((err) => {
+      stub.restore();
+      throw err;
+    });
+  });
+  it('should be rejected on clientList only with clientID', () => {
+    return new Accounts().groupList({ groupID: 'id' }).should.be.rejectedWith(Error);
+  });
+  it('should return resource on group', () => {
+    const accounts = new Accounts('live');
+    const stub = sinon.stub(helper, 'get');
+    stub.returns(resolver('group-list.json'));
+
+    return accounts.group('aID')
+    .then((resource) => {
+      resource.should.be.instanceof(GroupResource);
+      stub.restore();
+    })
+    .catch((err) => {
+      stub.restore();
+      throw err;
+    });
+  });
+  it('should be rejected on group with undefiend id', () => {
+    return new Accounts().group().should.be.rejectedWith(Error);
   });
 });
 

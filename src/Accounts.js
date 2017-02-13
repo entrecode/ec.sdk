@@ -14,6 +14,8 @@ import ClientList from './resources/ClientList';
 import ClientResource from './resources/ClientResource';
 import InvalidPermissionsResource from './resources/InvalidPermissionsResource';
 import InvitesResource from './resources/InvitesResource';
+import GroupList from './resources/GroupList';
+import GroupResource from './resources/GroupResource';
 import TokenStoreFactory from './TokenStore';
 
 const urls = {
@@ -376,7 +378,7 @@ export default class Accounts extends Core {
     return Promise.resolve()
     .then(() => {
       if (!clientID) {
-        throw new Error('accountID must be defined');
+        throw new Error('clientID must be defined');
       }
       const request = this.newRequest()
       .follow('ec:acc/clients/options')
@@ -398,5 +400,46 @@ export default class Accounts extends Core {
     return get(this.environment, request)
     .then(([resource, traversal]) =>
       new InvalidPermissionsResource(resource, this.environment, traversal));
+  }
+
+  /**
+   * Load the {@link GroupList}
+   *
+   * @param {filterOptions?} options filter options
+   * @returns {Promise<GroupList>} Promise resolving goup list
+   */
+  groupList(options) {
+    return Promise.resolve()
+    .then(() => {
+      if (options && Object.keys(options).length === 1 && 'groupID' in options) {
+        throw new Error('Providing only an groupID in GroupList filter will result in single resource response. Please use Accounts#groupList');
+      }
+
+      const request = this.newRequest()
+      .follow('ec:acc/groups/options')
+      .withTemplateParameters(optionsToQuery(options));
+      return get(this.environment, request);
+    })
+    .then(([res, traversal]) => new GroupList(res, this.environment, traversal));
+  }
+
+  /**
+   * Load a single group
+   *
+   * @param {string} groupID the id of the group
+   * @returns {Promise<GroupResource>} Promise resolving to the group
+   */
+  group(groupID) {
+    return Promise.resolve()
+    .then(() => {
+      if (!groupID) {
+        throw new Error('groupID must be defined');
+      }
+      const request = this.newRequest()
+      .follow('ec:acc/clients/options')
+      .withTemplateParameters({ groupid: groupID });
+      return get(this.environment, request);
+    })
+    .then(([res, traversal]) => new GroupResource(res, this.environment, traversal));
   }
 }

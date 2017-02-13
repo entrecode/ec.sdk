@@ -1,0 +1,42 @@
+{
+  "name": "AppManager-User",
+  "groupID": "c7df5f26-3fa2-4bd5-8a9a-47087d69ab29",
+  "permissions": [
+    "app-create",
+    "app:codesource,datasource,target,platform"
+  ],
+  "_embedded": {
+    "ec:account": [
+      {
+        "accountID": "ddd29fd1-7417-4894-a546-5c12b11c0186",
+        "email": "andre@entrecode.de",
+        "_links": {
+          "self": {
+            "profile": "https://entrecode.de/schema/account",
+            "href": "https://accounts.buffalo.entrecode.de/account?accountID=ddd29fd1-7417-4894-a546-5c12b11c0186"
+          }
+        }
+      },
+      {
+        "accountID": "a9ad32fd-c1e3-44ca-a995-a7bf366793cc",
+        "email": "reiner@hohn.de",
+        "_links": {
+          "self": {
+            "profile": "https://entrecode.de/schema/account",
+            "href": "https://accounts.buffalo.entrecode.de/account?accountID=a9ad32fd-c1e3-44ca-a995-a7bf366793cc"
+          }
+        }
+      }
+    ]
+  },
+  "_links": {
+    "self": {
+      "profile": "https://entrecode.de/schema/group",
+      "href": "https://accounts.buffalo.entrecode.de/group?groupID=c7df5f26-3fa2-4bd5-8a9a-47087d69ab29"
+    },
+    "collection": {
+      "profile": "https://entrecode.de/schema/groups",
+      "href": "https://accounts.buffalo.entrecode.de/group"
+    }
+  }
+}

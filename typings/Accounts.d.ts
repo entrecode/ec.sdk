@@ -6,6 +6,8 @@ import { InvitesResource } from './resources/InvitesResource';
 import { ClientList } from './resources/ClientList';
 import { ClientResrouce } from './resources/ClientResrouce';
 import { InvalidPermissionsResource } from './resources/InvalidPermissionsResource';
+import { GroupResource } from './resources/GroupResource';
+import { GroupList } from './resources/GroupList';
 
 export declare class Accounts extends Core {
   constructor(environment?: environment);
@@ -41,6 +43,10 @@ export declare class Accounts extends Core {
   client(clientID: string): Promise<ClientResrouce>;
 
   invalidPermissions(): Promise<InvalidPermissionsResource>;
+
+  groupList(options?: filterOptions): Promise<GroupList>;
+
+  group(groupID: string): Promise<GroupResource>;
 }
 
 interface tokenResponse {
