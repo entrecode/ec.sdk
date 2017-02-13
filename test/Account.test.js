@@ -11,6 +11,8 @@ const Accounts = require('../lib/Accounts').default;
 const ListResource = require('../lib/resources/ListResource').default;
 const AccountList = require('../lib/resources/AccountList').default;
 const AccountResource = require('../lib/resources/AccountResource').default;
+const ClientList = require('../lib/resources/ClientList').default;
+const ClientResource = require('../lib/resources/ClientResource').default;
 const InvitesResource = require('../lib/resources/InvitesResource').default;
 const Resource = require('../lib/resources/Resource').default;
 
@@ -293,6 +295,43 @@ describe('Accounts class', () => {
       throw err;
     });
   });
+  it('should return list on clientList', () => {
+    const accounts = new Accounts('live');
+    const stub = sinon.stub(helper, 'get');
+    stub.returns(resolver('client-list.json'));
+
+    return accounts.clientList()
+    .then((list) => {
+      list.should.be.instanceof(ClientList);
+      stub.restore();
+    })
+    .catch((err) => {
+      stub.restore();
+      throw err;
+    });
+  });
+  it('should be rejected on clientList only with clientID', () => {
+    return new Accounts().clientList({ clientID: 'id' }).should.be.rejectedWith(Error);
+  });
+  it('should return resource on client', () => {
+    const accounts = new Accounts('live');
+    const stub = sinon.stub(helper, 'get');
+    stub.returns(resolver('account-list.json'));
+
+    return accounts.client('aID')
+    .then((resource) => {
+      resource.should.be.instanceof(ClientResource);
+      stub.restore();
+    })
+    .catch((err) => {
+      stub.restore();
+      throw err;
+    });
+  });
+  it('should be rejected on client with undefiend id', () => {
+    return new Accounts().client().should.be.rejectedWith(Error);
+  });
+
 });
 
 describe('Account ListResource', () => {

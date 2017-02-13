@@ -3,6 +3,8 @@ import { AccountList } from './resources/AccountList';
 import { AccountResource } from './resources/AccountResource';
 import { filterOptions } from './interfaces';
 import { InvitesResource } from './resources/InvitesResource';
+import { ClientList } from './resources/ClientList';
+import { ClientResrouce } from './resources/ClientResrouce';
 
 export declare class Accounts extends Core {
   constructor(environment?: environment);
@@ -32,6 +34,10 @@ export declare class Accounts extends Core {
   createInvites(count: number): Promise<InvitesResource>;
 
   invites(): Promise<InvitesResource>
+
+  clientList(options?: filterOptions): Promise<ClientList>;
+
+  client(clientID: string): Promise<ClientResrouce>;
 }
 
 interface tokenResponse {

@@ -10,6 +10,8 @@ import {
 } from './helper';
 import AccountList from './resources/AccountList';
 import AccountResource from './resources/AccountResource';
+import ClientList from './resources/ClientList';
+import ClientResource from './resources/ClientResource';
 import InvitesResource from './resources/InvitesResource';
 import TokenStoreFactory from './TokenStore';
 
@@ -340,5 +342,34 @@ export default class Accounts extends Core {
       return get(this.environment, request)
       .then(([invites, traversal]) => new InvitesResource(invites, this.environment, traversal));
     });
+  }
+
+  clientList(options) {
+    return Promise.resolve()
+    .then(() => {
+      if (options && Object.keys(options).length === 1 && 'clientID' in options) {
+        throw new Error('Providing only an clientID in ClientList filter will result in single resource response. Please use Accounts#client');
+      }
+
+      const request = this.newRequest()
+      .follow('ec:acc/clients/options')
+      .withTemplateParameters(optionsToQuery(options));
+      return get(this.environment, request);
+    })
+    .then(([res, traversal]) => new ClientList(res, this.environment, traversal));
+  }
+
+  client(clientID) {
+    return Promise.resolve()
+    .then(() => {
+      if (!clientID) {
+        throw new Error('accountID must be defined');
+      }
+      const request = this.newRequest()
+      .follow('ec:acc/clients/options')
+      .withTemplateParameters({ clientid: clientID });
+      return get(this.environment, request);
+    })
+    .then(([res, traversal]) => new ClientResource(res, this.environment, traversal));
   }
 }
