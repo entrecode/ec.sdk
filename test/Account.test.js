@@ -64,6 +64,9 @@ describe('Accounts class', () => {
       throw err;
     });
   });
+  it('should be rejected on list only with accountID', () => {
+    return new Accounts().list({ accountID: 'id' }).should.be.rejectedWith(Error);
+  });
   it('should return resource on get', () => {
     const accounts = new Accounts('live');
     const stub = sinon.stub(helper, 'get');

@@ -74,6 +74,10 @@ export default class Accounts extends Core {
   list(options) {
     return Promise.resolve()
     .then(() => {
+      if (options && Object.keys(options).length === 1 && 'accountID' in options) {
+        throw new Error('Providing only an accountID in AccountList filter will result in single resource response. Please use Accounts#get');
+      }
+
       const request = this.newRequest()
       .follow('ec:accounts/options')
       .withTemplateParameters(optionsToQuery(options));

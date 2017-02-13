@@ -64,6 +64,10 @@ export default class DataManager extends Core {
   list(options) {
     return Promise.resolve()
     .then(() => {
+      if (options && Object.keys(options).length === 1 && 'dataManagerID' in options) {
+        throw new Error('Providing only an dataManagerID in DataManagerList filter will result in single resource response. Please use DataManager#get');
+      }
+
       const request = this.newRequest()
       .follow('ec:datamanagers/options')
       .withTemplateParameters(optionsToQuery(options));

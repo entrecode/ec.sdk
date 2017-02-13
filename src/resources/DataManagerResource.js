@@ -27,9 +27,8 @@ export default class DataManagerResource extends Resource {
 
       o.dataManagerID = this.getDataManagerID();
 
-      if (Object.keys(o).length === 2 &&
-        {}.hasOwnProperty.call(o, 'dataManagerID') && {}.hasOwnProperty.call(o, 'modelID')) {
-        throw new Error('Cannot filter modelList only by dataManagerID and modelID. Use #model(modelID) instead.');
+      if (Object.keys(o).length === 2 && 'dataManagerID' in o && 'modelID' in o) {
+        throw new Error('Cannot filter modelList only by dataManagerID and modelID. Use DataManagerResource#model() instead.');
       }
 
       return get(
