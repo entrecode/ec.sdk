@@ -14,6 +14,7 @@ const AccountResource = require('../lib/resources/AccountResource').default;
 const ClientList = require('../lib/resources/ClientList').default;
 const ClientResource = require('../lib/resources/ClientResource').default;
 const InvitesResource = require('../lib/resources/InvitesResource').default;
+const InvalidPermissionsResource = require('../lib/resources/InvalidPermissionsResource').default;
 const Resource = require('../lib/resources/Resource').default;
 
 chai.should();
@@ -331,7 +332,21 @@ describe('Accounts class', () => {
   it('should be rejected on client with undefiend id', () => {
     return new Accounts().client().should.be.rejectedWith(Error);
   });
+  it('should return invalidPermissionsResource', () => {
+    const accounts = new Accounts('live');
+    const stub = sinon.stub(helper, 'get');
+    stub.returns(resolver('invalid-permissions.json'));
 
+    return accounts.invalidPermissions()
+    .then((resource) => {
+      resource.should.be.instanceof(InvalidPermissionsResource);
+      stub.restore();
+    })
+    .catch((err) => {
+      stub.restore();
+      throw err;
+    });
+  });
 });
 
 describe('Account ListResource', () => {

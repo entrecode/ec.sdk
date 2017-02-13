@@ -5,6 +5,7 @@ import { filterOptions } from './interfaces';
 import { InvitesResource } from './resources/InvitesResource';
 import { ClientList } from './resources/ClientList';
 import { ClientResrouce } from './resources/ClientResrouce';
+import { InvalidPermissionsResource } from './resources/InvalidPermissionsResource';
 
 export declare class Accounts extends Core {
   constructor(environment?: environment);
@@ -38,6 +39,8 @@ export declare class Accounts extends Core {
   clientList(options?: filterOptions): Promise<ClientList>;
 
   client(clientID: string): Promise<ClientResrouce>;
+
+  invalidPermissions(): Promise<InvalidPermissionsResource>;
 }
 
 interface tokenResponse {

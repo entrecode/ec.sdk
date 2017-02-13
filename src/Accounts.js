@@ -12,6 +12,7 @@ import AccountList from './resources/AccountList';
 import AccountResource from './resources/AccountResource';
 import ClientList from './resources/ClientList';
 import ClientResource from './resources/ClientResource';
+import InvalidPermissionsResource from './resources/InvalidPermissionsResource';
 import InvitesResource from './resources/InvitesResource';
 import TokenStoreFactory from './TokenStore';
 
@@ -371,5 +372,19 @@ export default class Accounts extends Core {
       return get(this.environment, request);
     })
     .then(([res, traversal]) => new ClientResource(res, this.environment, traversal));
+  }
+
+  /**
+   * Get {@link InvalidPermissionsResource} to show all invalid permissions.
+   *
+   * @returns {Promise<InvalidPermissionsResource>} Promise resolving to invalid permissions
+   */
+  invalidPermissions() {
+    const request = this.newRequest()
+    .follow('ec:invalid-permissions');
+
+    return get(this.environment, request)
+    .then(([resource, traversal]) =>
+      new InvalidPermissionsResource(resource, this.environment, traversal));
   }
 }
