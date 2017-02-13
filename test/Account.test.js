@@ -357,6 +357,13 @@ describe('Account Resource', () => {
   it('should get all permissions', () => {
     resource.getAllPermissions().should.have.property('length', 8);
   });
+  it('should load TokenList', () => {
+    const stub = sinon.stub(helper, 'get');
+    stub.returns(resolver('token-list.json'));
+
+    return resource.tokenList().should.be.fulfilled
+    .and.notify(() => stub.restore());
+  });
 
   const dateGetter = [
     'created',

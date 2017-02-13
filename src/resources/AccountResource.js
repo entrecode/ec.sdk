@@ -1,4 +1,6 @@
 import Resource from './Resource';
+import TokenList from './TokenList';
+import { get } from '../helper';
 
 /**
  * Account resource class
@@ -189,8 +191,20 @@ export default class AccountResource extends Resource {
     return this.getProperty('hasPendingEmail');
   }
 
-  // todo change email
-  // todo password reset
+  /**
+   * Load the {@link TokenList} for this account
+   *
+   * @returns {Promise<TokenList>} Promise resolving the token list
+   */
+  tokenList() {
+    return Promise.resolve()
+    .then(() => {
+      const request = this.newRequest().follow('ec:account/tokens');
+
+      return get(this.environment, request)
+      .then(([tokenList, traversal]) => new TokenList(tokenList, this.environment, traversal));
+    });
+  }
 }
 
 /**
