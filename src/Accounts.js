@@ -102,6 +102,11 @@ export default class Accounts extends Core {
     .then(([res, traversal]) => new AccountResource(res, this.environment, traversal));
   }
 
+  /**
+   * Get the {@link AccountResource} which is currently logged in.
+   *
+   * @returns {Promise<AccountResource>} resolves to the Account which is logged in.
+   */
   me() {
     return Promise.resolve()
     .then(() => {

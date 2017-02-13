@@ -1,4 +1,5 @@
 import { Resource } from './Resource';
+import { TokenList } from './TokenList';
 
 export declare class AccountResource extends Resource {
   constructor(resource: any, environment: string, traversal?: any);
@@ -34,4 +35,6 @@ export declare class AccountResource extends Resource {
   hasPassword(): boolean;
 
   hasPendingEmail(): boolean
+
+  tokenList(): Promise<TokenList>;
 }
