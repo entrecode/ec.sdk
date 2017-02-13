@@ -42,7 +42,7 @@ describe('Model ListResource', () => {
   it('should be instance of ListResource', () => {
     list.should.be.instanceOf(ListResource);
   });
-  it('should be instance of AccountList', () => {
+  it('should be instance of ModelList', () => {
     list.should.be.instanceOf(ModelList);
   });
   it('should have AccountResource items', () => {
@@ -75,7 +75,7 @@ describe('Model Resource', () => {
   it('should be instance of Resource', () => {
     resource.should.be.instanceOf(Resource);
   });
-  it('should be instance of AccountResource', () => {
+  it('should be instance of ModelResource', () => {
     resource.should.be.instanceOf(ModelResource);
   });
   it('should return boolean on hasEntries', () => {
