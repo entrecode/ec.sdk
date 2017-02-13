@@ -89,14 +89,25 @@ export default class Accounts extends Core {
    * @returns {Promise<AccountResource>} resolves to the Account which should be loaded.
    */
   get(accountID) {
-    if (!accountID) {
-      throw new Error('accountID must be defined');
-    }
     return Promise.resolve()
     .then(() => {
+      if (!accountID) {
+        throw new Error('accountID must be defined');
+      }
       const request = this.newRequest()
       .follow('ec:accounts/options')
       .withTemplateParameters({ accountid: accountID });
+      return get(this.environment, request);
+    })
+    .then(([res, traversal]) => new AccountResource(res, this.environment, traversal));
+  }
+
+  me() {
+    return Promise.resolve()
+    .then(() => {
+      const request = this.newRequest()
+      .follow('ec:account')
+      .withTemplateParameters();
       return get(this.environment, request);
     })
     .then(([res, traversal]) => new AccountResource(res, this.environment, traversal));
@@ -273,17 +284,17 @@ export default class Accounts extends Core {
   changeEmail(email) {
     return Promise.resolve()
     .then(() => {
-    if (!email) {
-      throw new Error('email must be defined');
-    }
+      if (!email) {
+        throw new Error('email must be defined');
+      }
 
-    if (!this.tokenStore.has()) {
-      throw new Error('not logged in.');
-    }
+      if (!this.tokenStore.has()) {
+        throw new Error('not logged in.');
+      }
 
-    const request = this.newRequest().follow('ec:auth/change-email');
+      const request = this.newRequest().follow('ec:auth/change-email');
 
-    return postEmpty(this.environment, request, { email });
+      return postEmpty(this.environment, request, { email });
     });
   }
 

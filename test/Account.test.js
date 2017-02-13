@@ -79,9 +79,23 @@ describe('Accounts class', () => {
       throw err;
     });
   });
-  it('should throw on get in undefiend id', () => {
-    const throws = () => new Accounts().get();
-    throws.should.throw(Error);
+  it('should be rejected on get in undefiend id', () => {
+    return new Accounts().get().should.be.rejectedWith(Error);
+  });
+  it('should return resource on me', () => {
+    const accounts = new Accounts('live');
+    const stub = sinon.stub(helper, 'get');
+    stub.returns(resolver('account-list.json'));
+
+    return accounts.me()
+    .then((resource) => {
+      resource.should.be.instanceof(AccountResource);
+      stub.restore();
+    })
+    .catch((err) => {
+      stub.restore();
+      throw err;
+    });
   });
   it('should create API token', () => {
     const accounts = new Accounts('live');
