@@ -345,6 +345,12 @@ export default class Accounts extends Core {
     });
   }
 
+  /**
+   * Load the {@link ClientList}.
+   *
+   * @param {filterOptions} options filter options
+   * @returns {Promise<ClientList>} Promise resolving to ClientList
+   */
   clientList(options) {
     return Promise.resolve()
     .then(() => {
@@ -360,6 +366,12 @@ export default class Accounts extends Core {
     .then(([res, traversal]) => new ClientList(res, this.environment, traversal));
   }
 
+  /**
+   * Load a single {@link ClientResource}.
+   *
+   * @param {string} clientID the clientID
+   * @returns {Promise<ClientResource>} Promise resolving to ClientResource
+   */
   client(clientID) {
     return Promise.resolve()
     .then(() => {
