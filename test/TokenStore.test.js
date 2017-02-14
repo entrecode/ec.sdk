@@ -1,3 +1,5 @@
+/* eslint no-unused-expressions:0 */
+
 const chai = require('chai');
 const CookieMock = require('ec.cookie-mock');
 const cookie = require('browser-cookies');
@@ -59,6 +61,30 @@ describe('Token handling', () => {
     store.set(token);
     store.del();
     should.not.exist(store.token);
+  });
+  it('should set clientID', () => {
+    store.setClientID('rest');
+    store.clientID.should.be.equal('rest');
+  });
+  it('should throw on undefined clientID', () => {
+    const throws = () => store.setClientID();
+    throws.should.throw(Error);
+  });
+  it('should throw on clientID other than rest', () => {
+    const throws = () => store.setClientID('notRest');
+    throws.should.throw(Error);
+  });
+  it('should get clientID', () => {
+    store.clientID = 'rest';
+    store.getClientID().should.be.equal('rest');
+  });
+  it('should return true on hasClientID', () => {
+    store.clientID = 'rest';
+    store.hasClientID().should.be.true;
+  });
+  it('should return false on hasClientID', () => {
+    store.clientID = undefined;
+    store.hasClientID().should.be.false;
   });
 });
 

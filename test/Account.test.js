@@ -44,7 +44,7 @@ describe('Accounts class', () => {
     const accounts = new Accounts();
     accounts.should.not.have.property('clientID');
     accounts.setClientID('rest');
-    accounts.should.have.property('clientID', 'rest');
+    accounts.tokenStore.getClientID().should.be.equal('rest');
   });
   it('should throw on undefined clientID', () => {
     const throws = () => new Accounts().setClientID();
@@ -114,52 +114,6 @@ describe('Accounts class', () => {
     .should.eventually.have.property('accountID', '203e9c84-5c78-48ca-b266-405c9220f5d0')
     .and.notify(() => stub.restore());
   });
-  it('should login successfully', () => {
-    const accounts = new Accounts();
-    const stub = sinon.stub(helper, 'post');
-    stub.returns(resolver('login-token.json'));
-
-    accounts.setClientID('rest');
-    return accounts.login('andre@entrecode.de', 'mysecret').should.eventually.be.fulfilled
-    .and.notify(() => stub.restore());
-  });
-  it('should reject when already logged in', () => {
-    const accounts = new Accounts();
-    accounts.tokenStore.set('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJlbnRyZWNvZGVUZXN0IiwiaWF0IjoxNDg1NzgzNTg4LCJleHAiOjQ2NDE0NTcxODgsImF1ZCI6IlRlc3QiLCJzdWIiOiJ0ZXN0QGVudHJlY29kZS5kZSJ9.Vhrq5GR2hNz-RoAhdlnIIWHelPciBPCemEa74s7cXn8');
-    accounts.setClientID('rest');
-
-    return new Accounts().login('user', 'mysecret').should.be.rejectedWith(Error);
-  });
-  it('should be rejected on unset clientID', () => {
-    const accounts = new Accounts();
-    accounts.tokenStore.del();
-    return accounts.login('user', 'mysecret').should.be.rejectedWith(Error);
-  });
-  it('should be rejected on undefined email', () => {
-    const accounts = new Accounts();
-    accounts.tokenStore.del();
-    accounts.setClientID('rest');
-    return accounts.login(null, 'mysecret').should.be.rejectedWith(Error);
-  });
-  it('should be rejected on undefined password', () => {
-    const accounts = new Accounts();
-    accounts.tokenStore.del();
-    accounts.setClientID('rest');
-    return accounts.setClientID('rest').login('user', null).should.be.rejectedWith(Error);
-  });
-  it('should logout successfully', () => {
-    const accounts = new Accounts();
-    accounts.setToken('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJlbnRyZWNvZGVUZXN0IiwiaWF0IjoxNDg1NzgzNTg4LCJleHAiOjQ2NDE0NTcxODgsImF1ZCI6IlRlc3QiLCJzdWIiOiJ0ZXN0QGVudHJlY29kZS5kZSJ9.Vhrq5GR2hNz-RoAhdlnIIWHelPciBPCemEa74s7cXn8');
-    const stub = sinon.stub(helper, 'post');
-    stub.returns(Promise.resolve());
-
-    return accounts.logout().should.be.eventually.fulfilled
-    .and.notify(() => stub.restore());
-  });
-  it('should be successful on no token', () => {
-    const accounts = new Accounts();
-    return accounts.logout().should.be.eventually.fullfilled;
-  });
   it('should return true on email available', () => {
     const accounts = new Accounts();
     const stub = sinon.stub(helper, 'get');
@@ -201,7 +155,9 @@ describe('Accounts class', () => {
     return new Accounts().signup('someone@example.com', null).should.be.rejectedWith(Error);
   });
   it('should be rejected on undefined clientID', () => {
-    new Accounts().signup('someone@example.com', 'supersecure').should.be.rejectedWith(Error);
+    const accounts = new Accounts();
+    accounts.tokenStore.clientID = undefined;
+    return accounts.signup('someone@example.com', 'supersecure').should.be.rejectedWith(Error);
   });
   it('should reset password', () => {
     const accounts = new Accounts();
@@ -222,6 +178,8 @@ describe('Accounts class', () => {
     return new Accounts().resetPassword().should.be.rejectedWith(Error);
   });
   it('should be rejected on undefiend clientID', () => {
+    const accounts = new Accounts();
+    accounts.tokenStore.clientID = undefined;
     return new Accounts().resetPassword('someone@entrecode.de').should.be.rejectedWith(Error);
   });
   it('should change email', () => {

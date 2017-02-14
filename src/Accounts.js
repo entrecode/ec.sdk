@@ -64,7 +64,7 @@ export default class Accounts extends Core {
       throw new Error('ec.sdk currently only supports client \'rest\'');
     }
 
-    this.clientID = clientID;
+    this.tokenStore.setClientID(clientID);
     return this;
   }
 
@@ -139,75 +139,6 @@ export default class Accounts extends Core {
   }
 
   /**
-   * Response when creating a API token in account server.
-   *
-   * @typedef {{jwt: string, accountID: string, iat: number, exp: number}} tokenResponse
-   */
-
-  /**
-   * Login with email and password. Currently only supports rest clientID with body post of
-   * credentials.
-   *
-   * @param {string} email email address of the user
-   * @param {string} password password of the user
-   * @returns {Promise<string>} Promise resolving to the issued token
-   */
-  login(email, password) {
-    return Promise.resolve()
-    .then(() => {
-      if (this.tokenStore.has()) {
-        throw new Error('already logged in or old token present. logout first');
-      }
-
-      if (!this.clientID) {
-        throw new Error('clientID must be set with Account#setClientID(clientID: string)');
-      }
-      if (!email) {
-        throw new Error('email must be defined');
-      }
-      if (!password) {
-        throw new Error('password must be defined');
-      }
-
-      const request = this.newRequest().follow('ec:auth/login')
-      .withTemplateParameters({ clientID: this.clientID });
-
-      return post(this.environment, request, { email, password });
-    })
-    .then(([token]) => {
-      this.tokenStore.set(token.token);
-      this.events.emit('login', token.token);
-
-      return token.token;
-    });
-  }
-
-  /**
-   * Logout with existing token. Will invalidate the token with the Account API and remove any
-   * cookie stored.
-   *
-   * @returns {Promise<undefined>} Promise resolving undefined on success.
-   */
-  logout() {
-    return Promise.resolve()
-    .then(() => {
-      if (!this.tokenStore.has()) {
-        return Promise.resolve();
-      }
-
-      const request = this.newRequest().follow('ec:auth/logout')
-      .withTemplateParameters({ clientID: this.clientID, token: this.token });
-
-      return post(this.environment, request);
-    })
-    .then(() => {
-      this.events.emit('logout');
-      this.tokenStore.del();
-      return Promise.resolve();
-    });
-  }
-
-  /**
    * Will check if the given email is available for login.
    *
    * @param {string} email the email to check.
@@ -246,12 +177,12 @@ export default class Accounts extends Core {
       if (!password) {
         throw new Error('password must be defined');
       }
-      if (!this.clientID) {
+      if (!this.tokenStore.hasClientID()) {
         throw new Error('clientID must be set with Account#setClientID(clientID: string)');
       }
 
       const request = this.newRequest().follow('ec:auth/register').withTemplateParameters({
-        clientID: this.clientID,
+        clientID: this.tokenStore.getClientID(),
         invite,
       });
 
@@ -276,12 +207,12 @@ export default class Accounts extends Core {
       if (!email) {
         throw new Error('email must be defined');
       }
-      if (!this.clientID) {
+      if (!this.tokenStore.hasClientID()) {
         throw new Error('clientID must be set with Account#setClientID(clientID: string)');
       }
 
       const request = this.newRequest().follow('ec:auth/password-reset').withTemplateParameters({
-        clientID: this.clientID,
+        clientID: this.tokenStore.getClientID(),
         email,
       });
 

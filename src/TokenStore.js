@@ -25,6 +25,7 @@ class TokenStore {
   constructor(environment) {
     this.environment = environment;
     this.token = undefined;
+    this.clientID = undefined;
   }
 
   /**
@@ -92,6 +93,42 @@ class TokenStore {
     }
 
     this.token = undefined;
+  }
+
+  /**
+   * Set clientID for this {@link TokenStore}.
+   *
+   * @param {string} clientID the clientID
+   * @returns {undefined}
+   */
+  setClientID(clientID) {
+    if (!clientID) {
+      throw new Error('clientID cannot be undefined');
+    }
+
+    if (clientID !== 'rest') {
+      throw new Error('clientID other than rest currently not supported');
+    }
+
+    this.clientID = clientID;
+  }
+
+  /**
+   * Get the clientID for this {@link TokenStore}.
+   *
+   * @returns {string} the clientID
+   */
+  getClientID() {
+    return this.clientID;
+  }
+
+  /**
+   * Whether or not this {@link TokenStore} has a clientID set.
+   *
+   * @returns {boolean}
+   */
+  hasClientID() {
+    return this.clientID !== undefined;
   }
 }
 
