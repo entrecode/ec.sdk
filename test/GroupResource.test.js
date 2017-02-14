@@ -83,6 +83,10 @@ describe('Group Resource', () => {
     resource.addPermission('acc:something');
     resource.getPermissions().should.have.property('length', 3);
   });
+  it('should throw on undefined permission', () => {
+    const throws = () => resource.addPermission();
+    throws.should.throw(Error);
+  });
 
   const getter = [
     'groupID', 'name', 'permissions',
