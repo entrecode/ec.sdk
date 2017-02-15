@@ -4,6 +4,8 @@ import jwtDecode from 'jwt-decode';
 /**
  * Map for storing all tokenStores.
  *
+ * @access private
+ *
  * @type {Map<string, TokenStore>}
  */
 export const stores = new Map();
@@ -125,7 +127,7 @@ class TokenStore {
   /**
    * Whether or not this {@link TokenStore} has a clientID set.
    *
-   * @returns {boolean}
+   * @returns {boolean} Whether or not a clientID is set.
    */
   hasClientID() {
     return this.clientID !== undefined;
@@ -133,7 +135,7 @@ class TokenStore {
 }
 
 /**
- * Factory function for creating a {@link TokenFactory} for an environment. Will return a
+ * Factory function for creating a {@link TokenStore} for an environment. Will return a
  * previously created {@link TokenStore}.
  *
  * @param {environment} environment the environment for which the token store should be created

@@ -4,68 +4,59 @@ import Resource from './Resource';
  * TokenResource class
  *
  * @class
+ *
+ * @prop {string}   tokenID             - The id of this token
+ *
+ * @prop {object}   device              - Object containing device information
+ * @prop {string}   ipAddress           - The IP address
+ * @prop {string}   ipAddressLocation   - The location of the IP
+ * @prop {boolean}  isCurrent           - True if this is the current token
+ * @prop {Date}     issued              - The {@link Date} on which this token was issued
+ * @prop {Date}     validUntil          - The {@link Date} this token is valid until
  */
 export default class TokenResource extends Resource {
   /**
-   * Whether or not this is the token which is used by the current session.
+   * Creates a new {@link TokenResource}.
    *
-   * @returns {boolean} whether or not this is the current token
+   * @access protected
+   *
+   * @param {object} resource resource loaded from the API.
+   * @param {string} environment the environment this resource is associated to.
+   * @param {?object} traversal traversal from which traverson can continue.
    */
-  isCurrent() {
-    return this.getProperty('isCurrent');
-  }
+  constructor(resource, environment, traversal) {
+    super(resource, environment, traversal);
 
-  /**
-   * Issued {@link Date} for this token.
-   *
-   * @returns {Date} issued date
-   */
-  issued() {
-    return new Date(this.getProperty('issued'));
-  }
+    Object.defineProperties(this, {
+      accessTokenID: {
+        enumerable: true,
+        get: () => this.getProperty('accessTokenID'),
+      },
 
-  /**
-   * Valid until {@link Date} for this token.
-   *
-   * @returns {Date} valid until date
-   */
-  validUntil() {
-    return new Date(this.getProperty('validUntil'));
-  }
-
-  /**
-   * Will return ipAddress property.
-   *
-   * @returns {string} the ipAddress.
-   */
-  getIpAddress() {
-    return this.getProperty('ipAddress');
-  }
-
-  /**
-   * Will return ipAddressLocation property.
-   *
-   * @returns {string} the ipAddressLocation.
-   */
-  getIpAddressLocation() {
-    return this.getProperty('ipAddressLocation');
-  }
-
-  /**
-   * Will return accessTokenID property.
-   *
-   * @returns {string} the token id.
-   */
-  getAccessTokenID() {
-    return this.getProperty('accessTokenID');
-  }
-
-  /**
-   * Will return device property.
-   *
-   * @returns {object} the device property.
-   */
-  getDevice() {
-    return this.getProperty('device');
+      device: {
+        enumerable: true,
+        get: () => this.getProperty('device'),
+      },
+      ipAddress: {
+        enumerable: true,
+        get: () => this.getProperty('ipAddress'),
+      },
+      ipAddressLocation: {
+        enumerable: true,
+        get: () => this.getProperty('ipAddressLocation'),
+      },
+      isCurrent: {
+        enumerable: true,
+        get: () => this.getProperty('isCurrent'),
+      },
+      issued: {
+        enumerable: true,
+        get: () => new Date(this.getProperty('issued')),
+      },
+      validUntil: {
+        enumerable: true,
+        get: () => new Date(this.getProperty('validUntil')),
+      },
+    });
   }
 }

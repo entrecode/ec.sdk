@@ -6,87 +6,99 @@ import { get } from '../helper';
  * Account resource class
  *
  * @class
+ *
+ * @prop {string}         accountID         - The id of the Account
+ * @prop {Date}           created           - The {@link Date} on which this account was created
+ * @prop {string}         email             - The current email. Can be changed with {@link
+ *   Accounts#changeEmail}
+ * @prop {Array<object>}  groups            - Array of groups this account is member of
+ * @prop {boolean}        hasPassword       - Whether or not this account has a password
+ * @prop {boolean}        hasPendingEmail   - Whether or not this account has a pending email
+ * @prop {string}         language          - The language for frontend usage
+ * @prop {Array<openID>}  openID            - Array of connected openID accounts
+ * @prop {Array<string>}  permissions       - Array of permissions
+ * @prop {string}         state             - State of the account.
  */
 export default class AccountResource extends Resource {
   /**
-   * Will return created property.
+   * Creates a new {@link AccountResource}.
    *
-   * @returns {Date} the create date.
+   * @access protected
+   *
+   * @param {object} resource resource loaded from the API.
+   * @param {string} environment the environment this resource is associated to.
+   * @param {?object} traversal traversal from which traverson can continue.
    */
-  getCreated() {
-    return new Date(this.getProperty('created'));
-  }
+  constructor(resource, environment, traversal) {
+    super(resource, environment, traversal);
 
-  /**
-   * Will return accountID property.
-   *
-   * @returns {string} the accountID.
-   */
-  getAccountID() {
-    return this.getProperty('accountID');
-  }
+    Object.defineProperties(this, {
+      accountID: {
+        enumerable: true,
+        get: () => this.getProperty('accountID'),
+      },
 
-  /**
-   * Will return name property.
-   *
-   * @returns {string} the name.
-   */
-  getName() {
-    return this.getProperty('name');
-  }
-
-  /**
-   * Will return email property.
-   *
-   * @returns {string} the email.
-   */
-  getEmail() {
-    return this.getProperty('email');
-  }
-
-  /**
-   * Will return groups property.
-   *
-   * @returns {array<object>} the groups array.
-   */
-  getGroups() {
-    return this.getProperty('groups');
-  }
-
-  /**
-   * Will return language property.
-   *
-   * @returns {string} the language.
-   */
-  getLanguage() {
-    return this.getProperty('language');
-  }
-
-  /**
-   * Will return stage property.
-   *
-   * @returns {string} the state.
-   */
-  getState() {
-    return this.getProperty('state');
-  }
-
-  /**
-   * Will return openID property.
-   *
-   * @returns {array<openID>} the openID array.
-   */
-  getOpenID() {
-    return this.getProperty('openID');
-  }
-
-  /**
-   * Will return permissions property.
-   *
-   * @returns {array<string>} the config.
-   */
-  getPermissions() {
-    return this.getProperty('permissions');
+      created: {
+        enumerable: true,
+        get: () => new Date(this.getProperty('created')),
+      },
+      email: {
+        enumerable: true,
+        get: () => this.getProperty('email'),
+      },
+      groups: {
+        enumerable: true,
+        get: () => this.getProperty('groups'),
+      },
+      hasPassword: {
+        enumerable: true,
+        get: () => this.getProperty('hasPassword'),
+      },
+      hasPendingEmail: {
+        enumerable: true,
+        get: () => this.getProperty('hasPendingEmail'),
+      },
+      language: {
+        enumerable: true,
+        get: () => this.getProperty('language'),
+        set: (value) => {
+          this.setProperty('language', value);
+          return value;
+        },
+      },
+      name: {
+        enumerable: true,
+        get: () => this.getProperty('name'),
+        set: (value) => {
+          this.setProperty('name', value);
+          return value;
+        },
+      },
+      openID: {
+        enumerable: true,
+        get: () => this.getProperty('openID'),
+        set: (value) => {
+          this.setProperty('openID', value);
+          return value;
+        },
+      },
+      permissions: {
+        enumerable: true,
+        get: () => this.getProperty('permissions'),
+        set: (value) => {
+          this.setProperty('permissions', value);
+          return value;
+        },
+      },
+      state: {
+        enumerable: true,
+        get: () => this.getProperty('state'),
+        set: (value) => {
+          this.setProperty('state', value);
+          return value;
+        },
+      },
+    });
   }
 
   /**
@@ -96,65 +108,9 @@ export default class AccountResource extends Resource {
    * @returns {array<string>} All permissions.
    */
   getAllPermissions() {
-    return this.getProperty('groups')
+    return this.groups
     .map(g => g.permissions)
-    .reduce((all, current) => all.concat(current), this.getPermissions());
-  }
-
-  /**
-   * Set a new value to language property.
-   *
-   * @param {string} value the value to assign.
-   * @returns {AccountResource} this Resource for chainability
-   */
-  setLanguage(value) {
-    if (!value) {
-      throw new Error('Language must be defined');
-    }
-
-    return this.setProperty('language', value);
-  }
-
-  /**
-   * Set a new value to state property.
-   *
-   * @param {string} value the value to assign.
-   * @returns {AccountResource} this Resource for chainability
-   */
-  setState(value) {
-    if (!value) {
-      throw new Error('State must be defined');
-    }
-
-    return this.setProperty('state', value);
-  }
-
-  /**
-   * Set a new value to openID property.
-   *
-   * @param {array<openID>} value the value to assign.
-   * @returns {AccountResource} this Resource for chainability
-   */
-  setOpenID(value) {
-    if (!value) {
-      throw new Error('openID must be defined');
-    }
-
-    return this.setProperty('openID', value);
-  }
-
-  /**
-   * Set a new value to permissions property.
-   *
-   * @param {array<string>} value the value to assign.
-   * @returns {AccountResource} this Resource for chainability
-   */
-  setPermissions(value) {
-    if (!value) {
-      throw new Error('Permissions must be defined');
-    }
-
-    return this.setProperty('permissions', value);
+    .reduce((all, current) => all.concat(current), this.permissions);
   }
 
   /**
@@ -168,27 +124,10 @@ export default class AccountResource extends Resource {
       throw new Error('permission must be defined');
     }
 
-    const current = this.getPermissions();
+    const current = this.permissions;
     current.push(value);
-    return this.setPermissions(current);
-  }
-
-  /**
-   * Check if this account has a password. Will be false on openID only and API key accounts.
-   *
-   * @returns {boolean} whether or not this account has a password.
-   */
-  hasPassword() {
-    return this.getProperty('hasPassword');
-  }
-
-  /**
-   * Check if this account has a pending email.
-   *
-   * @returns {array<openID>} whether or not the account has a pending email.
-   */
-  hasPendingEmail() {
-    return this.getProperty('hasPendingEmail');
+    this.permissions = current;
+    return this;
   }
 
   /**

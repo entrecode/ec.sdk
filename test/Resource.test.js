@@ -6,7 +6,6 @@ const fs = require('fs');
 const sinon = require('sinon');
 const sinonChai = require('sinon-chai');
 
-const core = require('../lib/Core');
 const helper = require('../lib/helper');
 const traverson = require('traverson');
 const resolver = require('./mocks/resolver');
@@ -54,11 +53,11 @@ describe('Resource', () => {
     resource.newRequest().should.be.instanceOf(traverson._Builder);
   });
   it('should be clean', () => {
-    resource.isDirty().should.be.false;
+    resource.isDirty.should.be.false;
   });
   it('should be dirty on setProperty call', () => {
     resource.setProperty('description', 'hello');
-    resource.isDirty().should.be.true;
+    resource.isDirty.should.be.true;
   });
   it('should restore state on reset call', () => {
     resource.setProperty('description', 'hello');
@@ -67,9 +66,9 @@ describe('Resource', () => {
   });
   it('should be clean after reset', () => {
     resource.setProperty('description', 'hello');
-    resource.isDirty().should.be.true;
+    resource.isDirty.should.be.true;
     resource.reset();
-    resource.isDirty().should.be.false;
+    resource.isDirty.should.be.false;
   });
   it('should call put on save', () => {
     const stub = sinon.stub(helper, 'put');

@@ -6,14 +6,13 @@ import { get, put, del } from '../helper';
 traverson.registerMediaType(HalAdapter.mediaType, HalAdapter);
 
 /**
- * @private
- * @typedef {class} ResourceClass
- */
-
-/**
  * Generic resource class. Represents {@link https://tools.ietf.org/html/draft-kelly-json-hal-08
  * HAL resources}.
+ *
  * @class
+ * @access protected
+ *
+ * @prop {boolean}  isDirty   - Whether or not this Resource was modified
  */
 export default class Resource {
   /**
@@ -40,6 +39,22 @@ export default class Resource {
       this.traversal = traverson.from(this.resource.link('self').href).jsonHal()
       .addRequestOptions({ headers: { Accept: 'application/hal+json' } });
     }
+
+    Object.defineProperties(this, {
+      isDirty: {
+        enumerable: false,
+        get: () => this.dirty,
+      },
+      dirty: {
+        enumerable: false,
+      },
+      resource: {
+        enumerable: false,
+      },
+      traversal: {
+        enumerable: false,
+      }
+    });
   }
 
   /**
@@ -48,7 +63,7 @@ export default class Resource {
      * traverson request builder}
    *  which can be used for a new request to the API.
    *
-   * @access private
+   * @access protected
    *
    * @returns {Object} traverson request builder instance.
    */
@@ -76,15 +91,6 @@ export default class Resource {
       this.dirty = false;
       return this;
     });
-  }
-
-  /**
-   * Check if this {@link Resource} was modified since loading.
-   *
-   * @returns {boolean} whether or not this Resource was modified
-   */
-  isDirty() {
-    return this.dirty;
   }
 
   /**
@@ -154,6 +160,12 @@ export default class Resource {
   }
 
   /**
+   * @private
+   *
+   * @typedef {class} ResourceClass
+   */
+
+  /**
    * Loads the given {@link https://tools.ietf.org/html/draft-kelly-json-hal-08#section-5 link} and
    * returns a {@link Resource} with the loaded result.
    *
@@ -170,8 +182,6 @@ export default class Resource {
       return new Resource(res, this.environment, traversal);
     });
   }
-
-  // TODO follow all?
 
   /**
    * Returns an object with selected properties of the {@link Resource}. Will return all properties
@@ -223,6 +233,7 @@ export default class Resource {
 
   /**
    * Set a new value to the property identified by property.
+   *
    * @param {string} property the property to change.
    * @param {any} value the value to assign.
    * @returns {Resource} this Resource for chainability

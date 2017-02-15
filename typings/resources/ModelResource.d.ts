@@ -3,43 +3,17 @@ import { Resource } from './Resource';
 export declare class ModelResource extends Resource {
   constructor(resource: any, environment: string, traversal?: any);
 
-  setDescription(value: string): ModelResource;
+  modelID: string;
 
-  getDescription(): string;
-
-  setFields(value: Array<any>): ModelResource;
-
-  getFields(): Array<any>;
-
-  setHexColor(value: string): ModelResource;
-
-  getHexColor(): string;
-
-  setHooks(value: Array<any>): ModelResource;
-
-  getHooks(): Array<any>;
-
-  setLocales(value: Array<string>): ModelResource;
-
-  getLocales(): Array<string>;
-
-  setPolicies(value: Array<any>): ModelResource;
-
-  getPolicies(): Array<any>;
-
-  setTitle(value: string): ModelResource;
-
-  getTitle(): string;
-
-  setTitleField(value: string): ModelResource;
-
-  getTitleField(): string;
-
-  getCreated(): Date;
-
-  getModelID(): string;
-
-  getModified(): Date;
-
-  hasEntries(): boolean;
+  created: Date;
+  description: string;
+  fields: Array<any>; // TODO field type
+  hasEntries: boolean;
+  hexColor: string;
+  hooks: Array<any>; // TODO field type
+  locales: Array<string>;
+  modified: Date;
+  policies: Array<any>;
+  title: string;
+  titleField: string;
 }

@@ -2,14 +2,29 @@ import Resource from './Resource';
 
 /**
  * Invites Resource. Will contain an {@link Array} containing all unused invites.
+ *
+ * @class
+ *
+ * @prop {Array<string>} invites - Array of unused invites
  */
 export default class InvitesResource extends Resource {
   /**
-   * Get the invites {@link Array}
+   * Creates a new {@link InvitesResource}.
    *
-   * @returns {Array<string>} Array containing unused invites
+   * @access protected
+   *
+   * @param {object} resource resource loaded from the API.
+   * @param {string} environment the environment this resource is associated to.
+   * @param {?object} traversal traversal from which traverson can continue.
    */
-  getInvites() {
-    return this.getProperty('invites');
+  constructor(resource, environment, traversal) {
+    super(resource, environment, traversal);
+
+    Object.defineProperties(this, {
+      invites: {
+        enumerable: true,
+        get: () => this.getProperty('invites'),
+      },
+    });
   }
 }

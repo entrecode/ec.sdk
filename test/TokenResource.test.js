@@ -10,12 +10,8 @@ const TokenList = require('../lib/resources/TokenList').default;
 const Resource = require('../lib/resources/Resource').default;
 const ListResource = require('../lib/resources/ListResource').default;
 
-const should = chai.should();
+chai.should();
 chai.use(sinonChai);
-
-function capitalizeFirstLetter(string) {
-  return string.charAt(0).toUpperCase() + string.slice(1);
-}
 
 describe('Token ListResource', () => {
   let listJson;
@@ -79,7 +75,7 @@ describe('Token Resource', () => {
     resource.should.be.instanceOf(TokenResource);
   });
   it('should return boolean on isCurrent', () => {
-    resource.isCurrent().should.be.false;
+    resource.isCurrent.should.be.false;
   });
 
   const dateGetter = [
@@ -89,7 +85,7 @@ describe('Token Resource', () => {
     it(`should call resource.getProperty with ${name}`, () => {
       const spy = sinon.spy(resource, 'getProperty');
 
-      const property = resource[name]();
+      const property = resource[name];
       spy.should.have.been.called.once;
       spy.should.have.been.calledWith(name);
       property.toISOString().should.be.equal(resource.getProperty(name));
@@ -106,7 +102,7 @@ describe('Token Resource', () => {
     it(`should call resource.getProperty with ${name}`, () => {
       const spy = sinon.spy(resource, 'getProperty');
 
-      const property = resource[`get${capitalizeFirstLetter(name)}`]();
+      const property = resource[name];
       spy.should.have.been.called.once;
       spy.should.have.been.calledWith(name);
       property.should.be.equal(resource.getProperty(name));

@@ -1,15 +1,6 @@
 import Resource from './Resource';
 
 /**
- * @private
- * @typedef {class} ListResourceClass
- */
-/**
- * @private
- * @typedef {class} ResourceClass
- */
-
-/**
  * Generic list resource class. Represents {@link
   * https://tools.ietf.org/html/draft-kelly-json-hal-08 HAL resources} with added support for lists.
  * @class
@@ -165,4 +156,14 @@ export default class ListResource extends Resource {
  *
  * @typedef {{propertyNames: (string|{exact: string, search: string, from: string, to: string, any:
  *   array<string>, all: array<string>})}} filter
+ */
+
+/**
+ * @typedef {class} ListResourceClass
+ * @private
+ */
+
+/**
+ * @typedef {class} ResourceClass
+ * @private
  */

@@ -245,6 +245,8 @@ export function del(environment, t) {
 /**
  * Superagent Wrapper for posting forms.
  *
+ * @access private
+ *
  * @param {string} url the url to post to
  * @param {object} form the form to post as object
  * @returns {Promise} Promise resolving to response body.

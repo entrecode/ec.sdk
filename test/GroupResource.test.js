@@ -10,12 +10,8 @@ const GroupList = require('../lib/resources/GroupList').default;
 const Resource = require('../lib/resources/Resource').default;
 const ListResource = require('../lib/resources/ListResource').default;
 
-const should = chai.should();
+chai.should();
 chai.use(sinonChai);
-
-function capitalizeFirstLetter(string) {
-  return string.charAt(0).toUpperCase() + string.slice(1);
-}
 
 describe('Group ListResource', () => {
   let listJson;
@@ -79,9 +75,9 @@ describe('Group Resource', () => {
     resource.should.be.instanceOf(GroupResource);
   });
   it('should add single permission', () => {
-    resource.getPermissions().should.have.property('length', 2);
+    resource.permissions.should.have.property('length', 2);
     resource.addPermission('acc:something');
-    resource.getPermissions().should.have.property('length', 3);
+    resource.permissions.should.have.property('length', 3);
   });
   it('should throw on undefined permission', () => {
     const throws = () => resource.addPermission();
@@ -95,7 +91,7 @@ describe('Group Resource', () => {
     it(`should call resource.getProperty with ${name}`, () => {
       const spy = sinon.spy(resource, 'getProperty');
 
-      const property = resource[`get${capitalizeFirstLetter(name)}`]();
+      const property = resource[name];
       spy.should.have.been.called.once;
       spy.should.have.been.calledWith(name);
       property.should.be.equal(resource.getProperty(name));
@@ -109,15 +105,11 @@ describe('Group Resource', () => {
     it(`should call resource.setProperty with ${name}`, () => {
       const spy = sinon.spy(resource, 'setProperty');
 
-      resource[`set${capitalizeFirstLetter(name)}`](resource.getProperty(name));
+      resource[name] = resource.getProperty(name);
       spy.should.have.been.called.once;
       spy.should.have.been.calledWith(name, resource.getProperty(name));
 
       spy.restore();
-    });
-    it(`should throw on set${capitalizeFirstLetter(name)} with undefined value`, () => {
-      const throws = () => resource[`set${capitalizeFirstLetter(name)}`]();
-      throws.should.throw(Error);
     });
   });
 });

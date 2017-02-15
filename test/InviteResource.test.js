@@ -38,7 +38,7 @@ describe('InvitesResource', () => {
     should.exist(res.traversal);
   });
   it('should get invites', () => {
-    const invites = resource.getInvites();
+    const invites = resource.invites;
     invites.should.be.instanceOf(Array);
     invites.forEach(invite => (typeof invite).should.be.equal('string'));
   });

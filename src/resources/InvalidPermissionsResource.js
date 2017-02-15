@@ -4,23 +4,34 @@ import Resource from './Resource';
  * InvalidPermissionsResource class
  *
  * @class
+ *
+ * @prop {Array<Permission>} invalidAccountPermission - Array of invalid permissions linked to a
+ *   {@link AccountResource}
+ * @prop {Array<Permission>} invalidGroupPermission   - Array of invalid permissions linked to a
+ *   {@link GroupResource}
  */
 export default class InvalidPermissionsResource extends Resource {
   /**
-   * Get an array of invalid permissions associated with an {@link AccountResource}.
+   * Creates a new {@link InvalidPermissionsResource}.
    *
-   * @returns {Array<any>} Array of invalid permissions
+   * @access protected
+   *
+   * @param {object} resource resource loaded from the API.
+   * @param {string} environment the environment this resource is associated to.
+   * @param {?object} traversal traversal from which traverson can continue.
    */
-  getInvalidAccountPermissions() {
-    return this.getProperty('invalidAccountPermissions');
-  }
+  constructor(resource, environment, traversal) {
+    super(resource, environment, traversal);
 
-  /**
-   * Get an array of invalid permissions associated with a {@link GroupResource}.
-   *
-   * @returns {Array<any>} Array of invalid permissions
-   */
-  getInvalidGroupPermissions() {
-    return this.getProperty('invalidGroupPermissions');
+    Object.defineProperties(this, {
+      invalidAccountPermissions: {
+        enumerable: true,
+        get: () => this.getProperty('invalidAccountPermissions'),
+      },
+      invalidGroupPermissions: {
+        enumerable: true,
+        get: () => this.getProperty('invalidGroupPermissions'),
+      },
+    });
   }
 }

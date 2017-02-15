@@ -18,10 +18,6 @@ const Resource = require('../lib/resources/Resource').default;
 chai.should();
 chai.use(sinonChai);
 
-function capitalizeFirstLetter(string) {
-  return string.charAt(0).toUpperCase() + string.slice(1);
-}
-
 describe('DataManager class', () => {
   it('should instantiate', () => {
     new DataManager('live').should.be.instanceOf(DataManager);
@@ -173,7 +169,7 @@ describe('DataManager Resource', () => {
     it(`should call resource.getProperty with ${name}`, () => {
       const spy = sinon.spy(resource, 'getProperty');
 
-      const property = resource[`get${capitalizeFirstLetter(name)}`]();
+      const property = resource[name];
       spy.should.have.been.called.once;
       spy.should.have.been.calledWith(name);
       property.toISOString().should.be.equal(resource.getProperty(name));
@@ -183,13 +179,13 @@ describe('DataManager Resource', () => {
   });
 
   const getter = [
-    'dataManagerID',
+    'dataManagerID', 'shortID',
   ];
   getter.forEach((name) => {
     it(`should call resource.getProperty with ${name}`, () => {
       const spy = sinon.spy(resource, 'getProperty');
 
-      const property = resource[`get${capitalizeFirstLetter(name)}`]();
+      const property = resource[name];
       spy.should.have.been.called.once;
       spy.should.have.been.calledWith(name);
       property.should.be.equal(resource.getProperty(name));
@@ -203,7 +199,7 @@ describe('DataManager Resource', () => {
     it(`should call resource.getProperty with ${name}`, () => {
       const spy = sinon.spy(resource, 'getProperty');
 
-      const property = resource[`get${capitalizeFirstLetter(name)}`]();
+      const property = resource[name];
       spy.should.have.been.called.once;
       spy.should.have.been.calledWith(name);
       property.should.be.equal(resource.getProperty(name));
@@ -213,15 +209,11 @@ describe('DataManager Resource', () => {
     it(`should call resource.setProperty with ${name}`, () => {
       const spy = sinon.spy(resource, 'setProperty');
 
-      resource[`set${capitalizeFirstLetter(name)}`](resource.getProperty(name));
+      resource[name] = resource.getProperty(name);
       spy.should.have.been.called.once;
       spy.should.have.been.calledWith(name, resource.getProperty(name));
 
       spy.restore();
-    });
-    it(`should throw on set${capitalizeFirstLetter(name)} with undefined value`, () => {
-      const throws = () => resource[`set${capitalizeFirstLetter(name)}`]();
-      throws.should.throw(Error);
     });
   });
 
