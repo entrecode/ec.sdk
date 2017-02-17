@@ -6,7 +6,7 @@ import {
   getEmpty,
   postEmpty,
   superagentFormPost,
-  optionsToQuery,
+  optionsToQuery
 } from './helper';
 import AccountList from './resources/AccountList';
 import AccountResource from './resources/AccountResource';
@@ -72,6 +72,18 @@ export default class Accounts extends Core {
    * Load a {@link AccountList} of {@link AccountResource} filtered by the values specified
    * by the options parameter.
    *
+   * @example
+   * return accounts.list({
+   *   filter: {
+   *     created: {
+   *       from: new Date(new Date.getTime() - 600000).toISOString(),
+   *     },
+   *   },
+   * })
+   * .then((list) => {
+   *   return show(list);
+   * })
+   *
    * @param {filterOptions?} options the filter options.
    * @returns {Promise<AccountList>} resolves to account list with applied filters.
    */
@@ -93,6 +105,12 @@ export default class Accounts extends Core {
   /**
    * Get a single {@link AccountResource} identified by accountID.
    *
+   * @example
+   * return accounts.get(this.accountList.getItem(index).accountID)
+   * .then((account) => {
+   *   return show(account.email);
+   * });
+   *
    * @param {string} accountID id of the Account.
    * @returns {Promise<AccountResource>} resolves to the Account which should be loaded.
    */
@@ -113,6 +131,12 @@ export default class Accounts extends Core {
   /**
    * Get the {@link AccountResource} which is currently logged in.
    *
+   * @example
+   * return accounts.me()
+   * .then((account) => {
+   *   return show(`Your are logged in as ${account.name || account.email}`);
+   * });
+   *
    * @returns {Promise<AccountResource>} resolves to the Account which is logged in.
    */
   me() {
@@ -129,6 +153,12 @@ export default class Accounts extends Core {
   /**
    * Creates a new API token with 100 years validity.
    *
+   * @example
+   * return accounts.createAPIToken()
+   * .then((token) => {
+   *   return apiTokenCreated(token);
+   * });
+   *
    * @returns {Promise<tokenResponse>} the created api
    *   token response.
    */
@@ -139,6 +169,16 @@ export default class Accounts extends Core {
 
   /**
    * Will check if the given email is available for login.
+   *
+   * @example
+   * return accounts.emailAvailable(email)
+   * .then((available) => {
+   *    if (available){
+   *      return accounts.signup(email, password);
+   *    } else {
+   *      return showError(new Error(`Email ${email} already registered.`));
+   *    }
+   * });
    *
    * @param {string} email the email to check.
    * @returns {Promise<boolean>} Whether or not the email is available.
@@ -161,6 +201,12 @@ export default class Accounts extends Core {
   /**
    * Signup a new account.
    *
+   * @example
+   * return accounts.signup(email, password, invite)
+   * .then((token) => {
+   *   accounts.setToken(token);
+   *   return show('Successfully registered account');
+   * });
    *
    * @param {string} email email for the new account
    * @param {string} password password for the new account
@@ -197,6 +243,10 @@ export default class Accounts extends Core {
   /**
    * Start a password reset.
    *
+   * @example
+   * return accounts.resetPassword(email)
+   * .then(() => show(`Password reset link send to ${email}`))
+   *
    * @param {string} email email of the account
    * @returns {Promise} Promise resolving on success.
    */
@@ -222,6 +272,10 @@ export default class Accounts extends Core {
   /**
    * Change the logged in account to the given new email address.
    *
+   * @example
+   * return accounts.resetPassword(email)
+   * .then(() => show(`Email change startet. Please verify with your new address`))
+   *
    * @param {string} email the new email
    * @returns {Promise} Promise resolving on success.
    */
@@ -245,6 +299,14 @@ export default class Accounts extends Core {
   /**
    * Create new invites. Specify number of invites to create with count.
    *
+   * @example
+   * return accounts.createInvites(5)
+   * .then((invites) => {
+   *   return Promise.all(invites.invites.forEach((invite, index) => sendInvite(invite,
+   *   emails[index]);
+   * })
+   * .then(() => console.log('Invites send.');
+   *
    * @param {number} count the number of invites to create
    * @returns {Promise<InvitesResource>} Promise resolving to the invites resource
    */
@@ -265,6 +327,20 @@ export default class Accounts extends Core {
   /**
    * Load the {@link InvitesResource}.
    *
+   * @example
+   * return accounts.invites()
+   * .then((invites) => {
+   *   if (invites.invites.length < 5){
+   *     return Promise.resolve(invites.invites);
+   *   }
+   *   return accounts.createInvites(5 - invites.invites.length);
+   * })
+   * .then((invites) => {
+   *   return Promise.all(invites.invites.forEach((invite, index) => sendInvite(invite,
+   *   emails[index]);
+   * })
+   * .then(() => console.log('Invites send.');
+   *
    * @returns {Promise.<InvitesResource>} Promise resolving to the invites resource
    */
   invites() {
@@ -280,6 +356,26 @@ export default class Accounts extends Core {
   /**
    * Load the {@link ClientList}.
    *
+   * @example
+   * return accounts.clientList()
+   * .then(clients => {
+   *   return clients.getAllItems().filter(client => client.clientID === 'thisOne');
+   * })
+   * .then(clientArray => {
+   *   return show(clientArray[0]);
+   * });
+   *
+   * // This would actually be better:
+   * return accounts.clientList({
+   *   filter: {
+   *     clientID: 'thisOne',
+   *   },
+   * })
+   * .then(clients => {
+   *   return show(clients.getFirstItem());
+   * });
+   *
+   * @param {filterOptions?} options filter options
    * @returns {Promise<ClientList>} Promise resolving to ClientList
    */
   clientList(options) {
@@ -299,6 +395,12 @@ export default class Accounts extends Core {
 
   /**
    * Load a single {@link ClientResource}.
+   *
+   * @example
+   * return accounts.client('thisOne')
+   * .then(client => {
+   *   return show(client);
+   * });
    *
    * @param {string} clientID the clientID
    * @returns {Promise<ClientResource>} Promise resolving to ClientResource
@@ -320,6 +422,13 @@ export default class Accounts extends Core {
   /**
    * Get {@link InvalidPermissionsResource} to show all invalid permissions.
    *
+   * @example
+   * return accounts.invalidPermissions()
+   * .then((invalidPermissions) => {
+   *   show(invalidPermissions.invalidAccountPermissions);
+   *   show(invalidPermissions.invalidGroupPermissions);
+   * });
+   *
    * @returns {Promise<InvalidPermissionsResource>} Promise resolving to invalid permissions
    */
   invalidPermissions() {
@@ -333,6 +442,19 @@ export default class Accounts extends Core {
 
   /**
    * Load the {@link GroupList}
+   *
+   * @example
+   * return accounts.groupList({
+   *   filter: {
+   *     title: {
+   *       search: 'dev',
+   *     },
+   *   },
+   * })
+   * .then(groups => {
+   *   // all groups with 'dev' in the title
+   *   return Promise.all(groups.getAllItems.forEach(group => show(group)));
+   * });
    *
    * @param {filterOptions?} options filter options
    * @returns {Promise<GroupList>} Promise resolving goup list
@@ -354,6 +476,13 @@ export default class Accounts extends Core {
 
   /**
    * Load a single group
+   *
+   * @example
+   * return accounts.group(groupID)
+   * .then((group) => {
+   *   group.addPermission('can-view-stacktrace');
+   *   return group.save();
+   * });
    *
    * @param {string} groupID the id of the group
    * @returns {Promise<GroupResource>} Promise resolving to the group

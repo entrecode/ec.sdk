@@ -52,6 +52,11 @@ export default class Core {
   /**
    * Set an existing accessToken
    *
+   * @example
+   * return accounts.me(); // will result in error
+   * accounts.setToken('jwtToken');
+   * return accounts.mes(); // will resolve
+   *
    * @param {string} token the existing token
    * @returns {Core} this for chainability
    */
@@ -67,6 +72,11 @@ export default class Core {
   /**
    * Attaches a listener on the underlying EventEmitter.
    *
+   * @example
+   * session.on('login', myAlertFunc);
+   * session.login(email, password)
+   * .then(token => console.log(token)); // myAlertFunct will be called with token
+   *
    * @param {string} label the event type
    * @param {function} listener the listener
    * @returns {undefined}
@@ -77,6 +87,15 @@ export default class Core {
 
   /**
    * Removes a previously attached listener from the underlying EventEmitter.
+   *
+   * @example
+   * session.on('login', myAlertFunc);
+   * session.login(email, password)
+   * .then(token => {  // myAlertFunc will be called with token
+   *   console.log(token);
+   *   session.removeListener('login', myAlertFunc);
+   *   // myAlertFunc will no longer be called.
+   * });
    *
    * @param {string} label the event type
    * @param {function} listener the listener
