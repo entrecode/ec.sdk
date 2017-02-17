@@ -60,7 +60,7 @@ function unparsedHandler(callback) {
  * @access private
  *
  * @param {string} func traverson function which should be called
- * @param {string} environment environment from which a token should be used
+ * @param {environment} environment environment from which a token should be used
  * @param {object} t traverson build on which func should be called
  * @param {object?} body optional post/put body
  * @returns {Promise} resolves to the response from the API.
@@ -117,7 +117,7 @@ function traversonWrapper(func, environment, t, body) {
  *
  * @access private
  *
- * @param {string} environment environment from which a token should be used
+ * @param {environment} environment environment from which a token should be used
  * @param {object} t request builder
  * @returns {Promise} resolves to the response from the API.
  */
@@ -136,7 +136,7 @@ export function get(environment, t) {
  *
  * @access private
  *
- * @param {string} environment environment from which a token should be used
+ * @param {environment} environment environment from which a token should be used
  * @param {object} t request builder
  * @returns {Promise} resolves to undefined.
  */
@@ -156,7 +156,7 @@ export function getEmpty(environment, t) {
  *
  * @access private
  *
- * @param {string} environment environment from which a token should be used
+ * @param {environment} environment environment from which a token should be used
  * @param {object} t request builder
  * @param {object} body the request body
  * @returns {Promise} resolves to undefined.
@@ -175,7 +175,7 @@ export function postEmpty(environment, t, body) {
  *
  * @access private
  *
- * @param {string} environment environment from which a token should be used
+ * @param {environment} environment environment from which a token should be used
  * @param {object} t request builder
  * @returns {Promise} resolves to the url.
  */
@@ -194,7 +194,7 @@ export function getUrl(environment, t) {
  *
  * @access private
  *
- * @param {string} environment environment from which a token should be used
+ * @param {environment} environment environment from which a token should be used
  * @param {object} t request builder
  * @param {object} body post body
  * @returns {Promise} resolves to the response from the API.
@@ -214,7 +214,7 @@ export function post(environment, t, body) {
  *
  * @access private
  *
- * @param {string} environment environment from which a token should be used
+ * @param {environment} environment environment from which a token should be used
  * @param {object} t request builder
  * @param {object} body post body
  * @returns {Promise} resolves to the response from the API.
@@ -234,7 +234,7 @@ export function put(environment, t, body) {
  *
  * @access private
  *
- * @param {string} environment environment from which a token should be used
+ * @param {environment} environment environment from which a token should be used
  * @param {object} t request builder
  * @returns {Promise} resolves to the response from the API.
  */

@@ -22,7 +22,7 @@ export default class DataManager extends Core {
    * Creates a new instance of {@link DataManager} module. Can be used to work with DataManager
    * API.
    *
-   * @param {?string} environment the environment to connect to. 'live', 'stage', 'nightly', or
+   * @param {?environment} environment the environment to connect to. 'live', 'stage', 'nightly', or
    *   'develop'.
    */
   constructor(environment) {
@@ -57,8 +57,7 @@ export default class DataManager extends Core {
    * Load a {@link DataManagerList} of {@link DataManagerResource} filtered by the values specified
    * by the options parameter.
    *
-   * @param {{size: number, page: number, sort: array<string>, filter: filter}} options the
-   *   filter options.
+   * @param {filterOptions?} options the filter options.
    * @returns {Promise<DataManagerList>} resolves to datamanager list with applied filters.
    */
   list(options) {

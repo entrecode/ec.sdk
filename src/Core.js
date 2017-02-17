@@ -6,6 +6,10 @@ import events from './EventEmitter';
 traverson.registerMediaType(HalAdapter.mediaType, HalAdapter);
 
 /**
+ * @typedef { 'live' | 'stage' | 'nightly' | 'develop'} environment
+ */
+
+/**
  * Core class for connecting to any entrecode API.
  *
  * @interface

@@ -11,7 +11,7 @@ export default class GroupList extends ListResource {
    * Creates a new {@link GroupList}.
    *
    * @param {object} resource resource loaded from the API.
-   * @param {string} environment the environment this resource is associated to.
+   * @param {environment} environment the environment this resource is associated to.
    * @param {?object} traversal traversal from which traverson can continue.
    */
   constructor(resource, environment, traversal) {

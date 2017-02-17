@@ -21,7 +21,7 @@ export default class TokenResource extends Resource {
    * @access protected
    *
    * @param {object} resource resource loaded from the API.
-   * @param {string} environment the environment this resource is associated to.
+   * @param {environment} environment the environment this resource is associated to.
    * @param {?object} traversal traversal from which traverson can continue.
    */
   constructor(resource, environment, traversal) {

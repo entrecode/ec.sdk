@@ -34,9 +34,9 @@ const urls = {
 export default class Accounts extends Core {
   /**
    * Creates a new instance of {@link Accounts} module. Can be used to work with Accounts
-   * API.
+   * API. Multiple instances for multiple environments are possible.
    *
-   * @param {?string} environment the environment to connect to. 'live', 'stage', 'nightly', or
+   * @param {?environment} environment the environment to connect to. 'live', 'stage', 'nightly', or
    *   'develop'.
    */
   constructor(environment) {
@@ -72,8 +72,7 @@ export default class Accounts extends Core {
    * Load a {@link AccountList} of {@link AccountResource} filtered by the values specified
    * by the options parameter.
    *
-   * @param {{size: number, page: number, sort: array<string>, filter: filter}} options the
-   *   filter options.
+   * @param {filterOptions?} options the filter options.
    * @returns {Promise<AccountList>} resolves to account list with applied filters.
    */
   list(options) {
@@ -281,7 +280,6 @@ export default class Accounts extends Core {
   /**
    * Load the {@link ClientList}.
    *
-   * @param {filterOptions} options filter options
    * @returns {Promise<ClientList>} Promise resolving to ClientList
    */
   clientList(options) {

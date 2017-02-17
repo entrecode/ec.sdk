@@ -19,7 +19,7 @@ export default class Session extends Core {
   /**
    * Creates a new instance of {@link Session} module. Can be used to log in and log out.
    *
-   * @param {?string} environment the environment to connect to. 'live', 'stage', 'nightly', or
+   * @param {?environment} environment the environment to connect to. 'live', 'stage', 'nightly', or
    *   'develop'.
    */
   constructor(environment) {

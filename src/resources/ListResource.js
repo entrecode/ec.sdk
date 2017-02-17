@@ -12,7 +12,7 @@ export default class ListResource extends Resource {
    * @access protected
    *
    * @param {object} resource resource loaded from the API.
-   * @param {string} environment the environment this resource is associated to.
+   * @param {environment} environment the environment this resource is associated to.
    * @param {?string} name name of the embedded resources.
    * @param {?object} traversal traversal from which traverson can continue.
    */
@@ -156,6 +156,12 @@ export default class ListResource extends Resource {
  *
  * @typedef {{propertyNames: (string|{exact: string, search: string, from: string, to: string, any:
  *   array<string>, all: array<string>})}} filter
+ */
+
+/**
+ * List filter options with pagination, sorting, and {@link filter}
+ *
+ * @typedef {{size: number, page: number, sort: array<string>, filter: filter}} filterOptions
  */
 
 /**

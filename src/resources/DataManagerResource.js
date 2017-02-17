@@ -91,7 +91,7 @@ export default class DataManagerResource extends Resource {
    * Load a {@link ModelList} of {@link DataManagerResource} filtered by the values specified
    * by the options parameter.
    *
-   * @param {{size: number, page: number, sort: array<string>, filter: filter}} options? the
+   * @param {filterOptions?} options the
    *   filter options.
    * @returns {Promise<ModelList>} resolves to model list with applied filters.
    */
