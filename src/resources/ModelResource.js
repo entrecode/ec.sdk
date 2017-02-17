@@ -8,7 +8,7 @@ import Resource from './Resource';
  * @prop {string}         modelID       - The id of this Model
  * @prop {Date}           created       - The Date on which this Model was created
  * @prop {string}         description   - optional description
- * @prop {Array<Field>}   fields        - Array of fields
+ * @prop {Array<object>}  fields        - Array of fields
  * @prop {boolean}        hasEntries    - Whether or not this Model has Entries
  * @prop {string}         hexColor      - The hexColor for frontend usage
  * @prop {Array<object>}  hooks         - Array of hooks
@@ -119,8 +119,9 @@ export default class ModelResource extends Resource {
 
 // TODO hooks type
 // TODO policies type
+// TODO fields type
 
-/**
+/*
  * Fields object
  * @typedef {{
  *   title: string,

@@ -1,0 +1,39 @@
+toc:
+  - name: Introduction
+    description: |
+      Awesome Introduction.
+  - name: API connectors
+    description: |
+      What are those?
+  - Core
+  - Session
+  - Accounts
+  - DataManager
+  - environment
+  - name: Resources
+    description: |
+      Resource Description.
+  - Resource
+  - ListResource
+  - filterOptions
+  - filter
+  - name: Accounts Resources
+    description: |
+      Accounts resources are awesome.
+  - AccountResource
+  - AccountList
+  - TokenResource
+  - TokenList
+  - ClientResource
+  - ClientList
+  - GroupResource
+  - GroupList
+  - InvitesResource
+  - InvalidPermissionsResource
+  - name: DataManager Resources
+    description: |
+      They are awesome too.
+  - DataManagerResource
+  - DataManagerList
+  - ModelResource
+  - ModelList

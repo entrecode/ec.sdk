@@ -19,18 +19,7 @@ export default class ListResource extends Resource {
   constructor(resource, environment, name, traversal) {
     super(resource, environment, traversal);
 
-    /**
-     * Defines the class this {@link ListResource} has. Is used to support more specified classes
-     * like {@link DataManagerList}.
-     *
-     * @type {ListResource|ListResourceClass}
-     */
     this.ListClass = ListResource;
-
-    /**
-     * Defines the class the items of this {@link ListResource} have.
-     * @type {Resource|ResourceClass}
-     */
     this.ItemClass = Resource;
     this.name = name || Object.keys(this.resource.allEmbeddedResources())[0];
   }
@@ -166,10 +155,10 @@ export default class ListResource extends Resource {
 
 /**
  * @typedef {class} ListResourceClass
- * @private
+ * @access private
  */
 
 /**
  * @typedef {class} ResourceClass
- * @private
+ * @access private
  */

@@ -138,6 +138,8 @@ class TokenStore {
  * Factory function for creating a {@link TokenStore} for an environment. Will return a
  * previously created {@link TokenStore}.
  *
+ * @access private
+ *
  * @param {environment} environment the environment for which the token store should be created
  * @returns {TokenStore} The created token store
  */

@@ -15,7 +15,8 @@ import { get } from '../helper';
  * @prop {boolean}        hasPassword       - Whether or not this account has a password
  * @prop {boolean}        hasPendingEmail   - Whether or not this account has a pending email
  * @prop {string}         language          - The language for frontend usage
- * @prop {Array<openID>}  openID            - Array of connected openID accounts
+ * @prop {Array<{{sub: string, iss: string, pending: boolean, email: string, name: string}}>}
+ *                        openID            - Array of connected openID accounts
  * @prop {Array<string>}  permissions       - Array of permissions
  * @prop {string}         state             - State of the account.
  */
@@ -145,9 +146,3 @@ export default class AccountResource extends Resource {
     });
   }
 }
-
-/**
- * Object describing openID connections.
- *
- * @typedef {{sub: string, iss: string, pending: boolean, email: string, name: string}} openID
- */
