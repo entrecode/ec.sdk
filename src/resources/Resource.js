@@ -6,14 +6,13 @@ import { get, put, del } from '../helper';
 traverson.registerMediaType(HalAdapter.mediaType, HalAdapter);
 
 /**
- * @private
- * @typedef {class} ResourceClass
- */
-
-/**
  * Generic resource class. Represents {@link https://tools.ietf.org/html/draft-kelly-json-hal-08
  * HAL resources}.
+ *
  * @class
+ * @access protected
+ *
+ * @prop {boolean}  isDirty   - Whether or not this Resource was modified
  */
 export default class Resource {
   /**
@@ -22,7 +21,7 @@ export default class Resource {
    * @access protected
    *
    * @param {object} resource resource loaded from the API.
-   * @param {string} environment the environment this resource is associated to.
+   * @param {environment} environment the environment this resource is associated to.
    * @param {?object} traversal traversal from which traverson can continue.
    */
   constructor(resource, environment, traversal) {
@@ -30,12 +29,32 @@ export default class Resource {
     this.dirty = false;
     this.resource = halfred.parse(JSON.parse(JSON.stringify(resource)));
 
+    if (typeof this.environment !== 'string') {
+      throw new Error('environment must be a string');
+    }
+
     if (traversal) {
       this.traversal = traversal;
     } else {
       this.traversal = traverson.from(this.resource.link('self').href).jsonHal()
       .addRequestOptions({ headers: { Accept: 'application/hal+json' } });
     }
+
+    Object.defineProperties(this, {
+      isDirty: {
+        enumerable: false,
+        get: () => this.dirty,
+      },
+      dirty: {
+        enumerable: false,
+      },
+      resource: {
+        enumerable: false,
+      },
+      traversal: {
+        enumerable: false,
+      }
+    });
   }
 
   /**
@@ -44,7 +63,7 @@ export default class Resource {
      * traverson request builder}
    *  which can be used for a new request to the API.
    *
-   * @access private
+   * @access protected
    *
    * @returns {Object} traverson request builder instance.
    */
@@ -56,12 +75,22 @@ export default class Resource {
   }
 
   /**
-   * Check if this {@link Resource} was modified since loading.
+   * Reloads this {@link Resource}. Can be used when this resource was loaded from any {@link
+    * ListResource} from _embedded.
    *
-   * @returns {boolean} whether or not this Resource was modified
+   * @returns {Promise<Resource>} this resource
    */
-  isDirty() {
-    return this.dirty;
+  resolve() {
+    return get(
+      this.environment,
+      this.newRequest().follow('self')
+    )
+    .then(([res, traversal]) => {
+      this.resource = halfred.parse(res);
+      this.traversal = traversal;
+      this.dirty = false;
+      return this;
+    });
   }
 
   /**
@@ -83,13 +112,12 @@ export default class Resource {
    */
   save() {
     // TODO add validation
-    return put(
-      this.environment,
-      this.newRequest().follow('self'),
-      // TODO does this Object.assign work how I want it to?
-      // or do we need for(key in obj) loop?
-      Object.assign(this.resource.original(), this.resource)
-    )
+    const out = {};
+    Object.keys(this.resource.original()).forEach((key) => {
+      out[key] = this.resource[key];
+    });
+
+    return put(this.environment, this.newRequest().follow('self'), out)
     .then(([res, traversal]) => {
       this.resource = halfred.parse(res);
       this.traversal = traversal;
@@ -131,6 +159,12 @@ export default class Resource {
   }
 
   /**
+   * @private
+   *
+   * @typedef {class} ResourceClass
+   */
+
+  /**
    * Loads the given {@link https://tools.ietf.org/html/draft-kelly-json-hal-08#section-5 link} and
    * returns a {@link Resource} with the loaded result.
    *
@@ -142,13 +176,11 @@ export default class Resource {
     return get(this.environment, this.newRequest().follow(link))
     .then(([res, traversal]) => {
       if (ResourceClass) {
-        return new ResourceClass(res, null, traversal);
+        return new ResourceClass(res, this.environment, traversal);
       }
-      return new Resource(res, traversal);
+      return new Resource(res, this.environment, traversal);
     });
   }
-
-  // TODO follow all?
 
   /**
    * Returns an object with selected properties of the {@link Resource}. Will return all properties
@@ -200,6 +232,7 @@ export default class Resource {
 
   /**
    * Set a new value to the property identified by property.
+   *
    * @param {string} property the property to change.
    * @param {any} value the value to assign.
    * @returns {Resource} this Resource for chainability

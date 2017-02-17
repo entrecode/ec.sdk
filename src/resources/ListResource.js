@@ -1,15 +1,6 @@
 import Resource from './Resource';
 
 /**
- * @private
- * @typedef {class} ListResourceClass
- */
-/**
- * @private
- * @typedef {class} ResourceClass
- */
-
-/**
  * Generic list resource class. Represents {@link
   * https://tools.ietf.org/html/draft-kelly-json-hal-08 HAL resources} with added support for lists.
  * @class
@@ -21,25 +12,14 @@ export default class ListResource extends Resource {
    * @access protected
    *
    * @param {object} resource resource loaded from the API.
-   * @param {string} environment the environment this resource is associated to.
+   * @param {environment} environment the environment this resource is associated to.
    * @param {?string} name name of the embedded resources.
    * @param {?object} traversal traversal from which traverson can continue.
    */
   constructor(resource, environment, name, traversal) {
     super(resource, environment, traversal);
 
-    /**
-     * Defines the class this {@link ListResource} has. Is used to support more specified classes
-     * like {@link DataManagerList}.
-     *
-     * @type {ListResource|ListResourceClass}
-     */
     this.ListClass = ListResource;
-
-    /**
-     * Defines the class the items of this {@link ListResource} have.
-     * @type {Resource|ResourceClass}
-     */
     this.ItemClass = Resource;
     this.name = name || Object.keys(this.resource.allEmbeddedResources())[0];
   }
@@ -52,7 +32,7 @@ export default class ListResource extends Resource {
    */
   getAllItems() {
     const array = this.resource.embeddedArray(this.name) || [];
-    return array.map(resource => new this.ItemClass(resource));
+    return array.map(resource => new this.ItemClass(resource, this.environment));
   }
 
   /**
@@ -70,7 +50,7 @@ export default class ListResource extends Resource {
     if (!array || array.length === 0) {
       throw new Error('Cannot get n\'th item of empty list.');
     }
-    return new this.ItemClass(array[n]);
+    return new this.ItemClass(array[n], this.environment);
   }
 
   /**
@@ -165,4 +145,20 @@ export default class ListResource extends Resource {
  *
  * @typedef {{propertyNames: (string|{exact: string, search: string, from: string, to: string, any:
  *   array<string>, all: array<string>})}} filter
+ */
+
+/**
+ * List filter options with pagination, sorting, and {@link filter}
+ *
+ * @typedef {{size: number, page: number, sort: array<string>, filter: filter}} filterOptions
+ */
+
+/**
+ * @typedef {class} ListResourceClass
+ * @access private
+ */
+
+/**
+ * @typedef {class} ResourceClass
+ * @access private
  */

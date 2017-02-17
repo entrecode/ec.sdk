@@ -2,7 +2,7 @@ import superagent from 'superagent';
 
 import Problem from './Problem';
 import events from './EventEmitter';
-import { stores } from './TokenStore';
+import TokenStoreFactory from './TokenStore';
 
 /**
  * Creates a callback which wraps a traverson repsonse from `get`, `post`, `put`, `delete` and
@@ -15,8 +15,8 @@ import { stores } from './TokenStore';
  * @param {function} callback the callback which should be wrapped.
  * @returns {function}  function whichs wraps the given callback.
  */
-function handlerCallback(callback) {
-  return function callbackWrapper(err, res, traversal) {
+function jsonHandler(callback) {
+  return function jsonHandler(err, res, traversal) {
     if (err) {
       return callback(err);
     }
@@ -30,12 +30,37 @@ function handlerCallback(callback) {
 }
 
 /**
+ * Creates a callback which wraps a traverson repsonse from `get`, `post`, `put`, `delete` and
+ * handles http status codes.
+ * The callback will only handle status codes 200-299 as success. All
+ * other codes are handled as errors.
+ *
+ * @access private
+ *
+ * @param {function} callback the callback which should be wrapped.
+ * @returns {function}  function whichs wraps the given callback.
+ */
+function unparsedHandler(callback) {
+  return function unparsedHandler(err, res, traversal) {
+    if (err) {
+      return callback(err);
+    }
+
+    if (res.statusCode >= 200 && res.statusCode < 300) {
+      return callback(null, [res.body, traversal]);
+    }
+
+    return callback(new Error(res.body));
+  };
+}
+
+/**
  * Generic Promise wrapper for traverson functions.
  *
  * @access private
  *
  * @param {string} func traverson function which should be called
- * @param {string} environment environment from which a token should be used
+ * @param {environment} environment environment from which a token should be used
  * @param {object} t traverson build on which func should be called
  * @param {object?} body optional post/put body
  * @returns {Promise} resolves to the response from the API.
@@ -48,6 +73,12 @@ function traversonWrapper(func, environment, t, body) {
   return new Promise((resolve, reject) => {
     const cb = (err, res) => {
       if (err) {
+        if (TokenStoreFactory(environment) && err instanceof Problem &&
+          (err.code % 1000 === 401 || err.code % 1000 === 402)) {
+          TokenStoreFactory(environment).del();
+          events.emit('logout', err);
+        }
+
         events.emit('error', err);
         return reject(err);
       }
@@ -55,18 +86,22 @@ function traversonWrapper(func, environment, t, body) {
       return resolve(res);
     };
 
-    const store = stores.get(environment);
+    const store = TokenStoreFactory(environment);
     if (store && store.has()) {
       t.addRequestOptions({ headers: { Authorization: `Bearer ${store.get()}` } });
     }
 
     if (func === 'getUrl') {
       t[func](cb);
+    } else if (func === 'getEmpty') {
+      t.get(unparsedHandler(cb));
+    } else if (func === 'postEmpty') {
+      t.post(body, unparsedHandler(cb));
     } else if (func === 'post' || func === 'put') {
-      t.addRequestOptions({ headers: { 'Content-Type': 'application/json' } })
-      t[func](body, handlerCallback(cb));
+      t.addRequestOptions({ headers: { 'Content-Type': 'application/json' } });
+      t[func](body, jsonHandler(cb));
     } else {
-      t[func](handlerCallback(cb));
+      t[func](jsonHandler(cb));
     }
   });
 }
@@ -82,12 +117,53 @@ function traversonWrapper(func, environment, t, body) {
  *
  * @access private
  *
- * @param {string} environment environment from which a token should be used
+ * @param {environment} environment environment from which a token should be used
  * @param {object} t request builder
  * @returns {Promise} resolves to the response from the API.
  */
 export function get(environment, t) {
   return traversonWrapper('get', environment, t);
+}
+
+/**
+ * Wraps a {@link
+  * https://github.com/basti1302/traverson traverson} get request with a {@link Promise}
+ * Parameter t must be a {@link
+  * https://github.com/basti1302/traverson/blob/master/api.markdown#request-builder
+     * traverson request builder}.
+ * Only http status codes >200 <=299 will resolve, all others will
+ * reject.
+ *
+ * @access private
+ *
+ * @param {environment} environment environment from which a token should be used
+ * @param {object} t request builder
+ * @returns {Promise} resolves to undefined.
+ */
+export function getEmpty(environment, t) {
+  return traversonWrapper('getEmpty', environment, t)
+  .then(() => Promise.resolve());
+}
+
+/**
+ * Wraps a {@link
+  * https://github.com/basti1302/traverson traverson} get request with a {@link Promise}
+ * Parameter t must be a {@link
+  * https://github.com/basti1302/traverson/blob/master/api.markdown#request-builder
+     * traverson request builder}.
+ * Only http status codes >200 <=299 will resolve, all others will
+ * reject.
+ *
+ * @access private
+ *
+ * @param {environment} environment environment from which a token should be used
+ * @param {object} t request builder
+ * @param {object} body the request body
+ * @returns {Promise} resolves to undefined.
+ */
+export function postEmpty(environment, t, body) {
+  return traversonWrapper('postEmpty', environment, t, body)
+  .then(() => Promise.resolve());
 }
 
 /**
@@ -99,7 +175,7 @@ export function get(environment, t) {
  *
  * @access private
  *
- * @param {string} environment environment from which a token should be used
+ * @param {environment} environment environment from which a token should be used
  * @param {object} t request builder
  * @returns {Promise} resolves to the url.
  */
@@ -118,7 +194,7 @@ export function getUrl(environment, t) {
  *
  * @access private
  *
- * @param {string} environment environment from which a token should be used
+ * @param {environment} environment environment from which a token should be used
  * @param {object} t request builder
  * @param {object} body post body
  * @returns {Promise} resolves to the response from the API.
@@ -138,7 +214,7 @@ export function post(environment, t, body) {
  *
  * @access private
  *
- * @param {string} environment environment from which a token should be used
+ * @param {environment} environment environment from which a token should be used
  * @param {object} t request builder
  * @param {object} body post body
  * @returns {Promise} resolves to the response from the API.
@@ -158,7 +234,7 @@ export function put(environment, t, body) {
  *
  * @access private
  *
- * @param {string} environment environment from which a token should be used
+ * @param {environment} environment environment from which a token should be used
  * @param {object} t request builder
  * @returns {Promise} resolves to the response from the API.
  */
@@ -168,6 +244,8 @@ export function del(environment, t) {
 
 /**
  * Superagent Wrapper for posting forms.
+ *
+ * @access private
  *
  * @param {string} url the url to post to
  * @param {object} form the form to post as object

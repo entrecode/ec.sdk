@@ -8,7 +8,7 @@ git checkout develop
 git checkout -b release/$1
 npm version --no-git-tag-version $1
 npm run docs
-git add DOCUMENTATION.md package.json
+git add DOCUMENTATION.md docs/* package.json
 git commit -m "release version $1"
 git checkout master
 git merge --no-ff -m "merge release/$1 into master" release/$1

@@ -20,19 +20,4 @@ export default class DataManagerList extends ListResource {
     this.ListClass = DataManagerList;
     this.ItemClass = DataManagerResource;
   }
-
-  /**
-   * Create a new DataManager.
-   *
-   * @param {object} datamanager object representing the datamanager.
-   * @returns {Promise<DataManagerResource>} the newly created DataManagerResource
-   */
-  create(datamanager) {
-    if (!datamanager) {
-      throw new Error('Cannot create resource with undefined object.');
-    }
-    // TODO schema validation
-    return post(this.newRequest().follow('self'), datamanager)
-    .then(([dm, traversal]) => new DataManagerResource(dm, traversal));
-  }
 }

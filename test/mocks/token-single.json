@@ -1,0 +1,76 @@
+{
+  "accessTokenID": "5d36f51a-da58-4f2e-aee7-c09d1b84d346",
+  "device": {
+    "os": "macOS Sierra",
+    "isIE": false,
+    "isUC": false,
+    "geoIp": {},
+    "isBot": false,
+    "isMac": true,
+    "isBada": false,
+    "isCurl": false,
+    "isEdge": false,
+    "isSilk": false,
+    "isiPad": false,
+    "isiPod": false,
+    "source": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.95 Safari/537.36",
+    "browser": "Chrome",
+    "isAmaya": false,
+    "isFlock": false,
+    "isLinux": false,
+    "isOpera": false,
+    "isWinJs": false,
+    "version": "55.0.2883.95",
+    "isChrome": true,
+    "isMobile": false,
+    "isSafari": false,
+    "isTablet": false,
+    "isWebkit": false,
+    "isiPhone": false,
+    "platform": "Apple Mac",
+    "isAndroid": false,
+    "isCaptive": false,
+    "isDesktop": true,
+    "isFirefox": false,
+    "isLinux64": false,
+    "isOmniWeb": false,
+    "isSamsung": false,
+    "isSmartTV": false,
+    "isWindows": false,
+    "isChromeOS": false,
+    "isEpiphany": false,
+    "isKonqueror": false,
+    "isPhantomJS": false,
+    "isRaspberry": false,
+    "isSeaMonkey": false,
+    "isBlackberry": false,
+    "isKindleFire": false,
+    "isAndroidTablet": false,
+    "isAuthoritative": true,
+    "silkAccelerated": false,
+    "isIECompatibilityMode": false
+  },
+  "ipAddress": "134.3.229.181",
+  "ipAddressLocation": "Esslingen am Neckar (DE, 48.7394,9.3061)",
+  "isCurrent": false,
+  "issued": "2017-01-25T10:12:15.000Z",
+  "validUntil": "2017-02-24T10:12:15.000Z",
+  "_links": {
+    "self": {
+      "profile": "https://entrecode.de/schema/account-token",
+      "href": "https://accounts.entrecode.de/account/tokens?accessTokenID=5d36f51a-da58-4f2e-aee7-c09d1b84d346"
+    },
+    "curies": {
+      "href": "https://doc.entrecode.de/account_server/#relation-{rel}",
+      "templated": true
+    },
+    "ec:account": {
+      "profile": "https://entrecode.de/schema/account",
+      "href": "https://accounts.entrecode.de/account?accountID=ddd29fd1-7417-4894-a546-5c12b11c0186"
+    },
+    "collection": {
+      "profile": "https://entrecode.de/schema/accounts",
+      "href": "https://accounts.entrecode.de/account/tokens?accountID=ddd29fd1-7417-4894-a546-5c12b11c0186"
+    }
+  }
+}

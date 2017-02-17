@@ -10,6 +10,12 @@ class TokenStore {
   has(): boolean;
 
   del(): void
+
+  setClientID(clientID: string): void;
+
+  getClientID(): string;
+
+  hasClientID(): boolean;
 }
 
 export default function TokenStoreFactory(environment: string): TokenStore;

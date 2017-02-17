@@ -55,19 +55,34 @@ describe('Core', () => {
     };
     throws.should.throw(Error);
   });
+  it('should attach listener', () => {
+    core.on('attachTest', () => undefined);
+    emitter.listeners.get('attachTest').length.should.be.equal(1);
+  });
+  it('should remove listener', () => {
+    const listener = () => undefined;
+    core.on('removeTest', listener);
+    emitter.listeners.get('removeTest').length.should.be.equal(1);
+    core.removeListener('removeTest', listener);
+    emitter.listeners.get('removeTest').length.should.be.equal(0);
+  });
 });
 
 describe('Network Helper', () => {
   let traversal;
   let store;
-  let spy;
+  let errorSpy;
+  let loggedOutSpy;
   before(() => {
     nock.disableNetConnect();
-    spy = sinon.spy();
-    emitter.on('error', spy);
+    errorSpy = sinon.spy();
+    loggedOutSpy = sinon.spy();
+    emitter.on('error', errorSpy);
+    emitter.on('logout', loggedOutSpy);
   });
   beforeEach(() => {
-    spy.reset();
+    errorSpy.reset();
+    loggedOutSpy.reset();
     store = TokenStore.default('test');
     traversal = traverson.from('https://datamanager.entrecode.de').jsonHal();
   });
@@ -135,7 +150,42 @@ describe('Network Helper', () => {
       })
       .catch((err) => {
         err.should.have.property('message', 'mocked error');
-        spy.should.be.called.once;
+        errorSpy.should.be.called.once;
+      });
+    });
+    it('should fire loggedOut event on ec.402 error', () => {
+      nock('https://datamanager.entrecode.de')
+      .get('/').reply(401, {
+        title: 'Outdated Access Token',
+        code: 2402,
+        status: 401,
+      });
+
+      return helper.get('live', traversal)
+      .then(() => {
+        throw new Error('unexpectedly resolved');
+      })
+      .catch((err) => {
+        err.should.have.property('title', 'Outdated Access Token');
+        loggedOutSpy.should.be.called.once;
+      });
+    });
+    it('should fire loggedOut event on ec.401 error', () => {
+      TokenStore.default();
+      nock('https://datamanager.entrecode.de')
+      .get('/').reply(401, {
+        title: 'Invalid Access Token',
+        code: 2401,
+        status: 401,
+      });
+
+      return helper.get('live', traversal)
+      .then(() => {
+        throw new Error('unexpectedly resolved');
+      })
+      .catch((err) => {
+        err.should.have.property('title', 'Invalid Access Token');
+        loggedOutSpy.should.be.called.once;
       });
     });
   });
@@ -168,7 +218,73 @@ describe('Network Helper', () => {
       })
       .catch((err) => {
         err.should.have.property('message', 'mocked error');
-        spy.should.be.called.once;
+        errorSpy.should.be.called.once;
+      });
+    });
+  });
+  describe('getEmpty', () => {
+    it('should be resolved', () => {
+      nock('https://datamanager.entrecode.de')
+      .get('/').reply(204);
+
+      return helper.getEmpty('live', traversal).should.be.eventually.resolved;
+    });
+    it('should be rejected', () => {
+      nock('https://datamanager.entrecode.de')
+      .get('/').reply(404, 'mocked error');
+
+      return helper.getEmpty('live', traversal)
+      .then(() => {
+        throw new Error('unexpectedly resolved');
+      })
+      .catch((err) => {
+        err.should.have.property('message', 'mocked error');
+      });
+    });
+    it('should fire error event', () => {
+      nock('https://datamanager.entrecode.de')
+      .get('/').replyWithError('mocked error');
+
+      return helper.getEmpty('live', traversal)
+      .then(() => {
+        throw new Error('unexpectedly resolved');
+      })
+      .catch((err) => {
+        err.should.have.property('message', 'mocked error');
+        errorSpy.should.be.called.once;
+      });
+    });
+  });
+  describe('postEmpty', () => {
+    it('should be resolved', () => {
+      nock('https://datamanager.entrecode.de')
+      .post('/').reply(204);
+
+      return helper.postEmpty('live', traversal, {}).should.be.eventually.resolved;
+    });
+    it('should be rejected', () => {
+      nock('https://datamanager.entrecode.de')
+      .post('/').reply(404, 'mocked error');
+
+      return helper.postEmpty('live', traversal, {})
+      .then(() => {
+        throw new Error('unexpectedly resolved');
+      })
+      .catch((err) => {
+        err.should.have.property('message', 'mocked error');
+      });
+    });
+    it('should fire error event', () => {
+      nock('https://datamanager.entrecode.de')
+      .post('/').replyWithError('mocked error');
+
+      return helper.postEmpty('live', traversal)
+      .then(() => {
+        throw new Error('unexpectedly resolved');
+      })
+      .catch((err) => {
+        err.should.have.property('message', 'mocked error');
+        errorSpy.should.be.called.once;
       });
     });
   });
@@ -199,7 +315,7 @@ describe('Network Helper', () => {
       })
       .catch((err) => {
         err.should.have.property('message', 'mocked error');
-        spy.should.be.called.once;
+        errorSpy.should.be.called.once;
       });
     });
   });
@@ -231,7 +347,7 @@ describe('Network Helper', () => {
       })
       .catch((err) => {
         err.should.have.property('message', 'mocked error');
-        spy.should.be.called.once;
+        errorSpy.should.be.called.once;
       });
     });
   });
@@ -263,7 +379,7 @@ describe('Network Helper', () => {
       })
       .catch((err) => {
         err.should.have.property('message', 'mocked error');
-        spy.should.be.called.once;
+        errorSpy.should.be.called.once;
       });
     });
   });
@@ -295,7 +411,7 @@ describe('Network Helper', () => {
       })
       .catch((err) => {
         err.should.have.property('message', 'mocked error');
-        spy.should.be.called.once;
+        errorSpy.should.be.called.once;
       });
     });
   });

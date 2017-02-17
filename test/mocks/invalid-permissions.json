@@ -1,0 +1,22 @@
+{
+  "invalidAccountPermissions": [
+    {
+      "permission": "dm:50fe9e29-a9cc-428d-96cf-2f41b48d985c",
+      "accountID": "2b49283f-07e5-4d2c-bab6-ad325a6c6f1b"
+    }
+  ],
+  "invalidGroupPermissions": [
+    {
+      "permission": "dm:50fe9e29-a9cc-428d-96cf-2f41b48d985c",
+      "groupID": "044a8f35-03d7-4483-92bb-0e117da2e9c4"
+    }
+  ],
+  "_links": {
+    "self": {
+      "href": "https://accounts.buffalo.entrecode.de/internal/invalid-permissions"
+    },
+    "ec:auth": {
+      "href": "https://accounts.buffalo.entrecode.de"
+    }
+  }
+}

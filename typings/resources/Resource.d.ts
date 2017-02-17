@@ -1,9 +1,11 @@
 export declare class Resource {
   constructor(resource: any, environment: string, traversal?: any);
 
+  isDirty: boolean;
+
   newRequest(): any;
 
-  isDirty(): boolean;
+  resolve(): any;
 
   reset(): void;
 

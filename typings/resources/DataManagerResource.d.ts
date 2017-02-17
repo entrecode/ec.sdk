@@ -1,25 +1,20 @@
 import { Resource } from './Resource';
+import { filterOptions } from '../interfaces';
+import { ModelList } from './ModelList';
+import { ModelResource } from './ModelResource';
 
 export declare class DataManagerResource extends Resource {
   constructor(resource: any, environment: string, traversal?: any);
 
-  setTitle(value: string): DataManagerResource;
+  dataManagerID: string;
 
-  getTitle(): string;
+  config: any;
+  description: string;
+  hexColor: string;
+  locales: Array<string>;
+  title: string;
 
-  setDescription(value: string): DataManagerResource;
+  modelList(options?: filterOptions): ModelList
 
-  getDescription(): string;
-
-  setConfig(value: any): DataManagerResource;
-
-  getconfig(): any;
-
-  setHexColor(value: string): DataManagerResource;
-
-  getHexColor(): string;
-
-  setLocales(value: Array<string>): DataManagerResource;
-
-  getLocales(): Array<string>;
+  model(modelID: string): ModelResource;
 }

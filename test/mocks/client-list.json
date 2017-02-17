@@ -1,0 +1,203 @@
+{
+  "count": 10,
+  "total": 11,
+  "_links": {
+    "self": {
+      "profile": "https://entrecode.de/schema/clients",
+      "href": "https://accounts.buffalo.entrecode.de/client"
+    },
+    "curies": {
+      "href": "https://accounts.buffalo.entrecode.de/rel/{rel}",
+      "templated": true
+    },
+    "ec:acc/client/by-id": {
+      "profile": "https://entrecode.de/schema/clients",
+      "href": "https://accounts.buffalo.entrecode.de/client{?clientID}",
+      "templated": true
+    },
+    "ec:auth": {
+      "href": "https://accounts.buffalo.entrecode.de"
+    },
+    "ec:acc/clients/options": {
+      "href": "https://accounts.buffalo.entrecode.de/client{?callbackurl,callbackurl~,clientid,clientid~,page,size,sort}",
+      "templated": true
+    },
+    "next": {
+      "href": "https://accounts.buffalo.entrecode.de/client?page=2"
+    }
+  },
+  "_embedded": {
+    "ec:acc/client": [
+      {
+        "clientID": "auth-demo",
+        "callbackURL": "https://angular-datamanager.buffalo.entrecode.de/angular-datamanager-admin/demo/",
+        "config": {
+          "tokenMethod": "query"
+        },
+        "_links": {
+          "self": {
+            "profile": "https://entrecode.de/schema/client",
+            "href": "https://accounts.buffalo.entrecode.de/client?clientID=auth-demo"
+          },
+          "collection": {
+            "profile": "https://entrecode.de/schema/clients",
+            "href": "https://accounts.buffalo.entrecode.de/client"
+          }
+        }
+      },
+      {
+        "clientID": "bodywave",
+        "callbackURL": "https://login.body-wave.de/login",
+        "config": {
+          "tokenMethod": "query"
+        },
+        "_links": {
+          "self": {
+            "profile": "https://entrecode.de/schema/client",
+            "href": "https://accounts.buffalo.entrecode.de/client?clientID=bodywave"
+          },
+          "collection": {
+            "profile": "https://entrecode.de/schema/clients",
+            "href": "https://accounts.buffalo.entrecode.de/client"
+          }
+        }
+      },
+      {
+        "clientID": "bodywave-development",
+        "callbackURL": "http://localhost:7474/login",
+        "config": {
+          "tokenMethod": "query"
+        },
+        "_links": {
+          "self": {
+            "profile": "https://entrecode.de/schema/client",
+            "href": "https://accounts.buffalo.entrecode.de/client?clientID=bodywave-development"
+          },
+          "collection": {
+            "profile": "https://entrecode.de/schema/clients",
+            "href": "https://accounts.buffalo.entrecode.de/client"
+          }
+        }
+      },
+      {
+        "clientID": "bodywave-staging",
+        "callbackURL": "https://dev.body-wave.de/login",
+        "config": {
+          "tokenMethod": "query"
+        },
+        "_links": {
+          "self": {
+            "profile": "https://entrecode.de/schema/client",
+            "href": "https://accounts.buffalo.entrecode.de/client?clientID=bodywave-staging"
+          },
+          "collection": {
+            "profile": "https://entrecode.de/schema/clients",
+            "href": "https://accounts.buffalo.entrecode.de/client"
+          }
+        }
+      },
+      {
+        "clientID": "development-local",
+        "callbackURL": "http://localhost:7474/login",
+        "config": {
+          "tokenMethod": "query"
+        },
+        "_links": {
+          "self": {
+            "profile": "https://entrecode.de/schema/client",
+            "href": "https://accounts.buffalo.entrecode.de/client?clientID=development-local"
+          },
+          "collection": {
+            "profile": "https://entrecode.de/schema/clients",
+            "href": "https://accounts.buffalo.entrecode.de/client"
+          }
+        }
+      },
+      {
+        "clientID": "ec-editor",
+        "callbackURL": "https://editor.entrecode.de/account/token",
+        "config": {
+          "tokenMethod": "query"
+        },
+        "_links": {
+          "self": {
+            "profile": "https://entrecode.de/schema/client",
+            "href": "https://accounts.buffalo.entrecode.de/client?clientID=ec-editor"
+          },
+          "collection": {
+            "profile": "https://entrecode.de/schema/clients",
+            "href": "https://accounts.buffalo.entrecode.de/client"
+          }
+        }
+      },
+      {
+        "clientID": "editor-buffalo",
+        "callbackURL": "https://editor.buffalo.entrecode.de/account/token",
+        "config": {
+          "tokenMethod": "query"
+        },
+        "_links": {
+          "self": {
+            "profile": "https://entrecode.de/schema/client",
+            "href": "https://accounts.buffalo.entrecode.de/client?clientID=editor-buffalo"
+          },
+          "collection": {
+            "profile": "https://entrecode.de/schema/clients",
+            "href": "https://accounts.buffalo.entrecode.de/client"
+          }
+        }
+      },
+      {
+        "clientID": "editor-local",
+        "callbackURL": "http://localhost:7474/account/token",
+        "config": {
+          "tokenMethod": "query"
+        },
+        "_links": {
+          "self": {
+            "profile": "https://entrecode.de/schema/client",
+            "href": "https://accounts.buffalo.entrecode.de/client?clientID=editor-local"
+          },
+          "collection": {
+            "profile": "https://entrecode.de/schema/clients",
+            "href": "https://accounts.buffalo.entrecode.de/client"
+          }
+        }
+      },
+      {
+        "clientID": "local-development",
+        "callbackURL": "http://localhost:3000/login",
+        "config": {
+          "tokenMethod": "query"
+        },
+        "_links": {
+          "self": {
+            "profile": "https://entrecode.de/schema/client",
+            "href": "https://accounts.buffalo.entrecode.de/client?clientID=local-development"
+          },
+          "collection": {
+            "profile": "https://entrecode.de/schema/clients",
+            "href": "https://accounts.buffalo.entrecode.de/client"
+          }
+        }
+      },
+      {
+        "clientID": "rest",
+        "callbackURL": null,
+        "config": {
+          "tokenMethod": "body"
+        },
+        "_links": {
+          "self": {
+            "profile": "https://entrecode.de/schema/client",
+            "href": "https://accounts.buffalo.entrecode.de/client?clientID=rest"
+          },
+          "collection": {
+            "profile": "https://entrecode.de/schema/clients",
+            "href": "https://accounts.buffalo.entrecode.de/client"
+          }
+        }
+      }
+    ]
+  }
+}

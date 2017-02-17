@@ -1,0 +1,312 @@
+{
+  "count": 4,
+  "total": 4,
+  "_links": {
+    "self": {
+      "href": "https://accounts.entrecode.de/account/tokens?accountID=ddd29fd1-7417-4894-a546-5c12b11c0186"
+    },
+    "curies": {
+      "href": "https://doc.entrecode.de/account_server/#relation-{rel}",
+      "templated": true
+    },
+    "ec:account": {
+      "href": "https://accounts.entrecode.de/account?accountID=ddd29fd1-7417-4894-a546-5c12b11c0186"
+    },
+    "ec:account/tokens/options": {
+      "href": "https://accounts.entrecode.de/account/tokens{?accesstokenid,accesstokenid~,accountid,accountid~,ipaddress,ipaddresslocation,ipaddresslocation~,ipaddress~,issued,issuedFrom,issuedTo,issued~,page,size,sort,validuntil,validuntilFrom,validuntilTo,validuntil~}",
+      "templated": true
+    }
+  },
+  "_embedded": {
+    "ec:account/token": [
+      {
+        "accessTokenID": "5d36f51a-da58-4f2e-aee7-c09d1b84d346",
+        "device": {
+          "os": "macOS Sierra",
+          "isIE": false,
+          "isUC": false,
+          "geoIp": {},
+          "isBot": false,
+          "isMac": true,
+          "isBada": false,
+          "isCurl": false,
+          "isEdge": false,
+          "isSilk": false,
+          "isiPad": false,
+          "isiPod": false,
+          "source": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.95 Safari/537.36",
+          "browser": "Chrome",
+          "isAmaya": false,
+          "isFlock": false,
+          "isLinux": false,
+          "isOpera": false,
+          "isWinJs": false,
+          "version": "55.0.2883.95",
+          "isChrome": true,
+          "isMobile": false,
+          "isSafari": false,
+          "isTablet": false,
+          "isWebkit": false,
+          "isiPhone": false,
+          "platform": "Apple Mac",
+          "isAndroid": false,
+          "isCaptive": false,
+          "isDesktop": true,
+          "isFirefox": false,
+          "isLinux64": false,
+          "isOmniWeb": false,
+          "isSamsung": false,
+          "isSmartTV": false,
+          "isWindows": false,
+          "isChromeOS": false,
+          "isEpiphany": false,
+          "isKonqueror": false,
+          "isPhantomJS": false,
+          "isRaspberry": false,
+          "isSeaMonkey": false,
+          "isBlackberry": false,
+          "isKindleFire": false,
+          "isAndroidTablet": false,
+          "isAuthoritative": true,
+          "silkAccelerated": false,
+          "isIECompatibilityMode": false
+        },
+        "ipAddress": "134.3.229.181",
+        "ipAddressLocation": "Esslingen am Neckar (DE, 48.7394,9.3061)",
+        "isCurrent": false,
+        "issued": "2017-01-25T10:12:15.000Z",
+        "validUntil": "2017-02-24T10:12:15.000Z",
+        "_links": {
+          "self": {
+            "profile": "https://entrecode.de/schema/account-token",
+            "href": "https://accounts.entrecode.de/account/tokens?accessTokenID=5d36f51a-da58-4f2e-aee7-c09d1b84d346"
+          },
+          "ec:account": {
+            "profile": "https://entrecode.de/schema/account",
+            "href": "https://accounts.entrecode.de/account?accountID=ddd29fd1-7417-4894-a546-5c12b11c0186"
+          },
+          "collection": {
+            "profile": "https://entrecode.de/schema/accounts",
+            "href": "https://accounts.entrecode.de/account/tokens?accountID=ddd29fd1-7417-4894-a546-5c12b11c0186"
+          }
+        }
+      },
+      {
+        "accessTokenID": "d624893f-8f59-4f4a-a33b-44d309a06c48",
+        "device": {
+          "os": "macOS Sierra",
+          "isIE": false,
+          "isUC": false,
+          "geoIp": {},
+          "isBot": false,
+          "isMac": true,
+          "isBada": false,
+          "isCurl": false,
+          "isEdge": false,
+          "isSilk": false,
+          "isiPad": false,
+          "isiPod": false,
+          "source": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36",
+          "browser": "Chrome",
+          "isAmaya": false,
+          "isFlock": false,
+          "isLinux": false,
+          "isOpera": false,
+          "isWinJs": false,
+          "version": "56.0.2924.87",
+          "isChrome": true,
+          "isMobile": false,
+          "isSafari": false,
+          "isTablet": false,
+          "isWebkit": false,
+          "isiPhone": false,
+          "platform": "Apple Mac",
+          "isAndroid": false,
+          "isCaptive": false,
+          "isDesktop": true,
+          "isFirefox": false,
+          "isLinux64": false,
+          "isOmniWeb": false,
+          "isSamsung": false,
+          "isSmartTV": false,
+          "isWindows": false,
+          "isChromeOS": false,
+          "isEpiphany": false,
+          "isKonqueror": false,
+          "isPhantomJS": false,
+          "isRaspberry": false,
+          "isSeaMonkey": false,
+          "isBlackberry": false,
+          "isKindleFire": false,
+          "isAndroidTablet": false,
+          "isAuthoritative": true,
+          "silkAccelerated": false,
+          "isIECompatibilityMode": false
+        },
+        "ipAddress": "134.3.229.181",
+        "ipAddressLocation": "Esslingen am Neckar (DE, 48.7394,9.3061)",
+        "isCurrent": false,
+        "issued": "2017-02-06T12:24:58.000Z",
+        "validUntil": "2017-03-08T12:24:58.000Z",
+        "_links": {
+          "self": {
+            "profile": "https://entrecode.de/schema/account-token",
+            "href": "https://accounts.entrecode.de/account/tokens?accessTokenID=d624893f-8f59-4f4a-a33b-44d309a06c48"
+          },
+          "ec:account": {
+            "profile": "https://entrecode.de/schema/account",
+            "href": "https://accounts.entrecode.de/account?accountID=ddd29fd1-7417-4894-a546-5c12b11c0186"
+          },
+          "collection": {
+            "profile": "https://entrecode.de/schema/accounts",
+            "href": "https://accounts.entrecode.de/account/tokens?accountID=ddd29fd1-7417-4894-a546-5c12b11c0186"
+          }
+        }
+      },
+      {
+        "accessTokenID": "53117cee-9943-4bed-b923-5fc1179920e8",
+        "device": {
+          "os": "macOS Sierra",
+          "isIE": false,
+          "isUC": false,
+          "geoIp": {},
+          "isBot": false,
+          "isMac": true,
+          "isBada": false,
+          "isCurl": false,
+          "isEdge": false,
+          "isSilk": false,
+          "isiPad": false,
+          "isiPod": false,
+          "source": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36",
+          "browser": "Chrome",
+          "isAmaya": false,
+          "isFlock": false,
+          "isLinux": false,
+          "isOpera": false,
+          "isWinJs": false,
+          "version": "56.0.2924.87",
+          "isChrome": true,
+          "isMobile": false,
+          "isSafari": false,
+          "isTablet": false,
+          "isWebkit": false,
+          "isiPhone": false,
+          "platform": "Apple Mac",
+          "isAndroid": false,
+          "isCaptive": false,
+          "isDesktop": true,
+          "isFirefox": false,
+          "isLinux64": false,
+          "isOmniWeb": false,
+          "isSamsung": false,
+          "isSmartTV": false,
+          "isWindows": false,
+          "isChromeOS": false,
+          "isEpiphany": false,
+          "isKonqueror": false,
+          "isPhantomJS": false,
+          "isRaspberry": false,
+          "isSeaMonkey": false,
+          "isBlackberry": false,
+          "isKindleFire": false,
+          "isAndroidTablet": false,
+          "isAuthoritative": true,
+          "silkAccelerated": false,
+          "isIECompatibilityMode": false
+        },
+        "ipAddress": "134.3.229.181",
+        "ipAddressLocation": "Esslingen am Neckar (DE, 48.7394,9.3061)",
+        "isCurrent": false,
+        "issued": "2017-02-06T12:59:35.000Z",
+        "validUntil": "2017-03-08T12:59:35.000Z",
+        "_links": {
+          "self": {
+            "profile": "https://entrecode.de/schema/account-token",
+            "href": "https://accounts.entrecode.de/account/tokens?accessTokenID=53117cee-9943-4bed-b923-5fc1179920e8"
+          },
+          "ec:account": {
+            "profile": "https://entrecode.de/schema/account",
+            "href": "https://accounts.entrecode.de/account?accountID=ddd29fd1-7417-4894-a546-5c12b11c0186"
+          },
+          "collection": {
+            "profile": "https://entrecode.de/schema/accounts",
+            "href": "https://accounts.entrecode.de/account/tokens?accountID=ddd29fd1-7417-4894-a546-5c12b11c0186"
+          }
+        }
+      },
+      {
+        "accessTokenID": "40f7f2b8-2e2d-4be8-9268-a9242e8b81cc",
+        "device": {
+          "os": "macOS Sierra",
+          "isIE": false,
+          "isUC": false,
+          "geoIp": {},
+          "isBot": false,
+          "isMac": true,
+          "isBada": false,
+          "isCurl": false,
+          "isEdge": false,
+          "isSilk": false,
+          "isiPad": false,
+          "isiPod": false,
+          "source": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36",
+          "browser": "Chrome",
+          "isAmaya": false,
+          "isFlock": false,
+          "isLinux": false,
+          "isOpera": false,
+          "isWinJs": false,
+          "version": "56.0.2924.87",
+          "isChrome": true,
+          "isMobile": false,
+          "isSafari": false,
+          "isTablet": false,
+          "isWebkit": false,
+          "isiPhone": false,
+          "platform": "Apple Mac",
+          "isAndroid": false,
+          "isCaptive": false,
+          "isDesktop": true,
+          "isFirefox": false,
+          "isLinux64": false,
+          "isOmniWeb": false,
+          "isSamsung": false,
+          "isSmartTV": false,
+          "isWindows": false,
+          "isChromeOS": false,
+          "isEpiphany": false,
+          "isKonqueror": false,
+          "isPhantomJS": false,
+          "isRaspberry": false,
+          "isSeaMonkey": false,
+          "isBlackberry": false,
+          "isKindleFire": false,
+          "isAndroidTablet": false,
+          "isAuthoritative": true,
+          "silkAccelerated": false,
+          "isIECompatibilityMode": false
+        },
+        "ipAddress": "134.3.229.181",
+        "ipAddressLocation": "Esslingen am Neckar (DE, 48.7394,9.3061)",
+        "isCurrent": true,
+        "issued": "2017-02-06T13:39:42.000Z",
+        "validUntil": "2017-03-08T13:39:42.000Z",
+        "_links": {
+          "self": {
+            "profile": "https://entrecode.de/schema/account-token",
+            "href": "https://accounts.entrecode.de/account/tokens?accessTokenID=40f7f2b8-2e2d-4be8-9268-a9242e8b81cc"
+          },
+          "ec:account": {
+            "profile": "https://entrecode.de/schema/account",
+            "href": "https://accounts.entrecode.de/account?accountID=ddd29fd1-7417-4894-a546-5c12b11c0186"
+          },
+          "collection": {
+            "profile": "https://entrecode.de/schema/accounts",
+            "href": "https://accounts.entrecode.de/account/tokens?accountID=ddd29fd1-7417-4894-a546-5c12b11c0186"
+          }
+        }
+      }
+    ]
+  }
+}

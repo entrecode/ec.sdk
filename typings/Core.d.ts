@@ -1,9 +1,11 @@
 export declare class Core {
-  constructor(url: environment);
+  constructor(url: string);
 
   newRequest(): any;
 
   setToken(token: string): Core;
-}
 
-type environment = 'live' | 'stage' | 'nightly' | 'develop';
+  on(label: string, callback: () => void): void;
+
+  removeListener(label: string, callback: () => void): boolean;
+}

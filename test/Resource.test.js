@@ -6,7 +6,6 @@ const fs = require('fs');
 const sinon = require('sinon');
 const sinonChai = require('sinon-chai');
 
-const core = require('../lib/Core');
 const helper = require('../lib/helper');
 const traverson = require('traverson');
 const resolver = require('./mocks/resolver');
@@ -14,7 +13,6 @@ const Resource = require('../lib/resources/Resource').default;
 
 const should = chai.should();
 
-chai.should();
 chai.use(sinonChai);
 chai.use(chaiAsPromised);
 
@@ -40,22 +38,26 @@ describe('Resource', () => {
     resource.should.be.instanceOf(Resource);
   });
   it('should instantiate with traversal and environment', () => {
-    const resource = new Resource(resourceJson, 'stage', {});
-    resource.environment.should.be.equal('stage');
-    should.exist(resource.traversal);
+    const res = new Resource(resourceJson, 'stage', {});
+    res.environment.should.be.equal('stage');
+    should.exist(res.traversal);
   });
   it('should have environment live', () => {
     resource.environment.should.be.equal('live');
+  });
+  it('should throw on non string environment', () => {
+    const throws = () => new Resource(resourceJson, {});
+    throws.should.throw();
   });
   it('should return traverson builder on newRequest call', () => {
     resource.newRequest().should.be.instanceOf(traverson._Builder);
   });
   it('should be clean', () => {
-    resource.isDirty().should.be.false;
+    resource.isDirty.should.be.false;
   });
   it('should be dirty on setProperty call', () => {
     resource.setProperty('description', 'hello');
-    resource.isDirty().should.be.true;
+    resource.isDirty.should.be.true;
   });
   it('should restore state on reset call', () => {
     resource.setProperty('description', 'hello');
@@ -64,9 +66,9 @@ describe('Resource', () => {
   });
   it('should be clean after reset', () => {
     resource.setProperty('description', 'hello');
-    resource.isDirty().should.be.true;
+    resource.isDirty.should.be.true;
     resource.reset();
-    resource.isDirty().should.be.false;
+    resource.isDirty.should.be.false;
   });
   it('should call put on save', () => {
     const stub = sinon.stub(helper, 'put');
@@ -97,6 +99,7 @@ describe('Resource', () => {
   it('should return link in getLink', () => {
     resource.getLink('self').should.be.deep.equal({
       href: 'https://datamanager.entrecode.de/?dataManagerID=48e18a34-cf64-4f4a-bc47-45323a7f0e44',
+      profile: 'https://entrecode.de/schema/datamanager',
       templated: false,
       title: 'Test DM',
     });
@@ -118,7 +121,8 @@ describe('Resource', () => {
     const stub = sinon.stub(helper, 'get');
     stub.returns(Promise.reject(new Error('Traverson throws this')));
 
-    return resource.followLink('self').should.be.rejected.notify(() => stub.restore());
+    return resource.followLink('self').should.be.rejected
+    .and.notify(() => stub.restore());
   });
   it('should return resource on get', () => {
     const obj = resource.get();
@@ -189,5 +193,15 @@ describe('Resource', () => {
   it('should set single property', () => {
     resource.setProperty('title', 'New Title');
     resource.getProperty('title').should.be.equal('New Title');
+  });
+  it('should call get on resolve', () => {
+    const stub = sinon.stub(helper, 'get');
+    stub.returns(resolver('dm-single.json', resource._traversal));
+
+    return resource.resolve()
+    .then(() => {
+      stub.should.be.called.once;
+      stub.restore();
+    });
   });
 });

@@ -1,0 +1,17 @@
+{
+  "clientID": "auth-demo",
+  "callbackURL": "https://angular-datamanager.buffalo.entrecode.de/angular-datamanager-admin/demo/",
+  "config": {
+    "tokenMethod": "query"
+  },
+  "_links": {
+    "self": {
+      "profile": "https://entrecode.de/schema/client",
+      "href": "https://accounts.buffalo.entrecode.de/client?clientID=auth-demo"
+    },
+    "collection": {
+      "profile": "https://entrecode.de/schema/clients",
+      "href": "https://accounts.buffalo.entrecode.de/client"
+    }
+  }
+}
