@@ -6,18 +6,22 @@
 
 [![npm version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Coverage Status][cover-image]][cover-url] [![NSP Status][nsp-image]][nsp-url] [![Code Climate][cc-image]][cc-url] [![Inline docs][doc-image]][doc-url]
 
+## Documentation
+
+Documentation can be found [here](https://entrecode.github.io/ec.sdk/).
+
 ## Basic Usage
 
 ```sh
 npm i --save ec.api
 ```
 
-###### ES6 / Webpack
+##### ES6 / Webpack
 
 ```js
 import {DataManager, Accounts} from 'ec.api';
 
-const dataManager = new DataManager('live', accessToken);
+const dataManager = new DataManager('live').setToken(accessToken);
 
 dataManager.list()
 .then(list => doSomthingWith(list))
@@ -28,7 +32,7 @@ dataManager.list()
 
 ```js
 const ec = require('ec.api');
-const dataManager = new ec.DataManager('live', accessToken);
+const dataManager = new ec.DataManager('live').setToken(accessToken);
 
 dataManager.list()
 .then(list => doSomthingWith(list))
@@ -49,7 +53,6 @@ dataManager.list()
     .then(list => doSomthingWith(list))
     .catch(console.log);
 </script>
-
 ```
 
 [travis-image]: https://travis-ci.org/entrecode/ec.sdk.svg?branch=master
