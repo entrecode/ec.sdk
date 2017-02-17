@@ -112,13 +112,12 @@ export default class Resource {
    */
   save() {
     // TODO add validation
-    return put(
-      this.environment,
-      this.newRequest().follow('self'),
-      // TODO does this Object.assign work how I want it to?
-      // or do we need for(key in obj) loop?
-      Object.assign(this.resource.original(), this.resource)
-    )
+    const out = {};
+    Object.keys(this.resource.original()).forEach((key) => {
+      out[key] = this.resource[key];
+    });
+
+    return put(this.environment, this.newRequest().follow('self'), out)
     .then(([res, traversal]) => {
       this.resource = halfred.parse(res);
       this.traversal = traversal;
