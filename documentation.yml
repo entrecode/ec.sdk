@@ -10,6 +10,14 @@ toc:
   - Accounts
   - DataManager
   - environment
+  - Event#login
+  - Event#logout
+  - Event#error
+  - name: Find a name
+    description: |
+      Describe it.
+  - Problem
+  - EventEmitter
   - name: Resources
     description: |
       Resource Description.

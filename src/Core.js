@@ -6,13 +6,30 @@ import events from './EventEmitter';
 traverson.registerMediaType(HalAdapter.mediaType, HalAdapter);
 
 /**
+ * You can define which API should be used with the environment parameter. Internally this is also
+ * used as key to store tokens into cookies (for browsers).
+ *
+ * Valid value is one of `live`, `stage`, `nightly`, or `develop`.
+ *
+ * @example
+ * // will connect to production https://editor.entrecode.de
+ * const session = new Session('live');
+ * // will connect to cachena https://editor.cachena.entrecode.de
+ * const accounts = new Accounts('stage');
+ * // will connect to buffalo https://editor.buffalo.entrecode.de
+ * const dataManager = new DataManager('nightly');
+ * // will connect to your local instances, well maybe
+ * const accounts = new Accounts('develop');
+ *
  * @typedef { 'live' | 'stage' | 'nightly' | 'develop'} environment
  */
 
 /**
- * Core class for connecting to any entrecode API.
+ * Each API connector Class inherits directly from Core class. You can not instantiate Core
+ * directly. Use one of the following API connectors instead.
  *
- * @interface
+ * @access protected
+ *
  * @class
  */
 export default class Core {
@@ -50,11 +67,13 @@ export default class Core {
   }
 
   /**
-   * Set an existing accessToken
+   * If you have an existing access token you can use it by calling this function. All
+   * subsequent requests will use the provided {@link https://jwt.io/ Json Web Token} with an
+   * Authorization header.
    *
    * @example
    * return accounts.me(); // will result in error
-   * accounts.setToken('jwtToken');
+   * accounts.setToken('aJwtToken');
    * return accounts.mes(); // will resolve
    *
    * @param {string} token the existing token
@@ -70,7 +89,9 @@ export default class Core {
   }
 
   /**
-   * Attaches a listener on the underlying EventEmitter.
+   * All API connectors have an underlying {@link EventEmitter} for emitting events. You can use
+   * this function for attaching an event listener. See {@link EventEmitter} for the events which
+   * will be emitted.
    *
    * @example
    * session.on('login', myAlertFunc);
@@ -86,7 +107,8 @@ export default class Core {
   }
 
   /**
-   * Removes a previously attached listener from the underlying EventEmitter.
+   * You can remov a previously attached listener from the underlying {@link EventEmitter} with
+   * this function.
    *
    * @example
    * session.on('login', myAlertFunc);

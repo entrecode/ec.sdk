@@ -12,18 +12,17 @@ const urls = {
 };
 
 /**
- * Module for working with DataManager API.
+ * API connector for {@link https://doc.entrecode.de/en/latest/data_manager/ Accounts API}.
  *
+ *
+ * Multiple instances for multiple environments are possible.
  * @class
- * @module
  */
 export default class DataManager extends Core {
   /**
-   * Creates a new instance of {@link DataManager} module. Can be used to work with DataManager
-   * API.
+   * Creates a new instance of {@link DataManager} module.*
    *
-   * @param {?environment} environment the environment to connect to. 'live', 'stage', 'nightly', or
-   *   'develop'.
+   * @param {?environment} environment the environment to connect to.
    */
   constructor(environment) {
     if (environment && !{}.hasOwnProperty.call(urls, environment)) {

@@ -7,6 +7,8 @@
 class EventEmitter {
   /**
    * default constructor initialising a empty {@link Map} for event listeners.
+   *
+   * @access private
    */
   constructor() {
     this.listeners = new Map();
@@ -14,6 +16,8 @@ class EventEmitter {
 
   /**
    * Adds a listener for an event type.
+   *
+   * @access private
    *
    * @param {string} label event type
    * @param {function} callback function to invoke when event occurs.
@@ -29,6 +33,8 @@ class EventEmitter {
   /**
    * Adds a listener for an event type.
    *
+   * @access private
+   *
    * @param {string} label event type
    * @param {function} callback function to invoke when event occurs.
    * @returns {undefined}
@@ -39,6 +45,8 @@ class EventEmitter {
 
   /**
    * Removes a listener.
+   *
+   * @access private
    *
    * @param {string} label event type
    * @param {function} callback listener function to remove.
@@ -63,6 +71,9 @@ class EventEmitter {
 
   /**
    * Removes all listeners for a given label.
+   *
+   * @access private
+   *
    * @param {string} label event type.
    * @returns {boolean} whether or not all listeners got removed.
    */
@@ -90,6 +101,28 @@ class EventEmitter {
     }
     return false;
   }
+
+  /**
+   * Login event is emitted when a login succeeds with {@link Session#login}.
+   *
+   * @event Event#login
+   * @type {string}
+   */
+
+  /**
+   * Logout event is emitted either on a successful logout with {@link Session#logout} or an API
+   * error with token related error codes.
+   *
+   * @event Event#logout
+   * @type {undefined|Problem}
+   */
+
+  /**
+   * Error events are emitted whenever an API responds with an {@link Error} or {@link Problem}.
+   *
+   * @event Event#error
+   * @†ype {Error|Problem}
+   */
 }
 
 /**

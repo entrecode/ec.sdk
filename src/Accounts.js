@@ -26,18 +26,17 @@ const urls = {
 };
 
 /**
- * Module for working with Accounts API.
+ * API connector for {@link https://doc.entrecode.de/en/latest/account_server/ Accounts API}.
+ *
+ * Multiple instances for multiple environments are possible.
  *
  * @class
- * @module
  */
 export default class Accounts extends Core {
   /**
-   * Creates a new instance of {@link Accounts} module. Can be used to work with Accounts
-   * API. Multiple instances for multiple environments are possible.
+   * Creates a new instance of {@link Accounts} module.
    *
-   * @param {?environment} environment the environment to connect to. 'live', 'stage', 'nightly', or
-   *   'develop'.
+   * @param {?environment} environment the {@link environment} to connect to.
    */
   constructor(environment) {
     if (environment && !{}.hasOwnProperty.call(urls, environment)) {
@@ -50,7 +49,7 @@ export default class Accounts extends Core {
   }
 
   /**
-   * Set the clientID to use with the Accounts API. Currently only 'rest' is supported.
+   * Set the clientID to use with the Accounts API. Currently only `rest` is supported.
    *
    * @param {string} clientID the clientID.
    * @returns {Accounts} this object for chainability
@@ -159,7 +158,7 @@ export default class Accounts extends Core {
    *   return apiTokenCreated(token);
    * });
    *
-   * @returns {Promise<tokenResponse>} the created api
+   * @returns {Promise<{jwt: string, accountID: string, iat: number, exp: number}>} the created api
    *   token response.
    */
   createApiToken() {
@@ -199,7 +198,7 @@ export default class Accounts extends Core {
   }
 
   /**
-   * Signup a new account.
+   * Signup a new account. Invite may be required.
    *
    * @example
    * return accounts.signup(email, password, invite)
@@ -325,7 +324,7 @@ export default class Accounts extends Core {
   }
 
   /**
-   * Load the {@link InvitesResource}.
+   * Load the {@link InvitesResource} with unused invites.
    *
    * @example
    * return accounts.invites()

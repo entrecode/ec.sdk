@@ -10,17 +10,26 @@ const urls = {
 };
 
 /**
- * Module for logging in and logging out.
+ * This API connector can be used for login or logout into ec.apis. Login state will be avaliable
+ * to all other API connectors of the same {@link environment}.
+ *
+ * @example
+ * return session.login(email, password)
+ * .then(() => {
+ *   return accounts.me();
+ * })
+ * .then((account) => {
+ *   return show(account);
+ * });
  *
  * @class
  * @module
  */
 export default class Session extends Core {
   /**
-   * Creates a new instance of {@link Session} module. Can be used to log in and log out.
+   * Creates a new instance of {@link Session} API connector.
    *
-   * @param {?environment} environment the environment to connect to. 'live', 'stage', 'nightly', or
-   *   'develop'.
+   * @param {?environment} environment the environment to connect to.
    */
   constructor(environment) {
     if (environment && !{}.hasOwnProperty.call(urls, environment)) {
@@ -33,7 +42,7 @@ export default class Session extends Core {
   }
 
   /**
-   * Set the clientID to use with the Accounts API. Currently only 'rest' is supported.
+   * Set the clientID to use with the Accounts API. Currently only `rest is supported.
    *
    * @param {string} clientID the clientID.
    * @returns {Accounts} this object for chainability
@@ -52,14 +61,8 @@ export default class Session extends Core {
   }
 
   /**
-   * Response when creating a API token in account server.
-   *
-   * @typedef {{jwt: string, accountID: string, iat: number, exp: number}} tokenResponse
-   */
-
-  /**
-   * Login with email and password. Currently only supports rest clientID with body post of
-   * credentials.
+   * Login with email and password. Currently only supports `rest` clientID with body post of
+   * credentials and tokenMethod `body`.
    *
    * @param {string} email email address of the user
    * @param {string} password password of the user
