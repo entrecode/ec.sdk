@@ -59,7 +59,7 @@ export default class DataManager extends Core {
    * @param {filterOptions?} options the filter options.
    * @returns {Promise<DataManagerList>} resolves to datamanager list with applied filters.
    */
-  list(options) {
+  dataManagerList(options) {
     return Promise.resolve()
     .then(() => {
       if (options && Object.keys(options).length === 1 && 'dataManagerID' in options) {
@@ -80,7 +80,7 @@ export default class DataManager extends Core {
    * @param {string} dataManagerID id of the DataManager.
    * @returns {Promise<DataManagerResource>} resolves to the DataManager which should be loaded.
    */
-  get(dataManagerID) {
+  dataManager(dataManagerID) {
     return Promise.resolve()
     .then(() => {
       if (!dataManagerID) {

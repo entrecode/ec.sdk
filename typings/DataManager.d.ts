@@ -8,9 +8,9 @@ export declare class DataManager extends Core {
 
   create(dataManager: any): Promise<DataManagerResource>;
 
-  list(options?: filterOptions): Promise<DataManagerList>;
+  dataManagerList(options?: filterOptions): Promise<DataManagerList>;
 
-  get(dataManagerID: string): Promise<DataManagerResource>;
+  dataManager(dataManagerID: string): Promise<DataManagerResource>;
 }
 
 type environment = 'live' | 'stage' | 'nightly' | 'develop';

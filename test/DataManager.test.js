@@ -37,7 +37,7 @@ describe('DataManager class', () => {
     const stub = sinon.stub(helper, 'get');
     stub.returns(resolver('dm-list.json'));
 
-    return dm.list()
+    return dm.dataManagerList()
     .then((list) => {
       list.should.be.instanceof(DataManagerList);
       stub.restore();
@@ -48,14 +48,14 @@ describe('DataManager class', () => {
     });
   });
   it('should be rejected on list only with dataManagerID', () => {
-    return new DataManager('live').list({ dataManagerID: 'id' }).should.be.rejectedWith(Error);
+    return new DataManager('live').dataManagerList({ dataManagerID: 'id' }).should.be.rejectedWith(Error);
   });
   it('should return resource on get', () => {
     const dm = new DataManager('live');
     const stub = sinon.stub(helper, 'get');
     stub.returns(resolver('dm-list.json'));
 
-    return dm.get('aID')
+    return dm.dataManager('aID')
     .then((list) => {
       list.should.be.instanceof(DataManagerResource);
       stub.restore();
@@ -66,7 +66,7 @@ describe('DataManager class', () => {
     });
   });
   it('should be rejected on get with undefined id', () => {
-    return new DataManager('live').get().should.be.rejectedWith(Error);
+    return new DataManager('live').dataManager().should.be.rejectedWith(Error);
   });
   it('should call post on create', () => {
     const stub = sinon.stub(helper, 'post');

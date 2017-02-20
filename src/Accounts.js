@@ -86,7 +86,7 @@ export default class Accounts extends Core {
    * @param {filterOptions?} options the filter options.
    * @returns {Promise<AccountList>} resolves to account list with applied filters.
    */
-  list(options) {
+  accountList(options) {
     return Promise.resolve()
     .then(() => {
       if (options && Object.keys(options).length === 1 && 'accountID' in options) {
@@ -113,7 +113,7 @@ export default class Accounts extends Core {
    * @param {string} accountID id of the Account.
    * @returns {Promise<AccountResource>} resolves to the Account which should be loaded.
    */
-  get(accountID) {
+  account(accountID) {
     return Promise.resolve()
     .then(() => {
       if (!accountID) {

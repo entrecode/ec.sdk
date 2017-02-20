@@ -55,7 +55,7 @@ describe('Accounts class', () => {
     const stub = sinon.stub(helper, 'get');
     stub.returns(resolver('account-list.json'));
 
-    return accounts.list()
+    return accounts.accountList()
     .then((list) => {
       list.should.be.instanceof(AccountList);
       stub.restore();
@@ -66,14 +66,14 @@ describe('Accounts class', () => {
     });
   });
   it('should be rejected on list only with accountID', () => {
-    return new Accounts().list({ accountID: 'id' }).should.be.rejectedWith(Error);
+    return new Accounts().accountList({ accountID: 'id' }).should.be.rejectedWith(Error);
   });
   it('should return resource on get', () => {
     const accounts = new Accounts('live');
     const stub = sinon.stub(helper, 'get');
     stub.returns(resolver('account-list.json'));
 
-    return accounts.get('aID')
+    return accounts.account('aID')
     .then((resource) => {
       resource.should.be.instanceof(AccountResource);
       stub.restore();
@@ -84,7 +84,7 @@ describe('Accounts class', () => {
     });
   });
   it('should be rejected on get in undefiend id', () => {
-    return new Accounts().get().should.be.rejectedWith(Error);
+    return new Accounts().account().should.be.rejectedWith(Error);
   });
   it('should return resource on me', () => {
     const accounts = new Accounts('live');
