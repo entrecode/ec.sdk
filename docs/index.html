@@ -154,15 +154,15 @@
                       </a></li>
                       
                       <li><a
-                        href='#Accounts#list'
+                        href='#Accounts#accountList'
                         class='regular pre-open'>
-                        #list
+                        #accountList
                       </a></li>
                       
                       <li><a
-                        href='#Accounts#get'
+                        href='#Accounts#account'
                         class='regular pre-open'>
-                        #get
+                        #account
                       </a></li>
                       
                       <li><a
@@ -172,9 +172,51 @@
                       </a></li>
                       
                       <li><a
+                        href='#Accounts#groupList'
+                        class='regular pre-open'>
+                        #groupList
+                      </a></li>
+                      
+                      <li><a
+                        href='#Accounts#group'
+                        class='regular pre-open'>
+                        #group
+                      </a></li>
+                      
+                      <li><a
+                        href='#Accounts#clientList'
+                        class='regular pre-open'>
+                        #clientList
+                      </a></li>
+                      
+                      <li><a
+                        href='#Accounts#client'
+                        class='regular pre-open'>
+                        #client
+                      </a></li>
+                      
+                      <li><a
                         href='#Accounts#createApiToken'
                         class='regular pre-open'>
                         #createApiToken
+                      </a></li>
+                      
+                      <li><a
+                        href='#Accounts#invites'
+                        class='regular pre-open'>
+                        #invites
+                      </a></li>
+                      
+                      <li><a
+                        href='#Accounts#createInvites'
+                        class='regular pre-open'>
+                        #createInvites
+                      </a></li>
+                      
+                      <li><a
+                        href='#Accounts#invalidPermissions'
+                        class='regular pre-open'>
+                        #invalidPermissions
                       </a></li>
                       
                       <li><a
@@ -199,48 +241,6 @@
                         href='#Accounts#changeEmail'
                         class='regular pre-open'>
                         #changeEmail
-                      </a></li>
-                      
-                      <li><a
-                        href='#Accounts#createInvites'
-                        class='regular pre-open'>
-                        #createInvites
-                      </a></li>
-                      
-                      <li><a
-                        href='#Accounts#invites'
-                        class='regular pre-open'>
-                        #invites
-                      </a></li>
-                      
-                      <li><a
-                        href='#Accounts#clientList'
-                        class='regular pre-open'>
-                        #clientList
-                      </a></li>
-                      
-                      <li><a
-                        href='#Accounts#client'
-                        class='regular pre-open'>
-                        #client
-                      </a></li>
-                      
-                      <li><a
-                        href='#Accounts#invalidPermissions'
-                        class='regular pre-open'>
-                        #invalidPermissions
-                      </a></li>
-                      
-                      <li><a
-                        href='#Accounts#groupList'
-                        class='regular pre-open'>
-                        #groupList
-                      </a></li>
-                      
-                      <li><a
-                        href='#Accounts#group'
-                        class='regular pre-open'>
-                        #group
                       </a></li>
                       
                     </ul>
@@ -277,15 +277,15 @@
                       </a></li>
                       
                       <li><a
-                        href='#DataManager#list'
+                        href='#DataManager#dataManagerList'
                         class='regular pre-open'>
-                        #list
+                        #dataManagerList
                       </a></li>
                       
                       <li><a
-                        href='#DataManager#get'
+                        href='#DataManager#dataManager'
                         class='regular pre-open'>
-                        #get
+                        #dataManager
                       </a></li>
                       
                     </ul>
@@ -300,36 +300,6 @@
                   href='#environment'
                   class="">
                   environment
-                  
-                </a>
-                
-                </li>
-              
-                
-                <li><a
-                  href='#eventeventlogin'
-                  class="">
-                  Event#login
-                  
-                </a>
-                
-                </li>
-              
-                
-                <li><a
-                  href='#eventeventlogout'
-                  class="">
-                  Event#logout
-                  
-                </a>
-                
-                </li>
-              
-                
-                <li><a
-                  href='#eventeventerror'
-                  class="">
-                  Event#error
                   
                 </a>
                 
@@ -407,6 +377,36 @@
                   href='#eventemitter'
                   class="">
                   EventEmitter
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#eventeventlogin'
+                  class="">
+                  Event#login
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#eventeventlogout'
+                  class="">
+                  Event#logout
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#eventeventerror'
+                  class="">
+                  Event#error
                   
                 </a>
                 
@@ -1073,7 +1073,71 @@
   </h2>
 
   
-    <p>Awesome Introduction.</p>
+    <blockquote>
+<p>You've found the documentation for <a href="https://www.npmjs.com/package/ec.sdk">ec.sdk</a>. Congrats. 😊</p>
+<p>This is the SDK for all <a href="https://doc.entrecode.de">ec.APIs</a> by entrecode. By entrecode.</p>
+</blockquote>
+<p>In order to use this SDK you should be familiar with ec.APIs and the concepts behind those. Please refer to the official documentation linked above to get a basic understanding. The documentation you are reading now will first introduce the basic concept when using the SDK. Secondly it is the complete API documentation for ec.sdk.</p>
+<h3>Basic usage</h3>
+<p>For every ec.API you will find an API connector. Use one of those to connect to a certain ec.API. Login and logout are special cases and are done in <a href="#Session">Session</a> API connector.</p>
+<p>All API connectors of a certain <a href="#environment">environment</a> share some information. The most important one is any access token either received with <a href="#Session#login">Session#login</a> or by calling <a href="#Core#setToken">Core#setToken</a>. This means you can specifiy the token on any API connector and it will be automatically used by all other API connectors. If any API connector will receives a token related Error (<a href="#Problem">Problem</a>) it will be automatically removed from all API connectors and a <a href="#eventeventlogout">logout event</a> is fired.</p>
+<blockquote>
+<p>TBD <em>Every action you take in the ec.sdk will be validated before it will send as a request to ec.APIs. This means that the provided json schemas are used. (This is the idea, not really specified yet)</em></p>
+</blockquote>
+<p>The following example will show you the basic usage within a typscript project. This is by all means not complete. So feel free to read on.</p>
+<h4>Example</h4>
+<pre class='hljs'><span class="hljs-keyword">import</span> { Session, Accounts, DataManager } <span class="hljs-keyword">from</span> <span class="hljs-string">'ec.sdk'</span>;
+<span class="hljs-keyword">import</span> { AccountResource } <span class="hljs-keyword">from</span> <span class="hljs-string">'ec.sdk/typings/resources/AccountResource'</span>;
+<span class="hljs-keyword">import</span> { DataManagerResource } <span class="hljs-keyword">from</span> <span class="hljs-string">'ec.sdk/typings/resources/DataManagerResource'</span>;
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">myExample</span> </span>{
+  session: Session;
+  accounts: Accounts;
+  dataManager: DataManager;
+  
+  me: AccountResource;
+  dm: DataManagerResource;
+  
+  <span class="hljs-keyword">constructor</span>() {
+    session = <span class="hljs-keyword">new</span> Session();
+    accounts = <span class="hljs-keyword">new</span> Accounts();
+    
+    session.setClient(<span class="hljs-string">'rest'</span>);
+    <span class="hljs-comment">// this will also receive events from Accounts and DataMAnager</span>
+    session.on(<span class="hljs-string">'error'</span>, <span class="hljs-built_in">console</span>.error);
+  }
+  
+  login(email, password) {
+    session.login(email, password)
+    .then(<span class="hljs-built_in">console</span>.log);
+  }
+  
+  setAccountLanguage(lang) {
+    <span class="hljs-built_in">Promise</span>.resolve()
+    .then(<span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> {
+      <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.me){
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.me;
+      }
+      <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.accounts.me();
+    })
+    .then(<span class="hljs-function">(<span class="hljs-params">me</span>) =&gt;</span> {
+      me.language = lang;
+      <span class="hljs-keyword">return</span> me.save();
+    })
+    .then(<span class="hljs-function"><span class="hljs-params">meSaved</span> =&gt;</span> <span class="hljs-keyword">this</span>.me = meSaved);
+  }
+  
+  loadDataManager(id) {
+    <span class="hljs-keyword">if</span> (!<span class="hljs-keyword">this</span>.dataManager){
+      <span class="hljs-keyword">this</span>.dataManager = <span class="hljs-keyword">new</span> DataManager();
+    }
+    
+    <span class="hljs-keyword">this</span>.dataManager.dataManager(id)
+    .then(<span class="hljs-function">(<span class="hljs-params">dm</span>) =&gt;</span>{
+      <span class="hljs-keyword">this</span>.dm = dm;
+    });
+  }
+}</pre>
 
   
 </section>
@@ -1088,7 +1152,8 @@
   </h2>
 
   
-    <p>What are those?</p>
+    <p>You can view an API connector as the entry point to an <a href="https://doc.entrecode.de/en/latest/">ec.api</a>. Each connector is a class which must be instantiated with <code>new</code> and an optional <a href="#environment"><code>environment</code></a>. If no environment is specified the API connector will connect to <code>live</code> or rather <a href="https://editor.entrecode.de">production</a>. It is possible to have multiple API connectors for multiple environments.</p>
+<p>The two API connectors <a href="#Core">Core</a> and <a href="#Session">Session</a> are special cases. Core is the API connector every other inherits from and contains functionality shared by all other API connectors. Session is only used for login and logout. This will allow you to implement tree shaking into your build and only the parts which are used will be in your bundle.</p>
 
   
 </section>
@@ -1100,19 +1165,21 @@
 
   
   <div class='clearfix'>
+    
     <h3 class='fl m0' id='core'>
       Core
     </h3>
     
+    
   </div>
   
 
-  <p>Each API connector Class inherits directly from Core class. You can not instantiate Core
-directly. Use one of the following API connectors instead.</p>
+  <p>Each API connector Class inherits directly from Core class. You cannot instantiate Core
+directly. Use one of the other API connectors instead.</p>
 
 
   <div class='pre p1 fill-light mt0'>new Core()</div>
-
+  
   
 
   
@@ -1155,7 +1222,7 @@ Authorization header.</p>
 
 
   <div class='pre p1 fill-light mt0'>setToken(token: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>): <a href="#core">Core</a></div>
-
+  
   
 
   
@@ -1170,7 +1237,8 @@ Authorization header.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>token</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code> the existing token
+            <span class='code bold'>token</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    the existing token
 
           </div>
           
@@ -1231,7 +1299,7 @@ will be emitted.</p>
 
 
   <div class='pre p1 fill-light mt0'>on(label: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, listener: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function">function</a>): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/undefined">undefined</a></div>
-
+  
   
 
   
@@ -1246,7 +1314,8 @@ will be emitted.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>label</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code> the event type
+            <span class='code bold'>label</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    the event type
 
           </div>
           
@@ -1254,7 +1323,8 @@ will be emitted.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>listener</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function">function</a>)</code> the listener
+            <span class='code bold'>listener</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function">function</a>)</code>
+	    the listener
 
           </div>
           
@@ -1270,6 +1340,7 @@ will be emitted.</p>
       <div class='py1 quiet mt1 prose-big'>Returns</div>
       <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/undefined">undefined</a></code>:
         
+
       
     
   
@@ -1280,9 +1351,13 @@ will be emitted.</p>
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
-      <pre class='p1 overflow-auto round fill-light'>session.on(<span class="hljs-string">'login'</span>, myAlertFunc);
-session.login(email, password)
-.then(<span class="hljs-function"><span class="hljs-params">token</span> =&gt;</span> <span class="hljs-built_in">console</span>.log(token)); <span class="hljs-comment">// myAlertFunct will be called with token</span></pre>
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">myAlertFunc</span>(<span class="hljs-params">string</span>)</span>{
+  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`A new token was received: <span class="hljs-subst">${string}</span>`</span>);
+}
+
+session.on(<span class="hljs-string">'login'</span>, myAlertFunc);
+session.login(email, password);
+<span class="hljs-comment">// A new token was received: &lt;aJwtToken&gt; will be logged</span></pre>
     
   
 
@@ -1313,7 +1388,7 @@ this function.</p>
 
 
   <div class='pre p1 fill-light mt0'>removeListener(label: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, listener: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function">function</a>): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></div>
-
+  
   
 
   
@@ -1328,7 +1403,8 @@ this function.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>label</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code> the event type
+            <span class='code bold'>label</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    the event type
 
           </div>
           
@@ -1336,7 +1412,8 @@ this function.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>listener</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function">function</a>)</code> the listener
+            <span class='code bold'>listener</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function">function</a>)</code>
+	    the listener
 
           </div>
           
@@ -1397,9 +1474,11 @@ session.login(email, password)
 
   
   <div class='clearfix'>
+    
     <h3 class='fl m0' id='session'>
       Session
     </h3>
+    
     
   </div>
   
@@ -1408,8 +1487,8 @@ session.login(email, password)
 to all other API connectors of the same <a href="#environment">environment</a>.</p>
 
 
-  <div class='pre p1 fill-light mt0'>Session</div>
-
+  <div class='pre p1 fill-light mt0'>new Session()</div>
+  
   
     <p>
       Extends
@@ -1439,10 +1518,8 @@ to all other API connectors of the same <a href="#environment">environment</a>.<
       
       <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">return</span> session.login(email, password)
 .then(<span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> {
+  <span class="hljs-keyword">const</span> accounts = <span class="hljs-keyword">new</span> Accounts();
   <span class="hljs-keyword">return</span> accounts.me();
-})
-.then(<span class="hljs-function">(<span class="hljs-params">account</span>) =&gt;</span> {
-  <span class="hljs-keyword">return</span> show(account);
 });</pre>
     
   
@@ -1468,8 +1545,8 @@ to all other API connectors of the same <a href="#environment">environment</a>.<
   <p>Creates a new instance of <a href="#session">Session</a> API connector.</p>
 
 
-  <div class='pre p1 fill-light mt0'>constructor(environment: ?<a href="#environment">environment</a>)</div>
-
+  <div class='pre p1 fill-light mt0'>constructor(environment: <a href="#environment">environment</a>?)</div>
+  
   
 
   
@@ -1484,7 +1561,8 @@ to all other API connectors of the same <a href="#environment">environment</a>.<
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>environment</span> <code class='quiet'>(?<a href="#environment">environment</a>)</code> the environment to connect to.
+            <span class='code bold'>environment</span> <code class='quiet'>(<a href="#environment">environment</a>?)</code>
+	    the environment to connect to.
 
           </div>
           
@@ -1523,11 +1601,11 @@ to all other API connectors of the same <a href="#environment">environment</a>.<
 
   
 
-  <p>Set the clientID to use with the Accounts API. Currently only &#x60;rest is supported.</p>
+  <p>Set the clientID to use with the Accounts API. Currently only <code>rest</code> is supported.</p>
 
 
   <div class='pre p1 fill-light mt0'>setClientID(clientID: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>): <a href="#accounts">Accounts</a></div>
-
+  
   
 
   
@@ -1542,7 +1620,8 @@ to all other API connectors of the same <a href="#environment">environment</a>.<
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>clientID</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code> the clientID.
+            <span class='code bold'>clientID</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    the clientID.
 
           </div>
           
@@ -1593,8 +1672,8 @@ to all other API connectors of the same <a href="#environment">environment</a>.<
 credentials and tokenMethod <code>body</code>.</p>
 
 
-  <div class='pre p1 fill-light mt0'>login(email: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, password: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&lt;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>&gt;</div>
-
+  <div class='pre p1 fill-light mt0'>login(email: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, password: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>></div>
+  
   
 
   
@@ -1609,7 +1688,8 @@ credentials and tokenMethod <code>body</code>.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>email</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code> email address of the user
+            <span class='code bold'>email</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    email address of the user
 
           </div>
           
@@ -1617,7 +1697,8 @@ credentials and tokenMethod <code>body</code>.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>password</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code> password of the user
+            <span class='code bold'>password</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    password of the user
 
           </div>
           
@@ -1631,7 +1712,7 @@ credentials and tokenMethod <code>body</code>.</p>
   
     
       <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&lt;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>&gt;</code>:
+      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>></code>:
         Promise resolving to the issued token
 
       
@@ -1668,8 +1749,8 @@ credentials and tokenMethod <code>body</code>.</p>
 cookie stored.</p>
 
 
-  <div class='pre p1 fill-light mt0'>logout(): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&lt;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/undefined">undefined</a>&gt;</div>
-
+  <div class='pre p1 fill-light mt0'>logout(): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/undefined">undefined</a>></div>
+  
   
 
   
@@ -1685,7 +1766,7 @@ cookie stored.</p>
   
     
       <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&lt;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/undefined">undefined</a>&gt;</code>:
+      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/undefined">undefined</a>></code>:
         Promise resolving undefined on success.
 
       
@@ -1720,19 +1801,22 @@ cookie stored.</p>
 
   
   <div class='clearfix'>
+    
     <h3 class='fl m0' id='accounts'>
       Accounts
     </h3>
     
+    
   </div>
   
 
-  <p>API connector for <a href="https://doc.entrecode.de/en/latest/account_server/">Accounts API</a>.</p>
-<p>Multiple instances for multiple environments are possible.</p>
+  <p>API connector for <a href="https://doc.entrecode.de/en/latest/account_server/">Accounts API</a>. Use
+this for ec.accounts only. It contains APIs for profile editing (change email, reset password,
+signup…), permissions, clients, and groups.</p>
 
 
   <div class='pre p1 fill-light mt0'>new Accounts()</div>
-
+  
   
     <p>
       Extends
@@ -1776,11 +1860,11 @@ cookie stored.</p>
 
   
 
-  <p>Creates a new instance of <a href="#accounts">Accounts</a> module.</p>
+  <p>Creates a new instance of <a href="#accounts">Accounts</a> API connector.</p>
 
 
-  <div class='pre p1 fill-light mt0'>constructor(environment: ?<a href="#environment">environment</a>)</div>
-
+  <div class='pre p1 fill-light mt0'>constructor(environment: <a href="#environment">environment</a>?)</div>
+  
   
 
   
@@ -1795,7 +1879,8 @@ cookie stored.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>environment</span> <code class='quiet'>(?<a href="#environment">environment</a>)</code> the 
+            <span class='code bold'>environment</span> <code class='quiet'>(<a href="#environment">environment</a>?)</code>
+	    the 
 <a href="#environment">environment</a>
  to connect to.
 
@@ -1840,7 +1925,7 @@ cookie stored.</p>
 
 
   <div class='pre p1 fill-light mt0'>setClientID(clientID: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>): <a href="#accounts">Accounts</a></div>
-
+  
   
 
   
@@ -1855,7 +1940,8 @@ cookie stored.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>clientID</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code> the clientID.
+            <span class='code bold'>clientID</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    the clientID.
 
           </div>
           
@@ -1890,11 +1976,11 @@ cookie stored.</p>
       </div>
     </div>
   
-    <div class='border-bottom' id='Accounts#list'>
+    <div class='border-bottom' id='Accounts#accountList'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>list(options)</span>
+            <span class='code strong strong truncate'>accountList(options)</span>
         </div>
       </div>
       <div class="clearfix display-none toggle-target">
@@ -1906,8 +1992,8 @@ cookie stored.</p>
 by the options parameter.</p>
 
 
-  <div class='pre p1 fill-light mt0'>list(options: <a href="#filteroptions">filterOptions</a>?): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&lt;<a href="#accountlist">AccountList</a>&gt;</div>
-
+  <div class='pre p1 fill-light mt0'>accountList(options: <a href="#filteroptions">filterOptions</a>?): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#accountlist">AccountList</a>></div>
+  
   
 
   
@@ -1922,7 +2008,8 @@ by the options parameter.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>options</span> <code class='quiet'>(<a href="#filteroptions">filterOptions</a>?)</code> the filter options.
+            <span class='code bold'>options</span> <code class='quiet'>(<a href="#filteroptions">filterOptions</a>?)</code>
+	    the filter options.
 
           </div>
           
@@ -1936,7 +2023,7 @@ by the options parameter.</p>
   
     
       <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&lt;<a href="#accountlist">AccountList</a>&gt;</code>:
+      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#accountlist">AccountList</a>></code>:
         resolves to account list with applied filters.
 
       
@@ -1952,7 +2039,7 @@ by the options parameter.</p>
       <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">return</span> accounts.list({
   <span class="hljs-attr">filter</span>: {
     <span class="hljs-attr">created</span>: {
-      <span class="hljs-attr">from</span>: <span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>(<span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>.getTime() - <span class="hljs-number">600000</span>).toISOString(),
+      <span class="hljs-attr">from</span>: <span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>(<span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>.getTime() - <span class="hljs-number">600000</span>).toISOString()),
     },
   },
 })
@@ -1972,11 +2059,11 @@ by the options parameter.</p>
       </div>
     </div>
   
-    <div class='border-bottom' id='Accounts#get'>
+    <div class='border-bottom' id='Accounts#account'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>get(accountID)</span>
+            <span class='code strong strong truncate'>account(accountID)</span>
         </div>
       </div>
       <div class="clearfix display-none toggle-target">
@@ -1987,8 +2074,8 @@ by the options parameter.</p>
   <p>Get a single <a href="#accountresource">AccountResource</a> identified by accountID.</p>
 
 
-  <div class='pre p1 fill-light mt0'>get(accountID: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&lt;<a href="#accountresource">AccountResource</a>&gt;</div>
-
+  <div class='pre p1 fill-light mt0'>account(accountID: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#accountresource">AccountResource</a>></div>
+  
   
 
   
@@ -2003,7 +2090,8 @@ by the options parameter.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>accountID</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code> id of the Account.
+            <span class='code bold'>accountID</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    id of the Account.
 
           </div>
           
@@ -2017,7 +2105,7 @@ by the options parameter.</p>
   
     
       <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&lt;<a href="#accountresource">AccountResource</a>&gt;</code>:
+      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#accountresource">AccountResource</a>></code>:
         resolves to the Account which should be loaded.
 
       
@@ -2062,8 +2150,8 @@ by the options parameter.</p>
   <p>Get the <a href="#accountresource">AccountResource</a> which is currently logged in.</p>
 
 
-  <div class='pre p1 fill-light mt0'>me(): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&lt;<a href="#accountresource">AccountResource</a>&gt;</div>
-
+  <div class='pre p1 fill-light mt0'>me(): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#accountresource">AccountResource</a>></div>
+  
   
 
   
@@ -2079,7 +2167,7 @@ by the options parameter.</p>
   
     
       <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&lt;<a href="#accountresource">AccountResource</a>&gt;</code>:
+      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#accountresource">AccountResource</a>></code>:
         resolves to the Account which is logged in.
 
       
@@ -2109,11 +2197,11 @@ by the options parameter.</p>
       </div>
     </div>
   
-    <div class='border-bottom' id='Accounts#createApiToken'>
+    <div class='border-bottom' id='Accounts#groupList'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>createApiToken()</span>
+            <span class='code strong strong truncate'>groupList(options)</span>
         </div>
       </div>
       <div class="clearfix display-none toggle-target">
@@ -2121,19 +2209,33 @@ by the options parameter.</p>
 
   
 
-  <p>Creates a new API token with 100 years validity.</p>
+  <p>Load the <a href="#grouplist">GroupList</a></p>
 
 
-  <div class='pre p1 fill-light mt0'>createApiToken(): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&lt;{jwt: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, accountID: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, iat: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>, exp: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>}&gt;</div>
-
-  
-
-  
-  
-  
+  <div class='pre p1 fill-light mt0'>groupList(options: <a href="#filteroptions">filterOptions</a>?): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#grouplist">GroupList</a>></div>
   
   
 
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>options</span> <code class='quiet'>(<a href="#filteroptions">filterOptions</a>?)</code>
+	    filter options
+
+          </div>
+          
+        </div>
+      
+    </div>
   
 
   
@@ -2141,9 +2243,8 @@ by the options parameter.</p>
   
     
       <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&lt;{jwt: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, accountID: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, iat: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>, exp: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>}&gt;</code>:
-        the created api
-token response.
+      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#grouplist">GroupList</a>></code>:
+        Promise resolving goup list
 
       
     
@@ -2155,9 +2256,16 @@ token response.
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
-      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">return</span> accounts.createAPIToken()
-.then(<span class="hljs-function">(<span class="hljs-params">token</span>) =&gt;</span> {
-  <span class="hljs-keyword">return</span> apiTokenCreated(token);
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">return</span> accounts.groupList({
+  <span class="hljs-attr">filter</span>: {
+    <span class="hljs-attr">title</span>: {
+      <span class="hljs-attr">search</span>: <span class="hljs-string">'dev'</span>,
+    },
+  },
+})
+.then(<span class="hljs-function"><span class="hljs-params">groups</span> =&gt;</span> {
+  <span class="hljs-comment">// all groups with 'dev' in the title</span>
+  <span class="hljs-keyword">return</span> <span class="hljs-built_in">Promise</span>.all(groups.getAllItems.forEach(<span class="hljs-function"><span class="hljs-params">group</span> =&gt;</span> show(group)));
 });</pre>
     
   
@@ -2172,11 +2280,11 @@ token response.
       </div>
     </div>
   
-    <div class='border-bottom' id='Accounts#emailAvailable'>
+    <div class='border-bottom' id='Accounts#group'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>emailAvailable(email)</span>
+            <span class='code strong strong truncate'>group(groupID)</span>
         </div>
       </div>
       <div class="clearfix display-none toggle-target">
@@ -2184,11 +2292,11 @@ token response.
 
   
 
-  <p>Will check if the given email is available for login.</p>
+  <p>Load a single group</p>
 
 
-  <div class='pre p1 fill-light mt0'>emailAvailable(email: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&lt;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>&gt;</div>
-
+  <div class='pre p1 fill-light mt0'>group(groupID: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#groupresource">GroupResource</a>></div>
+  
   
 
   
@@ -2203,7 +2311,8 @@ token response.
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>email</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code> the email to check.
+            <span class='code bold'>groupID</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    the id of the group
 
           </div>
           
@@ -2217,8 +2326,8 @@ token response.
   
     
       <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&lt;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>&gt;</code>:
-        Whether or not the email is available.
+      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#groupresource">GroupResource</a>></code>:
+        Promise resolving to the group
 
       
     
@@ -2230,400 +2339,11 @@ token response.
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
-      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">return</span> accounts.emailAvailable(email)
-.then(<span class="hljs-function">(<span class="hljs-params">available</span>) =&gt;</span> {
-   <span class="hljs-keyword">if</span> (available){
-     <span class="hljs-keyword">return</span> accounts.signup(email, password);
-   } <span class="hljs-keyword">else</span> {
-     <span class="hljs-keyword">return</span> showError(<span class="hljs-keyword">new</span> <span class="hljs-built_in">Error</span>(<span class="hljs-string">`Email <span class="hljs-subst">${email}</span> already registered.`</span>));
-   }
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">return</span> accounts.group(groupID)
+.then(<span class="hljs-function">(<span class="hljs-params">group</span>) =&gt;</span> {
+  group.addPermission(<span class="hljs-string">'can-view-stacktrace'</span>);
+  <span class="hljs-keyword">return</span> group.save();
 });</pre>
-    
-  
-
-  
-
-  
-
-  
-</section>
-
-      </div>
-    </div>
-  
-    <div class='border-bottom' id='Accounts#signup'>
-      <div class="clearfix small pointer toggle-sibling">
-        <div class="py1 contain">
-            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>signup(email, password, invite)</span>
-        </div>
-      </div>
-      <div class="clearfix display-none toggle-target">
-        <section class='p2 mb2 clearfix bg-white minishadow'>
-
-  
-
-  <p>Signup a new account. Invite may be required.</p>
-
-
-  <div class='pre p1 fill-light mt0'>signup(email: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, password: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, invite: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&lt;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>&gt;</div>
-
-  
-
-  
-  
-  
-  
-  
-
-  
-    <div class='py1 quiet mt1 prose-big'>Parameters</div>
-    <div class='prose'>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>email</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code> email for the new account
-
-          </div>
-          
-        </div>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>password</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code> password for the new account
-
-          </div>
-          
-        </div>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>invite</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?)</code> optional invite. signup can be declined without invite.
-
-          </div>
-          
-        </div>
-      
-    </div>
-  
-
-  
-
-  
-    
-      <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&lt;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>&gt;</code>:
-        Promise resolving the newly created 
-<a href="#accountresource">AccountResource</a>
-
-      
-    
-  
-
-  
-
-  
-    <div class='py1 quiet mt1 prose-big'>Example</div>
-    
-      
-      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">return</span> accounts.signup(email, password, invite)
-.then(<span class="hljs-function">(<span class="hljs-params">token</span>) =&gt;</span> {
-  accounts.setToken(token);
-  <span class="hljs-keyword">return</span> show(<span class="hljs-string">'Successfully registered account'</span>);
-});</pre>
-    
-  
-
-  
-
-  
-
-  
-</section>
-
-      </div>
-    </div>
-  
-    <div class='border-bottom' id='Accounts#resetPassword'>
-      <div class="clearfix small pointer toggle-sibling">
-        <div class="py1 contain">
-            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>resetPassword(email)</span>
-        </div>
-      </div>
-      <div class="clearfix display-none toggle-target">
-        <section class='p2 mb2 clearfix bg-white minishadow'>
-
-  
-
-  <p>Start a password reset.</p>
-
-
-  <div class='pre p1 fill-light mt0'>resetPassword(email: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></div>
-
-  
-
-  
-  
-  
-  
-  
-
-  
-    <div class='py1 quiet mt1 prose-big'>Parameters</div>
-    <div class='prose'>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>email</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code> email of the account
-
-          </div>
-          
-        </div>
-      
-    </div>
-  
-
-  
-
-  
-    
-      <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></code>:
-        Promise resolving on success.
-
-      
-    
-  
-
-  
-
-  
-    <div class='py1 quiet mt1 prose-big'>Example</div>
-    
-      
-      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">return</span> accounts.resetPassword(email)
-.then(<span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> show(<span class="hljs-string">`Password reset link send to <span class="hljs-subst">${email}</span>`</span>))</pre>
-    
-  
-
-  
-
-  
-
-  
-</section>
-
-      </div>
-    </div>
-  
-    <div class='border-bottom' id='Accounts#changeEmail'>
-      <div class="clearfix small pointer toggle-sibling">
-        <div class="py1 contain">
-            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>changeEmail(email)</span>
-        </div>
-      </div>
-      <div class="clearfix display-none toggle-target">
-        <section class='p2 mb2 clearfix bg-white minishadow'>
-
-  
-
-  <p>Change the logged in account to the given new email address.</p>
-
-
-  <div class='pre p1 fill-light mt0'>changeEmail(email: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></div>
-
-  
-
-  
-  
-  
-  
-  
-
-  
-    <div class='py1 quiet mt1 prose-big'>Parameters</div>
-    <div class='prose'>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>email</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code> the new email
-
-          </div>
-          
-        </div>
-      
-    </div>
-  
-
-  
-
-  
-    
-      <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></code>:
-        Promise resolving on success.
-
-      
-    
-  
-
-  
-
-  
-    <div class='py1 quiet mt1 prose-big'>Example</div>
-    
-      
-      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">return</span> accounts.resetPassword(email)
-.then(<span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> show(<span class="hljs-string">`Email change startet. Please verify with your new address`</span>))</pre>
-    
-  
-
-  
-
-  
-
-  
-</section>
-
-      </div>
-    </div>
-  
-    <div class='border-bottom' id='Accounts#createInvites'>
-      <div class="clearfix small pointer toggle-sibling">
-        <div class="py1 contain">
-            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>createInvites(count)</span>
-        </div>
-      </div>
-      <div class="clearfix display-none toggle-target">
-        <section class='p2 mb2 clearfix bg-white minishadow'>
-
-  
-
-  <p>Create new invites. Specify number of invites to create with count.</p>
-
-
-  <div class='pre p1 fill-light mt0'>createInvites(count: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&lt;<a href="#invitesresource">InvitesResource</a>&gt;</div>
-
-  
-
-  
-  
-  
-  
-  
-
-  
-    <div class='py1 quiet mt1 prose-big'>Parameters</div>
-    <div class='prose'>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>count</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>)</code> the number of invites to create
-
-          </div>
-          
-        </div>
-      
-    </div>
-  
-
-  
-
-  
-    
-      <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&lt;<a href="#invitesresource">InvitesResource</a>&gt;</code>:
-        Promise resolving to the invites resource
-
-      
-    
-  
-
-  
-
-  
-    <div class='py1 quiet mt1 prose-big'>Example</div>
-    
-      
-      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">return</span> accounts.createInvites(<span class="hljs-number">5</span>)
-.then(<span class="hljs-function">(<span class="hljs-params">invites</span>) =&gt;</span> {
-  <span class="hljs-keyword">return</span> <span class="hljs-built_in">Promise</span>.all(invites.invites.forEach(<span class="hljs-function">(<span class="hljs-params">invite, index</span>) =&gt;</span> sendInvite(invite,
-  emails[index]);
-})
-.then(<span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'Invites send.'</span>);</pre>
-    
-  
-
-  
-
-  
-
-  
-</section>
-
-      </div>
-    </div>
-  
-    <div class='border-bottom' id='Accounts#invites'>
-      <div class="clearfix small pointer toggle-sibling">
-        <div class="py1 contain">
-            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>invites()</span>
-        </div>
-      </div>
-      <div class="clearfix display-none toggle-target">
-        <section class='p2 mb2 clearfix bg-white minishadow'>
-
-  
-
-  <p>Load the <a href="#invitesresource">InvitesResource</a> with unused invites.</p>
-
-
-  <div class='pre p1 fill-light mt0'>invites(): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&lt;<a href="#invitesresource">InvitesResource</a>&gt;</div>
-
-  
-
-  
-  
-  
-  
-  
-
-  
-
-  
-
-  
-    
-      <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&lt;<a href="#invitesresource">InvitesResource</a>&gt;</code>:
-        Promise resolving to the invites resource
-
-      
-    
-  
-
-  
-
-  
-    <div class='py1 quiet mt1 prose-big'>Example</div>
-    
-      
-      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">return</span> accounts.invites()
-.then(<span class="hljs-function">(<span class="hljs-params">invites</span>) =&gt;</span> {
-  <span class="hljs-keyword">if</span> (invites.invites.length &lt; <span class="hljs-number">5</span>){
-    <span class="hljs-keyword">return</span> <span class="hljs-built_in">Promise</span>.resolve(invites.invites);
-  }
-  <span class="hljs-keyword">return</span> accounts.createInvites(<span class="hljs-number">5</span> - invites.invites.length);
-})
-.then(<span class="hljs-function">(<span class="hljs-params">invites</span>) =&gt;</span> {
-  <span class="hljs-keyword">return</span> <span class="hljs-built_in">Promise</span>.all(invites.invites.forEach(<span class="hljs-function">(<span class="hljs-params">invite, index</span>) =&gt;</span> sendInvite(invite,
-  emails[index]);
-})
-.then(<span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'Invites send.'</span>);</pre>
     
   
 
@@ -2652,8 +2372,8 @@ token response.
   <p>Load the <a href="#clientlist">ClientList</a>.</p>
 
 
-  <div class='pre p1 fill-light mt0'>clientList(options: <a href="#filteroptions">filterOptions</a>?): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&lt;<a href="#clientlist">ClientList</a>&gt;</div>
-
+  <div class='pre p1 fill-light mt0'>clientList(options: <a href="#filteroptions">filterOptions</a>?): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#clientlist">ClientList</a>></div>
+  
   
 
   
@@ -2668,7 +2388,8 @@ token response.
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>options</span> <code class='quiet'>(<a href="#filteroptions">filterOptions</a>?)</code> filter options
+            <span class='code bold'>options</span> <code class='quiet'>(<a href="#filteroptions">filterOptions</a>?)</code>
+	    filter options
 
           </div>
           
@@ -2682,7 +2403,7 @@ token response.
   
     
       <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&lt;<a href="#clientlist">ClientList</a>&gt;</code>:
+      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#clientlist">ClientList</a>></code>:
         Promise resolving to ClientList
 
       
@@ -2740,8 +2461,8 @@ token response.
   <p>Load a single <a href="#clientresource">ClientResource</a>.</p>
 
 
-  <div class='pre p1 fill-light mt0'>client(clientID: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&lt;<a href="#clientresource">ClientResource</a>&gt;</div>
-
+  <div class='pre p1 fill-light mt0'>client(clientID: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#clientresource">ClientResource</a>></div>
+  
   
 
   
@@ -2756,7 +2477,8 @@ token response.
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>clientID</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code> the clientID
+            <span class='code bold'>clientID</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    the clientID
 
           </div>
           
@@ -2770,7 +2492,7 @@ token response.
   
     
       <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&lt;<a href="#clientresource">ClientResource</a>&gt;</code>:
+      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#clientresource">ClientResource</a>></code>:
         Promise resolving to ClientResource
 
       
@@ -2800,11 +2522,11 @@ token response.
       </div>
     </div>
   
-    <div class='border-bottom' id='Accounts#invalidPermissions'>
+    <div class='border-bottom' id='Accounts#createApiToken'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>invalidPermissions()</span>
+            <span class='code strong strong truncate'>createApiToken()</span>
         </div>
       </div>
       <div class="clearfix display-none toggle-target">
@@ -2812,11 +2534,11 @@ token response.
 
   
 
-  <p>Get <a href="#invalidpermissionsresource">InvalidPermissionsResource</a> to show all invalid permissions.</p>
+  <p>Creates a new API token with 100 years validity.</p>
 
 
-  <div class='pre p1 fill-light mt0'>invalidPermissions(): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&lt;<a href="#invalidpermissionsresource">InvalidPermissionsResource</a>&gt;</div>
-
+  <div class='pre p1 fill-light mt0'>createApiToken(): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;{jwt: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, accountID: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, iat: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>, exp: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>}></div>
+  
   
 
   
@@ -2832,7 +2554,218 @@ token response.
   
     
       <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&lt;<a href="#invalidpermissionsresource">InvalidPermissionsResource</a>&gt;</code>:
+      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;{jwt: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, accountID: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, iat: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>, exp: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>}></code>:
+        the created api
+token response.
+
+      
+    
+  
+
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">return</span> accounts.createAPIToken()
+.then(<span class="hljs-function">(<span class="hljs-params">token</span>) =&gt;</span> {
+  <span class="hljs-keyword">return</span> apiTokenCreated(token);
+});</pre>
+    
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='Accounts#invites'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>invites()</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Load the <a href="#invitesresource">InvitesResource</a> with unused invites.</p>
+
+
+  <div class='pre p1 fill-light mt0'>invites(): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#invitesresource">InvitesResource</a>></div>
+  
+  
+
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#invitesresource">InvitesResource</a>></code>:
+        Promise resolving to the invites resource
+
+      
+    
+  
+
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">return</span> accounts.invites()
+.then(<span class="hljs-function">(<span class="hljs-params">invites</span>) =&gt;</span> {
+  <span class="hljs-keyword">if</span> (invites.invites.length &lt; <span class="hljs-number">5</span>){
+    <span class="hljs-keyword">return</span> <span class="hljs-built_in">Promise</span>.resolve(invites.invites);
+  }
+  <span class="hljs-keyword">return</span> accounts.createInvites(<span class="hljs-number">5</span> - invites.invites.length);
+})
+.then(<span class="hljs-function">(<span class="hljs-params">invites</span>) =&gt;</span> {
+  <span class="hljs-keyword">return</span> <span class="hljs-built_in">Promise</span>.all(invites.invites.forEach(<span class="hljs-function">(<span class="hljs-params">invite, index</span>) =&gt;</span> sendInvite(invite,
+  emails[index]);
+})
+.then(<span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'Invites send.'</span>);</pre>
+    
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='Accounts#createInvites'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>createInvites(count)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Create new invites. Specify number of invites to create with count.</p>
+
+
+  <div class='pre p1 fill-light mt0'>createInvites(count: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#invitesresource">InvitesResource</a>></div>
+  
+  
+
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>count</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>)</code>
+	    the number of invites to create
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#invitesresource">InvitesResource</a>></code>:
+        Promise resolving to the invites resource
+
+      
+    
+  
+
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">return</span> accounts.createInvites(<span class="hljs-number">5</span>)
+.then(<span class="hljs-function">(<span class="hljs-params">invites</span>) =&gt;</span> {
+  <span class="hljs-keyword">return</span> <span class="hljs-built_in">Promise</span>.all(invites.invites.forEach(<span class="hljs-function">(<span class="hljs-params">invite, index</span>) =&gt;</span> sendInvite(invite,
+  emails[index]);
+})
+.then(<span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'Invites send.'</span>);</pre>
+    
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='Accounts#invalidPermissions'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>invalidPermissions()</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Get <a href="#invalidpermissionsresource">InvalidPermissionsResource</a> to show all invalid permissions.</p>
+
+
+  <div class='pre p1 fill-light mt0'>invalidPermissions(): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#invalidpermissionsresource">InvalidPermissionsResource</a>></div>
+  
+  
+
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#invalidpermissionsresource">InvalidPermissionsResource</a>></code>:
         Promise resolving to invalid permissions
 
       
@@ -2863,11 +2796,11 @@ token response.
       </div>
     </div>
   
-    <div class='border-bottom' id='Accounts#groupList'>
+    <div class='border-bottom' id='Accounts#emailAvailable'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>groupList(options)</span>
+            <span class='code strong strong truncate'>emailAvailable(email)</span>
         </div>
       </div>
       <div class="clearfix display-none toggle-target">
@@ -2875,11 +2808,11 @@ token response.
 
   
 
-  <p>Load the <a href="#grouplist">GroupList</a></p>
+  <p>Will check if the given email is available for login.</p>
 
 
-  <div class='pre p1 fill-light mt0'>groupList(options: <a href="#filteroptions">filterOptions</a>?): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&lt;<a href="#grouplist">GroupList</a>&gt;</div>
-
+  <div class='pre p1 fill-light mt0'>emailAvailable(email: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>></div>
+  
   
 
   
@@ -2894,7 +2827,8 @@ token response.
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>options</span> <code class='quiet'>(<a href="#filteroptions">filterOptions</a>?)</code> filter options
+            <span class='code bold'>email</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    the email to check.
 
           </div>
           
@@ -2908,8 +2842,8 @@ token response.
   
     
       <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&lt;<a href="#grouplist">GroupList</a>&gt;</code>:
-        Promise resolving goup list
+      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>></code>:
+        Whether or not the email is available.
 
       
     
@@ -2921,16 +2855,13 @@ token response.
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
-      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">return</span> accounts.groupList({
-  <span class="hljs-attr">filter</span>: {
-    <span class="hljs-attr">title</span>: {
-      <span class="hljs-attr">search</span>: <span class="hljs-string">'dev'</span>,
-    },
-  },
-})
-.then(<span class="hljs-function"><span class="hljs-params">groups</span> =&gt;</span> {
-  <span class="hljs-comment">// all groups with 'dev' in the title</span>
-  <span class="hljs-keyword">return</span> <span class="hljs-built_in">Promise</span>.all(groups.getAllItems.forEach(<span class="hljs-function"><span class="hljs-params">group</span> =&gt;</span> show(group)));
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">return</span> accounts.emailAvailable(email)
+.then(<span class="hljs-function">(<span class="hljs-params">available</span>) =&gt;</span> {
+   <span class="hljs-keyword">if</span> (available){
+     <span class="hljs-keyword">return</span> accounts.signup(email, password);
+   } <span class="hljs-keyword">else</span> {
+     <span class="hljs-keyword">return</span> showError(<span class="hljs-keyword">new</span> <span class="hljs-built_in">Error</span>(<span class="hljs-string">`Email <span class="hljs-subst">${email}</span> already registered.`</span>));
+   }
 });</pre>
     
   
@@ -2945,11 +2876,11 @@ token response.
       </div>
     </div>
   
-    <div class='border-bottom' id='Accounts#group'>
+    <div class='border-bottom' id='Accounts#signup'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>group(groupID)</span>
+            <span class='code strong strong truncate'>signup(email, password, invite)</span>
         </div>
       </div>
       <div class="clearfix display-none toggle-target">
@@ -2957,11 +2888,11 @@ token response.
 
   
 
-  <p>Load a single group</p>
+  <p>Signup a new account. Invite may be required.</p>
 
 
-  <div class='pre p1 fill-light mt0'>group(groupID: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&lt;<a href="#groupresource">GroupResource</a>&gt;</div>
-
+  <div class='pre p1 fill-light mt0'>signup(email: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, password: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, invite: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>></div>
+  
   
 
   
@@ -2976,7 +2907,26 @@ token response.
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>groupID</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code> the id of the group
+            <span class='code bold'>email</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    email for the new account
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>password</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    password for the new account
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>invite</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?)</code>
+	    optional invite. signup can be declined without invite.
 
           </div>
           
@@ -2990,8 +2940,9 @@ token response.
   
     
       <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&lt;<a href="#groupresource">GroupResource</a>&gt;</code>:
-        Promise resolving to the group
+      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>></code>:
+        Promise resolving the newly created 
+<a href="#accountresource">AccountResource</a>
 
       
     
@@ -3003,11 +2954,159 @@ token response.
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
-      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">return</span> accounts.group(groupID)
-.then(<span class="hljs-function">(<span class="hljs-params">group</span>) =&gt;</span> {
-  group.addPermission(<span class="hljs-string">'can-view-stacktrace'</span>);
-  <span class="hljs-keyword">return</span> group.save();
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">return</span> accounts.signup(email, password, invite)
+.then(<span class="hljs-function">(<span class="hljs-params">token</span>) =&gt;</span> {
+  accounts.setToken(token);
+  <span class="hljs-keyword">return</span> show(<span class="hljs-string">'Successfully registered account'</span>);
 });</pre>
+    
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='Accounts#resetPassword'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>resetPassword(email)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Start a password reset.</p>
+
+
+  <div class='pre p1 fill-light mt0'>resetPassword(email: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></div>
+  
+  
+
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>email</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    email of the account
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></code>:
+        Promise resolving on success.
+
+      
+    
+  
+
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">return</span> accounts.resetPassword(email)
+.then(<span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> show(<span class="hljs-string">`Password reset link send to <span class="hljs-subst">${email}</span>`</span>))</pre>
+    
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='Accounts#changeEmail'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>changeEmail(email)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Change the logged in account to the given new email address.</p>
+
+
+  <div class='pre p1 fill-light mt0'>changeEmail(email: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/undefined">undefined</a>></div>
+  
+  
+
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>email</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    the new email
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/undefined">undefined</a>></code>:
+        Promise resolving on success.
+
+      
+    
+  
+
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">return</span> accounts.resetPassword(email)
+.then(<span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> show(<span class="hljs-string">`Email change startet. Please verify with your new address`</span>))</pre>
     
   
 
@@ -3035,19 +3134,21 @@ token response.
 
   
   <div class='clearfix'>
+    
     <h3 class='fl m0' id='datamanager'>
       DataManager
     </h3>
     
+    
   </div>
   
 
-  <p>API connector for <a href="https://doc.entrecode.de/en/latest/data_manager/">Accounts API</a>.</p>
-<p>Multiple instances for multiple environments are possible.</p>
+  <p>API connector for <a href="https://doc.entrecode.de/en/latest/data_manager/">Accounts API</a>. It
+contains APIs for DataManagers, Models, Fields, Hooks, and Policies.</p>
 
 
   <div class='pre p1 fill-light mt0'>new DataManager()</div>
-
+  
   
     <p>
       Extends
@@ -3091,11 +3192,11 @@ token response.
 
   
 
-  <p>Creates a new instance of <a href="#datamanager">DataManager</a> module.*</p>
+  <p>Creates a new instance of <a href="#datamanager">DataManager</a> API connector.</p>
 
 
-  <div class='pre p1 fill-light mt0'>constructor(environment: ?<a href="#environment">environment</a>)</div>
-
+  <div class='pre p1 fill-light mt0'>constructor(environment: <a href="#environment">environment</a>?)</div>
+  
   
 
   
@@ -3110,7 +3211,8 @@ token response.
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>environment</span> <code class='quiet'>(?<a href="#environment">environment</a>)</code> the environment to connect to.
+            <span class='code bold'>environment</span> <code class='quiet'>(<a href="#environment">environment</a>?)</code>
+	    the environment to connect to.
 
           </div>
           
@@ -3152,8 +3254,8 @@ token response.
   <p>Create a new DataManager.</p>
 
 
-  <div class='pre p1 fill-light mt0'>create(datamanager: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&lt;<a href="#datamanagerresource">DataManagerResource</a>&gt;</div>
-
+  <div class='pre p1 fill-light mt0'>create(datamanager: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#datamanagerresource">DataManagerResource</a>></div>
+  
   
 
   
@@ -3168,7 +3270,8 @@ token response.
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>datamanager</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code> object representing the datamanager.
+            <span class='code bold'>datamanager</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    object representing the datamanager.
 
           </div>
           
@@ -3182,7 +3285,7 @@ token response.
   
     
       <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&lt;<a href="#datamanagerresource">DataManagerResource</a>&gt;</code>:
+      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#datamanagerresource">DataManagerResource</a>></code>:
         the newly created DataManagerResource
 
       
@@ -3203,11 +3306,11 @@ token response.
       </div>
     </div>
   
-    <div class='border-bottom' id='DataManager#list'>
+    <div class='border-bottom' id='DataManager#dataManagerList'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>list(options)</span>
+            <span class='code strong strong truncate'>dataManagerList(options)</span>
         </div>
       </div>
       <div class="clearfix display-none toggle-target">
@@ -3219,8 +3322,8 @@ token response.
 by the options parameter.</p>
 
 
-  <div class='pre p1 fill-light mt0'>list(options: <a href="#filteroptions">filterOptions</a>?): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&lt;<a href="#datamanagerlist">DataManagerList</a>&gt;</div>
-
+  <div class='pre p1 fill-light mt0'>dataManagerList(options: <a href="#filteroptions">filterOptions</a>?): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#datamanagerlist">DataManagerList</a>></div>
+  
   
 
   
@@ -3235,7 +3338,8 @@ by the options parameter.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>options</span> <code class='quiet'>(<a href="#filteroptions">filterOptions</a>?)</code> the filter options.
+            <span class='code bold'>options</span> <code class='quiet'>(<a href="#filteroptions">filterOptions</a>?)</code>
+	    the filter options.
 
           </div>
           
@@ -3249,7 +3353,7 @@ by the options parameter.</p>
   
     
       <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&lt;<a href="#datamanagerlist">DataManagerList</a>&gt;</code>:
+      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#datamanagerlist">DataManagerList</a>></code>:
         resolves to datamanager list with applied filters.
 
       
@@ -3270,11 +3374,11 @@ by the options parameter.</p>
       </div>
     </div>
   
-    <div class='border-bottom' id='DataManager#get'>
+    <div class='border-bottom' id='DataManager#dataManager'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>get(dataManagerID)</span>
+            <span class='code strong strong truncate'>dataManager(dataManagerID)</span>
         </div>
       </div>
       <div class="clearfix display-none toggle-target">
@@ -3285,8 +3389,8 @@ by the options parameter.</p>
   <p>Get a single <a href="#datamanagerresource">DataManagerResource</a> identified by dataManagerID.</p>
 
 
-  <div class='pre p1 fill-light mt0'>get(dataManagerID: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&lt;<a href="#datamanagerresource">DataManagerResource</a>&gt;</div>
-
+  <div class='pre p1 fill-light mt0'>dataManager(dataManagerID: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#datamanagerresource">DataManagerResource</a>></div>
+  
   
 
   
@@ -3301,7 +3405,8 @@ by the options parameter.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>dataManagerID</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code> id of the DataManager.
+            <span class='code bold'>dataManagerID</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    id of the DataManager.
 
           </div>
           
@@ -3315,7 +3420,7 @@ by the options parameter.</p>
   
     
       <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&lt;<a href="#datamanagerresource">DataManagerResource</a>&gt;</code>:
+      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#datamanagerresource">DataManagerResource</a>></code>:
         resolves to the DataManager which should be loaded.
 
       
@@ -3350,9 +3455,11 @@ by the options parameter.</p>
 
   
   <div class='clearfix'>
+    
     <h3 class='fl m0' id='environment'>
       environment
     </h3>
+    
     
   </div>
   
@@ -3363,7 +3470,12 @@ used as key to store tokens into cookies (for browsers).</p>
 
 
   <div class='pre p1 fill-light mt0'>environment</div>
-
+  
+    <p>
+      Type:
+      (<code>"live"</code> | <code>"stage"</code> | <code>"nightly"</code> | <code>"develop"</code>)
+    </p>
+  
   
 
   
@@ -3405,139 +3517,6 @@ used as key to store tokens into cookies (for browsers).</p>
           
         
           
-            <section class='p2 mb2 clearfix bg-white minishadow'>
-
-  
-  <div class='clearfix'>
-    <h3 class='fl m0' id='eventeventlogin'>
-      Event#login
-    </h3>
-    
-  </div>
-  
-
-  <p>Login event is emitted when a login succeeds with <a href="#sessionlogin">Session#login</a>.</p>
-
-
-  <div class='pre p1 fill-light mt0'>Event#login</div>
-
-  
-
-  
-  
-  
-  
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-</section>
-
-          
-        
-          
-            <section class='p2 mb2 clearfix bg-white minishadow'>
-
-  
-  <div class='clearfix'>
-    <h3 class='fl m0' id='eventeventlogout'>
-      Event#logout
-    </h3>
-    
-  </div>
-  
-
-  <p>Logout event is emitted either on a successful logout with <a href="#sessionlogout">Session#logout</a> or an API
-error with token related error codes.</p>
-
-
-  <div class='pre p1 fill-light mt0'>Event#logout</div>
-
-  
-
-  
-  
-  
-  
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-</section>
-
-          
-        
-          
-            <section class='p2 mb2 clearfix bg-white minishadow'>
-
-  
-  <div class='clearfix'>
-    <h3 class='fl m0' id='eventeventerror'>
-      Event#error
-    </h3>
-    
-  </div>
-  
-
-  <p>Error events are emitted whenever an API responds with an <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error">Error</a> or <a href="#problem">Problem</a>.</p>
-
-
-  <div class='pre p1 fill-light mt0'>Event#error</div>
-
-  
-
-  
-  
-  
-  
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-</section>
-
-          
-        
-          
             <div class='keyline-top-not py2'><section class='py2 clearfix'>
 
   <h2 id='Find a name' class='mt0'>
@@ -3557,20 +3536,22 @@ error with token related error codes.</p>
 
   
   <div class='clearfix'>
+    
     <h3 class='fl m0' id='problem'>
       Problem
     </h3>
+    
     
   </div>
   
 
   <p>Class representing Errors sent by all entrecode APIs. Complies to <a href="https://tools.ietf.org/html/draft-nottingham-http-problem-07">| Problem Details for HTTP APIs</a>.
-Problems also comply to <a href="https://tools.ietf.org/html/draft-kelly-json-hal-08%20HAL">resources</a> but this class won&#x27;t include any special hal implementation (like getEmbedded or
+Problems also comply to <a href="https://tools.ietf.org/html/draft-kelly-json-hal-08%20HAL">resources</a> but this class won't include any special hal implementation (like getEmbedded or
 getLinks).</p>
 
 
-  <div class='pre p1 fill-light mt0'>Problem</div>
-
+  <div class='pre p1 fill-light mt0'>new Problem()</div>
+  
   
     <p>
       Extends
@@ -3618,7 +3599,7 @@ getLinks).</p>
 
 
   <div class='pre p1 fill-light mt0'>constructor(error: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</div>
-
+  
   
 
   
@@ -3633,7 +3614,8 @@ getLinks).</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>error</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code> the error received from any entrecode API.
+            <span class='code bold'>error</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    the error received from any entrecode API.
 
           </div>
           
@@ -3676,7 +3658,7 @@ getLinks).</p>
 
 
   <div class='pre p1 fill-light mt0'>short(): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></div>
-
+  
   
 
   
@@ -3730,7 +3712,7 @@ sub error.</p>
 
 
   <div class='pre p1 fill-light mt0'>shortAll(): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></div>
-
+  
   
 
   
@@ -3783,7 +3765,7 @@ sub error.</p>
 
 
   <div class='pre p1 fill-light mt0'>long(): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></div>
-
+  
   
 
   
@@ -3837,7 +3819,7 @@ errors. Will contain newlines.</p>
 
 
   <div class='pre p1 fill-light mt0'>longAll(): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></div>
-
+  
   
 
   
@@ -3889,8 +3871,8 @@ errors. Will contain newlines.</p>
   <p>Get all <a href="#problem">Problem</a>s as an array.</p>
 
 
-  <div class='pre p1 fill-light mt0'>getAsArray(): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">array</a>&lt;<a href="#problem">Problem</a>&gt;</div>
-
+  <div class='pre p1 fill-light mt0'>getAsArray(): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">array</a>&#x3C;<a href="#problem">Problem</a>></div>
+  
   
 
   
@@ -3906,7 +3888,7 @@ errors. Will contain newlines.</p>
   
     
       <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">array</a>&lt;<a href="#problem">Problem</a>&gt;</code>:
+      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">array</a>&#x3C;<a href="#problem">Problem</a>></code>:
         array of all problems.
 
       
@@ -3941,9 +3923,11 @@ errors. Will contain newlines.</p>
 
   
   <div class='clearfix'>
+    
     <h3 class='fl m0' id='eventemitter'>
       EventEmitter
     </h3>
+    
     
   </div>
   
@@ -3953,7 +3937,146 @@ You can access this emitter with <a href="DataManager#events">DataManager#events
 
 
   <div class='pre p1 fill-light mt0'>EventEmitter</div>
+  
+  
 
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+            <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='eventeventlogin'>
+      Event#login
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Login event is emitted when a login succeeds with <a href="#sessionlogin">Session#login</a>.</p>
+
+
+  <div class='pre p1 fill-light mt0'>Event#login</div>
+  
+  
+
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+            <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='eventeventlogout'>
+      Event#logout
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Logout event is emitted either on a successful logout with <a href="#sessionlogout">Session#logout</a> or an API
+error with token related error codes.</p>
+
+
+  <div class='pre p1 fill-light mt0'>Event#logout</div>
+  
+  
+
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+            <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='eventeventerror'>
+      Event#error
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Error events are emitted whenever an API responds with an <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error">Error</a> or <a href="#problem">Problem</a>.</p>
+
+
+  <div class='pre p1 fill-light mt0'>Event#error</div>
+  
   
 
   
@@ -4001,9 +4124,11 @@ You can access this emitter with <a href="DataManager#events">DataManager#events
 
   
   <div class='clearfix'>
+    
     <h3 class='fl m0' id='resource'>
       Resource
     </h3>
+    
     
   </div>
   
@@ -4012,7 +4137,7 @@ You can access this emitter with <a href="DataManager#events">DataManager#events
 
 
   <div class='pre p1 fill-light mt0'>new Resource()</div>
-
+  
   
 
   
@@ -4064,8 +4189,8 @@ You can access this emitter with <a href="DataManager#events">DataManager#events
   <p>Creates a new <a href="#resource">Resource</a>.</p>
 
 
-  <div class='pre p1 fill-light mt0'>constructor(resource: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, environment: <a href="#environment">environment</a>, traversal: ?<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</div>
-
+  <div class='pre p1 fill-light mt0'>constructor(resource: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, environment: <a href="#environment">environment</a>, traversal: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</div>
+  
   
 
   
@@ -4080,7 +4205,8 @@ You can access this emitter with <a href="DataManager#events">DataManager#events
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>resource</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code> resource loaded from the API.
+            <span class='code bold'>resource</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    resource loaded from the API.
 
           </div>
           
@@ -4088,7 +4214,8 @@ You can access this emitter with <a href="DataManager#events">DataManager#events
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>environment</span> <code class='quiet'>(<a href="#environment">environment</a>)</code> the environment this resource is associated to.
+            <span class='code bold'>environment</span> <code class='quiet'>(<a href="#environment">environment</a>)</code>
+	    the environment this resource is associated to.
 
           </div>
           
@@ -4096,7 +4223,8 @@ You can access this emitter with <a href="DataManager#events">DataManager#events
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>traversal</span> <code class='quiet'>(?<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code> traversal from which traverson can continue.
+            <span class='code bold'>traversal</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</code>
+	    traversal from which traverson can continue.
 
           </div>
           
@@ -4140,7 +4268,7 @@ which can be used for a new request to the API.</p>
 
 
   <div class='pre p1 fill-light mt0'>newRequest(): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></div>
-
+  
   
 
   
@@ -4192,8 +4320,8 @@ which can be used for a new request to the API.</p>
   <p>Reloads this <a href="#resource">Resource</a>. Can be used when this resource was loaded from any <a href="#listresource">ListResource</a> from _embedded.</p>
 
 
-  <div class='pre p1 fill-light mt0'>resolve(): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&lt;<a href="#resource">Resource</a>&gt;</div>
-
+  <div class='pre p1 fill-light mt0'>resolve(): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#resource">Resource</a>></div>
+  
   
 
   
@@ -4209,7 +4337,7 @@ which can be used for a new request to the API.</p>
   
     
       <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&lt;<a href="#resource">Resource</a>&gt;</code>:
+      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#resource">Resource</a>></code>:
         this resource
 
       
@@ -4247,7 +4375,7 @@ afterwards.</p>
 
 
   <div class='pre p1 fill-light mt0'>reset(): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/undefined">undefined</a></div>
-
+  
   
 
   
@@ -4265,6 +4393,7 @@ afterwards.</p>
       <div class='py1 quiet mt1 prose-big'>Returns</div>
       <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/undefined">undefined</a></code>:
         
+
       
     
   
@@ -4298,8 +4427,8 @@ afterwards.</p>
   <p>Saves this <a href="#resource">Resource</a>.</p>
 
 
-  <div class='pre p1 fill-light mt0'>save(): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&lt;<a href="#resource">Resource</a>&gt;</div>
-
+  <div class='pre p1 fill-light mt0'>save(): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#resource">Resource</a>></div>
+  
   
 
   
@@ -4315,7 +4444,7 @@ afterwards.</p>
   
     
       <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&lt;<a href="#resource">Resource</a>&gt;</code>:
+      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#resource">Resource</a>></code>:
         Promise will resolve to the saved Resource. Will
 be the same object but with refreshed data.
 
@@ -4352,8 +4481,8 @@ be the same object but with refreshed data.
   <p>Deletes this <a href="#resource">Resource</a>.</p>
 
 
-  <div class='pre p1 fill-light mt0'>del(): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&lt;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/undefined">undefined</a>&gt;</div>
-
+  <div class='pre p1 fill-light mt0'>del(): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/undefined">undefined</a>></div>
+  
   
 
   
@@ -4369,7 +4498,7 @@ be the same object but with refreshed data.
   
     
       <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&lt;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/undefined">undefined</a>&gt;</code>:
+      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/undefined">undefined</a>></code>:
         Promise will resolve on success and reject otherwise.
 
       
@@ -4406,7 +4535,7 @@ be the same object but with refreshed data.
 
 
   <div class='pre p1 fill-light mt0'>hasLink(link: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></div>
-
+  
   
 
   
@@ -4421,7 +4550,8 @@ be the same object but with refreshed data.
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>link</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code> the link name.
+            <span class='code bold'>link</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    the link name.
 
           </div>
           
@@ -4473,7 +4603,7 @@ the given name.</p>
 
 
   <div class='pre p1 fill-light mt0'>getLink(link: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>): (<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a> | null)</div>
-
+  
   
 
   
@@ -4488,7 +4618,8 @@ the given name.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>link</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code> the link name.
+            <span class='code bold'>link</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    the link name.
 
           </div>
           
@@ -4539,8 +4670,8 @@ the given name.</p>
 returns a <a href="#resource">Resource</a> with the loaded result.</p>
 
 
-  <div class='pre p1 fill-light mt0'>followLink(link: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, ResourceClass: class): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&lt;(<a href="#resource">Resource</a> | ResourceClass)&gt;</div>
-
+  <div class='pre p1 fill-light mt0'>followLink(link: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, ResourceClass: class): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;(<a href="#resource">Resource</a> | ResourceClass)></div>
+  
   
 
   
@@ -4555,7 +4686,8 @@ returns a <a href="#resource">Resource</a> with the loaded result.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>link</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code> the link name.
+            <span class='code bold'>link</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    the link name.
 
           </div>
           
@@ -4563,7 +4695,8 @@ returns a <a href="#resource">Resource</a> with the loaded result.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>ResourceClass</span> <code class='quiet'>(class)</code> override the default resource class (
+            <span class='code bold'>ResourceClass</span> <code class='quiet'>(class)</code>
+	    override the default resource class (
 <a href="#resource">Resource</a>
 ).
 
@@ -4579,7 +4712,7 @@ returns a <a href="#resource">Resource</a> with the loaded result.</p>
   
     
       <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&lt;(<a href="#resource">Resource</a> | ResourceClass)&gt;</code>:
+      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;(<a href="#resource">Resource</a> | ResourceClass)></code>:
         the resource identified by the link.
 
       
@@ -4616,8 +4749,8 @@ returns a <a href="#resource">Resource</a> with the loaded result.</p>
 when properties array is empty or undefined.</p>
 
 
-  <div class='pre p1 fill-light mt0'>get(properties: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">array</a>&lt;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>&gt;): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a></div>
-
+  <div class='pre p1 fill-light mt0'>get(properties: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">array</a>&#x3C;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>>): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a></div>
+  
   
 
   
@@ -4632,7 +4765,8 @@ when properties array is empty or undefined.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>properties</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">array</a>&lt;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>&gt;)</code> array of properties to select.
+            <span class='code bold'>properties</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">array</a>&#x3C;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>>)</code>
+	    array of properties to select.
 
           </div>
           
@@ -4683,7 +4817,7 @@ when properties array is empty or undefined.</p>
 
 
   <div class='pre p1 fill-light mt0'>set(resource: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>): <a href="#resource">Resource</a></div>
-
+  
   
 
   
@@ -4698,7 +4832,8 @@ when properties array is empty or undefined.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>resource</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code> object with properties to assign.
+            <span class='code bold'>resource</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    object with properties to assign.
 
           </div>
           
@@ -4748,8 +4883,8 @@ when properties array is empty or undefined.</p>
   <p>Will return a single selected property identified by property.</p>
 
 
-  <div class='pre p1 fill-light mt0'>getProperty(property: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>): Any</div>
-
+  <div class='pre p1 fill-light mt0'>getProperty(property: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>): any</div>
+  
   
 
   
@@ -4764,7 +4899,8 @@ when properties array is empty or undefined.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>property</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code> the selected property name.
+            <span class='code bold'>property</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    the selected property name.
 
           </div>
           
@@ -4778,7 +4914,7 @@ when properties array is empty or undefined.</p>
   
     
       <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code>Any</code>:
+      <code>any</code>:
         the property which was selected.
 
       
@@ -4815,7 +4951,7 @@ when properties array is empty or undefined.</p>
 
 
   <div class='pre p1 fill-light mt0'>setProperty(property: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, value: any): <a href="#resource">Resource</a></div>
-
+  
   
 
   
@@ -4830,7 +4966,8 @@ when properties array is empty or undefined.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>property</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code> the property to change.
+            <span class='code bold'>property</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    the property to change.
 
           </div>
           
@@ -4838,7 +4975,8 @@ when properties array is empty or undefined.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>value</span> <code class='quiet'>(any)</code> the value to assign.
+            <span class='code bold'>value</span> <code class='quiet'>(any)</code>
+	    the value to assign.
 
           </div>
           
@@ -4887,9 +5025,11 @@ when properties array is empty or undefined.</p>
 
   
   <div class='clearfix'>
+    
     <h3 class='fl m0' id='listresource'>
       ListResource
     </h3>
+    
     
   </div>
   
@@ -4898,7 +5038,7 @@ when properties array is empty or undefined.</p>
 
 
   <div class='pre p1 fill-light mt0'>new ListResource()</div>
-
+  
   
     <p>
       Extends
@@ -4945,8 +5085,8 @@ when properties array is empty or undefined.</p>
   <p>Creates a new <a href="#listresource">ListResource</a>.</p>
 
 
-  <div class='pre p1 fill-light mt0'>constructor(resource: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, environment: <a href="#environment">environment</a>, name: ?<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, traversal: ?<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</div>
-
+  <div class='pre p1 fill-light mt0'>constructor(resource: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, environment: <a href="#environment">environment</a>, name: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?, traversal: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</div>
+  
   
 
   
@@ -4961,7 +5101,8 @@ when properties array is empty or undefined.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>resource</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code> resource loaded from the API.
+            <span class='code bold'>resource</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    resource loaded from the API.
 
           </div>
           
@@ -4969,7 +5110,8 @@ when properties array is empty or undefined.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>environment</span> <code class='quiet'>(<a href="#environment">environment</a>)</code> the environment this resource is associated to.
+            <span class='code bold'>environment</span> <code class='quiet'>(<a href="#environment">environment</a>)</code>
+	    the environment this resource is associated to.
 
           </div>
           
@@ -4977,7 +5119,8 @@ when properties array is empty or undefined.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>name</span> <code class='quiet'>(?<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code> name of the embedded resources.
+            <span class='code bold'>name</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?)</code>
+	    name of the embedded resources.
 
           </div>
           
@@ -4985,7 +5128,8 @@ when properties array is empty or undefined.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>traversal</span> <code class='quiet'>(?<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code> traversal from which traverson can continue.
+            <span class='code bold'>traversal</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</code>
+	    traversal from which traverson can continue.
 
           </div>
           
@@ -5027,8 +5171,8 @@ when properties array is empty or undefined.</p>
   <p>Get all list items <a href="https://tools.ietf.org/html/draft-kelly-json-hal-08#section-4.1.2">embedded</a> into this <a href="#listresource">ListResource</a>.</p>
 
 
-  <div class='pre p1 fill-light mt0'>getAllItems(): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&lt;(<a href="#resource">Resource</a> | ResourceClass)&gt;</div>
-
+  <div class='pre p1 fill-light mt0'>getAllItems(): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;(<a href="#resource">Resource</a> | ResourceClass)></div>
+  
   
 
   
@@ -5044,7 +5188,7 @@ when properties array is empty or undefined.</p>
   
     
       <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&lt;(<a href="#resource">Resource</a> | ResourceClass)&gt;</code>:
+      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;(<a href="#resource">Resource</a> | ResourceClass)></code>:
         an array of all list items.
 
       
@@ -5077,11 +5221,11 @@ when properties array is empty or undefined.</p>
 
   
 
-  <p>Get the n&#x27;th <a href="https://tools.ietf.org/html/draft-kelly-json-hal-08#section-4.1.2">embedded</a> item from the list</p>
+  <p>Get the n'th <a href="https://tools.ietf.org/html/draft-kelly-json-hal-08#section-4.1.2">embedded</a> item from the list</p>
 
 
   <div class='pre p1 fill-light mt0'>getItem(n: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>): (<a href="#resource">Resource</a> | ResourceClass)</div>
-
+  
   
 
   
@@ -5096,7 +5240,8 @@ when properties array is empty or undefined.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>n</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>)</code> index of the item
+            <span class='code bold'>n</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>)</code>
+	    index of the item
 
           </div>
           
@@ -5147,7 +5292,7 @@ when properties array is empty or undefined.</p>
 
 
   <div class='pre p1 fill-light mt0'>getFirstItem(): (<a href="#resource">Resource</a> | ResourceClass)</div>
-
+  
   
 
   
@@ -5196,11 +5341,11 @@ when properties array is empty or undefined.</p>
 
   
 
-  <p>Checks if this <a href="#resource">Resource</a> has at least one <a href="https://tools.ietf.org/html/draft-kelly-json-hal-08#section-5">link</a>  with the name &#x27;first&#x27;.</p>
+  <p>Checks if this <a href="#resource">Resource</a> has at least one <a href="https://tools.ietf.org/html/draft-kelly-json-hal-08#section-5">link</a>  with the name 'first'.</p>
 
 
   <div class='pre p1 fill-light mt0'>hasFirstLink(): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></div>
-
+  
   
 
   
@@ -5217,7 +5362,7 @@ when properties array is empty or undefined.</p>
     
       <div class='py1 quiet mt1 prose-big'>Returns</div>
       <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code>:
-        whether or not a link with the name &#x27;first&#x27; was found.
+        whether or not a link with the name 'first' was found.
 
       
     
@@ -5253,8 +5398,8 @@ when properties array is empty or undefined.</p>
 returns a <a href="#listresource">ListResource</a> with the loaded result.</p>
 
 
-  <div class='pre p1 fill-light mt0'>followFirstLink(): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&lt;(<a href="#resource">Resource</a> | ResourceClass)&gt;</div>
-
+  <div class='pre p1 fill-light mt0'>followFirstLink(): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;(<a href="#resource">Resource</a> | ResourceClass)></div>
+  
   
 
   
@@ -5270,7 +5415,7 @@ returns a <a href="#listresource">ListResource</a> with the loaded result.</p>
   
     
       <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&lt;(<a href="#resource">Resource</a> | ResourceClass)&gt;</code>:
+      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;(<a href="#resource">Resource</a> | ResourceClass)></code>:
         the resource identified by the link.
 
       
@@ -5303,11 +5448,11 @@ returns a <a href="#listresource">ListResource</a> with the loaded result.</p>
 
   
 
-  <p>Checks if this <a href="#resource">Resource</a> has at least one <a href="https://tools.ietf.org/html/draft-kelly-json-hal-08#section-5">link</a>  with the name &#x27;next&#x27;.</p>
+  <p>Checks if this <a href="#resource">Resource</a> has at least one <a href="https://tools.ietf.org/html/draft-kelly-json-hal-08#section-5">link</a>  with the name 'next'.</p>
 
 
   <div class='pre p1 fill-light mt0'>hasNextLink(): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></div>
-
+  
   
 
   
@@ -5324,7 +5469,7 @@ returns a <a href="#listresource">ListResource</a> with the loaded result.</p>
     
       <div class='py1 quiet mt1 prose-big'>Returns</div>
       <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code>:
-        whether or not a link with the name &#x27;next&#x27; was found.
+        whether or not a link with the name 'next' was found.
 
       
     
@@ -5360,8 +5505,8 @@ returns a <a href="#listresource">ListResource</a> with the loaded result.</p>
 returns a <a href="#listresource">ListResource</a> with the loaded result.</p>
 
 
-  <div class='pre p1 fill-light mt0'>followNextLink(): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&lt;(<a href="#resource">Resource</a> | ResourceClass)&gt;</div>
-
+  <div class='pre p1 fill-light mt0'>followNextLink(): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;(<a href="#resource">Resource</a> | ResourceClass)></div>
+  
   
 
   
@@ -5377,7 +5522,7 @@ returns a <a href="#listresource">ListResource</a> with the loaded result.</p>
   
     
       <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&lt;(<a href="#resource">Resource</a> | ResourceClass)&gt;</code>:
+      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;(<a href="#resource">Resource</a> | ResourceClass)></code>:
         the resource identified by the link.
 
       
@@ -5410,11 +5555,11 @@ returns a <a href="#listresource">ListResource</a> with the loaded result.</p>
 
   
 
-  <p>Checks if this <a href="#resource">Resource</a> has at least one <a href="https://tools.ietf.org/html/draft-kelly-json-hal-08#section-5">link</a>  with the name &#x27;prev&#x27;.</p>
+  <p>Checks if this <a href="#resource">Resource</a> has at least one <a href="https://tools.ietf.org/html/draft-kelly-json-hal-08#section-5">link</a>  with the name 'prev'.</p>
 
 
   <div class='pre p1 fill-light mt0'>hasPrevLink(): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></div>
-
+  
   
 
   
@@ -5431,7 +5576,7 @@ returns a <a href="#listresource">ListResource</a> with the loaded result.</p>
     
       <div class='py1 quiet mt1 prose-big'>Returns</div>
       <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code>:
-        whether or not a link with the name &#x27;prev&#x27; was found.
+        whether or not a link with the name 'prev' was found.
 
       
     
@@ -5467,8 +5612,8 @@ returns a <a href="#listresource">ListResource</a> with the loaded result.</p>
 returns a <a href="#listresource">ListResource</a> with the loaded result.</p>
 
 
-  <div class='pre p1 fill-light mt0'>followPrevLink(): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&lt;(<a href="#resource">Resource</a> | ResourceClass)&gt;</div>
-
+  <div class='pre p1 fill-light mt0'>followPrevLink(): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;(<a href="#resource">Resource</a> | ResourceClass)></div>
+  
   
 
   
@@ -5484,7 +5629,7 @@ returns a <a href="#listresource">ListResource</a> with the loaded result.</p>
   
     
       <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&lt;(<a href="#resource">Resource</a> | ResourceClass)&gt;</code>:
+      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;(<a href="#resource">Resource</a> | ResourceClass)></code>:
         the resource identified by the link.
 
       
@@ -5519,9 +5664,11 @@ returns a <a href="#listresource">ListResource</a> with the loaded result.</p>
 
   
   <div class='clearfix'>
+    
     <h3 class='fl m0' id='filteroptions'>
       filterOptions
     </h3>
+    
     
   </div>
   
@@ -5530,7 +5677,12 @@ returns a <a href="#listresource">ListResource</a> with the loaded result.</p>
 
 
   <div class='pre p1 fill-light mt0'>filterOptions</div>
-
+  
+    <p>
+      Type:
+      {size: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>, page: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>, sort: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">array</a>&#x3C;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>>, filter: <a href="#filter">filter</a>}
+    </p>
+  
   
 
   
@@ -5563,9 +5715,11 @@ returns a <a href="#listresource">ListResource</a> with the loaded result.</p>
 
   
   <div class='clearfix'>
+    
     <h3 class='fl m0' id='filter'>
       filter
     </h3>
+    
     
   </div>
   
@@ -5575,7 +5729,12 @@ when loading a <a href="#listresource">ListResource</a>.</p>
 
 
   <div class='pre p1 fill-light mt0'>filter</div>
-
+  
+    <p>
+      Type:
+      {propertyNames: (<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a> | {exact: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, search: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, from: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, to: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, any: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">array</a>&#x3C;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>>, all: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">array</a>&#x3C;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>>})}
+    </p>
+  
   
 
   
@@ -5637,9 +5796,11 @@ when loading a <a href="#listresource">ListResource</a>.</p>
 
   
   <div class='clearfix'>
+    
     <h3 class='fl m0' id='accountresource'>
       AccountResource
     </h3>
+    
     
   </div>
   
@@ -5648,7 +5809,7 @@ when loading a <a href="#listresource">ListResource</a>.</p>
 
 
   <div class='pre p1 fill-light mt0'>new AccountResource()</div>
-
+  
   
     <p>
       Extends
@@ -5695,7 +5856,7 @@ when loading a <a href="#listresource">ListResource</a>.</p>
         </div>
       
         <div class='space-bottom0'>
-          <span class='code bold'>groups</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&lt;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>&gt;)</code>
+          <span class='code bold'>groups</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>>)</code>
           : Array of groups this account is member of
 
           
@@ -5723,7 +5884,7 @@ when loading a <a href="#listresource">ListResource</a>.</p>
         </div>
       
         <div class='space-bottom0'>
-          <span class='code bold'>permissions</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&lt;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>&gt;)</code>
+          <span class='code bold'>permissions</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>>)</code>
           : Array of permissions
 
           
@@ -5766,8 +5927,8 @@ when loading a <a href="#listresource">ListResource</a>.</p>
   <p>Creates a new <a href="#accountresource">AccountResource</a>.</p>
 
 
-  <div class='pre p1 fill-light mt0'>constructor(resource: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, environment: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, traversal: ?<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</div>
-
+  <div class='pre p1 fill-light mt0'>constructor(resource: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, environment: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, traversal: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</div>
+  
   
 
   
@@ -5782,7 +5943,8 @@ when loading a <a href="#listresource">ListResource</a>.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>resource</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code> resource loaded from the API.
+            <span class='code bold'>resource</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    resource loaded from the API.
 
           </div>
           
@@ -5790,7 +5952,8 @@ when loading a <a href="#listresource">ListResource</a>.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>environment</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code> the environment this resource is associated to.
+            <span class='code bold'>environment</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    the environment this resource is associated to.
 
           </div>
           
@@ -5798,7 +5961,8 @@ when loading a <a href="#listresource">ListResource</a>.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>traversal</span> <code class='quiet'>(?<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code> traversal from which traverson can continue.
+            <span class='code bold'>traversal</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</code>
+	    traversal from which traverson can continue.
 
           </div>
           
@@ -5841,8 +6005,8 @@ when loading a <a href="#listresource">ListResource</a>.</p>
 permissions and all group permissions.</p>
 
 
-  <div class='pre p1 fill-light mt0'>getAllPermissions(): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">array</a>&lt;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>&gt;</div>
-
+  <div class='pre p1 fill-light mt0'>getAllPermissions(): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">array</a>&#x3C;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>></div>
+  
   
 
   
@@ -5858,7 +6022,7 @@ permissions and all group permissions.</p>
   
     
       <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">array</a>&lt;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>&gt;</code>:
+      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">array</a>&#x3C;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>></code>:
         All permissions.
 
       
@@ -5895,7 +6059,7 @@ permissions and all group permissions.</p>
 
 
   <div class='pre p1 fill-light mt0'>addPermission(value: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>): <a href="#accountresource">AccountResource</a></div>
-
+  
   
 
   
@@ -5910,7 +6074,8 @@ permissions and all group permissions.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>value</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code> the permission to add.
+            <span class='code bold'>value</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    the permission to add.
 
           </div>
           
@@ -5960,8 +6125,8 @@ permissions and all group permissions.</p>
   <p>Load the <a href="#tokenlist">TokenList</a> for this account</p>
 
 
-  <div class='pre p1 fill-light mt0'>tokenList(): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&lt;<a href="#tokenlist">TokenList</a>&gt;</div>
-
+  <div class='pre p1 fill-light mt0'>tokenList(): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#tokenlist">TokenList</a>></div>
+  
   
 
   
@@ -5977,7 +6142,7 @@ permissions and all group permissions.</p>
   
     
       <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&lt;<a href="#tokenlist">TokenList</a>&gt;</code>:
+      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#tokenlist">TokenList</a>></code>:
         Promise resolving the token list
 
       
@@ -6012,9 +6177,11 @@ permissions and all group permissions.</p>
 
   
   <div class='clearfix'>
+    
     <h3 class='fl m0' id='accountlist'>
       AccountList
     </h3>
+    
     
   </div>
   
@@ -6023,7 +6190,7 @@ permissions and all group permissions.</p>
 
 
   <div class='pre p1 fill-light mt0'>new AccountList()</div>
-
+  
   
     <p>
       Extends
@@ -6070,8 +6237,8 @@ permissions and all group permissions.</p>
   <p>Creates a new <a href="#accountlist">AccountList</a>.</p>
 
 
-  <div class='pre p1 fill-light mt0'>constructor(resource: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, environment: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, traversal: ?<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</div>
-
+  <div class='pre p1 fill-light mt0'>constructor(resource: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, environment: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, traversal: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</div>
+  
   
 
   
@@ -6086,7 +6253,8 @@ permissions and all group permissions.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>resource</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code> resource loaded from the API.
+            <span class='code bold'>resource</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    resource loaded from the API.
 
           </div>
           
@@ -6094,7 +6262,8 @@ permissions and all group permissions.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>environment</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code> the environment this resource is associated to.
+            <span class='code bold'>environment</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    the environment this resource is associated to.
 
           </div>
           
@@ -6102,7 +6271,8 @@ permissions and all group permissions.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>traversal</span> <code class='quiet'>(?<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code> traversal from which traverson can continue.
+            <span class='code bold'>traversal</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</code>
+	    traversal from which traverson can continue.
 
           </div>
           
@@ -6143,9 +6313,11 @@ permissions and all group permissions.</p>
 
   
   <div class='clearfix'>
+    
     <h3 class='fl m0' id='tokenresource'>
       TokenResource
     </h3>
+    
     
   </div>
   
@@ -6154,7 +6326,7 @@ permissions and all group permissions.</p>
 
 
   <div class='pre p1 fill-light mt0'>new TokenResource()</div>
-
+  
   
     <p>
       Extends
@@ -6259,8 +6431,8 @@ permissions and all group permissions.</p>
   <p>Creates a new <a href="#tokenresource">TokenResource</a>.</p>
 
 
-  <div class='pre p1 fill-light mt0'>constructor(resource: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, environment: <a href="#environment">environment</a>, traversal: ?<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</div>
-
+  <div class='pre p1 fill-light mt0'>constructor(resource: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, environment: <a href="#environment">environment</a>, traversal: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</div>
+  
   
 
   
@@ -6275,7 +6447,8 @@ permissions and all group permissions.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>resource</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code> resource loaded from the API.
+            <span class='code bold'>resource</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    resource loaded from the API.
 
           </div>
           
@@ -6283,7 +6456,8 @@ permissions and all group permissions.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>environment</span> <code class='quiet'>(<a href="#environment">environment</a>)</code> the environment this resource is associated to.
+            <span class='code bold'>environment</span> <code class='quiet'>(<a href="#environment">environment</a>)</code>
+	    the environment this resource is associated to.
 
           </div>
           
@@ -6291,7 +6465,8 @@ permissions and all group permissions.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>traversal</span> <code class='quiet'>(?<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code> traversal from which traverson can continue.
+            <span class='code bold'>traversal</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</code>
+	    traversal from which traverson can continue.
 
           </div>
           
@@ -6332,9 +6507,11 @@ permissions and all group permissions.</p>
 
   
   <div class='clearfix'>
+    
     <h3 class='fl m0' id='tokenlist'>
       TokenList
     </h3>
+    
     
   </div>
   
@@ -6343,7 +6520,7 @@ permissions and all group permissions.</p>
 
 
   <div class='pre p1 fill-light mt0'>new TokenList()</div>
-
+  
   
     <p>
       Extends
@@ -6390,8 +6567,8 @@ permissions and all group permissions.</p>
   <p>Creates a new <a href="#tokenlist">TokenList</a>.</p>
 
 
-  <div class='pre p1 fill-light mt0'>constructor(resource: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, environment: <a href="#environment">environment</a>, traversal: ?<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</div>
-
+  <div class='pre p1 fill-light mt0'>constructor(resource: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, environment: <a href="#environment">environment</a>, traversal: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</div>
+  
   
 
   
@@ -6406,7 +6583,8 @@ permissions and all group permissions.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>resource</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code> resource loaded from the API.
+            <span class='code bold'>resource</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    resource loaded from the API.
 
           </div>
           
@@ -6414,7 +6592,8 @@ permissions and all group permissions.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>environment</span> <code class='quiet'>(<a href="#environment">environment</a>)</code> the environment this resource is associated to.
+            <span class='code bold'>environment</span> <code class='quiet'>(<a href="#environment">environment</a>)</code>
+	    the environment this resource is associated to.
 
           </div>
           
@@ -6422,7 +6601,8 @@ permissions and all group permissions.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>traversal</span> <code class='quiet'>(?<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code> traversal from which traverson can continue.
+            <span class='code bold'>traversal</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</code>
+	    traversal from which traverson can continue.
 
           </div>
           
@@ -6463,9 +6643,11 @@ permissions and all group permissions.</p>
 
   
   <div class='clearfix'>
+    
     <h3 class='fl m0' id='clientresource'>
       ClientResource
     </h3>
+    
     
   </div>
   
@@ -6474,7 +6656,7 @@ permissions and all group permissions.</p>
 
 
   <div class='pre p1 fill-light mt0'>new ClientResource()</div>
-
+  
   
     <p>
       Extends
@@ -6547,8 +6729,8 @@ permissions and all group permissions.</p>
   <p>Creates a new <a href="#clientresource">ClientResource</a>.</p>
 
 
-  <div class='pre p1 fill-light mt0'>constructor(resource: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, environment: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, traversal: ?<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</div>
-
+  <div class='pre p1 fill-light mt0'>constructor(resource: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, environment: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, traversal: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</div>
+  
   
 
   
@@ -6563,7 +6745,8 @@ permissions and all group permissions.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>resource</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code> resource loaded from the API.
+            <span class='code bold'>resource</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    resource loaded from the API.
 
           </div>
           
@@ -6571,7 +6754,8 @@ permissions and all group permissions.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>environment</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code> the environment this resource is associated to.
+            <span class='code bold'>environment</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    the environment this resource is associated to.
 
           </div>
           
@@ -6579,7 +6763,8 @@ permissions and all group permissions.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>traversal</span> <code class='quiet'>(?<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code> traversal from which traverson can continue.
+            <span class='code bold'>traversal</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</code>
+	    traversal from which traverson can continue.
 
           </div>
           
@@ -6620,9 +6805,11 @@ permissions and all group permissions.</p>
 
   
   <div class='clearfix'>
+    
     <h3 class='fl m0' id='clientlist'>
       ClientList
     </h3>
+    
     
   </div>
   
@@ -6631,7 +6818,7 @@ permissions and all group permissions.</p>
 
 
   <div class='pre p1 fill-light mt0'>new ClientList()</div>
-
+  
   
     <p>
       Extends
@@ -6678,8 +6865,8 @@ permissions and all group permissions.</p>
   <p>Creates a new <a href="#clientlist">ClientList</a>.</p>
 
 
-  <div class='pre p1 fill-light mt0'>constructor(resource: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, environment: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, traversal: ?<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</div>
-
+  <div class='pre p1 fill-light mt0'>constructor(resource: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, environment: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, traversal: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</div>
+  
   
 
   
@@ -6694,7 +6881,8 @@ permissions and all group permissions.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>resource</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code> resource loaded from the API.
+            <span class='code bold'>resource</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    resource loaded from the API.
 
           </div>
           
@@ -6702,7 +6890,8 @@ permissions and all group permissions.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>environment</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code> the environment this resource is associated to.
+            <span class='code bold'>environment</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    the environment this resource is associated to.
 
           </div>
           
@@ -6710,7 +6899,8 @@ permissions and all group permissions.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>traversal</span> <code class='quiet'>(?<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code> traversal from which traverson can continue.
+            <span class='code bold'>traversal</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</code>
+	    traversal from which traverson can continue.
 
           </div>
           
@@ -6751,9 +6941,11 @@ permissions and all group permissions.</p>
 
   
   <div class='clearfix'>
+    
     <h3 class='fl m0' id='groupresource'>
       GroupResource
     </h3>
+    
     
   </div>
   
@@ -6762,7 +6954,7 @@ permissions and all group permissions.</p>
 
 
   <div class='pre p1 fill-light mt0'>new GroupResource()</div>
-
+  
   
     <p>
       Extends
@@ -6799,7 +6991,7 @@ permissions and all group permissions.</p>
         </div>
       
         <div class='space-bottom0'>
-          <span class='code bold'>permissions</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&lt;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>&gt;)</code>
+          <span class='code bold'>permissions</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>>)</code>
           : Array of permissions
 
           
@@ -6835,8 +7027,8 @@ permissions and all group permissions.</p>
   <p>Creates a new <a href="#groupresource">GroupResource</a>.</p>
 
 
-  <div class='pre p1 fill-light mt0'>constructor(resource: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, environment: <a href="#environment">environment</a>, traversal: ?<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</div>
-
+  <div class='pre p1 fill-light mt0'>constructor(resource: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, environment: <a href="#environment">environment</a>, traversal: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</div>
+  
   
 
   
@@ -6851,7 +7043,8 @@ permissions and all group permissions.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>resource</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code> resource loaded from the API.
+            <span class='code bold'>resource</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    resource loaded from the API.
 
           </div>
           
@@ -6859,7 +7052,8 @@ permissions and all group permissions.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>environment</span> <code class='quiet'>(<a href="#environment">environment</a>)</code> the environment this resource is associated to.
+            <span class='code bold'>environment</span> <code class='quiet'>(<a href="#environment">environment</a>)</code>
+	    the environment this resource is associated to.
 
           </div>
           
@@ -6867,7 +7061,8 @@ permissions and all group permissions.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>traversal</span> <code class='quiet'>(?<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code> traversal from which traverson can continue.
+            <span class='code bold'>traversal</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</code>
+	    traversal from which traverson can continue.
 
           </div>
           
@@ -6910,7 +7105,7 @@ permissions and all group permissions.</p>
 
 
   <div class='pre p1 fill-light mt0'>addPermission(value: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>): <a href="#groupresource">GroupResource</a></div>
-
+  
   
 
   
@@ -6925,7 +7120,8 @@ permissions and all group permissions.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>value</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code> the permission to add.
+            <span class='code bold'>value</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    the permission to add.
 
           </div>
           
@@ -6974,9 +7170,11 @@ permissions and all group permissions.</p>
 
   
   <div class='clearfix'>
+    
     <h3 class='fl m0' id='grouplist'>
       GroupList
     </h3>
+    
     
   </div>
   
@@ -6985,7 +7183,7 @@ permissions and all group permissions.</p>
 
 
   <div class='pre p1 fill-light mt0'>new GroupList()</div>
-
+  
   
     <p>
       Extends
@@ -7032,8 +7230,8 @@ permissions and all group permissions.</p>
   <p>Creates a new <a href="#grouplist">GroupList</a>.</p>
 
 
-  <div class='pre p1 fill-light mt0'>constructor(resource: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, environment: <a href="#environment">environment</a>, traversal: ?<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</div>
-
+  <div class='pre p1 fill-light mt0'>constructor(resource: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, environment: <a href="#environment">environment</a>, traversal: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</div>
+  
   
 
   
@@ -7048,7 +7246,8 @@ permissions and all group permissions.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>resource</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code> resource loaded from the API.
+            <span class='code bold'>resource</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    resource loaded from the API.
 
           </div>
           
@@ -7056,7 +7255,8 @@ permissions and all group permissions.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>environment</span> <code class='quiet'>(<a href="#environment">environment</a>)</code> the environment this resource is associated to.
+            <span class='code bold'>environment</span> <code class='quiet'>(<a href="#environment">environment</a>)</code>
+	    the environment this resource is associated to.
 
           </div>
           
@@ -7064,7 +7264,8 @@ permissions and all group permissions.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>traversal</span> <code class='quiet'>(?<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code> traversal from which traverson can continue.
+            <span class='code bold'>traversal</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</code>
+	    traversal from which traverson can continue.
 
           </div>
           
@@ -7105,9 +7306,11 @@ permissions and all group permissions.</p>
 
   
   <div class='clearfix'>
+    
     <h3 class='fl m0' id='invitesresource'>
       InvitesResource
     </h3>
+    
     
   </div>
   
@@ -7116,7 +7319,7 @@ permissions and all group permissions.</p>
 
 
   <div class='pre p1 fill-light mt0'>new InvitesResource()</div>
-
+  
   
     <p>
       Extends
@@ -7139,7 +7342,7 @@ permissions and all group permissions.</p>
     <div>
       
         <div class='space-bottom0'>
-          <span class='code bold'>invites</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&lt;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>&gt;)</code>
+          <span class='code bold'>invites</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>>)</code>
           : Array of unused invites
 
           
@@ -7175,8 +7378,8 @@ permissions and all group permissions.</p>
   <p>Creates a new <a href="#invitesresource">InvitesResource</a>.</p>
 
 
-  <div class='pre p1 fill-light mt0'>constructor(resource: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, environment: <a href="#environment">environment</a>, traversal: ?<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</div>
-
+  <div class='pre p1 fill-light mt0'>constructor(resource: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, environment: <a href="#environment">environment</a>, traversal: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</div>
+  
   
 
   
@@ -7191,7 +7394,8 @@ permissions and all group permissions.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>resource</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code> resource loaded from the API.
+            <span class='code bold'>resource</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    resource loaded from the API.
 
           </div>
           
@@ -7199,7 +7403,8 @@ permissions and all group permissions.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>environment</span> <code class='quiet'>(<a href="#environment">environment</a>)</code> the environment this resource is associated to.
+            <span class='code bold'>environment</span> <code class='quiet'>(<a href="#environment">environment</a>)</code>
+	    the environment this resource is associated to.
 
           </div>
           
@@ -7207,7 +7412,8 @@ permissions and all group permissions.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>traversal</span> <code class='quiet'>(?<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code> traversal from which traverson can continue.
+            <span class='code bold'>traversal</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</code>
+	    traversal from which traverson can continue.
 
           </div>
           
@@ -7248,9 +7454,11 @@ permissions and all group permissions.</p>
 
   
   <div class='clearfix'>
+    
     <h3 class='fl m0' id='invalidpermissionsresource'>
       InvalidPermissionsResource
     </h3>
+    
     
   </div>
   
@@ -7259,7 +7467,7 @@ permissions and all group permissions.</p>
 
 
   <div class='pre p1 fill-light mt0'>new InvalidPermissionsResource()</div>
-
+  
   
     <p>
       Extends
@@ -7282,7 +7490,7 @@ permissions and all group permissions.</p>
     <div>
       
         <div class='space-bottom0'>
-          <span class='code bold'>invalidAccountPermission</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&lt;Permission&gt;)</code>
+          <span class='code bold'>invalidAccountPermission</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;Permission>)</code>
           : Array of invalid permissions linked to a
 
 <a href="#accountresource">AccountResource</a>
@@ -7291,7 +7499,7 @@ permissions and all group permissions.</p>
         </div>
       
         <div class='space-bottom0'>
-          <span class='code bold'>invalidGroupPermission</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&lt;Permission&gt;)</code>
+          <span class='code bold'>invalidGroupPermission</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;Permission>)</code>
           : Array of invalid permissions linked to a
 
 <a href="#groupresource">GroupResource</a>
@@ -7329,8 +7537,8 @@ permissions and all group permissions.</p>
   <p>Creates a new <a href="#invalidpermissionsresource">InvalidPermissionsResource</a>.</p>
 
 
-  <div class='pre p1 fill-light mt0'>constructor(resource: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, environment: <a href="#environment">environment</a>, traversal: ?<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</div>
-
+  <div class='pre p1 fill-light mt0'>constructor(resource: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, environment: <a href="#environment">environment</a>, traversal: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</div>
+  
   
 
   
@@ -7345,7 +7553,8 @@ permissions and all group permissions.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>resource</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code> resource loaded from the API.
+            <span class='code bold'>resource</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    resource loaded from the API.
 
           </div>
           
@@ -7353,7 +7562,8 @@ permissions and all group permissions.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>environment</span> <code class='quiet'>(<a href="#environment">environment</a>)</code> the environment this resource is associated to.
+            <span class='code bold'>environment</span> <code class='quiet'>(<a href="#environment">environment</a>)</code>
+	    the environment this resource is associated to.
 
           </div>
           
@@ -7361,7 +7571,8 @@ permissions and all group permissions.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>traversal</span> <code class='quiet'>(?<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code> traversal from which traverson can continue.
+            <span class='code bold'>traversal</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</code>
+	    traversal from which traverson can continue.
 
           </div>
           
@@ -7417,9 +7628,11 @@ permissions and all group permissions.</p>
 
   
   <div class='clearfix'>
+    
     <h3 class='fl m0' id='datamanagerresource'>
       DataManagerResource
     </h3>
+    
     
   </div>
   
@@ -7428,7 +7641,7 @@ permissions and all group permissions.</p>
 
 
   <div class='pre p1 fill-light mt0'>new DataManagerResource()</div>
-
+  
   
     <p>
       Extends
@@ -7486,7 +7699,7 @@ permissions and all group permissions.</p>
         </div>
       
         <div class='space-bottom0'>
-          <span class='code bold'>locales</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&lt;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>&gt;)</code>
+          <span class='code bold'>locales</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>>)</code>
           : Array of available locales
 
           
@@ -7537,8 +7750,8 @@ permissions and all group permissions.</p>
   <p>Creates a new <a href="#datamanagerresource">DataManagerResource</a>.</p>
 
 
-  <div class='pre p1 fill-light mt0'>constructor(resource: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, environment: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, traversal: ?<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</div>
-
+  <div class='pre p1 fill-light mt0'>constructor(resource: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, environment: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, traversal: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</div>
+  
   
 
   
@@ -7553,7 +7766,8 @@ permissions and all group permissions.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>resource</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code> resource loaded from the API.
+            <span class='code bold'>resource</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    resource loaded from the API.
 
           </div>
           
@@ -7561,7 +7775,8 @@ permissions and all group permissions.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>environment</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code> the environment this resource is associated to.
+            <span class='code bold'>environment</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    the environment this resource is associated to.
 
           </div>
           
@@ -7569,7 +7784,8 @@ permissions and all group permissions.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>traversal</span> <code class='quiet'>(?<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code> traversal from which traverson can continue.
+            <span class='code bold'>traversal</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</code>
+	    traversal from which traverson can continue.
 
           </div>
           
@@ -7612,8 +7828,8 @@ permissions and all group permissions.</p>
 by the options parameter.</p>
 
 
-  <div class='pre p1 fill-light mt0'>modelList(options: <a href="#filteroptions">filterOptions</a>?): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&lt;<a href="#modellist">ModelList</a>&gt;</div>
-
+  <div class='pre p1 fill-light mt0'>modelList(options: <a href="#filteroptions">filterOptions</a>?): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#modellist">ModelList</a>></div>
+  
   
 
   
@@ -7628,7 +7844,8 @@ by the options parameter.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>options</span> <code class='quiet'>(<a href="#filteroptions">filterOptions</a>?)</code> the
+            <span class='code bold'>options</span> <code class='quiet'>(<a href="#filteroptions">filterOptions</a>?)</code>
+	    the
 filter options.
 
           </div>
@@ -7643,7 +7860,7 @@ filter options.
   
     
       <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&lt;<a href="#modellist">ModelList</a>&gt;</code>:
+      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#modellist">ModelList</a>></code>:
         resolves to model list with applied filters.
 
       
@@ -7679,8 +7896,8 @@ filter options.
   <p>Get a single <a href="#modelresource">ModelResource</a> identified by modelID.</p>
 
 
-  <div class='pre p1 fill-light mt0'>model(modelID: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&lt;<a href="#modelresource">ModelResource</a>&gt;</div>
-
+  <div class='pre p1 fill-light mt0'>model(modelID: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#modelresource">ModelResource</a>></div>
+  
   
 
   
@@ -7695,7 +7912,8 @@ filter options.
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>modelID</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code> id of the Model.
+            <span class='code bold'>modelID</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    id of the Model.
 
           </div>
           
@@ -7709,7 +7927,7 @@ filter options.
   
     
       <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&lt;<a href="#modelresource">ModelResource</a>&gt;</code>:
+      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#modelresource">ModelResource</a>></code>:
         resolves to the Model which should be loaded.
 
       
@@ -7744,9 +7962,11 @@ filter options.
 
   
   <div class='clearfix'>
+    
     <h3 class='fl m0' id='datamanagerlist'>
       DataManagerList
     </h3>
+    
     
   </div>
   
@@ -7755,7 +7975,7 @@ filter options.
 
 
   <div class='pre p1 fill-light mt0'>new DataManagerList()</div>
-
+  
   
     <p>
       Extends
@@ -7802,8 +8022,8 @@ filter options.
   <p>Creates a new <a href="#datamanagerlist">DataManagerList</a>.</p>
 
 
-  <div class='pre p1 fill-light mt0'>constructor(resource: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, environment: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, traversal: ?<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</div>
-
+  <div class='pre p1 fill-light mt0'>constructor(resource: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, environment: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, traversal: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</div>
+  
   
 
   
@@ -7818,7 +8038,8 @@ filter options.
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>resource</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code> resource loaded from the API.
+            <span class='code bold'>resource</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    resource loaded from the API.
 
           </div>
           
@@ -7826,7 +8047,8 @@ filter options.
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>environment</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code> the environment this resource is associated to.
+            <span class='code bold'>environment</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    the environment this resource is associated to.
 
           </div>
           
@@ -7834,7 +8056,8 @@ filter options.
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>traversal</span> <code class='quiet'>(?<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code> traversal from which traverson can continue.
+            <span class='code bold'>traversal</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</code>
+	    traversal from which traverson can continue.
 
           </div>
           
@@ -7875,9 +8098,11 @@ filter options.
 
   
   <div class='clearfix'>
+    
     <h3 class='fl m0' id='modelresource'>
       ModelResource
     </h3>
+    
     
   </div>
   
@@ -7886,7 +8111,7 @@ filter options.
 
 
   <div class='pre p1 fill-light mt0'>new ModelResource()</div>
-
+  
   
     <p>
       Extends
@@ -7930,7 +8155,7 @@ filter options.
         </div>
       
         <div class='space-bottom0'>
-          <span class='code bold'>fields</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&lt;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>&gt;)</code>
+          <span class='code bold'>fields</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>>)</code>
           : Array of fields
 
           
@@ -7951,14 +8176,14 @@ filter options.
         </div>
       
         <div class='space-bottom0'>
-          <span class='code bold'>hooks</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&lt;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>&gt;)</code>
+          <span class='code bold'>hooks</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>>)</code>
           : Array of hooks
 
           
         </div>
       
         <div class='space-bottom0'>
-          <span class='code bold'>locales</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&lt;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>&gt;)</code>
+          <span class='code bold'>locales</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>>)</code>
           : Array of available locales
 
           
@@ -7972,7 +8197,7 @@ filter options.
         </div>
       
         <div class='space-bottom0'>
-          <span class='code bold'>policies</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&lt;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>&gt;)</code>
+          <span class='code bold'>policies</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>>)</code>
           : Array of Policies
 
           
@@ -8022,8 +8247,8 @@ filter options.
   <p>Creates a new <a href="#modelresource">ModelResource</a>.</p>
 
 
-  <div class='pre p1 fill-light mt0'>constructor(resource: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, environment: <a href="#environment">environment</a>, traversal: ?<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</div>
-
+  <div class='pre p1 fill-light mt0'>constructor(resource: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, environment: <a href="#environment">environment</a>, traversal: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</div>
+  
   
 
   
@@ -8038,7 +8263,8 @@ filter options.
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>resource</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code> resource loaded from the API.
+            <span class='code bold'>resource</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    resource loaded from the API.
 
           </div>
           
@@ -8046,7 +8272,8 @@ filter options.
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>environment</span> <code class='quiet'>(<a href="#environment">environment</a>)</code> the environment this resource is associated to.
+            <span class='code bold'>environment</span> <code class='quiet'>(<a href="#environment">environment</a>)</code>
+	    the environment this resource is associated to.
 
           </div>
           
@@ -8054,7 +8281,8 @@ filter options.
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>traversal</span> <code class='quiet'>(?<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code> traversal from which traverson can continue.
+            <span class='code bold'>traversal</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</code>
+	    traversal from which traverson can continue.
 
           </div>
           
@@ -8095,9 +8323,11 @@ filter options.
 
   
   <div class='clearfix'>
+    
     <h3 class='fl m0' id='modellist'>
       ModelList
     </h3>
+    
     
   </div>
   
@@ -8106,7 +8336,7 @@ filter options.
 
 
   <div class='pre p1 fill-light mt0'>new ModelList()</div>
-
+  
   
     <p>
       Extends
@@ -8153,8 +8383,8 @@ filter options.
   <p>Creates a new <a href="#modellist">ModelList</a>.</p>
 
 
-  <div class='pre p1 fill-light mt0'>constructor(resource: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, environment: <a href="#environment">environment</a>, traversal: ?<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</div>
-
+  <div class='pre p1 fill-light mt0'>constructor(resource: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, environment: <a href="#environment">environment</a>, traversal: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</div>
+  
   
 
   
@@ -8169,7 +8399,8 @@ filter options.
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>resource</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code> resource loaded from the API.
+            <span class='code bold'>resource</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    resource loaded from the API.
 
           </div>
           
@@ -8177,7 +8408,8 @@ filter options.
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>environment</span> <code class='quiet'>(<a href="#environment">environment</a>)</code> the environment this resource is associated to.
+            <span class='code bold'>environment</span> <code class='quiet'>(<a href="#environment">environment</a>)</code>
+	    the environment this resource is associated to.
 
           </div>
           
@@ -8185,7 +8417,8 @@ filter options.
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>traversal</span> <code class='quiet'>(?<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code> traversal from which traverson can continue.
+            <span class='code bold'>traversal</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</code>
+	    traversal from which traverson can continue.
 
           </div>
           

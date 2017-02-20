@@ -26,15 +26,15 @@ const urls = {
 };
 
 /**
- * API connector for {@link https://doc.entrecode.de/en/latest/account_server/ Accounts API}.
- *
- * Multiple instances for multiple environments are possible.
+ * API connector for {@link https://doc.entrecode.de/en/latest/account_server/ Accounts API}. Use
+ * this for ec.accounts only. It contains APIs for profile editing (change email, reset password,
+ * signup…), permissions, clients, and groups.
  *
  * @class
  */
 export default class Accounts extends Core {
   /**
-   * Creates a new instance of {@link Accounts} module.
+   * Creates a new instance of {@link Accounts} API connector.
    *
    * @param {?environment} environment the {@link environment} to connect to.
    */
@@ -75,7 +75,7 @@ export default class Accounts extends Core {
    * return accounts.list({
    *   filter: {
    *     created: {
-   *       from: new Date(new Date.getTime() - 600000).toISOString(),
+   *       from: new Date(new Date.getTime() - 600000).toISOString()),
    *     },
    *   },
    * })
@@ -150,6 +150,133 @@ export default class Accounts extends Core {
   }
 
   /**
+   * Load the {@link GroupList}
+   *
+   * @example
+   * return accounts.groupList({
+   *   filter: {
+   *     title: {
+   *       search: 'dev',
+   *     },
+   *   },
+   * })
+   * .then(groups => {
+   *   // all groups with 'dev' in the title
+   *   return Promise.all(groups.getAllItems.forEach(group => show(group)));
+   * });
+   *
+   * @param {filterOptions?} options filter options
+   * @returns {Promise<GroupList>} Promise resolving goup list
+   */
+  groupList(options) {
+    return Promise.resolve()
+    .then(() => {
+      if (options && Object.keys(options).length === 1 && 'groupID' in options) {
+        throw new Error('Providing only an groupID in GroupList filter will result in single resource response. Please use Accounts#groupList');
+      }
+
+      const request = this.newRequest()
+      .follow('ec:acc/groups/options')
+      .withTemplateParameters(optionsToQuery(options));
+      return get(this.environment, request);
+    })
+    .then(([res, traversal]) => new GroupList(res, this.environment, traversal));
+  }
+
+  /**
+   * Load a single group
+   *
+   * @example
+   * return accounts.group(groupID)
+   * .then((group) => {
+   *   group.addPermission('can-view-stacktrace');
+   *   return group.save();
+   * });
+   *
+   * @param {string} groupID the id of the group
+   * @returns {Promise<GroupResource>} Promise resolving to the group
+   */
+  group(groupID) {
+    return Promise.resolve()
+    .then(() => {
+      if (!groupID) {
+        throw new Error('groupID must be defined');
+      }
+      const request = this.newRequest()
+      .follow('ec:acc/clients/options')
+      .withTemplateParameters({ groupid: groupID });
+      return get(this.environment, request);
+    })
+    .then(([res, traversal]) => new GroupResource(res, this.environment, traversal));
+  }
+
+  /**
+   * Load the {@link ClientList}.
+   *
+   * @example
+   * return accounts.clientList()
+   * .then(clients => {
+   *   return clients.getAllItems().filter(client => client.clientID === 'thisOne');
+   * })
+   * .then(clientArray => {
+   *   return show(clientArray[0]);
+   * });
+   *
+   * // This would actually be better:
+   * return accounts.clientList({
+   *   filter: {
+   *     clientID: 'thisOne',
+   *   },
+   * })
+   * .then(clients => {
+   *   return show(clients.getFirstItem());
+   * });
+   *
+   * @param {filterOptions?} options filter options
+   * @returns {Promise<ClientList>} Promise resolving to ClientList
+   */
+  clientList(options) {
+    return Promise.resolve()
+    .then(() => {
+      if (options && Object.keys(options).length === 1 && 'clientID' in options) {
+        throw new Error('Providing only an clientID in ClientList filter will result in single resource response. Please use Accounts#client');
+      }
+
+      const request = this.newRequest()
+      .follow('ec:acc/clients/options')
+      .withTemplateParameters(optionsToQuery(options));
+      return get(this.environment, request);
+    })
+    .then(([res, traversal]) => new ClientList(res, this.environment, traversal));
+  }
+
+  /**
+   * Load a single {@link ClientResource}.
+   *
+   * @example
+   * return accounts.client('thisOne')
+   * .then(client => {
+   *   return show(client);
+   * });
+   *
+   * @param {string} clientID the clientID
+   * @returns {Promise<ClientResource>} Promise resolving to ClientResource
+   */
+  client(clientID) {
+    return Promise.resolve()
+    .then(() => {
+      if (!clientID) {
+        throw new Error('clientID must be defined');
+      }
+      const request = this.newRequest()
+      .follow('ec:acc/clients/options')
+      .withTemplateParameters({ clientid: clientID });
+      return get(this.environment, request);
+    })
+    .then(([res, traversal]) => new ClientResource(res, this.environment, traversal));
+  }
+
+  /**
    * Creates a new API token with 100 years validity.
    *
    * @example
@@ -164,6 +291,84 @@ export default class Accounts extends Core {
   createApiToken() {
     return post(this.environment, this.newRequest().follow('ec:auth/create-anonymous'), {})
     .then(([tokenResponse]) => tokenResponse);
+  }
+
+  /**
+   * Load the {@link InvitesResource} with unused invites.
+   *
+   * @example
+   * return accounts.invites()
+   * .then((invites) => {
+   *   if (invites.invites.length < 5){
+   *     return Promise.resolve(invites.invites);
+   *   }
+   *   return accounts.createInvites(5 - invites.invites.length);
+   * })
+   * .then((invites) => {
+   *   return Promise.all(invites.invites.forEach((invite, index) => sendInvite(invite,
+   *   emails[index]);
+   * })
+   * .then(() => console.log('Invites send.');
+   *
+   * @returns {Promise.<InvitesResource>} Promise resolving to the invites resource
+   */
+  invites() {
+    return Promise.resolve()
+    .then(() => {
+      const request = this.newRequest().follow('ec:invites');
+
+      return get(this.environment, request)
+      .then(([invites, traversal]) => new InvitesResource(invites, this.environment, traversal));
+    });
+  }
+
+  /**
+   * Create new invites. Specify number of invites to create with count.
+   *
+   * @example
+   * return accounts.createInvites(5)
+   * .then((invites) => {
+   *   return Promise.all(invites.invites.forEach((invite, index) => sendInvite(invite,
+   *   emails[index]);
+   * })
+   * .then(() => console.log('Invites send.');
+   *
+   * @param {number} count the number of invites to create
+   * @returns {Promise<InvitesResource>} Promise resolving to the invites resource
+   */
+  createInvites(count) {
+    return Promise.resolve()
+    .then(() => {
+      if (count && typeof count !== 'number') {
+        throw new Error('count must be a number');
+      }
+
+      const request = this.newRequest().follow('ec:invites');
+
+      return post(this.environment, request, { count: count || 1 })
+      .then(([invites, traversal]) => new InvitesResource(invites, this.environment, traversal));
+    });
+  }
+
+  /**
+   * Get {@link InvalidPermissionsResource} to show all invalid permissions.
+   *
+   * @example
+   * return accounts.invalidPermissions()
+   * .then((invalidPermissions) => {
+   *   show(invalidPermissions.invalidAccountPermissions);
+   *   show(invalidPermissions.invalidGroupPermissions);
+   * });
+   *
+   * @returns {Promise<InvalidPermissionsResource>} Promise resolving to invalid permissions
+   */
+  invalidPermissions() {
+    const request = this.newRequest()
+    .follow('ec:invalid-permissions');
+
+    return get(this.environment, request)
+    .then(([resource, traversal]) =>
+      new InvalidPermissionsResource(resource, this.environment, traversal));
   }
 
   /**
@@ -276,7 +481,7 @@ export default class Accounts extends Core {
    * .then(() => show(`Email change startet. Please verify with your new address`))
    *
    * @param {string} email the new email
-   * @returns {Promise} Promise resolving on success.
+   * @returns {Promise<undefined>} Promise resolving on success.
    */
   changeEmail(email) {
     return Promise.resolve()
@@ -293,210 +498,5 @@ export default class Accounts extends Core {
 
       return postEmpty(this.environment, request, { email });
     });
-  }
-
-  /**
-   * Create new invites. Specify number of invites to create with count.
-   *
-   * @example
-   * return accounts.createInvites(5)
-   * .then((invites) => {
-   *   return Promise.all(invites.invites.forEach((invite, index) => sendInvite(invite,
-   *   emails[index]);
-   * })
-   * .then(() => console.log('Invites send.');
-   *
-   * @param {number} count the number of invites to create
-   * @returns {Promise<InvitesResource>} Promise resolving to the invites resource
-   */
-  createInvites(count) {
-    return Promise.resolve()
-    .then(() => {
-      if (count && typeof count !== 'number') {
-        throw new Error('count must be a number');
-      }
-
-      const request = this.newRequest().follow('ec:invites');
-
-      return post(this.environment, request, { count: count || 1 })
-      .then(([invites, traversal]) => new InvitesResource(invites, this.environment, traversal));
-    });
-  }
-
-  /**
-   * Load the {@link InvitesResource} with unused invites.
-   *
-   * @example
-   * return accounts.invites()
-   * .then((invites) => {
-   *   if (invites.invites.length < 5){
-   *     return Promise.resolve(invites.invites);
-   *   }
-   *   return accounts.createInvites(5 - invites.invites.length);
-   * })
-   * .then((invites) => {
-   *   return Promise.all(invites.invites.forEach((invite, index) => sendInvite(invite,
-   *   emails[index]);
-   * })
-   * .then(() => console.log('Invites send.');
-   *
-   * @returns {Promise.<InvitesResource>} Promise resolving to the invites resource
-   */
-  invites() {
-    return Promise.resolve()
-    .then(() => {
-      const request = this.newRequest().follow('ec:invites');
-
-      return get(this.environment, request)
-      .then(([invites, traversal]) => new InvitesResource(invites, this.environment, traversal));
-    });
-  }
-
-  /**
-   * Load the {@link ClientList}.
-   *
-   * @example
-   * return accounts.clientList()
-   * .then(clients => {
-   *   return clients.getAllItems().filter(client => client.clientID === 'thisOne');
-   * })
-   * .then(clientArray => {
-   *   return show(clientArray[0]);
-   * });
-   *
-   * // This would actually be better:
-   * return accounts.clientList({
-   *   filter: {
-   *     clientID: 'thisOne',
-   *   },
-   * })
-   * .then(clients => {
-   *   return show(clients.getFirstItem());
-   * });
-   *
-   * @param {filterOptions?} options filter options
-   * @returns {Promise<ClientList>} Promise resolving to ClientList
-   */
-  clientList(options) {
-    return Promise.resolve()
-    .then(() => {
-      if (options && Object.keys(options).length === 1 && 'clientID' in options) {
-        throw new Error('Providing only an clientID in ClientList filter will result in single resource response. Please use Accounts#client');
-      }
-
-      const request = this.newRequest()
-      .follow('ec:acc/clients/options')
-      .withTemplateParameters(optionsToQuery(options));
-      return get(this.environment, request);
-    })
-    .then(([res, traversal]) => new ClientList(res, this.environment, traversal));
-  }
-
-  /**
-   * Load a single {@link ClientResource}.
-   *
-   * @example
-   * return accounts.client('thisOne')
-   * .then(client => {
-   *   return show(client);
-   * });
-   *
-   * @param {string} clientID the clientID
-   * @returns {Promise<ClientResource>} Promise resolving to ClientResource
-   */
-  client(clientID) {
-    return Promise.resolve()
-    .then(() => {
-      if (!clientID) {
-        throw new Error('clientID must be defined');
-      }
-      const request = this.newRequest()
-      .follow('ec:acc/clients/options')
-      .withTemplateParameters({ clientid: clientID });
-      return get(this.environment, request);
-    })
-    .then(([res, traversal]) => new ClientResource(res, this.environment, traversal));
-  }
-
-  /**
-   * Get {@link InvalidPermissionsResource} to show all invalid permissions.
-   *
-   * @example
-   * return accounts.invalidPermissions()
-   * .then((invalidPermissions) => {
-   *   show(invalidPermissions.invalidAccountPermissions);
-   *   show(invalidPermissions.invalidGroupPermissions);
-   * });
-   *
-   * @returns {Promise<InvalidPermissionsResource>} Promise resolving to invalid permissions
-   */
-  invalidPermissions() {
-    const request = this.newRequest()
-    .follow('ec:invalid-permissions');
-
-    return get(this.environment, request)
-    .then(([resource, traversal]) =>
-      new InvalidPermissionsResource(resource, this.environment, traversal));
-  }
-
-  /**
-   * Load the {@link GroupList}
-   *
-   * @example
-   * return accounts.groupList({
-   *   filter: {
-   *     title: {
-   *       search: 'dev',
-   *     },
-   *   },
-   * })
-   * .then(groups => {
-   *   // all groups with 'dev' in the title
-   *   return Promise.all(groups.getAllItems.forEach(group => show(group)));
-   * });
-   *
-   * @param {filterOptions?} options filter options
-   * @returns {Promise<GroupList>} Promise resolving goup list
-   */
-  groupList(options) {
-    return Promise.resolve()
-    .then(() => {
-      if (options && Object.keys(options).length === 1 && 'groupID' in options) {
-        throw new Error('Providing only an groupID in GroupList filter will result in single resource response. Please use Accounts#groupList');
-      }
-
-      const request = this.newRequest()
-      .follow('ec:acc/groups/options')
-      .withTemplateParameters(optionsToQuery(options));
-      return get(this.environment, request);
-    })
-    .then(([res, traversal]) => new GroupList(res, this.environment, traversal));
-  }
-
-  /**
-   * Load a single group
-   *
-   * @example
-   * return accounts.group(groupID)
-   * .then((group) => {
-   *   group.addPermission('can-view-stacktrace');
-   *   return group.save();
-   * });
-   *
-   * @param {string} groupID the id of the group
-   * @returns {Promise<GroupResource>} Promise resolving to the group
-   */
-  group(groupID) {
-    return Promise.resolve()
-    .then(() => {
-      if (!groupID) {
-        throw new Error('groupID must be defined');
-      }
-      const request = this.newRequest()
-      .follow('ec:acc/clients/options')
-      .withTemplateParameters({ groupid: groupID });
-      return get(this.environment, request);
-    })
-    .then(([res, traversal]) => new GroupResource(res, this.environment, traversal));
   }
 }

@@ -1,23 +1,21 @@
 toc:
   - name: Introduction
-    description: |
-      Awesome Introduction.
+    file: ./src/doc/introduction.md
   - name: API connectors
-    description: |
-      What are those?
+    file: ./src/doc/api-connector.md
   - Core
   - Session
   - Accounts
   - DataManager
   - environment
-  - Event#login
-  - Event#logout
-  - Event#error
   - name: Find a name
     description: |
       Describe it.
   - Problem
   - EventEmitter
+  - Event#login
+  - Event#logout
+  - Event#error
   - name: Resources
     description: |
       Resource Description.

@@ -25,8 +25,8 @@ traverson.registerMediaType(HalAdapter.mediaType, HalAdapter);
  */
 
 /**
- * Each API connector Class inherits directly from Core class. You can not instantiate Core
- * directly. Use one of the following API connectors instead.
+ * Each API connector Class inherits directly from Core class. You cannot instantiate Core
+ * directly. Use one of the other API connectors instead.
  *
  * @access protected
  *
@@ -94,9 +94,13 @@ export default class Core {
    * will be emitted.
    *
    * @example
+   * function myAlertFunc(string){
+   *   console.log(`A new token was received: ${string}`);
+   * }
+   *
    * session.on('login', myAlertFunc);
-   * session.login(email, password)
-   * .then(token => console.log(token)); // myAlertFunct will be called with token
+   * session.login(email, password);
+   * // A new token was received: <aJwtToken> will be logged
    *
    * @param {string} label the event type
    * @param {function} listener the listener

@@ -12,15 +12,14 @@ const urls = {
 };
 
 /**
- * API connector for {@link https://doc.entrecode.de/en/latest/data_manager/ Accounts API}.
+ * API connector for {@link https://doc.entrecode.de/en/latest/data_manager/ Accounts API}. It
+ * contains APIs for DataManagers, Models, Fields, Hooks, and Policies.
  *
- *
- * Multiple instances for multiple environments are possible.
  * @class
  */
 export default class DataManager extends Core {
   /**
-   * Creates a new instance of {@link DataManager} module.*
+   * Creates a new instance of {@link DataManager} API connector.
    *
    * @param {?environment} environment the environment to connect to.
    */
