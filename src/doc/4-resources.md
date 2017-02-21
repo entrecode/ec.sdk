@@ -1,0 +1,7 @@
+All resources used by ec.APIs and ec.sdk are [HAL resources](https://tools.ietf.org/html/draft-kelly-json-hal-08) (Content-Type: application/hal+json). A HAL resources define the resources itself and relations to other resources.
+
+Take a look at the API state digrams of ec.APIs for an overview of all relations and how they are connected ([Accounts](https://doc.entrecode.de/en/latest/account_server/#state-diagram), [AppManager](https://doc.entrecode.de/en/latest/app_manager/#app-manager-api), and [DataManager](https://doc.entrecode.de/en/latest/data_manager/#state-diagram)). You can keep the state diagrams in mind since they tell you where to find any functionality inside ec.sdk. API connectors are the entry points, resources are – well – resources, and relations resemble the functions of them.
+
+In the next section you will find the description of [Resource](#Resource) and [ListResource](#ListResource) at the top. They define functionality all other resources. Like [Resource#save](#Resource#save) or functions for pagination. Following those are the documentation of resources for any individual ec.APIs.
+
+All resources which are from a specialized type (eg.: [DataManagerResource](#DataManagerResource)) will contain properties with getter and setter implementations. So calling `dataManager.title = 'new title'` will change the title and mark the resource dirty ([Resource#isDirty](#Resource#isDirty)). Calling [Resource#save](#Resource#save) would then save the resource with the ec.API.

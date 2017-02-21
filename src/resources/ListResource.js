@@ -3,7 +3,11 @@ import Resource from './Resource';
 /**
  * Generic list resource class. Represents {@link
   * https://tools.ietf.org/html/draft-kelly-json-hal-08 HAL resources} with added support for lists.
+ *
  * @class
+ *
+ * @prop {number} count - the number of total items in this list
+ * @prop {number} size - the number of embedded items in this list
  */
 export default class ListResource extends Resource {
   /**
@@ -128,29 +132,43 @@ export default class ListResource extends Resource {
 }
 
 /**
+ * List filter options with pagination, sorting, and {@link filter}. This can be used to apply all
+ * sorts of filter to a list request.
+ *
+ * @example
+ * accounts.accountList({ size: 25 }); // will result in a list with 25 entries
+ * accounts.accountList({
+ *   sort: ['email', '-created'], // sorted by email asc and created desc
+ *   page: 3 // page 3 of a list with 10 entries
+ * });
+ * // for filter see below
+ *
+ * @typedef {{size: number, page: number, sort: array<string>, filter: filter}} filterOptions
+ */
+
+/**
  *
  * This object should contain key value pairs with filter options. These object will be applied
  * when loading a {@link ListResource}.
  *
  * @example
- * {
- *   title: 'Recipe Book',
- *   created: {
- *     to: new Date().toISOString()
+ * accounts.accountList({
+ *   filter: {
+ *     email: {
+ *       search: 'andre', // email contains 'andre'
+ *     },
+ *     language: 'de', // language is exactly 'de'
+ *     active: {
+ *       exactly: 'active', // is in active state
+ *     },
+ *     created: {
+ *       from: new Date(new Date().getTime() - 60000), // created 10minutes or less ago
+ *     }
  *   },
- *   description: {
- *     search: 'desserts'
- *   }
- * }
+  * });
  *
  * @typedef {{propertyNames: (string|{exact: string, search: string, from: string, to: string, any:
  *   array<string>, all: array<string>})}} filter
- */
-
-/**
- * List filter options with pagination, sorting, and {@link filter}
- *
- * @typedef {{size: number, page: number, sort: array<string>, filter: filter}} filterOptions
  */
 
 /**

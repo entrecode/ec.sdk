@@ -33,7 +33,7 @@ class myExample {
     accounts = new Accounts();
     
     session.setClient('rest');
-    // this will also receive events from Accounts and DataMAnager
+    // this will also receive events from Accounts and DataManager
     session.on('error', console.error);
   }
   

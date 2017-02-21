@@ -103,7 +103,8 @@ class EventEmitter {
   }
 
   /**
-   * Login event is emitted when a login succeeds with {@link Session#login}.
+   * Login event is emitted when a login succeeds with {@link Session#login}. The newly created
+   * accessToken is passed as event parameter.
    *
    * @event Event#login
    * @type {string}
@@ -111,7 +112,8 @@ class EventEmitter {
 
   /**
    * Logout event is emitted either on a successful logout with {@link Session#logout} or an API
-   * error with token related error codes.
+   * error with token related error codes. Will either have undefined or {@link Problem} as event
+   * parameter.
    *
    * @event Event#logout
    * @type {undefined|Problem}
@@ -127,6 +129,6 @@ class EventEmitter {
 
 /**
  * Global event emitter. All received errors will be emitted as an error event here.
- * You can access this emitter with {@link DataManager#events} or {@link Accounts#events}
+ * You can access this emitter with {@link Core#on}.
  */
 export default new EventEmitter();
