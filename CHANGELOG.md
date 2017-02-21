@@ -1,3 +1,16 @@
+<a name="0.2.1"></a>
+## 0.2.1 (2017-02-21)
+
+* BREAKING refactor: renamed list and single functions in DataManager and Accounts ([b502aa4](https://github.com/entrecode/ec.sdk/commit/b502aa4))
+* release version 0.2.1 ([d0c4811](https://github.com/entrecode/ec.sdk/commit/d0c4811))
+* chore: remove DOCUMENTATION.md from release.sh ([71b327f](https://github.com/entrecode/ec.sdk/commit/71b327f))
+* feat: count and total properties in ListResource ([6b4f621](https://github.com/entrecode/ec.sdk/commit/6b4f621))
+* doc: updated documentation ([4331747](https://github.com/entrecode/ec.sdk/commit/4331747))
+* docs: adds introduction and api connector description to doc ([7c1eb48](https://github.com/entrecode/ec.sdk/commit/7c1eb48))
+* docs: remove single file doc. html doc is hosted ([d1f5cf2](https://github.com/entrecode/ec.sdk/commit/d1f5cf2))
+
+
+
 <a name="0.2.0"></a>
 # 0.2.0 (2017-02-17)
 
