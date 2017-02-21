@@ -1,6 +1,6 @@
 /**
  * Class representing Errors sent by all entrecode APIs. Complies to {@link
-  * https://tools.ietf.org/html/draft-nottingham-http-problem-07 | Problem Details for HTTP APIs}.
+  * https://tools.ietf.org/html/draft-nottingham-http-problem-07 Problem Details for HTTP APIs}.
  * Problems also comply to {@link https://tools.ietf.org/html/draft-kelly-json-hal-08 HAL
   * resources} but this class won't include any special hal implementation (like getEmbedded or
  * getLinks).

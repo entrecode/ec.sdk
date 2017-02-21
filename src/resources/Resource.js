@@ -63,7 +63,7 @@ export default class Resource {
      * traverson request builder}
    *  which can be used for a new request to the API.
    *
-   * @access protected
+   * @access private
    *
    * @returns {Object} traverson request builder instance.
    */

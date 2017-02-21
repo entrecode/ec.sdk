@@ -16,14 +16,11 @@ const urls = {
  * @example
  * return session.login(email, password)
  * .then(() => {
+ *   const accounts = new Accounts();
  *   return accounts.me();
- * })
- * .then((account) => {
- *   return show(account);
  * });
  *
  * @class
- * @module
  */
 export default class Session extends Core {
   /**
@@ -42,7 +39,7 @@ export default class Session extends Core {
   }
 
   /**
-   * Set the clientID to use with the Accounts API. Currently only `rest is supported.
+   * Set the clientID to use with the Accounts API. Currently only `rest` is supported.
    *
    * @param {string} clientID the clientID.
    * @returns {Accounts} this object for chainability

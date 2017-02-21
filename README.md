@@ -23,7 +23,7 @@ import {DataManager, Accounts} from 'ec.api';
 
 const dataManager = new DataManager('live').setToken(accessToken);
 
-dataManager.list()
+dataManager.dataManagerList()
 .then(list => doSomthingWith(list))
 .catch(console.log);
 ```
@@ -34,7 +34,7 @@ dataManager.list()
 const ec = require('ec.api');
 const dataManager = new ec.DataManager('live').setToken(accessToken);
 
-dataManager.list()
+dataManager.dataManagerList()
 .then(list => doSomthingWith(list))
 .catch(console.log);
 ```
@@ -48,7 +48,7 @@ dataManager.list()
 <script>
     console.log('My development stack is bad and I should feel bad');
     
-    var dataManager = new ec.DataManager('live', accessToken);
+    var dataManager = new ec.DataManager('live').setToken(accessToken);
     dataManager.list()
     .then(list => doSomthingWith(list))
     .catch(console.log);

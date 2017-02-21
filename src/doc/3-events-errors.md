@@ -1,0 +1,3 @@
+Whenever the ec.sdk receives an Error from any ec.API it will create not only an [Error](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error) object but a [Problem](#Problem). Problems will contain the [error codes](https://doc.entrecode.de/en/latest/#errors) from ec.APIs and all other information of the error. See below for a detailed description for Problems.
+
+Amongst other all Erors or Problems are emitted as events in every API connector. You can subscribe to [error events](#eventeventlerror) with [Core#on](#Core#on). Additionally to error events there are also events for [login](#eventeventlogin) and [logout](#eventeventlogout). Below you will find a description for each event type.

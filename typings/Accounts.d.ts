@@ -14,17 +14,27 @@ export declare class Accounts extends Core {
 
   setClientID(clientID: string): Accounts;
 
-  list(options?: filterOptions): Promise<AccountList>;
+  accountList(options?: filterOptions): Promise<AccountList>;
 
-  get(accountID: string): Promise<AccountResource>;
+  account(accountID: string): Promise<AccountResource>;
 
   me(): Promise<AccountResource>;
 
+  groupList(options?: filterOptions): Promise<GroupList>;
+
+  group(groupID: string): Promise<GroupResource>;
+
+  clientList(options?: filterOptions): Promise<ClientList>;
+
+  client(clientID: string): Promise<ClientResrouce>;
+
   createApiToken(): tokenResponse;
 
-  login(email: string, password: string): Promise<string>;
+  invites(): Promise<InvitesResource>
 
-  logout(): Promise<void>;
+  createInvites(count: number): Promise<InvitesResource>;
+
+  invalidPermissions(): Promise<InvalidPermissionsResource>;
 
   emailAvailable(email: string): Promise<boolean>;
 
@@ -33,20 +43,6 @@ export declare class Accounts extends Core {
   resetPassword(email: string): Promise<undefined>;
 
   changeEmail(email: string): Promise<undefined>;
-
-  createInvites(count: number): Promise<InvitesResource>;
-
-  invites(): Promise<InvitesResource>
-
-  clientList(options?: filterOptions): Promise<ClientList>;
-
-  client(clientID: string): Promise<ClientResrouce>;
-
-  invalidPermissions(): Promise<InvalidPermissionsResource>;
-
-  groupList(options?: filterOptions): Promise<GroupList>;
-
-  group(groupID: string): Promise<GroupResource>;
 }
 
 interface tokenResponse {

@@ -1,33 +1,28 @@
 toc:
   - name: Introduction
-    description: |
-      Awesome Introduction.
+    file: ./src/doc/1-introduction.md
   - name: API connectors
-    description: |
-      What are those?
+    file: ./src/doc/2-api-connector.md
   - Core
   - Session
   - Accounts
   - DataManager
   - environment
+  - name: Events and Errors
+    file: ./src/doc/3-events-errors.md
+  - Problem
+  - EventEmitter
   - Event#login
   - Event#logout
   - Event#error
-  - name: Find a name
-    description: |
-      Describe it.
-  - Problem
-  - EventEmitter
   - name: Resources
-    description: |
-      Resource Description.
+    file: ./src/doc/4-resources.md
   - Resource
   - ListResource
   - filterOptions
   - filter
   - name: Accounts Resources
-    description: |
-      Accounts resources are awesome.
+    file: ./src/doc/5-account-resources.md
   - AccountResource
   - AccountList
   - TokenResource
@@ -38,9 +33,10 @@ toc:
   - GroupList
   - InvitesResource
   - InvalidPermissionsResource
+  - name: AppManager Resources
+    file: ./src/doc/6-appmanager-resources.md
   - name: DataManager Resources
-    description: |
-      They are awesome too.
+    file: ./src/doc/7-datamanager-resources.md
   - DataManagerResource
   - DataManagerList
   - ModelResource
