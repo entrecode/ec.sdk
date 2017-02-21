@@ -399,7 +399,7 @@ describe('Network Helper', () => {
         detail: 'title',
       });
 
-      return helper.superagentFormPost('https://datamanager.entrecode.de', {}).should.be.eventually.rejectedWith(Problem);
+      return helper.superagentFormPost('https://datamanager.entrecode.de', {}).should.be.rejectedWith(Problem);
     });
     it('should fire error event', () => {
       nock('https://datamanager.entrecode.de')

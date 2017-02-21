@@ -48,7 +48,8 @@ describe('DataManager class', () => {
     });
   });
   it('should be rejected on list only with dataManagerID', () => {
-    return new DataManager('live').dataManagerList({ dataManagerID: 'id' }).should.be.rejectedWith(Error);
+    return new DataManager('live').dataManagerList({ dataManagerID: 'id' })
+    .should.be.rejectedWith('Providing only an dataManagerID in DataManagerList filter will result in single resource response. Please use DataManager#get');
   });
   it('should return resource on get', () => {
     const dm = new DataManager('live');
@@ -66,7 +67,8 @@ describe('DataManager class', () => {
     });
   });
   it('should be rejected on get with undefined id', () => {
-    return new DataManager('live').dataManager().should.be.rejectedWith(Error);
+    return new DataManager('live').dataManager()
+    .should.be.rejectedWith('dataManagerID must be defined');
   });
   it('should call post on create', () => {
     const stub = sinon.stub(helper, 'post');
@@ -96,7 +98,8 @@ describe('DataManager class', () => {
     });
   });
   it('should be rejected on create with undefined', () => {
-    return new DataManager('live').create().should.be.rejectedWith(Error);
+    return new DataManager('live').create()
+    .should.be.rejectedWith('Cannot create resource with undefined object');
   });
 });
 
@@ -229,10 +232,11 @@ describe('DataManager Resource', () => {
     .catch(() => stub.restore());
   });
   it('should throw on model list filtered with modelID', () => {
-    return resource.modelList({ modelID: 'id' }).should.be.rejectedWith(Error);
+    return resource.modelList({ modelID: 'id' })
+    .should.be.rejectedWith('Cannot filter modelList only by dataManagerID and modelID. Use DataManagerResource#model() instead');
   });
   it('should be rejected on model list filtered with modelID and dataManagerID', () => {
-    return resource.modelList({ modelID: 'id' }).should.be.rejectedWith(Error);
+    return resource.modelList({ modelID: 'id' }).should.be.rejectedWith('Cannot filter modelList only by dataManagerID and modelID. Use DataManagerResource#model() instead');
   });
   it('should load model resource', () => {
     const stub = sinon.stub(helper, 'get');
@@ -246,6 +250,6 @@ describe('DataManager Resource', () => {
     .catch(() => stub.restore());
   });
   it('should be rejected on undefined modelID', () => {
-    return resource.model().should.be.rejectedWith(Error);
+    return resource.model().should.be.rejectedWith('modelID must be defined');
   });
 });

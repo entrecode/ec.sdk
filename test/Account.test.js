@@ -66,7 +66,8 @@ describe('Accounts class', () => {
     });
   });
   it('should be rejected on list only with accountID', () => {
-    return new Accounts().accountList({ accountID: 'id' }).should.be.rejectedWith(Error);
+    return new Accounts().accountList({ accountID: 'id' })
+    .should.be.rejectedWith('Providing only an accountID in AccountList filter will result in single resource response. Please use Accounts#get');
   });
   it('should return resource on get', () => {
     const accounts = new Accounts('live');
@@ -84,7 +85,7 @@ describe('Accounts class', () => {
     });
   });
   it('should be rejected on get in undefiend id', () => {
-    return new Accounts().account().should.be.rejectedWith(Error);
+    return new Accounts().account().should.be.rejectedWith('accountID must be defined');
   });
   it('should return resource on me', () => {
     const accounts = new Accounts('live');
@@ -119,7 +120,7 @@ describe('Accounts class', () => {
     .and.notify(() => stub.restore());
   });
   it('should be rejected on undefined email', () => {
-    return new Accounts().emailAvailable().should.be.rejectedWith(Error);
+    return new Accounts().emailAvailable().should.be.rejectedWith('email must be defined');
   });
   it('should signup new account', () => {
     const accounts = new Accounts();
@@ -145,15 +146,18 @@ describe('Accounts class', () => {
     });
   });
   it('should be rejected on undefined email', () => {
-    return new Accounts().signup(null, 'supersecure').should.be.rejectedWith(Error);
+    return new Accounts().signup(null, 'supersecure')
+    .should.be.rejectedWith('email must be defined');
   });
   it('should be rejected on undefined password', () => {
-    return new Accounts().signup('someone@example.com', null).should.be.rejectedWith(Error);
+    return new Accounts().signup('someone@example.com', null)
+    .should.be.rejectedWith('password must be defined');
   });
   it('should be rejected on undefined clientID', () => {
     const accounts = new Accounts();
     accounts.tokenStore.clientID = undefined;
-    return accounts.signup('someone@example.com', 'supersecure').should.be.rejectedWith(Error);
+    return accounts.signup('someone@example.com', 'supersecure')
+    .should.be.rejectedWith('clientID must be set with Account#setClientID');
   });
   it('should reset password', () => {
     const accounts = new Accounts();
@@ -171,12 +175,13 @@ describe('Accounts class', () => {
     });
   });
   it('should be rejected on undefined email', () => {
-    return new Accounts().resetPassword().should.be.rejectedWith(Error);
+    return new Accounts().resetPassword().should.be.rejectedWith('email must be defined');
   });
   it('should be rejected on undefiend clientID', () => {
     const accounts = new Accounts();
     accounts.tokenStore.clientID = undefined;
-    return new Accounts().resetPassword('someone@entrecode.de').should.be.rejectedWith(Error);
+    return new Accounts().resetPassword('someone@entrecode.de')
+    .should.be.rejectedWith('clientID must be set with Account#setClientID');
   });
   it('should change email', () => {
     const accounts = new Accounts();
@@ -194,7 +199,7 @@ describe('Accounts class', () => {
     });
   });
   it('should be rejected on undefined email', () => {
-    return new Accounts().changeEmail().should.be.rejectedWith(Error);
+    return new Accounts().changeEmail().should.be.rejectedWith('email must be defined');
   });
   it('should be rejected on undefiend token', () => {
     const reject = () => {
@@ -202,7 +207,7 @@ describe('Accounts class', () => {
       accounts.tokenStore.del();
       return accounts.changeEmail('someone@entrecode.de');
     };
-    return reject().should.be.rejectedWith(Error);
+    return reject().should.be.rejectedWith('not logged in');
   });
   it('should create invites', () => {
     const accounts = new Accounts();
@@ -235,7 +240,8 @@ describe('Accounts class', () => {
     });
   });
   it('should be rejected in count not a number', () => {
-    return new Accounts().createInvites('notANumber').should.be.rejectedWith(Error);
+    return new Accounts().createInvites('notANumber')
+    .should.be.rejectedWith('count must be a number');
   });
   it('should load invites', () => {
     const accounts = new Accounts();
@@ -268,7 +274,8 @@ describe('Accounts class', () => {
     });
   });
   it('should be rejected on clientList only with clientID', () => {
-    return new Accounts().clientList({ clientID: 'id' }).should.be.rejectedWith(Error);
+    return new Accounts().clientList({ clientID: 'id' })
+    .should.be.rejectedWith('Providing only an clientID in ClientList filter will result in single resource response. Please use Accounts#client');
   });
   it('should return resource on client', () => {
     const accounts = new Accounts('live');
@@ -286,7 +293,7 @@ describe('Accounts class', () => {
     });
   });
   it('should be rejected on client with undefiend id', () => {
-    return new Accounts().client().should.be.rejectedWith(Error);
+    return new Accounts().client().should.be.rejectedWith('clientID must be defined');
   });
   it('should return invalidPermissionsResource', () => {
     const accounts = new Accounts('live');
@@ -319,7 +326,8 @@ describe('Accounts class', () => {
     });
   });
   it('should be rejected on clientList only with clientID', () => {
-    return new Accounts().groupList({ groupID: 'id' }).should.be.rejectedWith(Error);
+    return new Accounts().groupList({ groupID: 'id' })
+    .should.be.rejectedWith('Providing only an groupID in GroupList filter will result in single resource response. Please use Accounts#groupList');
   });
   it('should return resource on group', () => {
     const accounts = new Accounts('live');
@@ -337,7 +345,7 @@ describe('Accounts class', () => {
     });
   });
   it('should be rejected on group with undefiend id', () => {
-    return new Accounts().group().should.be.rejectedWith(Error);
+    return new Accounts().group().should.be.rejectedWith('groupID must be defined');
   });
 });
 
