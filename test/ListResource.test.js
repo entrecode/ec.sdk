@@ -127,4 +127,20 @@ describe('ListResource', () => {
       stub.restore();
     });
   });
+
+  const getter = [
+    'count', 'total',
+  ];
+  getter.forEach((name) => {
+    it(`should call resource.getProperty with ${name}`, () => {
+      const spy = sinon.spy(list, 'getProperty');
+
+      const property = list[name];
+      spy.should.have.been.called.once;
+      spy.should.have.been.calledWith(name);
+      property.should.be.equal(list.getProperty(name));
+
+      spy.restore();
+    });
+  });
 });

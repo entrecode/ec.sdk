@@ -6,8 +6,8 @@ import Resource from './Resource';
  *
  * @class
  *
- * @prop {number} count - the number of total items in this list
- * @prop {number} size - the number of embedded items in this list
+ * @prop {number} count - the number of embedded items in this list
+ * @prop {number} size - the number of total items in this list
  */
 export default class ListResource extends Resource {
   /**
@@ -22,6 +22,17 @@ export default class ListResource extends Resource {
    */
   constructor(resource, environment, name, traversal) {
     super(resource, environment, traversal);
+
+    Object.defineProperties(this, {
+      count: {
+        enumerable: false,
+        get: () => this.getProperty('count'),
+      },
+      total: {
+        enumerable: false,
+        get: () => this.getProperty('total'),
+      },
+    });
 
     this.ListClass = ListResource;
     this.ItemClass = Resource;
