@@ -45,7 +45,7 @@
     "mocha": "^3.2.0",
     "mocha-bamboo-reporter": "^1.1.1",
     "nock": "^9.0.9",
-    "sinon": "^1.17.7",
+    "sinon": "^2.0.0",
     "sinon-chai": "^2.8.0",
     "uglify-js": "^2.8.4"
   }

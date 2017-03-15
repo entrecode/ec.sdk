@@ -132,6 +132,43 @@ class TokenStore {
   hasClientID() {
     return this.clientID !== undefined;
   }
+
+  /**
+   * Set user agent for this {@link TokenStore}. The value must match the following regex:
+   * ^(?:\w+/[\w.+-]+(?: \([\w]+\))? ?)+$
+   *
+   * @param {string} agent the user agent
+   * @returns {undefined}
+   */
+  setUserAgent(agent) {
+    if (!agent) {
+      throw new Error('agent cannot be undefined');
+    }
+
+    if (!/^(?:\w+\/[\w.+-]+(?: \([\w]+\))? ?)+$/.test(agent)) {
+      throw new Error('agent is malformed');
+    }
+
+    this.agent = agent;
+  }
+
+  /**
+   * Get the user agent for this {@link TokenStore}.
+   *
+   * @returns {string} the user agent
+   */
+  getUserAgent() {
+    return this.agent;
+  }
+
+  /**
+   * Whether or not this {@link TokenStore} has a user agent set.
+   *
+   * @returns {boolean} Whether or not a user agent is set.
+   */
+  hasUserAgent() {
+    return this.agent !== undefined;
+  }
 }
 
 /**

@@ -1,8 +1,8 @@
 import superagent from 'superagent';
-
 import Problem from './Problem';
 import events from './EventEmitter';
 import TokenStoreFactory from './TokenStore';
+import packageJson from '../package.json';
 
 /**
  * Creates a callback which wraps a traverson repsonse from `get`, `post`, `put`, `delete` and
@@ -87,8 +87,16 @@ function traversonWrapper(func, environment, t, body) {
     };
 
     const store = TokenStoreFactory(environment);
-    if (store && store.has()) {
-      t.addRequestOptions({ headers: { Authorization: `Bearer ${store.get()}` } });
+    if (store) {
+      if (store.hasUserAgent()) {
+        t.addRequestOptions({ headers: { 'User-Agent': `${store.getUserAgent()} ec.sdk/${packageJson.version}` } });
+      } else {
+        t.addRequestOptions({ headers: { 'User-Agent': `ec.sdk/${packageJson.version}` } });
+      }
+
+      if (store.has()) {
+        t.addRequestOptions({ headers: { Authorization: `Bearer ${store.get()}` } });
+      }
     }
 
     if (func === 'getUrl') {

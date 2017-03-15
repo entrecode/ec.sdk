@@ -89,6 +89,26 @@ export default class Core {
   }
 
   /**
+   * If you want to add additional information to the user agent used bed ec.sdk you can use this
+   * function to add any string.
+   *
+   * @example
+   * accounts.setUserAgent('editor/0.15.3 (a comment)');
+   * // all subsequent requests will have user agent: editor/0.15.3 (a comment) ec.sdk/<version>
+   *
+   * @param {string} agent the user agent to add
+   * @return {Core} this for chainability
+   */
+  setUserAgent(agent) {
+    if (!agent) {
+      throw new Error('agent must be defined');
+    }
+
+    this.tokenStore.setUserAgent(agent);
+    return this;
+  }
+
+  /**
    * All API connectors have an underlying {@link EventEmitter} for emitting events. You can use
    * this function for attaching an event listener. See {@link EventEmitter} for the events which
    * will be emitted.

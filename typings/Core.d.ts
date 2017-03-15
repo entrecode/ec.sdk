@@ -5,6 +5,8 @@ export declare class Core {
 
   setToken(token: string): Core;
 
+  setUserAgent(agent: string): Core;
+
   on(label: string, callback: () => void): void;
 
   removeListener(label: string, callback: () => void): boolean;

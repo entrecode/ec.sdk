@@ -11,6 +11,7 @@ const Core = require('../lib/Core');
 const helper = require('../lib/helper');
 const traverson = require('traverson');
 const traversonHal = require('traverson-hal');
+const packageJson = require('../package.json');
 const Problem = require('../lib/Problem').default;
 const emitter = require('../lib/EventEmitter').default;
 const TokenStore = require('../lib/TokenStore');
@@ -39,6 +40,15 @@ describe('Core', () => {
   });
   it('should throw on undefined token', () => {
     const throws = () => core.setToken();
+    throws.should.throw(Error);
+  });
+  it('should set user agent', () => {
+    const stub = sinon.stub(core.tokenStore, 'setUserAgent');
+    core.setUserAgent('useragent');
+    stub.should.have.been.calledWith('useragent');
+  });
+  it('should throw on undefined user agent', () => {
+    const throws = () => core.setUserAgent();
     throws.should.throw(Error);
   });
   it('should return traverson Builder', () => {
@@ -186,6 +196,26 @@ describe('Network Helper', () => {
       .catch((err) => {
         err.should.have.property('title', 'Invalid Access Token');
         loggedOutSpy.should.be.called.once;
+      });
+    });
+    it('should add user agent', () => {
+      nock('https://datamanager.entrecode.de')
+      .get('/').replyWithFile(200, `${__dirname}/mocks/dm-list.json`);
+
+      return helper.get('test', traversal)
+      .then(() => {
+        traversal.should.have.deep.property('requestOptions.headers.User-Agent', `ec.sdk/${packageJson.version}`);
+      });
+    });
+    it('shuold add custom user agent', () => {
+      nock('https://datamanager.entrecode.de')
+      .get('/').replyWithFile(200, `${__dirname}/mocks/dm-list.json`);
+
+      store.agent = 'test/0.0.1';
+
+      return helper.get('test', traversal)
+      .then(() => {
+        traversal.should.have.deep.property('requestOptions.headers.User-Agent', `test/0.0.1 ec.sdk/${packageJson.version}`);
       });
     });
   });

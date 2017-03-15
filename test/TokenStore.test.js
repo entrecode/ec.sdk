@@ -86,6 +86,30 @@ describe('Token handling', () => {
     store.clientID = undefined;
     store.hasClientID().should.be.false;
   });
+  it('should set user agent', () => {
+    store.setUserAgent('agent/1.0.0');
+    store.agent.should.be.equal('agent/1.0.0');
+  });
+  it('should throw on undefined user agent', () => {
+    const throws = () => store.setUserAgent();
+    throws.should.throw('agent cannot be undefined');
+  });
+  it('should throw on malformed user agent', () => {
+    const throws = () => store.setUserAgent('agent');
+    throws.should.throw('agent is malformed');
+  });
+  it('should get user agent', () => {
+    store.agent = 'agent';
+    store.getUserAgent().should.be.equal('agent');
+  });
+  it('should return true on hasUserAgent', () => {
+    store.agent = 'agent';
+    store.hasUserAgent().should.be.true;
+  });
+  it('should return false on hasUserAgent', () => {
+    store.agent = undefined;
+    store.hasUserAgent().should.be.false;
+  });
 });
 
 describe('Token handling with cookie store', () => {
