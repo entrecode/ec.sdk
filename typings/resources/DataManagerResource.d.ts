@@ -26,6 +26,8 @@ export declare class DataManagerResource extends Resource {
 
   client(clientID: string): DMClientResource;
 
+  createClient(client: { callbackURL: string, tokenMethod: Array<string>, disableStrategies: Array<string>, hexColor: string }): DMClientResource;
+
   accountList(options?: filterOptions): DMAccountList;
 
   account(accountID: string): DMAccountResource;

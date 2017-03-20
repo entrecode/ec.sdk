@@ -1,4 +1,4 @@
-import { get, optionsToQuery } from '../helper';
+import { get, post, optionsToQuery } from '../helper';
 import ModelList from './ModelList';
 import ModelResource from './ModelResource';
 import DMClientList from './DMClientList';
@@ -213,6 +213,24 @@ export default class DataManagerResource extends Resource {
       return get(this.environment, request);
     })
     .then(([res, traversal]) => new DMClientResource(res, this.environment, traversal));
+  }
+
+  /**
+   * Create a new dm client.
+   *
+   * @param {object} client object representing the client.
+   * @returns {Promise<DMClientResource>} the newly created DMClientResource
+   */
+  createClient(client) {
+    return Promise.resolve()
+    .then(() => {
+      if (!client) {
+        throw new Error('Cannot create resource with undefined object.');
+      }
+      // TODO schema validation
+      return post(this.newRequest().follow('ec:dm-clients'), client);
+    })
+    .then(([dm, traversal]) => new DMClientResource(dm, this.environment, traversal));
   }
 
   /**

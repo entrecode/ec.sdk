@@ -291,6 +291,35 @@ describe('DataManager Resource', () => {
   it('should be rejected on undefined clientID', () => {
     return resource.client().should.be.rejectedWith('clientID must be defined');
   });
+  it('should create client', () => {
+    const stub = sinon.stub(helper, 'post');
+    return new Promise((resolve, reject) => {
+      fs.readFile(`${__dirname}/mocks/dm-client-single.json`, 'utf-8', (err, res) => {
+        if (err) {
+          return reject(err);
+        }
+        return resolve(JSON.parse(res));
+      });
+    })
+    .then((clientJSON) => {
+      stub.returns(Promise.resolve([clientJSON, resource.traversal]));
+      const create = Object.assign({}, {
+        clientID: resource.clientID,
+        callbackURL: resource.callbackURL,
+        disableStrategies: resource.disableStrategies,
+        hexColor: resource.hexColor,
+      });
+      return resource.createClient(create);
+    })
+    .then(() => {
+      stub.should.be.called.once;
+      stub.restore();
+    });
+  });
+  it('should be rejected on undefined client', () => {
+    return resource.createClient().should.be.rejectedWith('Cannot create resource with undefined object.');
+  });
+
 
   it('should load account list', () => {
     const stub = sinon.stub(helper, 'get');

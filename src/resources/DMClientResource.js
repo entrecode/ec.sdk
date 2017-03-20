@@ -6,6 +6,7 @@ import ClientResource from './ClientResource';
  * @class
  *
  * @prop {array<String>} disableStrategies - Strategies disabled in this client.
+ * @prop {string}        hexColor          - Strategies disabled in this client.
  */
 export default class DMClientResource extends ClientResource {
   /**
