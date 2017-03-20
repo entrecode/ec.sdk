@@ -4,7 +4,7 @@ import { AccountResource } from './resources/AccountResource';
 import { filterOptions } from './interfaces';
 import { InvitesResource } from './resources/InvitesResource';
 import { ClientList } from './resources/ClientList';
-import { ClientResrouce } from './resources/ClientResrouce';
+import { ClientResrouce } from './resources/ClientResource';
 import { InvalidPermissionsResource } from './resources/InvalidPermissionsResource';
 import { GroupResource } from './resources/GroupResource';
 import { GroupList } from './resources/GroupList';

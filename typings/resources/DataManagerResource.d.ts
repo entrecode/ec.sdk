@@ -3,7 +3,7 @@ import { filterOptions } from '../interfaces';
 import { ModelList } from './ModelList';
 import { ModelResource } from './ModelResource';
 import { DMClientList } from './DMClientList';
-import { DMClientResrouce } from './DMClientResrouce';
+import { DMClientResource } from './DMClientResource';
 import { DMAccountList } from './DMAccountList';
 import { DMAccountResource } from './DMAccountResource';
 
@@ -24,7 +24,7 @@ export declare class DataManagerResource extends Resource {
 
   clientList(options?: filterOptions): DMClientList;
 
-  client(clientID: string): DMClientResrouce;
+  client(clientID: string): DMClientResource;
 
   accountList(options?: filterOptions): DMAccountList;
 

@@ -1,6 +1,6 @@
-import { ClientResrouce } from './ClientResrouce';
+import { ClientResource } from './ClientResource';
 
-export declare class DMClientResrouce extends ClientResrouce {
+export declare class DMClientResource extends ClientResource {
   constructor(resource: any, environment: string, traversal?: any);
 
   clientID: string;
