@@ -2,6 +2,8 @@ import { Resource } from './Resource';
 import { filterOptions } from '../interfaces';
 import { ModelList } from './ModelList';
 import { ModelResource } from './ModelResource';
+import { DMClientList } from './DMClientList';
+import { DMClientResrouce } from './DMClientResrouce';
 
 export declare class DataManagerResource extends Resource {
   constructor(resource: any, environment: string, traversal?: any);
@@ -17,4 +19,8 @@ export declare class DataManagerResource extends Resource {
   modelList(options?: filterOptions): ModelList
 
   model(modelID: string): ModelResource;
+
+  clientList(options?: filterOptions): DMClientList;
+
+  client(clientID: string): DMClientResrouce;
 }
