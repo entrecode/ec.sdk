@@ -52,6 +52,10 @@ describe('Resource', () => {
   it('should return traverson builder on newRequest call', () => {
     resource.newRequest().should.be.instanceOf(traverson._Builder);
   });
+  it('should return traverson builder on newRequest call with continue()', () => {
+    resource.traversal.continue = () => resource.traversal;
+    resource.newRequest().should.be.instanceOf(traverson._Builder);
+  });
   it('should be clean', () => {
     resource.isDirty.should.be.false;
   });
