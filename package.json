@@ -26,7 +26,7 @@
     "ec.cookie-mock": "^1.0.0",
     "halfred": "^1.0.0",
     "jwt-decode": "^2.1.0",
-    "superagent": "^3.5.0",
+    "superagent": "^3.5.1",
     "traverson": "^6.0.1",
     "traverson-hal": "^6.0.0"
   },
@@ -47,6 +47,6 @@
     "nock": "^9.0.9",
     "sinon": "^2.0.0",
     "sinon-chai": "^2.8.0",
-    "uglify-js": "^2.8.4"
+    "uglify-js": "^2.8.14"
   }
 }
