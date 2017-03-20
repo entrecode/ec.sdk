@@ -6,6 +6,8 @@ import { DMClientList } from './DMClientList';
 import { DMClientResource } from './DMClientResource';
 import { DMAccountList } from './DMAccountList';
 import { DMAccountResource } from './DMAccountResource';
+import { RoleList } from './RoleList';
+import { RoleResource } from './RoleResource';
 
 export declare class DataManagerResource extends Resource {
   constructor(resource: any, environment: string, traversal?: any);
@@ -31,4 +33,10 @@ export declare class DataManagerResource extends Resource {
   accountList(options?: filterOptions): DMAccountList;
 
   account(accountID: string): DMAccountResource;
+
+  roleList(options?: filterOptions): RoleList;
+
+  role(roleID: string): RoleResource;
+
+  createRole(role: { name: string, label: string, addUnregistered: boolean, addRegistered: boolean, accounts: Array<string> }): RoleResource;
 }

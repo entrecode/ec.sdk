@@ -5,6 +5,8 @@ import DMClientList from './DMClientList';
 import DMClientResource from './DMClientResource';
 import DMAccountList from './DMAccountList';
 import DMAccountResource from './DMAccountResource';
+import RoleList from './RoleList';
+import RoleResource from './RoleResource';
 import Resource from './Resource';
 
 /**
@@ -298,5 +300,96 @@ export default class DataManagerResource extends Resource {
       return get(this.environment, request);
     })
     .then(([res, traversal]) => new DMAccountResource(res, this.environment, traversal));
+  }
+
+  /**
+   * Load the {@link RoleList}.
+   *
+   * @example
+   * return dm.roleList()
+   * .then(roles => {
+   *   return roles.getAllItems().filter(client => client.clientID === 'thisOne');
+   * })
+   * .then(roleArray => {
+   *   return show(roleArray[0]);
+   * });
+   *
+   * // This would actually be better:
+   * return dm.roleList({
+   *   filter: {
+   *     roleID: 'thisOne',
+   *   },
+   * })
+   * .then(roles => {
+   *   return show(roles.getFirstItem());
+   * });
+   *
+   * @param {filterOptions?} options filter options
+   * @returns {Promise<RoleList>} Promise resolving to RoleList
+   */
+  roleList(options) {
+    return Promise.resolve()
+    .then(() => {
+      const o = {};
+      if (options) {
+        Object.assign(o, options);
+      }
+
+      o.dataManagerID = this.dataManagerID;
+
+      if (o && Object.keys(o).length === 2 && 'roleID' in o && 'dataManagerID' in o) {
+        throw new Error('Cannot filter roleList only by dataManagerID and roleID. Use DataManagerResource#role() instead');
+      }
+
+      const request = this.newRequest()
+      .follow('ec:dm-roles/options')
+      .withTemplateParameters(optionsToQuery(o));
+      return get(this.environment, request);
+    })
+    .then(([res, traversal]) => new RoleList(res, this.environment, traversal));
+  }
+
+  /**
+   * Load a single {@link RoleResource}.
+   *
+   * @example
+   * return dm.role('thisOne')
+   * .then(role => {
+   *   return show(role);
+   * });
+   *
+   * @param {string} roleID the roleID
+   * @returns {Promise<RoleResource>} Promise resolving to RoleResource
+   */
+  role(roleID) {
+    return Promise.resolve()
+    .then(() => {
+      if (!roleID) {
+        throw new Error('roleID must be defined');
+      }
+      const request = this.newRequest()
+      .follow('ec:dm-roles/options')
+      .withTemplateParameters({ dataManagerID: this.dataManagerID, roleID: roleID });
+      return get(this.environment, request);
+    })
+    .then(([res, traversal]) => new RoleResource(res, this.environment, traversal));
+  }
+
+  /**
+   * Create a new role.
+   *
+   * @param {object} role object representing the role.
+   * @returns {Promise<RoleResource>} the newly created RoleResouce
+   */
+  createRole(role) {
+    return Promise.resolve()
+    .then(() => {
+      if (!role) {
+        throw new Error('Cannot create resource with undefined object.');
+      }
+      // TODO schema validation
+      return post(this.newRequest().follow('ec:dm-roles'), role);
+    })
+    .then(([dm, traversal]) => new RoleResource(dm, this.environment, traversal));
   }
 }

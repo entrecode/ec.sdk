@@ -17,6 +17,8 @@ const DMClientList = require('../lib/resources/DMClientList').default;
 const DMClientResource = require('../lib/resources/DMClientResource').default;
 const DMAccountList = require('../lib/resources/DMAccountList').default;
 const DMAccountResource = require('../lib/resources/DMAccountResource').default;
+const RoleList = require('../lib/resources/RoleList').default;
+const RoleResource = require('../lib/resources/RoleResource').default;
 const Resource = require('../lib/resources/Resource').default;
 
 chai.should();
@@ -320,7 +322,6 @@ describe('DataManager Resource', () => {
     return resource.createClient().should.be.rejectedWith('Cannot create resource with undefined object.');
   });
 
-
   it('should load account list', () => {
     const stub = sinon.stub(helper, 'get');
     stub.returns(resolver('dm-account-list.json'));
@@ -353,5 +354,68 @@ describe('DataManager Resource', () => {
   });
   it('should be rejected on undefined accountID', () => {
     return resource.account().should.be.rejectedWith('accountID must be defined');
+  });
+
+  it('should load role list', () => {
+    const stub = sinon.stub(helper, 'get');
+    stub.returns(resolver('role-list.json'));
+
+    return resource.roleList()
+    .then((list) => {
+      list.should.be.instanceof(RoleList);
+      stub.restore();
+    })
+    .catch(() => stub.restore());
+  });
+  it('should throw on role list filtered with roleID', () => {
+    return resource.roleList({ roleID: 'id' })
+    .should.be.rejectedWith('Cannot filter roleList only by dataManagerID and roleID. Use DataManagerResource#role() instead');
+  });
+  it('should be rejected on role list filtered with roleID and dataManagerID', () => {
+    return resource.roleList({ roleID: 'id', dataManagerID: 'id' })
+    .should.be.rejectedWith('Cannot filter roleList only by dataManagerID and roleID. Use DataManagerResource#role() instead');
+  });
+  it('should load role resource', () => {
+    const stub = sinon.stub(helper, 'get');
+    stub.returns(resolver('role-single.json'));
+
+    return resource.role('id')
+    .then((model) => {
+      model.should.be.instanceof(RoleResource);
+      stub.restore();
+    })
+    .catch(() => stub.restore());
+  });
+  it('should be rejected on undefined roleID', () => {
+    return resource.role().should.be.rejectedWith('roleID must be defined');
+  });
+  it('should create role', () => {
+    const stub = sinon.stub(helper, 'post');
+    return new Promise((resolve, reject) => {
+      fs.readFile(`${__dirname}/mocks/role-single.json`, 'utf-8', (err, res) => {
+        if (err) {
+          return reject(err);
+        }
+        return resolve(JSON.parse(res));
+      });
+    })
+    .then((clientJSON) => {
+      stub.returns(Promise.resolve([clientJSON, resource.traversal]));
+      const create = Object.assign({}, {
+        name: resource.name,
+        label: resource.label,
+        addUnregistered: resource.addUnregistered,
+        addRegistered: resource.addRegistered,
+        accounts: resource.accounts,
+      });
+      return resource.createRole(create);
+    })
+    .then(() => {
+      stub.should.be.called.once;
+      stub.restore();
+    });
+  });
+  it('should be rejected on undefined client', () => {
+    return resource.createRole().should.be.rejectedWith('Cannot create resource with undefined object.');
   });
 });

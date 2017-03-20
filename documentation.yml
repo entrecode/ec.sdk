@@ -45,3 +45,5 @@ toc:
   - DMAccountList
   - DMClientResource
   - DMClientList
+  - RoleResource
+  - RoleList
