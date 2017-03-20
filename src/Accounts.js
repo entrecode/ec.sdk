@@ -72,7 +72,7 @@ export default class Accounts extends Core {
    * by the options parameter.
    *
    * @example
-   * return accounts.list({
+   * return accounts.accountList({
    *   filter: {
    *     created: {
    *       from: new Date(new Date.getTime() - 600000).toISOString()),
@@ -90,7 +90,7 @@ export default class Accounts extends Core {
     return Promise.resolve()
     .then(() => {
       if (options && Object.keys(options).length === 1 && 'accountID' in options) {
-        throw new Error('Providing only an accountID in AccountList filter will result in single resource response. Please use Accounts#get');
+        throw new Error('Providing only an accountID in AccountList filter will result in single resource response. Please use Accounts#account');
       }
 
       const request = this.newRequest()
@@ -105,7 +105,7 @@ export default class Accounts extends Core {
    * Get a single {@link AccountResource} identified by accountID.
    *
    * @example
-   * return accounts.get(this.accountList.getItem(index).accountID)
+   * return accounts.account(this.accountList.getItem(index).accountID)
    * .then((account) => {
    *   return show(account.email);
    * });

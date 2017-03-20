@@ -67,7 +67,7 @@ describe('Accounts class', () => {
   });
   it('should be rejected on list only with accountID', () => {
     return new Accounts().accountList({ accountID: 'id' })
-    .should.be.rejectedWith('Providing only an accountID in AccountList filter will result in single resource response. Please use Accounts#get');
+    .should.be.rejectedWith('Providing only an accountID in AccountList filter will result in single resource response. Please use Accounts#account');
   });
   it('should return resource on get', () => {
     const accounts = new Accounts('live');

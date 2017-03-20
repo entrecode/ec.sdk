@@ -41,3 +41,7 @@ toc:
   - DataManagerList
   - ModelResource
   - ModelList
+  - DMAccountResource
+  - DMAccountList
+  - DMClientResource
+  - DMClientList
