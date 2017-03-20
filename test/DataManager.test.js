@@ -238,7 +238,8 @@ describe('DataManager Resource', () => {
     .should.be.rejectedWith('Cannot filter modelList only by dataManagerID and modelID. Use DataManagerResource#model() instead');
   });
   it('should be rejected on model list filtered with modelID and dataManagerID', () => {
-    return resource.modelList({ modelID: 'id' }).should.be.rejectedWith('Cannot filter modelList only by dataManagerID and modelID. Use DataManagerResource#model() instead');
+    return resource.modelList({ modelID: 'id', dataManagerID: 'id' })
+    .should.be.rejectedWith('Cannot filter modelList only by dataManagerID and modelID. Use DataManagerResource#model() instead');
   });
   it('should load model resource', () => {
     const stub = sinon.stub(helper, 'get');
