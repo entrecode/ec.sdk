@@ -13,8 +13,10 @@ const DataManagerList = require('../lib/resources/DataManagerList').default;
 const DataManagerResource = require('../lib/resources/DataManagerResource').default;
 const ModelResource = require('../lib/resources/ModelResource').default;
 const ModelList = require('../lib/resources/ModelList').default;
-const ClientList = require('../lib/resources/ClientList').default;
-const ClientResource = require('../lib/resources/ClientResource').default;
+const DMClientList = require('../lib/resources/DMClientList').default;
+const DMClientResource = require('../lib/resources/DMClientResource').default;
+const DMAccountList = require('../lib/resources/DMAccountList').default;
+const DMAccountResource = require('../lib/resources/DMAccountResource').default;
 const Resource = require('../lib/resources/Resource').default;
 
 chai.should();
@@ -262,7 +264,7 @@ describe('DataManager Resource', () => {
 
     return resource.clientList()
     .then((list) => {
-      list.should.be.instanceof(ClientList);
+      list.should.be.instanceof(DMClientList);
       stub.restore();
     })
     .catch(() => stub.restore());
@@ -281,12 +283,46 @@ describe('DataManager Resource', () => {
 
     return resource.client('id')
     .then((model) => {
-      model.should.be.instanceof(ClientResource);
+      model.should.be.instanceof(DMClientResource);
       stub.restore();
     })
     .catch(() => stub.restore());
   });
   it('should be rejected on undefined clientID', () => {
     return resource.client().should.be.rejectedWith('clientID must be defined');
+  });
+
+  it('should load account list', () => {
+    const stub = sinon.stub(helper, 'get');
+    stub.returns(resolver('dm-account-list.json'));
+
+    return resource.accountList()
+    .then((list) => {
+      list.should.be.instanceof(DMAccountList);
+      stub.restore();
+    })
+    .catch(() => stub.restore());
+  });
+  it('should throw on account list filtered with accountID', () => {
+    return resource.accountList({ accountID: 'id' })
+    .should.be.rejectedWith('Cannot filter accountList only by dataManagerID and accountID. Use DataManagerResource#account() instead');
+  });
+  it('should be rejected on account list filtered with accountID and dataManagerID', () => {
+    return resource.accountList({ accountID: 'id', dataManagerID: 'id' })
+    .should.be.rejectedWith('Cannot filter accountList only by dataManagerID and accountID. Use DataManagerResource#account() instead');
+  });
+  it('should load account resource', () => {
+    const stub = sinon.stub(helper, 'get');
+    stub.returns(resolver('dm-account-single.json'));
+
+    return resource.account('id')
+    .then((model) => {
+      model.should.be.instanceof(DMAccountResource);
+      stub.restore();
+    })
+    .catch(() => stub.restore());
+  });
+  it('should be rejected on undefined accountID', () => {
+    return resource.account().should.be.rejectedWith('accountID must be defined');
   });
 });

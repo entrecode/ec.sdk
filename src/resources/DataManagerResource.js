@@ -3,6 +3,8 @@ import ModelList from './ModelList';
 import ModelResource from './ModelResource';
 import DMClientList from './DMClientList';
 import DMClientResource from './DMClientResource';
+import DMAccountList from './DMAccountList';
+import DMAccountResource from './DMAccountResource';
 import Resource from './Resource';
 
 /**
@@ -211,5 +213,72 @@ export default class DataManagerResource extends Resource {
       return get(this.environment, request);
     })
     .then(([res, traversal]) => new DMClientResource(res, this.environment, traversal));
+  }
+
+  /**
+   * Load a {@link DMAccountList} of {@link DMAccountResource} filtered by the values specified
+   * by the options parameter.
+   *
+   * @example
+   * return dm.accountList({
+   *   filter: {
+   *     created: {
+   *       from: new Date(new Date.getTime() - 600000).toISOString()),
+   *     },
+   *   },
+   * })
+   * .then((list) => {
+   *   return show(list);
+   * })
+   *
+   * @param {filterOptions?} options the filter options.
+   * @returns {Promise<DMAccountList>} resolves to account list with applied filters.
+   */
+  accountList(options) {
+    return Promise.resolve()
+    .then(() => {
+      const o = {};
+      if (options) {
+        Object.assign(o, options);
+      }
+
+      o.dataManagerID = this.dataManagerID;
+
+      if (o && Object.keys(o).length === 2 && 'accountID' in o && 'dataManagerID' in o) {
+        throw new Error('Cannot filter accountList only by dataManagerID and accountID. Use DataManagerResource#account() instead');
+      }
+
+      const request = this.newRequest()
+      .follow('ec:dm-account/options')
+      .withTemplateParameters(optionsToQuery(o));
+      return get(this.environment, request);
+    })
+    .then(([res, traversal]) => new DMAccountList(res, this.environment, traversal));
+  }
+
+  /**
+   * Get a single {@link DMAccountResource} identified by accountID.
+   *
+   * @example
+   * return dm.account(accountID)
+   * .then((account) => {
+   *   return show(account.email);
+   * });
+   *
+   * @param {string} accountID id of the Account.
+   * @returns {Promise<DMAccountResource>} resolves to the Account which should be loaded.
+   */
+  account(accountID) {
+    return Promise.resolve()
+    .then(() => {
+      if (!accountID) {
+        throw new Error('accountID must be defined');
+      }
+      const request = this.newRequest()
+      .follow('ec:dm-accounts/options')
+      .withTemplateParameters({ accountid: accountID, datamanagerid: this.dataManagerID });
+      return get(this.environment, request);
+    })
+    .then(([res, traversal]) => new DMAccountResource(res, this.environment, traversal));
   }
 }

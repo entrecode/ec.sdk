@@ -1,0 +1,26 @@
+{
+  "accountID": "057df709-5a50-40ad-bfda-780cacf40df9",
+  "email": "nobody@example.com",
+  "pending": false,
+  "hasPassword": true,
+  "oauth": [],
+  "_links": {
+    "ec:dm-role": {
+      "profile": "https://entrecode.de/schema/dm-role",
+      "name": "Registered Users",
+      "href": "https://datamanager.entrecode.de/role?dataManagerID=f7bfb69a-56a2-4475-b4ea-58b976eb7618&roleID=8f3bbe41-6dcd-4c0d-8098-9ba5f5cd57c5"
+    },
+    "self": {
+      "profile": "https://entrecode.de/schema/dm-account",
+      "href": "https://datamanager.entrecode.de/account?dataManagerID=f7bfb69a-56a2-4475-b4ea-58b976eb7618&accountID=057df709-5a50-40ad-bfda-780cacf40df9"
+    },
+    "collection": {
+      "profile": "https://entrecode.de/schema/dm-accounts",
+      "href": "https://datamanager.entrecode.de/account?dataManagerID=f7bfb69a-56a2-4475-b4ea-58b976eb7618"
+    },
+    "ec:datamanager": {
+      "profile": "https://entrecode.de/schema/datamanager",
+      "href": "https://datamanager.entrecode.de/?dataManagerID=f7bfb69a-56a2-4475-b4ea-58b976eb7618"
+    }
+  }
+}
