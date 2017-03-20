@@ -1,6 +1,8 @@
-import { get } from '../helper';
+import { get, optionsToQuery } from '../helper';
 import ModelList from './ModelList';
 import ModelResource from './ModelResource';
+import DMClientList from './DMClientList';
+import DMClientResource from './DMClientResource';
 import Resource from './Resource';
 
 /**
@@ -111,7 +113,7 @@ export default class DataManagerResource extends Resource {
 
       return get(
         this.environment,
-        this.newRequest().follow('ec:models/options').withTemplateParameters(o)
+        this.newRequest().follow('ec:models/options').withTemplateParameters(optionsToQuery(o))
       );
     })
     .then(([resource, traversal]) => new ModelList(resource, this.environment, traversal));
@@ -136,5 +138,78 @@ export default class DataManagerResource extends Resource {
       );
     })
     .then(([resource, traversal]) => new ModelResource(resource, this.environment, traversal));
+  }
+
+  /**
+   * Load the {@link DMClientList}.
+   *
+   * @example
+   * return dm.clientList()
+   * .then(clients => {
+   *   return clients.getAllItems().filter(client => client.clientID === 'thisOne');
+   * })
+   * .then(clientArray => {
+   *   return show(clientArray[0]);
+   * });
+   *
+   * // This would actually be better:
+   * return dm.clientList({
+   *   filter: {
+   *     clientID: 'thisOne',
+   *   },
+   * })
+   * .then(clients => {
+   *   return show(clients.getFirstItem());
+   * });
+   *
+   * @param {filterOptions?} options filter options
+   * @returns {Promise<DMClientList>} Promise resolving to DMClientList
+   */
+  clientList(options) {
+    return Promise.resolve()
+    .then(() => {
+      const o = {};
+      if (options) {
+        Object.assign(o, options);
+      }
+
+      o.dataManagerID = this.dataManagerID;
+
+      if (o && Object.keys(o).length === 2 && 'clientID' in o && 'dataManagerID' in o) {
+        throw new Error('Cannot filter clientList only by dataManagerID and clientID. Use DataManagerResource#client() instead');
+      }
+
+      const request = this.newRequest()
+      .follow('ec:dm-clients/options')
+      .withTemplateParameters(optionsToQuery(o));
+      return get(this.environment, request);
+    })
+    .then(([res, traversal]) => new DMClientList(res, this.environment, traversal));
+  }
+
+  /**
+   * Load a single {@link DMClientResource}.
+   *
+   * @example
+   * return dm.client('thisOne')
+   * .then(client => {
+   *   return show(client);
+   * });
+   *
+   * @param {string} clientID the clientID
+   * @returns {Promise<DMClientResource>} Promise resolving to DMClientResource
+   */
+  client(clientID) {
+    return Promise.resolve()
+    .then(() => {
+      if (!clientID) {
+        throw new Error('clientID must be defined');
+      }
+      const request = this.newRequest()
+      .follow('ec:dm-clients/options')
+      .withTemplateParameters({ datamanagerid: this.dataManagerID, clientid: clientID });
+      return get(this.environment, request);
+    })
+    .then(([res, traversal]) => new DMClientResource(res, this.environment, traversal));
   }
 }

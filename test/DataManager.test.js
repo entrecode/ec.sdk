@@ -13,6 +13,8 @@ const DataManagerList = require('../lib/resources/DataManagerList').default;
 const DataManagerResource = require('../lib/resources/DataManagerResource').default;
 const ModelResource = require('../lib/resources/ModelResource').default;
 const ModelList = require('../lib/resources/ModelList').default;
+const ClientList = require('../lib/resources/ClientList').default;
+const ClientResource = require('../lib/resources/ClientResource').default;
 const Resource = require('../lib/resources/Resource').default;
 
 chai.should();
@@ -251,5 +253,39 @@ describe('DataManager Resource', () => {
   });
   it('should be rejected on undefined modelID', () => {
     return resource.model().should.be.rejectedWith('modelID must be defined');
+  });
+
+  it('should load client list', () => {
+    const stub = sinon.stub(helper, 'get');
+    stub.returns(resolver('dm-client-list.json'));
+
+    return resource.clientList()
+    .then((list) => {
+      list.should.be.instanceof(ClientList);
+      stub.restore();
+    })
+    .catch(() => stub.restore());
+  });
+  it('should throw on client list filtered with clientID', () => {
+    return resource.clientList({ clientID: 'id' })
+    .should.be.rejectedWith('Cannot filter clientList only by dataManagerID and clientID. Use DataManagerResource#client() instead');
+  });
+  it('should be rejected on client list filtered with clientID and dataManagerID', () => {
+    return resource.clientList({ clientID: 'id', dataManagerID: 'id' })
+    .should.be.rejectedWith('Cannot filter clientList only by dataManagerID and clientID. Use DataManagerResource#client() instead');
+  });
+  it('should load client resource', () => {
+    const stub = sinon.stub(helper, 'get');
+    stub.returns(resolver('dm-client-single.json'));
+
+    return resource.client('id')
+    .then((model) => {
+      model.should.be.instanceof(ClientResource);
+      stub.restore();
+    })
+    .catch(() => stub.restore());
+  });
+  it('should be rejected on undefined clientID', () => {
+    return resource.client().should.be.rejectedWith('clientID must be defined');
   });
 });
