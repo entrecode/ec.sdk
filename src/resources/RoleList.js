@@ -15,7 +15,7 @@ export default class RoleList extends ListResource {
    * @param {?object} traversal traversal from which traverson can continue.
    */
   constructor(resource, environment, traversal) {
-    super(resource, environment, 'ec:dm-roles', traversal);
+    super(resource, environment, 'ec:dm-role', traversal);
     this.ListClass = RoleList;
     this.ItemClass = RoleResource;
   }
