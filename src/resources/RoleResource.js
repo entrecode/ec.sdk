@@ -5,7 +5,12 @@ import Resource from './Resource';
  *
  * @class
  *
- * @prop {string} roleID- The id of the role
+ * @prop {string} roleID - The id of the role
+ * @prop {stirng} name - The name of the role
+ * @prop {string} label - A label for the role
+ * @prop {boolean} addUnregistered - Whether or not to add unregistered users to this role
+ * @prop {boolean} addRegistered - Whether or not to add registered users to this role
+ * @prop {array<string>} accounts - array of accountIDs associated to this role
  */
 export default class RoleResource extends Resource {
   /**
