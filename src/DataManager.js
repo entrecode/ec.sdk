@@ -5,6 +5,7 @@ import DataManagerList from './resources/DataManagerList';
 import TokenStoreFactory from './TokenStore';
 import TemplateList from './resources/TemplateList';
 import TemplateResource from './resources/TemplateResource';
+import DMStatsList from './resources/DMStatsList';
 
 const urls = {
   live: 'https://datamanager.entrecode.de/',
@@ -177,5 +178,53 @@ export default class DataManager extends Core {
       return post(this.newRequest().follow('ec:dm-templates'), template);
     })
     .then(([dm, traversal]) => new TemplateResource(dm, this.environment, traversal));
+  }
+
+  /**
+   * Load the {@link DMStatsList}.
+   *
+   * @example
+   * return dm.statsList()
+   * .then(templates => {
+   *   return show(templates.getAllItems());
+   * });
+   *
+   *
+   * @returns {Promise<TemplateList>} Promise resolving to DMStatsList
+   */
+  statsList() {
+    return Promise.resolve()
+    .then(() => {
+      const request = this.newRequest()
+      .follow('ec:dm-stats');
+      return get(this.environment, request);
+    })
+    .then(([res, traversal]) => new DMStatsList(res, this.environment, traversal));
+  }
+
+  /**
+   * Load a single {@link DMStatsResource}.
+   *
+   * @example
+   * return dm.stats('id')
+   * .then(stats => {
+   *   return show(stats);
+   * });
+   *
+   * @param {string} dataManagerID the dataManagerID
+   * @returns {Promise<DMStatsResource>} Promise resolving to DMStatsResource
+   */
+  stats(dataManagerID) {
+    return Promise.resolve()
+    .then(() => {
+      if (!dataManagerID) {
+        throw new Error('dataManagerID must be defined');
+      }
+      const request = this.newRequest()
+      .follow('ec:dm-templates/options')
+      .withTemplateParameters({ dataManagerID });
+      return get(this.environment, request);
+    })
+    .then(([res]) => new DMStatsList(res, this.environment).getFirstItem());
   }
 }

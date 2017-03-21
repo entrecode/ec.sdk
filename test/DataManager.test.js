@@ -21,6 +21,8 @@ const RoleList = require('../lib/resources/RoleList').default;
 const RoleResource = require('../lib/resources/RoleResource').default;
 const TemplateList = require('../lib/resources/TemplateList').default;
 const TemplateResource = require('../lib/resources/TemplateResource').default;
+const DMStatsList = require('../lib/resources/DMStatsList').default;
+const DMStatsResource = require('../lib/resources/DMStatsResource').default;
 const Resource = require('../lib/resources/Resource').default;
 
 chai.should();
@@ -175,6 +177,38 @@ describe('DataManager class', () => {
   it('should be rejected on undefined template', () => {
     const dm = new DataManager('live');
     return dm.createTemplate().should.be.rejectedWith('Cannot create resource with undefined object.');
+  });
+
+  it('should load stats list', () => {
+    const dm = new DataManager('live');
+    const stub = sinon.stub(helper, 'get');
+    stub.returns(resolver('dm-stats-list.json'));
+
+    return dm.statsList()
+    .then((list) => {
+      list.should.be.instanceof(DMStatsList);
+      stub.restore();
+    })
+    .catch((err) => { // TODO add this to all other list tests -.-
+      stub.restore();
+      throw err;
+    });
+  });
+  it('should load stats resource', () => {
+    const dm = new DataManager('live');
+    const stub = sinon.stub(helper, 'get');
+    stub.returns(resolver('dm-stats-single.json'));
+
+    return dm.stats('id')
+    .then((model) => {
+      model.should.be.instanceof(DMStatsResource);
+      stub.restore();
+    })
+    .catch(() => stub.restore());
+  });
+  it('should be rejected on undefined dataManagerID', () => {
+    const dm = new DataManager('live');
+    return dm.stats().should.be.rejectedWith('dataManagerID must be defined');
   });
 });
 
@@ -486,5 +520,17 @@ describe('DataManager Resource', () => {
   });
   it('should be rejected on undefined client', () => {
     return resource.createRole().should.be.rejectedWith('Cannot create resource with undefined object.');
+  });
+
+  it('should load stats resource', () => {
+    const stub = sinon.stub(helper, 'get');
+    stub.returns(resolver('dm-stats-single.json'));
+
+    return resource.stats()
+    .then((model) => {
+      model.should.be.instanceof(DMStatsResource);
+      stub.restore();
+    })
+    .catch(() => stub.restore());
   });
 });

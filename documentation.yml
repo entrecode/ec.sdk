@@ -49,3 +49,5 @@ toc:
   - RoleList
   - TemplateResource
   - TemplateList
+  - DMStatsResource
+  - DMStatsList

@@ -7,6 +7,7 @@ import DMAccountList from './DMAccountList';
 import DMAccountResource from './DMAccountResource';
 import RoleList from './RoleList';
 import RoleResource from './RoleResource';
+import DMStatsList from './DMStatsList';
 import Resource from './Resource';
 
 /**
@@ -391,5 +392,27 @@ export default class DataManagerResource extends Resource {
       return post(this.newRequest().follow('ec:dm-roles'), role);
     })
     .then(([dm, traversal]) => new RoleResource(dm, this.environment, traversal));
+  }
+
+  /**
+   * Load a single {@link DMStatsResource}.
+   *
+   * @example
+   * return dm.stats('id')
+   * .then(stats => {
+   *   return show(stats);
+   * });
+   *
+   * @returns {Promise<DMStatsResource>} Promise resolving to DMStatsResource
+   */
+  stats() {
+    return Promise.resolve()
+    .then(() => {
+      const request = this.newRequest()
+      .follow('ec:dm-templates/options')
+      .withTemplateParameters({ dataManagerID: this.dataManagerID });
+      return get(this.environment, request);
+    })
+    .then(([res]) => new DMStatsList(res, this.environment).getFirstItem());
   }
 }
