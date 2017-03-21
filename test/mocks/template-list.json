@@ -1,0 +1,105 @@
+{
+  "count": 3,
+  "total": 3,
+  "_links": {
+    "self": {
+      "href": "https://datamanager.entrecode.de/template"
+    },
+    "curies": {
+      "href": "https://doc.entrecode.de/data_manager/#relation-{rel}",
+      "templated": true
+    },
+    "ec:dm-template/by-id": {
+      "profile": "https://entrecode.de/schema/dm-template",
+      "href": "https://datamanager.entrecode.de/template{?templateID}",
+      "templated": true
+    },
+    "ec:datamanagers": {
+      "profile": "https://entrecode.de/schema/datamanagers",
+      "href": "https://datamanager.entrecode.de/"
+    },
+    "ec:dm-templates/options": {
+      "href": "https://datamanager.entrecode.de/template{?name,name~,page,parentName,parentName~,parentTemplate,parentVersion,parentVersionFrom,parentVersionTo,size,sort,templateID,version,versionFrom,versionTo}",
+      "templated": true
+    }
+  },
+  "_embedded": {
+    "ec:dm-template": [
+      {
+        "templateID": "5fe396d9-ce29-4acb-bd86-c1c97b67b728",
+        "name": "Clubapp 1.0.1",
+        "version": "2016-07-08T10:41:48.137Z",
+        "_links": {
+          "ec:datamanagers/new-from-template": {
+            "profile": "https://entrecode.de/schema/datamanager",
+            "href": "https://datamanager.entrecode.de/?_templateID=5fe396d9-ce29-4acb-bd86-c1c97b67b728",
+            "templated": true
+          },
+          "ec:datamanager/update-from-template": {
+            "profile": "https://entrecode.de/schema/datamanager",
+            "href": "https://datamanager.entrecode.de/?_templateID=5fe396d9-ce29-4acb-bd86-c1c97b67b728{&dataManagerID}",
+            "templated": true
+          },
+          "self": {
+            "profile": "https://entrecode.de/schema/dm-template",
+            "href": "https://datamanager.entrecode.de/template?templateID=5fe396d9-ce29-4acb-bd86-c1c97b67b728"
+          },
+          "collection": {
+            "profile": "https://entrecode.de/schema/dm-templates",
+            "href": "https://datamanager.entrecode.de/template"
+          }
+        }
+      },
+      {
+        "templateID": "b252ea7a-67df-4905-8877-dc27b9c0c0c7",
+        "name": "Clubapp 2.0.0",
+        "version": "2017-02-08T16:01:25.509Z",
+        "_links": {
+          "ec:datamanagers/new-from-template": {
+            "profile": "https://entrecode.de/schema/datamanager",
+            "href": "https://datamanager.entrecode.de/?_templateID=b252ea7a-67df-4905-8877-dc27b9c0c0c7",
+            "templated": true
+          },
+          "ec:datamanager/update-from-template": {
+            "profile": "https://entrecode.de/schema/datamanager",
+            "href": "https://datamanager.entrecode.de/?_templateID=b252ea7a-67df-4905-8877-dc27b9c0c0c7{&dataManagerID}",
+            "templated": true
+          },
+          "self": {
+            "profile": "https://entrecode.de/schema/dm-template",
+            "href": "https://datamanager.entrecode.de/template?templateID=b252ea7a-67df-4905-8877-dc27b9c0c0c7"
+          },
+          "collection": {
+            "profile": "https://entrecode.de/schema/dm-templates",
+            "href": "https://datamanager.entrecode.de/template"
+          }
+        }
+      },
+      {
+        "templateID": "395bc8d8-e784-46ac-b138-50695e85d785",
+        "name": "deine-strasse v1.0",
+        "version": "2017-02-07T17:09:39.577Z",
+        "_links": {
+          "ec:datamanagers/new-from-template": {
+            "profile": "https://entrecode.de/schema/datamanager",
+            "href": "https://datamanager.entrecode.de/?_templateID=395bc8d8-e784-46ac-b138-50695e85d785",
+            "templated": true
+          },
+          "ec:datamanager/update-from-template": {
+            "profile": "https://entrecode.de/schema/datamanager",
+            "href": "https://datamanager.entrecode.de/?_templateID=395bc8d8-e784-46ac-b138-50695e85d785{&dataManagerID}",
+            "templated": true
+          },
+          "self": {
+            "profile": "https://entrecode.de/schema/dm-template",
+            "href": "https://datamanager.entrecode.de/template?templateID=395bc8d8-e784-46ac-b138-50695e85d785"
+          },
+          "collection": {
+            "profile": "https://entrecode.de/schema/dm-templates",
+            "href": "https://datamanager.entrecode.de/template"
+          }
+        }
+      }
+    ]
+  }
+}

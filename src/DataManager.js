@@ -3,6 +3,8 @@ import { get, post, optionsToQuery } from './helper';
 import DataManagerResource from './resources/DataManagerResource';
 import DataManagerList from './resources/DataManagerList';
 import TokenStoreFactory from './TokenStore';
+import TemplateList from './resources/TemplateList';
+import TemplateResource from './resources/TemplateResource';
 
 const urls = {
   live: 'https://datamanager.entrecode.de/',
@@ -91,5 +93,89 @@ export default class DataManager extends Core {
       return get(this.environment, request);
     })
     .then(([res, traversal]) => new DataManagerResource(res, this.environment, traversal));
+  }
+
+  /**
+   * Load the {@link TemplateList}.
+   *
+   * @example
+   * return dm.templateList()
+   * .then(templates => {
+   *   return template.getAllItems().filter(template => template.templateID === 'thisOne');
+   * })
+   * .then(templateArray => {
+   *   return show(templateArray[0]);
+   * });
+   *
+   * // This would actually be better:
+   * return dm.template({
+   *   filter: {
+   *     roleID: 'thisOne',
+   *   },
+   * })
+   * .then(templates => {
+   *   return show(templates.getFirstItem());
+   * });
+   *
+   * @param {filterOptions?} options filter options
+   * @returns {Promise<TemplateList>} Promise resolving to TemplateList
+   */
+  templateList(options) {
+    return Promise.resolve()
+    .then(() => {
+      if (options && Object.keys(options).length === 1 && 'templateID' in options) {
+        throw new Error('Cannot filter templateList only by templateID. Use DataManagerResource#template() instead');
+      }
+
+      const request = this.newRequest()
+      .follow('ec:dm-templates/options')
+      .withTemplateParameters(optionsToQuery(options));
+      return get(this.environment, request);
+    })
+    .then(([res, traversal]) => new TemplateList(res, this.environment, traversal));
+  }
+
+  /**
+   * Load a single {@link TemplateResource}.
+   *
+   * @example
+   * return dm.template('thisOne')
+   * .then(template => {
+   *   return show(template);
+   * });
+   *
+   * @param {string} templateID the templateID
+   * @returns {Promise<TemplateResource>} Promise resolving to TemplateResource
+   */
+  template(templateID) {
+    return Promise.resolve()
+    .then(() => {
+      if (!templateID) {
+        throw new Error('templateID must be defined');
+      }
+      const request = this.newRequest()
+      .follow('ec:dm-templates/options')
+      .withTemplateParameters({ templateID });
+      return get(this.environment, request);
+    })
+    .then(([res, traversal]) => new TemplateResource(res, this.environment, traversal));
+  }
+
+  /**
+   * Create a new template.
+   *
+   * @param {object} template object representing the template.
+   * @returns {Promise<TemplateResource>} the newly created TemplateResource
+   */
+  createTemplate(template) {
+    return Promise.resolve()
+    .then(() => {
+      if (!template) {
+        throw new Error('Cannot create resource with undefined object.');
+      }
+      // TODO schema validation
+      return post(this.newRequest().follow('ec:dm-templates'), template);
+    })
+    .then(([dm, traversal]) => new TemplateResource(dm, this.environment, traversal));
   }
 }

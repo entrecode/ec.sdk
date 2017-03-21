@@ -47,3 +47,5 @@ toc:
   - DMClientList
   - RoleResource
   - RoleList
+  - TemplateResource
+  - TemplateList

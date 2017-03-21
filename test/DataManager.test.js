@@ -19,6 +19,8 @@ const DMAccountList = require('../lib/resources/DMAccountList').default;
 const DMAccountResource = require('../lib/resources/DMAccountResource').default;
 const RoleList = require('../lib/resources/RoleList').default;
 const RoleResource = require('../lib/resources/RoleResource').default;
+const TemplateList = require('../lib/resources/TemplateList').default;
+const TemplateResource = require('../lib/resources/TemplateResource').default;
 const Resource = require('../lib/resources/Resource').default;
 
 chai.should();
@@ -106,6 +108,73 @@ describe('DataManager class', () => {
   it('should be rejected on create with undefined', () => {
     return new DataManager('live').create()
     .should.be.rejectedWith('Cannot create resource with undefined object');
+  });
+
+  it('should load template list', () => {
+    const dm = new DataManager('live');
+    const stub = sinon.stub(helper, 'get');
+    stub.returns(resolver('template-list.json'));
+
+    return dm.templateList()
+    .then((list) => {
+      list.should.be.instanceof(TemplateList);
+      stub.restore();
+    })
+    .catch((err) => { // TODO add this to all other list tests -.-
+      stub.restore();
+      throw err;
+    });
+  });
+  it('should throw on template list filtered with templateID', () => {
+    const dm = new DataManager('live');
+    return dm.templateList({ templateID: 'id' })
+    .should.be.rejectedWith('Cannot filter templateList only by templateID. Use DataManagerResource#template() instead');
+  });
+  it('should load template resource', () => {
+    const dm = new DataManager('live');
+    const stub = sinon.stub(helper, 'get');
+    stub.returns(resolver('template-single.json'));
+
+    return dm.template('id')
+    .then((model) => {
+      model.should.be.instanceof(TemplateResource);
+      stub.restore();
+    })
+    .catch(() => stub.restore());
+  });
+  it('should be rejected on undefined templateID', () => {
+    const dm = new DataManager('live');
+    return dm.template().should.be.rejectedWith('templateID must be defined');
+  });
+  it('should create template', () => {
+    const dm = new DataManager('live');
+    const stub = sinon.stub(helper, 'post');
+    return new Promise((resolve, reject) => {
+      fs.readFile(`${__dirname}/mocks/template-single.json`, 'utf-8', (err, res) => {
+        if (err) {
+          return reject(err);
+        }
+        return resolve(JSON.parse(res));
+      });
+    })
+    .then((templateJSON) => {
+      stub.returns(Promise.resolve([templateJSON, dm.traversal]));
+      const create = Object.assign({}, {
+        name: templateJSON.name,
+        collection: templateJSON.collection,
+        dataSchema: templateJSON.dataSchema,
+        version: templateJSON.version,
+      });
+      return dm.createTemplate(create);
+    })
+    .then(() => {
+      stub.should.be.called.once;
+      stub.restore();
+    });
+  });
+  it('should be rejected on undefined template', () => {
+    const dm = new DataManager('live');
+    return dm.createTemplate().should.be.rejectedWith('Cannot create resource with undefined object.');
   });
 });
 
