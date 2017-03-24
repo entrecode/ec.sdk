@@ -7,6 +7,8 @@ import DMAccountList from './DMAccountList';
 import DMAccountResource from './DMAccountResource';
 import RoleList from './RoleList';
 import RoleResource from './RoleResource';
+import AssetList from './AssetList';
+import AssetResource from './AssetResource';
 import DMStatsList from './DMStatsList';
 import Resource from './Resource';
 
@@ -414,5 +416,99 @@ export default class DataManagerResource extends Resource {
       return get(this.environment, request);
     })
     .then(([res]) => new DMStatsList(res, this.environment).getFirstItem());
+  }
+
+  /**
+   * Load the {@link AssetList}.
+   *
+   * @example
+   * return dm.assetList()
+   * .then(assets => {
+   *   return assets.getAllItems().filter(asset => asset.assetID === 'thisOne');
+   * })
+   * .then(assetsArray => {
+   *   return show(assetsArray[0]);
+   * });
+   *
+   * // This would actually be better:
+   * return dm.assetList({
+   *   filter: {
+   *     assetID: 'thisOne',
+   *   },
+   * })
+   * .then(assets => {
+   *   return show(assets.getFirstItem());
+   * });
+   *
+   * @param {filterOptions?} options filter options
+   * @returns {Promise<AssetList>} Promise resolving to AssetList
+   */
+  assetList(options) {
+    return Promise.resolve()
+    .then(() => {
+      const o = {};
+      if (options) {
+        Object.assign(o, options);
+      }
+
+      o.dataManagerID = this.dataManagerID;
+
+      if (o && Object.keys(o).length === 2 && 'assetID' in o && 'dataManagerID' in o) {
+        throw new Error('Cannot filter assetList only by dataManagerID and assetID. Use DataManagerResource#asset() instead');
+      }
+
+      const request = this.newRequest()
+      .follow('ec:assets/options')
+      .withTemplateParameters(optionsToQuery(o));
+      return get(this.environment, request);
+    })
+    .then(([res, traversal]) => new AssetList(res, this.environment, traversal));
+  }
+
+  /**
+   * Load a single {@link AssetResource}.
+   *
+   * @example
+   * return dm.asset('thisOne')
+   * .then(asset => {
+   *   return show(asset);
+   * });
+   *
+   * @param {string} assetID the assetID
+   * @returns {Promise<AssetResource>} Promise resolving to AssetResource
+   */
+  asset(assetID) {
+    return Promise.resolve()
+    .then(() => {
+      if (!assetID) {
+        throw new Error('assetID must be defined');
+      }
+      const request = this.newRequest()
+      .follow('ec:assets/options')
+      .withTemplateParameters({ dataManagerID: this.dataManagerID, assetID });
+      return get(this.environment, request);
+    })
+    .then(([res, traversal]) => new AssetResource(res, this.environment, traversal));
+  }
+
+  /**
+   * Create a new asset.
+   *
+   * @param {object} asset object representing the asset.
+   * @returns {Promise<AssetResource>} the newly created AssetResource
+   */
+  createAsset(asset) {
+    return Promise.reject(new Error('not implemented yet'));
+    /*
+     return Promise.resolve()
+     .then(() => {
+     if (!asset) {
+     throw new Error('Cannot create resource with undefined object.');
+     }
+     // TODO schema validation
+     return post(this.newRequest().follow('ec:assets'), asset);
+     })
+     .then(([dm, traversal]) => new RoleResource(dm, this.environment, traversal));
+     */
   }
 }

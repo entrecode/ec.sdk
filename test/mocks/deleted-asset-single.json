@@ -1,0 +1,121 @@
+{
+  "assetID": "4d23281a-ea16-4108-8a40-91b710cfae5d",
+  "created": "2017-03-24T09:16:14.897Z",
+  "deleted": "2017-03-24T09:17:54.882Z",
+  "files": [
+    {
+      "url": "https://cdn2.entrecode.de/files/01bd8e08/lGft2gVDPmDt5NfA0HF2IlPg_100_thumb.png",
+      "mimetype": "image/png",
+      "size": 7457,
+      "resolution": {
+        "width": 100,
+        "height": 100
+      },
+      "locale": null,
+      "created": "2017-03-24T09:16:15.393+00:00",
+      "modified": "2017-03-24T09:16:15.393+00:00",
+      "assetID": "4d23281a-ea16-4108-8a40-91b710cfae5d"
+    },
+    {
+      "url": "https://cdn2.entrecode.de/files/01bd8e08/lGft2gVDPmDt5NfA0HF2IlPg.png",
+      "mimetype": "image/png",
+      "size": 49569,
+      "resolution": {
+        "width": 654,
+        "height": 452
+      },
+      "locale": null,
+      "created": "2017-03-24T09:16:14.882+00:00",
+      "modified": "2017-03-24T09:16:14.882+00:00",
+      "assetID": "4d23281a-ea16-4108-8a40-91b710cfae5d"
+    },
+    {
+      "url": "https://cdn2.entrecode.de/files/01bd8e08/lGft2gVDPmDt5NfA0HF2IlPg_256.png",
+      "mimetype": "image/png",
+      "size": 24724,
+      "resolution": {
+        "width": 256,
+        "height": 177
+      },
+      "locale": null,
+      "created": "2017-03-24T09:16:15.239+00:00",
+      "modified": "2017-03-24T09:16:15.239+00:00",
+      "assetID": "4d23281a-ea16-4108-8a40-91b710cfae5d"
+    },
+    {
+      "url": "https://cdn2.entrecode.de/files/01bd8e08/lGft2gVDPmDt5NfA0HF2IlPg_50_thumb.png",
+      "mimetype": "image/png",
+      "size": 2589,
+      "resolution": {
+        "width": 50,
+        "height": 50
+      },
+      "locale": null,
+      "created": "2017-03-24T09:16:15.242+00:00",
+      "modified": "2017-03-24T09:16:15.242+00:00",
+      "assetID": "4d23281a-ea16-4108-8a40-91b710cfae5d"
+    },
+    {
+      "url": "https://cdn2.entrecode.de/files/01bd8e08/lGft2gVDPmDt5NfA0HF2IlPg_512.png",
+      "mimetype": "image/png",
+      "size": 61026,
+      "resolution": {
+        "width": 512,
+        "height": 354
+      },
+      "locale": null,
+      "created": "2017-03-24T09:16:15.249+00:00",
+      "modified": "2017-03-24T09:16:15.249+00:00",
+      "assetID": "4d23281a-ea16-4108-8a40-91b710cfae5d"
+    },
+    {
+      "url": "https://cdn2.entrecode.de/files/01bd8e08/lGft2gVDPmDt5NfA0HF2IlPg_400_thumb.png",
+      "mimetype": "image/png",
+      "size": 45471,
+      "resolution": {
+        "width": 400,
+        "height": 400
+      },
+      "locale": null,
+      "created": "2017-03-24T09:16:15.28+00:00",
+      "modified": "2017-03-24T09:16:15.28+00:00",
+      "assetID": "4d23281a-ea16-4108-8a40-91b710cfae5d"
+    },
+    {
+      "url": "https://cdn2.entrecode.de/files/01bd8e08/lGft2gVDPmDt5NfA0HF2IlPg_200_thumb.png",
+      "mimetype": "image/png",
+      "size": 18550,
+      "resolution": {
+        "width": 200,
+        "height": 200
+      },
+      "locale": null,
+      "created": "2017-03-24T09:16:15.372+00:00",
+      "modified": "2017-03-24T09:16:15.372+00:00",
+      "assetID": "4d23281a-ea16-4108-8a40-91b710cfae5d"
+    }
+  ],
+  "tags": [],
+  "title": "Bildschirmfoto 2017-03-24 um 10.15.28",
+  "type": "image",
+  "_links": {
+    "collection": {
+      "profile": "https://entrecode.de/schema/assets",
+      "href": "https://datamanager.entrecode.de/asset/deleted?dataManagerID=48e18a34-cf64-4f4a-bc47-45323a7f0e44"
+    },
+    "ec:asset/deleted/best-file": {
+      "href": "https://datamanager.entrecode.de/files/deleted/4d23281a-ea16-4108-8a40-91b710cfae5d{?size,thumb}",
+      "templated": true
+    },
+    "ec:datamanager": {
+      "profile": "https://entrecode.de/schema/datamanager",
+      "href": "https://datamanager.entrecode.de/?dataManagerID=48e18a34-cf64-4f4a-bc47-45323a7f0e44"
+    },
+    "self": {
+      "profile": "https://entrecode.de/schema/asset",
+      "href": "https://datamanager.entrecode.de/asset/deleted?assetID=4d23281a-ea16-4108-8a40-91b710cfae5d{&destroy}",
+      "title": "Bildschirmfoto 2017-03-24 um 10.15.28",
+      "templated": true
+    }
+  }
+}

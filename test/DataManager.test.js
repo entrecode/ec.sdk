@@ -23,6 +23,8 @@ const TemplateList = require('../lib/resources/TemplateList').default;
 const TemplateResource = require('../lib/resources/TemplateResource').default;
 const DMStatsList = require('../lib/resources/DMStatsList').default;
 const DMStatsResource = require('../lib/resources/DMStatsResource').default;
+const AssetList = require('../lib/resources/AssetList').default;
+const AssetResource = require('../lib/resources/AssetResource').default;
 const Resource = require('../lib/resources/Resource').default;
 
 chai.should();
@@ -532,5 +534,45 @@ describe('DataManager Resource', () => {
       stub.restore();
     })
     .catch(() => stub.restore());
+  });
+
+  it('should load asset list', () => {
+    const stub = sinon.stub(helper, 'get');
+    stub.returns(resolver('asset-list.json'));
+
+    return resource.assetList()
+    .then((list) => {
+      list.should.be.instanceof(AssetList);
+      stub.restore();
+    })
+    .catch(() => stub.restore());
+  });
+  it('should throw on asset list filtered with assetID', () => {
+    return resource.assetList({ assetID: 'id' })
+    .should.be.rejectedWith('Cannot filter assetList only by dataManagerID and assetID. Use DataManagerResource#asset() instead');
+  });
+  it('should be rejected on asset list filtered with assetID and dataManagerID', () => {
+    return resource.assetList({ assetID: 'id', dataManagerID: 'id' })
+    .should.be.rejectedWith('Cannot filter assetList only by dataManagerID and assetID. Use DataManagerResource#asset() instead');
+  });
+  it('should load asset resource', () => {
+    const stub = sinon.stub(helper, 'get');
+    stub.returns(resolver('asset-single.json'));
+
+    return resource.asset('id')
+    .then((model) => {
+      model.should.be.instanceof(AssetResource);
+      stub.restore();
+    })
+    .catch(() => stub.restore());
+  });
+  it('should be rejected on undefined assetID', () => {
+    return resource.asset().should.be.rejectedWith('assetID must be defined');
+  });
+  it.skip('should create asset', () => {
+    // TODO with formdata, file, buffer
+  });
+  it.skip('should be rejected on create asset with undefined value', () => {
+    return resource.createAsset().should.be.rejectedWith('Cannot create resource with undefined object.');
   });
 });

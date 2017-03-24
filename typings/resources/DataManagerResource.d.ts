@@ -9,6 +9,8 @@ import { DMAccountResource } from './DMAccountResource';
 import { RoleList } from './RoleList';
 import { RoleResource } from './RoleResource';
 import { DMStatsResource } from './DMStatsResource';
+import { AssetList } from './AssetList';
+import { AssetResource } from './AssetResource';
 
 export declare class DataManagerResource extends Resource {
   constructor(resource: any, environment: string, traversal?: any);
@@ -42,4 +44,8 @@ export declare class DataManagerResource extends Resource {
   createRole(role: { name: string, label: string, addUnregistered: boolean, addRegistered: boolean, accounts: Array<string> }): RoleResource;
 
   stats(): DMStatsResource;
+
+  assetList(options?: filterOptions): AssetList;
+
+  asset(assetID: string): AssetResource;
 }
