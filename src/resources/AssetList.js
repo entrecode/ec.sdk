@@ -1,6 +1,10 @@
 import { get, optionsToQuery } from '../helper';
 import ListResource from './ListResource';
 import AssetResource from './AssetResource';
+import DeletedAssetList from './DeletedAssetList';
+import DeletedAssetResource from './DeletedAssetResource';
+import TagList from './TagList';
+import TagResource from './TagResource';
 
 /**
  * Asset list class
@@ -69,7 +73,7 @@ export default class AssetList extends ListResource {
       .withTemplateParameters(optionsToQuery(o));
       return get(this.environment, request);
     })
-    .then(([res, traversal]) => new AssetList(res, this.environment, traversal));
+    .then(([res, traversal]) => new DeletedAssetList(res, this.environment, traversal));
   }
 
   /**
@@ -95,6 +99,79 @@ export default class AssetList extends ListResource {
       .withTemplateParameters({ dataManagerID: this.dataManagerID, assetID });
       return get(this.environment, request);
     })
-    .then(([res, traversal]) => new AssetResource(res, this.environment, traversal));
+    .then(([res, traversal]) => new DeletedAssetResource(res, this.environment, traversal));
+  }
+
+  /**
+   * Load the {@link TagList}.
+   *
+   * @example
+   * return assetList.tagList()
+   * .then(tags => {
+   *   return tags.getAllItems().filter(tags => tag.tag === 'thisOne');
+   * })
+   * .then(tagsArray => {
+   *   return show(tagsArray[0]);
+   * });
+   *
+   * // This would actually be better:
+   * return dm.tagList({
+   *   filter: {
+   *     assetID: 'thisOne',
+   *   },
+   * })
+   * .then(tags => {
+   *   return show(tags.getFirstItem());
+   * });
+   *
+   * @param {filterOptions?} options filter options
+   * @returns {Promise<TagList>} Promise resolving to TagList
+   */
+  tagList(options) {
+    return Promise.resolve()
+    .then(() => {
+      const o = {};
+      if (options) {
+        Object.assign(o, options);
+      }
+
+      o.dataManagerID = this.dataManagerID;
+
+      if (o && Object.keys(o).length === 2 && 'tag' in o && 'dataManagerID' in o) {
+        throw new Error('Cannot filter tagList only by dataManagerID and tag. Use AssetList#tag() instead');
+      }
+
+      const request = this.newRequest()
+      .follow('ec:tags/options')
+      .withTemplateParameters(optionsToQuery(o));
+      return get(this.environment, request);
+    })
+    .then(([res, traversal]) => new TagList(res, this.environment, traversal));
+  }
+
+  /**
+   * Load a single deleted {@link TagResource}.
+   *
+   * @example
+   * return assetList.tag('thisOne')
+   * .then(tag => {
+   *   return show(tag);
+   * });
+   *
+   * @param {string} tag the tag
+   * @returns {Promise<TagResource>} Promise resolving to TagResource
+   */
+  tag(tag) {
+    return Promise.resolve()
+    .then(() => {
+      if (!tag) {
+        throw new Error('tag must be defined');
+      }
+      const request = this.newRequest()
+      .follow('ec:tags/options')
+      .withTemplateParameters({ dataManagerID: this.dataManagerID, tag });
+      return get(this.environment, request);
+    })
+    .then(([res, traversal]) => new TagResource(res, this.environment, traversal));
   }
 }

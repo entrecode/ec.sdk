@@ -11,6 +11,8 @@ const AssetResource = require('../lib/resources/AssetResource').default;
 const AssetList = require('../lib/resources/AssetList').default;
 const DeletedAssetResource = require('../lib/resources/DeletedAssetResource').default;
 const DeletedAssetList = require('../lib/resources/DeletedAssetList').default;
+const TagResource = require('../lib/resources/TagResource').default;
+const TagList = require('../lib/resources/TagList').default;
 const Resource = require('../lib/resources/Resource').default;
 const ListResource = require('../lib/resources/ListResource').default;
 
@@ -81,6 +83,40 @@ describe('Asset ListResource', () => {
   });
   it('should be rejected on undefined assetID', () => {
     return list.deletedAsset().should.be.rejectedWith('assetID must be defined');
+  });
+
+  it('should load tag list', () => {
+    const stub = sinon.stub(helper, 'get');
+    stub.returns(resolver('tag-list.json'));
+
+    return list.tagList()
+    .then((l) => {
+      l.should.be.instanceof(TagList);
+      stub.restore();
+    })
+    .catch(() => stub.restore());
+  });
+  it('should throw on tag list filtered with tag', () => {
+    return list.tagList({ tag: 'id' })
+    .should.be.rejectedWith('Cannot filter tagList only by dataManagerID and tag. Use AssetList#tag() instead');
+  });
+  it('should be rejected on tag list filtered with tag and dataManagerID', () => {
+    return list.tagList({ tag: 'id', dataManagerID: 'id' })
+    .should.be.rejectedWith('Cannot filter tagList only by dataManagerID and tag. Use AssetList#tag() instead');
+  });
+  it('should load tag resource', () => {
+    const stub = sinon.stub(helper, 'get');
+    stub.returns(resolver('asset-single.json'));
+
+    return list.tag('id')
+    .then((model) => {
+      model.should.be.instanceof(TagResource);
+      stub.restore();
+    })
+    .catch(() => stub.restore());
+  });
+  it('should be rejected on undefined tag', () => {
+    return list.tag().should.be.rejectedWith('tag must be defined');
   });
 });
 
