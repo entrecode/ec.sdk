@@ -63,15 +63,34 @@ export default class AssetResource extends Resource {
     });
   }
 
-
+  /**
+   * Best file helper for files.
+   *
+   * @param {string?} locale - the locale
+   * @returns {string} URL to the file
+   */
   getFileUrl(locale) {
     return fileNegotiate(this, false, false, null, locale);
   }
 
+  /**
+   * Best file helper for images.
+   *
+   * @param {number?} size - the minimum size of the image
+   * @param {string?} locale - the locale
+   * @returns {string} URL to the file
+   */
   getImageUrl(size, locale) {
     return fileNegotiate(this, true, false, size, locale);
   }
 
+  /**
+   * Best file helper for image thumbnails.
+   *
+   * @param {number?} size - the minimum size of the image
+   * @param {string?} locale - the locale
+   * @returns {string} URL to the file
+   */
   getImageThumbUrl(size, locale) {
     return fileNegotiate(this, true, true, size, locale);
   }
