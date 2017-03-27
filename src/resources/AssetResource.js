@@ -1,4 +1,5 @@
 import Resource from './Resource';
+import { fileNegotiate } from '../helper';
 
 /**
  * AssetResource class
@@ -62,5 +63,16 @@ export default class AssetResource extends Resource {
     });
   }
 
-  // TODO get best file
+
+  getFileUrl(locale) {
+    return fileNegotiate(this, false, false, null, locale);
+  }
+
+  getImageUrl(size, locale) {
+    return fileNegotiate(this, true, false, size, locale);
+  }
+
+  getImageThumbUrl(size, locale) {
+    return fileNegotiate(this, true, true, size, locale);
+  }
 }

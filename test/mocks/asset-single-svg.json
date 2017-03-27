@@ -1,0 +1,38 @@
+{
+  "assetID": "1e34deed-81ea-4f97-96ba-80c9db9706b8",
+  "created": "2017-03-27T07:50:00.676Z",
+  "files": [
+    {
+      "url": "https://cdn2.entrecode.de/files/01bd8e08/q-reMdqANeX4zuRGdK1OwhrR.svg",
+      "mimetype": "image/svg+xml",
+      "size": 505770,
+      "resolution": null,
+      "locale": null,
+      "created": "2017-03-27T07:50:00.676+00:00",
+      "modified": "2017-03-27T07:50:00.676+00:00",
+      "assetID": "1e34deed-81ea-4f97-96ba-80c9db9706b8"
+    }
+  ],
+  "tags": [],
+  "title": "statediagram-dm",
+  "type": "image",
+  "_links": {
+    "collection": {
+      "profile": "https://entrecode.de/schema/assets",
+      "href": "https://datamanager.entrecode.de/asset?dataManagerID=48e18a34-cf64-4f4a-bc47-45323a7f0e44"
+    },
+    "ec:asset/best-file": {
+      "href": "https://datamanager.entrecode.de/files/1e34deed-81ea-4f97-96ba-80c9db9706b8{?size,thumb}",
+      "templated": true
+    },
+    "ec:datamanager": {
+      "profile": "https://entrecode.de/schema/datamanager",
+      "href": "https://datamanager.entrecode.de/?dataManagerID=48e18a34-cf64-4f4a-bc47-45323a7f0e44"
+    },
+    "self": {
+      "profile": "https://entrecode.de/schema/asset",
+      "href": "https://datamanager.entrecode.de/asset?assetID=1e34deed-81ea-4f97-96ba-80c9db9706b8",
+      "title": "statediagram-dm"
+    }
+  }
+}

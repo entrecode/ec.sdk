@@ -1,4 +1,6 @@
 import superagent from 'superagent';
+import locale from 'locale';
+
 import Problem from './Problem';
 import events from './EventEmitter';
 import TokenStoreFactory from './TokenStore';
@@ -355,3 +357,71 @@ export function optionsToQuery(options) {
 
   return out;
 }
+
+/**
+ * Helper for negotiating files from assets.
+ *
+ * @param image
+ * @param thumb
+ * @param size
+ * @param requestedLocale
+ */
+export function fileNegotiate(asset, image, thumb, size, requestedLocale) {
+  let f = JSON.parse(JSON.stringify(asset.files));
+
+  if (requestedLocale) {
+    const supportedLocales = new locale.Locales(
+      [...new Set(f.map(e => e.locale))] // unique
+      .filter(a => !!a));// remove falsy values
+    let bestLocale = (new locale.Locales(requestedLocale)).best(supportedLocales).toString();
+    bestLocale = /^([^.]+)/.exec(bestLocale)[1]; // remove charset
+    const filesWithLocale = f.filter(file => file.locale === bestLocale);
+    if (filesWithLocale && filesWithLocale.length > 0) {
+      f = filesWithLocale;
+    }
+  }
+  if (!image && !thumb && asset.type !== 'image') { // for getFileUrl pic fist file and return - not for images
+    return f[0].url;
+  }
+
+  const first = f[0];
+  // remove image files we have no resolution for (image/svg+xml; fix for CMS-1091)
+  f = f.filter(file => file.resolution);
+  if (f.length === 0) { // if no file is left pick first of original data
+    return first.url;
+  }
+  f.sort((left, right) => { // sort by size descending
+    const leftMax = Math.max(left.resolution.height, left.resolution.width);
+    const rightMax = Math.max(right.resolution.height, right.resolution.width);
+    if (leftMax < rightMax) {
+      return 1;
+    }
+    if (leftMax > rightMax) {
+      return -1;
+    }
+    return 0;
+  });
+  let imageFiles = f.filter((file) => {
+    if (thumb) {
+      return file.url.indexOf('_thumb') !== -1; // is thumbnail
+    }
+    return file.url.indexOf('_thumb') === -1; // is not a thumbnail
+  });
+  if (!imageFiles || imageFiles.length === 0) {
+    imageFiles = f;
+  }
+  const largest = imageFiles[0];
+  if (size) {
+    // remove all image resolutions that are too small
+    imageFiles = imageFiles
+    .filter(file => file.resolution.height >= size || file.resolution.width >= size)
+    // choose smallest image of all that are greater than size parameter
+    .slice(-1);
+  }
+
+  if (imageFiles.length > 0) { // if all is good, we have an image now
+    return imageFiles[0].url;
+  }
+  // if the requested size is larger than the original image, we take the largest possible one
+  return largest.url;
+};

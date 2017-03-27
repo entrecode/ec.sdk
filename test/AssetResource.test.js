@@ -148,6 +148,85 @@ describe('Asset Resource', () => {
   it('should be instance of TokenResource', () => {
     resource.should.be.instanceOf(AssetResource);
   });
+  it('should get file url', () => {
+    resource.getFileUrl().should.be.equal('https://cdn2.entrecode.de/files/01bd8e08/J2DJfjfEVby3KcxGNrJyFdEz.png');
+  });
+  it('should get image url', () => {
+    resource.getImageUrl(1000).should.be.equal('https://cdn2.entrecode.de/files/01bd8e08/J2DJfjfEVby3KcxGNrJyFdEz_1024.png');
+  });
+  it('should get image thumb url', () => {
+    resource.getImageThumbUrl(500).should.be.equal('https://cdn2.entrecode.de/files/01bd8e08/J2DJfjfEVby3KcxGNrJyFdEz_400_thumb.png');
+  });
+  it('should get file url', () => {
+    resource.getFileUrl('de-DE').should.be.equal('https://cdn2.entrecode.de/files/01bd8e08/J2DJfjfEVby3KcxGNrJyFdEz.png');
+  });
+  it('should get image url', () => {
+    resource.getImageUrl(1000, 'de-DE').should.be.equal('https://cdn2.entrecode.de/files/01bd8e08/J2DJfjfEVby3KcxGNrJyFdEz_1024.png');
+  });
+  it('should get image thumb url', () => {
+    resource.getImageThumbUrl(100, 'de-DE').should.be.equal('https://cdn2.entrecode.de/files/01bd8e08/J2DJfjfEVby3KcxGNrJyFdEz_100_thumb.png');
+  });
+  it('should get on svg image with resolution', () => {
+    return new Promise((resolve, reject) => {
+      fs.readFile(`${__dirname}/mocks/asset-single-svg.json`, 'utf-8', (err, res) => {
+        if (err) {
+          return reject(err);
+        }
+
+        return resolve(JSON.parse(res));
+      });
+    })
+    .then(data => new AssetResource(data))
+    .then((asset) => {
+      asset.getImageUrl(200).should.be.equal('https://cdn2.entrecode.de/files/01bd8e08/q-reMdqANeX4zuRGdK1OwhrR.svg');
+    });
+  });
+  it('should get on image without thumbs', () => {
+    return new Promise((resolve, reject) => {
+      fs.readFile(`${__dirname}/mocks/asset-single-nothumbs.json`, 'utf-8', (err, res) => {
+        if (err) {
+          return reject(err);
+        }
+
+        return resolve(JSON.parse(res));
+      });
+    })
+    .then(data => new AssetResource(data))
+    .then((asset) => {
+      asset.getImageThumbUrl(200).should.be.equal('https://cdn2.entrecode.de/files/01bd8e08/J2DJfjfEVby3KcxGNrJyFdEz_256.png');
+    });
+  });
+  it('should get on non image file', () => {
+    return new Promise((resolve, reject) => {
+      fs.readFile(`${__dirname}/mocks/asset-single-plain.json`, 'utf-8', (err, res) => {
+        if (err) {
+          return reject(err);
+        }
+
+        return resolve(JSON.parse(res));
+      });
+    })
+    .then(data => new AssetResource(data))
+    .then((asset) => {
+      asset.getFileUrl().should.be.equal('https://cdn2.entrecode.de/files/01bd8e08/1-mt7_kX_DnyNbTQaSP4meVk.txt');
+    });
+  });
+  it('should get with locale on no locale', () => {
+    return new Promise((resolve, reject) => {
+      fs.readFile(`${__dirname}/mocks/asset-single-plain.json`, 'utf-8', (err, res) => {
+        if (err) {
+          return reject(err);
+        }
+
+        return resolve(JSON.parse(res));
+      });
+    })
+    .then(data => new AssetResource(data))
+    .then((asset) => {
+      asset.getFileUrl('de-DE').should.be.equal('https://cdn2.entrecode.de/files/01bd8e08/1-mt7_kX_DnyNbTQaSP4meVk.txt');
+    });
+  });
+
 
   const dateGetter = ['created'];
   dateGetter.forEach((name) => {
