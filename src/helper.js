@@ -277,6 +277,33 @@ export function superagentFormPost(url, form) {
 }
 
 /**
+ * Superagent Wrapper for GET.
+ *
+ * @access private
+ *
+ * @param {string} url the url to get
+ * @param {object} headers additional headers
+ * @returns {Promise} Promise resolving to response body.
+ */
+export function superagentGet(url, headers) {
+  const request = superagent.get(url);
+
+  if (headers) {
+    request.set(headers);
+  }
+
+  return request.then(res => Promise.resolve(res.body ? res.body : {}))
+  .catch((err) => {
+    let problem;
+    if ({}.hasOwnProperty.call(err, 'status')) {
+      problem = new Problem(err.response.body);
+    }
+    events.emit('error', problem || err);
+    throw problem || err;
+  });
+}
+
+/**
  * Modifier for filter object to query convertion.
  *
  * @access private

@@ -1,5 +1,5 @@
 import Core from './Core';
-import { get, post, optionsToQuery } from './helper';
+import { get, optionsToQuery, post, superagentGet } from './helper';
 import DataManagerResource from './resources/DataManagerResource';
 import DataManagerList from './resources/DataManagerList';
 import TokenStoreFactory from './TokenStore';
@@ -226,5 +226,58 @@ export default class DataManager extends Core {
       return get(this.environment, request);
     })
     .then(([res]) => new DMStatsList(res, this.environment).getFirstItem());
+  }
+
+  /**
+   * Best file helper for files.
+   *
+   * @param {string} assetID - the assetID
+   * @param {string?} locale - the locale
+   * @returns {Promise<string>} URL to the file
+   */
+  getFileUrl(assetID, locale) {
+    if (!assetID) {
+      return Promise.reject(new Error('assetID must be defined'));
+    }
+
+    const url = `${urls[this.environment]}files/${assetID}/url`;
+    return superagentGet(url, { 'Accept-Language': locale })
+    .then(([res]) => res.url);
+  }
+
+  /**
+   * Best file helper for images.
+   *
+   * @param {string} assetID - the assetID
+   * @param {number?} size - the minimum size of the image
+   * @param {string?} locale - the locale
+   * @returns {Promise<string>} URL to the file
+   */
+  getImageUrl(assetID, size, locale) {
+    if (!assetID) {
+      return Promise.reject(new Error('assetID must be defined'));
+    }
+
+    const url = `${urls[this.environment]}files/${assetID}/url${size ? `?size=${size}` : ''}`;
+    return superagentGet(url, { 'Accept-Language': locale })
+    .then(([res]) => res.url);
+  }
+
+  /**
+   * Best file helper for image thumbnails.
+   *
+   * @param {string} assetID - the assetID
+   * @param {number?} size - the minimum size of the image
+   * @param {string?} locale - the locale
+   * @returns {Promise<string>} URL to the file
+   */
+  getImageThumbUrl(assetID, size, locale) {
+    if (!assetID) {
+      return Promise.reject(new Error('assetID must be defined'));
+    }
+
+    const url = `${urls[this.environment]}files/${assetID}/url?thumb${size ? `&size=${size}` : ''}`;
+    return superagentGet(url, { 'Accept-Language': locale })
+    .then(([res]) => res.url);
   }
 }

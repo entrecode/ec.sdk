@@ -25,6 +25,12 @@ export declare class DataManager extends Core {
   statsList(): DMStatsList;
 
   stats(dataManagerID: string): DMStatsResource;
+
+  getFileUrl(assetID: string, locale?: string): string;
+
+  getImageUrl(assetID: string, size?: number, locale?: string): string;
+
+  getImageThumbUrl(assetID: string, size?: number, locale?: string): string;
 }
 
 type environment = 'live' | 'stage' | 'nightly' | 'develop';

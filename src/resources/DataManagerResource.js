@@ -1,4 +1,4 @@
-import { get, post, optionsToQuery } from '../helper';
+import { get, optionsToQuery, post } from '../helper';
 import ModelList from './ModelList';
 import ModelResource from './ModelResource';
 import DMClientList from './DMClientList';
@@ -498,6 +498,9 @@ export default class DataManagerResource extends Resource {
    * @returns {Promise<AssetResource>} the newly created AssetResource
    */
   createAsset(asset) {
+    if (!asset) {
+      return Promise.reject(new Error('Cannot create resource with undefined object.'));
+    }
     return Promise.reject(new Error('not implemented yet'));
     /*
      return Promise.resolve()

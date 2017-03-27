@@ -445,6 +445,44 @@ describe('Network Helper', () => {
       });
     });
   });
+  describe('superagentGet', () => {
+    it('should be resolved', () => {
+      nock('https://datamanager.entrecode.de')
+      .get('/').reply(200, { url: 'http://example.com' });
+
+      return helper.superagentGet('https://datamanager.entrecode.de').should.be.eventually.fulfilled;
+    });
+    it('should be resolved with headers', () => {
+      nock('https://datamanager.entrecode.de')
+      .get('/').reply(200, { url: 'http://example.com' });
+
+      return helper.superagentGet('https://datamanager.entrecode.de', {}).should.be.eventually.fulfilled;
+    });
+    it('should be rejected', () => {
+      nock('https://datamanager.entrecode.de')
+      .get('/').reply(404, {
+        title: 'not found',
+        code: 2102,
+        status: 404,
+        detail: 'title',
+      });
+
+      return helper.superagentGet('https://datamanager.entrecode.de', {}).should.be.rejectedWith(Problem);
+    });
+    it('should fire error event', () => {
+      nock('https://datamanager.entrecode.de')
+      .get('/').replyWithError('mocked error');
+
+      return helper.superagentGet('https://datamanager.entrecode.de', {})
+      .then(() => {
+        throw new Error('unexpectedly resolved');
+      })
+      .catch((err) => {
+        err.should.have.property('message', 'mocked error');
+        errorSpy.should.be.called.once;
+      });
+    });
+  });
 });
 
 describe('optionsToQuery', () => {

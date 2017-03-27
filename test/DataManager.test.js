@@ -212,6 +212,64 @@ describe('DataManager class', () => {
     const dm = new DataManager('live');
     return dm.stats().should.be.rejectedWith('dataManagerID must be defined');
   });
+
+  it('should get best file', () => {
+    const dm = new DataManager('live');
+    const stub = sinon.stub(helper, 'superagentGet');
+    stub.returns(resolver('best-file.json'));
+
+    return dm.getFileUrl('id')
+    .should.eventually.be.equal('https://cdn2.entrecode.de/files/01bd8e08/J2DJfjfEVby3KcxGNrJyFdEz_512.png')
+    .notify(() => stub.restore());
+  });
+  it('should be rejected on undefined assetID', () => {
+    return new DataManager('live').getFileUrl()
+    .should.be.rejectedWith('assetID must be defined');
+  });
+  it('should get best image', () => {
+    const dm = new DataManager('live');
+    const stub = sinon.stub(helper, 'superagentGet');
+    stub.returns(resolver('best-file.json'));
+
+    return dm.getImageUrl('id')
+    .should.eventually.be.equal('https://cdn2.entrecode.de/files/01bd8e08/J2DJfjfEVby3KcxGNrJyFdEz_512.png')
+    .notify(() => stub.restore());
+  });
+  it('should get best image with size', () => {
+    const dm = new DataManager('live');
+    const stub = sinon.stub(helper, 'superagentGet');
+    stub.returns(resolver('best-file.json'));
+
+    return dm.getImageUrl('id', 2)
+    .should.eventually.be.equal('https://cdn2.entrecode.de/files/01bd8e08/J2DJfjfEVby3KcxGNrJyFdEz_512.png')
+    .notify(() => stub.restore());
+  });
+  it('should be rejected on undefined assetID', () => {
+    return new DataManager('live').getImageUrl()
+    .should.be.rejectedWith('assetID must be defined');
+  });
+  it('should get best thumb', () => {
+    const dm = new DataManager('live');
+    const stub = sinon.stub(helper, 'superagentGet');
+    stub.returns(resolver('best-file.json'));
+
+    return dm.getImageThumbUrl('id')
+    .should.eventually.be.equal('https://cdn2.entrecode.de/files/01bd8e08/J2DJfjfEVby3KcxGNrJyFdEz_512.png')
+    .notify(() => stub.restore());
+  });
+  it('should get best thumb with size', () => {
+    const dm = new DataManager('live');
+    const stub = sinon.stub(helper, 'superagentGet');
+    stub.returns(resolver('best-file.json'));
+
+    return dm.getImageThumbUrl('id', 2)
+    .should.eventually.be.equal('https://cdn2.entrecode.de/files/01bd8e08/J2DJfjfEVby3KcxGNrJyFdEz_512.png')
+    .notify(() => stub.restore());
+  });
+  it('should be rejected on undefined assetID', () => {
+    return new DataManager('live').getImageThumbUrl()
+    .should.be.rejectedWith('assetID must be defined');
+  });
 });
 
 describe('DataManager ListResource', () => {
@@ -572,7 +630,7 @@ describe('DataManager Resource', () => {
   it.skip('should create asset', () => {
     // TODO with formdata, file, buffer
   });
-  it.skip('should be rejected on create asset with undefined value', () => {
+  it('should be rejected on create asset with undefined value', () => {
     return resource.createAsset().should.be.rejectedWith('Cannot create resource with undefined object.');
   });
 });
