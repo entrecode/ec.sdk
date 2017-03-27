@@ -10,4 +10,8 @@ export declare class AssetResource extends Resource {
   created: Date;
   type: string;
   files: Array<any>;
+
+  getFileUrl(locale?: string): string;
+  getImageUrl(size?: number): string;
+  getImageThumbUrl(size?: number): string;
 }
