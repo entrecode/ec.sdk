@@ -1,5 +1,5 @@
 import { Resource } from './Resource';
-import { filterOptions } from '../interfaces';
+import { assetInput, assetOpitons, filterOptions } from '../interfaces';
 import { ModelList } from './ModelList';
 import { ModelResource } from './ModelResource';
 import { DMClientList } from './DMClientList';
@@ -48,4 +48,8 @@ export declare class DataManagerResource extends Resource {
   assetList(options?: filterOptions): AssetList;
 
   asset(assetID: string): AssetResource;
+
+  createAsset(input: assetInput, options: assetOpitons): () => Promise<AssetResource>;
+
+  // createAsset(input: Array<assetInput>, options: assetOpitons): () => Promise<AssetList>;
 }

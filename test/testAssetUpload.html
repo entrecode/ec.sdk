@@ -1,0 +1,50 @@
+<!doctype html>
+<html class="no-js" lang="">
+<head>
+    <meta charset="utf-8">
+    <title>Asset Upload Test Site</title>
+</head>
+<body>
+<form>
+    File: <input type="file" id="file" name="file"/><br/>
+    Token: <input type="text" id="token" name="token"/><br/>
+    dmID: <input type="text" id="id" name="id"/><br/>
+    <input type="submit" value="Submit now!"/>
+</form>
+
+<script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+<script src="../dist/ec.sdk.js"></script>
+<script>
+  $(document).ready(function () {
+    $('form').submit(function (e) {
+      e.preventDefault();
+      var data;
+
+      data = new FormData();
+      data.append('file', $('#file')[0].files[0]);
+      window.test = data;
+
+      var dataManager = new ec.DataManager('live');
+      var token = $('#token').val();
+      dataManager.setToken(token);
+
+      var id = $('#id').val();
+      dataManager.dataManager(id)
+      .then((dm) => {
+        return dm.createAsset(data);
+      })
+      .then(function (asset) {
+        console.log('success!');
+        return asset();
+      })
+      .then((asset) => {
+        console.log(asset.assetID);
+      }).catch(function (err) {
+        console.error(err);
+      });
+      e.preventDefault();
+    });
+  });
+</script>
+</body>
+</html>

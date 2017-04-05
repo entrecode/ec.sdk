@@ -36,8 +36,7 @@ export default class Resource {
     if (traversal) {
       this.traversal = traversal;
     } else {
-      this.traversal = traverson.from(this.resource.link('self').href).jsonHal()
-      .addRequestOptions({ headers: { Accept: 'application/hal+json' } });
+      this.traversal = traverson.from(this.resource.link('self').href).jsonHal();
     }
 
     Object.defineProperties(this, {

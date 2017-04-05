@@ -27,7 +27,7 @@
     "jwt-decode": "^2.1.0",
     "locale": "^0.1.0",
     "superagent": "^3.5.1",
-    "traverson": "^6.0.1",
+    "traverson": "^6.0.2",
     "traverson-hal": "^6.0.0"
   },
   "devDependencies": {

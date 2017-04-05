@@ -1,4 +1,7 @@
-import { get, optionsToQuery, post } from '../helper';
+import superagent from 'superagent';
+import traverson from 'traverson';
+
+import { get, getUrl, optionsToQuery, post, superagentPost } from '../helper';
 import ModelList from './ModelList';
 import ModelResource from './ModelResource';
 import DMClientList from './DMClientList';
@@ -494,24 +497,58 @@ export default class DataManagerResource extends Resource {
   /**
    * Create a new asset.
    *
-   * @param {object} asset object representing the asset.
-   * @returns {Promise<AssetResource>} the newly created AssetResource
+   * @param {object|string} input representing the asset, either a path, a FormData object,
+   *  a readStream, or an object containing a buffer.
+   * @param {object} options options for creating an asset.
+   * @returns {Promise<Promise<AssetResource>>} the newly created AssetResource
    */
-  createAsset(asset) {
-    if (!asset) {
+  createAsset(input, options = {}) {
+    if (!input) {
       return Promise.reject(new Error('Cannot create resource with undefined object.'));
     }
-    return Promise.reject(new Error('not implemented yet'));
-    /*
-     return Promise.resolve()
-     .then(() => {
-     if (!asset) {
-     throw new Error('Cannot create resource with undefined object.');
-     }
-     // TODO schema validation
-     return post(this.newRequest().follow('ec:assets'), asset);
-     })
-     .then(([dm, traversal]) => new RoleResource(dm, this.environment, traversal));
-     */
+
+    return getUrl(this.environment, this.newRequest().follow('ec:assets'))
+    .then((url) => {
+      const superagentRequest = superagent.post(url);
+
+      const isFormData = typeof FormData === 'function' && input instanceof FormData; // eslint-disable-line
+                                                                                      // no-undef
+      if (isFormData) {
+        superagentRequest.send(input);
+      } else if (typeof input === 'string') {
+        superagentRequest.attach('file', input);
+      } else if (Buffer.isBuffer(input)) {
+        if (!('fileName' in options)) {
+          throw new Error('When using buffer file input you must provide options.fileName');
+        }
+        superagentRequest.attach('file', options.fileName);
+      } else {
+        throw new Error('Cannot handle input.');
+      }
+
+      if (options.title) {
+        if (isFormData) {
+          input.field('title', options.title);
+        } else {
+          superagentRequest.field('title', options.title);
+        }
+      }
+
+      if (options.tags) {
+        if (isFormData) {
+          input.field('tags', options.tags);
+        } else {
+          superagentRequest.field('tags', options.tags);
+        }
+      }
+
+      return superagentPost(this.environment, superagentRequest);
+    })
+    .then((response) => {
+      const url = response._links['ec:asset'].href;
+      console.log(url);
+      return () => get(this.environment, traverson.from(url))
+      .then(([res, traversal]) => new AssetResource(res, this.environment, traversal));
+    });
   }
 }

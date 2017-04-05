@@ -88,16 +88,18 @@ function traversonWrapper(func, environment, t, body) {
       return resolve(res);
     };
 
+    t.addRequestOptions({ headers: { Accept: 'application/hal+json' } });
+
     const store = TokenStoreFactory(environment);
     if (store) {
+      if (store.has()) {
+        t.addRequestOptions({ headers: { Authorization: `Bearer ${store.get()}` } });
+      }
+
       if (store.hasUserAgent()) {
         t.addRequestOptions({ headers: { 'User-Agent': `${store.getUserAgent()} ec.sdk/${packageJson.version}` } });
       } else {
         t.addRequestOptions({ headers: { 'User-Agent': `ec.sdk/${packageJson.version}` } });
-      }
-
-      if (store.has()) {
-        t.addRequestOptions({ headers: { Authorization: `Bearer ${store.get()}` } });
       }
     }
 
@@ -295,7 +297,43 @@ export function superagentGet(url, headers) {
   return request.then(res => Promise.resolve(res.body ? res.body : {}))
   .catch((err) => {
     let problem;
-    if ({}.hasOwnProperty.call(err, 'status')) {
+    if ('status' in err) {
+      problem = new Problem(err.response.body);
+    }
+    events.emit('error', problem || err);
+    throw problem || err;
+  });
+}
+
+/**
+ * Superagent Wrapper for POST.
+ *
+ * @access private
+ *
+ * @param {string} environment environment from which a token should be used
+ * @param {object} request the url to post to
+ * @returns {Promise} Promise resolving to response body.
+ */
+export function superagentPost(environment, request) {
+  request.set('Accept', 'application/hal+json');
+
+  const store = TokenStoreFactory(environment);
+  if (store) {
+    if (store.has()) {
+      request.set('Authorization', `Bearer ${store.get()}`);
+    }
+
+    if (store.hasUserAgent()) {
+      request.set('User-Agent', `${store.getUserAgent()} ec.sdk/${packageJson.version}`);
+    } else {
+      request.set('User-Agent', `ec.sdk/${packageJson.version}`);
+    }
+  }
+
+  return request.then(res => Promise.resolve(res.body ? res.body : {}))
+  .catch((err) => {
+    let problem;
+    if ('status' in error) {
       problem = new Problem(err.response.body);
     }
     events.emit('error', problem || err);
