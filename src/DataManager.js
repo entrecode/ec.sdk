@@ -1,11 +1,11 @@
 import Core from './Core';
 import { get, optionsToQuery, post, superagentGet } from './helper';
-import DataManagerResource from './resources/DataManagerResource';
-import DataManagerList from './resources/DataManagerList';
+import DataManagerResource from './resources/datamanager/DataManagerResource';
+import DataManagerList from './resources/datamanager/DataManagerList';
 import TokenStoreFactory from './TokenStore';
-import TemplateList from './resources/TemplateList';
-import TemplateResource from './resources/TemplateResource';
-import DMStatsList from './resources/DMStatsList';
+import TemplateList from './resources/datamanager/TemplateList';
+import TemplateResource from './resources/datamanager/TemplateResource';
+import DMStatsList from './resources/datamanager/DMStatsList';
 
 const urls = {
   live: 'https://datamanager.entrecode.de/',

@@ -121,7 +121,7 @@ describe('Token handling with cookie store', () => {
   });
   after(() => {
     store = null;
-    document = null; // eslint-disable-line no-undef
+    document = undefined; // eslint-disable-line no-undef
     TokenStore.stores.clear();
   });
   it('should get token store', () => {

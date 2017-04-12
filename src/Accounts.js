@@ -6,16 +6,16 @@ import {
   getEmpty,
   postEmpty,
   superagentFormPost,
-  optionsToQuery
+  optionsToQuery,
 } from './helper';
-import AccountList from './resources/AccountList';
-import AccountResource from './resources/AccountResource';
-import ClientList from './resources/ClientList';
-import ClientResource from './resources/ClientResource';
-import InvalidPermissionsResource from './resources/InvalidPermissionsResource';
-import InvitesResource from './resources/InvitesResource';
-import GroupList from './resources/GroupList';
-import GroupResource from './resources/GroupResource';
+import AccountList from './resources/accounts/AccountList';
+import AccountResource from './resources/accounts/AccountResource';
+import ClientList from './resources/accounts/ClientList';
+import ClientResource from './resources/accounts/ClientResource';
+import InvalidPermissionsResource from './resources/accounts/InvalidPermissionsResource';
+import InvitesResource from './resources/accounts/InvitesResource';
+import GroupList from './resources/accounts/GroupList';
+import GroupResource from './resources/accounts/GroupResource';
 import TokenStoreFactory from './TokenStore';
 
 const urls = {

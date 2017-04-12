@@ -1,11 +1,11 @@
 import { Core } from './Core';
-import { DataManagerResource } from './resources/DataManagerResource';
-import { DataManagerList } from './resources/DataManagerList';
+import { DataManagerResource } from './resources/datamanager/DataManagerResource';
+import { DataManagerList } from './resources/datamanager/DataManagerList';
 import { filterOptions } from './interfaces';
-import { TemplateList } from './resources/TemplateList';
-import { TemplateResource } from './resources/TemplateResource';
-import { DMStatsList } from './resources/DMStatsList';
-import { DMStatsResource } from './resources/DMStatsResource';
+import { TemplateList } from './resources/datamanager/TemplateList';
+import { TemplateResource } from './resources/datamanager/TemplateResource';
+import { DMStatsList } from './resources/datamanager/DMStatsList';
+import { DMStatsResource } from './resources/datamanager/DMStatsResource';
 
 export declare class DataManager extends Core {
   constructor(environment?: environment);

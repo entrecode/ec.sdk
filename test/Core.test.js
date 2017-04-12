@@ -222,7 +222,7 @@ describe('Network Helper', () => {
   describe('getUrl', () => {
     it('should be resolved', () => {
       nock('https://datamanager.entrecode.de')
-      .get('/').replyWithFile(200, `${__dirname}/mocks/dm-list.json`);
+      .get('/').replyWithFile(200, `${__dirname}/../mocks/dm-list.json`);
 
       return helper.getUrl('live', traversal.follow('ec:dm-stats')).should.be.eventually.resolved;
     });
@@ -321,7 +321,7 @@ describe('Network Helper', () => {
   describe('post', () => {
     it('should be resolved', () => {
       nock('https://datamanager.entrecode.de')
-      .post('/').replyWithFile(200, `${__dirname}/mocks/dm-list.json`);
+      .post('/').replyWithFile(200, `${__dirname}/../mocks/dm-list.json`);
 
       return helper.post('live', traversal).should.be.eventually.resolved;
     });
@@ -352,7 +352,7 @@ describe('Network Helper', () => {
   describe('put', () => {
     it('should be resolved', () => {
       nock('https://datamanager.entrecode.de')
-      .put('/').replyWithFile(200, `${__dirname}/mocks/dm-list.json`);
+      .put('/').replyWithFile(200, `${__dirname}/../mocks/dm-list.json`);
 
       return helper.put('live', traversal).should.be.eventually.resolved;
     });

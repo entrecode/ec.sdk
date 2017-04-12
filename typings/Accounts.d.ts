@@ -1,13 +1,13 @@
 import { Core } from './Core';
-import { AccountList } from './resources/AccountList';
-import { AccountResource } from './resources/AccountResource';
+import { AccountList } from './resources/accounts/AccountList';
+import { AccountResource } from './resources/accounts/AccountResource';
 import { filterOptions } from './interfaces';
-import { InvitesResource } from './resources/InvitesResource';
-import { ClientList } from './resources/ClientList';
-import { ClientResrouce } from './resources/ClientResource';
-import { InvalidPermissionsResource } from './resources/InvalidPermissionsResource';
-import { GroupResource } from './resources/GroupResource';
-import { GroupList } from './resources/GroupList';
+import { InvitesResource } from './resources/accounts/InvitesResource';
+import { ClientList } from './resources/accounts/ClientList';
+import { ClientResrouce } from './resources/accounts/ClientResource';
+import { InvalidPermissionsResource } from './resources/accounts/InvalidPermissionsResource';
+import { GroupResource } from './resources/accounts/GroupResource';
+import { GroupList } from './resources/accounts/GroupList';
 
 export declare class Accounts extends Core {
   constructor(environment?: environment);
