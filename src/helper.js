@@ -333,7 +333,7 @@ export function superagentPost(environment, request) {
   return request.then(res => Promise.resolve(res.body ? res.body : {}))
   .catch((err) => {
     let problem;
-    if ('status' in error) {
+    if ('status' in err) {
       problem = new Problem(err.response.body);
     }
     events.emit('error', problem || err);

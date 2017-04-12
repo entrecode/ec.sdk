@@ -5,7 +5,7 @@ const chaiAsPromised = require('chai-as-promised');
 const nock = require('nock');
 const sinon = require('sinon');
 const sinonChai = require('sinon-chai');
-const fs = require('fs');
+const superagent = require('superagent');
 
 const Core = require('../lib/Core');
 const helper = require('../lib/helper');
@@ -222,7 +222,7 @@ describe('Network Helper', () => {
   describe('getUrl', () => {
     it('should be resolved', () => {
       nock('https://datamanager.entrecode.de')
-      .get('/').replyWithFile(200, `${__dirname}/../mocks/dm-list.json`);
+      .get('/').replyWithFile(200, `${__dirname}/mocks/dm-list.json`);
 
       return helper.getUrl('live', traversal.follow('ec:dm-stats')).should.be.eventually.resolved;
     });
@@ -321,7 +321,7 @@ describe('Network Helper', () => {
   describe('post', () => {
     it('should be resolved', () => {
       nock('https://datamanager.entrecode.de')
-      .post('/').replyWithFile(200, `${__dirname}/../mocks/dm-list.json`);
+      .post('/').replyWithFile(200, `${__dirname}/mocks/dm-list.json`);
 
       return helper.post('live', traversal).should.be.eventually.resolved;
     });
@@ -352,7 +352,7 @@ describe('Network Helper', () => {
   describe('put', () => {
     it('should be resolved', () => {
       nock('https://datamanager.entrecode.de')
-      .put('/').replyWithFile(200, `${__dirname}/../mocks/dm-list.json`);
+      .put('/').replyWithFile(200, `${__dirname}/mocks/dm-list.json`);
 
       return helper.put('live', traversal).should.be.eventually.resolved;
     });
@@ -474,6 +474,51 @@ describe('Network Helper', () => {
       .get('/').replyWithError('mocked error');
 
       return helper.superagentGet('https://datamanager.entrecode.de', {})
+      .then(() => {
+        throw new Error('unexpectedly resolved');
+      })
+      .catch((err) => {
+        err.should.have.property('message', 'mocked error');
+        errorSpy.should.be.called.once;
+      });
+    });
+  });
+  describe('superagentPost', () => {
+    it('should be resolved', () => {
+      nock('https://datamanager.entrecode.de')
+      .post('/').reply(200, {});
+
+      return helper.superagentPost('live', superagent.post('https://datamanager.entrecode.de'))
+      .should.be.eventually.resolved;
+    });
+    it('should be resolved with token and user agent', () => {
+      nock('https://datamanager.entrecode.de')
+      .post('/').reply(200, {});
+
+      const liveStore = TokenStore.default('live');
+      liveStore.set('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ');
+      liveStore.setUserAgent('agent/1.0.0');
+
+      return helper.superagentPost('live', superagent.post('https://datamanager.entrecode.de'))
+        .should.be.eventually.resolved;
+    });
+    it('should be rejected', () => {
+      nock('https://datamanager.entrecode.de')
+      .post('/').reply(404, {
+        title: 'not found',
+        code: 2102,
+        status: 404,
+        detail: 'title',
+      });
+
+      return helper.superagentPost('live', superagent.post('https://datamanager.entrecode.de'))
+      .should.be.rejectedWith(Problem);
+    });
+    it('should fire error event', () => {
+      nock('https://datamanager.entrecode.de')
+      .post('/').replyWithError('mocked error');
+
+      return helper.superagentPost('live', superagent.post('https://datamanager.entrecode.de'))
       .then(() => {
         throw new Error('unexpectedly resolved');
       })

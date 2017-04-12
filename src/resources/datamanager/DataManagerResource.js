@@ -546,7 +546,6 @@ export default class DataManagerResource extends Resource {
     })
     .then((response) => {
       const url = response._links['ec:asset'].href;
-      console.log(url);
       return () => get(this.environment, traverson.from(url))
       .then(([res, traversal]) => new AssetResource(res, this.environment, traversal));
     });
