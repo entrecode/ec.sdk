@@ -174,7 +174,13 @@ export default class ListResource extends Resource {
  *     },
  *     created: {
  *       from: new Date(new Date().getTime() - 60000), // created 10minutes or less ago
- *     }
+ *     },
+ *     permissions: { // has at least one of these permissions
+ *       any: [
+ *         'dm-user',
+ *         'app-user',
+ *       ],
+ *     },
  *   },
   * });
  *

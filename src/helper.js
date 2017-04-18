@@ -426,10 +426,12 @@ export function optionsToQuery(options) {
 /**
  * Helper for negotiating files from assets.
  *
- * @param image
- * @param thumb
- * @param size
- * @param requestedLocale
+ * @param {AssetResource} asset - The asset from which negotiation should occur.
+ * @param {boolean} image - true if it is an image negotiation.
+ * @param {boolean} thumb - true if it is a thumbnail negotiation.
+ * @param {number?} size - the minimum size to request.
+ * @param {string?} requestedLocale - locale to request.
+ * @returns {string} url for the requested asset.
  */
 export function fileNegotiate(asset, image, thumb, size, requestedLocale) {
   let f = JSON.parse(JSON.stringify(asset.files));
