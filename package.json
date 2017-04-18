@@ -15,8 +15,8 @@
     "buildNode": "babel src -d lib --source-maps",
     "buildBrowser": "browserify lib/index.js -o dist/ec.sdk.js -s ec -t [ babelify --presets [ es2015 ] ] && uglifyjs dist/ec.sdk.js --screw-ie8 --compress --mangle  -o dist/ec.sdk.min.js",
     "changelog": "conventional-changelog -i CHANGELOG.md -s",
-    "coveralls": "istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js",
-    "coverage": "istanbul cover ./node_modules/mocha/bin/_mocha -- -R spec && open ./coverage/lcov-report/index.html",
+    "coveralls": "istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec --recursive && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js",
+    "coverage": "istanbul cover ./node_modules/mocha/bin/_mocha -- -R spec --recursive && open ./coverage/lcov-report/index.html",
     "docs": "documentation build src/** -c documentation.yml -f html -o docs",
     "test": "npm run buildNode && mocha --recursive",
     "testTravis": "npm run build && mocha --recursive"
