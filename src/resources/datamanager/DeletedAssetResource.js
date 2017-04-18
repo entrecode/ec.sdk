@@ -1,4 +1,5 @@
 import Resource from '../Resource';
+import { del } from '../../helper';
 
 /**
  * DeletedAssetResource class
@@ -54,7 +55,14 @@ export default class DeletedAssetResource extends Resource {
     });
   }
 
+  purge() {
+    return del(this.environment,
+      this.newRequest().follow('self').withTemplateParameters({ destroy: 'destroy' }));
+  }
+
+  restore() {
+    return this.del();
+  }
+
   // TODO get best file
-  // TODO purge
-  // TODO restore
 }

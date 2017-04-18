@@ -9,6 +9,7 @@ const DeletedAssetResource = require('../../lib/resources/datamanager/DeletedAss
 const DeletedAssetList = require('../../lib/resources/datamanager/DeletedAssetList').default;
 const Resource = require('../../lib/resources/Resource').default;
 const ListResource = require('../../lib/resources/ListResource').default;
+const helper = require('../../lib/helper');
 
 chai.should();
 chai.use(sinonChai);
@@ -73,6 +74,28 @@ describe('DeletedAsset Resource', () => {
   });
   it('should be instance of TokenResource', () => {
     resource.should.be.instanceOf(DeletedAssetResource);
+  });
+  it('should resolve on purge', () => {
+    const stub = sinon.stub(helper, 'del');
+    stub.returns(Promise.resolve());
+
+    return resource.purge()
+    .then(() => stub.restore())
+    .catch((err) => {
+      stub.restore();
+      throw err;
+    });
+  });
+  it('should resolve on restore', () => {
+    const stub = sinon.stub(helper, 'del');
+    stub.returns(Promise.resolve());
+
+    return resource.restore()
+    .then(() => stub.restore())
+    .catch((err) => {
+      stub.restore();
+      throw err;
+    });
   });
 
   const dateGetter = ['created'];
