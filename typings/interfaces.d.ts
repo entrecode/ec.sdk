@@ -7,8 +7,8 @@ export interface filterOptions {
 
 export type assetInput = string | object;
 
-export interface assetOpitons {
-  fileName?: string,
+export interface assetOptions {
+  fileName?: string | Array<string>,
   title?: string,
   tags?: Array<string>
 }

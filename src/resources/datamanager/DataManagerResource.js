@@ -1,5 +1,5 @@
 import superagent from 'superagent';
-import traverson from 'traverson';
+import * as qs from 'querystring';
 
 import { get, getUrl, optionsToQuery, post, superagentPost } from '../../helper';
 import ModelList from './ModelList';
@@ -519,9 +519,9 @@ export default class DataManagerResource extends Resource {
         superagentRequest.attach('file', input);
       } else if (Buffer.isBuffer(input)) {
         if (!('fileName' in options)) {
-          throw new Error('When using buffer file input you must provide options.fileName');
+          throw new Error('When using buffer file input you must provide options.fileName.');
         }
-        superagentRequest.attach('file', options.fileName);
+        superagentRequest.attach('file', input, options.fileName);
       } else {
         throw new Error('Cannot handle input.');
       }
@@ -545,9 +545,74 @@ export default class DataManagerResource extends Resource {
       return superagentPost(this.environment, superagentRequest);
     })
     .then((response) => {
-      const url = response._links['ec:asset'].href;
-      return () => get(this.environment, traverson.from(url))
-      .then(([res, traversal]) => new AssetResource(res, this.environment, traversal));
+      const url = response._links['ec:asset'].href; // eslint-disable-line no-underscore-dangle
+      const queryStrings = qs.parse(url.substr(url.indexOf('?') + 1));
+      return () => this.asset(queryStrings.assetID);
+    });
+  }
+
+  /**
+   * Create multiple new asset.
+   *
+   * @param {object|array<object|string>} input representing the asset, either an array of paths, a
+   *   FormData object, a array of readStreams, or an array containing buffers.
+   * @param {object} options options for creating an asset.
+   * @returns {Promise<Promise<AssetList>>} the newly created assets as AssetList
+   */
+  createAssets(input, options = {}) {
+    if (!input) {
+      return Promise.reject(new Error('Cannot create resource with undefined object.'));
+    }
+
+    return getUrl(this.environment, this.newRequest().follow('ec:assets'))
+    .then((url) => {
+      const superagentRequest = superagent.post(url);
+
+      const isFormData = typeof FormData === 'function' && input instanceof FormData; // eslint-disable-line
+                                                                                      // no-undef
+      if (isFormData) {
+        superagentRequest.send(input);
+      } else {
+        input.forEach((file, index) => {
+          if (typeof file === 'string') {
+            superagentRequest.attach('file', file);
+          } else if (Buffer.isBuffer(file)) {
+            if (!('fileName' in options)
+              || !Array.isArray(options.fileName)
+              || !options.fileName[index]) {
+              throw new Error('When using buffer file input you must provide options.fileName.');
+            }
+            superagentRequest.attach('file', file, options.fileName[index]);
+          } else {
+            throw new Error('Cannot handle input.');
+          }
+        });
+      }
+      if (options.title) {
+        if (isFormData) {
+          input.field('title', options.title);
+        } else {
+          superagentRequest.field('title', options.title);
+        }
+      }
+
+      if (options.tags) {
+        if (isFormData) {
+          input.field('tags', options.tags);
+        } else {
+          superagentRequest.field('tags', options.tags);
+        }
+      }
+
+      return superagentPost(this.environment, superagentRequest);
+    })
+    .then((response) => {
+      const urls = response._links['ec:asset'].map((link) => { // eslint-disable-line no-underscore-dangle
+        const queryStrings = qs.parse(link.href.substr(link.href.indexOf('?') + 1));
+        return queryStrings.assetID;
+      });
+
+      return () => this.assetList({ filter: { assetID: { any: urls } } });
     });
   }
 }
