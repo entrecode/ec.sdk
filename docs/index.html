@@ -875,6 +875,16 @@
               
                 
                 <li><a
+                  href='#config'
+                  class="">
+                  config
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
                   href='#groupresource'
                   class=" toggle-sibling">
                   GroupResource
@@ -1210,6 +1220,56 @@
                   
                   
                 </div>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#field'
+                  class="">
+                  field
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#policy'
+                  class="">
+                  policy
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#condition'
+                  class="">
+                  condition
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#conditions'
+                  class="">
+                  conditions
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#hook'
+                  class="">
+                  hook
+                  
+                </a>
                 
                 </li>
               
@@ -8403,6 +8463,58 @@ permissions and all group permissions.</p>
   
   <div class='clearfix'>
     
+    <h3 class='fl m0' id='config'>
+      config
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Configuration of a client</p>
+
+
+  <div class='pre p1 fill-light mt0'>config</div>
+  
+    <p>
+      Type:
+      {tokenMethod: (query | cookie | body), disableStrategies: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;(facebook | google | password)>}
+    </p>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+            <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
     <h3 class='fl m0' id='groupresource'>
       GroupResource
     </h3>
@@ -10664,7 +10776,7 @@ FormData object, a array of readStreams, or an array containing buffers.
         </div>
       
         <div class='space-bottom0'>
-          <span class='code bold'>fields</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>>)</code>
+          <span class='code bold'>fields</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="#field">field</a>>)</code>
           : Array of fields
 
           
@@ -10685,7 +10797,7 @@ FormData object, a array of readStreams, or an array containing buffers.
         </div>
       
         <div class='space-bottom0'>
-          <span class='code bold'>hooks</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>>)</code>
+          <span class='code bold'>hooks</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="#hook">hook</a>>)</code>
           : Array of hooks
 
           
@@ -10706,7 +10818,7 @@ FormData object, a array of readStreams, or an array containing buffers.
         </div>
       
         <div class='space-bottom0'>
-          <span class='code bold'>policies</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>>)</code>
+          <span class='code bold'>policies</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="#policy">policy</a>>)</code>
           : Array of Policies
 
           
@@ -10958,6 +11070,293 @@ FormData object, a array of readStreams, or an array containing buffers.
     </div>
   
 </div>
+
+  
+
+  
+</section>
+
+          
+        
+          
+            <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='field'>
+      field
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Object describing all properties of fields.</p>
+<p><a href="https://doc.entrecode.de/en/latest/data_manager/#field-data-types">Filed Documentation</a></p>
+
+
+  <div class='pre p1 fill-light mt0'>field</div>
+  
+    <p>
+      Type:
+      {title: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, description: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, type: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, readOnly: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>, required: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>, unique: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>, localizable: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>, mutable: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>, validation: (<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)}
+    </p>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'>{
+  <span class="hljs-string">"method"</span>: <span class="hljs-string">"put"</span>,
+  <span class="hljs-string">"restrictToFields"</span>: [<span class="hljs-string">"editableField"</span>],
+  <span class="hljs-string">"public"</span>: <span class="hljs-literal">false</span>,
+  <span class="hljs-string">"roles"</span>: [<span class="hljs-string">"anonymous"</span>],
+  <span class="hljs-string">"conditions"</span>: [
+    {
+      <span class="hljs-string">"field"</span>: <span class="hljs-string">"_creator"</span>,
+      <span class="hljs-string">"operator"</span>: <span class="hljs-string">"="</span>,
+      <span class="hljs-string">"variable"</span>: <span class="hljs-string">"accountID"</span>
+    },
+    <span class="hljs-string">"or"</span>,
+    {
+      <span class="hljs-string">"field"</span>: <span class="hljs-string">"public"</span>,
+      <span class="hljs-string">"operator"</span>: <span class="hljs-string">"="</span>,
+      <span class="hljs-string">"constant"</span>:<span class="hljs-literal">true</span>
+    }
+  ]
+}</pre>
+    
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+            <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='policy'>
+      policy
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Policy object</p>
+<p><a href="https://doc.entrecode.de/en/latest/data_manager/#permission-policies">Policy Documentation</a></p>
+
+
+  <div class='pre p1 fill-light mt0'>policy</div>
+  
+    <p>
+      Type:
+      {method: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, restrictToFields: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>>, public: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>, roles: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>>, conditions: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="#conditions">conditions</a>>}
+    </p>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+            <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='condition'>
+      condition
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Single condition object.</p>
+
+
+  <div class='pre p1 fill-light mt0'>condition</div>
+  
+    <p>
+      Type:
+      {field: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, operator: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, variable: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>}
+    </p>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+            <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='conditions'>
+      conditions
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Multiple conditions can be used by putting them into an array.</p>
+
+
+  <div class='pre p1 fill-light mt0'>conditions</div>
+  
+    <p>
+      Type:
+      (<a href="#condition">condition</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;(<a href="#conditions">conditions</a> | <a href="#condition">condition</a> | and | or)>)
+    </p>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+            <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='hook'>
+      hook
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Single hook object.</p>
+<p><a href="https://doc.entrecode.de/en/latest/data_manager/#hooks">Hook Documentation</a></p>
+
+
+  <div class='pre p1 fill-light mt0'>hook</div>
+  
+    <p>
+      Type:
+      {hookID: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, hook: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, type: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, description: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, methods: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>>, config: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>}
+    </p>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
 
   
 

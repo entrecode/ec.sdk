@@ -29,6 +29,7 @@ toc:
   - TokenList
   - ClientResource
   - ClientList
+  - config
   - GroupResource
   - GroupList
   - InvitesResource
@@ -41,6 +42,11 @@ toc:
   - DataManagerList
   - ModelResource
   - ModelList
+  - field
+  - policy
+  - condition
+  - conditions
+  - hook
   - DMAccountResource
   - DMAccountList
   - DMClientResource

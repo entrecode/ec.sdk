@@ -8,13 +8,13 @@ import Resource from '../Resource';
  * @prop {string}         modelID       - The id of this Model
  * @prop {Date}           created       - The Date on which this Model was created
  * @prop {string}         description   - optional description
- * @prop {Array<object>}  fields        - Array of fields
+ * @prop {Array<field>}   fields        - Array of fields
  * @prop {boolean}        hasEntries    - Whether or not this Model has Entries
  * @prop {string}         hexColor      - The hexColor for frontend usage
- * @prop {Array<object>}  hooks         - Array of hooks
+ * @prop {Array<hook>}    hooks         - Array of hooks
  * @prop {Array<string>}  locales       - Array of available locales
  * @prop {Date}           modified      - The Date this Model was modified last
- * @prop {Array<object>}  policies      - Array of Policies
+ * @prop {Array<policy>}  policies      - Array of Policies
  * @prop {string}         title         - Model title
  * @prop {string}         titleField    - the field to used as a title for Entries
  */
@@ -117,21 +117,89 @@ export default class ModelResource extends Resource {
   }
 }
 
-// TODO hooks type
-// TODO policies type
-// TODO fields type
-
-/*
- * Fields object
+/**
+ * Single hook object.
+ *
+ * {@link https://doc.entrecode.de/en/latest/data_manager/#hooks Hook Documentation}
+ *
  * @typedef {{
- *   title: string,
- *   description: string,
- *   type: string,
- *   readOnly: boolean,
- *   required: boolean,
- *   unique: boolean,
- *   localizable: boolean,
- *   mutable: boolean,
- *   validation: string|object
- * }} Field
+ *  hookID: string,
+ *  hook: string,
+ *  type: string,
+ *  description: string,
+ *  methods: Array<string>,
+ *  config: object
+ * }} hook
+ */
+
+/**
+ * Single condition object.
+ *
+ * @typedef {{
+ *  field: string,
+ *  operator: string,
+ *  variable: string
+ * }} condition
+ */
+
+/**
+ * Multiple conditions can be used by putting them into an array.
+ *
+ * @typedef {(
+ *  condition |
+ *  Array<(conditions|condition|and|or)>
+ * )} conditions
+ */
+
+/**
+ * Policy object
+ *
+ * {@link https://doc.entrecode.de/en/latest/data_manager/#permission-policies Policy Documentation}
+ *
+ * @typedef {{
+ *  method: string,
+ *  restrictToFields: Array<string>,
+ *  public: boolean,
+ *  roles: Array<string>,
+ *  conditions: Array<conditions>
+ * }} policy
+ */
+
+/**
+ * Object describing all properties of fields.
+ *
+ * {@link https://doc.entrecode.de/en/latest/data_manager/#field-data-types Filed Documentation}
+ *
+ * @example
+ * {
+ *   "method": "put",
+ *   "restrictToFields": ["editableField"],
+ *   "public": false,
+ *   "roles": ["anonymous"],
+ *   "conditions": [
+ *     {
+ *       "field": "_creator",
+ *       "operator": "=",
+ *       "variable": "accountID"
+ *     },
+ *     "or",
+ *     {
+ *       "field": "public",
+ *       "operator": "=",
+ *       "constant":true
+ *     }
+ *   ]
+ * }
+ *
+ * @typedef {{
+ *  title: string,
+ *  description: string,
+ *  type: string,
+ *  readOnly: boolean,
+ *  required: boolean,
+ *  unique: boolean,
+ *  localizable: boolean,
+ *  mutable: boolean,
+ *  validation: (string|object)
+ * }} field
  */

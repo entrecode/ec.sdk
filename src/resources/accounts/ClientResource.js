@@ -47,4 +47,11 @@ export default class ClientResource extends Resource {
   }
 }
 
-// TODO config type
+/**
+ * Configuration of a client
+ *
+ * @typedef {{
+ *  tokenMethod: (query|cookie|body),
+ *  disableStrategies: Array<(facebook|google|password)>
+ * }} config
+ */
