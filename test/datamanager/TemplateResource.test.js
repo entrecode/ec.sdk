@@ -8,7 +8,11 @@ const sinonChai = require('sinon-chai');
 const ListResource = require('../../lib/resources/ListResource').default;
 const TemplateList = require('../../lib/resources/datamanager/TemplateList').default;
 const TemplateResource = require('../../lib/resources/datamanager/TemplateResource').default;
+const DataManagerResource = require('../../lib/resources/datamanager/DataManagerResource').default;
 const Resource = require('../../lib/resources/Resource').default;
+const helper = require('../../lib/helper');
+
+const resolver = require('../mocks/resolver');
 
 chai.should();
 chai.use(sinonChai);
@@ -73,6 +77,38 @@ describe('Template Resource', () => {
   });
   it('should be instance of AccountResource', () => {
     resource.should.be.instanceOf(TemplateResource);
+  });
+  it('should resolve on createDM', () => {
+    const stub = sinon.stub(helper, 'post');
+    stub.returns(resolver('dm-single.json'));
+
+    return resource.createDM()
+    .then((dm) => {
+      dm.should.be.instanceOf(DataManagerResource);
+      stub.restore();
+    })
+    .catch((err) => {
+      stub.restore();
+      throw err;
+    });
+  });
+  it('should resolve on updateDM', () => {
+    const stub = sinon.stub(helper, 'put');
+    stub.returns(resolver('dm-single.json'));
+
+    return resource.updateDM('id')
+    .then((dm) => {
+      dm.should.be.instanceOf(DataManagerResource);
+      stub.restore();
+    })
+    .catch((err) => {
+      stub.restore();
+      throw err;
+    });
+  });
+  it('should be rejected on updateDM withoud dmID', () => {
+    return resource.updateDM()
+    .should.be.rejectedWith('Must provide dataManagerID for update.');
   });
 
   const getter = ['templateID', 'name', 'collection', 'dataSchema', 'version'];

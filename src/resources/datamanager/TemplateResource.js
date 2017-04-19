@@ -1,4 +1,6 @@
 import Resource from '../Resource';
+import DataManagerResource from './DataManagerResource';
+import { post, put } from '../../helper';
 
 /**
  * Template resource class
@@ -46,5 +48,33 @@ export default class TemplateResource extends Resource {
         get: () => this.getProperty('version'),
       },
     });
+  }
+
+  /**
+   * Create new DataManager from this template.
+   *
+   * @returns {Promise<DataManagerResource>} The newly created DataManager.
+   */
+  createDM() {
+    return post(this.environment, this.newRequest().follow('ec:datamanagers/new-from-template'), {})
+    .then(([res, traversal]) => new DataManagerResource(res, this.environment, traversal));
+  }
+
+  /**
+   * Update existing DataManager from this template.
+   *
+   * @param {string} dataManagerID The DataManager to update.
+   * @returns {Promise<DataManager>} The updated DataManager.
+   */
+  updateDM(dataManagerID) {
+    if (!dataManagerID) {
+      return Promise.reject(new Error('Must provide dataManagerID for update.'));
+    }
+
+    const request = this.newRequest()
+    .follow('ec:datamanager/update-from-template')
+    .withTemplateParameters({ dataManagerID });
+    return put(this.environment, request, {})
+    .then(([res, traversal]) => new DataManagerResource(res, this.environment, traversal));
   }
 }
