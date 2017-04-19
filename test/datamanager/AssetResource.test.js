@@ -94,7 +94,10 @@ describe('Asset ListResource', () => {
       l.should.be.instanceof(TagList);
       stub.restore();
     })
-    .catch(() => stub.restore());
+    .catch((err) => {
+      stub.restore();
+      throw err;
+    });
   });
   it('should throw on tag list filtered with tag', () => {
     return list.tagList({ tag: 'id' })
@@ -117,6 +120,39 @@ describe('Asset ListResource', () => {
   });
   it('should be rejected on undefined tag', () => {
     return list.tag().should.be.rejectedWith('tag must be defined');
+  });
+
+  it('should resolve on download without writable stream', () => {
+    const stub = sinon.stub(helper, 'getUrl');
+    stub.returns(Promise.resolve('https://datamanager.entrecode.de/assets/download'));
+
+    return list.download()
+    .then(() => stub.restore())
+    .catch((err) => {
+      stub.restore();
+      throw err;
+    });
+  });
+  it('should resolve on download with writable stream', () => {
+    const stubGetUrl = sinon.stub(helper, 'getUrl');
+    stubGetUrl.returns(Promise.resolve('https://datamanager.entrecode.de/assets/download'));
+    const stubSuperagentGetPiped = sinon.stub(helper, 'superagentGetPiped');
+    stubSuperagentGetPiped.returns(Promise.resolve());
+
+    return list.download(fs.createWriteStream('/dev/null'))
+    .then(() => {
+      stubGetUrl.restore();
+      stubSuperagentGetPiped.restore();
+    })
+    .catch((err) => {
+      stubGetUrl.restore();
+      stubSuperagentGetPiped.restore();
+      throw err;
+    });
+  });
+  it('should be rejected on stream not writable', () => {
+    return list.download(fs.createReadStream('/dev/null'))
+    .should.be.rejectedWith('writeStream must be instance of stream.Writable.');
   });
 });
 

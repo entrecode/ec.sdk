@@ -1,4 +1,6 @@
-import { get, optionsToQuery } from '../../helper';
+import * as stream from 'stream';
+
+import { get, getUrl, optionsToQuery, superagentGetPiped } from '../../helper';
 import ListResource from '../ListResource';
 import AssetResource from './AssetResource';
 import DeletedAssetList from './DeletedAssetList';
@@ -173,5 +175,29 @@ export default class AssetList extends ListResource {
       return get(this.environment, request);
     })
     .then(([res, traversal]) => new TagResource(res, this.environment, traversal));
+  }
+
+  /**
+   * Download the contents of this {@link AssetList}. It will pipe the response to a writeable
+   * stream if one is provided. Otherwise it will simply return the url where the assets can be
+   * downloaded.
+   *
+   * @param {stream.Writable?} writeStream writable stream for direct downloading of zip file.
+   * @returns {Promise<undefined>|string} Promise resolving undefined if writeable stream is
+   * provided. Url otherwise.
+   */
+  download(writeStream) {
+    if (writeStream && !(writeStream instanceof stream.Writable)) {
+      return Promise.reject(new Error('writeStream must be instance of stream.Writable.'));
+    }
+
+    return getUrl(this.environment, this.newRequest().follow('ec:assets/download'))
+    .then((url) => {
+      if (writeStream) {
+        return superagentGetPiped(url, writeStream);
+      }
+
+      return Promise.resolve(url);
+    });
   }
 }

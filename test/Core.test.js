@@ -2,6 +2,7 @@
 
 const chai = require('chai');
 const chaiAsPromised = require('chai-as-promised');
+const fs = require('fs');
 const nock = require('nock');
 const sinon = require('sinon');
 const sinonChai = require('sinon-chai');
@@ -489,7 +490,7 @@ describe('Network Helper', () => {
       .post('/').reply(200, {});
 
       return helper.superagentPost('live', superagent.post('https://datamanager.entrecode.de'))
-      .should.be.eventually.resolved;
+        .should.be.eventually.resolved;
     });
     it('should be resolved with token and user agent', () => {
       nock('https://datamanager.entrecode.de')
@@ -526,6 +527,24 @@ describe('Network Helper', () => {
         err.should.have.property('message', 'mocked error');
         errorSpy.should.be.called.once;
       });
+    });
+  });
+  describe('superagentGetPiped', () => {
+    it('should be resolved', () => {
+      nock('https://datamanager.entrecode.de')
+      .get('/asset/download')
+      .reply(200, () => fs.createReadStream(`${__dirname}/mocks/test.png`));
+
+      return helper.superagentGetPiped('https://datamanager.entrecode.de/asset/download', fs.createWriteStream('/dev/null'))
+        .should.eventually.be.resolved;
+    });
+    it('should be rejected', () => {
+      nock('https://datamanager.entrecode.de')
+      .get('/asset/download')
+      .replyWithError('mocked error');
+
+      return helper.superagentGetPiped('https://datamanager.entrecode.de/asset/download', fs.createWriteStream('/dev/null'))
+      .should.eventually.be.rejectedWith('mocked error');
     });
   });
 });

@@ -91,16 +91,14 @@ function traversonWrapper(func, environment, t, body) {
     t.addRequestOptions({ headers: { Accept: 'application/hal+json' } });
 
     const store = TokenStoreFactory(environment);
-    if (store) {
-      if (store.has()) {
-        t.addRequestOptions({ headers: { Authorization: `Bearer ${store.get()}` } });
-      }
+    if (store.has()) {
+      t.addRequestOptions({ headers: { Authorization: `Bearer ${store.get()}` } });
+    }
 
-      if (store.hasUserAgent()) {
-        t.addRequestOptions({ headers: { 'User-Agent': `${store.getUserAgent()} ec.sdk/${packageJson.version}` } });
-      } else {
-        t.addRequestOptions({ headers: { 'User-Agent': `ec.sdk/${packageJson.version}` } });
-      }
+    if (store.hasUserAgent()) {
+      t.addRequestOptions({ headers: { 'User-Agent': `${store.getUserAgent()} ec.sdk/${packageJson.version}` } });
+    } else {
+      t.addRequestOptions({ headers: { 'User-Agent': `ec.sdk/${packageJson.version}` } });
     }
 
     if (func === 'getUrl') {
@@ -305,6 +303,16 @@ export function superagentGet(url, headers) {
   });
 }
 
+export function superagentGetPiped(url, pipe) {
+  const request = superagent.get(url);
+
+  return new Promise((resolve, reject) => {
+    request.on('error', reject);
+    pipe.on('finish', resolve);
+    request.pipe(pipe);
+  });
+}
+
 /**
  * Superagent Wrapper for POST.
  *
@@ -318,16 +326,14 @@ export function superagentPost(environment, request) {
   request.set('Accept', 'application/hal+json');
 
   const store = TokenStoreFactory(environment);
-  if (store) {
-    if (store.has()) {
-      request.set('Authorization', `Bearer ${store.get()}`);
-    }
+  if (store.has()) {
+    request.set('Authorization', `Bearer ${store.get()}`);
+  }
 
-    if (store.hasUserAgent()) {
-      request.set('User-Agent', `${store.getUserAgent()} ec.sdk/${packageJson.version}`);
-    } else {
-      request.set('User-Agent', `ec.sdk/${packageJson.version}`);
-    }
+  if (store.hasUserAgent()) {
+    request.set('User-Agent', `${store.getUserAgent()} ec.sdk/${packageJson.version}`);
+  } else {
+    request.set('User-Agent', `ec.sdk/${packageJson.version}`);
   }
 
   return request.then(res => Promise.resolve(res.body ? res.body : {}))

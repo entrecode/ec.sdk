@@ -22,6 +22,7 @@
     "testTravis": "npm run build && mocha --recursive"
   },
   "dependencies": {
+    "@types/node": "^7.0.13",
     "browser-cookies": "^1.1.0",
     "halfred": "^1.0.0",
     "jwt-decode": "^2.2.0",

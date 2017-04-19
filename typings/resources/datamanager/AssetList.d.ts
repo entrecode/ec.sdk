@@ -1,3 +1,4 @@
+import * as stream from 'stream';
 import { ListResource } from '../ListResource';
 import { filterOptions } from '../../interfaces';
 import { DeletedAssetList } from './DeletedAssetList';
@@ -15,4 +16,6 @@ export declare class AssetList extends ListResource {
   tagList(options?: filterOptions): TagList;
 
   tag(tag: string): TagResource;
+
+  download(writeStream: stream.Writable): Promise<void> | string;
 }
