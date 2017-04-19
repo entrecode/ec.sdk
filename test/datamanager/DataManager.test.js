@@ -920,4 +920,20 @@ describe('DataManager Resource', () => {
     return resource.createAssets([[]]).should.be.rejectedWith('Cannot handle input.')
     .notify(() => stubGetUrl.restore());
   });
+
+  it('should export datamanager', () => {
+    const stub = sinon.stub(helper, 'get');
+    stub.returns(resolver('dm-export.json'));
+
+    return resource.export()
+    .then((exported) => {
+      exported.should.have.property('collection');
+      exported.should.have.property('dataSchema');
+      stub.restore();
+    })
+    .catch((err) => {
+      stub.restore();
+      throw err;
+    });
+  });
 });

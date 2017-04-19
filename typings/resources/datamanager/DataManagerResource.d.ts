@@ -52,4 +52,6 @@ export declare class DataManagerResource extends Resource {
   createAsset(input: assetInput, options: assetOptions): () => Promise<AssetResource>;
 
   createAsset(input: Array<assetInput>, options: assetOptions): () => Promise<AssetList>;
+
+  export(): { collection: any, dataSchema: any };
 }

@@ -615,4 +615,19 @@ export default class DataManagerResource extends Resource {
       return () => this.assetList({ filter: { assetID: { any: urls } } });
     });
   }
+
+  /**
+   * Export this datamanager as postman collection.
+   *
+   * @returns {Promise<object>} The exported datamanager with collection and dataSchema.
+   */
+  export() {
+    return Promise.resolve()
+    .then(() => {
+      const request = this.newRequest()
+      .follow('ec:datamananger/export');
+      return get(this.environment, request);
+    })
+    .then(([res]) => res);
+  }
 }
