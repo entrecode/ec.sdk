@@ -205,7 +205,7 @@ describe('Network Helper', () => {
 
       return helper.get('test', traversal)
       .then(() => {
-        traversal.should.have.deep.property('requestOptions.headers.User-Agent', `ec.sdk/${packageJson.version}`);
+        traversal.should.have.deep.property('requestOptions.headers.X-User-Agent', `ec.sdk/${packageJson.version}`);
       });
     });
     it('shuold add custom user agent', () => {
@@ -216,7 +216,7 @@ describe('Network Helper', () => {
 
       return helper.get('test', traversal)
       .then(() => {
-        traversal.should.have.deep.property('requestOptions.headers.User-Agent', `test/0.0.1 ec.sdk/${packageJson.version}`);
+        traversal.should.have.deep.property('requestOptions.headers.X-User-Agent', `test/0.0.1 ec.sdk/${packageJson.version}`);
       });
     });
   });

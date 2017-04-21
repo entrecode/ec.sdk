@@ -96,9 +96,9 @@ function traversonWrapper(func, environment, t, body) {
     }
 
     if (store.hasUserAgent()) {
-      t.addRequestOptions({ headers: { 'User-Agent': `${store.getUserAgent()} ec.sdk/${packageJson.version}` } });
+      t.addRequestOptions({ headers: { 'X-User-Agent': `${store.getUserAgent()} ec.sdk/${packageJson.version}` } });
     } else {
-      t.addRequestOptions({ headers: { 'User-Agent': `ec.sdk/${packageJson.version}` } });
+      t.addRequestOptions({ headers: { 'X-User-Agent': `ec.sdk/${packageJson.version}` } });
     }
 
     if (func === 'getUrl') {
@@ -331,9 +331,9 @@ export function superagentPost(environment, request) {
   }
 
   if (store.hasUserAgent()) {
-    request.set('User-Agent', `${store.getUserAgent()} ec.sdk/${packageJson.version}`);
+    request.set('X-User-Agent', `${store.getUserAgent()} ec.sdk/${packageJson.version}`);
   } else {
-    request.set('User-Agent', `ec.sdk/${packageJson.version}`);
+    request.set('X-User-Agent', `ec.sdk/${packageJson.version}`);
   }
 
   return request.then(res => Promise.resolve(res.body ? res.body : {}))
