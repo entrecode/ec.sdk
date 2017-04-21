@@ -4,7 +4,7 @@ import { AccountResource } from './resources/accounts/AccountResource';
 import { filterOptions } from './interfaces';
 import { InvitesResource } from './resources/accounts/InvitesResource';
 import { ClientList } from './resources/accounts/ClientList';
-import { ClientResrouce } from './resources/accounts/ClientResource';
+import { ClientResource } from './resources/accounts/ClientResource';
 import { InvalidPermissionsResource } from './resources/accounts/InvalidPermissionsResource';
 import { GroupResource } from './resources/accounts/GroupResource';
 import { GroupList } from './resources/accounts/GroupList';
@@ -26,7 +26,7 @@ export declare class Accounts extends Core {
 
   clientList(options?: filterOptions): Promise<ClientList>;
 
-  client(clientID: string): Promise<ClientResrouce>;
+  client(clientID: string): Promise<ClientResource>;
 
   createApiToken(): tokenResponse;
 

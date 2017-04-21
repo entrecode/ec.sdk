@@ -1,4 +1,4 @@
-import { Resource } from './Resource';
+import { Resource } from '../Resource';
 
 export declare class TagResource extends Resource {
   constructor(resource: any, environment: string, traversal?: any);

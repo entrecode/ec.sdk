@@ -5,7 +5,7 @@ export interface filterOptions {
   filter?: any
 }
 
-export type assetInput = string | object;
+export type assetInput = string | any;
 
 export interface assetOptions {
   fileName?: string | Array<string>,

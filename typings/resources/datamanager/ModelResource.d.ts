@@ -1,4 +1,4 @@
-import { Resource } from './Resource';
+import { Resource } from '../Resource';
 
 export declare class ModelResource extends Resource {
   constructor(resource: any, environment: string, traversal?: any);
