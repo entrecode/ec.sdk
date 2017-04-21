@@ -428,6 +428,16 @@ describe('Account Resource', () => {
   it('should get all permissions', () => {
     resource.getAllPermissions().should.have.property('length', 8);
   });
+  it('should check permission ok', () => {
+    return resource.checkPermission('dm-stats').should.be.true;
+  });
+  it('should check permission not ok', () => {
+    return resource.checkPermission('nonono').should.be.false;
+  });
+  it('should throw on permission check with no permission', () => {
+    const throws = () => resource.checkPermission();
+    throws.should.throw('permission must be defined');
+  });
   it('should load TokenList', () => {
     const stub = sinon.stub(helper, 'get');
     stub.returns(resolver('token-list.json'));

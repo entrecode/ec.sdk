@@ -21,4 +21,6 @@ export declare class AccountResource extends Resource {
   addPermission(value: string): AccountResource;
 
   tokenList(): Promise<TokenList>;
+
+  checkPermission(permission: string): boolean;
 }

@@ -27,6 +27,7 @@
     "halfred": "^1.0.0",
     "jwt-decode": "^2.2.0",
     "locale": "^0.1.0",
+    "shiro-trie": "^0.3.13",
     "superagent": "^3.5.2",
     "traverson": "^6.0.2",
     "traverson-hal": "^6.0.0"

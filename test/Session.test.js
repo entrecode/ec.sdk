@@ -59,7 +59,7 @@ describe('Session class', () => {
     const session = new Session();
     session.tokenStore.del();
     session.tokenStore.clientID = undefined;
-    return session.login('user', 'mysecret').should.be.rejectedWith('clientID must be set with Account#setClientID');
+    return session.login('user', 'mysecret').should.be.rejectedWith('clientID must be set with Session#setClientID');
   });
   it('should be rejected on undefined email', () => {
     const session = new Session();
@@ -90,6 +90,74 @@ describe('Session class', () => {
     const session = new Session();
     session.tokenStore.set('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJlbnRyZWNvZGVUZXN0IiwiaWF0IjoxNDg1NzgzNTg4LCJleHAiOjQ2NDE0NTcxODgsImF1ZCI6IlRlc3QiLCJzdWIiOiJ0ZXN0QGVudHJlY29kZS5kZSJ9.Vhrq5GR2hNz-RoAhdlnIIWHelPciBPCemEa74s7cXn8');
     session.tokenStore.clientID = undefined;
-    return session.logout().should.be.rejectedWith('clientID must be set with Account#setClientID');
+    return session.logout().should.be.rejectedWith('clientID must be set with Session#setClientID');
+  });
+  it('should check true', () => {
+    const stub = sinon.stub(helper, 'get');
+    stub.returns(resolver('account-single.json'));
+
+    return new Session().checkPermission('dm-stats')
+    .then((ok) => {
+      ok.should.be.true;
+      stub.restore();
+    })
+    .catch((err) => {
+      stub.restore();
+      throw err;
+    });
+  });
+  it('should check false', () => {
+    const stub = sinon.stub(helper, 'get');
+    stub.returns(resolver('account-single.json'));
+
+    return new Session().checkPermission('nonono')
+    .then((ok) => {
+      ok.should.be.false;
+      stub.restore();
+    })
+    .catch((err) => {
+      stub.restore();
+      throw err;
+    });
+  });
+  it('should check from cache', () => {
+    const stub = sinon.stub(helper, 'get');
+    stub.returns(resolver('account-single.json'));
+
+    const session = new Session();
+    return session.checkPermission('dm-stats')
+    .then(() => session.checkPermission('dm-stats'))
+    .then((ok) => {
+      stub.should.have.callCount(1);
+      ok.should.be.true;
+      stub.restore();
+    })
+    .catch((err) => {
+      stub.restore();
+      throw err;
+    });
+  });
+  it('should check reload', () => {
+    const stub = sinon.stub(helper, 'get');
+    stub.returns(resolver('account-single.json'));
+
+    const session = new Session();
+    return session.checkPermission('dm-stats')
+    .then(() => {
+      session.meLoadedTime = new Date(new Date() - 350000);
+      return session.checkPermission('dm-stats');
+    })
+    .then((ok) => {
+      stub.should.have.callCount(2);
+      ok.should.be.true;
+      stub.restore();
+    })
+    .catch((err) => {
+      stub.restore();
+      throw err;
+    });
+  });
+  it('should be rejected on check permission without permission', () => {
+    return new Session().checkPermission().should.be.rejectedWith('permission must be defined');
   });
 });

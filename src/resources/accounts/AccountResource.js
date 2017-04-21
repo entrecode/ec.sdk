@@ -1,3 +1,5 @@
+import ShiroTrie from 'shiro-trie';
+
 import Resource from '../Resource';
 import TokenList from './TokenList';
 import { get } from '../../helper';
@@ -144,5 +146,22 @@ export default class AccountResource extends Resource {
       return get(this.environment, request)
       .then(([tokenList, traversal]) => new TokenList(tokenList, this.environment, traversal));
     });
+  }
+
+  /**
+   * Check if this Account has a given permission
+   *
+   * @param {string} permission the permission to check
+   * @returns {boolean} true if the Account has this permission, false otherwise
+   */
+  checkPermission(permission) {
+    if (!permission) {
+      throw Error('permission must be defined');
+    }
+
+    const trie = ShiroTrie.new();
+    trie.add(this.getAllPermissions());
+
+    return trie.check(permission);
   }
 }
