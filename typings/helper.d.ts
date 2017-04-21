@@ -24,6 +24,6 @@ export function superagentGetPiped(url: string, pipe: stream.Writable): Promise<
 
 export function superagentPost(environment: environment, request: any): Promise<any>;
 
-export function optionsToQuery(t: any): any;
+export function optionsToQuery(t: any, templateURL?: string): any;
 
 export function fileNegotiate(asset: AssetResource, image: boolean, thumb: boolean, size: number, requestedLocale: string): string;

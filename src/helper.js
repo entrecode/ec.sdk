@@ -370,9 +370,10 @@ const modifier = {
  * @access private
  *
  * @param {filter} options filter options
+ * @param {string?} templateURL optional templateURL for validating inputs
  * @returns {object} translated querystring object
  */
-export function optionsToQuery(options) {
+export function optionsToQuery(options, templateURL) {
   const out = {};
 
   if (options) {
@@ -423,6 +424,31 @@ export function optionsToQuery(options) {
           throw new Error(`filter.${property} must be either Object or String.`);
         }
       });
+    }
+  }
+
+  if (templateURL) {
+    const results = templateURL.match(/{[^}]*}/g)
+    .map(result => /^[{?&]+([^}]+)}$/.exec(result)[1].split(','))
+    .reduce((a, b) => a.concat(b), []);
+
+    const missings = Object.keys(out).filter(k => !results.includes(k));
+
+    if (missings.length > 0) {
+      const err = new Error('Invalid filter options. Check error#array for details.');
+      err.array = missings.map((missing) => {
+        if (missing.indexOf('~') !== -1) {
+          return new Error(`Cannot apply 'search' filter to '${missing.substr(0, missing.indexOf('~'))}'`);
+        } else if (missing.indexOf('From') !== -1) {
+          return new Error(`Cannot apply 'from' filter to '${missing.substr(0, missing.indexOf('From'))}'`);
+        } else if (missing.indexOf('To') !== -1) {
+          return new Error(`Cannot apply 'to' filter to '${missing.substr(0, missing.indexOf('To'))}'`);
+        } else if (['page', 'size', 'sort'].includes(missing)) {
+          return new Error(`Cannot apply ${missing} option`);
+        }
+        return new Error(`Cannot apply 'exact' filter to '${missing}'`);
+      });
+      throw err;
     }
   }
 

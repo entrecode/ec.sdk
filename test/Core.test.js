@@ -678,4 +678,45 @@ describe('optionsToQuery', () => {
     };
     throws.should.throw(Error);
   });
+  describe('template validation', () => {
+    it('valid, all types', () => {
+      const obj = {
+        size: 1,
+        page: 1,
+        sort: ['field'],
+        filter: {
+          field: {
+            to: 'to',
+            from: 'from',
+            exact: 'exact',
+            search: 'search',
+          },
+        },
+      };
+      (() => helper.optionsToQuery(obj, '{?size,page,sort,field,fieldTo,fieldFrom,field~}'))
+      .should.not.throw();
+    });
+    it('invalid, all types', () => {
+      const obj = {
+        size: 1,
+        page: 1,
+        sort: ['field'],
+        filter: {
+          field: {
+            to: 'to',
+            from: 'from',
+            exact: 'exact',
+            search: 'search',
+          },
+        },
+      };
+      try {
+        helper.optionsToQuery(obj, '{?other}');
+      } catch (e) {
+        e.should.have.property('array');
+        return e.array.should.have.property('length', 7);
+      }
+      throw new Error('failed');
+    });
+  });
 });
