@@ -11,6 +11,8 @@ const traverson = require('traverson');
 const resolver = require('./mocks/resolver');
 const Resource = require('../lib/resources/Resource').default;
 
+const schemaNock = require('./mocks/schema-nock');
+
 const should = chai.should();
 
 chai.use(sinonChai);
@@ -75,6 +77,7 @@ describe('Resource', () => {
     resource.isDirty.should.be.false;
   });
   it('should call put on save', () => {
+    schemaNock.reset();
     const stub = sinon.stub(helper, 'put');
     stub.returns(resolver('dm-single.json', resource._traversal));
 
@@ -82,7 +85,16 @@ describe('Resource', () => {
     .then(() => {
       stub.should.be.called.once;
       stub.restore();
+    })
+    .catch((err) => {
+      stub.restore();
+      throw err;
     });
+  });
+  it('should reject on schema error', () => {
+    schemaNock.reset();
+    resource.setProperty('title', {});
+    return resource.save().should.be.rejectedWith('JSON Schema Validation error');
   });
   it('should call del on del', () => {
     const stub = sinon.stub(helper, 'del');
@@ -92,6 +104,10 @@ describe('Resource', () => {
     .then(() => {
       stub.should.be.called.once;
       stub.restore();
+    })
+    .catch((err) => {
+      stub.restore();
+      throw err;
     });
   });
   it('should return true for existing link', () => {

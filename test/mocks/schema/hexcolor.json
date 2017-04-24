@@ -1,0 +1,5 @@
+{
+  "id": "https://entrecode.de/schema/hexcolor",
+  "type": "string",
+  "pattern": "^#[A-Fa-f0-9]{6}$"
+}

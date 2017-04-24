@@ -1,7 +1,8 @@
 import * as traverson from 'traverson';
 import HalAdapter from 'traverson-hal';
 import halfred from 'halfred';
-import { get, put, del } from '../helper';
+import validator from 'json-schema-remote';
+import { del, get, put } from '../helper';
 
 traverson.registerMediaType(HalAdapter.mediaType, HalAdapter);
 
@@ -110,13 +111,13 @@ export default class Resource {
    *   be the same object but with refreshed data.
    */
   save() {
-    // TODO add validation
     const out = {};
     Object.keys(this.resource.original()).forEach((key) => {
       out[key] = this.resource[key];
     });
 
-    return put(this.environment, this.newRequest().follow('self'), out)
+    return validator.validate(out, this.resource.link('self').profile)
+    .then(() => put(this.environment, this.newRequest().follow('self'), out))
     .then(([res, traversal]) => {
       this.resource = halfred.parse(res);
       this.traversal = traversal;
