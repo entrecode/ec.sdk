@@ -123,7 +123,8 @@ export default class DataManagerResource extends Resource {
 
       return get(
         this.environment,
-        this.newRequest().follow('ec:models/options').withTemplateParameters(optionsToQuery(o))
+        this.newRequest().follow('ec:models/options')
+        .withTemplateParameters(optionsToQuery(o, this.resource.link('ec:models/options').href))
       );
     })
     .then(([resource, traversal]) => new ModelList(resource, this.environment, traversal));
@@ -191,7 +192,7 @@ export default class DataManagerResource extends Resource {
 
       const request = this.newRequest()
       .follow('ec:dm-clients/options')
-      .withTemplateParameters(optionsToQuery(o));
+      .withTemplateParameters(optionsToQuery(o, this.resource.link('ec:dm-clients/options').href));
       return get(this.environment, request);
     })
     .then(([res, traversal]) => new DMClientList(res, this.environment, traversal));
@@ -276,7 +277,7 @@ export default class DataManagerResource extends Resource {
 
       const request = this.newRequest()
       .follow('ec:dm-account/options')
-      .withTemplateParameters(optionsToQuery(o));
+      .withTemplateParameters(optionsToQuery(o, this.resource.link('ec.dm-account/options').href));
       return get(this.environment, request);
     })
     .then(([res, traversal]) => new DMAccountList(res, this.environment, traversal));
@@ -349,7 +350,7 @@ export default class DataManagerResource extends Resource {
 
       const request = this.newRequest()
       .follow('ec:dm-roles/options')
-      .withTemplateParameters(optionsToQuery(o));
+      .withTemplateParameters(optionsToQuery(o, this.resource.link('ec.dm-roles/options').href));
       return get(this.environment, request);
     })
     .then(([res, traversal]) => new RoleList(res, this.environment, traversal));
@@ -462,7 +463,7 @@ export default class DataManagerResource extends Resource {
 
       const request = this.newRequest()
       .follow('ec:assets/options')
-      .withTemplateParameters(optionsToQuery(o));
+      .withTemplateParameters(optionsToQuery(o, this.resource.link('ec:assets/options').href));
       return get(this.environment, request);
     })
     .then(([res, traversal]) => new AssetList(res, this.environment, traversal));
@@ -545,7 +546,7 @@ export default class DataManagerResource extends Resource {
       return superagentPost(this.environment, superagentRequest);
     })
     .then((response) => {
-      const url = response._links['ec:asset'].href; // eslint-disable-line no-underscore-dangle
+      const url = response._links['ec:asset'].href;
       const queryStrings = qs.parse(url.substr(url.indexOf('?') + 1));
       return () => this.asset(queryStrings.assetID);
     });
@@ -607,7 +608,7 @@ export default class DataManagerResource extends Resource {
       return superagentPost(this.environment, superagentRequest);
     })
     .then((response) => {
-      const urls = response._links['ec:asset'].map((link) => { // eslint-disable-line no-underscore-dangle
+      const urls = response._links['ec:asset'].map((link) => {
         const queryStrings = qs.parse(link.href.substr(link.href.indexOf('?') + 1));
         return queryStrings.assetID;
       });

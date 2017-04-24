@@ -1,3 +1,5 @@
+import halfred from 'halfred';
+
 import Core from './Core';
 import { get, optionsToQuery, post, superagentGet } from './helper';
 import DataManagerResource from './resources/datamanager/DataManagerResource';
@@ -68,9 +70,13 @@ export default class DataManager extends Core {
         throw new Error('Providing only an dataManagerID in DataManagerList filter will result in single resource response. Please use DataManager#get');
       }
 
-      const request = this.newRequest()
+      return get(this.environment, this.newRequest());
+    })
+    .then(([res, traversal]) => {
+      const root = halfred.parse(res);
+      const request = traversal.continue().newRequest()
       .follow('ec:datamanagers/options')
-      .withTemplateParameters(optionsToQuery(options));
+      .withTemplateParameters(optionsToQuery(options, root.link('ec:datamanagers/options').href));
       return get(this.environment, request);
     })
     .then(([res, traversal]) => new DataManagerList(res, this.environment, traversal));
@@ -128,9 +134,13 @@ export default class DataManager extends Core {
         throw new Error('Cannot filter templateList only by templateID. Use DataManagerResource#template() instead');
       }
 
-      const request = this.newRequest()
+      return get(this.environment, this.newRequest());
+    })
+    .then(([res, traversal]) => {
+      const root = halfred.parse(res);
+      const request = traversal.continue().newRequest()
       .follow('ec:dm-templates/options')
-      .withTemplateParameters(optionsToQuery(options));
+      .withTemplateParameters(optionsToQuery(options, root.link('ec:dm-templates/options').href));
       return get(this.environment, request);
     })
     .then(([res, traversal]) => new TemplateList(res, this.environment, traversal));

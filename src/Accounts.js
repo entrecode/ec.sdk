@@ -1,12 +1,14 @@
+import halfred from 'halfred';
+
 import Core from './Core';
 import {
   get,
-  post,
-  getUrl,
   getEmpty,
-  postEmpty,
-  superagentFormPost,
+  getUrl,
   optionsToQuery,
+  post,
+  postEmpty,
+  superagentFormPost
 } from './helper';
 import AccountList from './resources/accounts/AccountList';
 import AccountResource from './resources/accounts/AccountResource';
@@ -93,9 +95,13 @@ export default class Accounts extends Core {
         throw new Error('Providing only an accountID in AccountList filter will result in single resource response. Please use Accounts#account');
       }
 
-      const request = this.newRequest()
+      return get(this.environment, this.newRequest());
+    })
+    .then(([res, traversal]) => {
+      const root = halfred.parse(res);
+      const request = traversal.continue().newRequest()
       .follow('ec:accounts/options')
-      .withTemplateParameters(optionsToQuery(options));
+      .withTemplateParameters(optionsToQuery(options, root.link('ec:accounts/options').href));
       return get(this.environment, request);
     })
     .then(([res, traversal]) => new AccountList(res, this.environment, traversal));
@@ -175,9 +181,13 @@ export default class Accounts extends Core {
         throw new Error('Providing only an groupID in GroupList filter will result in single resource response. Please use Accounts#groupList');
       }
 
-      const request = this.newRequest()
+      return get(this.environment, this.newRequest());
+    })
+    .then(([res, traversal]) => {
+      const root = halfred.parse(res);
+      const request = traversal.continue().newRequest()
       .follow('ec:acc/groups/options')
-      .withTemplateParameters(optionsToQuery(options));
+      .withTemplateParameters(optionsToQuery(options, root.link('ec:acc/groups/options').href));
       return get(this.environment, request);
     })
     .then(([res, traversal]) => new GroupList(res, this.environment, traversal));
@@ -242,9 +252,13 @@ export default class Accounts extends Core {
         throw new Error('Providing only an clientID in ClientList filter will result in single resource response. Please use Accounts#client');
       }
 
-      const request = this.newRequest()
+      return get(this.environment, this.newRequest());
+    })
+    .then(([res, traversal]) => {
+      const root = halfred.parse(res);
+      const request = traversal.continue().newRequest()
       .follow('ec:acc/clients/options')
-      .withTemplateParameters(optionsToQuery(options));
+      .withTemplateParameters(optionsToQuery(options, root.link('ec:acc/clients/options').href));
       return get(this.environment, request);
     })
     .then(([res, traversal]) => new ClientList(res, this.environment, traversal));
