@@ -1,7 +1,8 @@
-import * as traverson from 'traverson';
+import traverson from 'traverson';
 import HalAdapter from 'traverson-hal';
 import halfred from 'halfred';
 import validator from 'json-schema-remote';
+
 import { del, get, put } from '../helper';
 
 traverson.registerMediaType(HalAdapter.mediaType, HalAdapter);
