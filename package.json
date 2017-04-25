@@ -25,7 +25,7 @@
     "@types/node": "^7.0.13",
     "browser-cookies": "^1.1.0",
     "halfred": "^1.0.0",
-    "json-schema-remote": "^1.1.5",
+    "json-schema-remote": "entrecode/json-schema-remote#develop",
     "jwt-decode": "^2.2.0",
     "locale": "^0.1.0",
     "shiro-trie": "^0.3.13",
