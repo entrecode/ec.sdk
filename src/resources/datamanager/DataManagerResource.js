@@ -117,7 +117,11 @@ export default class DataManagerResource extends Resource {
 
       o.dataManagerID = this.dataManagerID;
 
-      if (Object.keys(o).length === 2 && 'dataManagerID' in o && 'modelID' in o) {
+      if (
+        Object.keys(o).length === 2 && 'dataManagerID' in o && 'modelID' in o
+        && (typeof o.dataManagerID === 'string' || (!('any' in o.dataManagerID) && !('all' in o.dataManagerID)))
+        && (typeof o.modelID === 'string' || (!('any' in o.modelID) && !('all' in o.modelID)))
+      ) {
         throw new Error('Cannot filter modelList only by dataManagerID and modelID. Use DataManagerResource#model() instead.');
       }
 
@@ -186,7 +190,11 @@ export default class DataManagerResource extends Resource {
 
       o.dataManagerID = this.dataManagerID;
 
-      if (o && Object.keys(o).length === 2 && 'clientID' in o && 'dataManagerID' in o) {
+      if (
+        Object.keys(o).length === 2 && 'clientID' in o && 'dataManagerID' in o
+        && (typeof o.dataManagerID === 'string' || (!('any' in o.dataManagerID) && !('all' in o.dataManagerID)))
+        && (typeof o.clientID === 'string' || (!('any' in o.clientID) && !('all' in o.clientID)))
+      ) {
         throw new Error('Cannot filter clientList only by dataManagerID and clientID. Use DataManagerResource#client() instead');
       }
 
@@ -271,7 +279,11 @@ export default class DataManagerResource extends Resource {
 
       o.dataManagerID = this.dataManagerID;
 
-      if (o && Object.keys(o).length === 2 && 'accountID' in o && 'dataManagerID' in o) {
+      if (
+        Object.keys(o).length === 2 && 'accountID' in o && 'dataManagerID' in o
+        && (typeof o.accountID === 'string' || (!('any' in o.accountID) && !('all' in o.accountID)))
+        && (typeof o.dataManagerID === 'string' || (!('any' in o.dataManagerID) && !('all' in o.dataManagerID)))
+      ) {
         throw new Error('Cannot filter accountList only by dataManagerID and accountID. Use DataManagerResource#account() instead');
       }
 
@@ -344,7 +356,11 @@ export default class DataManagerResource extends Resource {
 
       o.dataManagerID = this.dataManagerID;
 
-      if (o && Object.keys(o).length === 2 && 'roleID' in o && 'dataManagerID' in o) {
+      if (
+        Object.keys(o).length === 2 && 'roleID' in o && 'dataManagerID' in o
+        && (typeof o.roleID === 'string' || (!('any' in o.roleID) && !('all' in o.roleID)))
+        && (typeof o.dataManagerID === 'string' || (!('any' in o.dataManagerID) && !('all' in o.dataManagerID)))
+      ) {
         throw new Error('Cannot filter roleList only by dataManagerID and roleID. Use DataManagerResource#role() instead');
       }
 
@@ -457,7 +473,11 @@ export default class DataManagerResource extends Resource {
 
       o.dataManagerID = this.dataManagerID;
 
-      if (o && Object.keys(o).length === 2 && 'assetID' in o && 'dataManagerID' in o) {
+      if (
+        Object.keys(o).length === 2 && 'assetID' in o && 'dataManagerID' in o
+        && (typeof o.assetID === 'string' || (!('any' in o.assetID) && !('all' in o.assetID)))
+        && (typeof o.dataManagerID === 'string' || (!('any' in o.dataManagerID) && !('all' in o.dataManagerID)))
+      ) {
         throw new Error('Cannot filter assetList only by dataManagerID and assetID. Use DataManagerResource#asset() instead');
       }
 
@@ -613,7 +633,7 @@ export default class DataManagerResource extends Resource {
         return queryStrings.assetID;
       });
 
-      return () => this.assetList({ filter: { assetID: { any: urls } } });
+      return () => this.assetList({ assetID: { any: urls } });
     });
   }
 

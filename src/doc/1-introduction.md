@@ -10,7 +10,7 @@ For every ec.API you will find an API connector. Use one of those to connect to 
 
 All API connectors of a certain [environment](#environment) share some information. The most important one is any access token either received with [Session#login](#Session#login) or by calling [Core#setToken](#Core#setToken). This means you can specifiy the token on any API connector and it will be automatically used by all other API connectors. If any API connector will receives a token related Error ([Problem](#Problem)) it will be automatically removed from all API connectors and a [logout event](#eventeventlogout) is fired.
 
->TBD *Every action you take in the ec.sdk will be validated before it will send as a request to ec.APIs. This means that the provided json schemas are used. (This is the idea, not really specified yet)*
+Every action you take in the ec.sdk will be validated before it will send as a request to ec.APIs. This means that the provided json schemas are used.
 
 The following example will show you the basic usage within a typscript project. This is by all means not complete. So feel free to read on.
 

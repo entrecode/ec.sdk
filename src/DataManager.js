@@ -130,7 +130,10 @@ export default class DataManager extends Core {
   templateList(options) {
     return Promise.resolve()
     .then(() => {
-      if (options && Object.keys(options).length === 1 && 'templateID' in options) {
+      if (
+        options && Object.keys(options).length === 1 && 'templateID' in options
+        && (typeof options.templateID === 'string' || (!('any' in options.tempalteID) && !('all' in options.templateID)))
+      ) {
         throw new Error('Cannot filter templateList only by templateID. Use DataManagerResource#template() instead');
       }
 

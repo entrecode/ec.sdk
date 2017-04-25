@@ -377,54 +377,43 @@ export function optionsToQuery(options, templateURL) {
   const out = {};
 
   if (options) {
-    ['size', 'page'].forEach((property) => {
-      if ({}.hasOwnProperty.call(options, property)) {
-        out[property] = options[property];
+    Object.keys(options).forEach((key) => {
+      if (['size', 'page'].includes(key)) {
+        out[key] = options[key];
+      } else if (key === 'sort') {
+        if (Array.isArray(options.sort)) {
+          out.sort = options.sort.join(',');
+        } else if (typeof options.sort === 'string') {
+          out.sort = options.sort;
+        } else {
+          throw new Error('sort must be either Array or String.');
+        }
+      } else if (typeof options[key] === 'string') {
+        out[key] = options[key];
+      } else if (typeof options[key] === 'object') {
+        Object.keys(options[key]).forEach((searchKey) => {
+          switch (searchKey) {
+          case 'exact':
+          case 'search':
+          case 'from':
+          case 'to':
+            out[`${key}${modifier[searchKey]}`] = options[key][searchKey];
+            break;
+          case 'any':
+          case 'all':
+            if (!Array.isArray(options[key][searchKey])) {
+              throw new Error(`${key}.${searchKey} must be an Array.`);
+            }
+            out[key] = options[key][searchKey].join(modifier[searchKey]);
+            break;
+          default:
+            throw new Error(`No handling of ${key}.${searchKey} filter supported.`);
+          }
+        });
+      } else {
+        throw new Error(`${key} must be either Object or String.`);
       }
     });
-
-    if ({}.hasOwnProperty.call(options, 'sort')) {
-      if (Array.isArray(options.sort)) {
-        out.sort = options.sort.join(',');
-      } else if (typeof options.sort === 'string') {
-        out.sort = options.sort;
-      } else {
-        throw new Error('sort must be either Array or String.');
-      }
-    }
-
-    if ({}.hasOwnProperty.call(options, 'filter')) {
-      if (typeof options.filter !== 'object') {
-        throw new Error('filter must by an Object.');
-      }
-      Object.keys(options.filter).forEach((property) => {
-        if (typeof options.filter[property] === 'string') {
-          out[property] = options.filter[property];
-        } else if (typeof options.filter[property] === 'object') {
-          Object.keys(options.filter[property]).forEach((key) => {
-            switch (key) {
-            case 'exact':
-            case 'search':
-            case 'from':
-            case 'to':
-              out[`${property}${modifier[key]}`] = options.filter[property][key];
-              break;
-            case 'any':
-            case 'all':
-              if (!Array.isArray(options.filter[property][key])) {
-                throw new Error(`filter.${property}.${key} must be an Array.`);
-              }
-              out[property] = options.filter[property][key].join(modifier[key]);
-              break;
-            default:
-              throw new Error(`No handling of ${property}.${key} filter supported.`);
-            }
-          });
-        } else {
-          throw new Error(`filter.${property} must be either Object or String.`);
-        }
-      });
-    }
   }
 
   if (templateURL) {

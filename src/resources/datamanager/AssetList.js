@@ -66,7 +66,11 @@ export default class AssetList extends ListResource {
 
       o.dataManagerID = this.dataManagerID;
 
-      if (o && Object.keys(o).length === 2 && 'assetID' in o && 'dataManagerID' in o) {
+      if (
+        Object.keys(o).length === 2 && 'assetID' in o && 'dataManagerID' in o
+        && (typeof o.assetID === 'string' || (!('any' in o.assetID) && !('all' in o.assetID)))
+        && (typeof o.dataManagerID === 'string' || (!('any' in o.dataManagerID) && !('all' in o.dataManagerID)))
+      ) {
         throw new Error('Cannot filter deletedAssetList only by dataManagerID and assetID. Use AssetList#deletedAsset() instead');
       }
 
@@ -139,7 +143,11 @@ export default class AssetList extends ListResource {
 
       o.dataManagerID = this.dataManagerID;
 
-      if (o && Object.keys(o).length === 2 && 'tag' in o && 'dataManagerID' in o) {
+      if (
+        Object.keys(o).length === 2 && 'tag' in o && 'dataManagerID' in o
+        && (typeof o.tag === 'string' || (!('any' in o.tag) && !('all' in o.tag)))
+        && (typeof o.dataManagerID === 'string' || (!('any' in o.dataManagerID) && !('all' in o.dataManagerID)))
+      ) {
         throw new Error('Cannot filter tagList only by dataManagerID and tag. Use AssetList#tag() instead');
       }
 

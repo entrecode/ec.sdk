@@ -150,41 +150,40 @@ export default class ListResource extends Resource {
  * accounts.accountList({ size: 25 }); // will result in a list with 25 entries
  * accounts.accountList({
  *   sort: ['email', '-created'], // sorted by email asc and created desc
- *   page: 3 // page 3 of a list with 10 entries
+ *   page: 3, // page 3 of a list with 10 entries
+ *   property: 'exactlyThis', // filter exactly exactlyThis for property property
  * });
  * // for filter see below
  *
- * @typedef {{size: number, page: number, sort: array<string>, filter: filter}} filterOptions
+ * @typedef {{size: number, page: number, sort: array<string>, property: filter}} filterOptions
  */
 
 /**
  *
- * This object should contain key value pairs with filter options. These object will be applied
- * when loading a {@link ListResource}.
+ * {@link filterOptions} can contain key value pairs with filter options. These object will be
+ * applied when loading a {@link ListResource}.
  *
  * @example
  * accounts.accountList({
- *   filter: {
- *     email: {
- *       search: 'andre', // email contains 'andre'
- *     },
- *     language: 'de', // language is exactly 'de'
- *     active: {
- *       exactly: 'active', // is in active state
- *     },
- *     created: {
- *       from: new Date(new Date().getTime() - 60000), // created 10minutes or less ago
- *     },
- *     permissions: { // has at least one of these permissions
- *       any: [
- *         'dm-user',
- *         'app-user',
- *       ],
- *     },
+ *   email: {
+ *     search: 'andre', // email contains 'andre'
+ *   },
+ *   language: 'de', // language is exactly 'de'
+ *   active: {
+ *     exactly: 'active', // is (exactly) in active state
+ *   },
+ *   created: {
+ *     from: new Date(new Date().getTime() - 60000), // created 10minutes or less ago
+ *   },
+ *   permissions: { // has at least one of these permissions
+ *     any: [
+ *       'dm-user',
+ *       'app-user',
+ *     ],
  *   },
   * });
  *
- * @typedef {{propertyNames: (string|{exact: string, search: string, from: string, to: string, any:
+ * @typedef {{propertyName: (string|{exact: string, search: string, from: string, to: string, any:
  *   array<string>, all: array<string>})}} filter
  */
 

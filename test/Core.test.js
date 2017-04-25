@@ -581,100 +581,54 @@ describe('optionsToQuery', () => {
     throws.should.throw(Error);
   });
   it('should have exact filter on string property', () => {
-    const obj = {
-      filter: {
-        property: 'exact',
-      },
-    };
+    const obj = { property: 'exact' };
     helper.optionsToQuery(obj).should.have.property('property', 'exact');
   });
   it('should have exact filter', () => {
-    const obj = {
-      filter: {
-        property: {
-          exact: 'value',
-        },
-      },
-    };
+    const obj = { property: { exact: 'value' } };
     helper.optionsToQuery(obj).should.have.property('property', 'value');
   });
   it('should have search filter', () => {
-    const obj = {
-      filter: {
-        property: {
-          search: 'value',
-        },
-      },
-    };
+    const obj = { property: { search: 'value' } };
     helper.optionsToQuery(obj).should.have.property('property~', 'value');
   });
   it('should have from filter', () => {
-    const obj = {
-      filter: {
-        property: {
-          from: 'value',
-        },
-      },
-    };
+    const obj = { property: { from: 'value' } };
     helper.optionsToQuery(obj).should.have.property('propertyFrom', 'value');
   });
   it('should have to filter', () => {
-    const obj = {
-      filter: {
-        property: {
-          to: 'value',
-        },
-      },
-    };
+    const obj = { property: { to: 'value' } };
     helper.optionsToQuery(obj).should.have.property('propertyTo', 'value');
   });
   it('should have any filter', () => {
-    const obj = {
-      filter: {
-        property: {
-          any: ['value1', 'value2'],
-        },
-      },
-    };
+    const obj = { property: { any: ['value1', 'value2'] } };
     helper.optionsToQuery(obj).should.have.property('property', 'value1,value2');
   });
   it('should throw on any filter not an array', () => {
     const throws = () => {
-      helper.optionsToQuery({ filter: { property: { any: 'string' } } });
+      helper.optionsToQuery({ property: { any: 'string' } });
     };
     throws.should.throw(Error);
   });
   it('should have all filter', () => {
-    const obj = {
-      filter: {
-        property: {
-          all: ['value1', 'value2'],
-        },
-      },
-    };
+    const obj = { property: { all: ['value1', 'value2'] } };
     helper.optionsToQuery(obj).should.have.property('property', 'value1+value2');
   });
   it('should throw on all filter not an array', () => {
     const throws = () => {
-      helper.optionsToQuery({ filter: { property: { all: 'string' } } });
-    };
-    throws.should.throw(Error);
-  });
-  it('should throw on invalid filter object', () => {
-    const throws = () => {
-      helper.optionsToQuery({ filter: 1 });
+      helper.optionsToQuery({ property: { all: 'string' } });
     };
     throws.should.throw(Error);
   });
   it('should throw on invalid filter property value', () => {
     const throws = () => {
-      helper.optionsToQuery({ filter: { property: 1 } });
+      helper.optionsToQuery({ property: 1 });
     };
     throws.should.throw(Error);
   });
   it('should throw on unknown filter type', () => {
     const throws = () => {
-      helper.optionsToQuery({ filter: { property: { unknown: '1' } } });
+      helper.optionsToQuery({ property: { unknown: '1' } });
     };
     throws.should.throw(Error);
   });
@@ -684,13 +638,11 @@ describe('optionsToQuery', () => {
         size: 1,
         page: 1,
         sort: ['field'],
-        filter: {
-          field: {
-            to: 'to',
-            from: 'from',
-            exact: 'exact',
-            search: 'search',
-          },
+        field: {
+          to: 'to',
+          from: 'from',
+          exact: 'exact',
+          search: 'search',
         },
       };
       (() => helper.optionsToQuery(obj, '{?size,page,sort,field,fieldTo,fieldFrom,field~}'))
@@ -701,13 +653,11 @@ describe('optionsToQuery', () => {
         size: 1,
         page: 1,
         sort: ['field'],
-        filter: {
-          field: {
-            to: 'to',
-            from: 'from',
-            exact: 'exact',
-            search: 'search',
-          },
+        field: {
+          to: 'to',
+          from: 'from',
+          exact: 'exact',
+          search: 'search',
         },
       };
       try {
