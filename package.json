@@ -11,7 +11,7 @@
   "typings": "./typings/index.d.ts",
   "scripts": {
     "release": "./release.sh $3",
-    "build": "npm run buildNode && npm run buildBrowser",
+    "build": "npm run buildNode && webpack ./src/index.js ./dist/webpack-bundle.js && npm run buildBrowser",
     "buildNode": "babel src -d lib --source-maps",
     "buildBrowser": "browserify lib/index.js -o dist/ec.sdk.js -s ec --global-transform [ babelify --presets [ es2015 ] ] && uglifyjs dist/ec.sdk.js --screw-ie8 --compress --mangle  -o dist/ec.sdk.min.js",
     "changelog": "conventional-changelog -i CHANGELOG.md -s",
@@ -51,6 +51,7 @@
     "nock": "^9.0.13",
     "sinon": "^2.1.0",
     "sinon-chai": "^2.9.0",
-    "uglify-js": "^2.8.22"
+    "uglify-js": "^2.8.22",
+    "webpack": "^2.4.1"
   }
 }
