@@ -74,10 +74,24 @@ export default class TemplateResource extends Resource {
   /**
    * Create new DataManager from this template.
    *
+   * @param {object} body body parameters for creating the DataManager
    * @returns {Promise<DataManagerResource>} The newly created DataManager.
    */
-  createDM() {
-    return post(this.environment, this.newRequest().follow('ec:datamanagers/new-from-template'), {})
+  createDM(body) {
+    return Promise.resolve()
+    .then(() => {
+      if (this.resolved) {
+        return undefined;
+      }
+      return this.resolve();
+    })
+    .then(() => {
+      validator.validate(body || {}, this.dataSchema);
+    })
+    .then(() => {
+      const request = this.newRequest().follow('ec:datamanagers/new-from-template');
+      return post(this.environment, request, body || {});
+    })
     .then(([res, traversal]) => new DataManagerResource(res, this.environment, traversal));
   }
 
