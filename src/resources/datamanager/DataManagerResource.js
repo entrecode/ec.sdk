@@ -392,7 +392,7 @@ export default class DataManagerResource extends Resource {
       }
       const request = this.newRequest()
       .follow('ec:dm-roles/options')
-      .withTemplateParameters({ dataManagerID: this.dataManagerID, roleID: roleID });
+      .withTemplateParameters({ dataManagerID: this.dataManagerID, roleID });
       return get(this.environment, request);
     })
     .then(([res, traversal]) => new RoleResource(res, this.environment, traversal));
@@ -431,8 +431,7 @@ export default class DataManagerResource extends Resource {
     return Promise.resolve()
     .then(() => {
       const request = this.newRequest()
-      .follow('ec:dm-templates/options')
-      .withTemplateParameters({ dataManagerID: this.dataManagerID });
+      .follow('ec:dm-stats');
       return get(this.environment, request);
     })
     .then(([res]) => new DMStatsList(res, this.environment).getFirstItem());
