@@ -172,7 +172,7 @@ export default class DataManager extends Core {
       .withTemplateParameters({ templateID });
       return get(this.environment, request);
     })
-    .then(([res, traversal]) => new TemplateResource(res, this.environment, traversal));
+    .then(([res, traversal]) => new TemplateResource(res, this.environment, traversal, true));
   }
 
   /**

@@ -11,7 +11,9 @@ export declare class TemplateResource extends Resource {
   dataSchema: Object;
   version: Object;
 
-  createDM(): Promise<DataManagerResource>;
+  createDM(body?: any): Promise<DataManagerResource>;
+
+  resolve(): Promise<TemplateResource>;
 
   updateDM(dataManagerID: string): Promise<DataManagerResource>;
 }

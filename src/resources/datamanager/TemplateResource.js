@@ -1,6 +1,9 @@
+import halfred from 'halfred';
+import validator from 'json-schema-remote';
+
 import Resource from '../Resource';
 import DataManagerResource from './DataManagerResource';
-import { post, put } from '../../helper';
+import { get, post, put } from '../../helper';
 
 /**
  * Template resource class
@@ -22,9 +25,12 @@ export default class TemplateResource extends Resource {
    * @param {object} resource resource loaded from the API.
    * @param {string} environment the environment this resource is associated to.
    * @param {?object} traversal traversal from which traverson can continue.
+   * @param {?boolean} resolved whether or not this resource is already resolved
    */
-  constructor(resource, environment, traversal) {
+  constructor(resource, environment, traversal, resolved = false) {
     super(resource, environment, traversal);
+
+    this.resolved = resolved;
 
     Object.defineProperties(this, {
       templateID: {
@@ -47,6 +53,21 @@ export default class TemplateResource extends Resource {
         enumerable: true,
         get: () => this.getProperty('version'),
       },
+    });
+  }
+
+  resolve() {
+    return Promise.resolve()
+    .then(() => {
+      const request = this.newRequest()
+      .follow('self');
+      return get(this.environment, request);
+    })
+    .then(([res, traversal]) => {
+      this.resolved = true;
+      this.traversal = traversal;
+      this.resource = halfred.parse(res);
+      return this;
     });
   }
 

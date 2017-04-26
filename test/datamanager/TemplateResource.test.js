@@ -68,6 +68,7 @@ describe('Template Resource', () => {
   });
   beforeEach(() => {
     resource = new TemplateResource(resourceJson);
+    resource.resolved = true;
   });
   afterEach(() => {
     resource = null;
@@ -77,6 +78,22 @@ describe('Template Resource', () => {
   });
   it('should be instance of AccountResource', () => {
     resource.should.be.instanceOf(TemplateResource);
+  });
+  it('should resolve on resolve', () => {
+    const stub = sinon.stub(helper, 'get');
+    stub.returns(resolver('template-single.json'));
+
+    return resource.resolve()
+    .then((template) => {
+      template.should.be.instanceOf(TemplateResource);
+      resource.should.be.equal(template);
+      resource.resolved.should.be.true;
+      stub.restore();
+    })
+    .catch((err) => {
+      stub.restore();
+      throw err;
+    });
   });
   it('should resolve on createDM', () => {
     const stub = sinon.stub(helper, 'post');
@@ -89,6 +106,27 @@ describe('Template Resource', () => {
     })
     .catch((err) => {
       stub.restore();
+      throw err;
+    });
+  });
+  it('should resolve on createDM with unresolved', () => {
+    const get = sinon.stub(helper, 'get');
+    get.returns(resolver('template-single.json'));
+    const post = sinon.stub(helper, 'post');
+    post.returns(resolver('dm-single.json'));
+
+    resource.resolved = false;
+
+    return resource.createDM()
+    .then((dm) => {
+      dm.should.be.instanceOf(DataManagerResource);
+      resource.resolved.should.be.true;
+      get.restore();
+      post.restore();
+    })
+    .catch((err) => {
+      get.restore();
+      post.restore();
       throw err;
     });
   });
