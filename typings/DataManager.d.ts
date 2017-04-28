@@ -16,21 +16,21 @@ export declare class DataManager extends Core {
 
   dataManager(dataManagerID: string): Promise<DataManagerResource>;
 
-  templateList(options?: filterOptions): TemplateList;
+  templateList(options?: filterOptions): Promise<TemplateList>;
 
-  template(templateID: string): TemplateResource;
+  template(templateID: string): Promise<TemplateResource>;
 
-  createTemplate(template: { name: string, collection: any, dataSchema: any, version: string }): TemplateResource;
+  createTemplate(template: { name: string, collection: any, dataSchema: any, version: string }): Promise<TemplateResource>;
 
-  statsList(): DMStatsList;
+  statsList(): Promise<DMStatsList>;
 
-  stats(dataManagerID: string): DMStatsResource;
+  stats(dataManagerID: string): Promise<DMStatsResource>;
 
-  getFileUrl(assetID: string, locale?: string): string;
+  getFileUrl(assetID: string, locale?: string): Promise<string>;
 
-  getImageUrl(assetID: string, size?: number, locale?: string): string;
+  getImageUrl(assetID: string, size?: number, locale?: string): Promise<string>;
 
-  getImageThumbUrl(assetID: string, size?: number, locale?: string): string;
+  getImageThumbUrl(assetID: string, size?: number, locale?: string): Promise<string>;
 }
 
 type environment = 'live' | 'stage' | 'nightly' | 'develop';
