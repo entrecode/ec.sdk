@@ -83,9 +83,10 @@ export default class Session extends Core {
         throw new Error('password must be defined');
       }
 
-      const request = this.newRequest().follow('ec:auth/login')
-      .withTemplateParameters({ clientID: this.tokenStore.getClientID() });
-
+      return this.follow('ec:auth/login');
+    })
+    .then((request) => {
+      request.withTemplateParameters({ clientID: this.tokenStore.getClientID() });
       return post(this.environment, request, { email, password });
     })
     .then(([token]) => {
@@ -113,10 +114,14 @@ export default class Session extends Core {
         throw new Error('clientID must be set with Session#setClientID(clientID: string)');
       }
 
-      const request = this.newRequest().follow('ec:auth/logout')
-      .withTemplateParameters({ clientID: this.tokenStore.getClientID(), token: this.token });
-
-      return post(this.environment, request);
+      return this.follow('ec:auth/logout')
+      .then((request) => {
+        request.withTemplateParameters({
+          clientID: this.tokenStore.getClientID(),
+          token: this.token,
+        });
+        return post(this.environment, request);
+      });
     })
     .then(() => {
       this.events.emit('logout');
@@ -142,10 +147,8 @@ export default class Session extends Core {
         return undefined;
       }
 
-      const request = this.newRequest()
-      .follow('ec:account');
-
-      return get(this.environment, request)
+      return this.follow('ec:account')
+      .then(request => get(this.environment, request))
       .then(([res, traversal]) => {
         this.me = new AccountResource(res, this.environment, traversal)
         this.meLoadedTime = new Date();

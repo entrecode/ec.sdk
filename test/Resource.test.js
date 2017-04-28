@@ -11,7 +11,7 @@ const traverson = require('traverson');
 const resolver = require('./mocks/resolver');
 const Resource = require('../lib/resources/Resource').default;
 
-const schemaNock = require('./mocks/schema-nock');
+const schemaNock = require('./mocks/nock');
 
 const should = chai.should();
 

@@ -1,0 +1,84 @@
+{
+  "message": "Welcome to AccountServer Server",
+  "_links": {
+    "self": {
+      "href": "https://accounts.entrecode.de/"
+    },
+    "curies": {
+      "href": "https://doc.entrecode.de/account_server/#relation-{rel}",
+      "templated": true
+    },
+    "ec:auth/email-available": {
+      "href": "https://accounts.entrecode.de/auth/email{?email}",
+      "templated": true
+    },
+    "ec:auth/login": {
+      "href": "https://accounts.entrecode.de/auth/login{?clientID}",
+      "templated": true
+    },
+    "ec:auth/logout": {
+      "href": "https://accounts.entrecode.de/auth/logout{?clientID}",
+      "templated": true
+    },
+    "ec:auth/password-reset": {
+      "href": "https://accounts.entrecode.de/auth/password-reset{?clientID,email}",
+      "templated": true
+    },
+    "ec:auth/change-email": {
+      "href": "https://accounts.entrecode.de/auth/change-email"
+    },
+    "ec:auth/register": {
+      "href": "https://accounts.entrecode.de/auth/signup{?clientID,invite}",
+      "templated": true
+    },
+    "ec:auth/facebook": {
+      "href": "https://accounts.entrecode.de/auth/facebook{?clientID,invite}",
+      "templated": true
+    },
+    "ec:auth/google": {
+      "href": "https://accounts.entrecode.de/auth/google{?clientID,invite}",
+      "templated": true
+    },
+    "ec:auth/public-key": {
+      "href": "https://accounts.entrecode.de/auth/public-key.pem"
+    },
+    "ec:account": {
+      "href": "https://accounts.entrecode.de/account?accountID=54837882-8b6c-41b1-9016-611e4696916d"
+    },
+    "ec:accounts": {
+      "profile": "https://entrecode.de/schema/accounts",
+      "href": "https://accounts.entrecode.de/account"
+    },
+    "ec:accounts/options": {
+      "href": "https://accounts.entrecode.de/account{?accountid,accountid~,created,createdFrom,createdTo,created~,email,email~,isprincess,language,language~,page,size,sort,state}",
+      "templated": true
+    },
+    "ec:acc/groups": {
+      "profile": "https://entrecode.de/schema/groups",
+      "href": "https://accounts.entrecode.de/group"
+    },
+    "ec:acc/groups/options": {
+      "href": "https://accounts.entrecode.de/group{?groupid,groupid~,name,name~,page,size,sort}",
+      "templated": true
+    },
+    "ec:acc/clients": {
+      "profile": "https://entrecode.de/schema/clients",
+      "href": "https://accounts.entrecode.de/client"
+    },
+    "ec:acc/clients/options": {
+      "href": "https://accounts.entrecode.de/client{?callbackurl,callbackurl~,clientid,clientid~,page,size,sort}",
+      "templated": true
+    },
+    "ec:auth/create-anonymous": {
+      "profile": "https://entrecode.de/schema/account-template",
+      "href": "https://accounts.entrecode.de/auth/account"
+    },
+    "ec:invites": {
+      "profile": "https://entrecode.de/schema/invites",
+      "href": "https://accounts.entrecode.de/invites"
+    },
+    "ec:invalid-permissions": {
+      "href": "https://accounts.entrecode.de/internal/invalid-permissions"
+    }
+  }
+}

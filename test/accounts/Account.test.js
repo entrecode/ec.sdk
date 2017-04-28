@@ -19,10 +19,15 @@ const InvitesResource = require('../../lib/resources/accounts/InvitesResource').
 const InvalidPermissionsResource = require('../../lib/resources/accounts/InvalidPermissionsResource').default;
 const Resource = require('../../lib/resources/Resource').default;
 
+const nock = require('../mocks/nock.js');
+
 chai.should();
 chai.use(sinonChai);
 
 describe('Accounts class', () => {
+  beforeEach(() => {
+    nock.reset();
+  });
   it('should instantiate', () => {
     new Accounts('live').should.be.instanceOf(Accounts);
   });
@@ -91,6 +96,8 @@ describe('Accounts class', () => {
     const accounts = new Accounts('live');
     const stub = sinon.stub(helper, 'get');
     stub.returns(resolver('account-list.json'));
+    const follow = sinon.stub(accounts, 'follow');
+    follow.returns(Promise.resolve(accounts.newRequest()));
 
     return accounts.me()
     .then((resource) => {
@@ -115,6 +122,8 @@ describe('Accounts class', () => {
     const accounts = new Accounts();
     const stub = sinon.stub(helper, 'get');
     stub.returns(resolver('email-available.json'));
+    const follow = sinon.stub(accounts, 'follow');
+    follow.returns(Promise.resolve(accounts.newRequest()));
 
     return accounts.emailAvailable('someone@example.com').should.be.eventually.equal(true)
     .and.notify(() => stub.restore());
@@ -247,6 +256,8 @@ describe('Accounts class', () => {
     const accounts = new Accounts();
     const stub = sinon.stub(helper, 'get');
     stub.returns(resolver('invites.json'), accounts.traversal);
+    const follow = sinon.stub(accounts, 'follow');
+    follow.returns(Promise.resolve(accounts.newRequest()));
 
     return accounts.invites()
     .then((invites) => {
@@ -281,6 +292,8 @@ describe('Accounts class', () => {
     const accounts = new Accounts('live');
     const stub = sinon.stub(helper, 'get');
     stub.returns(resolver('account-list.json'));
+    const follow = sinon.stub(accounts, 'follow');
+    follow.returns(Promise.resolve(accounts.newRequest()));
 
     return accounts.client('aID')
     .then((resource) => {
@@ -299,6 +312,8 @@ describe('Accounts class', () => {
     const accounts = new Accounts('live');
     const stub = sinon.stub(helper, 'get');
     stub.returns(resolver('invalid-permissions.json'));
+    const follow = sinon.stub(accounts, 'follow');
+    follow.returns(Promise.resolve(accounts.newRequest()));
 
     return accounts.invalidPermissions()
     .then((resource) => {
@@ -333,6 +348,8 @@ describe('Accounts class', () => {
     const accounts = new Accounts('live');
     const stub = sinon.stub(helper, 'get');
     stub.returns(resolver('group-list.json'));
+    const follow = sinon.stub(accounts, 'follow');
+    follow.returns(Promise.resolve(accounts.newRequest()));
 
     return accounts.group('aID')
     .then((resource) => {

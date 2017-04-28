@@ -30,11 +30,16 @@ const AssetList = require('../../lib/resources/datamanager/AssetList').default;
 const AssetResource = require('../../lib/resources/datamanager/AssetResource').default;
 const Resource = require('../../lib/resources/Resource').default;
 
+const nock = require('../mocks/nock.js');
+
 chai.should();
 chai.use(sinonChai);
 chai.use(chaiAsPromised);
 
 describe('DataManager class', () => {
+  beforeEach(() => {
+    nock.reset();
+  });
   it('should instantiate', () => {
     new DataManager('live').should.be.instanceOf(DataManager);
   });
@@ -189,6 +194,8 @@ describe('DataManager class', () => {
     const dm = new DataManager('live');
     const stub = sinon.stub(helper, 'get');
     stub.returns(resolver('dm-stats-list.json'));
+    const follow = sinon.stub(dm, 'follow');
+    follow.returns(Promise.resolve(dm.newRequest()));
 
     return dm.statsList()
     .then((list) => {

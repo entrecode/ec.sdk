@@ -11,5 +11,11 @@ module.exports = {
     .get('/locale').replyWithFile(200, `${__dirname}/schema/locale.json`)
     .get('/hexcolor').replyWithFile(200, `${__dirname}/schema/hexcolor.json`)
     .get('/hal').replyWithFile(200, `${__dirname}/schema/hal.json`);
+
+    nock('https://accounts.entrecode.de')
+    .get('/').replyWithFile(200, `${__dirname}/accounts-root.json`);
+
+    nock('https://datamanager.entrecode.de')
+    .get('/').replyWithFile(200, `${__dirname}/dm-list.json`);
   },
 };

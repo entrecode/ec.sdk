@@ -1,7 +1,9 @@
 import traverson from 'traverson';
 import HalAdapter from 'traverson-hal';
+import halfred from 'halfred';
 import TokenStoreFactory from './TokenStore';
 import events from './EventEmitter';
+import { get } from './helper';
 
 traverson.registerMediaType(HalAdapter.mediaType, HalAdapter);
 
@@ -40,8 +42,7 @@ export default class Core {
 
     this.events = events;
     this.tokenStore = TokenStoreFactory('live');
-    this.traversal = traverson.from(url).jsonHal()
-    .addRequestOptions({ headers: { Accept: 'application/hal+json' } });
+    this.traversal = traverson.from(url).jsonHal();
   }
 
   /**
@@ -64,6 +65,27 @@ export default class Core {
     }
 
     return this.traversal.newRequest();
+  }
+
+  follow(link) {
+    return Promise.resolve()
+    .then(() => {
+      if (this.resource && this.traversal && this.resource.link(link) !== null) {
+        return this.newRequest().follow(link);
+      }
+
+      return get(this.environment, this.newRequest())
+      .then(([res, traversal]) => {
+        this.resource = halfred.parse(res);
+        this.traversal = traversal;
+
+        if (this.resource.link(link) === null) {
+          throw new Error(`Could not follow ${link}. Link not present in root response.`);
+        }
+
+        return this.newRequest().follow(link);
+      });
+    });
   }
 
   /**

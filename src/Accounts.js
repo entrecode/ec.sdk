@@ -1,5 +1,3 @@
-import halfred from 'halfred';
-
 import Core from './Core';
 import {
   get,
@@ -95,13 +93,10 @@ export default class Accounts extends Core {
         throw new Error('Providing only an accountID in AccountList filter will result in single resource response. Please use Accounts#account');
       }
 
-      return get(this.environment, this.newRequest());
+      return this.follow('ec:accounts/options');
     })
-    .then(([res, traversal]) => {
-      const root = halfred.parse(res);
-      const request = traversal.continue().newRequest()
-      .follow('ec:accounts/options')
-      .withTemplateParameters(optionsToQuery(options, root.link('ec:accounts/options').href));
+    .then((request) => {
+      request.withTemplateParameters(optionsToQuery(options, this.resource.link('ec:accounts/options').href));
       return get(this.environment, request);
     })
     .then(([res, traversal]) => new AccountList(res, this.environment, traversal));
@@ -125,9 +120,10 @@ export default class Accounts extends Core {
       if (!accountID) {
         throw new Error('accountID must be defined');
       }
-      const request = this.newRequest()
-      .follow('ec:accounts/options')
-      .withTemplateParameters({ accountid: accountID });
+      return this.follow('ec:accounts/options');
+    })
+    .then((request) => {
+      request.withTemplateParameters({ accountid: accountID });
       return get(this.environment, request);
     })
     .then(([res, traversal]) => new AccountResource(res, this.environment, traversal));
@@ -146,12 +142,8 @@ export default class Accounts extends Core {
    */
   me() {
     return Promise.resolve()
-    .then(() => {
-      const request = this.newRequest()
-      .follow('ec:account')
-      .withTemplateParameters();
-      return get(this.environment, request);
-    })
+    .then(() => this.follow('ec:account'))
+    .then(request => get(this.environment, request))
     .then(([res, traversal]) => new AccountResource(res, this.environment, traversal));
   }
 
@@ -181,13 +173,10 @@ export default class Accounts extends Core {
         throw new Error('Providing only an groupID in GroupList filter will result in single resource response. Please use Accounts#groupList');
       }
 
-      return get(this.environment, this.newRequest());
+      return this.follow('ec:acc/groups/options');
     })
-    .then(([res, traversal]) => {
-      const root = halfred.parse(res);
-      const request = traversal.continue().newRequest()
-      .follow('ec:acc/groups/options')
-      .withTemplateParameters(optionsToQuery(options, root.link('ec:acc/groups/options').href));
+    .then((request) => {
+      request.withTemplateParameters(optionsToQuery(options, this.resource.link('ec:acc/groups/options').href));
       return get(this.environment, request);
     })
     .then(([res, traversal]) => new GroupList(res, this.environment, traversal));
@@ -212,9 +201,10 @@ export default class Accounts extends Core {
       if (!groupID) {
         throw new Error('groupID must be defined');
       }
-      const request = this.newRequest()
-      .follow('ec:acc/clients/options')
-      .withTemplateParameters({ groupid: groupID });
+      return this.follow('ec:acc/clients/options');
+    })
+    .then((request) => {
+      request.withTemplateParameters({ groupid: groupID });
       return get(this.environment, request);
     })
     .then(([res, traversal]) => new GroupResource(res, this.environment, traversal));
@@ -252,13 +242,10 @@ export default class Accounts extends Core {
         throw new Error('Providing only an clientID in ClientList filter will result in single resource response. Please use Accounts#client');
       }
 
-      return get(this.environment, this.newRequest());
+      return this.follow('ec:acc/clients/options');
     })
-    .then(([res, traversal]) => {
-      const root = halfred.parse(res);
-      const request = traversal.continue().newRequest()
-      .follow('ec:acc/clients/options')
-      .withTemplateParameters(optionsToQuery(options, root.link('ec:acc/clients/options').href));
+    .then((request) => {
+      request.withTemplateParameters(optionsToQuery(options, this.resource.link('ec:acc/clients/options').href));
       return get(this.environment, request);
     })
     .then(([res, traversal]) => new ClientList(res, this.environment, traversal));
@@ -282,9 +269,11 @@ export default class Accounts extends Core {
       if (!clientID) {
         throw new Error('clientID must be defined');
       }
-      const request = this.newRequest()
-      .follow('ec:acc/clients/options')
-      .withTemplateParameters({ clientid: clientID });
+
+      return this.follow('ec:acc/client/options');
+    })
+    .then((request) => {
+      request.withTemplateParameters({ clientid: clientID });
       return get(this.environment, request);
     })
     .then(([res, traversal]) => new ClientResource(res, this.environment, traversal));
@@ -303,7 +292,8 @@ export default class Accounts extends Core {
    *   token response.
    */
   createApiToken() {
-    return post(this.environment, this.newRequest().follow('ec:auth/create-anonymous'), {})
+    return this.follow('ec:auth/create-anonymous')
+    .then(request => post(this.environment, request, {}))
     .then(([tokenResponse]) => tokenResponse);
   }
 
@@ -327,13 +317,9 @@ export default class Accounts extends Core {
    * @returns {Promise.<InvitesResource>} Promise resolving to the invites resource
    */
   invites() {
-    return Promise.resolve()
-    .then(() => {
-      const request = this.newRequest().follow('ec:invites');
-
-      return get(this.environment, request)
-      .then(([invites, traversal]) => new InvitesResource(invites, this.environment, traversal));
-    });
+    return this.follow('ec:invites')
+    .then(request => get(this.environment, request))
+    .then(([invites, traversal]) => new InvitesResource(invites, this.environment, traversal));
   }
 
   /**
@@ -357,11 +343,10 @@ export default class Accounts extends Core {
         throw new Error('count must be a number');
       }
 
-      const request = this.newRequest().follow('ec:invites');
-
-      return post(this.environment, request, { count: count || 1 })
-      .then(([invites, traversal]) => new InvitesResource(invites, this.environment, traversal));
-    });
+      return this.follow('ec:invites');
+    })
+    .then(request => post(this.environment, request, { count: count || 1 }))
+    .then(([invites, traversal]) => new InvitesResource(invites, this.environment, traversal));
   }
 
   /**
@@ -377,10 +362,8 @@ export default class Accounts extends Core {
    * @returns {Promise<InvalidPermissionsResource>} Promise resolving to invalid permissions
    */
   invalidPermissions() {
-    const request = this.newRequest()
-    .follow('ec:invalid-permissions');
-
-    return get(this.environment, request)
+    return this.follow('ec:invalid-permissions')
+    .then(request => get(this.environment, request))
     .then(([resource, traversal]) =>
       new InvalidPermissionsResource(resource, this.environment, traversal));
   }
@@ -408,10 +391,11 @@ export default class Accounts extends Core {
         throw new Error('email must be defined');
       }
 
-      const request = this.newRequest().follow('ec:auth/email-available')
-      .withTemplateParameters({ email });
-
-      return get(this.environment, request)
+      return this.follow('ec:auth/email-available');
+    })
+    .then((request) => {
+      request.withTemplateParameters({ email });
+      return get(this.environment, request);
     })
     .then(([a]) => a.available);
   }
@@ -444,11 +428,13 @@ export default class Accounts extends Core {
         throw new Error('clientID must be set with Account#setClientID(clientID: string)');
       }
 
-      const request = this.newRequest().follow('ec:auth/register').withTemplateParameters({
+      return this.follow('ec:auth/register');
+    })
+    .then((request) => {
+      request.withTemplateParameters({
         clientID: this.tokenStore.getClientID(),
         invite,
       });
-
       return getUrl(this.environment, request);
     })
     .then(url => superagentFormPost(url, { email, password }))
@@ -478,11 +464,12 @@ export default class Accounts extends Core {
         throw new Error('clientID must be set with Account#setClientID(clientID: string)');
       }
 
-      const request = this.newRequest().follow('ec:auth/password-reset').withTemplateParameters({
+      return this.follow('ec:auth/password-reset');
+    }).then((request) => {
+      request.withTemplateParameters({
         clientID: this.tokenStore.getClientID(),
         email,
       });
-
       return getEmpty(this.environment, request);
     });
   }
@@ -508,9 +495,8 @@ export default class Accounts extends Core {
         throw new Error('not logged in.');
       }
 
-      const request = this.newRequest().follow('ec:auth/change-email');
-
-      return postEmpty(this.environment, request, { email });
-    });
+      return this.follow('ec:auth/change-email');
+    })
+    .then(request => postEmpty(this.environment, request, { email }));
   }
 }

@@ -3,6 +3,8 @@ export declare class Core {
 
   newRequest(): any;
 
+  follow(link: string): any;
+
   setToken(token: string): Core;
 
   setUserAgent(agent: string): Core;

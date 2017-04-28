@@ -1,5 +1,3 @@
-import halfred from 'halfred';
-
 import Core from './Core';
 import { get, optionsToQuery, post, superagentGet } from './helper';
 import DataManagerResource from './resources/datamanager/DataManagerResource';
@@ -29,7 +27,7 @@ export default class DataManager extends Core {
    * @param {?environment} environment the environment to connect to.
    */
   constructor(environment) {
-    if (environment && !{}.hasOwnProperty.call(urls, environment)) {
+    if (environment && !(environment in urls)) {
       throw new Error('invalid environment specified');
     }
 
@@ -70,13 +68,10 @@ export default class DataManager extends Core {
         throw new Error('Providing only an dataManagerID in DataManagerList filter will result in single resource response. Please use DataManager#get');
       }
 
-      return get(this.environment, this.newRequest());
+      return this.follow('ec:datamanagers/options');
     })
-    .then(([res, traversal]) => {
-      const root = halfred.parse(res);
-      const request = traversal.continue().newRequest()
-      .follow('ec:datamanagers/options')
-      .withTemplateParameters(optionsToQuery(options, root.link('ec:datamanagers/options').href));
+    .then((request) => {
+      request.withTemplateParameters(optionsToQuery(options, this.resource.link('ec:datamanagers/options').href));
       return get(this.environment, request);
     })
     .then(([res, traversal]) => new DataManagerList(res, this.environment, traversal));
@@ -94,9 +89,10 @@ export default class DataManager extends Core {
       if (!dataManagerID) {
         throw new Error('dataManagerID must be defined');
       }
-      const request = this.newRequest()
-      .follow('ec:datamanager/by-id')
-      .withTemplateParameters({ dataManagerID });
+      return this.follow('ec:datamanager/by-id');
+    })
+    .then((request) => {
+      request.withTemplateParameters({ dataManagerID });
       return get(this.environment, request);
     })
     .then(([res, traversal]) => new DataManagerResource(res, this.environment, traversal));
@@ -137,13 +133,10 @@ export default class DataManager extends Core {
         throw new Error('Cannot filter templateList only by templateID. Use DataManagerResource#template() instead');
       }
 
-      return get(this.environment, this.newRequest());
+      return this.follow('ec:dm-templates/options');
     })
-    .then(([res, traversal]) => {
-      const root = halfred.parse(res);
-      const request = traversal.continue().newRequest()
-      .follow('ec:dm-templates/options')
-      .withTemplateParameters(optionsToQuery(options, root.link('ec:dm-templates/options').href));
+    .then((request) => {
+      request.withTemplateParameters(optionsToQuery(options, this.resource.link('ec:dm-templates/options').href));
       return get(this.environment, request);
     })
     .then(([res, traversal]) => new TemplateList(res, this.environment, traversal));
@@ -167,11 +160,9 @@ export default class DataManager extends Core {
       if (!templateID) {
         throw new Error('templateID must be defined');
       }
-      const request = this.newRequest()
-      .follow('ec:dm-templates/options')
-      .withTemplateParameters({ templateID });
-      return get(this.environment, request);
+      return this.follow('ec:dm-templates/options');
     })
+    .then(request => get(this.environment, request.withTemplateParameters({ templateID })))
     .then(([res, traversal]) => new TemplateResource(res, this.environment, traversal, true));
   }
 
@@ -188,8 +179,9 @@ export default class DataManager extends Core {
         throw new Error('Cannot create resource with undefined object.');
       }
       // TODO schema validation
-      return post(this.newRequest().follow('ec:dm-templates'), template);
+      return this.follow('ec:dm-templates');
     })
+    .then(request => post(request, template))
     .then(([dm, traversal]) => new TemplateResource(dm, this.environment, traversal));
   }
 
@@ -207,11 +199,8 @@ export default class DataManager extends Core {
    */
   statsList() {
     return Promise.resolve()
-    .then(() => {
-      const request = this.newRequest()
-      .follow('ec:dm-stats');
-      return get(this.environment, request);
-    })
+    .then(() => this.follow('ec:dm-stats'))
+    .then(request => get(this.environment, request))
     .then(([res, traversal]) => new DMStatsList(res, this.environment, traversal));
   }
 
@@ -233,11 +222,9 @@ export default class DataManager extends Core {
       if (!dataManagerID) {
         throw new Error('dataManagerID must be defined');
       }
-      const request = this.newRequest()
-      .follow('ec:dm-templates/options')
-      .withTemplateParameters({ dataManagerID });
-      return get(this.environment, request);
+      return this.follow('ec:dm-stats');
     })
+    .then(request => get(this.environment, request.withTemplateParameters({ dataManagerID })))
     .then(([res]) => new DMStatsList(res, this.environment).getFirstItem());
   }
 

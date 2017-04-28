@@ -93,10 +93,14 @@ describe('Session class', () => {
     return session.logout().should.be.rejectedWith('clientID must be set with Session#setClientID');
   });
   it('should check true', () => {
+    const session = new Session();
+
     const stub = sinon.stub(helper, 'get');
     stub.returns(resolver('account-single.json'));
+    const follow = sinon.stub(session, 'follow');
+    follow.returns(Promise.resolve(session.newRequest()));
 
-    return new Session().checkPermission('dm-stats')
+    return session.checkPermission('dm-stats')
     .then((ok) => {
       ok.should.be.true;
       stub.restore();
@@ -107,10 +111,14 @@ describe('Session class', () => {
     });
   });
   it('should check false', () => {
+    const session = new Session();
+
     const stub = sinon.stub(helper, 'get');
     stub.returns(resolver('account-single.json'));
+    const follow = sinon.stub(session, 'follow');
+    follow.returns(Promise.resolve(session.newRequest()));
 
-    return new Session().checkPermission('nonono')
+    return session.checkPermission('nonono')
     .then((ok) => {
       ok.should.be.false;
       stub.restore();
@@ -121,10 +129,14 @@ describe('Session class', () => {
     });
   });
   it('should check from cache', () => {
-    const stub = sinon.stub(helper, 'get');
-    stub.returns(resolver('account-single.json'));
-
     const session = new Session();
+
+    const stub = sinon.stub(helper, 'get');
+    stub.onFirstCall('accounts-root.json');
+    stub.returns(resolver('account-single.json'));
+    const follow = sinon.stub(session, 'follow');
+    follow.returns(Promise.resolve(session.newRequest()));
+
     return session.checkPermission('dm-stats')
     .then(() => session.checkPermission('dm-stats'))
     .then((ok) => {
@@ -138,10 +150,14 @@ describe('Session class', () => {
     });
   });
   it('should check reload', () => {
-    const stub = sinon.stub(helper, 'get');
-    stub.returns(resolver('account-single.json'));
-
     const session = new Session();
+
+    const stub = sinon.stub(helper, 'get');
+    stub.onFirstCall('accounts-root.json');
+    stub.returns(resolver('account-single.json'));
+    const follow = sinon.stub(session, 'follow');
+    follow.returns(Promise.resolve(session.newRequest()));
+
     return session.checkPermission('dm-stats')
     .then(() => {
       session.meLoadedTime = new Date(new Date() - 350000);
