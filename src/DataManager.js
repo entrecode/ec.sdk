@@ -181,9 +181,10 @@ export default class DataManager extends Core {
       if (!template) {
         throw new Error('Cannot create resource with undefined object.');
       }
-      // TODO schema validation
-      return this.follow('ec:dm-templates');
+      return this.link('ec:dm-template/by-id');
     })
+    .then(link => validator.validate(template, `${link.profile}-template`))
+    .then(() => this.follow('ec:dm-templates'))
     .then(request => post(request, template))
     .then(([dm, traversal]) => new TemplateResource(dm, this.environment, traversal));
   }
