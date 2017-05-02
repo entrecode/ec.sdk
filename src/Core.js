@@ -88,6 +88,27 @@ export default class Core {
     });
   }
 
+  link(link) {
+    return Promise.resolve()
+    .then(() => {
+      if (this.resource && this.traversal && this.resource.link(link) !== null) {
+        return this.resource.link(link);
+      }
+
+      return get(this.environment, this.newRequest())
+      .then(([res, traversal]) => {
+        this.resource = halfred.parse(res);
+        this.traversal = traversal;
+
+        if (this.resource.link(link) === null) {
+          throw new Error(`Could not get ${link}. Link not present in root response.`);
+        }
+
+        return this.resource.link(link);
+      });
+    });
+  }
+
   /**
    * If you have an existing access token you can use it by calling this function. All
    * subsequent requests will use the provided {@link https://jwt.io/ Json Web Token} with an

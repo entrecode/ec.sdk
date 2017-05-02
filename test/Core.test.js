@@ -77,6 +77,22 @@ describe('Core', () => {
     return core.follow('ec:dm-stats')
     .then(() => core.follow('missing').should.be.rejectedWith('Could not follow missing. Link not present in root response.'));
   });
+  it('should return link', () => {
+    core.environment = 'live';
+    return core.link('ec:dm-stats').should.eventually
+    .have.property('href', 'https://datamanager.entrecode.de/stats{?dataManagerID}');
+  });
+  it('should return link cached', () => {
+    core.environment = 'live';
+    return core.link('ec:dm-stats')
+    .then(() => core.link('ec:dm-stats').should.eventually
+    .have.property('href', 'https://datamanager.entrecode.de/stats{?dataManagerID}'));
+  });
+  it('should reject on link missing link', () => {
+    core.environment = 'live';
+    return core.link('ec:dm-stats')
+    .then(() => core.link('missing').should.be.rejectedWith('Could not get missing. Link not present in root response.'));
+  });
   it('should throw on undefined traversal', () => {
     const throws = () => {
       core.traversal = null;

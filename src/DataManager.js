@@ -1,3 +1,5 @@
+import validator from 'json-schema-remote';
+
 import Core from './Core';
 import { get, optionsToQuery, post, superagentGet } from './helper';
 import DataManagerResource from './resources/datamanager/DataManagerResource';
@@ -48,9 +50,10 @@ export default class DataManager extends Core {
       if (!datamanager) {
         throw new Error('Cannot create resource with undefined object.');
       }
-      // TODO schema validation
-      return post(this.newRequest(), datamanager);
+      return this.link('ec:datamanager/by-id');
     })
+    .then(link => validator.validate(datamanager, `${link.profile}-template`))
+    .then(() => post(this.environment, this.newRequest(), datamanager))
     .then(([dm, traversal]) => new DataManagerResource(dm, this.environment, traversal));
   }
 

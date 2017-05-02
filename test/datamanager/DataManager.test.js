@@ -116,6 +116,10 @@ describe('DataManager class', () => {
     .then(() => {
       stub.should.be.called.once;
       stub.restore();
+    })
+    .catch((err) => {
+      stub.restore();
+      throw err;
     });
   });
   it('should be rejected on create with undefined', () => {
