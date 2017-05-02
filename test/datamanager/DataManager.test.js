@@ -577,20 +577,24 @@ describe('DataManager Resource', () => {
         return resolve(JSON.parse(res));
       });
     })
-    .then((clientJSON) => {
-      stub.returns(Promise.resolve([clientJSON, resource.traversal]));
+    .then((res) => {
+      stub.returns(Promise.resolve([res, resource.traversal]));
       const create = Object.assign({}, {
-        name: resource.name,
-        label: resource.label,
-        addUnregistered: resource.addUnregistered,
-        addRegistered: resource.addRegistered,
-        accounts: resource.accounts,
+        name: res.name,
+        label: res.label,
+        addUnregistered: res.addUnregistered,
+        addRegistered: res.addRegistered,
+        accounts: res.accounts,
       });
       return resource.createRole(create);
     })
     .then(() => {
       stub.should.be.called.once;
       stub.restore();
+    })
+    .catch((err) => {
+      stub.restore();
+      throw err;
     });
   });
   it('should be rejected on undefined client', () => {

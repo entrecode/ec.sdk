@@ -1,3 +1,5 @@
+import validator from 'json-schema-remote';
+
 import superagent from 'superagent';
 import * as qs from 'querystring';
 
@@ -410,9 +412,10 @@ export default class DataManagerResource extends Resource {
       if (!role) {
         throw new Error('Cannot create resource with undefined object.');
       }
-      // TODO schema validation
-      return post(this.newRequest().follow('ec:dm-roles'), role);
+      return this.resource.link('ec:dm-role/by-id');
     })
+    .then(link => validator.validate(role, `${link.profile}-template`))
+    .then(() => post(this.newRequest().follow('ec:dm-roles'), role))
     .then(([dm, traversal]) => new RoleResource(dm, this.environment, traversal));
   }
 

@@ -72,6 +72,11 @@
       "profile": "https://entrecode.de/schema/dm-roles",
       "href": "https://datamanager.entrecode.de/role?dataManagerID=48e18a34-cf64-4f4a-bc47-45323a7f0e44"
     },
+    "ec:dm-role/by-id": {
+      "profile": "https://entrecode.de/schema/dm-role",
+      "href": "https://datamanager.entrecode.de/role{?roldeID}",
+      "templated": true
+    },
     "ec:dm-roles/options": {
       "href": "https://datamanager.entrecode.de/role{?accounts,addRegistered,addUnregistered,dataManagerID,label,label~,name,name~,page,roleID,roleID~,size,sort}",
       "templated": true
