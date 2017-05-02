@@ -69,6 +69,11 @@
       "href": "https://accounts.entrecode.de/client{?callbackurl,callbackurl~,clientid,clientid~,page,size,sort}",
       "templated": true
     },
+    "ec:acc/client/by-id": {
+      "profile": "https://entrecode.de/schema/client",
+      "href": "https://accounts.entrecode.de/client{?clientID}",
+      "templated": true
+    },
     "ec:auth/create-anonymous": {
       "profile": "https://entrecode.de/schema/account-template",
       "href": "https://accounts.entrecode.de/auth/account"

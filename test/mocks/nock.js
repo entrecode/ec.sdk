@@ -5,6 +5,7 @@ module.exports = {
     nock.disableNetConnect();
 
     nock('https://entrecode.de/schema')
+    .get('/client').replyWithFile(200, `${__dirname}/schema/client.json`)
     .get('/datamanager').replyWithFile(200, `${__dirname}/schema/dm.json`)
     .get('/datamanager-template').replyWithFile(200, `${__dirname}/schema/dm-template.json`)
     .get('/dm-template-template').replyWithFile(200, `${__dirname}/schema/dm-template-template.json`)

@@ -1,3 +1,5 @@
+import validator from 'json-schema-remote';
+
 import Core from './Core';
 import {
   get,
@@ -277,6 +279,26 @@ export default class Accounts extends Core {
       return get(this.environment, request);
     })
     .then(([res, traversal]) => new ClientResource(res, this.environment, traversal));
+  }
+
+  /**
+   * Create a new Client.
+   *
+   * @param {object} client object representing the client.
+   * @returns {Promise<ClientResource>} the newly created ClientResource
+   */
+  createClient(client) {
+    return Promise.resolve()
+    .then(() => {
+      if (!client) {
+        throw new Error('Cannot create resource with undefined object.');
+      }
+      return this.link('ec:acc/client/by-id');
+    })
+    .then(link => validator.validate(client, link.profile))
+    .then(() => this.follow('ec:acc/clients'))
+    .then(request => post(this.environment, request, client))
+    .then(([c, traversal]) => new ClientResource(c, this.environment, traversal));
   }
 
   /**

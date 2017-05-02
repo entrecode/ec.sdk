@@ -28,6 +28,8 @@ export declare class Accounts extends Core {
 
   client(clientID: string): Promise<ClientResource>;
 
+  createClient(client: any): Promise<ClientResource>;
+
   createApiToken(): tokenResponse;
 
   invites(): Promise<InvitesResource>
