@@ -1,5 +1,5 @@
 import Resource from '../Resource';
-import { del } from '../../helper';
+import { del, fileNegotiate } from '../../helper';
 
 /**
  * DeletedAssetResource class
@@ -55,14 +55,54 @@ export default class DeletedAssetResource extends Resource {
     });
   }
 
+  /**
+   * Use this function to permanently delete this asset.
+   *
+   * @returns {Promise<void>} Promise resolving on successful purging.
+   */
   purge() {
     return del(this.environment,
       this.newRequest().follow('self').withTemplateParameters({ destroy: 'destroy' }));
   }
 
+  /**
+   * Use this function to restore this asset.
+   *
+   * @returns {Promise<void>} Promise resolving on successful restore.
+   */
   restore() {
     return this.del();
   }
 
-  // TODO get best file
+  /**
+   * Best file helper for files.
+   *
+   * @param {string?} locale - the locale
+   * @returns {string} URL to the file
+   */
+  getFileUrl(locale) {
+    return fileNegotiate(this, false, false, null, locale);
+  }
+
+  /**
+   * Best file helper for images.
+   *
+   * @param {number?} size - the minimum size of the image
+   * @param {string?} locale - the locale
+   * @returns {string} URL to the file
+   */
+  getImageUrl(size, locale) {
+    return fileNegotiate(this, true, false, size, locale);
+  }
+
+  /**
+   * Best file helper for image thumbnails.
+   *
+   * @param {number?} size - the minimum size of the image
+   * @param {string?} locale - the locale
+   * @returns {string} URL to the file
+   */
+  getImageThumbUrl(size, locale) {
+    return fileNegotiate(this, true, true, size, locale);
+  }
 }

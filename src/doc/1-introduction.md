@@ -1,4 +1,4 @@
-> You've found the documentation for [ec.sdk](https://www.npmjs.com/package/ec.sdk). Congrats. 😊
+> You've found the documentation for [ec.sdk](https://www.npmjs.com/package/ec.sdk). Awesome! 😊
 >
 > This is the SDK for all [ec.APIs](https://doc.entrecode.de) by entrecode. By entrecode.
 
