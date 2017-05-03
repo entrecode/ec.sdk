@@ -24,6 +24,8 @@ export declare class Accounts extends Core {
 
   group(groupID: string): Promise<GroupResource>;
 
+  createGroup(group: any): Promise<GroupResource>;
+
   clientList(options?: filterOptions): Promise<ClientList>;
 
   client(clientID: string): Promise<ClientResource>;

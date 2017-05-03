@@ -61,6 +61,10 @@
       "href": "https://accounts.entrecode.de/group{?groupid,groupid~,name,name~,page,size,sort}",
       "templated": true
     },
+    "ec:acc/group/by-id": {
+      "profile": "https://entrecode.de/schema/group",
+      "href": "https://accounts.entrecode.de/group{?groupID}"
+    },
     "ec:acc/clients": {
       "profile": "https://entrecode.de/schema/clients",
       "href": "https://accounts.entrecode.de/client"

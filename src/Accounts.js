@@ -213,6 +213,27 @@ export default class Accounts extends Core {
   }
 
   /**
+   * Create a new Group.
+   *
+   * @param {object} group object representing the group.
+   * @returns {Promise<GroupResource>} the newly created GroupResource
+   */
+  createGroup(group) {
+    return Promise.resolve()
+    .then(() => {
+      if (!group) {
+        throw new Error('Cannot create resource with undefined object.');
+      }
+      return this.link('ec:acc/group/by-id');
+    })
+    .then(link => validator.validate(group, `${link.profile}-template`))
+    .then(() => this.follow('ec:acc/groups'))
+    .then(request => post(this.environment, request, group))
+    .then(([c, traversal]) => new ClientResource(c, this.environment, traversal));
+  }
+
+
+  /**
    * Load the {@link ClientList}.
    *
    * @example

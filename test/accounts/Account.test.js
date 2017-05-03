@@ -397,6 +397,38 @@ describe('Accounts class', () => {
   it('should be rejected on group with undefiend id', () => {
     return new Accounts().group().should.be.rejectedWith('groupID must be defined');
   });
+  it('should call post on create group', () => {
+    const stub = sinon.stub(helper, 'post');
+    return new Promise((resolve, reject) => {
+      fs.readFile(`${__dirname}/../mocks/group-single.json`, 'utf-8', (err, res) => {
+        if (err) {
+          return reject(err);
+        }
+        return resolve(JSON.parse(res));
+      });
+    })
+    .then((resource) => {
+      const acc = new Accounts('live');
+      stub.returns(Promise.resolve([resource, acc.traversal]));
+      const create = Object.assign({}, {
+        name: resource.name,
+        permissions: resource.permissions,
+      });
+      return acc.createGroup(create);
+    })
+    .then(() => {
+      stub.should.be.called.once;
+      stub.restore();
+    })
+    .catch((err) => {
+      stub.restore();
+      throw err;
+    });
+  });
+  it('should be rejected on create with undefined', () => {
+    return new Accounts('live').createGroup()
+    .should.be.rejectedWith('Cannot create resource with undefined object');
+  });
 });
 
 describe('Account ListResource', () => {

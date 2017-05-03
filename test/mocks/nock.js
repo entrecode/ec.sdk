@@ -10,6 +10,7 @@ module.exports = {
     .get('/datamanager-template').replyWithFile(200, `${__dirname}/schema/dm-template.json`)
     .get('/dm-template-template').replyWithFile(200, `${__dirname}/schema/dm-template-template.json`)
     .get('/dm-role-template').replyWithFile(200, `${__dirname}/schema/dm-role-template.json`)
+    .get('/group-template').replyWithFile(200, `${__dirname}/schema/group-template.json`)
     .get('/datetime').replyWithFile(200, `${__dirname}/schema/datetime.json`)
     .get('/uuidV4').replyWithFile(200, `${__dirname}/schema/uuidV4.json`)
     .get('/locale').replyWithFile(200, `${__dirname}/schema/locale.json`)
