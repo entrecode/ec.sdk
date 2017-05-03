@@ -198,6 +198,12 @@
                       </a></li>
                       
                       <li><a
+                        href='#Accounts#createGroup'
+                        class='regular pre-open'>
+                        #createGroup
+                      </a></li>
+                      
+                      <li><a
                         href='#Accounts#clientList'
                         class='regular pre-open'>
                         #clientList
@@ -207,6 +213,12 @@
                         href='#Accounts#client'
                         class='regular pre-open'>
                         #client
+                      </a></li>
+                      
+                      <li><a
+                        href='#Accounts#createClient'
+                        class='regular pre-open'>
+                        #createClient
                       </a></li>
                       
                       <li><a
@@ -1763,6 +1775,36 @@
                         #constructor
                       </a></li>
                       
+                      <li><a
+                        href='#DeletedAssetResource#purge'
+                        class='regular pre-open'>
+                        #purge
+                      </a></li>
+                      
+                      <li><a
+                        href='#DeletedAssetResource#restore'
+                        class='regular pre-open'>
+                        #restore
+                      </a></li>
+                      
+                      <li><a
+                        href='#DeletedAssetResource#getFileUrl'
+                        class='regular pre-open'>
+                        #getFileUrl
+                      </a></li>
+                      
+                      <li><a
+                        href='#DeletedAssetResource#getImageUrl'
+                        class='regular pre-open'>
+                        #getImageUrl
+                      </a></li>
+                      
+                      <li><a
+                        href='#DeletedAssetResource#getImageThumbUrl'
+                        class='regular pre-open'>
+                        #getImageThumbUrl
+                      </a></li>
+                      
                     </ul>
                   
                   
@@ -1845,7 +1887,7 @@
 
   
     <blockquote>
-<p>You've found the documentation for <a href="https://www.npmjs.com/package/ec.sdk">ec.sdk</a>. Congrats. 😊</p>
+<p>You've found the documentation for <a href="https://www.npmjs.com/package/ec.sdk">ec.sdk</a>. Awesome! 😊</p>
 <p>This is the SDK for all <a href="https://doc.entrecode.de">ec.APIs</a> by entrecode. By entrecode.</p>
 </blockquote>
 <p>In order to use this SDK you should be familiar with ec.APIs and the concepts behind those. Please refer to the official documentation linked above to get a basic understanding. The documentation you are reading now will first introduce the basic concept when using the SDK. Secondly it is the complete API documentation for ec.sdk.</p>
@@ -3287,6 +3329,74 @@ by the options parameter.</p>
       </div>
     </div>
   
+    <div class='border-bottom' id='Accounts#createGroup'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>createGroup(group)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Create a new Group.</p>
+
+
+  <div class='pre p1 fill-light mt0'>createGroup(group: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#groupresource">GroupResource</a>></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>group</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    object representing the group.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#groupresource">GroupResource</a>></code>:
+        the newly created GroupResource
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
     <div class='border-bottom' id='Accounts#clientList'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
@@ -3442,6 +3552,74 @@ by the options parameter.</p>
   <span class="hljs-keyword">return</span> show(client);
 });</pre>
     
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='Accounts#createClient'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>createClient(client)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Create a new Client.</p>
+
+
+  <div class='pre p1 fill-light mt0'>createClient(client: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#clientresource">ClientResource</a>></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>client</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    object representing the client.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#clientresource">ClientResource</a>></code>:
+        the newly created ClientResource
+
+      
+    
+  
+
+  
+
   
 
   
@@ -12612,7 +12790,7 @@ FormData object, a array of readStreams, or an array containing buffers.
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>constructor(resource, environment, traversal)</span>
+            <span class='code strong strong truncate'>constructor(resource, environment, traversal, resolved = false)</span>
         </div>
       </div>
       <div class="clearfix display-none toggle-target">
@@ -12623,7 +12801,7 @@ FormData object, a array of readStreams, or an array containing buffers.
   <p>Creates a new <a href="#templateresource">TemplateResource</a>.</p>
 
 
-  <div class='pre p1 fill-light mt0'>constructor(resource: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, environment: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, traversal: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</div>
+  <div class='pre p1 fill-light mt0'>constructor(resource: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, environment: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, traversal: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?, resolved: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>??)</div>
   
   
 
@@ -12665,6 +12843,16 @@ FormData object, a array of readStreams, or an array containing buffers.
           
         </div>
       
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>resolved</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>??
+            = <code>false</code>)</code>
+	    whether or not this resource is already resolved
+
+          </div>
+          
+        </div>
+      
     </div>
   
 
@@ -12690,7 +12878,7 @@ FormData object, a array of readStreams, or an array containing buffers.
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>createDM()</span>
+            <span class='code strong strong truncate'>createDM(body)</span>
         </div>
       </div>
       <div class="clearfix display-none toggle-target">
@@ -12701,7 +12889,7 @@ FormData object, a array of readStreams, or an array containing buffers.
   <p>Create new DataManager from this template.</p>
 
 
-  <div class='pre p1 fill-light mt0'>createDM(): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#datamanagerresource">DataManagerResource</a>></div>
+  <div class='pre p1 fill-light mt0'>createDM(body: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#datamanagerresource">DataManagerResource</a>></div>
   
   
 
@@ -12712,6 +12900,20 @@ FormData object, a array of readStreams, or an array containing buffers.
   
   
 
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>body</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    body parameters for creating the DataManager
+
+          </div>
+          
+        </div>
+      
+    </div>
   
 
   
@@ -14772,6 +14974,336 @@ provided. Url otherwise.
 
   
 
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='DeletedAssetResource#purge'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>purge()</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Use this function to permanently delete this asset.</p>
+
+
+  <div class='pre p1 fill-light mt0'>purge(): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;void></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;void></code>:
+        Promise resolving on successful purging.
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='DeletedAssetResource#restore'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>restore()</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Use this function to restore this asset.</p>
+
+
+  <div class='pre p1 fill-light mt0'>restore(): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;void></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;void></code>:
+        Promise resolving on successful restore.
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='DeletedAssetResource#getFileUrl'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>getFileUrl(locale)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Best file helper for files.</p>
+
+
+  <div class='pre p1 fill-light mt0'>getFileUrl(locale: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>locale</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?)</code>
+	    the locale
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>:
+        URL to the file
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='DeletedAssetResource#getImageUrl'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>getImageUrl(size, locale)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Best file helper for images.</p>
+
+
+  <div class='pre p1 fill-light mt0'>getImageUrl(size: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>?, locale: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>size</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>?)</code>
+	    the minimum size of the image
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>locale</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?)</code>
+	    the locale
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>:
+        URL to the file
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='DeletedAssetResource#getImageThumbUrl'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>getImageThumbUrl(size, locale)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Best file helper for image thumbnails.</p>
+
+
+  <div class='pre p1 fill-light mt0'>getImageThumbUrl(size: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>?, locale: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>size</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>?)</code>
+	    the minimum size of the image
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>locale</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?)</code>
+	    the locale
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>:
+        URL to the file
+
+      
+    
   
 
   
