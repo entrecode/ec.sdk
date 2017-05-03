@@ -8,6 +8,8 @@ export declare class Session extends Core {
   login(email: string, password: string): Promise<string>;
 
   logout(): Promise<void>;
+
+  checkPermission(permission: string): Promise<boolean>;
 }
 
 type environment = 'live' | 'stage' | 'nightly' | 'develop';

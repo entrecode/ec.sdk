@@ -1,0 +1,96 @@
+{
+  "dataManagers": [
+    {
+      "dataManagerID": "6fa28c7a-58a4-4486-aae5-09ecdc5fdfa1",
+      "title": "dm1",
+      "config": {
+        "users": {
+          "google": null,
+          "facebook": null,
+          "password": true,
+          "anonymous": true
+        },
+        "disableUserEmailVerificationEmail": true
+      },
+      "templateID": "id",
+      "templateName": "hello",
+      "templateVersion": "5.50",
+      "modelCount": "9",
+      "entryCount": "7577",
+      "assetCount": "3",
+      "fileCount": "27",
+      "fileSize": "7656157",
+      "numberAccounts": "2729",
+      "numberRequests": "1100472",
+      "numberHookRequests": "5039",
+      "monthlyHooks": {
+        "2016-12": 22,
+        "2017-02": 2181,
+        "2016-10": 2,
+        "2016-11": 1,
+        "2017-01": 1883,
+        "2017-03": 950
+      },
+      "_links": {
+        "ec:datamanager": {
+          "profile": "https://entrecode.de/schema/datamanager",
+          "href": "https://datamanager.entrecode.de/?dataManagerID=6fa28c7a-58a4-4486-aae5-09ecdc5fdfa1"
+        },
+        "self": {
+          "href": "https://datamanager.entrecode.de/stats?dataManagerID=6fa28c7a-58a4-4486-aae5-09ecdc5fdfa1"
+        }
+      }
+    },
+    {
+      "dataManagerID": "b7e6305a-2453-4601-87aa-bf5994d4fd91",
+      "title": "dm2",
+      "config": {
+        "users": {
+          "google": null,
+          "hector": true,
+          "facebook": null,
+          "password": false,
+          "anonymous": false
+        },
+        "disableUserEmailVerificationEmail": true
+      },
+      "templateID": "5fe396d9-ce29-4acb-bd86-c1c97b67b728",
+      "templateName": "Clubapp 1.0.1",
+      "templateVersion": "2016-07-08T10:41:48.137Z",
+      "modelCount": "17",
+      "entryCount": "257",
+      "assetCount": "3",
+      "fileCount": "6",
+      "fileSize": "101442",
+      "numberAccounts": "530",
+      "numberRequests": "54656",
+      "numberHookRequests": "218",
+      "monthlyHooks": {
+        "2016-10": 17,
+        "2017-02": 22,
+        "2017-01": 3,
+        "2016-11": 12,
+        "2017-03": 151,
+        "2016-12": 13
+      },
+      "_links": {
+        "ec:datamanager": {
+          "profile": "https://entrecode.de/schema/datamanager",
+          "href": "https://datamanager.entrecode.de/?dataManagerID=b7e6305a-2453-4601-87aa-bf5994d4fd91"
+        },
+        "self": {
+          "href": "https://datamanager.entrecode.de/stats?dataManagerID=b7e6305a-2453-4601-87aa-bf5994d4fd91"
+        }
+      }
+    }
+  ],
+  "_links": {
+    "self": {
+      "href": "https://datamanager.entrecode.de/stats"
+    },
+    "ec:datamanagers": {
+      "profile": "https://entrecode.de/schema/datamanagers",
+      "href": "https://datamanager.entrecode.de"
+    }
+  }
+}

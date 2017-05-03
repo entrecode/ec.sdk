@@ -1,5 +1,6 @@
 import Core from './Core';
-import { post } from './helper';
+import { get, post } from './helper';
+import AccountResource from './resources/accounts/AccountResource';
 import TokenStoreFactory from './TokenStore';
 
 const urls = {
@@ -73,7 +74,7 @@ export default class Session extends Core {
       }
 
       if (!this.tokenStore.hasClientID()) {
-        throw new Error('clientID must be set with Account#setClientID(clientID: string)');
+        throw new Error('clientID must be set with Session#setClientID(clientID: string)');
       }
       if (!email) {
         throw new Error('email must be defined');
@@ -82,9 +83,10 @@ export default class Session extends Core {
         throw new Error('password must be defined');
       }
 
-      const request = this.newRequest().follow('ec:auth/login')
-      .withTemplateParameters({ clientID: this.tokenStore.getClientID() });
-
+      return this.follow('ec:auth/login');
+    })
+    .then((request) => {
+      request.withTemplateParameters({ clientID: this.tokenStore.getClientID() });
       return post(this.environment, request, { email, password });
     })
     .then(([token]) => {
@@ -109,18 +111,50 @@ export default class Session extends Core {
       }
 
       if (!this.tokenStore.hasClientID()) {
-        throw new Error('clientID must be set with Account#setClientID(clientID: string)');
+        throw new Error('clientID must be set with Session#setClientID(clientID: string)');
       }
 
-      const request = this.newRequest().follow('ec:auth/logout')
-      .withTemplateParameters({ clientID: this.tokenStore.getClientID(), token: this.token });
-
-      return post(this.environment, request);
+      return this.follow('ec:auth/logout')
+      .then((request) => {
+        request.withTemplateParameters({
+          clientID: this.tokenStore.getClientID(),
+          token: this.token,
+        });
+        return post(this.environment, request);
+      });
     })
     .then(() => {
       this.events.emit('logout');
       this.tokenStore.del();
       return Promise.resolve();
     });
+  }
+
+  /**
+   * Checks a permission for the currently logged in user
+   *
+   * @param {string} permission the permission to check.
+   * @returns {Promise<boolean>} true if user has permission, false otherwise.
+   */
+  checkPermission(permission) {
+    return Promise.resolve()
+    .then(() => {
+      if (!permission) {
+        throw new Error('permission must be defined');
+      }
+
+      if (this.me && new Date() - this.meLoadedTime <= 300000) { // 5 Minutes
+        return undefined;
+      }
+
+      return this.follow('ec:account')
+      .then(request => get(this.environment, request))
+      .then(([res, traversal]) => {
+        this.me = new AccountResource(res, this.environment, traversal)
+        this.meLoadedTime = new Date();
+        return undefined;
+      });
+    })
+    .then(() => this.me.checkPermission(permission));
   }
 }

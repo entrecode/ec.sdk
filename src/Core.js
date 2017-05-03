@@ -1,7 +1,9 @@
 import traverson from 'traverson';
 import HalAdapter from 'traverson-hal';
+import halfred from 'halfred';
 import TokenStoreFactory from './TokenStore';
 import events from './EventEmitter';
+import { get } from './helper';
 
 traverson.registerMediaType(HalAdapter.mediaType, HalAdapter);
 
@@ -40,8 +42,7 @@ export default class Core {
 
     this.events = events;
     this.tokenStore = TokenStoreFactory('live');
-    this.traversal = traverson.from(url).jsonHal()
-    .addRequestOptions({ headers: { Accept: 'application/hal+json' } });
+    this.traversal = traverson.from(url).jsonHal();
   }
 
   /**
@@ -66,6 +67,48 @@ export default class Core {
     return this.traversal.newRequest();
   }
 
+  follow(link) {
+    return Promise.resolve()
+    .then(() => {
+      if (this.resource && this.traversal && this.resource.link(link) !== null) {
+        return this.newRequest().follow(link);
+      }
+
+      return get(this.environment, this.newRequest())
+      .then(([res, traversal]) => {
+        this.resource = halfred.parse(res);
+        this.traversal = traversal;
+
+        if (this.resource.link(link) === null) {
+          throw new Error(`Could not follow ${link}. Link not present in root response.`);
+        }
+
+        return this.newRequest().follow(link);
+      });
+    });
+  }
+
+  link(link) {
+    return Promise.resolve()
+    .then(() => {
+      if (this.resource && this.traversal && this.resource.link(link) !== null) {
+        return this.resource.link(link);
+      }
+
+      return get(this.environment, this.newRequest())
+      .then(([res, traversal]) => {
+        this.resource = halfred.parse(res);
+        this.traversal = traversal;
+
+        if (this.resource.link(link) === null) {
+          throw new Error(`Could not get ${link}. Link not present in root response.`);
+        }
+
+        return this.resource.link(link);
+      });
+    });
+  }
+
   /**
    * If you have an existing access token you can use it by calling this function. All
    * subsequent requests will use the provided {@link https://jwt.io/ Json Web Token} with an
@@ -85,6 +128,26 @@ export default class Core {
     }
 
     this.tokenStore.set(token);
+    return this;
+  }
+
+  /**
+   * If you want to add additional information to the user agent used bed ec.sdk you can use this
+   * function to add any string.
+   *
+   * @example
+   * accounts.setUserAgent('editor/0.15.3 (a comment)');
+   * // all subsequent requests will have user agent: editor/0.15.3 (a comment) ec.sdk/<version>
+   *
+   * @param {string} agent the user agent to add
+   * @return {Core} this for chainability
+   */
+  setUserAgent(agent) {
+    if (!agent) {
+      throw new Error('agent must be defined');
+    }
+
+    this.tokenStore.setUserAgent(agent);
     return this;
   }
 

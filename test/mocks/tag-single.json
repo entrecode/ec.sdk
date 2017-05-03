@@ -1,0 +1,22 @@
+{
+  "count": 1,
+  "tag": "one",
+  "_links": {
+    "collection": {
+      "profile": "https://entrecode.de/schema/tags",
+      "href": "https://datamanager.entrecode.de/tag?dataManagerID=48e18a34-cf64-4f4a-bc47-45323a7f0e44"
+    },
+    "ec:assets/with-tag": {
+      "profile": "https://entrecode.de/schema/assets",
+      "href": "https://datamanager.entrecode.de/asset?dataManagerID=48e18a34-cf64-4f4a-bc47-45323a7f0e44&tag=one"
+    },
+    "ec:datamanager": {
+      "profile": "https://entrecode.de/schema/datamanager",
+      "href": "https://datamanager.entrecode.de/?dataManagerID=48e18a34-cf64-4f4a-bc47-45323a7f0e44"
+    },
+    "self": {
+      "profile": "https://entrecode.de/schema/tag",
+      "href": "https://datamanager.entrecode.de/tag?dataManagerID=48e18a34-cf64-4f4a-bc47-45323a7f0e44&tag=one"
+    }
+  }
+}

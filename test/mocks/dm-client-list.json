@@ -1,0 +1,80 @@
+{
+  "count": 2,
+  "total": 2,
+  "_links": {
+    "self": {
+      "profile": "https://entrecode.de/schema/dm-clients",
+      "href": "https://datamanager.entrecode.de/client?dataManagerID=f7bfb69a-56a2-4475-b4ea-58b976eb7618"
+    },
+    "curies": {
+      "href": "https://datamanager.entrecode.de/rel/{rel}",
+      "templated": true
+    },
+    "ec:dm-client/by-id": {
+      "profile": "https://entrecode.de/schema/dm-client",
+      "href": "https://datamanager.entrecode.de/client?dataManagerID=f7bfb69a-56a2-4475-b4ea-58b976eb7618{&clientID}",
+      "templated": true
+    },
+    "ec:datamanager": {
+      "profile": "https://entrecode.de/schema/datamanager",
+      "href": "https://datamanager.entrecode.de/?dataManagerID=f7bfb69a-56a2-4475-b4ea-58b976eb7618"
+    },
+    "ec:dm-clients/options": {
+      "href": "https://datamanager.entrecode.de/client{?callbackURL,callbackURL~,clientID,clientID~,dataManagerID,datamanagerid,page,size,sort}",
+      "templated": true
+    }
+  },
+  "_embedded": {
+    "ec:dm-client": [
+      {
+        "clientID": "rest",
+        "callbackURL": "http://",
+        "tokenMethod": [
+          "body"
+        ],
+        "disableStrategies": [],
+        "hexColor": "#CDDA49",
+        "_links": {
+          "self": {
+            "profile": "https://entrecode.de/schema/dm-client",
+            "href": "https://datamanager.entrecode.de/client?dataManagerID=f7bfb69a-56a2-4475-b4ea-58b976eb7618&clientID=rest"
+          },
+          "collection": {
+            "profile": "https://entrecode.de/schema/dm-clients",
+            "href": "https://datamanager.entrecode.de/client?dataManagerID=f7bfb69a-56a2-4475-b4ea-58b976eb7618"
+          },
+          "ec:datamanager": {
+            "profile": "https://entrecode.de/schema/datamanager",
+            "href": "https://datamanager.entrecode.de/?dataManagerID=f7bfb69a-56a2-4475-b4ea-58b976eb7618"
+          }
+        }
+      },
+      {
+        "clientID": "example",
+        "callbackURL": "https://example.com/login",
+        "tokenMethod": [
+          "query"
+        ],
+        "disableStrategies": [
+          "facebook",
+          "google"
+        ],
+        "hexColor": "#FD9727",
+        "_links": {
+          "self": {
+            "profile": "https://entrecode.de/schema/dm-client",
+            "href": "https://datamanager.entrecode.de/client?dataManagerID=f7bfb69a-56a2-4475-b4ea-58b976eb7618&clientID=t5"
+          },
+          "collection": {
+            "profile": "https://entrecode.de/schema/dm-clients",
+            "href": "https://datamanager.entrecode.de/client?dataManagerID=f7bfb69a-56a2-4475-b4ea-58b976eb7618"
+          },
+          "ec:datamanager": {
+            "profile": "https://entrecode.de/schema/datamanager",
+            "href": "https://datamanager.entrecode.de/?dataManagerID=f7bfb69a-56a2-4475-b4ea-58b976eb7618"
+          }
+        }
+      }
+    ]
+  }
+}

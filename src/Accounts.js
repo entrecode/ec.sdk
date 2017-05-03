@@ -1,21 +1,23 @@
+import validator from 'json-schema-remote';
+
 import Core from './Core';
 import {
   get,
-  post,
-  getUrl,
   getEmpty,
+  getUrl,
+  optionsToQuery,
+  post,
   postEmpty,
-  superagentFormPost,
-  optionsToQuery
+  superagentFormPost
 } from './helper';
-import AccountList from './resources/AccountList';
-import AccountResource from './resources/AccountResource';
-import ClientList from './resources/ClientList';
-import ClientResource from './resources/ClientResource';
-import InvalidPermissionsResource from './resources/InvalidPermissionsResource';
-import InvitesResource from './resources/InvitesResource';
-import GroupList from './resources/GroupList';
-import GroupResource from './resources/GroupResource';
+import AccountList from './resources/accounts/AccountList';
+import AccountResource from './resources/accounts/AccountResource';
+import ClientList from './resources/accounts/ClientList';
+import ClientResource from './resources/accounts/ClientResource';
+import InvalidPermissionsResource from './resources/accounts/InvalidPermissionsResource';
+import InvitesResource from './resources/accounts/InvitesResource';
+import GroupList from './resources/accounts/GroupList';
+import GroupResource from './resources/accounts/GroupResource';
 import TokenStoreFactory from './TokenStore';
 
 const urls = {
@@ -72,7 +74,7 @@ export default class Accounts extends Core {
    * by the options parameter.
    *
    * @example
-   * return accounts.list({
+   * return accounts.accountList({
    *   filter: {
    *     created: {
    *       from: new Date(new Date.getTime() - 600000).toISOString()),
@@ -90,12 +92,13 @@ export default class Accounts extends Core {
     return Promise.resolve()
     .then(() => {
       if (options && Object.keys(options).length === 1 && 'accountID' in options) {
-        throw new Error('Providing only an accountID in AccountList filter will result in single resource response. Please use Accounts#get');
+        throw new Error('Providing only an accountID in AccountList filter will result in single resource response. Please use Accounts#account');
       }
 
-      const request = this.newRequest()
-      .follow('ec:accounts/options')
-      .withTemplateParameters(optionsToQuery(options));
+      return this.follow('ec:accounts/options');
+    })
+    .then((request) => {
+      request.withTemplateParameters(optionsToQuery(options, this.resource.link('ec:accounts/options').href));
       return get(this.environment, request);
     })
     .then(([res, traversal]) => new AccountList(res, this.environment, traversal));
@@ -105,7 +108,7 @@ export default class Accounts extends Core {
    * Get a single {@link AccountResource} identified by accountID.
    *
    * @example
-   * return accounts.get(this.accountList.getItem(index).accountID)
+   * return accounts.account(this.accountList.getItem(index).accountID)
    * .then((account) => {
    *   return show(account.email);
    * });
@@ -119,9 +122,10 @@ export default class Accounts extends Core {
       if (!accountID) {
         throw new Error('accountID must be defined');
       }
-      const request = this.newRequest()
-      .follow('ec:accounts/options')
-      .withTemplateParameters({ accountid: accountID });
+      return this.follow('ec:accounts/options');
+    })
+    .then((request) => {
+      request.withTemplateParameters({ accountid: accountID });
       return get(this.environment, request);
     })
     .then(([res, traversal]) => new AccountResource(res, this.environment, traversal));
@@ -140,12 +144,8 @@ export default class Accounts extends Core {
    */
   me() {
     return Promise.resolve()
-    .then(() => {
-      const request = this.newRequest()
-      .follow('ec:account')
-      .withTemplateParameters();
-      return get(this.environment, request);
-    })
+    .then(() => this.follow('ec:account'))
+    .then(request => get(this.environment, request))
     .then(([res, traversal]) => new AccountResource(res, this.environment, traversal));
   }
 
@@ -175,9 +175,10 @@ export default class Accounts extends Core {
         throw new Error('Providing only an groupID in GroupList filter will result in single resource response. Please use Accounts#groupList');
       }
 
-      const request = this.newRequest()
-      .follow('ec:acc/groups/options')
-      .withTemplateParameters(optionsToQuery(options));
+      return this.follow('ec:acc/groups/options');
+    })
+    .then((request) => {
+      request.withTemplateParameters(optionsToQuery(options, this.resource.link('ec:acc/groups/options').href));
       return get(this.environment, request);
     })
     .then(([res, traversal]) => new GroupList(res, this.environment, traversal));
@@ -202,13 +203,35 @@ export default class Accounts extends Core {
       if (!groupID) {
         throw new Error('groupID must be defined');
       }
-      const request = this.newRequest()
-      .follow('ec:acc/clients/options')
-      .withTemplateParameters({ groupid: groupID });
+      return this.follow('ec:acc/clients/options');
+    })
+    .then((request) => {
+      request.withTemplateParameters({ groupid: groupID });
       return get(this.environment, request);
     })
     .then(([res, traversal]) => new GroupResource(res, this.environment, traversal));
   }
+
+  /**
+   * Create a new Group.
+   *
+   * @param {object} group object representing the group.
+   * @returns {Promise<GroupResource>} the newly created GroupResource
+   */
+  createGroup(group) {
+    return Promise.resolve()
+    .then(() => {
+      if (!group) {
+        throw new Error('Cannot create resource with undefined object.');
+      }
+      return this.link('ec:acc/group/by-id');
+    })
+    .then(link => validator.validate(group, `${link.profile}-template`))
+    .then(() => this.follow('ec:acc/groups'))
+    .then(request => post(this.environment, request, group))
+    .then(([c, traversal]) => new ClientResource(c, this.environment, traversal));
+  }
+
 
   /**
    * Load the {@link ClientList}.
@@ -242,9 +265,10 @@ export default class Accounts extends Core {
         throw new Error('Providing only an clientID in ClientList filter will result in single resource response. Please use Accounts#client');
       }
 
-      const request = this.newRequest()
-      .follow('ec:acc/clients/options')
-      .withTemplateParameters(optionsToQuery(options));
+      return this.follow('ec:acc/clients/options');
+    })
+    .then((request) => {
+      request.withTemplateParameters(optionsToQuery(options, this.resource.link('ec:acc/clients/options').href));
       return get(this.environment, request);
     })
     .then(([res, traversal]) => new ClientList(res, this.environment, traversal));
@@ -268,12 +292,34 @@ export default class Accounts extends Core {
       if (!clientID) {
         throw new Error('clientID must be defined');
       }
-      const request = this.newRequest()
-      .follow('ec:acc/clients/options')
-      .withTemplateParameters({ clientid: clientID });
+
+      return this.follow('ec:acc/client/options');
+    })
+    .then((request) => {
+      request.withTemplateParameters({ clientid: clientID });
       return get(this.environment, request);
     })
     .then(([res, traversal]) => new ClientResource(res, this.environment, traversal));
+  }
+
+  /**
+   * Create a new Client.
+   *
+   * @param {object} client object representing the client.
+   * @returns {Promise<ClientResource>} the newly created ClientResource
+   */
+  createClient(client) {
+    return Promise.resolve()
+    .then(() => {
+      if (!client) {
+        throw new Error('Cannot create resource with undefined object.');
+      }
+      return this.link('ec:acc/client/by-id');
+    })
+    .then(link => validator.validate(client, link.profile))
+    .then(() => this.follow('ec:acc/clients'))
+    .then(request => post(this.environment, request, client))
+    .then(([c, traversal]) => new ClientResource(c, this.environment, traversal));
   }
 
   /**
@@ -289,7 +335,8 @@ export default class Accounts extends Core {
    *   token response.
    */
   createApiToken() {
-    return post(this.environment, this.newRequest().follow('ec:auth/create-anonymous'), {})
+    return this.follow('ec:auth/create-anonymous')
+    .then(request => post(this.environment, request, {}))
     .then(([tokenResponse]) => tokenResponse);
   }
 
@@ -313,13 +360,9 @@ export default class Accounts extends Core {
    * @returns {Promise.<InvitesResource>} Promise resolving to the invites resource
    */
   invites() {
-    return Promise.resolve()
-    .then(() => {
-      const request = this.newRequest().follow('ec:invites');
-
-      return get(this.environment, request)
-      .then(([invites, traversal]) => new InvitesResource(invites, this.environment, traversal));
-    });
+    return this.follow('ec:invites')
+    .then(request => get(this.environment, request))
+    .then(([invites, traversal]) => new InvitesResource(invites, this.environment, traversal));
   }
 
   /**
@@ -343,11 +386,10 @@ export default class Accounts extends Core {
         throw new Error('count must be a number');
       }
 
-      const request = this.newRequest().follow('ec:invites');
-
-      return post(this.environment, request, { count: count || 1 })
-      .then(([invites, traversal]) => new InvitesResource(invites, this.environment, traversal));
-    });
+      return this.follow('ec:invites');
+    })
+    .then(request => post(this.environment, request, { count: count || 1 }))
+    .then(([invites, traversal]) => new InvitesResource(invites, this.environment, traversal));
   }
 
   /**
@@ -363,10 +405,8 @@ export default class Accounts extends Core {
    * @returns {Promise<InvalidPermissionsResource>} Promise resolving to invalid permissions
    */
   invalidPermissions() {
-    const request = this.newRequest()
-    .follow('ec:invalid-permissions');
-
-    return get(this.environment, request)
+    return this.follow('ec:invalid-permissions')
+    .then(request => get(this.environment, request))
     .then(([resource, traversal]) =>
       new InvalidPermissionsResource(resource, this.environment, traversal));
   }
@@ -394,10 +434,11 @@ export default class Accounts extends Core {
         throw new Error('email must be defined');
       }
 
-      const request = this.newRequest().follow('ec:auth/email-available')
-      .withTemplateParameters({ email });
-
-      return get(this.environment, request)
+      return this.follow('ec:auth/email-available');
+    })
+    .then((request) => {
+      request.withTemplateParameters({ email });
+      return get(this.environment, request);
     })
     .then(([a]) => a.available);
   }
@@ -430,11 +471,13 @@ export default class Accounts extends Core {
         throw new Error('clientID must be set with Account#setClientID(clientID: string)');
       }
 
-      const request = this.newRequest().follow('ec:auth/register').withTemplateParameters({
+      return this.follow('ec:auth/register');
+    })
+    .then((request) => {
+      request.withTemplateParameters({
         clientID: this.tokenStore.getClientID(),
         invite,
       });
-
       return getUrl(this.environment, request);
     })
     .then(url => superagentFormPost(url, { email, password }))
@@ -464,11 +507,12 @@ export default class Accounts extends Core {
         throw new Error('clientID must be set with Account#setClientID(clientID: string)');
       }
 
-      const request = this.newRequest().follow('ec:auth/password-reset').withTemplateParameters({
+      return this.follow('ec:auth/password-reset');
+    }).then((request) => {
+      request.withTemplateParameters({
         clientID: this.tokenStore.getClientID(),
         email,
       });
-
       return getEmpty(this.environment, request);
     });
   }
@@ -494,9 +538,8 @@ export default class Accounts extends Core {
         throw new Error('not logged in.');
       }
 
-      const request = this.newRequest().follow('ec:auth/change-email');
-
-      return postEmpty(this.environment, request, { email });
-    });
+      return this.follow('ec:auth/change-email');
+    })
+    .then(request => postEmpty(this.environment, request, { email }));
   }
 }

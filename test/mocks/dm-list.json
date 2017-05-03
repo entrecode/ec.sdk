@@ -29,6 +29,10 @@
       "profile": "https://entrecode.de/schema/dm-templates",
       "href": "https://datamanager.entrecode.de/template"
     },
+    "ec:dm-template/by-id": {
+      "profile": "https://entrecode.de/schema/dm-template",
+      "href": "https://datamanager.entrecode.de/template{?templateID}"
+    },
     "ec:dm-templates/options": {
       "href": "https://datamanager.entrecode.de/template{?name,name~,page,parentName,parentName~,parentTemplate,parentVersion,parentVersionFrom,parentVersionTo,size,sort,templateID,version,versionFrom,versionTo}",
       "templated": true

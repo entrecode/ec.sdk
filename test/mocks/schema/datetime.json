@@ -1,0 +1,6 @@
+{
+  "id": "https://entrecode.de/schema/datetime",
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "string",
+  "format": "date-time"
+}

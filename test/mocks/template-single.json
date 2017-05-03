@@ -1,0 +1,60 @@
+{
+  "templateID": "395bc8d8-e784-46ac-b138-50695e85d785",
+  "name": "deine-strasse v1.0",
+  "version": "2017-02-07T17:09:39.577Z",
+  "collection": {
+    "id": "c9800ac6-e1ef-4b79-98d3-696303102d55",
+    "name": "deine-strasse",
+    "order": [
+      "5e0b28bf-6c9f-4067-879b-547c8953f061",
+      "37e2c31f-2937-4836-8347-59cc2009c195"
+    ],
+    "requests": [
+      {
+        "id": "5e0b28bf-6c9f-4067-879b-547c8953f061",
+        "url": "{{datamanager}}/",
+        "name": "Create DM",
+        "tests": "tests[\"Successful request\"] =\n      responseCode.code === 200 ||\n      responseCode.code === 201 ||\n      responseCode.code === 204;\nvar res = JSON.parse(responseBody);\npostman.setEnvironmentVariable('dataManagerID', res.dataManagerID);\n",
+        "method": "POST",
+        "headers": "Content-Type: application/json\nAuthorization: Bearer {{accessToken}}\nAccept: application/json",
+        "dataMode": "raw",
+        "rawModeData": "{\"customerID\":null,\"title\":\"deine-strasse\",\"description\":\"test Datenmanager\",\"locales\":[],\"defaultLocale\":null,\"publicAssetRights\":[\"get\",\"getTags\",\"put\",\"postPrivate\",\"postPublic\"],\"hexColor\":\"#1FBCD2\",\"config\":{\"users\":{\"google\":null,\"facebook\":null,\"password\":true,\"anonymous\":true},\"disableUserEmailVerificationEmail\":true},\"template\":null}",
+        "collectionId": "c9800ac6-e1ef-4b79-98d3-696303102d55"
+      },
+      {
+        "id": "37e2c31f-2937-4836-8347-59cc2009c195",
+        "url": "{{datamanager}}/client?datamanagerid={{dataManagerID}}",
+        "name": "Create client deinestrasse",
+        "tests": "tests[\"Successful request\"] =\n      responseCode.code === 200 ||\n      responseCode.code === 201 ||\n      responseCode.code === 204;\n",
+        "method": "POST",
+        "headers": "Content-Type: application/json\nAuthorization: Bearer {{accessToken}}\nAccept: application/json",
+        "dataMode": "raw",
+        "rawModeData": "{\"hexColor\":\"#9B2FAE\",\"callbackURL\":\"#\",\"tokenMethod\":[\"body\"],\"disableStrategies\":[\"google\",\"facebook\"],\"clientID\":\"deinestrasse\"}",
+        "collectionId": "c9800ac6-e1ef-4b79-98d3-696303102d55"
+      }
+    ]
+  },
+  "dataSchema": {
+    "properties": {}
+  },
+  "_links": {
+    "ec:datamanagers/new-from-template": {
+      "profile": "https://entrecode.de/schema/datamanager",
+      "href": "https://datamanager.entrecode.de/?_templateID=395bc8d8-e784-46ac-b138-50695e85d785",
+      "templated": true
+    },
+    "ec:datamanager/update-from-template": {
+      "profile": "https://entrecode.de/schema/datamanager",
+      "href": "https://datamanager.entrecode.de/?_templateID=395bc8d8-e784-46ac-b138-50695e85d785{&dataManagerID}",
+      "templated": true
+    },
+    "self": {
+      "profile": "https://entrecode.de/schema/dm-template",
+      "href": "https://datamanager.entrecode.de/template?templateID=395bc8d8-e784-46ac-b138-50695e85d785"
+    },
+    "collection": {
+      "profile": "https://entrecode.de/schema/dm-templates",
+      "href": "https://datamanager.entrecode.de/template"
+    }
+  }
+}

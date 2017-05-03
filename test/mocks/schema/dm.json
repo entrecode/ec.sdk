@@ -1,0 +1,143 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "https://entrecode.de/schema/datamanager",
+  "type": "object",
+  "required": [
+    "dataManagerID",
+    "created",
+    "title",
+    "description",
+    "config",
+    "hexColor",
+    "rights",
+    "publicAssetRights",
+    "locales",
+    "defaultLocale"
+  ],
+  "properties": {
+    "dataManagerID": {
+      "$ref": "https://entrecode.de/schema/uuidV4"
+    },
+    "created": {
+      "$ref": "https://entrecode.de/schema/datetime"
+    },
+    "title": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "config": {
+      "type": "object",
+      "properties": {
+        "users": {
+          "type": [
+            "null",
+            "object"
+          ],
+          "properties": {
+            "anonymous": {
+              "type": [
+                "null",
+                "boolean"
+              ]
+            },
+            "password": {
+              "type": [
+                "null",
+                "boolean"
+              ]
+            },
+            "google": {
+              "type": [
+                "null",
+                "object"
+              ],
+              "properties": {
+                "clientID": {
+                  "type": "string"
+                },
+                "clientSecret": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "clientID",
+                "clientSecret"
+              ]
+            },
+            "facebook": {
+              "type": [
+                "null",
+                "object"
+              ],
+              "properties": {
+                "clientID": {
+                  "type": "string"
+                },
+                "clientSecret": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "clientID",
+                "clientSecret"
+              ]
+            }
+          }
+        },
+        "publicConfig": {
+          "type": "object"
+        },
+        "customAssetDomain": {
+          "type": "string",
+          "format": "uri"
+        }
+      }
+    },
+    "hexColor": {
+      "$ref": "https://entrecode.de/schema/hexcolor"
+    },
+    "rights": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "publicAssetRights": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "locales": {
+      "type": "array",
+      "items": {
+        "oneOf": [
+          {
+            "$ref": "https://entrecode.de/schema/locale"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      }
+    },
+    "defaultLocale": {
+      "oneOf": [
+        {
+          "$ref": "https://entrecode.de/schema/locale"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "_links": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "https://entrecode.de/schema/hal#/definitions/linkOrLinkArray"
+      }
+    }
+  }
+}

@@ -1,8 +1,10 @@
 import superagent from 'superagent';
+import locale from 'locale';
 
 import Problem from './Problem';
 import events from './EventEmitter';
 import TokenStoreFactory from './TokenStore';
+import packageJson from '../package.json';
 
 /**
  * Creates a callback which wraps a traverson repsonse from `get`, `post`, `put`, `delete` and
@@ -86,9 +88,17 @@ function traversonWrapper(func, environment, t, body) {
       return resolve(res);
     };
 
+    t.addRequestOptions({ headers: { Accept: 'application/hal+json' } });
+
     const store = TokenStoreFactory(environment);
-    if (store && store.has()) {
+    if (store.has()) {
       t.addRequestOptions({ headers: { Authorization: `Bearer ${store.get()}` } });
+    }
+
+    if (store.hasUserAgent()) {
+      t.addRequestOptions({ headers: { 'X-User-Agent': `${store.getUserAgent()} ec.sdk/${packageJson.version}` } });
+    } else {
+      t.addRequestOptions({ headers: { 'X-User-Agent': `ec.sdk/${packageJson.version}` } });
     }
 
     if (func === 'getUrl') {
@@ -267,6 +277,78 @@ export function superagentFormPost(url, form) {
 }
 
 /**
+ * Superagent Wrapper for GET.
+ *
+ * @access private
+ *
+ * @param {string} url the url to get
+ * @param {object} headers additional headers
+ * @returns {Promise} Promise resolving to response body.
+ */
+export function superagentGet(url, headers) {
+  const request = superagent.get(url);
+
+  if (headers) {
+    request.set(headers);
+  }
+
+  return request
+  .then(res => Promise.resolve(res.body ? res.body : {}))
+  .catch((err) => {
+    let problem;
+    if ('status' in err) {
+      problem = new Problem(err.response.body);
+    }
+    events.emit('error', problem || err);
+    throw problem || err;
+  });
+}
+
+export function superagentGetPiped(url, pipe) {
+  const request = superagent.get(url);
+
+  return new Promise((resolve, reject) => {
+    request.on('error', reject);
+    pipe.on('finish', resolve);
+    request.pipe(pipe);
+  });
+}
+
+/**
+ * Superagent Wrapper for POST.
+ *
+ * @access private
+ *
+ * @param {string} environment environment from which a token should be used
+ * @param {object} request the url to post to
+ * @returns {Promise} Promise resolving to response body.
+ */
+export function superagentPost(environment, request) {
+  request.set('Accept', 'application/hal+json');
+
+  const store = TokenStoreFactory(environment);
+  if (store.has()) {
+    request.set('Authorization', `Bearer ${store.get()}`);
+  }
+
+  if (store.hasUserAgent()) {
+    request.set('X-User-Agent', `${store.getUserAgent()} ec.sdk/${packageJson.version}`);
+  } else {
+    request.set('X-User-Agent', `ec.sdk/${packageJson.version}`);
+  }
+
+  return request.then(res => Promise.resolve(res.body ? res.body : {}))
+  .catch((err) => {
+    let problem;
+    if ('status' in err) {
+      problem = new Problem(err.response.body);
+    }
+    events.emit('error', problem || err);
+    throw problem || err;
+  });
+}
+
+/**
  * Modifier for filter object to query convertion.
  *
  * @access private
@@ -289,61 +371,146 @@ const modifier = {
  * @access private
  *
  * @param {filter} options filter options
+ * @param {string?} templateURL optional templateURL for validating inputs
  * @returns {object} translated querystring object
  */
-export function optionsToQuery(options) {
+export function optionsToQuery(options, templateURL) {
   const out = {};
 
   if (options) {
-    ['size', 'page'].forEach((property) => {
-      if ({}.hasOwnProperty.call(options, property)) {
-        out[property] = options[property];
+    Object.keys(options).forEach((key) => {
+      if (['size', 'page'].includes(key)) {
+        out[key] = options[key];
+      } else if (key === 'sort') {
+        if (Array.isArray(options.sort)) {
+          out.sort = options.sort.join(',');
+        } else if (typeof options.sort === 'string') {
+          out.sort = options.sort;
+        } else {
+          throw new Error('sort must be either Array or String.');
+        }
+      } else if (typeof options[key] === 'string') {
+        out[key] = options[key];
+      } else if (typeof options[key] === 'object') {
+        Object.keys(options[key]).forEach((searchKey) => {
+          switch (searchKey) {
+          case 'exact':
+          case 'search':
+          case 'from':
+          case 'to':
+            out[`${key}${modifier[searchKey]}`] = options[key][searchKey];
+            break;
+          case 'any':
+          case 'all':
+            if (!Array.isArray(options[key][searchKey])) {
+              throw new Error(`${key}.${searchKey} must be an Array.`);
+            }
+            out[key] = options[key][searchKey].join(modifier[searchKey]);
+            break;
+          default:
+            throw new Error(`No handling of ${key}.${searchKey} filter supported.`);
+          }
+        });
+      } else {
+        throw new Error(`${key} must be either Object or String.`);
       }
     });
+  }
 
-    if ({}.hasOwnProperty.call(options, 'sort')) {
-      if (Array.isArray(options.sort)) {
-        out.sort = options.sort.join(',');
-      } else if (typeof options.sort === 'string') {
-        out.sort = options.sort;
-      } else {
-        throw new Error('sort must be either Array or String.');
-      }
-    }
+  if (templateURL) {
+    const results = templateURL.match(/{[^}]*}/g)
+    .map(result => /^[{?&]+([^}]+)}$/.exec(result)[1].split(','))
+    .reduce((a, b) => a.concat(b), []);
 
-    if ({}.hasOwnProperty.call(options, 'filter')) {
-      if (typeof options.filter !== 'object') {
-        throw new Error('filter must by an Object.');
-      }
-      Object.keys(options.filter).forEach((property) => {
-        if (typeof options.filter[property] === 'string') {
-          out[property] = options.filter[property];
-        } else if (typeof options.filter[property] === 'object') {
-          Object.keys(options.filter[property]).forEach((key) => {
-            switch (key) {
-            case 'exact':
-            case 'search':
-            case 'from':
-            case 'to':
-              out[`${property}${modifier[key]}`] = options.filter[property][key];
-              break;
-            case 'any':
-            case 'all':
-              if (!Array.isArray(options.filter[property][key])) {
-                throw new Error(`filter.${property}.${key} must be an Array.`);
-              }
-              out[property] = options.filter[property][key].join(modifier[key]);
-              break;
-            default:
-              throw new Error(`No handling of ${property}.${key} filter supported.`);
-            }
-          });
-        } else {
-          throw new Error(`filter.${property} must be either Object or String.`);
+    const missings = Object.keys(out).filter(k => !results.includes(k));
+
+    if (missings.length > 0) {
+      const err = new Error('Invalid filter options. Check error#array for details.');
+      err.array = missings.map((missing) => {
+        if (missing.indexOf('~') !== -1) {
+          return new Error(`Cannot apply 'search' filter to '${missing.substr(0, missing.indexOf('~'))}'`);
+        } else if (missing.indexOf('From') !== -1) {
+          return new Error(`Cannot apply 'from' filter to '${missing.substr(0, missing.indexOf('From'))}'`);
+        } else if (missing.indexOf('To') !== -1) {
+          return new Error(`Cannot apply 'to' filter to '${missing.substr(0, missing.indexOf('To'))}'`);
+        } else if (['page', 'size', 'sort'].includes(missing)) {
+          return new Error(`Cannot apply ${missing} option`);
         }
+        return new Error(`Cannot apply 'exact' filter to '${missing}'`);
       });
+      throw err;
     }
   }
 
   return out;
 }
+
+/**
+ * Helper for negotiating files from assets.
+ *
+ * @param {AssetResource} asset - The asset from which negotiation should occur.
+ * @param {boolean} image - true if it is an image negotiation.
+ * @param {boolean} thumb - true if it is a thumbnail negotiation.
+ * @param {number?} size - the minimum size to request.
+ * @param {string?} requestedLocale - locale to request.
+ * @returns {string} url for the requested asset.
+ */
+export function fileNegotiate(asset, image, thumb, size, requestedLocale) {
+  let f = JSON.parse(JSON.stringify(asset.files));
+
+  if (requestedLocale) {
+    const supportedLocales = new locale.Locales(
+      [...new Set(f.map(e => e.locale))] // unique
+      .filter(a => !!a));// remove falsy values
+    let bestLocale = (new locale.Locales(requestedLocale)).best(supportedLocales).toString();
+    bestLocale = /^([^.]+)/.exec(bestLocale)[1]; // remove charset
+    const filesWithLocale = f.filter(file => file.locale === bestLocale);
+    if (filesWithLocale && filesWithLocale.length > 0) {
+      f = filesWithLocale;
+    }
+  }
+  if (!image && !thumb && asset.type !== 'image') { // for getFileUrl pic fist file and return - not for images
+    return f[0].url;
+  }
+
+  const first = f[0];
+  // remove image files we have no resolution for (image/svg+xml; fix for CMS-1091)
+  f = f.filter(file => file.resolution);
+  if (f.length === 0) { // if no file is left pick first of original data
+    return first.url;
+  }
+  f.sort((left, right) => { // sort by size descending
+    const leftMax = Math.max(left.resolution.height, left.resolution.width);
+    const rightMax = Math.max(right.resolution.height, right.resolution.width);
+    if (leftMax < rightMax) {
+      return 1;
+    }
+    if (leftMax > rightMax) {
+      return -1;
+    }
+    return 0;
+  });
+  let imageFiles = f.filter((file) => {
+    if (thumb) {
+      return file.url.indexOf('_thumb') !== -1; // is thumbnail
+    }
+    return file.url.indexOf('_thumb') === -1; // is not a thumbnail
+  });
+  if (!imageFiles || imageFiles.length === 0) {
+    imageFiles = f;
+  }
+  const largest = imageFiles[0];
+  if (size) {
+    // remove all image resolutions that are too small
+    imageFiles = imageFiles
+    .filter(file => file.resolution.height >= size || file.resolution.width >= size)
+    // choose smallest image of all that are greater than size parameter
+    .slice(-1);
+  }
+
+  if (imageFiles.length > 0) { // if all is good, we have an image now
+    return imageFiles[0].url;
+  }
+  // if the requested size is larger than the original image, we take the largest possible one
+  return largest.url;
+};

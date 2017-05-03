@@ -16,6 +16,12 @@ class TokenStore {
   getClientID(): string;
 
   hasClientID(): boolean;
+
+  setUserAgent(agent: string): void;
+
+  getUserAgent(): string;
+
+  hasUserAgent(): boolean;
 }
 
 export default function TokenStoreFactory(environment: string): TokenStore;

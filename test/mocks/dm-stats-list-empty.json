@@ -1,0 +1,13 @@
+{
+  "dataManagers": [
+  ],
+  "_links": {
+    "self": {
+      "href": "https://datamanager.entrecode.de/stats"
+    },
+    "ec:datamanagers": {
+      "profile": "https://entrecode.de/schema/datamanagers",
+      "href": "https://datamanager.entrecode.de"
+    }
+  }
+}

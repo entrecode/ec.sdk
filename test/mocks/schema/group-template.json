@@ -1,0 +1,21 @@
+{
+  "id": "https://entrecode.de/schema/group-template",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "permissions": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[a-zA-Z0-9_\\-:*,]+$"
+      }
+    }
+  },
+  "required": [
+    "name",
+    "permissions"
+  ],
+  "$schema": "http://json-schema.org/draft-04/schema#"
+}

@@ -1,0 +1,67 @@
+{
+  "dataManagers": [
+    {
+      "dataManagerID": "6fa28c7a-58a4-4486-aae5-09ecdc5fdfa1",
+      "title": "dm1",
+      "config": {
+        "users": {
+          "google": null,
+          "facebook": null,
+          "password": true,
+          "anonymous": true
+        },
+        "disableUserEmailVerificationEmail": true
+      },
+      "templateID": "id",
+      "templateName": "hello",
+      "templateVersion": "5.50",
+      "modelCount": "9",
+      "entryCount": "7577",
+      "assetCount": "3",
+      "fileCount": "27",
+      "fileSize": "7656157",
+      "numberAccounts": "2729",
+      "numberRequests": "1100472",
+      "numberHookRequests": "5039",
+      "monthlyRequests": {
+        "2016-02": 10180,
+        "2016-03": 14376,
+        "2016-04": 4989,
+        "2016-05": 13807,
+        "2016-06": 7001,
+        "2016-07": 6534,
+        "2016-08": 10553,
+        "2016-09": 10878,
+        "2016-10": 8311,
+        "2016-11": 37099,
+        "2016-12": 540636,
+        "2017-01": 284407,
+        "2017-02": 114911,
+        "2017-03": 36790
+      },
+      "monthlyHooks": {
+        "2016-12": 22,
+        "2016-11": 1,
+        "2017-01": 1883,
+        "2017-03": 950,
+        "2017-02": 2181,
+        "2016-10": 2
+      },
+      "_links": {
+        "ec:datamanager": {
+          "profile": "https://entrecode.de/schema/datamanager",
+          "href": "https://datamanager.entrecode.de/?dataManagerID=6fa28c7a-58a4-4486-aae5-09ecdc5fdfa1"
+        },
+        "self": {
+          "href": "https://datamanager.entrecode.de/stats?dataManagerID=6fa28c7a-58a4-4486-aae5-09ecdc5fdfa1"
+        }
+      }
+    }
+  ],
+  "_links": {
+    "ec:datamanagers": {
+      "profile": "https://entrecode.de/schema/datamanagers",
+      "href": "https://datamanager.entrecode.de"
+    }
+  }
+}

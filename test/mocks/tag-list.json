@@ -1,0 +1,74 @@
+{
+  "count": 2,
+  "total": 2,
+  "_links": {
+    "curies": {
+      "href": "https://doc.entrecode.de/data_manager/#relation-{rel}",
+      "templated": true
+    },
+    "ec:assets": {
+      "profile": "https://entrecode.de/schema/assets",
+      "href": "https://datamanager.entrecode.de/asset?dataManagerID=48e18a34-cf64-4f4a-bc47-45323a7f0e44"
+    },
+    "ec:datamanager": {
+      "profile": "https://entrecode.de/schema/datamanager",
+      "href": "https://datamanager.entrecode.de/?dataManagerID=48e18a34-cf64-4f4a-bc47-45323a7f0e44"
+    },
+    "ec:tags/options": {
+      "href": "https://datamanager.entrecode.de/tag{?dataManagerID,page,size,sort,tag,tag~}",
+      "templated": true
+    },
+    "self": {
+      "profile": "https://entrecode.de/schema/tag",
+      "href": "https://datamanager.entrecode.de/tag?dataManagerID=48e18a34-cf64-4f4a-bc47-45323a7f0e44"
+    }
+  },
+  "_embedded": {
+    "ec:tag": [
+      {
+        "count": 1,
+        "tag": "one",
+        "_links": {
+          "collection": {
+            "profile": "https://entrecode.de/schema/tags",
+            "href": "https://datamanager.entrecode.de/tag?dataManagerID=48e18a34-cf64-4f4a-bc47-45323a7f0e44"
+          },
+          "ec:assets/with-tag": {
+            "profile": "https://entrecode.de/schema/assets",
+            "href": "https://datamanager.entrecode.de/asset?dataManagerID=48e18a34-cf64-4f4a-bc47-45323a7f0e44&tag=one"
+          },
+          "ec:datamanager": {
+            "profile": "https://entrecode.de/schema/datamanager",
+            "href": "https://datamanager.entrecode.de/?dataManagerID=48e18a34-cf64-4f4a-bc47-45323a7f0e44"
+          },
+          "self": {
+            "profile": "https://entrecode.de/schema/tag",
+            "href": "https://datamanager.entrecode.de/tag?dataManagerID=48e18a34-cf64-4f4a-bc47-45323a7f0e44&tag=one"
+          }
+        }
+      },
+      {
+        "count": 1,
+        "tag": "two",
+        "_links": {
+          "collection": {
+            "profile": "https://entrecode.de/schema/tags",
+            "href": "https://datamanager.entrecode.de/tag?dataManagerID=48e18a34-cf64-4f4a-bc47-45323a7f0e44"
+          },
+          "ec:assets/with-tag": {
+            "profile": "https://entrecode.de/schema/assets",
+            "href": "https://datamanager.entrecode.de/asset?dataManagerID=48e18a34-cf64-4f4a-bc47-45323a7f0e44&tag=two"
+          },
+          "ec:datamanager": {
+            "profile": "https://entrecode.de/schema/datamanager",
+            "href": "https://datamanager.entrecode.de/?dataManagerID=48e18a34-cf64-4f4a-bc47-45323a7f0e44"
+          },
+          "self": {
+            "profile": "https://entrecode.de/schema/tag",
+            "href": "https://datamanager.entrecode.de/tag?dataManagerID=48e18a34-cf64-4f4a-bc47-45323a7f0e44&tag=two"
+          }
+        }
+      }
+    ]
+  }
+}

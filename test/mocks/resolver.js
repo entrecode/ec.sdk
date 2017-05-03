@@ -1,6 +1,6 @@
 const fs = require('fs');
 const path = require('path');
-const traverson = require('traverson');
+const TraversonMock = require('./TraversonMock.js');
 
 function resolveFile(filePath, obj) {
   return new Promise((resolve, reject) => {
@@ -8,7 +8,7 @@ function resolveFile(filePath, obj) {
       if (err) {
         return reject(err);
       }
-      return resolve([JSON.parse(file), obj || traverson.from('http://entrecode.de')]);
+      return resolve([JSON.parse(file), obj || new TraversonMock()]);
     });
   })
   .catch((err) => {

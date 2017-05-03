@@ -1,0 +1,26 @@
+{
+  "clientID": "example",
+  "callbackURL": "https://example.com/login",
+  "tokenMethod": [
+    "query"
+  ],
+  "disableStrategies": [
+    "facebook",
+    "google"
+  ],
+  "hexColor": "#FD9727",
+  "_links": {
+    "self": {
+      "profile": "https://entrecode.de/schema/dm-client",
+      "href": "https://datamanager.entrecode.de/client?dataManagerID=f7bfb69a-56a2-4475-b4ea-58b976eb7618&clientID=t5"
+    },
+    "collection": {
+      "profile": "https://entrecode.de/schema/dm-clients",
+      "href": "https://datamanager.entrecode.de/client?dataManagerID=f7bfb69a-56a2-4475-b4ea-58b976eb7618"
+    },
+    "ec:datamanager": {
+      "profile": "https://entrecode.de/schema/datamanager",
+      "href": "https://datamanager.entrecode.de/?dataManagerID=f7bfb69a-56a2-4475-b4ea-58b976eb7618"
+    }
+  }
+}

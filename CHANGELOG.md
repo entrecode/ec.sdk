@@ -1,7 +1,95 @@
+<a name="0.3.0"></a>
+# 0.3.0 (2017-05-03)
+
+* release version 0.3.0 ([c6a1b59](https://github.com/entrecode/ec.sdk/commit/c6a1b59))
+* feat: add default user agent and Core#setUserAgent for cusstom one CMS-2628 ([8c8ddd8](https://github.com/entrecode/ec.sdk/commit/8c8ddd8))
+* feat: add missing filter checks CMS-2707 ([ac8e247](https://github.com/entrecode/ec.sdk/commit/ac8e247))
+* feat: asset file helper CMS-2705 ([82967a7](https://github.com/entrecode/ec.sdk/commit/82967a7))
+* feat: assets resource (CMS-2564) and deleted assets resource (CMS-2703) ([63911e5](https://github.com/entrecode/ec.sdk/commit/63911e5))
+* feat: best file in DataManager CMS-2706 ([df1073c](https://github.com/entrecode/ec.sdk/commit/df1073c))
+* feat: best file negotiation in delted assets ([b36daaf](https://github.com/entrecode/ec.sdk/commit/b36daaf))
+* feat: check permissions in Session and AccountResource ([bf5fc89](https://github.com/entrecode/ec.sdk/commit/bf5fc89))
+* feat: client schema validation on create CMS-2751 ([3326061](https://github.com/entrecode/ec.sdk/commit/3326061))
+* feat: create Asset CMS-2704 ([5096224](https://github.com/entrecode/ec.sdk/commit/5096224))
+* feat: create dm from template dataSchema validation ([b5cdf8b](https://github.com/entrecode/ec.sdk/commit/b5cdf8b))
+* feat: create dm-client CMS-2558 ([ff1496a](https://github.com/entrecode/ec.sdk/commit/ff1496a))
+* feat: create multiple assets CMS-2719 ([82637b8](https://github.com/entrecode/ec.sdk/commit/82637b8))
+* feat: create/update DataManager from Template CMS-2732 ([fd05bec](https://github.com/entrecode/ec.sdk/commit/fd05bec))
+* feat: dm-account resource CMS-2560 ([73ffcc9](https://github.com/entrecode/ec.sdk/commit/73ffcc9))
+* feat: dm-client resource CMS-2562 ([f081af5](https://github.com/entrecode/ec.sdk/commit/f081af5))
+* feat: DMStatsResource CMS-2566 ([d395fab](https://github.com/entrecode/ec.sdk/commit/d395fab))
+* feat: download option for assets CMS-2728 ([861f139](https://github.com/entrecode/ec.sdk/commit/861f139))
+* feat: export datamanager CMS-2730 ([75df67f](https://github.com/entrecode/ec.sdk/commit/75df67f))
+* feat: group create with validation CMS-2750 ([50a7953](https://github.com/entrecode/ec.sdk/commit/50a7953))
+* feat: purge/restore deleted asset CMS-2729 ([de47cd7](https://github.com/entrecode/ec.sdk/commit/de47cd7))
+* feat: resolve dm-templates ([ed4dbcb](https://github.com/entrecode/ec.sdk/commit/ed4dbcb))
+* feat: Role resource CMS-2561 ([55561e9](https://github.com/entrecode/ec.sdk/commit/55561e9))
+* feat: root response cache in Core CMS-2742 ([fcd9a31](https://github.com/entrecode/ec.sdk/commit/fcd9a31))
+* feat: schema validation prior to put CMS-2595 ([1082d64](https://github.com/entrecode/ec.sdk/commit/1082d64))
+* feat: TagResource CMS-2565 ([b393f4e](https://github.com/entrecode/ec.sdk/commit/b393f4e))
+* feat: TemplateResource CMS-2563 ([2185c56](https://github.com/entrecode/ec.sdk/commit/2185c56))
+* feat: typings for asset best file ([e612f51](https://github.com/entrecode/ec.sdk/commit/e612f51))
+* feat: typings for dm-clients CMS-2562 ([f5bd2d9](https://github.com/entrecode/ec.sdk/commit/f5bd2d9))
+* feat: validation create template CMS-2753 ([b946774](https://github.com/entrecode/ec.sdk/commit/b946774))
+* feat: validation in create actions CMS-2743 ([573902e](https://github.com/entrecode/ec.sdk/commit/573902e))
+* feat: validation of create role CMS-2752 ([4f739a2](https://github.com/entrecode/ec.sdk/commit/4f739a2))
+* feat: validity check for filter CMS-2707 ([3b3429e](https://github.com/entrecode/ec.sdk/commit/3b3429e))
+* fix: embedded name in RoleList ([36e5f8a](https://github.com/entrecode/ec.sdk/commit/36e5f8a))
+* fix: fixed a really bad typo ([a436cb5](https://github.com/entrecode/ec.sdk/commit/a436cb5))
+* fix: global transform for babelify ([855d660](https://github.com/entrecode/ec.sdk/commit/855d660))
+* fix: return types in DataManager.d.ts ([2df8fa7](https://github.com/entrecode/ec.sdk/commit/2df8fa7))
+* fix: some typings fixes ([a426f3f](https://github.com/entrecode/ec.sdk/commit/a426f3f))
+* fix: wrong relation for DataManagerResource#stats ([06f6dd2](https://github.com/entrecode/ec.sdk/commit/06f6dd2))
+* refactor: changelog old breaking change documented ([90ba228](https://github.com/entrecode/ec.sdk/commit/90ba228))
+* refactor: reworked filter options ([57a526c](https://github.com/entrecode/ec.sdk/commit/57a526c))
+* refactor: split resources into packages ([d9ab53e](https://github.com/entrecode/ec.sdk/commit/d9ab53e))
+* refactor: User-Agent now X-User-Agent ([b25e934](https://github.com/entrecode/ec.sdk/commit/b25e934))
+* chore: add webpack test build ([b27694b](https://github.com/entrecode/ec.sdk/commit/b27694b))
+* chore: coverage recursive ([1c0839a](https://github.com/entrecode/ec.sdk/commit/1c0839a))
+* chore: dependency update ([11c3b65](https://github.com/entrecode/ec.sdk/commit/11c3b65))
+* chore: dependency updates ([49dc02e](https://github.com/entrecode/ec.sdk/commit/49dc02e))
+* chore: json-schema-remote develop with tv4-format fork ([7530bbd](https://github.com/entrecode/ec.sdk/commit/7530bbd))
+* chore: json-schema-remote version bump ([99e6967](https://github.com/entrecode/ec.sdk/commit/99e6967))
+* chore: json-schema-remote with fixed tv4-formats ([a36d1ba](https://github.com/entrecode/ec.sdk/commit/a36d1ba))
+* chore: renamed dm account testfile ([9c3df88](https://github.com/entrecode/ec.sdk/commit/9c3df88))
+* chore: some formatting :) ([9230b65](https://github.com/entrecode/ec.sdk/commit/9230b65))
+* doc: asset best file doc ([5bbd870](https://github.com/entrecode/ec.sdk/commit/5bbd870))
+* doc: document missing types CMS-2731 ([6293a3b](https://github.com/entrecode/ec.sdk/commit/6293a3b))
+* doc: fixed some wrong examples in docs ([e4345de](https://github.com/entrecode/ec.sdk/commit/e4345de))
+* doc: more doc for filter options CMS-2727 ([09ee4b1](https://github.com/entrecode/ec.sdk/commit/09ee4b1))
+* doc: properties in RoleResource ([1753a1a](https://github.com/entrecode/ec.sdk/commit/1753a1a))
+* tests: for superagentPost helper ([dae79f3](https://github.com/entrecode/ec.sdk/commit/dae79f3))
+* test: add newRequest() test with continue() ([4afe047](https://github.com/entrecode/ec.sdk/commit/4afe047))
+* test: test for rejectWith proper error message ([3f10251](https://github.com/entrecode/ec.sdk/commit/3f10251))
+
+
+### BREAKING CHANGE
+
+* filter objects do not contain `filter` anymore
+
+before:
+
+```json
+{
+  filter: {
+    property: ‘exactFilter’
+  }
+}
+```
+
+after:
+
+```json
+{
+  property: ‘exactFilter’
+}
+```
+
+
 <a name="0.2.1"></a>
 ## 0.2.1 (2017-02-21)
 
-* BREAKING refactor: renamed list and single functions in DataManager and Accounts ([b502aa4](https://github.com/entrecode/ec.sdk/commit/b502aa4))
+* refactor: renamed list and single functions in DataManager and Accounts ([b502aa4](https://github.com/entrecode/ec.sdk/commit/b502aa4))
 * release version 0.2.1 ([d0c4811](https://github.com/entrecode/ec.sdk/commit/d0c4811))
 * chore: remove DOCUMENTATION.md from release.sh ([71b327f](https://github.com/entrecode/ec.sdk/commit/71b327f))
 * feat: count and total properties in ListResource ([6b4f621](https://github.com/entrecode/ec.sdk/commit/6b4f621))
@@ -9,7 +97,27 @@
 * docs: adds introduction and api connector description to doc ([7c1eb48](https://github.com/entrecode/ec.sdk/commit/7c1eb48))
 * docs: remove single file doc. html doc is hosted ([d1f5cf2](https://github.com/entrecode/ec.sdk/commit/d1f5cf2))
 
+### BREAKING CHANGE
 
+* refactor: renamed list and single functions in DataManager and Accounts
+
+before:
+
+```js
+dataManager.list(…);
+dataManager.get(…);
+accounts.list(…);
+accounts.get(…);
+```
+
+after:
+
+```js
+dataManager.dataManageList(…);
+dataManager.dataManager(…);
+accounts.accountList(…);
+accounts.account(…);
+```
 
 <a name="0.2.0"></a>
 # 0.2.0 (2017-02-17)

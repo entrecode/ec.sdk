@@ -17,7 +17,7 @@
         <scripts>
           <script value="buildNode" />
         </scripts>
-        <node-interpreter value="project" />
+        <node-interpreter value="$USER_HOME$/.nvm/versions/node/v6.10.0/bin/node" />
         <envs />
       </option>
     </method>

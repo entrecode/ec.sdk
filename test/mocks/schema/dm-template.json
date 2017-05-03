@@ -1,0 +1,31 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "https://entrecode.de/schema/datamanager-template",
+  "type": "object",
+  "properties": {
+    "title": {
+      "$ref": "https://entrecode.de/schema/datamanager#/properties/title"
+    },
+    "description": {
+      "$ref": "https://entrecode.de/schema/datamanager#/properties/description"
+    },
+    "config": {
+      "$ref": "https://entrecode.de/schema/datamanager#/properties/config"
+    },
+    "hexColor": {
+      "$ref": "https://entrecode.de/schema/datamanager#/properties/hexColor"
+    },
+    "rights": {
+      "$ref": "https://entrecode.de/schema/datamanager#/properties/rights"
+    },
+    "publicAssetRights": {
+      "$ref": "https://entrecode.de/schema/datamanager#/properties/publicAssetRights"
+    },
+    "locales": {
+      "$ref": "https://entrecode.de/schema/datamanager#/properties/locales"
+    },
+    "defaultLocale": {
+      "$ref": "https://entrecode.de/schema/datamanager#/properties/defaultLocale"
+    }
+  }
+}

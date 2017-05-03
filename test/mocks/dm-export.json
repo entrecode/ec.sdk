@@ -1,0 +1,190 @@
+{
+  "collection": {
+    "id": "1a547165-dbe2-420f-b726-478a8c239c30",
+    "order": [
+      "fede3233-3f82-4cc1-9546-dd181d66fc48",
+      "a813beb1-93bf-4d57-ba56-ff9e9d3a7bee",
+      "bd333b0e-724b-44c1-b3c5-3b869a3a9dbc",
+      "d5a1b86d-10f9-4d63-bee9-b4701be024b8",
+      "fcc885f4-f0af-4353-8963-a523526f5a23",
+      "90d88384-8b42-414f-9e86-852b952b1af5",
+      "b96453e6-1c51-4a52-add3-65c9eb91a893",
+      "043c9d02-65bb-4536-97e5-d21d66fa469d",
+      "8451b963-6396-4c6c-b9fe-70bc7f8b8bed",
+      "66b37098-56cb-491b-bcb4-ce800e9c5872",
+      "a9e6301e-a3e7-408f-8db7-384e04473e33",
+      "d011eb9e-8a02-475d-ae04-72c44e7c155d",
+      "3c26734a-dfab-42fa-b778-b713dbad614a"
+    ],
+    "requests": [
+      {
+        "id": "fede3233-3f82-4cc1-9546-dd181d66fc48",
+        "url": "{{datamanager}}/",
+        "method": "POST",
+        "collectionId": "1a547165-dbe2-420f-b726-478a8c239c30",
+        "headers": "Content-Type: application/json\nAuthorization: Bearer {{accessToken}}\nAccept: application/json",
+        "dataMode": "raw",
+        "tests": "tests[\"Successful request\"] =\n      responseCode.code === 200 ||\n      responseCode.code === 201 ||\n      responseCode.code === 204;\nvar res = JSON.parse(responseBody);\npostman.setEnvironmentVariable('dataManagerID', res.dataManagerID);\n",
+        "rawModeData": "{\"customerID\":null,\"title\":\"Test DM\",\"description\":\"hier kann alles getestet werden\",\"locales\":[\"de-DE\"],\"defaultLocale\":\"de-DE\",\"publicAssetRights\":[\"get\",\"getTags\",\"put\",\"postprivate\"],\"hexColor\":\"#F1453D\",\"config\":{\"users\":{\"google\":null,\"facebook\":null,\"password\":null,\"anonymous\":true}},\"template\":null}",
+        "name": "Create DM"
+      },
+      {
+        "id": "a813beb1-93bf-4d57-ba56-ff9e9d3a7bee",
+        "url": "{{datamanager}}/role?datamanagerid={{dataManagerID}}",
+        "method": "GET",
+        "collectionId": "1a547165-dbe2-420f-b726-478a8c239c30",
+        "headers": "Content-Type: application/json\nAuthorization: Bearer {{accessToken}}\nAccept: application/json",
+        "dataMode": "raw",
+        "tests": "tests[\"Successful request\"] =\n      responseCode.code === 200 ||\n      responseCode.code === 201 ||\n      responseCode.code === 204;\nvar res = JSON.parse(responseBody);\n      if(res._embedded.hasOwnProperty('ec:dm-role')){\n        var roles = res._embedded['ec:dm-role'];\n        if(!Array.isArray(roles)){\n          roles = [roles];\n        }\n        for(var i = 0; i < roles.length; i++){\n          postman.setEnvironmentVariable('deleteRole' + i, roles[i].roleID);\n        }\n      }\n",
+        "rawModeData": null,
+        "name": "Get auto generated roles"
+      },
+      {
+        "id": "bd333b0e-724b-44c1-b3c5-3b869a3a9dbc",
+        "url": "{{datamanager}}/role?datamanagerid={{dataManagerID}}&roleid={{deleteRole0}}",
+        "method": "DELETE",
+        "collectionId": "1a547165-dbe2-420f-b726-478a8c239c30",
+        "headers": "Content-Type: application/json\nAuthorization: Bearer {{accessToken}}\nAccept: application/json",
+        "dataMode": "raw",
+        "tests": "tests[\"Successful request\"] =\n      responseCode.code === 200 ||\n      responseCode.code === 201 ||\n      responseCode.code === 204;\n",
+        "rawModeData": null,
+        "name": "Delete auto generated role no 0"
+      },
+      {
+        "id": "d5a1b86d-10f9-4d63-bee9-b4701be024b8",
+        "url": "{{datamanager}}/role?datamanagerid={{dataManagerID}}&roleid={{deleteRole1}}",
+        "method": "DELETE",
+        "collectionId": "1a547165-dbe2-420f-b726-478a8c239c30",
+        "headers": "Content-Type: application/json\nAuthorization: Bearer {{accessToken}}\nAccept: application/json",
+        "dataMode": "raw",
+        "tests": "tests[\"Successful request\"] =\n      responseCode.code === 200 ||\n      responseCode.code === 201 ||\n      responseCode.code === 204;\n",
+        "rawModeData": null,
+        "name": "Delete auto generated role no 1"
+      },
+      {
+        "id": "fcc885f4-f0af-4353-8963-a523526f5a23",
+        "url": "{{datamanager}}/role?datamanagerid={{dataManagerID}}",
+        "method": "POST",
+        "collectionId": "1a547165-dbe2-420f-b726-478a8c239c30",
+        "headers": "Content-Type: application/json\nAuthorization: Bearer {{accessToken}}\nAccept: application/json",
+        "dataMode": "raw",
+        "tests": "tests[\"Successful request\"] =\n      responseCode.code === 200 ||\n      responseCode.code === 201 ||\n      responseCode.code === 204;\nvar res = JSON.parse(responseBody);\npostman.setEnvironmentVariable('6c7dd95c-2dee-4f97-8e9e-ff272118a2c0', res.roleID);\n",
+        "rawModeData": "{\"name\":\"Anonymous Users\",\"label\":\"\",\"addRegistered\":false,\"addUnregistered\":true}",
+        "name": "Create Role Anonymous Users"
+      },
+      {
+        "id": "90d88384-8b42-414f-9e86-852b952b1af5",
+        "url": "{{datamanager}}/role?datamanagerid={{dataManagerID}}",
+        "method": "POST",
+        "collectionId": "1a547165-dbe2-420f-b726-478a8c239c30",
+        "headers": "Content-Type: application/json\nAuthorization: Bearer {{accessToken}}\nAccept: application/json",
+        "dataMode": "raw",
+        "tests": "tests[\"Successful request\"] =\n      responseCode.code === 200 ||\n      responseCode.code === 201 ||\n      responseCode.code === 204;\nvar res = JSON.parse(responseBody);\npostman.setEnvironmentVariable('3779d1ee-ce4f-4081-b2a7-6245e8540b18', res.roleID);\n",
+        "rawModeData": "{\"name\":\"Registered Users\",\"label\":\"\",\"addRegistered\":true,\"addUnregistered\":false}",
+        "name": "Create Role Registered Users"
+      },
+      {
+        "id": "b96453e6-1c51-4a52-add3-65c9eb91a893",
+        "url": "{{datamanager}}/model?datamanagerid={{dataManagerID}}",
+        "method": "POST",
+        "collectionId": "1a547165-dbe2-420f-b726-478a8c239c30",
+        "headers": "Content-Type: application/json\nAuthorization: Bearer {{accessToken}}\nAccept: application/json",
+        "dataMode": "raw",
+        "tests": "tests[\"Successful request\"] =\n      responseCode.code === 200 ||\n      responseCode.code === 201 ||\n      responseCode.code === 204;\n",
+        "rawModeData": "{\"title\":\"allFields\",\"description\":\"\",\"rights\":{\"get\":false,\"put\":false,\"postPublic\":false,\"postPrivate\":false,\"delete\":false},\"fields\":[{\"type\":\"text\",\"title\":\"text\",\"unique\":false,\"default\":\"\",\"mutable\":true,\"readOnly\":false,\"required\":true,\"validation\":\"\",\"description\":\"\",\"localizable\":false},{\"type\":\"formattedText\",\"title\":\"formattedText\",\"unique\":false,\"default\":\"\",\"mutable\":true,\"readOnly\":false,\"required\":true,\"validation\":\"\",\"description\":\"\",\"localizable\":false},{\"type\":\"number\",\"title\":\"number\",\"unique\":false,\"default\":0,\"mutable\":true,\"readOnly\":false,\"required\":true,\"validation\":null,\"description\":\"\",\"localizable\":false},{\"type\":\"decimal\",\"title\":\"decimal\",\"unique\":false,\"default\":0,\"mutable\":true,\"readOnly\":false,\"required\":true,\"validation\":null,\"description\":\"\",\"localizable\":false},{\"type\":\"boolean\",\"title\":\"boolean\",\"unique\":false,\"default\":false,\"mutable\":true,\"readOnly\":false,\"required\":true,\"validation\":\"\",\"description\":\"\",\"localizable\":false},{\"type\":\"datetime\",\"title\":\"datetime\",\"unique\":false,\"default\":\"2017-02-08T14:54:49.700Z\",\"mutable\":true,\"readOnly\":false,\"required\":true,\"validation\":\"\",\"description\":\"\",\"localizable\":false},{\"type\":\"location\",\"title\":\"location\",\"unique\":false,\"default\":{\"latitude\":0,\"longitude\":0},\"mutable\":true,\"readOnly\":false,\"required\":true,\"validation\":\"\",\"description\":\"\",\"localizable\":false},{\"type\":\"email\",\"title\":\"email\",\"unique\":false,\"default\":\"noreply@entrecode.de\",\"mutable\":true,\"readOnly\":false,\"required\":true,\"validation\":\"\",\"description\":\"\",\"localizable\":false},{\"type\":\"url\",\"title\":\"url\",\"unique\":false,\"default\":\"entrecode.de\",\"mutable\":true,\"readOnly\":false,\"required\":true,\"validation\":\"\",\"description\":\"\",\"localizable\":false},{\"type\":\"phone\",\"title\":\"phone\",\"unique\":false,\"default\":\"0\",\"mutable\":true,\"readOnly\":false,\"required\":true,\"validation\":\"\",\"description\":\"\",\"localizable\":false},{\"type\":\"json\",\"title\":\"json\",\"unique\":false,\"default\":{},\"mutable\":true,\"readOnly\":false,\"required\":true,\"validation\":\"\",\"description\":\"\",\"localizable\":false},{\"type\":\"entry\",\"title\":\"entry\",\"unique\":false,\"default\":{\"ad\":\"asd\",\"id\":\"EJlJtSrkgl\",\"_id\":\"EJlJtSrkgl\",\"_links\":{\"self\":[{\"href\":\"https://datamanager.entrecode.de/api/01bd8e08/contains_entries?_id=EJlJtSrkgl\",\"profile\":\"https://datamanager.entrecode.de/api/schema/01bd8e08/contains_entries\",\"templated\":false}],\"ec:model\":[{\"href\":\"https://datamanager.entrecode.de/model?modelID=5a215d0a-84a4-468e-98ba-8673dfb2cc17\",\"profile\":\"https://entrecode.de/schema/model\",\"templated\":false}],\"collection\":[{\"href\":\"https://datamanager.entrecode.de/api/01bd8e08/contains_entries\",\"profile\":\"https://datamanager.entrecode.de/api/schema/01bd8e08/contains_entries\",\"templated\":false}]},\"_curies\":[],\"created\":\"2015-10-08T11:41:18.571Z\",\"entries\":[],\"private\":false,\"_created\":\"2015-10-08T11:41:18.571Z\",\"modified\":\"2015-12-08T17:12:25.449Z\",\"_embedded\":{},\"_modified\":\"2015-12-08T17:12:25.449Z\",\"_original\":{\"ad\":\"asd\",\"id\":\"EJlJtSrkgl\",\"_id\":\"EJlJtSrkgl\",\"_links\":{\"self\":{\"href\":\"https://datamanager.entrecode.de/api/01bd8e08/contains_entries?_id=EJlJtSrkgl\",\"profile\":\"https://datamanager.entrecode.de/api/schema/01bd8e08/contains_entries\"},\"ec:model\":{\"href\":\"https://datamanager.entrecode.de/model?modelID=5a215d0a-84a4-468e-98ba-8673dfb2cc17\",\"profile\":\"https://entrecode.de/schema/model\"},\"collection\":{\"href\":\"https://datamanager.entrecode.de/api/01bd8e08/contains_entries\",\"profile\":\"https://datamanager.entrecode.de/api/schema/01bd8e08/contains_entries\"}},\"created\":\"2015-10-08T11:41:18.571Z\",\"entries\":[],\"private\":false,\"_created\":\"2015-10-08T11:41:18.571Z\",\"modified\":\"2015-12-08T17:12:25.449Z\",\"_modified\":\"2015-12-08T17:12:25.449Z\",\"_entryTitle\":\"EJlJtSrkgl\",\"_modelTitle\":\"contains_entries\",\"_modelTitleField\":\"_id\"},\"_curiesMap\":{},\"_entryTitle\":\"EJlJtSrkgl\",\"_modelTitle\":\"contains_entries\",\"_validation\":[],\"_modelTitleField\":\"_id\",\"_resolvedCuriesMap\":{}},\"mutable\":true,\"readOnly\":false,\"required\":true,\"validation\":\"\",\"description\":\"\",\"localizable\":false},{\"type\":\"entries\",\"title\":\"entries\",\"unique\":false,\"default\":[{\"ad\":\"asd\",\"id\":\"EJlJtSrkgl\",\"_id\":\"EJlJtSrkgl\",\"_links\":{\"self\":[{\"href\":\"https://datamanager.entrecode.de/api/01bd8e08/contains_entries?_id=EJlJtSrkgl\",\"profile\":\"https://datamanager.entrecode.de/api/schema/01bd8e08/contains_entries\",\"templated\":false}],\"ec:model\":[{\"href\":\"https://datamanager.entrecode.de/model?modelID=5a215d0a-84a4-468e-98ba-8673dfb2cc17\",\"profile\":\"https://entrecode.de/schema/model\",\"templated\":false}],\"collection\":[{\"href\":\"https://datamanager.entrecode.de/api/01bd8e08/contains_entries\",\"profile\":\"https://datamanager.entrecode.de/api/schema/01bd8e08/contains_entries\",\"templated\":false}]},\"_curies\":[],\"created\":\"2015-10-08T11:41:18.571Z\",\"entries\":[],\"private\":false,\"_created\":\"2015-10-08T11:41:18.571Z\",\"modified\":\"2015-12-08T17:12:25.449Z\",\"_embedded\":{},\"_modified\":\"2015-12-08T17:12:25.449Z\",\"_original\":{\"ad\":\"asd\",\"id\":\"EJlJtSrkgl\",\"_id\":\"EJlJtSrkgl\",\"_links\":{\"self\":{\"href\":\"https://datamanager.entrecode.de/api/01bd8e08/contains_entries?_id=EJlJtSrkgl\",\"profile\":\"https://datamanager.entrecode.de/api/schema/01bd8e08/contains_entries\"},\"ec:model\":{\"href\":\"https://datamanager.entrecode.de/model?modelID=5a215d0a-84a4-468e-98ba-8673dfb2cc17\",\"profile\":\"https://entrecode.de/schema/model\"},\"collection\":{\"href\":\"https://datamanager.entrecode.de/api/01bd8e08/contains_entries\",\"profile\":\"https://datamanager.entrecode.de/api/schema/01bd8e08/contains_entries\"}},\"created\":\"2015-10-08T11:41:18.571Z\",\"entries\":[],\"private\":false,\"_created\":\"2015-10-08T11:41:18.571Z\",\"modified\":\"2015-12-08T17:12:25.449Z\",\"_modified\":\"2015-12-08T17:12:25.449Z\",\"_entryTitle\":\"EJlJtSrkgl\",\"_modelTitle\":\"contains_entries\",\"_modelTitleField\":\"_id\"},\"_curiesMap\":{},\"_entryTitle\":\"EJlJtSrkgl\",\"_modelTitle\":\"contains_entries\",\"_validation\":[],\"_modelTitleField\":\"_id\",\"_resolvedCuriesMap\":{}}],\"mutable\":true,\"readOnly\":false,\"required\":true,\"validation\":\"contains_entries\",\"description\":\"\",\"localizable\":false},{\"type\":\"asset\",\"title\":\"asset\",\"unique\":false,\"default\":\"5ded1488-3c85-4aa7-b274-150c3503cc35\",\"mutable\":true,\"readOnly\":false,\"required\":false,\"validation\":\"\",\"description\":\"\",\"localizable\":false},{\"type\":\"assets\",\"title\":\"assets\",\"unique\":false,\"default\":null,\"mutable\":true,\"readOnly\":false,\"required\":false,\"validation\":\"\",\"description\":\"\",\"localizable\":false}],\"locales\":[],\"hooks\":[],\"titleField\":\"_id\",\"hexColor\":\"#159588\",\"sync\":null,\"config\":{},\"policies\":[]}",
+        "name": "Create model allFields"
+      },
+      {
+        "id": "043c9d02-65bb-4536-97e5-d21d66fa469d",
+        "url": "{{datamanager}}/model?datamanagerid={{dataManagerID}}",
+        "method": "POST",
+        "collectionId": "1a547165-dbe2-420f-b726-478a8c239c30",
+        "headers": "Content-Type: application/json\nAuthorization: Bearer {{accessToken}}\nAccept: application/json",
+        "dataMode": "raw",
+        "tests": "tests[\"Successful request\"] =\n      responseCode.code === 200 ||\n      responseCode.code === 201 ||\n      responseCode.code === 204;\n",
+        "rawModeData": "{\"title\":\"muffin\",\"description\":\"\",\"rights\":{\"get\":false,\"put\":false,\"postPublic\":false,\"postPrivate\":false,\"delete\":false},\"fields\":[{\"type\":\"text\",\"title\":\"title\",\"unique\":false,\"default\":\"\",\"mutable\":true,\"readOnly\":false,\"required\":true,\"validation\":\"\",\"description\":\"The muffin's title\",\"localizable\":false},{\"type\":\"formattedText\",\"title\":\"description\",\"unique\":false,\"default\":null,\"mutable\":true,\"readOnly\":false,\"required\":false,\"validation\":\"\",\"description\":\"Description of muffin\",\"localizable\":false},{\"type\":\"number\",\"title\":\"price\",\"unique\":false,\"default\":0,\"mutable\":true,\"readOnly\":false,\"required\":true,\"validation\":null,\"description\":\"What does it cost?\",\"localizable\":false},{\"type\":\"account\",\"title\":\"account\",\"unique\":false,\"mutable\":true,\"readOnly\":false,\"required\":false,\"validation\":\"\",\"description\":\"\",\"localizable\":false}],\"locales\":[],\"hooks\":[],\"titleField\":\"title\",\"hexColor\":\"#d23738\",\"sync\":null,\"config\":{},\"policies\":[]}",
+        "name": "Create model muffin"
+      },
+      {
+        "id": "8451b963-6396-4c6c-b9fe-70bc7f8b8bed",
+        "url": "{{datamanager}}/model?datamanagerid={{dataManagerID}}",
+        "method": "POST",
+        "collectionId": "1a547165-dbe2-420f-b726-478a8c239c30",
+        "headers": "Content-Type: application/json\nAuthorization: Bearer {{accessToken}}\nAccept: application/json",
+        "dataMode": "raw",
+        "tests": "tests[\"Successful request\"] =\n      responseCode.code === 200 ||\n      responseCode.code === 201 ||\n      responseCode.code === 204;\n",
+        "rawModeData": "{\"title\":\"model_with_underscore\",\"description\":\"ghk\",\"rights\":{\"get\":false,\"put\":false,\"postPublic\":false,\"postPrivate\":false,\"delete\":false},\"fields\":[{\"type\":\"json\",\"title\":\"some_title\",\"unique\":false,\"mutable\":true,\"readOnly\":false,\"required\":false,\"validation\":null,\"description\":\"\",\"localizable\":false}],\"locales\":[],\"hooks\":[],\"titleField\":\"_id\",\"hexColor\":\"#d23738\",\"sync\":null,\"config\":{},\"policies\":[{\"method\":\"get\",\"restrictToFields\":[],\"public\":true,\"conditions\":null,\"roles\":[]}]}",
+        "name": "Create model model_with_underscore"
+      },
+      {
+        "id": "66b37098-56cb-491b-bcb4-ce800e9c5872",
+        "url": "{{datamanager}}/model?datamanagerid={{dataManagerID}}",
+        "method": "POST",
+        "collectionId": "1a547165-dbe2-420f-b726-478a8c239c30",
+        "headers": "Content-Type: application/json\nAuthorization: Bearer {{accessToken}}\nAccept: application/json",
+        "dataMode": "raw",
+        "tests": "tests[\"Successful request\"] =\n      responseCode.code === 200 ||\n      responseCode.code === 201 ||\n      responseCode.code === 204;\n",
+        "rawModeData": "{\"title\":\"contains_entries\",\"description\":\"\",\"rights\":{\"get\":false,\"put\":false,\"postPublic\":false,\"postPrivate\":false,\"delete\":false},\"fields\":[{\"type\":\"entries\",\"title\":\"entries\",\"unique\":false,\"default\":null,\"mutable\":true,\"readOnly\":false,\"required\":false,\"validation\":null,\"description\":\"\",\"localizable\":false},{\"type\":\"text\",\"title\":\"ad\",\"unique\":false,\"default\":\"asd\",\"mutable\":true,\"readOnly\":false,\"required\":true,\"validation\":\"\",\"description\":\"\",\"localizable\":false}],\"locales\":[],\"hooks\":[],\"titleField\":\"_id\",\"hexColor\":\"#d23738\",\"sync\":null,\"config\":{},\"policies\":[{\"method\":\"get\",\"restrictToFields\":[],\"public\":true,\"conditions\":null,\"roles\":[]}]}",
+        "name": "Create model contains_entries"
+      },
+      {
+        "id": "a9e6301e-a3e7-408f-8db7-384e04473e33",
+        "url": "{{datamanager}}/model?datamanagerid={{dataManagerID}}",
+        "method": "POST",
+        "collectionId": "1a547165-dbe2-420f-b726-478a8c239c30",
+        "headers": "Content-Type: application/json\nAuthorization: Bearer {{accessToken}}\nAccept: application/json",
+        "dataMode": "raw",
+        "tests": "tests[\"Successful request\"] =\n      responseCode.code === 200 ||\n      responseCode.code === 201 ||\n      responseCode.code === 204;\n",
+        "rawModeData": "{\"title\":\"withaAsset\",\"description\":\"\",\"rights\":{\"get\":false,\"put\":false,\"postPublic\":false,\"postPrivate\":false,\"delete\":false},\"fields\":[{\"type\":\"asset\",\"title\":\"asset\",\"unique\":false,\"mutable\":true,\"readOnly\":false,\"required\":false,\"validation\":\"\",\"description\":\"\",\"localizable\":false}],\"locales\":[],\"hooks\":[],\"titleField\":\"_id\",\"hexColor\":\"#d23738\",\"sync\":null,\"config\":{},\"policies\":[]}",
+        "name": "Create model withaAsset"
+      },
+      {
+        "id": "d011eb9e-8a02-475d-ae04-72c44e7c155d",
+        "url": "{{datamanager}}/model?datamanagerid={{dataManagerID}}",
+        "method": "POST",
+        "collectionId": "1a547165-dbe2-420f-b726-478a8c239c30",
+        "headers": "Content-Type: application/json\nAuthorization: Bearer {{accessToken}}\nAccept: application/json",
+        "dataMode": "raw",
+        "tests": "tests[\"Successful request\"] =\n      responseCode.code === 200 ||\n      responseCode.code === 201 ||\n      responseCode.code === 204;\n",
+        "rawModeData": "{\"title\":\"json_entry\",\"description\":\"\",\"rights\":{\"get\":false,\"put\":false,\"postPublic\":false,\"postPrivate\":false,\"delete\":false},\"fields\":[{\"type\":\"json\",\"title\":\"json\",\"unique\":false,\"mutable\":true,\"readOnly\":false,\"required\":false,\"validation\":\"\",\"description\":\"\",\"localizable\":false}],\"locales\":[],\"hooks\":[],\"titleField\":\"json\",\"hexColor\":\"#d23738\",\"sync\":null,\"config\":{},\"policies\":[]}",
+        "name": "Create model json_entry"
+      },
+      {
+        "id": "3c26734a-dfab-42fa-b778-b713dbad614a",
+        "url": "{{datamanager}}/model?datamanagerid={{dataManagerID}}",
+        "method": "POST",
+        "collectionId": "1a547165-dbe2-420f-b726-478a8c239c30",
+        "headers": "Content-Type: application/json\nAuthorization: Bearer {{accessToken}}\nAccept: application/json",
+        "dataMode": "raw",
+        "tests": "tests[\"Successful request\"] =\n      responseCode.code === 200 ||\n      responseCode.code === 201 ||\n      responseCode.code === 204;\n",
+        "rawModeData": "{\"title\":\"entry\",\"description\":\"kjhgfd\",\"rights\":{\"get\":false,\"put\":false,\"postPublic\":false,\"postPrivate\":false,\"delete\":false},\"fields\":[{\"type\":\"text\",\"title\":\"title\",\"unique\":false,\"mutable\":true,\"readOnly\":false,\"required\":false,\"validation\":null,\"description\":\"\",\"localizable\":false}],\"locales\":[],\"hooks\":[],\"titleField\":\"_id\",\"hexColor\":\"#d23738\",\"sync\":null,\"config\":{},\"policies\":[{\"method\":\"delete\",\"restrictToFields\":[],\"public\":false,\"conditions\":null,\"roles\":[\"{{6c7dd95c-2dee-4f97-8e9e-ff272118a2c0}}\"]},{\"method\":\"put\",\"restrictToFields\":[],\"public\":false,\"conditions\":null,\"roles\":[\"{{6c7dd95c-2dee-4f97-8e9e-ff272118a2c0}}\"]},{\"method\":\"get\",\"restrictToFields\":[],\"public\":true,\"conditions\":null,\"roles\":[]},{\"method\":\"post\",\"restrictToFields\":[],\"public\":false,\"conditions\":null,\"roles\":[\"{{6c7dd95c-2dee-4f97-8e9e-ff272118a2c0}}\"]}]}",
+        "name": "Create model entry"
+      }
+    ],
+    "name": "Test DM"
+  },
+  "dataSchema": {
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "type": "object",
+    "required": [
+      "accessToken",
+      "datamanager"
+    ],
+    "properties": {
+      "datamanager": {
+        "type": "string",
+        "description": "URL of the Data Manager you want to import to.",
+        "enum": [
+          "https://datamanager.entrecode.de",
+          "https://datamanager.buffalo.entrecode.de",
+          "http://localhost:7471",
+          "http://192.168.99.100:7471"
+        ]
+      },
+      "accessToken": {
+        "description": "JWT token (without 'Bearer') of the user. Must have dm-create right and at least one datamanager left.",
+        "type": "string"
+      }
+    }
+  }
+}
