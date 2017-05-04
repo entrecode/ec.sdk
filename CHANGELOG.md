@@ -69,19 +69,19 @@
 
 before:
 
-```json
+```js
 {
   filter: {
-    property: ‘exactFilter’
+    property: 'exactFilter'
   }
 }
 ```
 
 after:
 
-```json
+```js
 {
-  property: ‘exactFilter’
+  property: 'exactFilter'
 }
 ```
 
