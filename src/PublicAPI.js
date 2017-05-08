@@ -1,6 +1,6 @@
 import halfred from 'halfred';
 
-import { get } from './helper';
+import { get, getEmpty, getUrl, post, superagentFormPost } from './helper';
 import { urls } from './DataManager';
 import TokenStoreFactory from './TokenStore';
 import Core from './Core';
@@ -169,5 +169,37 @@ export default class PublicAPI extends Core {
       this.tokenStore.del();
       return Promise.resolve();
     });
+  }
+
+  /**
+   * Will check if the given email is available for login.
+   *
+   * @example
+   * return api.emailAvailable(email)
+   * .then((available) => {
+   *    if (available){
+   *      return api.signup(email, password);
+   *    } else {
+   *      return showError(new Error(`Email ${email} already registered.`));
+   *    }
+   * });
+   *
+   * @param {string} email the email to check.
+   * @returns {Promise<boolean>} Whether or not the email is available.
+   */
+  emailAvailable(email) {
+    return Promise.resolve()
+    .then(() => {
+      if (!email) {
+        throw new Error('email must be defined');
+      }
+
+      return this.follow(`${this.shortID}:_auth/email-available`);
+    })
+    .then((request) => {
+      request.withTemplateParameters({ email });
+      return get(this.environment, request);
+    })
+    .then(([a]) => a.available);
   }
 }

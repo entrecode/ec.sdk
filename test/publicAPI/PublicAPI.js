@@ -166,6 +166,21 @@ describe('PublicAPI', () => {
     return api.logout().should.be.rejectedWith('clientID must be set with PublicAPI#setClientID');
   });
 
+  it('should return true on email available', () => {
+    const stub = sinon.stub(helper, 'get');
+    stub.returns(resolver('email-available.json'));
+    const follow = sinon.stub(api, 'follow');
+    follow.returns(Promise.resolve(api.newRequest()));
+
+    return api.emailAvailable('someone@example.com').should.be.eventually.equal(true)
+    .and.notify(() => {
+      stub.restore();
+      follow.restore();
+    });
+  });
+  it('should be rejected on undefined email', () => {
+    return api.emailAvailable().should.be.rejectedWith('email must be defined');
+  });
 
   ['dataManagerID', 'title', 'description', 'locales',
     'defaultLocale', 'models', 'account', 'config']
