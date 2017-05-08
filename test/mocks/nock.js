@@ -26,6 +26,7 @@ module.exports = {
     .get('/').replyWithFile(200, `${__dirname}/accounts-root.json`);
 
     nock('https://datamanager.entrecode.de')
-    .get('/').replyWithFile(200, `${__dirname}/dm-list.json`);
+    .get('/').replyWithFile(200, `${__dirname}/dm-list.json`)
+    .get('/api/beefbeef').replyWithFile(200, `${__dirname}/public-dm-root.json`);
   },
 };

@@ -23,7 +23,7 @@ export default class PublicAPI extends Core {
       throw new Error('must provide valid shortID');
     }
 
-    super(`${urls[environment || 'live']}/api/${id}`);
+    super(`${urls[environment || 'live']}api/${id}`);
     this.environment = environment || 'live';
     this.tokenStore = TokenStoreFactory(environment || 'live');
     this.shortID = id;
@@ -77,6 +77,97 @@ export default class PublicAPI extends Core {
       });
       this.modelCache = out;
       return out;
+    });
+  }
+
+  /**
+   * Set the clientID to use with the public API. Currently only `rest` is supported.
+   *
+   * @param {string} clientID the clientID.
+   * @returns {Accounts} this object for chainability
+   */
+  setClientID(clientID) {
+    if (!clientID) {
+      throw new Error('ClientID must be defined');
+    }
+
+    if (clientID !== 'rest') {
+      throw new Error('ec.sdk currently only supports client \'rest\'');
+    }
+
+    this.tokenStore.setClientID(clientID);
+    return this;
+  }
+
+  /**
+   * Login with email and password. Currently only supports `rest` clientID with body post of
+   * credentials and tokenMethod `body`.
+   *
+   * @param {string} email email address of the user
+   * @param {string} password password of the user
+   * @returns {Promise<string>} Promise resolving to the issued token
+   */
+  login(email, password) {
+    return Promise.resolve()
+    .then(() => {
+      if (this.tokenStore.has()) {
+        throw new Error('already logged in or old token present. logout first');
+      }
+
+      if (!this.tokenStore.hasClientID()) {
+        throw new Error('clientID must be set with PublicAPI#setClientID(clientID: string)');
+      }
+      if (!email) {
+        throw new Error('email must be defined');
+      }
+      if (!password) {
+        throw new Error('password must be defined');
+      }
+
+      return this.follow(`${this.shortID}:_auth/login`);
+    })
+    .then((request) => {
+      request.withTemplateParameters({ clientID: this.tokenStore.getClientID() });
+      return post(this.environment, request, { email, password });
+    })
+    .then(([token]) => {
+      this.tokenStore.set(token.token);
+      this.events.emit('login', token.token);
+
+      return token.token;
+    });
+  }
+
+  /**
+   * Logout with existing token. Will invalidate the token with the public API and remove any
+   * cookie stored.
+   *
+   * @returns {Promise<undefined>} Promise resolving undefined on success.
+   */
+  logout() {
+    return Promise.resolve()
+    .then(() => {
+      if (!this.tokenStore.has()) {
+        return Promise.resolve();
+      }
+
+      if (!this.tokenStore.hasClientID()) {
+        throw new Error('clientID must be set with PublicAPI#setClientID(clientID: string)');
+      }
+
+      return this.follow(`${this.shortID}:_auth/logout`)
+      .then((request) => {
+        request.withTemplateParameters({
+          clientID: this.tokenStore.getClientID(),
+          token: this.token,
+        });
+        return post(this.environment, request);
+      });
+    })
+    .then(() => {
+      this.events.emit('logout');
+      this.tokenStore.del();
+      return Promise.resolve();
     });
   }
 }

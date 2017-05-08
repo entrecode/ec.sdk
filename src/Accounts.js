@@ -232,7 +232,6 @@ export default class Accounts extends Core {
     .then(([c, traversal]) => new ClientResource(c, this.environment, traversal));
   }
 
-
   /**
    * Load the {@link ClientList}.
    *
@@ -456,7 +455,7 @@ export default class Accounts extends Core {
    * @param {string} email email for the new account
    * @param {string} password password for the new account
    * @param {string?} invite optional invite. signup can be declined without invite.
-   * @returns {Promise<string>} Promise resolving the newly created {@link AccountResource}
+   * @returns {Promise<string>} Promise resolving the token
    */
   signup(email, password, invite) {
     return Promise.resolve()
