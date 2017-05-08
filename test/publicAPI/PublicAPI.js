@@ -182,6 +182,42 @@ describe('PublicAPI', () => {
     return api.emailAvailable().should.be.rejectedWith('email must be defined');
   });
 
+  it('should signup new account', () => {
+    api.setClientID('rest');
+    const url = sinon.stub(helper, 'getUrl');
+    url.returns(Promise.resolve('https://accounts.entrecode.de/auth/signup?clientID=rest'));
+    const token = sinon.stub(helper, 'superagentFormPost');
+    token.returns(Promise.resolve({ token: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJlbnRyZWNvZGVUZXN0IiwiaWF0IjoxNDg1NzgzNTg4LCJleHAiOjQ2NDE0NTcxODgsImF1ZCI6IlRlc3QiLCJzdWIiOiJ0ZXN0QGVudHJlY29kZS5kZSJ9.Vhrq5GR2hNz-RoAhdlnIIWHelPciBPCemEa74s7cXn8' }));
+    api.tokenStore.del();
+    api.tokenStore.has().should.be.false;
+
+    return api.signup('someone@example.com', 'suchsecurewow')
+    .then((tokenResponse) => {
+      tokenResponse.should.be.equal('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJlbnRyZWNvZGVUZXN0IiwiaWF0IjoxNDg1NzgzNTg4LCJleHAiOjQ2NDE0NTcxODgsImF1ZCI6IlRlc3QiLCJzdWIiOiJ0ZXN0QGVudHJlY29kZS5kZSJ9.Vhrq5GR2hNz-RoAhdlnIIWHelPciBPCemEa74s7cXn8');
+      api.tokenStore.has().should.be.true;
+      token.restore();
+      url.restore();
+    })
+    .catch((err) => {
+      token.restore();
+      url.restore();
+      throw err;
+    });
+  });
+  it('should be rejected on undefined email', () => {
+    return api.signup(null, 'supersecure')
+    .should.be.rejectedWith('email must be defined');
+  });
+  it('should be rejected on undefined password', () => {
+    return api.signup('someone@example.com', null)
+    .should.be.rejectedWith('password must be defined');
+  });
+  it('should be rejected on undefined clientID', () => {
+    api.tokenStore.clientID = undefined;
+    return api.signup('someone@example.com', 'supersecure')
+    .should.be.rejectedWith('clientID must be set with PublicAPI#setClientID');
+  });
+
   ['dataManagerID', 'title', 'description', 'locales',
     'defaultLocale', 'models', 'account', 'config']
   .forEach((property) => {

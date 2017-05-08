@@ -202,4 +202,48 @@ export default class PublicAPI extends Core {
     })
     .then(([a]) => a.available);
   }
+
+  /**
+   * Signup a new account. Invite may be required.
+   *
+   * @example
+   * return api.signup(email, password, invite)
+   * .then((token) => {
+   *   api.setToken(token);
+   *   return show('Successfully registered account');
+   * });
+   *
+   * @param {string} email email for the new account
+   * @param {string} password password for the new account
+   * @param {string?} invite optional invite. signup can be declined without invite.
+   * @returns {Promise<string>} Promise resolving with the token
+   */
+  signup(email, password, invite) {
+    return Promise.resolve()
+    .then(() => {
+      if (!email) {
+        throw new Error('email must be defined');
+      }
+      if (!password) {
+        throw new Error('password must be defined');
+      }
+      if (!this.tokenStore.hasClientID()) {
+        throw new Error('clientID must be set with PublicAPI#setClientID(clientID: string)');
+      }
+
+      return this.follow(`${this.shortID}:_auth/signup`);
+    })
+    .then((request) => {
+      request.withTemplateParameters({
+        clientID: this.tokenStore.getClientID(),
+        invite,
+      });
+      return getUrl(this.environment, request);
+    })
+    .then(url => superagentFormPost(url, { email, password }))
+    .then((token) => {
+      this.tokenStore.set(token.token);
+      return Promise.resolve(token.token);
+    });
+  }
 }
