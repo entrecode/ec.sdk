@@ -241,6 +241,23 @@ describe('PublicAPI', () => {
     .should.be.rejectedWith('clientID must be set with PublicAPI#setClientID');
   });
 
+  it('should create anonymous', () => {
+    const stub = sinon.stub(helper, 'post');
+    stub.returns(resolver('public-create-anon.json'));
+
+    return api.createAnonymous()
+    .should.eventually.have.property('accountID', 'b6d0671d-17f3-43b7-9eb2-e2b0e4040015')
+    .and.notify(() => stub.restore());
+  });
+  it('should create anonymous, validUntil', () => {
+    const stub = sinon.stub(helper, 'post');
+    stub.returns(resolver('public-create-anon.json'));
+
+    return api.createAnonymous(new Date())
+    .should.eventually.have.property('accountID', 'b6d0671d-17f3-43b7-9eb2-e2b0e4040015')
+    .and.notify(() => stub.restore());
+  });
+
   ['dataManagerID', 'title', 'description', 'locales',
     'defaultLocale', 'models', 'account', 'config']
   .forEach((property) => {

@@ -6,7 +6,7 @@ import TokenStoreFactory from './TokenStore';
 import Core from './Core';
 
 /**
- * API connector for public APIs.
+ * API connector for public APIs. This is the successor of ec.datamanager.js
  */
 export default class PublicAPI extends Core {
   /**
@@ -275,5 +275,29 @@ export default class PublicAPI extends Core {
       });
       return getEmpty(this.environment, request);
     });
+  }
+
+  /**
+   * Creates a new anonymous account.
+   *
+   * @example
+   * return api.createAnonymous()
+   * .then((token) => {
+   *   return save(token)
+   * });
+   *
+   * @param {Date} validUntil valid until date
+   * @returns {Promise<{jwt: string, accountID: string, iat: number, exp: number}>} the created api
+   *   token response.
+   */
+  createAnonymous(validUntil) {
+    return this.follow(`${this.shortID}:_auth/anonymous`)
+    .then((request) => {
+      if (validUntil) {
+        request.withTemplateParameters({ validUntil: validUntil.toISOString() });
+      }
+      return post(this.environment, request, {});
+    })
+    .then(([tokenResponse]) => tokenResponse);
   }
 }
