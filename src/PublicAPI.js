@@ -246,4 +246,34 @@ export default class PublicAPI extends Core {
       return Promise.resolve(token.token);
     });
   }
+
+  /**
+   * Start a password reset.
+   *
+   * @example
+   * return api.resetPassword(email)
+   * .then(() => show(`Password reset link send to ${email}`))
+   *
+   * @param {string} email email of the account
+   * @returns {Promise} Promise resolving on success.
+   */
+  resetPassword(email) {
+    return Promise.resolve()
+    .then(() => {
+      if (!email) {
+        throw new Error('email must be defined');
+      }
+      if (!this.tokenStore.hasClientID()) {
+        throw new Error('clientID must be set with PublicAPI#setClientID(clientID: string)');
+      }
+
+      return this.follow(`${this.shortID}:_auth/password-reset`);
+    }).then((request) => {
+      request.withTemplateParameters({
+        clientID: this.tokenStore.getClientID(),
+        email,
+      });
+      return getEmpty(this.environment, request);
+    });
+  }
 }

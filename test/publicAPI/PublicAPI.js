@@ -218,6 +218,29 @@ describe('PublicAPI', () => {
     .should.be.rejectedWith('clientID must be set with PublicAPI#setClientID');
   });
 
+  it('should reset password', () => {
+    api.setClientID('rest');
+    const stub = sinon.stub(helper, 'getEmpty');
+    stub.returns(Promise.resolve());
+
+    return api.resetPassword('someone@entrecode.de')
+    .then(() => {
+      stub.restore();
+    })
+    .catch((err) => {
+      stub.restore();
+      throw err;
+    });
+  });
+  it('should be rejected on undefined email', () => {
+    return api.resetPassword().should.be.rejectedWith('email must be defined');
+  });
+  it('should be rejected on undefiend clientID', () => {
+    api.tokenStore.clientID = undefined;
+    return api.resetPassword('someone@entrecode.de')
+    .should.be.rejectedWith('clientID must be set with PublicAPI#setClientID');
+  });
+
   ['dataManagerID', 'title', 'description', 'locales',
     'defaultLocale', 'models', 'account', 'config']
   .forEach((property) => {
