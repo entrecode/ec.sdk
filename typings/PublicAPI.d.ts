@@ -18,6 +18,8 @@ export declare class PublicAPI extends Core {
   signup(email: string, password: string, invite: string): Promise<string>;
 
   resetPassword(email: string): Promise<undefined>;
+
+  createAnonymous(validUntil: Date): Promise<any>;
 }
 
 type environment = 'live' | 'stage' | 'nightly' | 'develop';
