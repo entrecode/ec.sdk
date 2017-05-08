@@ -300,4 +300,17 @@ export default class PublicAPI extends Core {
     })
     .then(([tokenResponse]) => tokenResponse);
   }
+
+  /**
+   * Loads the account object of a public user.
+   *
+   * @param {boolean?} reload whether or not to force reload
+   * @returns {Promise<any>} Object account info
+   */
+  me(reload) {
+    return this.resolve(reload)
+    .then(() => {
+      return this.resource.account;
+    });
+  }
 }

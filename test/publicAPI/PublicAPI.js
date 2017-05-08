@@ -106,6 +106,22 @@ describe('PublicAPI', () => {
       throw err;
     });
   });
+  it('should load me', () => {
+    const stub = sinon.stub(helper, 'get');
+    stub.returns(resolver('public-dm-root.json'));
+
+    return api.me()
+    .then((me) => {
+      me.should.be.instanceOf(Object);
+      me.should.have.property('accountID', '49518e7d-a8b0-444a-b829-7fe3c86810ab');
+      // TODO properties should be model objects
+      stub.restore();
+    })
+    .catch((err) => {
+      stub.restore();
+      throw err;
+    });
+  });
 
   it('should set clientID', () => {
     api.setClientID('rest');
