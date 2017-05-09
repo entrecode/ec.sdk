@@ -282,7 +282,7 @@ export function superagentFormPost(url, form) {
  * @access private
  *
  * @param {string} url the url to get
- * @param {object} headers additional headers
+ * @param {object?} headers additional headers
  * @returns {Promise} Promise resolving to response body.
  */
 export function superagentGet(url, headers) {

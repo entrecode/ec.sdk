@@ -12,6 +12,8 @@ const Api = require('../../lib/PublicAPI');
 const helper = require('../../lib/helper');
 const mock = require('../mocks/nock');
 
+const publicSchema = require('../mocks/public-schema');
+
 chai.should();
 chai.use(chaiAsPromised);
 chai.use(sinonChai);
@@ -43,6 +45,26 @@ describe('PublicAPI', () => {
     const throws = () => new Api.default('beefbeef', 'notvalid'); // eslint-disable-line new-cap
     throws.should.throw(Error);
   });
+
+  ['dataManagerID', 'title', 'description', 'locales',
+    'defaultLocale', 'models', 'account', 'config']
+  .forEach((property) => {
+    it(`getter for ${property}`, () => {
+      const stub = sinon.stub(helper, 'get');
+      stub.returns(resolver('public-dm-root.json'));
+
+      return api.resolve()
+      .then(() => {
+        api[property].should.be.defined;
+        stub.restore();
+      })
+      .catch((err) => {
+        stub.restore();
+        throw err;
+      });
+    });
+  });
+
   it('should resolve data manager root response', () => {
     const stub = sinon.stub(helper, 'get');
     stub.returns(resolver('public-dm-root.json'));
@@ -274,22 +296,54 @@ describe('PublicAPI', () => {
     .and.notify(() => stub.restore());
   });
 
-  ['dataManagerID', 'title', 'description', 'locales',
-    'defaultLocale', 'models', 'account', 'config']
-  .forEach((property) => {
-    it(`getter for ${property}`, () => {
-      const stub = sinon.stub(helper, 'get');
-      stub.returns(resolver('public-dm-root.json'));
+  it('should get schema', () => {
+    const stub = sinon.stub(helper, 'superagentGet');
+    stub.returns(Promise.resolve(publicSchema));
 
-      return api.resolve()
-      .then(() => {
-        api[property].should.be.defined;
-        stub.restore();
-      })
-      .catch((err) => {
-        stub.restore();
-        throw err;
-      });
+    return api.getSchema('allFields')
+    .then((schema) => {
+      schema.should.have.property('id', 'https://datamanager.entrecode.de/api/schema/01bd8e08/allFields');
+      stub.restore();
+    })
+    .catch((err) => {
+      stub.restore();
+      throw err;
     });
+  });
+  it('should get schema, method set', () => {
+    const stub = sinon.stub(helper, 'superagentGet');
+    stub.returns(Promise.resolve(publicSchema));
+
+    return api.getSchema('allFields', 'put')
+    .then((schema) => {
+      schema.should.have.property('id', 'https://datamanager.entrecode.de/api/schema/01bd8e08/allFields');
+      stub.restore();
+    })
+    .catch((err) => {
+      stub.restore();
+      throw err;
+    });
+  });
+  it('should get schema, cached', () => {
+    const stub = sinon.stub(helper, 'superagentGet');
+    stub.returns(Promise.resolve(publicSchema));
+
+    return api.getSchema('allFields')
+    .then(() => api.getSchema('allFields'))
+    .then((schema) => {
+      schema.should.have.property('id', 'https://datamanager.entrecode.de/api/schema/01bd8e08/allFields');
+      stub.restore();
+    })
+    .catch((err) => {
+      stub.restore();
+      throw err;
+    });
+  });
+  it('should reject on undefined model', () => {
+    return api.getSchema().should.be.rejectedWith('model must be defined');
+  });
+  it('should reject on invalid method', () => {
+    return api.getSchema('allFields', 'patch')
+    .should.be.rejectedWith('invalid method, only: get, post, and put');
   });
 });

@@ -1,6 +1,8 @@
 import halfred from 'halfred';
+import validator from 'json-schema-remote';
+import qs from 'querystring';
 
-import { get, getEmpty, getUrl, post, superagentFormPost } from './helper';
+import { get, getEmpty, getUrl, post, superagentFormPost, superagentGet } from './helper';
 import { urls } from './DataManager';
 import TokenStoreFactory from './TokenStore';
 import Core from './Core';
@@ -311,6 +313,56 @@ export default class PublicAPI extends Core {
     return this.resolve(reload)
     .then(() => {
       return this.resource.account;
+    });
+  }
+
+  /**
+   * Loads the JSON Schema for a given model. Loaded Schemas will be stored in tv4 cache upon first
+   * load.
+   *
+   * @param {string} model the model for which to load the JSON Schema
+   * @param {string} method the method for which the JSON Schema should be loaded
+   * @returns {Promise<object>} the loaded JSON Schema
+   */
+  getSchema(model, method = 'get') {
+    return Promise.resolve()
+    .then(() => {
+      if (!model) { // todo validate model title?
+        throw new Error('model must be defined');
+      }
+
+      if (!['get', 'put', 'post'].includes(method)) {
+        throw new Error('invalid method, only: get, post, and put');
+      }
+
+      if (!this.resource) {
+        return this.resolve();
+      }
+      return undefined;
+    })
+    .then(() => {
+      let link = this.resource.link(`${this.shortID}:${model}`).profile;
+      if (method !== 'get') {
+        link = link.split('?');
+        if (link.length === 1) {
+          link.push('');
+        }
+        link[1] = qs.parse(link[1]);
+        link[1].method = method;
+        link[1] = qs.stringify(link[1]);
+        link = link.join('?');
+      }
+
+      const schema = validator.getSchema(link);
+      if (schema) {
+        return schema;
+      }
+
+      return superagentGet(link)
+      .then((loadedSchema) => {
+        validator.preload(link, loadedSchema);
+        return loadedSchema;
+      });
     });
   }
 }
