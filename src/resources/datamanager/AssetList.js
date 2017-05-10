@@ -2,12 +2,14 @@ import * as stream from 'stream';
 
 import { get, getUrl, optionsToQuery, superagentGetPiped } from '../../helper';
 import ListResource from '../ListResource';
+import { resourceSymbol, environmentSymbol } from '../Resource';
 import AssetResource from './AssetResource';
 import DeletedAssetList from './DeletedAssetList';
 import DeletedAssetResource from './DeletedAssetResource';
 import TagList from './TagList';
 import TagResource from './TagResource';
 
+const dataManagerIDSymbol = Symbol('_dataManagerID');
 /**
  * Asset list class
  *
@@ -22,12 +24,10 @@ export default class AssetList extends ListResource {
    * @param {?object} traversal traversal from which traverson can continue.
    */
   constructor(resource, environment, traversal) {
-    super(resource, environment, 'ec:asset', traversal);
-    this.ListClass = AssetList;
-    this.ItemClass = AssetResource;
+    super(resource, environment, 'ec:asset', traversal, AssetList, AssetResource);
 
     /* eslint no-underscore-dangle:0 */
-    this.dataManagerID = resource._links.self.href.substr(resource._links.self.href.indexOf('dataManagerID') + 14);
+    this[dataManagerIDSymbol] = resource._links.self.href.substr(resource._links.self.href.indexOf('dataManagerID') + 14);
     /* eslint no-underscore-dangle:1 */
   }
 
@@ -64,7 +64,7 @@ export default class AssetList extends ListResource {
         Object.assign(o, options);
       }
 
-      o.dataManagerID = this.dataManagerID;
+      o.dataManagerID = this[dataManagerIDSymbol];
 
       if (
         Object.keys(o).length === 2 && 'assetID' in o && 'dataManagerID' in o
@@ -76,10 +76,10 @@ export default class AssetList extends ListResource {
 
       const request = this.newRequest()
       .follow('ec:assets/deleted/options')
-      .withTemplateParameters(optionsToQuery(o, this.resource.link('ec:assets/deleted/options').href));
-      return get(this.environment, request);
+      .withTemplateParameters(optionsToQuery(o, this[resourceSymbol].link('ec:assets/deleted/options').href));
+      return get(this[environmentSymbol], request);
     })
-    .then(([res, traversal]) => new DeletedAssetList(res, this.environment, traversal));
+    .then(([res, traversal]) => new DeletedAssetList(res, this[environmentSymbol], traversal));
   }
 
   /**
@@ -102,10 +102,10 @@ export default class AssetList extends ListResource {
       }
       const request = this.newRequest()
       .follow('ec:assets/deleted/options')
-      .withTemplateParameters({ dataManagerID: this.dataManagerID, assetID });
-      return get(this.environment, request);
+      .withTemplateParameters({ dataManagerID: this[dataManagerIDSymbol], assetID });
+      return get(this[environmentSymbol], request);
     })
-    .then(([res, traversal]) => new DeletedAssetResource(res, this.environment, traversal));
+    .then(([res, traversal]) => new DeletedAssetResource(res, this[environmentSymbol], traversal));
   }
 
   /**
@@ -141,7 +141,7 @@ export default class AssetList extends ListResource {
         Object.assign(o, options);
       }
 
-      o.dataManagerID = this.dataManagerID;
+      o.dataManagerID = this[dataManagerIDSymbol];
 
       if (
         Object.keys(o).length === 2 && 'tag' in o && 'dataManagerID' in o
@@ -153,10 +153,10 @@ export default class AssetList extends ListResource {
 
       const request = this.newRequest()
       .follow('ec:tags/options')
-      .withTemplateParameters(optionsToQuery(o, this.resource.link('ec:tags/options').href));
-      return get(this.environment, request);
+      .withTemplateParameters(optionsToQuery(o, this[resourceSymbol].link('ec:tags/options').href));
+      return get(this[environmentSymbol], request);
     })
-    .then(([res, traversal]) => new TagList(res, this.environment, traversal));
+    .then(([res, traversal]) => new TagList(res, this[environmentSymbol], traversal));
   }
 
   /**
@@ -179,10 +179,10 @@ export default class AssetList extends ListResource {
       }
       const request = this.newRequest()
       .follow('ec:tags/options')
-      .withTemplateParameters({ dataManagerID: this.dataManagerID, tag });
-      return get(this.environment, request);
+      .withTemplateParameters({ dataManagerID: this[dataManagerIDSymbol], tag });
+      return get(this[environmentSymbol], request);
     })
-    .then(([res, traversal]) => new TagResource(res, this.environment, traversal));
+    .then(([res, traversal]) => new TagResource(res, this[environmentSymbol], traversal));
   }
 
   /**
@@ -199,7 +199,7 @@ export default class AssetList extends ListResource {
       return Promise.reject(new Error('writeStream must be instance of stream.Writable.'));
     }
 
-    return getUrl(this.environment, this.newRequest().follow('ec:assets/download'))
+    return getUrl(this[environmentSymbol], this.newRequest().follow('ec:assets/download'))
     .then((url) => {
       if (writeStream) {
         return superagentGetPiped(url, writeStream);

@@ -7,6 +7,8 @@ const sinonChai = require('sinon-chai');
 
 const helper = require('../lib/helper');
 const Session = require('../lib/Session').default;
+const meLoadedTimeSymbol = require('../lib/Session').meLoadedTimeSymbol;
+const tokenStoreSymbol = require('../lib/Core').tokenStoreSymbol;
 
 chai.should();
 chai.use(sinonChai);
@@ -26,10 +28,10 @@ describe('Session class', () => {
     fn.should.throw(Error);
   });
   it('should set clientID', () => {
-    const sessioin = new Session();
-    sessioin.should.not.have.property('clientID');
-    sessioin.setClientID('rest');
-    sessioin.tokenStore.getClientID().should.be.equal('rest');
+    const session = new Session();
+    session.should.not.have.property('clientID');
+    session.setClientID('rest');
+    session[tokenStoreSymbol].getClientID().should.be.equal('rest');
   });
   it('should throw on undefined clientID', () => {
     const throws = () => new Session().setClientID();
@@ -50,26 +52,26 @@ describe('Session class', () => {
   });
   it('should reject when already logged in', () => {
     const session = new Session();
-    session.tokenStore.set('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJlbnRyZWNvZGVUZXN0IiwiaWF0IjoxNDg1NzgzNTg4LCJleHAiOjQ2NDE0NTcxODgsImF1ZCI6IlRlc3QiLCJzdWIiOiJ0ZXN0QGVudHJlY29kZS5kZSJ9.Vhrq5GR2hNz-RoAhdlnIIWHelPciBPCemEa74s7cXn8');
+    session[tokenStoreSymbol].set('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJlbnRyZWNvZGVUZXN0IiwiaWF0IjoxNDg1NzgzNTg4LCJleHAiOjQ2NDE0NTcxODgsImF1ZCI6IlRlc3QiLCJzdWIiOiJ0ZXN0QGVudHJlY29kZS5kZSJ9.Vhrq5GR2hNz-RoAhdlnIIWHelPciBPCemEa74s7cXn8');
     session.setClientID('rest');
 
     return new Session().login('user', 'mysecret').should.be.rejectedWith('already logged in or old token present. logout first');
   });
   it('should be rejected on unset clientID', () => {
     const session = new Session();
-    session.tokenStore.del();
-    session.tokenStore.clientID = undefined;
+    session[tokenStoreSymbol].del();
+    session[tokenStoreSymbol].clientID = undefined;
     return session.login('user', 'mysecret').should.be.rejectedWith('clientID must be set with Session#setClientID');
   });
   it('should be rejected on undefined email', () => {
     const session = new Session();
-    session.tokenStore.del();
+    session[tokenStoreSymbol].del();
     session.setClientID('rest');
     return session.login(null, 'mysecret').should.be.rejectedWith('email must be defined');
   });
   it('should be rejected on undefined password', () => {
     const session = new Session();
-    session.tokenStore.del();
+    session[tokenStoreSymbol].del();
     session.setClientID('rest');
     return session.setClientID('rest').login('user', null).should.be.rejectedWith('password must be defined');
   });
@@ -88,8 +90,8 @@ describe('Session class', () => {
   });
   it('should be rejected on unset clientID', () => {
     const session = new Session();
-    session.tokenStore.set('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJlbnRyZWNvZGVUZXN0IiwiaWF0IjoxNDg1NzgzNTg4LCJleHAiOjQ2NDE0NTcxODgsImF1ZCI6IlRlc3QiLCJzdWIiOiJ0ZXN0QGVudHJlY29kZS5kZSJ9.Vhrq5GR2hNz-RoAhdlnIIWHelPciBPCemEa74s7cXn8');
-    session.tokenStore.clientID = undefined;
+    session[tokenStoreSymbol].set('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJlbnRyZWNvZGVUZXN0IiwiaWF0IjoxNDg1NzgzNTg4LCJleHAiOjQ2NDE0NTcxODgsImF1ZCI6IlRlc3QiLCJzdWIiOiJ0ZXN0QGVudHJlY29kZS5kZSJ9.Vhrq5GR2hNz-RoAhdlnIIWHelPciBPCemEa74s7cXn8');
+    session[tokenStoreSymbol].clientID = undefined;
     return session.logout().should.be.rejectedWith('clientID must be set with Session#setClientID');
   });
   it('should check true', () => {
@@ -160,7 +162,7 @@ describe('Session class', () => {
 
     return session.checkPermission('dm-stats')
     .then(() => {
-      session.meLoadedTime = new Date(new Date() - 350000);
+      session[meLoadedTimeSymbol] = new Date(new Date() - 350000);
       return session.checkPermission('dm-stats');
     })
     .then((ok) => {

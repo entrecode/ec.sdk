@@ -7,7 +7,7 @@ const sinonChai = require('sinon-chai');
 
 const ListResource = require('../../lib/resources/ListResource').default;
 const TemplateList = require('../../lib/resources/datamanager/TemplateList').default;
-const TemplateResource = require('../../lib/resources/datamanager/TemplateResource').default;
+const TemplateResource = require('../../lib/resources/datamanager/TemplateResource');
 const DataManagerResource = require('../../lib/resources/datamanager/DataManagerResource').default;
 const Resource = require('../../lib/resources/Resource').default;
 const helper = require('../../lib/helper');
@@ -46,7 +46,7 @@ describe('Template ListResource', () => {
     list.should.be.instanceOf(TemplateList);
   });
   it('should have AccountResource items', () => {
-    list.getAllItems().forEach(item => item.should.be.instanceOf(TemplateResource));
+    list.getAllItems().forEach(item => item.should.be.instanceOf(TemplateResource.default));
   });
 });
 
@@ -67,7 +67,7 @@ describe('Template Resource', () => {
     });
   });
   beforeEach(() => {
-    resource = new TemplateResource(resourceJson);
+    resource = new TemplateResource.default(resourceJson);
     resource.resolved = true;
   });
   afterEach(() => {
@@ -77,7 +77,7 @@ describe('Template Resource', () => {
     resource.should.be.instanceOf(Resource);
   });
   it('should be instance of AccountResource', () => {
-    resource.should.be.instanceOf(TemplateResource);
+    resource.should.be.instanceOf(TemplateResource.default);
   });
   it('should resolve on resolve', () => {
     const stub = sinon.stub(helper, 'get');
@@ -85,7 +85,7 @@ describe('Template Resource', () => {
 
     return resource.resolve()
     .then((template) => {
-      template.should.be.instanceOf(TemplateResource);
+      template.should.be.instanceOf(TemplateResource.default);
       resource.should.be.equal(template);
       resource.resolved.should.be.true;
       stub.restore();
@@ -98,6 +98,7 @@ describe('Template Resource', () => {
   it('should resolve on createDM', () => {
     const stub = sinon.stub(helper, 'post');
     stub.returns(resolver('dm-single.json'));
+    resource[TemplateResource.resolvedSymbol] = true;
 
     return resource.createDM()
     .then((dm) => {
@@ -115,12 +116,12 @@ describe('Template Resource', () => {
     const post = sinon.stub(helper, 'post');
     post.returns(resolver('dm-single.json'));
 
-    resource.resolved = false;
+    resource[TemplateResource.resolvedSymbol] = false;
 
     return resource.createDM()
     .then((dm) => {
       dm.should.be.instanceOf(DataManagerResource);
-      resource.resolved.should.be.true;
+      resource[TemplateResource.resolvedSymbol].should.be.true;
       get.restore();
       post.restore();
     })

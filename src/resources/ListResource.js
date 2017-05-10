@@ -1,4 +1,8 @@
-import Resource from './Resource';
+import Resource, { environmentSymbol, resourceSymbol } from './Resource';
+
+const nameSymbol = Symbol('_name');
+const listClassSymbol = Symbol('_listClass');
+const itemClassSymbol = Symbol('_itemClass');
 
 /**
  * Generic list resource class. Represents {@link
@@ -19,8 +23,10 @@ export default class ListResource extends Resource {
    * @param {environment} environment the environment this resource is associated to.
    * @param {?string} name name of the embedded resources.
    * @param {?object} traversal traversal from which traverson can continue.
+   * @param {ListResource} ListClass Class constructor for list types
+   * @param {Resource} ItemClass Class constructor for item types
    */
-  constructor(resource, environment, name, traversal) {
+  constructor(resource, environment, name, traversal, ListClass = ListResource, ItemClass = Resource) {
     super(resource, environment, traversal);
 
     Object.defineProperties(this, {
@@ -34,9 +40,9 @@ export default class ListResource extends Resource {
       },
     });
 
-    this.ListClass = ListResource;
-    this.ItemClass = Resource;
-    this.name = name || Object.keys(this.resource.allEmbeddedResources())[0];
+    this[listClassSymbol] = ListClass;
+    this[itemClassSymbol] = ItemClass;
+    this[nameSymbol] = name || Object.keys(this[resourceSymbol].allEmbeddedResources())[0];
   }
 
   /**
@@ -46,8 +52,8 @@ export default class ListResource extends Resource {
    * @returns {Array<Resource|ResourceClass>} an array of all list items.
    */
   getAllItems() {
-    const array = this.resource.embeddedArray(this.name) || [];
-    return array.map(resource => new this.ItemClass(resource, this.environment));
+    const array = this[resourceSymbol].embeddedArray(this[nameSymbol]) || [];
+    return array.map(resource => new this[itemClassSymbol](resource, this[environmentSymbol]));
   }
 
   /**
@@ -61,11 +67,11 @@ export default class ListResource extends Resource {
     if (n === undefined) { // undefined check
       throw new Error('Index must be defined.');
     }
-    const array = this.resource.embeddedArray(this.name);
+    const array = this[resourceSymbol].embeddedArray(this[nameSymbol]);
     if (!array || array.length === 0) {
       throw new Error('Cannot get n\'th item of empty list.');
     }
-    return new this.ItemClass(array[n], this.environment);
+    return new this[itemClassSymbol](array[n], this[environmentSymbol]);
   }
 
   /**
@@ -96,7 +102,7 @@ export default class ListResource extends Resource {
    * @returns {Promise<Resource|ResourceClass>} the resource identified by the link.
    */
   followFirstLink() {
-    return this.followLink('first', this.ListClass);
+    return this.followLink('first', this[listClassSymbol]);
   }
 
   /**
@@ -117,7 +123,7 @@ export default class ListResource extends Resource {
    * @returns {Promise<Resource|ResourceClass>} the resource identified by the link.
    */
   followNextLink() {
-    return this.followLink('next', this.ListClass);
+    return this.followLink('next', this[listClassSymbol]);
   }
 
   /**
@@ -138,7 +144,7 @@ export default class ListResource extends Resource {
    * @returns {Promise<Resource|ResourceClass>} the resource identified by the link.
    */
   followPrevLink() {
-    return this.followLink('prev', this.ListClass);
+    return this.followLink('prev', this[listClassSymbol]);
   }
 }
 

@@ -9,7 +9,7 @@ const sinonChai = require('sinon-chai');
 const helper = require('../lib/helper');
 const traverson = require('traverson');
 const resolver = require('./mocks/resolver');
-const Resource = require('../lib/resources/Resource').default;
+const Resource = require('../lib/resources/Resource');
 
 const schemaNock = require('./mocks/nock');
 
@@ -31,31 +31,31 @@ describe('Resource', () => {
     });
   });
   beforeEach(() => {
-    resource = new Resource(resourceJson);
+    resource = new Resource.default(resourceJson);
   });
   afterEach(() => {
     resource = null;
   });
   it('should be instance of Resource', () => {
-    resource.should.be.instanceOf(Resource);
+    resource.should.be.instanceOf(Resource.default);
   });
   it('should instantiate with traversal and environment', () => {
-    const res = new Resource(resourceJson, 'stage', {});
-    res.environment.should.be.equal('stage');
-    should.exist(res.traversal);
+    const res = new Resource.default(resourceJson, 'stage', {});
+    res[Resource.environmentSymbol].should.be.equal('stage');
+    should.exist(res[Resource.traversalSymbol]);
   });
   it('should have environment live', () => {
-    resource.environment.should.be.equal('live');
+    resource[Resource.environmentSymbol].should.be.equal('live');
   });
   it('should throw on non string environment', () => {
-    const throws = () => new Resource(resourceJson, {});
+    const throws = () => new Resource.default(resourceJson, {});
     throws.should.throw();
   });
   it('should return traverson builder on newRequest call', () => {
     resource.newRequest().should.be.instanceOf(traverson._Builder);
   });
   it('should return traverson builder on newRequest call with continue()', () => {
-    resource.traversal.continue = () => resource.traversal;
+    resource[Resource.traversalSymbol].continue = () => resource[Resource.traversalSymbol];
     resource.newRequest().should.be.instanceOf(traverson._Builder);
   });
   it('should be clean', () => {

@@ -7,6 +7,12 @@ import { get } from './helper';
 
 traverson.registerMediaType(HalAdapter.mediaType, HalAdapter);
 
+export const tokenStoreSymbol = Symbol('_tokenStore');
+export const traversalSymbol = Symbol('_traversal');
+export const eventsSymbol = Symbol('_events');
+export const environmentSymbol = Symbol('_environment');
+export const resourceSymbol = Symbol('_resource');
+
 /**
  * You can define which API should be used with the environment parameter. Internally this is also
  * used as key to store tokens into cookies (for browsers).
@@ -35,14 +41,19 @@ traverson.registerMediaType(HalAdapter.mediaType, HalAdapter);
  * @class
  */
 export default class Core {
-  constructor(url) {
-    if (!url) {
-      throw new Error('url must be defined');
+  constructor(urls, environment = 'live') {
+    if (!urls) {
+      throw new Error('urls must be defined');
     }
 
-    this.events = events;
-    this.tokenStore = TokenStoreFactory('live');
-    this.traversal = traverson.from(url).jsonHal();
+    if (!(environment in urls)) {
+      throw new Error('invalid environment specified');
+    }
+
+    this[eventsSymbol] = events;
+    this[environmentSymbol] = environment;
+    this[tokenStoreSymbol] = TokenStoreFactory(environment);
+    this[traversalSymbol] = traverson.from(urls[environment]).jsonHal();
   }
 
   /**
@@ -56,30 +67,30 @@ export default class Core {
    * @returns {Object} traverson request builder instance.
    */
   newRequest() {
-    if (!this.traversal) {
+    if (!this[traversalSymbol]) {
       throw new Error('Critical: Traversal invalid!');
     }
 
-    if ({}.hasOwnProperty.call(this.traversal, 'continue')) {
-      return this.traversal.continue().newRequest();
+    if ('continue' in this[traversalSymbol]) {
+      return this[traversalSymbol].continue().newRequest();
     }
 
-    return this.traversal.newRequest();
+    return this[traversalSymbol].newRequest();
   }
 
   follow(link) {
     return Promise.resolve()
     .then(() => {
-      if (this.resource && this.traversal && this.resource.link(link) !== null) {
+      if (this[resourceSymbol] && this[traversalSymbol] && this.getLink(link) !== null) {
         return this.newRequest().follow(link);
       }
 
-      return get(this.environment, this.newRequest())
+      return get(this[environmentSymbol], this.newRequest())
       .then(([res, traversal]) => {
-        this.resource = halfred.parse(res);
-        this.traversal = traversal;
+        this[resourceSymbol] = halfred.parse(res);
+        this[traversalSymbol] = traversal;
 
-        if (this.resource.link(link) === null) {
+        if (this[resourceSymbol].link(link) === null) {
           throw new Error(`Could not follow ${link}. Link not present in root response.`);
         }
 
@@ -91,20 +102,20 @@ export default class Core {
   link(link) {
     return Promise.resolve()
     .then(() => {
-      if (this.resource && this.traversal && this.resource.link(link) !== null) {
-        return this.resource.link(link);
+      if (this[resourceSymbol] && this[traversalSymbol] && this[resourceSymbol].link(link) !== null) {
+        return this[resourceSymbol].link(link);
       }
 
-      return get(this.environment, this.newRequest())
+      return get(this[environmentSymbol], this.newRequest())
       .then(([res, traversal]) => {
-        this.resource = halfred.parse(res);
-        this.traversal = traversal;
+        this[resourceSymbol] = halfred.parse(res);
+        this[traversalSymbol] = traversal;
 
-        if (this.resource.link(link) === null) {
+        if (this[resourceSymbol].link(link) === null) {
           throw new Error(`Could not get ${link}. Link not present in root response.`);
         }
 
-        return this.resource.link(link);
+        return this[resourceSymbol].link(link);
       });
     });
   }
@@ -127,7 +138,7 @@ export default class Core {
       throw new Error('Token must be defined');
     }
 
-    this.tokenStore.set(token);
+    this[tokenStoreSymbol].set(token);
     return this;
   }
 
@@ -147,7 +158,7 @@ export default class Core {
       throw new Error('agent must be defined');
     }
 
-    this.tokenStore.setUserAgent(agent);
+    this[tokenStoreSymbol].setUserAgent(agent);
     return this;
   }
 
@@ -170,7 +181,7 @@ export default class Core {
    * @returns {undefined}
    */
   on(label, listener) {
-    return this.events.on(label, listener);
+    return this[eventsSymbol].on(label, listener);
   }
 
   /**
@@ -191,6 +202,15 @@ export default class Core {
    * @returns {boolean} whether or not the listener was removed
    */
   removeListener(label, listener) {
-    return this.events.removeListener(label, listener);
+    return this[eventsSymbol].removeListener(label, listener);
+  }
+
+  /**
+   * Get a given link from the root resource
+   * @param {string} link
+   * @returns {any} link object
+   */
+  getLink(link) {
+    return this[resourceSymbol].link(link);
   }
 }

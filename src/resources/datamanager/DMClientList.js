@@ -15,8 +15,6 @@ export default class DMClientList extends ClientList {
    * @param {?object} traversal traversal from which traverson can continue.
    */
   constructor(resource, environment, traversal) {
-    super(resource, environment, 'ec:dm-clients', traversal);
-    this.ListClass = DMClientList;
-    this.ItemClass = DMClientResource;
+    super(resource, environment, 'ec:dm-clients', traversal, DMClientList, DMClientResource);
   }
 }

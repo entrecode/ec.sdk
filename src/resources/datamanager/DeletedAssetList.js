@@ -15,8 +15,6 @@ export default class DeletedAssetList extends ListResource {
    * @param {?object} traversal traversal from which traverson can continue.
    */
   constructor(resource, environment, traversal) {
-    super(resource, environment, 'ec:asset/deleted', traversal);
-    this.ListClass = DeletedAssetList;
-    this.ItemClass = DeletedAssetResource;
+    super(resource, environment, 'ec:asset/deleted', traversal, DeletedAssetList, DeletedAssetResource);
   }
 }

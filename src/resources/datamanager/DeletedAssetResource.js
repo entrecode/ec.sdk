@@ -1,4 +1,4 @@
-import Resource from '../Resource';
+import Resource, {environmentSymbol} from '../Resource';
 import { del, fileNegotiate } from '../../helper';
 
 /**
@@ -61,7 +61,7 @@ export default class DeletedAssetResource extends Resource {
    * @returns {Promise<void>} Promise resolving on successful purging.
    */
   purge() {
-    return del(this.environment,
+    return del(this[environmentSymbol],
       this.newRequest().follow('self').withTemplateParameters({ destroy: 'destroy' }));
   }
 

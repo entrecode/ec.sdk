@@ -1,10 +1,11 @@
 import halfred from 'halfred';
 import validator from 'json-schema-remote';
 
-import Resource from '../Resource';
+import Resource, { environmentSymbol, resourceSymbol, traversalSymbol } from '../Resource';
 import DataManagerResource from './DataManagerResource';
 import { get, post, put } from '../../helper';
 
+export const resolvedSymbol = Symbol('_resolved');
 /**
  * Template resource class
  *
@@ -30,7 +31,7 @@ export default class TemplateResource extends Resource {
   constructor(resource, environment, traversal, resolved = false) {
     super(resource, environment, traversal);
 
-    this.resolved = resolved;
+    this[resolvedSymbol] = resolved;
 
     Object.defineProperties(this, {
       templateID: {
@@ -61,12 +62,12 @@ export default class TemplateResource extends Resource {
     .then(() => {
       const request = this.newRequest()
       .follow('self');
-      return get(this.environment, request);
+      return get(this[environmentSymbol], request);
     })
     .then(([res, traversal]) => {
-      this.resolved = true;
-      this.traversal = traversal;
-      this.resource = halfred.parse(res);
+      this[resolvedSymbol] = true;
+      this[traversalSymbol] = traversal;
+      this[resourceSymbol] = halfred.parse(res);
       return this;
     });
   }
@@ -80,7 +81,7 @@ export default class TemplateResource extends Resource {
   createDM(body) {
     return Promise.resolve()
     .then(() => {
-      if (this.resolved) {
+      if (this[resolvedSymbol]) {
         return undefined;
       }
       return this.resolve();
@@ -90,9 +91,9 @@ export default class TemplateResource extends Resource {
     })
     .then(() => {
       const request = this.newRequest().follow('ec:datamanagers/new-from-template');
-      return post(this.environment, request, body || {});
+      return post(this[environmentSymbol], request, body || {});
     })
-    .then(([res, traversal]) => new DataManagerResource(res, this.environment, traversal));
+    .then(([res, traversal]) => new DataManagerResource(res, this[environmentSymbol], traversal));
   }
 
   /**
@@ -109,7 +110,7 @@ export default class TemplateResource extends Resource {
     const request = this.newRequest()
     .follow('ec:datamanager/update-from-template')
     .withTemplateParameters({ dataManagerID });
-    return put(this.environment, request, {})
-    .then(([res, traversal]) => new DataManagerResource(res, this.environment, traversal));
+    return put(this[environmentSymbol], request, {})
+    .then(([res, traversal]) => new DataManagerResource(res, this[environmentSymbol], traversal));
   }
 }

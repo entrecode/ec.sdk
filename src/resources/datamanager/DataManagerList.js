@@ -15,8 +15,6 @@ export default class DataManagerList extends ListResource {
    * @param {?object} traversal traversal from which traverson can continue.
    */
   constructor(resource, environment, traversal) {
-    super(resource, environment, 'ec:datamanager', traversal);
-    this.ListClass = DataManagerList;
-    this.ItemClass = DataManagerResource;
+    super(resource, environment, 'ec:datamanager', traversal, DataManagerList, DataManagerResource);
   }
 }

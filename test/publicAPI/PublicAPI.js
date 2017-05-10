@@ -9,6 +9,9 @@ const sinonChai = require('sinon-chai');
 const resolver = require('../mocks/resolver');
 
 const Api = require('../../lib/PublicAPI');
+const environmentSymbol = require('../../lib/Core').environmentSymbol;
+const resourceSymbol = require('../../lib/Core').resourceSymbol;
+const tokenStoreSymbol = require('../../lib/Core').tokenStoreSymbol;
 const helper = require('../../lib/helper');
 const mock = require('../mocks/nock');
 
@@ -31,7 +34,7 @@ describe('PublicAPI', () => {
   it('should be instance of PublicAPI with live env', () => {
     api = new Api.default('beefbeef'); // eslint-disable-line new-cap
     api.should.be.instanceOf(Api.default);
-    api.environment.should.be.equal('live');
+    api[environmentSymbol].should.be.equal('live');
   });
   it('should throw on missing id', () => {
     const throws = () => new Api.default(); // eslint-disable-line new-cap
@@ -71,7 +74,7 @@ describe('PublicAPI', () => {
 
     return api.resolve()
     .then(() => {
-      api.resource.should.have.property('dataManagerID', '48e18a34-cf64-4f4a-bc47-45323a7f0e44');
+      api[resourceSymbol].should.have.property('dataManagerID', '48e18a34-cf64-4f4a-bc47-45323a7f0e44');
       stub.restore();
     })
     .catch((err) => {
@@ -87,7 +90,7 @@ describe('PublicAPI', () => {
     return api.resolve()
     .then(() => api.resolve())
     .then(() => {
-      api.resource.should.have.property('dataManagerID', '48e18a34-cf64-4f4a-bc47-45323a7f0e44');
+      api[resourceSymbol].should.have.property('dataManagerID', '48e18a34-cf64-4f4a-bc47-45323a7f0e44');
       stub.restore();
     })
     .catch((err) => {
@@ -104,7 +107,7 @@ describe('PublicAPI', () => {
     return api.resolve()
     .then(() => api.resolve(true))
     .then(() => {
-      api.resource.should.have.property('dataManagerID', '48e18a34-cf64-4f4a-bc47-45323a7f0e44');
+      api[resourceSymbol].should.have.property('dataManagerID', '48e18a34-cf64-4f4a-bc47-45323a7f0e44');
       stub.restore();
     })
     .catch((err) => {
@@ -147,7 +150,7 @@ describe('PublicAPI', () => {
 
   it('should set clientID', () => {
     api.setClientID('rest');
-    api.tokenStore.getClientID().should.be.equal('rest');
+    api[tokenStoreSymbol].getClientID().should.be.equal('rest');
   });
   it('should throw on undefined clientID', () => {
     const throws = () => api.setClientID(); // eslint-disable-line new-cap
@@ -167,23 +170,23 @@ describe('PublicAPI', () => {
     .and.notify(() => stub.restore());
   });
   it('should reject when already logged in', () => {
-    api.tokenStore.set('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJlbnRyZWNvZGVUZXN0IiwiaWF0IjoxNDg1NzgzNTg4LCJleHAiOjQ2NDE0NTcxODgsImF1ZCI6IlRlc3QiLCJzdWIiOiJ0ZXN0QGVudHJlY29kZS5kZSJ9.Vhrq5GR2hNz-RoAhdlnIIWHelPciBPCemEa74s7cXn8');
+    api[tokenStoreSymbol].set('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJlbnRyZWNvZGVUZXN0IiwiaWF0IjoxNDg1NzgzNTg4LCJleHAiOjQ2NDE0NTcxODgsImF1ZCI6IlRlc3QiLCJzdWIiOiJ0ZXN0QGVudHJlY29kZS5kZSJ9.Vhrq5GR2hNz-RoAhdlnIIWHelPciBPCemEa74s7cXn8');
     api.setClientID('rest');
 
     return api.login('user', 'mysecret').should.be.rejectedWith('already logged in or old token present. logout first');
   });
   it('should be rejected on unset clientID', () => {
-    api.tokenStore.del();
-    api.tokenStore.clientID = undefined;
+    api[tokenStoreSymbol].del();
+    api[tokenStoreSymbol].clientID = undefined;
     return api.login('user', 'mysecret').should.be.rejectedWith('clientID must be set with PublicAPI#setClientID');
   });
   it('should be rejected on undefined email', () => {
-    api.tokenStore.del();
+    api[tokenStoreSymbol].del();
     api.setClientID('rest');
     return api.login(null, 'mysecret').should.be.rejectedWith('email must be defined');
   });
   it('should be rejected on undefined password', () => {
-    api.tokenStore.del();
+    api[tokenStoreSymbol].del();
     api.setClientID('rest');
     return api.setClientID('rest').login('user', null).should.be.rejectedWith('password must be defined');
   });
@@ -199,8 +202,8 @@ describe('PublicAPI', () => {
     return api.logout().should.be.eventually.fullfilled;
   });
   it('should be rejected on unset clientID', () => {
-    api.tokenStore.set('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJlbnRyZWNvZGVUZXN0IiwiaWF0IjoxNDg1NzgzNTg4LCJleHAiOjQ2NDE0NTcxODgsImF1ZCI6IlRlc3QiLCJzdWIiOiJ0ZXN0QGVudHJlY29kZS5kZSJ9.Vhrq5GR2hNz-RoAhdlnIIWHelPciBPCemEa74s7cXn8');
-    api.tokenStore.clientID = undefined;
+    api[tokenStoreSymbol].set('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJlbnRyZWNvZGVUZXN0IiwiaWF0IjoxNDg1NzgzNTg4LCJleHAiOjQ2NDE0NTcxODgsImF1ZCI6IlRlc3QiLCJzdWIiOiJ0ZXN0QGVudHJlY29kZS5kZSJ9.Vhrq5GR2hNz-RoAhdlnIIWHelPciBPCemEa74s7cXn8');
+    api[tokenStoreSymbol].clientID = undefined;
     return api.logout().should.be.rejectedWith('clientID must be set with PublicAPI#setClientID');
   });
 
@@ -226,13 +229,13 @@ describe('PublicAPI', () => {
     url.returns(Promise.resolve('https://accounts.entrecode.de/auth/signup?clientID=rest'));
     const token = sinon.stub(helper, 'superagentFormPost');
     token.returns(Promise.resolve({ token: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJlbnRyZWNvZGVUZXN0IiwiaWF0IjoxNDg1NzgzNTg4LCJleHAiOjQ2NDE0NTcxODgsImF1ZCI6IlRlc3QiLCJzdWIiOiJ0ZXN0QGVudHJlY29kZS5kZSJ9.Vhrq5GR2hNz-RoAhdlnIIWHelPciBPCemEa74s7cXn8' }));
-    api.tokenStore.del();
-    api.tokenStore.has().should.be.false;
+    api[tokenStoreSymbol].del();
+    api[tokenStoreSymbol].has().should.be.false;
 
     return api.signup('someone@example.com', 'suchsecurewow')
     .then((tokenResponse) => {
       tokenResponse.should.be.equal('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJlbnRyZWNvZGVUZXN0IiwiaWF0IjoxNDg1NzgzNTg4LCJleHAiOjQ2NDE0NTcxODgsImF1ZCI6IlRlc3QiLCJzdWIiOiJ0ZXN0QGVudHJlY29kZS5kZSJ9.Vhrq5GR2hNz-RoAhdlnIIWHelPciBPCemEa74s7cXn8');
-      api.tokenStore.has().should.be.true;
+      api[tokenStoreSymbol].has().should.be.true;
       token.restore();
       url.restore();
     })
@@ -251,7 +254,7 @@ describe('PublicAPI', () => {
     .should.be.rejectedWith('password must be defined');
   });
   it('should be rejected on undefined clientID', () => {
-    api.tokenStore.clientID = undefined;
+    api[tokenStoreSymbol].clientID = undefined;
     return api.signup('someone@example.com', 'supersecure')
     .should.be.rejectedWith('clientID must be set with PublicAPI#setClientID');
   });
@@ -274,7 +277,7 @@ describe('PublicAPI', () => {
     return api.resetPassword().should.be.rejectedWith('email must be defined');
   });
   it('should be rejected on undefiend clientID', () => {
-    api.tokenStore.clientID = undefined;
+    api[tokenStoreSymbol].clientID = undefined;
     return api.resetPassword('someone@entrecode.de')
     .should.be.rejectedWith('clientID must be set with PublicAPI#setClientID');
   });

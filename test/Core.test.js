@@ -28,7 +28,8 @@ traverson.registerMediaType(traversonHal.mediaType, traversonHal);
 describe('Core', () => {
   let core;
   beforeEach(() => {
-    core = new Core.default('https://datamanager.entrecode.de'); // eslint-disable-line new-cap
+    core = new Core.default({ live: 'https://datamanager.entrecode.de' }); // eslint-disable-line
+                                                                           // new-cap
     nockMock.reset();
   });
   it('should be instance of Core', () => {
@@ -39,7 +40,7 @@ describe('Core', () => {
     throws.should.throw(Error);
   });
   it('should set token', () => {
-    const stub = sinon.stub(core.tokenStore, 'set');
+    const stub = sinon.stub(core[Core.tokenStoreSymbol], 'set');
     core.setToken('token');
     stub.should.have.been.calledWith('token');
   });
@@ -48,7 +49,7 @@ describe('Core', () => {
     throws.should.throw(Error);
   });
   it('should set user agent', () => {
-    const stub = sinon.stub(core.tokenStore, 'setUserAgent');
+    const stub = sinon.stub(core[Core.tokenStoreSymbol], 'setUserAgent');
     core.setUserAgent('useragent');
     stub.should.have.been.calledWith('useragent');
   });
@@ -60,7 +61,8 @@ describe('Core', () => {
     core.newRequest().should.be.instanceOf(traverson._Builder);
   });
   it('should return traverson Builder newRequest with continue', () => {
-    core.traversal.continue = () => core.traversal; // simulate traversal with continue
+    // simulate traversal with continue
+    core[Core.traversalSymbol].continue = () => core[Core.traversalSymbol];
     core.newRequest().should.be.instanceOf(traverson._Builder);
   });
   it('should return traverson Builder follow', () => {
@@ -95,7 +97,7 @@ describe('Core', () => {
   });
   it('should throw on undefined traversal', () => {
     const throws = () => {
-      core.traversal = null;
+      core[Core.traversalSymbol] = null;
       core.newRequest();
     };
     throws.should.throw(Error);

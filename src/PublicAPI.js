@@ -5,8 +5,10 @@ import ShiroTrie from 'shiro-trie';
 
 import { get, getEmpty, getUrl, post, superagentFormPost, superagentGet } from './helper';
 import { urls } from './DataManager';
-import TokenStoreFactory from './TokenStore';
-import Core from './Core';
+import Core, { environmentSymbol, resourceSymbol, tokenStoreSymbol, eventsSymbol, traversalSymbol } from './Core';
+
+const shortIDSymbol = Symbol('_shortID');
+const modelCacheSymbol = Symbol('_modelCache');
 
 /**
  * API connector for public APIs. This is the successor of ec.datamanager.js
@@ -18,27 +20,24 @@ export default class PublicAPI extends Core {
    * @param {string} id shortID of the desired DataManager.
    * @param {environment?} environment the environment to connect to.
    */
-  constructor(id, environment) {
-    if (environment && !(environment in urls)) {
-      throw new Error('invalid environment specified');
-    }
+  constructor(id, environment = 'live') {
     if (!id || !/[a-f0-9]{8}/i.test(id)) {
       throw new Error('must provide valid shortID');
     }
 
-    super(`${urls[environment || 'live']}api/${id}`);
-    this.environment = environment || 'live';
-    this.tokenStore = TokenStoreFactory(environment || 'live');
-    this.shortID = id;
+    if (!(environment in urls)) {
+      throw new Error('invalid environment specified');
+    }
 
-    this.resource = null;
+    super({ [environment]: `${urls[environment]}api/${id}` }, environment);
+    this[shortIDSymbol] = id;
 
     ['dataManagerID', 'title', 'description', 'locales',
       'defaultLocale', 'models', 'account', 'config']
     .forEach((property) => {
       Object.defineProperty(this, property, {
         enumerable: true,
-        get: () => this.resource[property],
+        get: () => this[resourceSymbol][property],
       });
     });
   }
@@ -50,14 +49,14 @@ export default class PublicAPI extends Core {
    * @returns {Promise<PublicAPI>} returns this
    */
   resolve(reload) {
-    if (!reload && this.resource) {
+    if (!reload && this[resourceSymbol]) {
       return Promise.resolve(this);
     }
 
-    return get(this.environment, this.newRequest())
+    return get(this[environmentSymbol], this.newRequest())
     .then(([res, traversal]) => {
-      this.resource = halfred.parse(res);
-      this.traversal = traversal;
+      this[resourceSymbol] = halfred.parse(res);
+      this[traversalSymbol] = traversal;
 
       return this;
     });
@@ -78,7 +77,7 @@ export default class PublicAPI extends Core {
         // TODO proper model object
         out[model.title] = model;
       });
-      this.modelCache = out;
+      this[modelCacheSymbol] = out;
       return out;
     });
   }
@@ -98,7 +97,7 @@ export default class PublicAPI extends Core {
       throw new Error('ec.sdk currently only supports client \'rest\'');
     }
 
-    this.tokenStore.setClientID(clientID);
+    this[tokenStoreSymbol].setClientID(clientID);
     return this;
   }
 
@@ -113,11 +112,11 @@ export default class PublicAPI extends Core {
   login(email, password) {
     return Promise.resolve()
     .then(() => {
-      if (this.tokenStore.has()) {
+      if (this[tokenStoreSymbol].has()) {
         throw new Error('already logged in or old token present. logout first');
       }
 
-      if (!this.tokenStore.hasClientID()) {
+      if (!this[tokenStoreSymbol].hasClientID()) {
         throw new Error('clientID must be set with PublicAPI#setClientID(clientID: string)');
       }
       if (!email) {
@@ -127,15 +126,15 @@ export default class PublicAPI extends Core {
         throw new Error('password must be defined');
       }
 
-      return this.follow(`${this.shortID}:_auth/login`);
+      return this.follow(`${this[shortIDSymbol]}:_auth/login`);
     })
     .then((request) => {
-      request.withTemplateParameters({ clientID: this.tokenStore.getClientID() });
-      return post(this.environment, request, { email, password });
+      request.withTemplateParameters({ clientID: this[tokenStoreSymbol].getClientID() });
+      return post(this[environmentSymbol], request, { email, password });
     })
     .then(([token]) => {
-      this.tokenStore.set(token.token);
-      this.events.emit('login', token.token);
+      this[tokenStoreSymbol].set(token.token);
+      this[eventsSymbol].emit('login', token.token);
 
       return token.token;
     });
@@ -150,26 +149,26 @@ export default class PublicAPI extends Core {
   logout() {
     return Promise.resolve()
     .then(() => {
-      if (!this.tokenStore.has()) {
+      if (!this[tokenStoreSymbol].has()) {
         return Promise.resolve();
       }
 
-      if (!this.tokenStore.hasClientID()) {
+      if (!this[tokenStoreSymbol].hasClientID()) {
         throw new Error('clientID must be set with PublicAPI#setClientID(clientID: string)');
       }
 
-      return this.follow(`${this.shortID}:_auth/logout`)
+      return this.follow(`${this[shortIDSymbol]}:_auth/logout`)
       .then((request) => {
         request.withTemplateParameters({
-          clientID: this.tokenStore.getClientID(),
+          clientID: this[tokenStoreSymbol].getClientID(),
           token: this.token,
         });
-        return post(this.environment, request);
+        return post(this[environmentSymbol], request);
       });
     })
     .then(() => {
-      this.events.emit('logout');
-      this.tokenStore.del();
+      this[eventsSymbol].emit('logout');
+      this[tokenStoreSymbol].del();
       return Promise.resolve();
     });
   }
@@ -197,11 +196,11 @@ export default class PublicAPI extends Core {
         throw new Error('email must be defined');
       }
 
-      return this.follow(`${this.shortID}:_auth/email-available`);
+      return this.follow(`${this[shortIDSymbol]}:_auth/email-available`);
     })
     .then((request) => {
       request.withTemplateParameters({ email });
-      return get(this.environment, request);
+      return get(this[environmentSymbol], request);
     })
     .then(([a]) => a.available);
   }
@@ -230,22 +229,22 @@ export default class PublicAPI extends Core {
       if (!password) {
         throw new Error('password must be defined');
       }
-      if (!this.tokenStore.hasClientID()) {
+      if (!this[tokenStoreSymbol].hasClientID()) {
         throw new Error('clientID must be set with PublicAPI#setClientID(clientID: string)');
       }
 
-      return this.follow(`${this.shortID}:_auth/signup`);
+      return this.follow(`${this[shortIDSymbol]}:_auth/signup`);
     })
     .then((request) => {
       request.withTemplateParameters({
-        clientID: this.tokenStore.getClientID(),
+        clientID: this[tokenStoreSymbol].getClientID(),
         invite,
       });
-      return getUrl(this.environment, request);
+      return getUrl(this[environmentSymbol], request);
     })
     .then(url => superagentFormPost(url, { email, password }))
     .then((token) => {
-      this.tokenStore.set(token.token);
+      this[tokenStoreSymbol].set(token.token);
       return Promise.resolve(token.token);
     });
   }
@@ -266,17 +265,17 @@ export default class PublicAPI extends Core {
       if (!email) {
         throw new Error('email must be defined');
       }
-      if (!this.tokenStore.hasClientID()) {
+      if (!this[tokenStoreSymbol].hasClientID()) {
         throw new Error('clientID must be set with PublicAPI#setClientID(clientID: string)');
       }
 
-      return this.follow(`${this.shortID}:_auth/password-reset`);
+      return this.follow(`${this[shortIDSymbol]}:_auth/password-reset`);
     }).then((request) => {
       request.withTemplateParameters({
-        clientID: this.tokenStore.getClientID(),
+        clientID: this[tokenStoreSymbol].getClientID(),
         email,
       });
-      return getEmpty(this.environment, request);
+      return getEmpty(this[environmentSymbol], request);
     });
   }
 
@@ -294,12 +293,12 @@ export default class PublicAPI extends Core {
    *   token response.
    */
   createAnonymous(validUntil) {
-    return this.follow(`${this.shortID}:_auth/anonymous`)
+    return this.follow(`${this[shortIDSymbol]}:_auth/anonymous`)
     .then((request) => {
       if (validUntil) {
         request.withTemplateParameters({ validUntil: validUntil.toISOString() });
       }
-      return post(this.environment, request, {});
+      return post(this[environmentSymbol], request, {});
     })
     .then(([tokenResponse]) => tokenResponse);
   }
@@ -313,7 +312,7 @@ export default class PublicAPI extends Core {
   me(reload) {
     return this.resolve(reload)
     .then(() => {
-      return this.resource.account;
+      return this[resourceSymbol].account;
     });
   }
 
@@ -336,13 +335,13 @@ export default class PublicAPI extends Core {
         throw new Error('invalid method, only: get, post, and put');
       }
 
-      if (!this.resource) {
+      if (!this[resourceSymbol]) {
         return this.resolve();
       }
       return undefined;
     })
     .then(() => {
-      let link = this.resource.link(`${this.shortID}:${model}`).profile;
+      let link = this[resourceSymbol].link(`${this[shortIDSymbol]}:${model}`).profile;
       if (method !== 'get') {
         link = link.split('?');
         if (link.length === 1) {
@@ -379,7 +378,7 @@ export default class PublicAPI extends Core {
       }
 
       return this.follow('_permissions')
-      .then(request => get(this.environment, request))
+      .then(request => get(this[environmentSymbol], request))
       .then(([response]) => {
         this.permissions = ShiroTrie.new();
         this.permissions.add(response.permissions);

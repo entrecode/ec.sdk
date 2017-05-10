@@ -1,10 +1,9 @@
 import validator from 'json-schema-remote';
 
-import Core from './Core';
+import Core, { environmentSymbol } from './Core';
 import { get, optionsToQuery, post, superagentGet } from './helper';
 import DataManagerResource from './resources/datamanager/DataManagerResource';
 import DataManagerList from './resources/datamanager/DataManagerList';
-import TokenStoreFactory from './TokenStore';
 import TemplateList from './resources/datamanager/TemplateList';
 import TemplateResource from './resources/datamanager/TemplateResource';
 import DMStatsList from './resources/datamanager/DMStatsList';
@@ -28,14 +27,8 @@ export default class DataManager extends Core {
    *
    * @param {?environment} environment the environment to connect to.
    */
-  constructor(environment) {
-    if (environment && !(environment in urls)) {
-      throw new Error('invalid environment specified');
-    }
-
-    super(urls[environment || 'live']);
-    this.environment = environment;
-    this.tokenStore = TokenStoreFactory(environment || 'live');
+  constructor(environment = 'live') {
+    super(urls, environment);
   }
 
   /**
@@ -53,8 +46,8 @@ export default class DataManager extends Core {
       return this.link('ec:datamanager/by-id');
     })
     .then(link => validator.validate(datamanager, `${link.profile}-template`))
-    .then(() => post(this.environment, this.newRequest(), datamanager))
-    .then(([dm, traversal]) => new DataManagerResource(dm, this.environment, traversal));
+    .then(() => post(this[environmentSymbol], this.newRequest(), datamanager))
+    .then(([dm, traversal]) => new DataManagerResource(dm, this[environmentSymbol], traversal));
   }
 
   /**
@@ -74,10 +67,10 @@ export default class DataManager extends Core {
       return this.follow('ec:datamanagers/options');
     })
     .then((request) => {
-      request.withTemplateParameters(optionsToQuery(options, this.resource.link('ec:datamanagers/options').href));
-      return get(this.environment, request);
+      request.withTemplateParameters(optionsToQuery(options, this.getLink('ec:datamanagers/options').href));
+      return get(this[environmentSymbol], request);
     })
-    .then(([res, traversal]) => new DataManagerList(res, this.environment, traversal));
+    .then(([res, traversal]) => new DataManagerList(res, this[environmentSymbol], traversal));
   }
 
   /**
@@ -96,9 +89,9 @@ export default class DataManager extends Core {
     })
     .then((request) => {
       request.withTemplateParameters({ dataManagerID });
-      return get(this.environment, request);
+      return get(this[environmentSymbol], request);
     })
-    .then(([res, traversal]) => new DataManagerResource(res, this.environment, traversal));
+    .then(([res, traversal]) => new DataManagerResource(res, this[environmentSymbol], traversal));
   }
 
   /**
@@ -139,10 +132,10 @@ export default class DataManager extends Core {
       return this.follow('ec:dm-templates/options');
     })
     .then((request) => {
-      request.withTemplateParameters(optionsToQuery(options, this.resource.link('ec:dm-templates/options').href));
-      return get(this.environment, request);
+      request.withTemplateParameters(optionsToQuery(options, this.getLink('ec:dm-templates/options').href));
+      return get(this[environmentSymbol], request);
     })
-    .then(([res, traversal]) => new TemplateList(res, this.environment, traversal));
+    .then(([res, traversal]) => new TemplateList(res, this[environmentSymbol], traversal));
   }
 
   /**
@@ -165,8 +158,8 @@ export default class DataManager extends Core {
       }
       return this.follow('ec:dm-templates/options');
     })
-    .then(request => get(this.environment, request.withTemplateParameters({ templateID })))
-    .then(([res, traversal]) => new TemplateResource(res, this.environment, traversal, true));
+    .then(request => get(this[environmentSymbol], request.withTemplateParameters({ templateID })))
+    .then(([res, traversal]) => new TemplateResource(res, this[environmentSymbol], traversal, true));
   }
 
   /**
@@ -186,7 +179,7 @@ export default class DataManager extends Core {
     .then(link => validator.validate(template, `${link.profile}-template`))
     .then(() => this.follow('ec:dm-templates'))
     .then(request => post(request, template))
-    .then(([dm, traversal]) => new TemplateResource(dm, this.environment, traversal));
+    .then(([dm, traversal]) => new TemplateResource(dm, this[environmentSymbol], traversal));
   }
 
   /**
@@ -204,8 +197,8 @@ export default class DataManager extends Core {
   statsList() {
     return Promise.resolve()
     .then(() => this.follow('ec:dm-stats'))
-    .then(request => get(this.environment, request))
-    .then(([res, traversal]) => new DMStatsList(res, this.environment, traversal));
+    .then(request => get(this[environmentSymbol], request))
+    .then(([res, traversal]) => new DMStatsList(res, this[environmentSymbol], traversal));
   }
 
   /**
@@ -228,8 +221,8 @@ export default class DataManager extends Core {
       }
       return this.follow('ec:dm-stats');
     })
-    .then(request => get(this.environment, request.withTemplateParameters({ dataManagerID })))
-    .then(([res]) => new DMStatsList(res, this.environment).getFirstItem());
+    .then(request => get(this[environmentSymbol], request.withTemplateParameters({ dataManagerID })))
+    .then(([res]) => new DMStatsList(res, this[environmentSymbol]).getFirstItem());
   }
 
   /**
@@ -244,7 +237,7 @@ export default class DataManager extends Core {
       return Promise.reject(new Error('assetID must be defined'));
     }
 
-    const url = `${urls[this.environment]}files/${assetID}/url`;
+    const url = `${urls[this[environmentSymbol]]}files/${assetID}/url`;
     return superagentGet(url, { 'Accept-Language': locale })
     .then(([res]) => res.url);
   }
@@ -262,7 +255,7 @@ export default class DataManager extends Core {
       return Promise.reject(new Error('assetID must be defined'));
     }
 
-    const url = `${urls[this.environment]}files/${assetID}/url${size ? `?size=${size}` : ''}`;
+    const url = `${urls[this[environmentSymbol]]}files/${assetID}/url${size ? `?size=${size}` : ''}`;
     return superagentGet(url, { 'Accept-Language': locale })
     .then(([res]) => res.url);
   }
@@ -280,7 +273,7 @@ export default class DataManager extends Core {
       return Promise.reject(new Error('assetID must be defined'));
     }
 
-    const url = `${urls[this.environment]}files/${assetID}/url?thumb${size ? `&size=${size}` : ''}`;
+    const url = `${urls[this[environmentSymbol]]}files/${assetID}/url?thumb${size ? `&size=${size}` : ''}`;
     return superagentGet(url, { 'Accept-Language': locale })
     .then(([res]) => res.url);
   }

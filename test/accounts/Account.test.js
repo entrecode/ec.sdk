@@ -18,6 +18,7 @@ const GroupResource = require('../../lib/resources/accounts/GroupResource').defa
 const InvitesResource = require('../../lib/resources/accounts/InvitesResource').default;
 const InvalidPermissionsResource = require('../../lib/resources/accounts/InvalidPermissionsResource').default;
 const Resource = require('../../lib/resources/Resource').default;
+const tokenStoreSymbol = require('../../lib/Core').tokenStoreSymbol;
 
 const nock = require('../mocks/nock.js');
 
@@ -45,7 +46,7 @@ describe('Accounts class', () => {
     const accounts = new Accounts();
     accounts.should.not.have.property('clientID');
     accounts.setClientID('rest');
-    accounts.tokenStore.getClientID().should.be.equal('rest');
+    accounts[tokenStoreSymbol].getClientID().should.be.equal('rest');
   });
   it('should throw on undefined clientID', () => {
     const throws = () => new Accounts().setClientID();
@@ -138,13 +139,13 @@ describe('Accounts class', () => {
     url.returns(Promise.resolve('https://accounts.entrecode.de/auth/signup?clientID=rest'));
     const token = sinon.stub(helper, 'superagentFormPost');
     token.returns(Promise.resolve({ token: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJlbnRyZWNvZGVUZXN0IiwiaWF0IjoxNDg1NzgzNTg4LCJleHAiOjQ2NDE0NTcxODgsImF1ZCI6IlRlc3QiLCJzdWIiOiJ0ZXN0QGVudHJlY29kZS5kZSJ9.Vhrq5GR2hNz-RoAhdlnIIWHelPciBPCemEa74s7cXn8' }));
-    accounts.tokenStore.del();
-    accounts.tokenStore.has().should.be.false;
+    accounts[tokenStoreSymbol].del();
+    accounts[tokenStoreSymbol].has().should.be.false;
 
     return accounts.signup('someone@example.com', 'suchsecurewow')
     .then((tokenResponse) => {
       tokenResponse.should.be.equal('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJlbnRyZWNvZGVUZXN0IiwiaWF0IjoxNDg1NzgzNTg4LCJleHAiOjQ2NDE0NTcxODgsImF1ZCI6IlRlc3QiLCJzdWIiOiJ0ZXN0QGVudHJlY29kZS5kZSJ9.Vhrq5GR2hNz-RoAhdlnIIWHelPciBPCemEa74s7cXn8');
-      accounts.tokenStore.has().should.be.true;
+      accounts[tokenStoreSymbol].has().should.be.true;
       token.restore();
       url.restore();
     })
@@ -164,7 +165,7 @@ describe('Accounts class', () => {
   });
   it('should be rejected on undefined clientID', () => {
     const accounts = new Accounts();
-    accounts.tokenStore.clientID = undefined;
+    accounts[tokenStoreSymbol].clientID = undefined;
     return accounts.signup('someone@example.com', 'supersecure')
     .should.be.rejectedWith('clientID must be set with Account#setClientID');
   });
@@ -188,7 +189,7 @@ describe('Accounts class', () => {
   });
   it('should be rejected on undefiend clientID', () => {
     const accounts = new Accounts();
-    accounts.tokenStore.clientID = undefined;
+    accounts[tokenStoreSymbol].clientID = undefined;
     return new Accounts().resetPassword('someone@entrecode.de')
     .should.be.rejectedWith('clientID must be set with Account#setClientID');
   });
@@ -213,7 +214,7 @@ describe('Accounts class', () => {
   it('should be rejected on undefiend token', () => {
     const reject = () => {
       const accounts = new Accounts();
-      accounts.tokenStore.del();
+      accounts[tokenStoreSymbol].del();
       return accounts.changeEmail('someone@entrecode.de');
     };
     return reject().should.be.rejectedWith('not logged in');
