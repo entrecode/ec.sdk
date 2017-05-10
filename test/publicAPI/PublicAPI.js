@@ -346,4 +346,56 @@ describe('PublicAPI', () => {
     return api.getSchema('allFields', 'patch')
     .should.be.rejectedWith('invalid method, only: get, post, and put');
   });
+
+  it('should check permission ok', () => {
+    const stub = sinon.stub(helper, 'get');
+    stub.onFirstCall().returns(resolver('public-dm-root.json'));
+    stub.onSecondCall().returns(resolver('public-permissions.json'));
+
+    return api.checkPermission('entry:get:read')
+    .then((ok) => {
+      ok.should.be.true;
+      stub.restore();
+    })
+    .catch((err) => {
+      stub.restore();
+      throw err;
+    });
+  });
+  it('should check permission not ok', () => {
+    const stub = sinon.stub(helper, 'get');
+    stub.onFirstCall().returns(resolver('public-dm-root.json'));
+    stub.onSecondCall().returns(resolver('public-permissions.json'));
+
+    return api.checkPermission('nonono')
+    .then((ok) => {
+      ok.should.be.false;
+      stub.restore();
+    })
+    .catch((err) => {
+      stub.restore();
+      throw err;
+    });
+  });
+  it('should check permission cached', () => {
+    const stub = sinon.stub(helper, 'get');
+    stub.onFirstCall().returns(resolver('public-dm-root.json'));
+    stub.onSecondCall().returns(resolver('public-permissions.json'));
+    stub.onThirdCall().throws(new Error('should not happen in tests'));
+
+    return api.checkPermission('entry:get:read')
+    .then(() => api.checkPermission('entry:get:read'))
+    .then((ok) => {
+      ok.should.be.true;
+      stub.restore();
+    })
+    .catch((err) => {
+      stub.restore();
+      throw err;
+    });
+  });
+  it('should reject on undefined permission', () => {
+    return api.checkPermission()
+    .should.be.rejectedWith('permission must be defined');
+  });
 });

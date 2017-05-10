@@ -89,6 +89,10 @@
       "name": "Test DM",
       "href": "https://datamanager.entrecode.de/api/beefbeef"
     },
+    "_permissions": {
+      "href": "https://datamanager.entrecode.de/api/beefbeef/_permissions",
+      "name": "permissions"
+    },
     "beefbeef:allFields": {
       "profile": "https://datamanager.entrecode.de/api/schema/beefbeef/allFields",
       "href": "https://datamanager.entrecode.de/api/beefbeef/allFields{?_created,_createdFrom,_createdTo,_creator,_fields,_id,_levels,_modified,_modifiedFrom,_modifiedTo,_private,asset,assets,assets~,boolean,created,createdFrom,createdTo,datetime,datetimeFrom,datetimeTo,decimal,decimalFrom,decimalTo,email,email~,entries,entries~,entry,formattedText~,id,location,locationFrom,locationTo,modified,modifiedFrom,modifiedTo,number,numberFrom,numberTo,page,phone,phone~,private,size,sort,text,text~,url,url~}",

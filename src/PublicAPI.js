@@ -1,6 +1,7 @@
 import halfred from 'halfred';
 import validator from 'json-schema-remote';
 import qs from 'querystring';
+import ShiroTrie from 'shiro-trie';
 
 import { get, getEmpty, getUrl, post, superagentFormPost, superagentGet } from './helper';
 import { urls } from './DataManager';
@@ -364,5 +365,28 @@ export default class PublicAPI extends Core {
         return loadedSchema;
       });
     });
+  }
+
+  checkPermission(permission) {
+    return Promise.resolve()
+    .then(() => {
+      if (!permission) {
+        throw new Error('permission must be defined');
+      }
+
+      if (this.permissions && new Date() - this.permissionsLoadedTime <= 300000) { // 5 Minutes
+        return undefined;
+      }
+
+      return this.follow('_permissions')
+      .then(request => get(this.environment, request))
+      .then(([response]) => {
+        this.permissions = ShiroTrie.new();
+        this.permissions.add(response.permissions);
+        this.permissionsLoadedTime = new Date();
+        return undefined;
+      });
+    })
+    .then(() => this.permissions.check(permission));
   }
 }
