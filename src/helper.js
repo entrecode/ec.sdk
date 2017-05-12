@@ -390,6 +390,10 @@ export function optionsToQuery(options, templateURL) {
         } else {
           throw new Error('sort must be either Array or String.');
         }
+      } else if (key === '_levels') {
+        if (options[key] > 1 && options[key] <= 5) {
+          out[key] = options[key]; // eslint-disable-line no-underscore-dangle
+        }
       } else if (typeof options[key] === 'string') {
         out[key] = options[key];
       } else if (typeof options[key] === 'object') {

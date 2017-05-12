@@ -2,6 +2,7 @@ export interface filterOptions {
   size?: number,
   page?: number,
   sort?: Array<string>,
+  _levels?: string,
   [key: string]: filterType
 }
 

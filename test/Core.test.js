@@ -598,6 +598,24 @@ describe('optionsToQuery', () => {
     };
     helper.optionsToQuery(obj).should.have.property('page', 1);
   });
+  it('should have levels', () => {
+    const obj = {
+      _levels: 5,
+    };
+    helper.optionsToQuery(obj).should.have.property('_levels', 5);
+  });
+  it('should not have levels, 1', () => {
+    const obj = {
+      _levels: 1,
+    };
+    helper.optionsToQuery(obj).should.not.have.property('_levels');
+  });
+  it('should not have levels, 6', () => {
+    const obj = {
+      _levels: 6,
+    };
+    helper.optionsToQuery(obj).should.not.have.property('_levels');
+  });
   it('should sort one item', () => {
     const obj = {
       sort: 'name',
