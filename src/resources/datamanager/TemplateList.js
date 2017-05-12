@@ -2,7 +2,7 @@ import ListResource from '../ListResource';
 import TemplateResource from './TemplateResource';
 
 /**
- * Client list class
+ * Template list class
  *
  * @class
  */

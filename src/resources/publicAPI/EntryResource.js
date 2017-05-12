@@ -54,10 +54,10 @@ export default class EntryResource extends Resource {
    * Creates a new EntryResource
    * @param {object} resource loaded resource
    * @param {environment} environment the environment of this resource
-   * @param {object|undefined} traversal traversal for continuing
    * @param {object} schema JSON Schema for this entry
+   * @param {object?} traversal traversal for continuing
    */
-  constructor(resource, environment, traversal, schema) {
+  constructor(resource, environment, schema, traversal) {
     super(resource, environment, traversal);
 
     if (!schema) {
@@ -283,5 +283,5 @@ export function create(resource, environment, traversal) {
     const res = halfred.parse(resource);
     return getSchema(res.link('self').profile);
   })
-  .then(schema => new EntryResource(resource, environment, traversal, schema));
+  .then(schema => new EntryResource(resource, environment, schema, traversal));
 }

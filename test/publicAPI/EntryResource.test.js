@@ -7,10 +7,47 @@ const fs = require('fs');
 const mock = require('../mocks/nock');
 
 const Resource = require('../../lib/resources/Resource').default;
+const ListResource = require('../../lib/resources/ListResource').default;
+const EntryList = require('../../lib/resources/publicAPI/EntryList');
 const EntryResource = require('../../lib/resources/publicAPI/EntryResource');
 
 const should = chai.should();
 chai.use(sinonChai);
+
+describe('Entry List', () => {
+  let listJson;
+  let list;
+  before(() => {
+    return new Promise((resolve, reject) => {
+      fs.readFile(`${__dirname}/../mocks/public-entry-list.json`, 'utf-8', (err, res) => {
+        if (err) {
+          return reject(err);
+        }
+        return resolve(JSON.parse(res));
+      });
+    })
+    .then((json) => {
+      listJson = json;
+    });
+  });
+  beforeEach(() => {
+    mock.reset();
+    return EntryList.create(listJson, 'live', 'beefbeef:allFields')
+    .then(l => list = l); // eslint-disable-line no-return-assign
+  });
+  afterEach(() => {
+    list = null;
+  });
+  it('should be instance of ListResource', () => {
+    list.should.be.instanceOf(ListResource);
+  });
+  it('should be instance of ModelList', () => {
+    list.should.be.instanceOf(EntryList.default);
+  });
+  it('should have ModelResource items', () => {
+    list.getAllItems().forEach(item => item.should.be.instanceOf(EntryResource.default));
+  });
+});
 
 describe('Entry Resource', () => {
   let resourceJson;
@@ -64,7 +101,7 @@ describe('Entry Resource', () => {
     should.not.exist(resource.getFieldType('nonexistent'));
   });
   it('should return undefined on non matching type', () => {
-    const res = new EntryResource.default(resourceJson, 'live', null, { // eslint-disable-line new-cap
+    const res = new EntryResource.default(resourceJson, 'live', { // eslint-disable-line new-cap
       allOf: [
         null,
         {

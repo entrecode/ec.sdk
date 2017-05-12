@@ -3,6 +3,7 @@ import Resource, { environmentSymbol, resourceSymbol } from './Resource';
 const nameSymbol = Symbol('_name');
 const listClassSymbol = Symbol('_listClass');
 const itemClassSymbol = Symbol('_itemClass');
+const itemSchemaSymbol = Symbol('_itmeSchema');
 
 /**
  * Generic list resource class. Represents {@link
@@ -25,8 +26,9 @@ export default class ListResource extends Resource {
    * @param {?object} traversal traversal from which traverson can continue.
    * @param {ListResource} ListClass Class constructor for list types
    * @param {Resource} ItemClass Class constructor for item types
+   * @param {object?} itemSchema optional schema for list items
    */
-  constructor(resource, environment, name, traversal, ListClass = ListResource, ItemClass = Resource) {
+  constructor(resource, environment, name, traversal, ListClass = ListResource, ItemClass = Resource, itemSchema) {
     super(resource, environment, traversal);
 
     Object.defineProperties(this, {
@@ -42,6 +44,7 @@ export default class ListResource extends Resource {
 
     this[listClassSymbol] = ListClass;
     this[itemClassSymbol] = ItemClass;
+    this[itemSchemaSymbol] = itemSchema;
     this[nameSymbol] = name || Object.keys(this[resourceSymbol].allEmbeddedResources())[0];
   }
 
@@ -53,7 +56,12 @@ export default class ListResource extends Resource {
    */
   getAllItems() {
     const array = this[resourceSymbol].embeddedArray(this[nameSymbol]) || [];
-    return array.map(resource => new this[itemClassSymbol](resource, this[environmentSymbol]));
+    return array.map((resource) => {
+      if (this[itemSchemaSymbol]) {
+        return new this[itemClassSymbol](resource, this[environmentSymbol], this[itemSchemaSymbol]);
+      }
+      return new this[itemClassSymbol](resource, this[environmentSymbol]);
+    });
   }
 
   /**
