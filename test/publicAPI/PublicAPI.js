@@ -300,32 +300,12 @@ describe('PublicAPI', () => {
   });
 
   it('should get schema', () => {
-    const stub = sinon.stub(helper, 'superagentGet');
-    stub.returns(Promise.resolve(publicSchema));
-
     return api.getSchema('allFields')
-    .then((schema) => {
-      schema.should.have.property('id', 'https://datamanager.entrecode.de/api/schema/01bd8e08/allFields');
-      stub.restore();
-    })
-    .catch((err) => {
-      stub.restore();
-      throw err;
-    });
+    .should.eventually.have.property('id', 'https://datamanager.entrecode.de/api/schema/beefbeef/allFields');
   });
   it('should get schema, method set', () => {
-    const stub = sinon.stub(helper, 'superagentGet');
-    stub.returns(Promise.resolve(publicSchema));
-
     return api.getSchema('allFields', 'put')
-    .then((schema) => {
-      schema.should.have.property('id', 'https://datamanager.entrecode.de/api/schema/01bd8e08/allFields');
-      stub.restore();
-    })
-    .catch((err) => {
-      stub.restore();
-      throw err;
-    });
+    .should.eventually.have.property('id', 'https://datamanager.entrecode.de/api/schema/beefbeef/allFields');
   });
   it('should get schema, cached', () => {
     const stub = sinon.stub(helper, 'superagentGet');
@@ -334,7 +314,7 @@ describe('PublicAPI', () => {
     return api.getSchema('allFields')
     .then(() => api.getSchema('allFields'))
     .then((schema) => {
-      schema.should.have.property('id', 'https://datamanager.entrecode.de/api/schema/01bd8e08/allFields');
+      schema.should.have.property('id', 'https://datamanager.entrecode.de/api/schema/beefbeef/allFields');
       stub.restore();
     })
     .catch((err) => {

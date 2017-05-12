@@ -32,8 +32,8 @@ export default class Resource {
    * @param {environment} environment the environment this resource is associated to.
    * @param {?object} traversal traversal from which traverson can continue.
    */
-  constructor(resource, environment, traversal) {
-    this[environmentSymbol] = environment || 'live';
+  constructor(resource, environment = 'live', traversal) {
+    this[environmentSymbol] = environment;
     this[dirtySymbol] = false;
     this[resourceSymbol] = halfred.parse(JSON.parse(JSON.stringify(resource)));
 

@@ -1,11 +1,16 @@
 import halfred from 'halfred';
-import validator from 'json-schema-remote';
 import qs from 'querystring';
 import ShiroTrie from 'shiro-trie';
 
-import { get, getEmpty, getUrl, post, superagentFormPost, superagentGet } from './helper';
+import { get, getEmpty, getSchema, getUrl, post, superagentFormPost } from './helper';
 import { urls } from './DataManager';
-import Core, { environmentSymbol, resourceSymbol, tokenStoreSymbol, eventsSymbol, traversalSymbol } from './Core';
+import Core, {
+  environmentSymbol,
+  eventsSymbol,
+  resourceSymbol,
+  tokenStoreSymbol,
+  traversalSymbol
+} from './Core';
 
 const shortIDSymbol = Symbol('_shortID');
 const modelCacheSymbol = Symbol('_modelCache');
@@ -353,16 +358,7 @@ export default class PublicAPI extends Core {
         link = link.join('?');
       }
 
-      const schema = validator.getSchema(link);
-      if (schema) {
-        return schema;
-      }
-
-      return superagentGet(link)
-      .then((loadedSchema) => {
-        validator.preload(link, loadedSchema);
-        return loadedSchema;
-      });
+      return getSchema(link);
     });
   }
 

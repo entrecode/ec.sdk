@@ -502,7 +502,7 @@ describe('Network Helper', () => {
         code: 2102,
         status: 404,
         detail: 'title',
-      });
+      }, { 'Content-Type': 'application/json' });
 
       return helper.superagentGet('https://entrecode.de', {}).should.be.rejectedWith(Problem);
     });

@@ -1,5 +1,6 @@
 import superagent from 'superagent';
 import locale from 'locale';
+import validator from 'json-schema-remote';
 
 import Problem from './Problem';
 import events from './EventEmitter';
@@ -513,4 +514,20 @@ export function fileNegotiate(asset, image, thumb, size, requestedLocale) {
   }
   // if the requested size is larger than the original image, we take the largest possible one
   return largest.url;
-};
+}
+
+export function getSchema(link) {
+  return Promise.resolve()
+  .then(() => {
+    const schema = validator.getSchema(link);
+    if (schema) {
+      return schema;
+    }
+
+    return superagentGet(link)
+    .then((loadedSchema) => {
+      validator.preload(link, loadedSchema);
+      return loadedSchema;
+    });
+  });
+}
