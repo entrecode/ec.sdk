@@ -27,7 +27,11 @@ const underscore = [
 ];
 
 /**
- * EntryResource class representing entries. Fields will have getter and setter.
+ * EntryResource class representing entries. Fields will have getter and setter. Setter will
+ * validate the input on a best effort basis.
+ *
+ * If the schema for this Entry is not known on creating it, you will have to use
+ * EntryResource#creatEntry.
  *
  * @example
  * publicAPI.getEntry('muffins', '1234567')
@@ -40,14 +44,14 @@ const underscore = [
  * @param {Date} modified last modified date (_modified defined as well)
  * @param {string} creator public user which created thie entry (_creator defined as well)
  *
- * @param {Date|string} datetime-fields fields with type datetime
- * @param {EntryResource|object|string} entry-fields fields with type entry
- * @param {Array<EntryResource|object|string>} entries-fields fields with type entries
- * @param {AssetResource|object|string} asset-fields fields with type asset
- * @param {Array<AssetResource|object|string>} assets-fields fields with type assets
- * @param {DMAccountResource|object|string} account-fields fields with type account
- * @param {RoleResource|object|string} role-fields fields with type role
- * @param {string|object|array|number} other-fields field with all other types
+ * @param {Date|string} datetime fields with type datetime
+ * @param {EntryResource|object|string} entry fields with type entry
+ * @param {Array<EntryResource|object|string>} entries fields with type entries
+ * @param {AssetResource|object|string} asset fields with type asset
+ * @param {Array<AssetResource|object|string>} assets fields with type assets
+ * @param {DMAccountResource|object|string} account fields with type account
+ * @param {RoleResource|object|string} role fields with type role
+ * @param {string|object|array|number} other field with all other types
  */
 export default class EntryResource extends Resource {
   /**
