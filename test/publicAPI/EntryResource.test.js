@@ -192,7 +192,7 @@ describe('Entry Resource', () => {
   });
 
   it('should get asset field', () => {
-    resource.asset.should.be.equal('03685901-8bbe-40a2-89f2-a7c9a5db5bf8');
+    resource.asset.should.be.equal('2bf325a9-c8f9-4e7d-b244-faa1090a479d');
     getSpy.should.have.been.calledWith('asset');
   });
   it('should set asset field, string', () => {
@@ -213,7 +213,7 @@ describe('Entry Resource', () => {
   });
 
   it('should get assets field', () => {
-    resource.assets.should.deep.equal(['03685901-8bbe-40a2-89f2-a7c9a5db5bf8']);
+    resource.assets.should.deep.equal(['2bf325a9-c8f9-4e7d-b244-faa1090a479d']);
     getSpy.should.have.been.calledWith('assets');
   });
   it('should set assets field, string', () => {
@@ -238,7 +238,7 @@ describe('Entry Resource', () => {
   });
 
   it('should get account field', () => {
-    resource.account.should.equal('03685901-8bbe-40a2-89f2-a7c9a5db5bf8');
+    resource.account.should.equal('2bf325a9-c8f9-4e7d-b244-faa1090a479d');
     getSpy.should.have.been.calledWith('account');
   });
   it('should set account field, string', () => {
@@ -259,7 +259,7 @@ describe('Entry Resource', () => {
   });
 
   it('should get role field', () => {
-    resource.role.should.equal('03685901-8bbe-40a2-89f2-a7c9a5db5bf8');
+    resource.role.should.equal('2bf325a9-c8f9-4e7d-b244-faa1090a479d');
     getSpy.should.have.been.calledWith('role');
   });
   it('should set role field, string', () => {
@@ -287,5 +287,42 @@ describe('Entry Resource', () => {
   });
   it('should get model title field', () => {
     resource.getModelTitleField().should.be.equal('_id');
+  });
+
+  it('should get file url, asset', () => {
+    resource.getFileUrl('asset').should.be.equal('https://cdn2.entrecode.de/files/beefbeef/wFG3Al80jXjH06NIw3UWM2x0.png');
+  });
+  it('should be undefined, asset', () => {
+    should.not.exist(resource.getFileUrl('nonono'));
+  });
+  it('should get file url, assets', () => {
+    resource.getFileUrl('assets').should.be.deep.equal(['https://cdn2.entrecode.de/files/beefbeef/wFG3Al80jXjH06NIw3UWM2x0.png']);
+  });
+  it('should be empty array, assets', () => {
+    resource.getFileUrl('emptyAssets').should.have.property('length', 0);
+  });
+  it('should get image url, asset', () => {
+    resource.getImageUrl('asset', 500).should.be.equal('https://cdn2.entrecode.de/files/beefbeef/wFG3Al80jXjH06NIw3UWM2x0_512.png');
+  });
+  it('should be undefined, asset', () => {
+    should.not.exist(resource.getImageUrl('nonono'));
+  });
+  it('should get image url, assets', () => {
+    resource.getImageUrl('assets', 500).should.be.deep.equal(['https://cdn2.entrecode.de/files/beefbeef/wFG3Al80jXjH06NIw3UWM2x0_512.png']);
+  });
+  it('should be empty array, assets', () => {
+    resource.getImageUrl('emptyAssets').should.have.property('length', 0);
+  });
+  it('should get thumb url, asset', () => {
+    resource.getImageThumbUrl('asset', 200).should.be.equal('https://cdn2.entrecode.de/files/beefbeef/wFG3Al80jXjH06NIw3UWM2x0_200_thumb.png');
+  });
+  it('should be undefined, asset', () => {
+    should.not.exist(resource.getImageThumbUrl('nonono'));
+  });
+  it('should get thumb url, assets', () => {
+    resource.getImageThumbUrl('assets', 200).should.be.deep.equal(['https://cdn2.entrecode.de/files/beefbeef/wFG3Al80jXjH06NIw3UWM2x0_200_thumb.png']);
+  });
+  it('should be empty array, assets', () => {
+    resource.getImageThumbUrl('emptyAssets').should.have.property('length', 0);
   });
 });

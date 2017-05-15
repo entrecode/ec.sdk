@@ -1,9 +1,10 @@
 import halfred from 'halfred';
 
-import { getSchema } from '../../helper';
-import Resource from '../Resource';
+import { fileNegotiate, getSchema } from '../../helper';
+import Resource, { resourceSymbol } from '../Resource';
 
 const schemaSymbol = Symbol('_schema');
+const shortIDSymbol = Symbol('_shortID');
 
 const datetimeRegex = /^(?:[1-9]\d{3}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1\d|2[0-8])|(?:0[13-9]|1[0-2])-(?:29|30)|(?:0[13578]|1[02])-31)|(?:[1-9]\d(?:0[48]|[2468][048]|[13579][26])|(?:[2468][048]|[13579][26])00)-02-29)T(?:[01]\d|2[0-3]):[0-5]\d:[0-5]\d(?:\.\d{3})?(?:Z|[+-][01]\d:[0-5]\d)$/;
 
@@ -69,6 +70,12 @@ export default class EntryResource extends Resource {
     }
 
     this[schemaSymbol] = schema;
+
+    const link = this.getLink('collection').href;
+    const result = new RegExp(`/api/([0-9a-f]{8})/${this.getModelTitle()}`).exec(link);
+    if (result) {
+      this[shortIDSymbol] = result[1];
+    }
 
     Object.keys(this[schemaSymbol].allOf[1].properties).forEach((key) => {
       if (!skip.includes(key)) {
@@ -268,7 +275,85 @@ export default class EntryResource extends Resource {
     return this.getProperty('_modelTitleField');
   }
 
-  // TODO file stuff (file, image, thumb, original)
+  /**
+   * Best file helper for embedded assets files.
+   *
+   * @param {string} field the asset field name
+   * @param {string?} locale - the locale
+   * @returns {string} URL to the file
+   */
+  getFileUrl(field, locale) {
+    const assets = this[resourceSymbol].embeddedArray(`${this[shortIDSymbol]}:${this.getModelTitle()}/${field}/asset`);
+    const isAssets = this.getFieldType(field) === 'assets';
+
+    if (!assets) {
+      if (isAssets) {
+        return [];
+      }
+      return undefined;
+    }
+
+    const results = assets.map(asset => fileNegotiate(asset, false, false, null, locale));
+
+    if (!isAssets) {
+      return results[0];
+    }
+    return results;
+  }
+
+  /**
+   * Best file helper for embedded assets images.
+   *
+   * @param {string} field the asset field name
+   * @param {number?} size - the minimum size of the image
+   * @param {string?} locale - the locale
+   * @returns {string} URL to the file
+   */
+  getImageUrl(field, size, locale) {
+    const assets = this[resourceSymbol].embeddedArray(`${this[shortIDSymbol]}:${this.getModelTitle()}/${field}/asset`);
+    const isAssets = this.getFieldType(field) === 'assets';
+
+    if (!assets) {
+      if (isAssets) {
+        return [];
+      }
+      return undefined;
+    }
+
+    const results = assets.map(asset => fileNegotiate(asset, true, false, size, locale));
+
+    if (!isAssets) {
+      return results[0];
+    }
+    return results;
+  }
+
+  /**
+   * Best file helper for embedded assets image thumbnails.
+   *
+   * @param {string} field the asset field name
+   * @param {number?} size - the minimum size of the image
+   * @param {string?} locale - the locale
+   * @returns {string} URL to the file
+   */
+  getImageThumbUrl(field, size, locale) {
+    const assets = this[resourceSymbol].embeddedArray(`${this[shortIDSymbol]}:${this.getModelTitle()}/${field}/asset`);
+    const isAssets = this.getFieldType(field) === 'assets';
+
+    if (!assets) {
+      if (isAssets) {
+        return [];
+      }
+      return undefined;
+    }
+
+    const results = assets.map(asset => fileNegotiate(asset, true, true, size, locale));
+
+    if (!isAssets) {
+      return results[0];
+    }
+    return results;
+  }
 }
 
 /**

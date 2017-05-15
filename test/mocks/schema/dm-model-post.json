@@ -293,6 +293,36 @@
           "description": "",
           "default": null
         },
+        "emptyAssets": {
+          "type": "array",
+          "items": {
+            "oneOf": [
+              {
+                "type": "string",
+                "pattern": "^[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-4[0-9A-Fa-f]{3}-[89ABab][0-9A-Fa-f]{3}-[0-9A-Fa-f]{12}$"
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "assetID": {
+                    "oneOf": [
+                      {
+                        "type": "null"
+                      },
+                      {
+                        "type": "string",
+                        "pattern": "^[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-4[0-9A-Fa-f]{3}-[89ABab][0-9A-Fa-f]{3}-[0-9A-Fa-f]{12}$"
+                      }
+                    ]
+                  }
+                }
+              }
+            ]
+          },
+          "title": "assets",
+          "description": "",
+          "default": null
+        },
         "account": {
           "oneOf": [
             {
