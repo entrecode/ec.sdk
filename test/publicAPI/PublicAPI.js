@@ -16,6 +16,8 @@ const helper = require('../../lib/helper');
 const mock = require('../mocks/nock');
 
 const publicSchema = require('../mocks/public-schema');
+const EntryList = require('../../lib/resources/publicAPI/EntryList').default;
+const EntryResource = require('../../lib/resources/publicAPI/EntryResource').default;
 
 chai.should();
 chai.use(chaiAsPromised);
@@ -305,7 +307,7 @@ describe('PublicAPI', () => {
   });
   it('should get schema, method set', () => {
     return api.getSchema('allFields', 'put')
-    .should.eventually.have.property('id', 'https://datamanager.entrecode.de/api/schema/beefbeef/allFields');
+    .should.eventually.have.property('id', 'https://datamanager.entrecode.de/api/schema/beefbeef/allFields?template=put');
   });
   it('should get schema, cached', () => {
     const stub = sinon.stub(helper, 'superagentGet');
@@ -380,5 +382,107 @@ describe('PublicAPI', () => {
   it('should reject on undefined permission', () => {
     return api.checkPermission()
     .should.be.rejectedWith('permission must be defined');
+  });
+
+  it('should resolve on entryList', () => {
+    const stub = sinon.stub(helper, 'get');
+    stub.onFirstCall().returns(resolver('public-dm-root.json'));
+    stub.onSecondCall().returns(resolver('public-entry-list.json'));
+
+    return api.entryList('allFields')
+    .then((list) => {
+      list.should.be.instanceof(EntryList);
+      stub.restore();
+    })
+    .catch((err) => {
+      stub.restore();
+      throw err;
+    });
+  });
+  it('should throw on undefined model', () => {
+    return api.entryList()
+    .should.be.rejectedWith('model must be defined');
+  });
+  it('should throw on filter only id', () => {
+    return api.entryList('allFields', { id: '1234567' })
+    .should.be.rejectedWith('Providing only an id/_id in entryList filter will result in single resource response. Please use PublicAPI#entry');
+  });
+  it('should throw on filter only _id', () => {
+    return api.entryList('allFields', { _id: '1234567' })
+    .should.be.rejectedWith('Providing only an id/_id in entryList filter will result in single resource response. Please use PublicAPI#entry');
+  });
+
+  it('should resolve on entry', () => {
+    const stub = sinon.stub(helper, 'get');
+    stub.onFirstCall().returns(resolver('public-dm-root.json'));
+    stub.onSecondCall().returns(resolver('public-entry.json'));
+
+    return api.entry('allFields', '1234567')
+    .then((entry) => {
+      entry.should.be.instanceof(EntryResource);
+      stub.restore();
+    })
+    .catch((err) => {
+      stub.restore();
+      throw err;
+    });
+  });
+  it('should throw on undefined model', () => {
+    return api.entry()
+    .should.be.rejectedWith('model must be defined');
+  });
+  it('should throw on undefined id', () => {
+    return api.entry('allFields')
+    .should.be.rejectedWith('id must be defined');
+  });
+
+  it('should create entry', () => {
+    const getStub = sinon.stub(helper, 'get');
+    getStub.returns(resolver('public-dm-root.json'));
+    const postStub = sinon.stub(helper, 'post');
+    postStub.returns(resolver('public-entry.json'));
+
+    return api.createEntry('allFields', {
+      text: 'hehe',
+      formattedText: 'hehe',
+      number: 1,
+      decimal: 1.1,
+      boolean: true,
+      datetime: new Date().toISOString(),
+      location: {
+        latitude: 0,
+        longitude: 0,
+      },
+      email: 'someone@anything.com',
+      url: 'https://anything.com',
+      phone: '+49 11 8 33',
+      json: {},
+      entry: '1234567',
+      entries: [
+        '1234567',
+      ],
+    })
+    .then((entry) => {
+      entry.should.be.instanceOf(EntryResource);
+      getStub.restore();
+      postStub.restore();
+    })
+    .catch((err) => {
+      getStub.restore();
+      postStub.restore();
+      throw err;
+    });
+  });
+  it('should throw on undefined model', () => {
+    return api.createEntry()
+    .should.be.rejectedWith('model must be defined');
+  });
+  it('should throw on undefined entry', () => {
+    return api.createEntry('allFields')
+    .should.be.rejectedWith('Cannot create resource with undefined object.');
+  });
+  it('should throw on invalid entry', () => {
+    return api.createEntry('allFields', {})
+    .should.be.rejectedWith('JSON Schema Validation error');
   });
 });

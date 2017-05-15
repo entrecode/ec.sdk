@@ -18,7 +18,8 @@ module.exports = {
     .get('/hal').replyWithFile(200, `${__dirname}/schema/hal.json`, { 'Content-Type': 'application/json' });
 
     nock('http://json-schema.org')
-    .get('/draft-04/schema').replyWithFile(200, `${__dirname}/schema/schema.json`, { 'Content-Type': 'application/json' });
+    .get('/draft-04/schema').replyWithFile(200, `${__dirname}/schema/schema.json`, { 'Content-Type': 'application/json' })
+    .get('/geo').replyWithFile(200, `${__dirname}/schema/geo.json`, { 'Content-Type': 'application/json' });
     nock('https://schema.getpostman.com')
     .get('/json/collection/v1.0.0/').replyWithFile(200, `${__dirname}/schema/postman-collection.json`, { 'Content-Type': 'application/json' });
 
@@ -29,6 +30,7 @@ module.exports = {
     .get('/').replyWithFile(200, `${__dirname}/dm-list.json`, { 'Content-Type': 'application/json' })
     .get('/api/beefbeef').replyWithFile(200, `${__dirname}/public-dm-root.json`, { 'Content-Type': 'application/json' })
     .get('/api/schema/beefbeef/allFields').replyWithFile(200, `${__dirname}/schema/dm-model.json`, { 'Content-Type': 'application/json' })
-    .get('/api/schema/beefbeef/allFields?method=put').replyWithFile(200, `${__dirname}/schema/dm-model.json`, { 'Content-Type': 'application/json' });
+    .get('/api/schema/beefbeef/allFields?template=put').replyWithFile(200, `${__dirname}/schema/dm-model-put.json`, { 'Content-Type': 'application/json' })
+    .get('/api/schema/beefbeef/allFields?template=post').replyWithFile(200, `${__dirname}/schema/dm-model-post.json`, { 'Content-Type': 'application/json' });
   },
 };

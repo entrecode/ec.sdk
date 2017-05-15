@@ -1,9 +1,20 @@
 import halfred from 'halfred';
 import qs from 'querystring';
 import ShiroTrie from 'shiro-trie';
+import validator from 'json-schema-remote';
 
-import { get, getEmpty, getSchema, getUrl, post, superagentFormPost } from './helper';
+import {
+  get,
+  getEmpty,
+  getSchema,
+  getUrl,
+  optionsToQuery,
+  post,
+  superagentFormPost
+} from './helper';
 import { urls } from './DataManager';
+import { create as creatEntryList } from './resources/publicAPI/EntryList';
+import { create as createEntry } from './resources/publicAPI/EntryResource';
 import Core, {
   environmentSymbol,
   eventsSymbol,
@@ -353,7 +364,7 @@ export default class PublicAPI extends Core {
           link.push('');
         }
         link[1] = qs.parse(link[1]);
-        link[1].method = method;
+        link[1].template = method;
         link[1] = qs.stringify(link[1]);
         link = link.join('?');
       }
@@ -362,6 +373,105 @@ export default class PublicAPI extends Core {
     });
   }
 
+  /**
+   * Load the {@link EntryList}.
+   *
+   * @example
+   * return api.entryList('myModel')
+   * .then(list => {
+   *   return list.getAllItems().find(entry => entry.id === '1234567');
+   * })
+   * .then(entry => {
+   *   return show(entry);
+   * });
+   *
+   * @param {string} model name of the model for which the list should be loaded
+   * @param {filterOptions?} options filter options
+   * @returns {Promise<EntryList>} Promise resolving to EntryList
+   */
+  entryList(model, options) {
+    return Promise.resolve()
+    .then(() => {
+      if (!model) {
+        throw new Error('model must be defined');
+      }
+
+      if (options && Object.keys(options).length === 1 && ('id' in options || '_id' in options)) {
+        throw new Error('Providing only an id/_id in entryList filter will result in single resource response. Please use PublicAPI#entry');
+      }
+
+      return this.follow(`${this[shortIDSymbol]}:${model}`);
+    })
+    .then((request) => {
+      request.withTemplateParameters(optionsToQuery(options, this.getLink(`${this[shortIDSymbol]}:${model}`).href));
+      return get(this[environmentSymbol], request);
+    })
+    .then(([res, traversal]) => creatEntryList(res, this[environmentSymbol], `${this[shortIDSymbol]}:${model}`, traversal));
+  }
+
+  /**
+   * Load a single {@link EntryResource}.
+   *
+   * @example
+   * return dm.entry('myModel', '1234567')
+   * .then(entry => {
+   *   return show(entry);
+   * });
+   *
+   * @param {string} model name of the model for which the list should be loaded
+   * @param {string} id the entry id
+   * @returns {Promise<EntryResource>} Promise resolving to EntryResource
+   */
+  entry(model, id) {
+    return Promise.resolve()
+    .then(() => {
+      if (!model) {
+        throw new Error('model must be defined');
+      }
+
+      if (!id) {
+        throw new Error('id must be defined');
+      }
+
+      return this.follow(`${this[shortIDSymbol]}:${model}`);
+    })
+    .then((request) => {
+      request.withTemplateParameters({ _id: id });
+      return get(this[environmentSymbol], request);
+    })
+    .then(([res, traversal]) => createEntry(res, this[environmentSymbol], traversal));
+  }
+
+  /**
+   * Create a new entry.
+   *
+   * @param {string} model name of the model for which the list should be loaded
+   * @param {object} entry object representing the entry.
+   * @returns {Promise<EntryResource>} the newly created EntryResource
+   */
+  createEntry(model, entry) {
+    return Promise.resolve()
+    .then(() => {
+      if (!model) {
+        throw new Error('model must be defined');
+      }
+
+      if (!entry) {
+        throw new Error('Cannot create resource with undefined object.');
+      }
+      return this.link(`${this[shortIDSymbol]}:${model}`);
+    })
+    .then(link => validator.validate(entry, `${link.profile}?template=post`))
+    .then(() => post(this[environmentSymbol], this.newRequest(), entry))
+    .then(([res, traversal]) => createEntry(res, this[environmentSymbol], traversal));
+  }
+
+  /**
+   * Checks a permission for the currently logged in public user
+   *
+   * @param {string} permission the permission to check.
+   * @returns {Promise<boolean>} true if user has permission, false otherwise.
+   */
   checkPermission(permission) {
     return Promise.resolve()
     .then(() => {
