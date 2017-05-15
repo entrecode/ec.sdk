@@ -32,7 +32,7 @@ describe('Entry List', () => {
   });
   beforeEach(() => {
     mock.reset();
-    return EntryList.create(listJson, 'live', 'beefbeef:allFields')
+    return EntryList.createList(listJson, 'live', 'beefbeef:allFields')
     .then(l => list = l); // eslint-disable-line no-return-assign
   });
   afterEach(() => {
@@ -68,7 +68,7 @@ describe('Entry Resource', () => {
     }));
   beforeEach(() => {
     mock.reset();
-    return EntryResource.create(resourceJson)
+    return EntryResource.createEntry(resourceJson)
     .then((res) => {
       resource = res;
       getSpy = sinon.spy(resource, 'getProperty');

@@ -277,7 +277,7 @@ export default class EntryResource extends Resource {
  * @returns {Promise<EntryResource>} {@link Promise} resolving to the newly created {@link
  *   EntryResource}
  */
-export function create(resource, environment, traversal) {
+export function createEntry(resource, environment, traversal) {
   return Promise.resolve()
   .then(() => {
     const res = halfred.parse(resource);

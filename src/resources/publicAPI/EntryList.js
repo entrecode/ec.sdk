@@ -35,7 +35,7 @@ export default class EntryList extends ListResource {
  * @returns {Promise<EntryResource>} {@link Promise} resolving to the newly created {@link
   *   EntryResource}
  */
-export function create(resource, environment, name, traversal) {
+export function createList(resource, environment, name, traversal) {
   return Promise.resolve()
   .then(() => {
     const res = halfred.parse(resource);

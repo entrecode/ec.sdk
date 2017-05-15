@@ -13,8 +13,8 @@ import {
   superagentFormPost
 } from './helper';
 import { urls } from './DataManager';
-import { create as creatEntryList } from './resources/publicAPI/EntryList';
-import { create as createEntry } from './resources/publicAPI/EntryResource';
+import { createList } from './resources/publicAPI/EntryList';
+import { createEntry } from './resources/publicAPI/EntryResource';
 import Core, {
   environmentSymbol,
   eventsSymbol,
@@ -406,7 +406,7 @@ export default class PublicAPI extends Core {
       request.withTemplateParameters(optionsToQuery(options, this.getLink(`${this[shortIDSymbol]}:${model}`).href));
       return get(this[environmentSymbol], request);
     })
-    .then(([res, traversal]) => creatEntryList(res, this[environmentSymbol], `${this[shortIDSymbol]}:${model}`, traversal));
+    .then(([res, traversal]) => createList(res, this[environmentSymbol], `${this[shortIDSymbol]}:${model}`, traversal));
   }
 
   /**

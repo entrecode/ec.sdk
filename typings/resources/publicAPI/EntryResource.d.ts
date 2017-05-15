@@ -12,6 +12,6 @@ export declare class EntryResource extends Resource {
   getModelTitleField(): string;
 }
 
-export declare function create(resource: any, environment: environment, traversal: any): Promise<EntryResource>;
+export declare function createEntry(resource: any, environment: environment, traversal: any): Promise<EntryResource>;
 
 type environment = 'live' | 'stage' | 'nightly' | 'develop';
