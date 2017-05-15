@@ -453,6 +453,8 @@ export function optionsToQuery(options, templateURL) {
 /**
  * Helper for negotiating files from assets.
  *
+ * @private
+ *
  * @param {AssetResource} asset - The asset from which negotiation should occur.
  * @param {boolean} image - true if it is an image negotiation.
  * @param {boolean} thumb - true if it is a thumbnail negotiation.
