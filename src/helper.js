@@ -89,7 +89,7 @@ function traversonWrapper(func, environment, t, body) {
       return resolve(res);
     };
 
-    t.addRequestOptions({ headers: { Accept: 'application/hal+json' } });
+    t.withRequestOptions({ headers: { Accept: 'application/hal+json' } });
 
     const store = TokenStoreFactory(environment);
     if (store.has()) {

@@ -24,7 +24,7 @@ class TokenStore {
    * @constructor
    * @param {environment} environment The environment for which to store tokens.
    */
-  constructor(environment) {
+  constructor(environment = 'live') {
     this.environment = environment;
     this.token = undefined;
     this.clientID = undefined;
@@ -180,9 +180,9 @@ class TokenStore {
  * @param {environment} environment the environment for which the token store should be created
  * @returns {TokenStore} The created token store
  */
-export default function TokenStoreFactory(environment) {
-  if (!stores.has(environment || 'live')) {
-    stores.set(environment || 'live', new TokenStore(environment || 'live'));
+export default function TokenStoreFactory(environment = 'live') {
+  if (!stores.has(environment)) {
+    stores.set(environment, new TokenStore(environment));
   }
-  return stores.get(environment || 'live');
+  return stores.get(environment);
 }

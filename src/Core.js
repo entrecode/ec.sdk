@@ -85,7 +85,7 @@ export default class Core {
         return this.newRequest().follow(link);
       }
 
-      return get(this[environmentSymbol], this.newRequest())
+      return get(this[environmentSymbol], this.newRequest().follow('self'))
       .then(([res, traversal]) => {
         this[resourceSymbol] = halfred.parse(res);
         this[traversalSymbol] = traversal;
