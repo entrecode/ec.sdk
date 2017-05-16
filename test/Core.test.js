@@ -18,6 +18,8 @@ const emitter = require('../lib/EventEmitter').default;
 const TokenStore = require('../lib/TokenStore');
 
 const nockMock = require('./mocks/nock');
+const resolver = require('./mocks/resolver');
+const TraversonMock = require('./mocks/TraversonMock');
 
 nock.disableNetConnect();
 chai.should();
@@ -66,18 +68,33 @@ describe('Core', () => {
     core.newRequest().should.be.instanceOf(traverson._Builder);
   });
   it('should return traverson Builder follow', () => {
-    core.environment = 'live';
-    return core.follow('ec:dm-stats').should.eventually.be.instanceOf(traverson._Builder);
+    const stub = sinon.stub(helper, 'get');
+    stub.onFirstCall().returns(resolver('dm-list.json'));
+    stub.onSecondCall().throws(new Error('not in tests my friend'));
+
+    return core.follow('ec:dm-stats').should.eventually.be.instanceOf(TraversonMock)
+    .notify(() => stub.restore());
   });
   it('should return traverson Builder follow cached', () => {
-    core.environment = 'live';
+    const stub = sinon.stub(helper, 'get');
+    stub.onFirstCall().returns(resolver('dm-list.json'));
+    stub.onSecondCall().throws(new Error('not in tests my friend'));
+
     return core.follow('ec:dm-stats')
-    .then(() => core.follow('ec:dm-stats').should.eventually.be.instanceOf(traverson._Builder));
+    .then(() => core.follow('ec:dm-stats')
+    .should.eventually.be.instanceOf(TraversonMock)
+    .notify(() => stub.restore()));
   });
   it('should reject on follow missing link', () => {
-    core.environment = 'live';
+    const stub = sinon.stub(helper, 'get');
+    stub.onFirstCall().returns(resolver('dm-list.json'));
+    stub.onSecondCall().returns(resolver('dm-list.json'));
+    stub.onThirdCall().throws(new Error('not in tests my friend'));
+
     return core.follow('ec:dm-stats')
-    .then(() => core.follow('missing').should.be.rejectedWith('Could not follow missing. Link not present in root response.'));
+    .then(() => core.follow('missing')
+    .should.be.rejectedWith('Could not follow missing. Link not present in root response.')
+    .notify(() => stub.restore()));
   });
   it('should return link', () => {
     core.environment = 'live';
