@@ -12,7 +12,8 @@ import {
   optionsToQuery,
   post,
   superagentFormPost,
-  superagentPost
+  superagentPost,
+  superagentGet
 } from './helper';
 import { urls } from './DataManager';
 import { createList } from './resources/publicAPI/EntryList';
@@ -682,5 +683,58 @@ export default class PublicAPI extends Core {
 
       return () => this.assetList({ assetID: { any: urls } });
     });
+  }
+
+  /**
+   * Best file helper for files.
+   *
+   * @param {string} assetID - the assetID
+   * @param {string?} locale - the locale
+   * @returns {Promise<string>} URL to the file
+   */
+  getFileUrl(assetID, locale) {
+    if (!assetID) {
+      return Promise.reject(new Error('assetID must be defined'));
+    }
+
+    const url = `${urls[this[environmentSymbol]]}files/${assetID}/url`;
+    return superagentGet(url, { 'Accept-Language': locale })
+    .then(([res]) => res.url);
+  }
+
+  /**
+   * Best file helper for images.
+   *
+   * @param {string} assetID - the assetID
+   * @param {number?} size - the minimum size of the image
+   * @param {string?} locale - the locale
+   * @returns {Promise<string>} URL to the file
+   */
+  getImageUrl(assetID, size, locale) {
+    if (!assetID) {
+      return Promise.reject(new Error('assetID must be defined'));
+    }
+
+    const url = `${urls[this[environmentSymbol]]}files/${assetID}/url${size ? `?size=${size}` : ''}`;
+    return superagentGet(url, { 'Accept-Language': locale })
+    .then(([res]) => res.url);
+  }
+
+  /**
+   * Best file helper for image thumbnails.
+   *
+   * @param {string} assetID - the assetID
+   * @param {number?} size - the minimum size of the image
+   * @param {string?} locale - the locale
+   * @returns {Promise<string>} URL to the file
+   */
+  getImageThumbUrl(assetID, size, locale) {
+    if (!assetID) {
+      return Promise.reject(new Error('assetID must be defined'));
+    }
+
+    const url = `${urls[this[environmentSymbol]]}files/${assetID}/url?thumb${size ? `&size=${size}` : ''}`;
+    return superagentGet(url, { 'Accept-Language': locale })
+    .then(([res]) => res.url);
   }
 }
