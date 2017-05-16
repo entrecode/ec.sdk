@@ -2,6 +2,7 @@ import halfred from 'halfred';
 import qs from 'querystring';
 import ShiroTrie from 'shiro-trie';
 import validator from 'json-schema-remote';
+import superagent from 'superagent';
 
 import {
   get,
@@ -10,7 +11,8 @@ import {
   getUrl,
   optionsToQuery,
   post,
-  superagentFormPost
+  superagentFormPost,
+  superagentPost
 } from './helper';
 import { urls } from './DataManager';
 import { createList } from './resources/publicAPI/EntryList';
@@ -22,6 +24,8 @@ import Core, {
   tokenStoreSymbol,
   traversalSymbol
 } from './Core';
+import PublicAssetList from './resources/publicAPI/PublicAssetList';
+import PublicAssetResource from './resources/publicAPI/PublicAssetResource';
 
 const shortIDSymbol = Symbol('_shortID');
 const modelCacheSymbol = Symbol('_modelCache');
@@ -493,5 +497,190 @@ export default class PublicAPI extends Core {
       });
     })
     .then(() => this.permissions.check(permission));
+  }
+
+  /**
+   * Load the {@link PublicAssetList}.
+   *
+   * @example
+   * return api.assetList()
+   * .then(assets => {
+   *   return assets.getAllItems().find(asset => asset.assetID === 'thisOne');
+   * })
+   * .then(asset => {
+   *   return show(asset);
+   * });
+   *
+   * @param {filterOptions?} options filter options
+   * @returns {Promise<PublicAssetList>} Promise resolving to PublicAssetList
+   */
+  assetList(options) {
+    return Promise.resolve()
+    .then(() => {
+      if (
+        options
+        && Object.keys(options).length === 1 && 'assetID' in options
+        && (typeof options.assetID === 'string' || (!('any' in options.assetID) && !('all' in options.assetID)))
+      ) {
+        throw new Error('Cannot filter assetList only by assetID. Use PublicAPI#asset() instead');
+      }
+
+      return this.follow('ec:api/assets');
+    })
+    .then((request) => {
+      request.withTemplateParameters(optionsToQuery(options, this[resourceSymbol].link('ec:api/assets').href));
+      return get(this[environmentSymbol], request);
+    })
+    .then(([res, traversal]) => new PublicAssetList(res, this[environmentSymbol], traversal));
+  }
+
+  /**
+   * Load a single {@link PublicAssetResource}.
+   *
+   * @example
+   * return api.asset('thisOne')
+   * .then(asset => {
+   *   return show(asset);
+   * });
+   *
+   * @param {string} assetID the assetID
+   * @returns {Promise<PublicAssetResource>} Promise resolving to PublicAssetResource
+   */
+  asset(assetID) {
+    return Promise.resolve()
+    .then(() => {
+      if (!assetID) {
+        throw new Error('assetID must be defined');
+      }
+      const request = this.newRequest()
+      .follow('ec:api/assets')
+      .withTemplateParameters({ assetID });
+      return get(this[environmentSymbol], request);
+    })
+    .then(([res, traversal]) => new PublicAssetResource(res, this[environmentSymbol], traversal));
+  }
+
+  /**
+   * Create a new asset.
+   *
+   * @param {object|string} input representing the asset, either a path, a FormData object,
+   *  a readStream, or an object containing a buffer.
+   * @param {object} options options for creating an asset.
+   * @returns {Promise<Promise<PublicAssetResource>>} the newly created PublicAssetResource
+   */
+  createAsset(input, options = {}) {
+    if (!input) {
+      return Promise.reject(new Error('Cannot create resource with undefined object.'));
+    }
+
+    return this.follow('ec:api/assets')
+    .then((request) => getUrl(this[environmentSymbol], request))
+    .then((url) => {
+      const superagentRequest = superagent.post(url);
+
+      const isFormData = typeof FormData === 'function' && input instanceof FormData; // eslint-disable-line
+                                                                                      // no-undef
+      if (isFormData) {
+        superagentRequest.send(input);
+      } else if (typeof input === 'string') {
+        superagentRequest.attach('file', input);
+      } else if (Buffer.isBuffer(input)) {
+        if (!('fileName' in options)) {
+          throw new Error('When using buffer file input you must provide options.fileName.');
+        }
+        superagentRequest.attach('file', input, options.fileName);
+      } else {
+        throw new Error('Cannot handle input.');
+      }
+
+      if (options.title) {
+        if (isFormData) {
+          input.field('title', options.title);
+        } else {
+          superagentRequest.field('title', options.title);
+        }
+      }
+
+      if (options.tags) {
+        if (isFormData) {
+          input.field('tags', options.tags);
+        } else {
+          superagentRequest.field('tags', options.tags);
+        }
+      }
+
+      return superagentPost(this[environmentSymbol], superagentRequest);
+    })
+    .then((response) => {
+      const url = response._links['ec:asset'].href;
+      const queryStrings = qs.parse(url.substr(url.indexOf('?') + 1));
+      return () => this.asset(queryStrings.assetID);
+    });
+  }
+
+  /**
+   * Create multiple new asset.
+   *
+   * @param {object|array<object|string>} input representing the asset, either an array of paths, a
+   *   FormData object, a array of readStreams, or an array containing buffers.
+   * @param {object} options options for creating an asset.
+   * @returns {Promise<Promise<AssetList>>} the newly created assets as AssetList
+   */
+  createAssets(input, options = {}) {
+    if (!input) {
+      return Promise.reject(new Error('Cannot create resource with undefined object.'));
+    }
+
+    return this.follow('ec:api/assets')
+    .then((request) => getUrl(this[environmentSymbol], request))
+    .then((url) => {
+      const superagentRequest = superagent.post(url);
+
+      const isFormData = typeof FormData === 'function' && input instanceof FormData; // eslint-disable-line
+                                                                                      // no-undef
+      if (isFormData) {
+        superagentRequest.send(input);
+      } else {
+        input.forEach((file, index) => {
+          if (typeof file === 'string') {
+            superagentRequest.attach('file', file);
+          } else if (Buffer.isBuffer(file)) {
+            if (!('fileName' in options)
+              || !Array.isArray(options.fileName)
+              || !options.fileName[index]) {
+              throw new Error('When using buffer file input you must provide options.fileName.');
+            }
+            superagentRequest.attach('file', file, options.fileName[index]);
+          } else {
+            throw new Error('Cannot handle input.');
+          }
+        });
+      }
+      if (options.title) {
+        if (isFormData) {
+          input.field('title', options.title);
+        } else {
+          superagentRequest.field('title', options.title);
+        }
+      }
+
+      if (options.tags) {
+        if (isFormData) {
+          input.field('tags', options.tags);
+        } else {
+          superagentRequest.field('tags', options.tags);
+        }
+      }
+
+      return superagentPost(this[environmentSymbol], superagentRequest);
+    })
+    .then((response) => {
+      const urls = response._links['ec:asset'].map((link) => {
+        const queryStrings = qs.parse(link.href.substr(link.href.indexOf('?') + 1));
+        return queryStrings.assetID;
+      });
+
+      return () => this.assetList({ assetID: { any: urls } });
+    });
   }
 }

@@ -1,0 +1,80 @@
+{
+  "count": 3,
+  "total": 3,
+  "_links": {
+    "curies": {
+      "href": "https://doc.entrecode.de/data_manager/#relation-{rel}",
+      "templated": true
+    },
+    "ec:api/assets": {
+      "profile": "https://entrecode.de/schema/assets",
+      "href": "https://datamanager.entrecode.de/asset/01bd8e08"
+    },
+    "ec:api/tags/options": {
+      "href": "https://datamanager.entrecode.de/tag/01bd8e08{?dataManagerID,page,size,sort,tag,tag~}",
+      "templated": true
+    },
+    "self": {
+      "profile": "https://entrecode.de/schema/tag",
+      "href": "https://datamanager.entrecode.de/tag/01bd8e08"
+    }
+  },
+  "_embedded": {
+    "ec:api/tag": [
+      {
+        "count": 1,
+        "tag": "one",
+        "_links": {
+          "collection": {
+            "profile": "https://entrecode.de/schema/tags",
+            "href": "https://datamanager.entrecode.de/tag/01bd8e08"
+          },
+          "ec:api/assets/with-tag": {
+            "profile": "https://entrecode.de/schema/assets",
+            "href": "https://datamanager.entrecode.de/asset/01bd8e08?tag=one"
+          },
+          "self": {
+            "profile": "https://entrecode.de/schema/tag",
+            "href": "https://datamanager.entrecode.de/tag/01bd8e08?tag=one"
+          }
+        }
+      },
+      {
+        "count": 10,
+        "tag": "test",
+        "_links": {
+          "collection": {
+            "profile": "https://entrecode.de/schema/tags",
+            "href": "https://datamanager.entrecode.de/tag/01bd8e08"
+          },
+          "ec:api/assets/with-tag": {
+            "profile": "https://entrecode.de/schema/assets",
+            "href": "https://datamanager.entrecode.de/asset/01bd8e08?tag=test"
+          },
+          "self": {
+            "profile": "https://entrecode.de/schema/tag",
+            "href": "https://datamanager.entrecode.de/tag/01bd8e08?tag=test"
+          }
+        }
+      },
+      {
+        "count": 1,
+        "tag": "two",
+        "_links": {
+          "collection": {
+            "profile": "https://entrecode.de/schema/tags",
+            "href": "https://datamanager.entrecode.de/tag/01bd8e08"
+          },
+          "ec:api/assets/with-tag": {
+            "profile": "https://entrecode.de/schema/assets",
+            "href": "https://datamanager.entrecode.de/asset/01bd8e08?tag=two"
+          },
+          "self": {
+            "profile": "https://entrecode.de/schema/tag",
+            "href": "https://datamanager.entrecode.de/tag/01bd8e08?tag=two"
+          }
+        }
+      }
+    ]
+  }
+}

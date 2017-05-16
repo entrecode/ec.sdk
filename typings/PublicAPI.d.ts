@@ -1,7 +1,9 @@
 import { Core } from './Core';
-import { filterOptions } from './interfaces';
+import { assetInput, assetOptions, filterOptions } from './interfaces';
 import { EntryList } from './resources/publicAPI/EntryList';
 import { EntryResource } from './resources/publicAPI/EntryResource';
+import { PublicAssetList } from './resources/publicAPI/PublicAssetList';
+import { PublicAssetResource } from './resources/publicAPI/PublicAssetResource';
 
 export declare class PublicAPI extends Core {
   constructor(id: string, environment?: environment);
@@ -35,6 +37,14 @@ export declare class PublicAPI extends Core {
   createEntry(model:string, entry: any): Promise<EntryResource>;
 
   checkPermission(permission): Promise<boolean>;
+
+  assetList(options?: filterOptions): PublicAssetList;
+
+  asset(assetID: string): PublicAssetResource;
+
+  createAsset(input: assetInput, options: assetOptions): () => Promise<PublicAssetResource>;
+
+  createAsset(input: Array<assetInput>, options: assetOptions): () => Promise<PublicAssetList>;
 }
 
 type environment = 'live' | 'stage' | 'nightly' | 'develop';
