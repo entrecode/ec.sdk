@@ -12,8 +12,8 @@ import {
   optionsToQuery,
   post,
   superagentFormPost,
-  superagentPost,
-  superagentGet
+  superagentGet,
+  superagentPost
 } from './helper';
 import { urls } from './DataManager';
 import { createList } from './resources/publicAPI/EntryList';
@@ -425,9 +425,10 @@ export default class PublicAPI extends Core {
    *
    * @param {string} model name of the model for which the list should be loaded
    * @param {string} id the entry id
+   * @param {number} levels number of levels to request
    * @returns {Promise<EntryResource>} Promise resolving to EntryResource
    */
-  entry(model, id) {
+  entry(model, id, levels) {
     return Promise.resolve()
     .then(() => {
       if (!model) {
@@ -441,7 +442,11 @@ export default class PublicAPI extends Core {
       return this.follow(`${this[shortIDSymbol]}:${model}`);
     })
     .then((request) => {
-      request.withTemplateParameters({ _id: id });
+      const parameters = { _id: id };
+      if (levels && levels > 1) {
+        parameters._levels = levels; // eslint-disable-line no-underscore-dangle
+      }
+      request.withTemplateParameters(parameters);
       return get(this[environmentSymbol], request);
     })
     .then(([res, traversal]) => createEntry(res, this[environmentSymbol], traversal));

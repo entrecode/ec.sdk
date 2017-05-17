@@ -32,7 +32,7 @@ export declare class PublicAPI extends Core {
 
   entryList(model: string, options?: filterOptions): Promise<EntryList>;
 
-  entry(model:string, id: string): Promise<EntryResource>;
+  entry(model: string, id: string, levels: number): Promise<EntryResource>;
 
   createEntry(model:string, entry: any): Promise<EntryResource>;
 

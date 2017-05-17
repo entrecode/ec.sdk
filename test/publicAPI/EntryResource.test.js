@@ -155,11 +155,12 @@ describe('Entry Resource', () => {
   });
   it('should set entry field, object', () => {
     resource.entry = { _id: '1234567' };
-    setSpy.should.have.been.calledWith('entry', '1234567');
+    setSpy.should.have.been.calledWith('entry', { _id: '1234567' });
   });
   it('should set entry field, EntryResource', () => {
+    const original = resource.toOriginal();
     resource.entry = resource;
-    setSpy.should.have.been.calledWith('entry', resource.id);
+    setSpy.should.have.been.calledWith('entry', original);
   });
   it('should throw on set entry field, invalid object', () => {
     const throws = () => resource.entry = { invalid: 'object' };
@@ -176,11 +177,12 @@ describe('Entry Resource', () => {
   });
   it('should set entries field, object', () => {
     resource.entries = [{ _id: '1234567' }];
-    setSpy.should.have.been.calledWith('entries', ['1234567']);
+    setSpy.should.have.been.calledWith('entries', [{ _id: '1234567' }]);
   });
   it('should set entries field, EntryResource', () => {
+    const original = resource.toOriginal();
     resource.entries = [resource];
-    setSpy.should.have.been.calledWith('entries', [resource.id]);
+    setSpy.should.have.been.calledWith('entries', [original]);
   });
   it('should throw on set entries field, not an array', () => {
     const throws = () => resource.entries = {};
@@ -324,5 +326,81 @@ describe('Entry Resource', () => {
   });
   it('should be empty array, assets', () => {
     resource.getImageThumbUrl('emptyAssets').should.have.property('length', 0);
+  });
+});
+
+describe('Entry Resource with nested', () => {
+  let resJson;
+  let res;
+  before(() =>
+    new Promise((resolve, reject) => {
+      fs.readFile(`${__dirname}/../mocks/public-entry-nested.json`, 'utf-8', (err, json) => {
+        if (err) {
+          return reject(err);
+        }
+        return resolve(JSON.parse(json));
+      });
+    })
+    .then((json) => {
+      resJson = json;
+    }));
+  beforeEach(() => {
+    mock.reset();
+    return EntryResource.createEntry(resJson)
+    .then((r) => {
+      res = r;
+    });
+  });
+  afterEach(() => {
+    res = null;
+  });
+  it('should get nested entry, entry', () => {
+    res.entry.should.be.instanceOf(EntryResource.default);
+  });
+  it('should get nested entry, entries', () => {
+    res.entries.forEach((entry) => {
+      entry.should.be.instanceOf(EntryResource.default);
+    });
+    res.entries.forEach((entry) => {
+      entry.should.be.instanceOf(EntryResource.default);
+    });
+  });
+});
+
+describe('Entry Resource with nested and array links', () => {
+  let resJson;
+  let res;
+  before(() =>
+    new Promise((resolve, reject) => {
+      fs.readFile(`${__dirname}/../mocks/public-entry-nested-linkarrays.json`, 'utf-8', (err, json) => {
+        if (err) {
+          return reject(err);
+        }
+        return resolve(JSON.parse(json));
+      });
+    })
+    .then((json) => {
+      resJson = json;
+    }));
+  beforeEach(() => {
+    mock.reset();
+    return EntryResource.createEntry(resJson)
+    .then((r) => {
+      res = r;
+    });
+  });
+  afterEach(() => {
+    res = null;
+  });
+  it('should get nested entry, entry', () => {
+    res.entry.should.be.instanceOf(EntryResource.default);
+  });
+  it('should get nested entry, entries', () => {
+    res.entries.forEach((entry) => {
+      entry.should.be.instanceOf(EntryResource.default);
+    });
+    res.entries.forEach((entry) => {
+      entry.should.be.instanceOf(EntryResource.default);
+    });
   });
 });

@@ -1,4 +1,5 @@
 import halfred from 'halfred';
+import validator from 'json-schema-remote';
 
 import { fileNegotiate, getSchema } from '../../helper';
 import Resource, { resourceSymbol } from '../Resource';
@@ -27,6 +28,30 @@ const underscore = [
   '_creator',
 ];
 
+function getFieldType(schema, property) {
+  if (!property) {
+    return undefined;
+  }
+
+  const prop = schema.allOf[1].properties[property];
+  if (!prop) {
+    return undefined;
+  }
+
+  const result = /^([^<>]+)(?:<[^>]*>)?$/.exec(prop.title);
+  if (!result) {
+    return undefined;
+  }
+
+  return result[1];
+}
+
+function getShortID(resource) {
+  const link = resource.link('collection').href;
+  const result = new RegExp(`/api/([0-9a-f]{8})/${resource._modelTitle}`).exec(link);
+  return result[1];
+}
+
 /**
  * EntryResource class representing entries. Fields will have getter and setter. Setter will
  * validate the input on a best effort basis.
@@ -34,29 +59,36 @@ const underscore = [
  * If the schema for this Entry is not known on creating it, you will have to use
  * EntryResource#creatEntry.
  *
+ * So called `nested Entries` will seamlessly integrate with EntryResources. When an entry is
+ * loaded with level parameter set it will return EntryResources for alle entry/entries fields. You
+ * don't need to do any other work except loading it leveled. For this to work properly the parent
+ * EntryResource will need to be instantiated with EntryResource#createEntry, otherwise the
+ * required JSON Schemas won't be stored in the cache.
+ *
  * @example
  * publicAPI.getEntry('muffins', '1234567')
  * .then((muffin) => {
  *   show(muffin.title, muffin.deliciousness);
  * });
  *
- * @param {string} id entry id (_id defined as well)
- * @param {Date} created created date (_created defined as well)
- * @param {Date} modified last modified date (_modified defined as well)
- * @param {string} creator public user which created thie entry (_creator defined as well)
+ * @prop {string} id entry id (_id defined as well)
+ * @prop {Date} created created date (_created defined as well)
+ * @prop {Date} modified last modified date (_modified defined as well)
+ * @prop {string} creator public user which created thie entry (_creator defined as well)
  *
- * @param {Date|string} datetime fields with type datetime
- * @param {EntryResource|object|string} entry fields with type entry
- * @param {Array<EntryResource|object|string>} entries fields with type entries
- * @param {AssetResource|object|string} asset fields with type asset
- * @param {Array<AssetResource|object|string>} assets fields with type assets
- * @param {DMAccountResource|object|string} account fields with type account
- * @param {RoleResource|object|string} role fields with type role
- * @param {string|object|array|number} other field with all other types
+ * @prop {Date|string} datetime fields with type datetime
+ * @prop {EntryResource|object|string} entry fields with type entry
+ * @prop {Array<EntryResource|object|string>} entries fields with type entries
+ * @prop {AssetResource|object|string} asset fields with type asset
+ * @prop {Array<AssetResource|object|string>} assets fields with type assets
+ * @prop {DMAccountResource|object|string} account fields with type account
+ * @prop {RoleResource|object|string} role fields with type role
+ * @prop {string|object|array|number} other field with all other types
  */
 export default class EntryResource extends Resource {
   /**
    * Creates a new EntryResource
+   *
    * @param {object} resource loaded resource
    * @param {environment} environment the environment of this resource
    * @param {object} schema JSON Schema for this entry
@@ -70,12 +102,7 @@ export default class EntryResource extends Resource {
     }
 
     this[schemaSymbol] = schema;
-
-    const link = this.getLink('collection').href;
-    const result = new RegExp(`/api/([0-9a-f]{8})/${this.getModelTitle()}`).exec(link);
-    if (result) {
-      this[shortIDSymbol] = result[1];
-    }
+    this[shortIDSymbol] = getShortID(this[resourceSymbol]);
 
     Object.keys(this[schemaSymbol].allOf[1].properties).forEach((key) => {
       if (!skip.includes(key)) {
@@ -102,13 +129,26 @@ export default class EntryResource extends Resource {
           };
           break;
         case 'entry':
-          property.get = () => this.getProperty(key);
+          property.get = () => {
+            const entry = this.getProperty(key);
+            if (typeof entry === 'object' && !(entry instanceof EntryResource)) {
+              let link = entry._links.self;
+              if (Array.isArray(link)) {
+                link = link[0];
+              }
+              const entrySchema = validator.getSchema(link.profile);
+              this[resourceSymbol][key] = new EntryResource(entry, environment, entrySchema);
+            }
+            return this.getProperty(key);
+          };
           property.set = (val) => {
             let value;
             if (typeof val === 'string') {
               value = val;
+            } else if (val instanceof EntryResource) {
+              value = val.toOriginal();
             } else if (typeof val === 'object' && '_id' in val) {
-              value = val._id;
+              value = val;
             } else {
               throw new Error('only string and object/EntryResource supported as input type');
             }
@@ -118,7 +158,25 @@ export default class EntryResource extends Resource {
           };
           break;
         case 'entries':
-          property.get = () => this.getProperty(key);
+          property.get = () => {
+            const entries = this.getProperty(key);
+            this[resourceSymbol][key] = entries.map((entry) => {
+              if (typeof entry === 'object') {
+                if (entry instanceof EntryResource) {
+                  return entry;
+                }
+
+                let link = entry._links.self;
+                if (Array.isArray(link)) {
+                  link = link[0];
+                }
+                const entrySchema = validator.getSchema(link.profile);
+                return new EntryResource(entry, environment, entrySchema);
+              }
+              return entry;
+            });
+            return this.getProperty(key);
+          };
           property.set = (val) => {
             if (!Array.isArray(val)) {
               throw new Error('only array supported as input type');
@@ -128,12 +186,14 @@ export default class EntryResource extends Resource {
               if (typeof v === 'string') {
                 return v;
               }
+              if (v instanceof EntryResource) {
+                return v.toOriginal();
+              }
               if (typeof v === 'object' && '_id' in v) {
-                return v._id;
+                return v;
               }
               throw new Error('only string and object/EntryResource supported as input type');
             });
-
             this.setProperty(key, value);
             return val;
           };
@@ -231,21 +291,7 @@ export default class EntryResource extends Resource {
    * @returns {string} type of the field
    */
   getFieldType(property) {
-    if (!property) {
-      return undefined;
-    }
-
-    const prop = this[schemaSymbol].allOf[1].properties[property];
-    if (!prop) {
-      return undefined;
-    }
-
-    const result = /^([^<>]+)(?:<[^>]*>)?$/.exec(prop.title);
-    if (!result) {
-      return undefined;
-    }
-
-    return result[1];
+    return getFieldType(this[schemaSymbol], property);
   }
 
   /**
@@ -356,6 +402,29 @@ export default class EntryResource extends Resource {
   }
 }
 
+function loadSchemaForResource(resource) {
+  const res = halfred.parse(resource);
+  return getSchema(res.link('self').profile)
+  .then(schema =>
+    Object.keys(schema.allOf[1].properties).map((property) => {
+      if (!skip.includes(property) && ['entry', 'entries'].includes(getFieldType(schema, property))) {
+        const field = res[property];
+        if (Array.isArray(field)) {
+          return field[0] && typeof field[0] === 'object' ? field : undefined;
+        } else if (typeof field === 'object') {
+          return field;
+        }
+      }
+    })
+    .reduce((r, p) => r.concat(p), [])
+    .filter(x => !!x) // filter undefined
+    .filter((x, i, a) => a.findIndex(t => t.id === x.id) === i) // filter duplicates
+    .map(r => () => loadSchemaForResource(r)) // eslint-disable-line comma-dangle
+    .reduce((r, p) => r.then(p), Promise.resolve())
+    .then(() => schema)
+  );
+}
+
 /**
  * Asynchronously create a new {@link EntryResource}. This can be used when the schema is not known
  * before creating the EntryResource.
@@ -364,13 +433,10 @@ export default class EntryResource extends Resource {
  * @param {environment} environment the environment of this resource
  * @param {object?} traversal traversal for continuing
  * @returns {Promise<EntryResource>} {@link Promise} resolving to the newly created {@link
- *   EntryResource}
+  *   EntryResource}
  */
 export function createEntry(resource, environment, traversal) {
   return Promise.resolve()
-  .then(() => {
-    const res = halfred.parse(resource);
-    return getSchema(res.link('self').profile);
-  })
+  .then(() => loadSchemaForResource(resource))
   .then(schema => new EntryResource(resource, environment, schema, traversal));
 }

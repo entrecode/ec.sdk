@@ -1,0 +1,128 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "https://datamanager.entrecode.de/api/schema/beefbeef/contains_entries",
+  "type": "object",
+  "allOf": [
+    {
+      "$ref": "https://entrecode.de/schema/hal#definitions/halResource"
+    },
+    {
+      "additionalProperties": false,
+      "properties": {
+        "_links": {
+          "$ref": "https://entrecode.de/schema/hal#_links"
+        },
+        "_embedded": {
+          "$ref": "https://entrecode.de/schema/hal#_embedded"
+        },
+        "_id": {
+          "type": "string",
+          "pattern": "^[0-9A-Za-z-_]{7,14}$",
+          "title": "id",
+          "description": "Unique identifier for this entry."
+        },
+        "id": {
+          "type": "string",
+          "pattern": "^[0-9A-Za-z-_]{7,14}$",
+          "title": "id",
+          "description": "Unique identifier for this entry."
+        },
+        "private": {
+          "type": "boolean",
+          "description": "Indicates if an entry was posted private."
+        },
+        "_created": {
+          "type": "string",
+          "format": "date-time",
+          "title": "datetime",
+          "description": "Timestamp of the creation of this entry."
+        },
+        "created": {
+          "type": "string",
+          "format": "date-time",
+          "title": "datetime",
+          "description": "Timestamp of the creation of this entry."
+        },
+        "_creator": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "title": "account",
+          "description": "Creator of this entry."
+        },
+        "creator": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "title": "account",
+          "description": "Creator of this entry."
+        },
+        "_modified": {
+          "type": "string",
+          "format": "date-time",
+          "title": "datetime",
+          "description": "Timestamp of the last modification of this entry."
+        },
+        "modified": {
+          "type": "string",
+          "format": "date-time",
+          "title": "datetime",
+          "description": "Timestamp of the last modification of this entry."
+        },
+        "_modelTitleField": {
+          "type": "string",
+          "description": "Indicates which field is the title field of the model."
+        },
+        "_modelTitle": {
+          "type": "string",
+          "description": "The title of the model this entry is part of.",
+          "pattern": "^[a-zA-Z0-9_\\-]{1,256}$"
+        },
+        "_entryTitle": {
+          "description": "Shorthand for entry title."
+        },
+        "entries": {
+          "type": "array",
+          "items": {
+            "title": "entry<undefined>",
+            "oneOf": [
+              {
+                "type": "string",
+                "pattern": "^[0-9A-Za-z-_]{7,14}$"
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "pattern": "^[0-9A-Za-z-_]{7,14}$"
+                  }
+                }
+              }
+            ]
+          },
+          "title": "entries<null>",
+          "description": "",
+          "default": null
+        },
+        "ad": {
+          "type": "string",
+          "title": "text",
+          "description": "",
+          "default": "asd"
+        }
+      },
+      "required": [
+        "_id",
+        "_created",
+        "_modified",
+        "_modelTitleField",
+        "_modelTitle",
+        "_entryTitle",
+        "ad"
+      ]
+    }
+  ]
+}

@@ -118,11 +118,7 @@ export default class Resource {
    *   be the same object but with refreshed data.
    */
   save() {
-    const out = {};
-    Object.keys(this[resourceSymbol].original()).forEach((key) => {
-      out[key] = this[resourceSymbol][key];
-    });
-
+    const out = this.toOriginal();
     return validator.validate(out, this[resourceSymbol].link('self').profile)
     .then(() => put(this[environmentSymbol], this.newRequest().follow('self'), out))
     .then(([res, traversal]) => {
@@ -248,5 +244,13 @@ export default class Resource {
     this[dirtySymbol] = true;
     this[resourceSymbol][property] = value;
     return this;
+  }
+
+  toOriginal() {
+    const out = {};
+    Object.keys(this[resourceSymbol].original()).forEach((key) => {
+      out[key] = this[resourceSymbol][key];
+    });
+    return out;
   }
 }

@@ -3,6 +3,8 @@ import { Resource } from '../Resource';
 export declare class EntryResource extends Resource {
   constructor(resource: any, environment: environment, schema: any, traversal: any);
 
+  [key: string]: any;
+
   getFieldType(property: string): string;
 
   getTitle(property: string): Array<string> | string;

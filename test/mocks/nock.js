@@ -29,6 +29,7 @@ module.exports = {
     nock('https://datamanager.entrecode.de')
     .get('/').replyWithFile(200, `${__dirname}/dm-list.json`, { 'Content-Type': 'application/json' })
     .get('/api/beefbeef').replyWithFile(200, `${__dirname}/public-dm-root.json`, { 'Content-Type': 'application/json' })
+    .get('/api/schema/beefbeef/contains_entries').replyWithFile(200, `${__dirname}/schema/dm-model2.json`, { 'Content-Type': 'application/json' })
     .get('/api/schema/beefbeef/allFields').replyWithFile(200, `${__dirname}/schema/dm-model.json`, { 'Content-Type': 'application/json' })
     .get('/api/schema/beefbeef/allFields?template=put').replyWithFile(200, `${__dirname}/schema/dm-model-put.json`, { 'Content-Type': 'application/json' })
     .get('/api/schema/beefbeef/allFields?template=post').replyWithFile(200, `${__dirname}/schema/dm-model-post.json`, { 'Content-Type': 'application/json' });
