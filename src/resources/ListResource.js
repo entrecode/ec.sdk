@@ -75,15 +75,18 @@ export default class ListResource extends Resource {
     if (n === undefined) { // undefined check
       throw new Error('Index must be defined.');
     }
-    const array = this.getAllItems();
-    if (array.length === 0) {
+    const array = this[resourceSymbol].embeddedArray(this[nameSymbol]);
+    if (!array || array.length === 0) {
       throw new Error('Cannot get n\'th item of empty list.');
     }
     if (array.length <= n) {
       throw new Error(`Cannot get ${n}'th item of list with length ${array.length}`);
     }
 
-    return array[n];
+    if (this[itemSchemaSymbol]) {
+      return new this[itemClassSymbol](array[n], this[environmentSymbol], this[itemSchemaSymbol]);
+    }
+    return new this[itemClassSymbol](array[n], this[environmentSymbol]);
   }
 
   /**
