@@ -15,7 +15,7 @@ import RoleResource from './RoleResource';
 import AssetList from './AssetList';
 import AssetResource from './AssetResource';
 import DMStatsList from './DMStatsList';
-import Resource from '../Resource';
+import Resource, { environmentSymbol, resourceSymbol } from '../Resource';
 
 /**
  * DataManager resource class.
@@ -128,12 +128,12 @@ export default class DataManagerResource extends Resource {
       }
 
       return get(
-        this.environment,
+        this[environmentSymbol],
         this.newRequest().follow('ec:models/options')
-        .withTemplateParameters(optionsToQuery(o, this.resource.link('ec:models/options').href))
+        .withTemplateParameters(optionsToQuery(o, this[resourceSymbol].link('ec:models/options').href))
       );
     })
-    .then(([resource, traversal]) => new ModelList(resource, this.environment, traversal));
+    .then(([resource, traversal]) => new ModelList(resource, this[environmentSymbol], traversal));
   }
 
   /**
@@ -150,11 +150,11 @@ export default class DataManagerResource extends Resource {
       }
 
       return get(
-        this.environment,
+        this[environmentSymbol],
         this.newRequest().follow('ec:models/options').withTemplateParameters({ modelID })
       );
     })
-    .then(([resource, traversal]) => new ModelResource(resource, this.environment, traversal));
+    .then(([resource, traversal]) => new ModelResource(resource, this[environmentSymbol], traversal));
   }
 
   /**
@@ -202,10 +202,10 @@ export default class DataManagerResource extends Resource {
 
       const request = this.newRequest()
       .follow('ec:dm-clients/options')
-      .withTemplateParameters(optionsToQuery(o, this.resource.link('ec:dm-clients/options').href));
-      return get(this.environment, request);
+      .withTemplateParameters(optionsToQuery(o, this[resourceSymbol].link('ec:dm-clients/options').href));
+      return get(this[environmentSymbol], request);
     })
-    .then(([res, traversal]) => new DMClientList(res, this.environment, traversal));
+    .then(([res, traversal]) => new DMClientList(res, this[environmentSymbol], traversal));
   }
 
   /**
@@ -229,9 +229,9 @@ export default class DataManagerResource extends Resource {
       const request = this.newRequest()
       .follow('ec:dm-clients/options')
       .withTemplateParameters({ datamanagerid: this.dataManagerID, clientid: clientID });
-      return get(this.environment, request);
+      return get(this[environmentSymbol], request);
     })
-    .then(([res, traversal]) => new DMClientResource(res, this.environment, traversal));
+    .then(([res, traversal]) => new DMClientResource(res, this[environmentSymbol], traversal));
   }
 
   /**
@@ -246,10 +246,11 @@ export default class DataManagerResource extends Resource {
       if (!client) {
         throw new Error('Cannot create resource with undefined object.');
       }
-      // TODO schema validation
-      return post(this.newRequest().follow('ec:dm-clients'), client);
+      return this[resourceSymbol].link('ec:dm-client/by-id');
     })
-    .then(([dm, traversal]) => new DMClientResource(dm, this.environment, traversal));
+    .then(link => validator.validate(client, `${link.profile}`))
+    .then(() => post(this.newRequest().follow('ec:dm-clients'), client))
+    .then(([dm, traversal]) => new DMClientResource(dm, this[environmentSymbol], traversal));
   }
 
   /**
@@ -290,11 +291,11 @@ export default class DataManagerResource extends Resource {
       }
 
       const request = this.newRequest()
-      .follow('ec:dm-account/options')
-      .withTemplateParameters(optionsToQuery(o, this.resource.link('ec.dm-account/options').href));
-      return get(this.environment, request);
+      .follow('ec:dm-accounts/options')
+      .withTemplateParameters(optionsToQuery(o, this[resourceSymbol].link('ec:dm-accounts/options').href));
+      return get(this[environmentSymbol], request);
     })
-    .then(([res, traversal]) => new DMAccountList(res, this.environment, traversal));
+    .then(([res, traversal]) => new DMAccountList(res, this[environmentSymbol], traversal));
   }
 
   /**
@@ -318,9 +319,9 @@ export default class DataManagerResource extends Resource {
       const request = this.newRequest()
       .follow('ec:dm-accounts/options')
       .withTemplateParameters({ accountid: accountID, datamanagerid: this.dataManagerID });
-      return get(this.environment, request);
+      return get(this[environmentSymbol], request);
     })
-    .then(([res, traversal]) => new DMAccountResource(res, this.environment, traversal));
+    .then(([res, traversal]) => new DMAccountResource(res, this[environmentSymbol], traversal));
   }
 
   /**
@@ -368,10 +369,10 @@ export default class DataManagerResource extends Resource {
 
       const request = this.newRequest()
       .follow('ec:dm-roles/options')
-      .withTemplateParameters(optionsToQuery(o, this.resource.link('ec.dm-roles/options').href));
-      return get(this.environment, request);
+      .withTemplateParameters(optionsToQuery(o, this[resourceSymbol].link('ec:dm-roles/options').href));
+      return get(this[environmentSymbol], request);
     })
-    .then(([res, traversal]) => new RoleList(res, this.environment, traversal));
+    .then(([res, traversal]) => new RoleList(res, this[environmentSymbol], traversal));
   }
 
   /**
@@ -395,9 +396,9 @@ export default class DataManagerResource extends Resource {
       const request = this.newRequest()
       .follow('ec:dm-roles/options')
       .withTemplateParameters({ dataManagerID: this.dataManagerID, roleID });
-      return get(this.environment, request);
+      return get(this[environmentSymbol], request);
     })
-    .then(([res, traversal]) => new RoleResource(res, this.environment, traversal));
+    .then(([res, traversal]) => new RoleResource(res, this[environmentSymbol], traversal));
   }
 
   /**
@@ -412,11 +413,11 @@ export default class DataManagerResource extends Resource {
       if (!role) {
         throw new Error('Cannot create resource with undefined object.');
       }
-      return this.resource.link('ec:dm-role/by-id');
+      return this[resourceSymbol].link('ec:dm-role/by-id');
     })
     .then(link => validator.validate(role, `${link.profile}-template`))
     .then(() => post(this.newRequest().follow('ec:dm-roles'), role))
-    .then(([dm, traversal]) => new RoleResource(dm, this.environment, traversal));
+    .then(([dm, traversal]) => new RoleResource(dm, this[environmentSymbol], traversal));
   }
 
   /**
@@ -435,9 +436,9 @@ export default class DataManagerResource extends Resource {
     .then(() => {
       const request = this.newRequest()
       .follow('ec:dm-stats');
-      return get(this.environment, request);
+      return get(this[environmentSymbol], request);
     })
-    .then(([res]) => new DMStatsList(res, this.environment).getFirstItem());
+    .then(([res]) => new DMStatsList(res, this[environmentSymbol]).getFirstItem());
   }
 
   /**
@@ -485,10 +486,10 @@ export default class DataManagerResource extends Resource {
 
       const request = this.newRequest()
       .follow('ec:assets/options')
-      .withTemplateParameters(optionsToQuery(o, this.resource.link('ec:assets/options').href));
-      return get(this.environment, request);
+      .withTemplateParameters(optionsToQuery(o, this[resourceSymbol].link('ec:assets/options').href));
+      return get(this[environmentSymbol], request);
     })
-    .then(([res, traversal]) => new AssetList(res, this.environment, traversal));
+    .then(([res, traversal]) => new AssetList(res, this[environmentSymbol], traversal));
   }
 
   /**
@@ -512,9 +513,9 @@ export default class DataManagerResource extends Resource {
       const request = this.newRequest()
       .follow('ec:assets/options')
       .withTemplateParameters({ dataManagerID: this.dataManagerID, assetID });
-      return get(this.environment, request);
+      return get(this[environmentSymbol], request);
     })
-    .then(([res, traversal]) => new AssetResource(res, this.environment, traversal));
+    .then(([res, traversal]) => new AssetResource(res, this[environmentSymbol], traversal));
   }
 
   /**
@@ -530,7 +531,7 @@ export default class DataManagerResource extends Resource {
       return Promise.reject(new Error('Cannot create resource with undefined object.'));
     }
 
-    return getUrl(this.environment, this.newRequest().follow('ec:assets'))
+    return getUrl(this[environmentSymbol], this.newRequest().follow('ec:assets'))
     .then((url) => {
       const superagentRequest = superagent.post(url);
 
@@ -565,7 +566,7 @@ export default class DataManagerResource extends Resource {
         }
       }
 
-      return superagentPost(this.environment, superagentRequest);
+      return superagentPost(this[environmentSymbol], superagentRequest);
     })
     .then((response) => {
       const url = response._links['ec:asset'].href;
@@ -587,7 +588,7 @@ export default class DataManagerResource extends Resource {
       return Promise.reject(new Error('Cannot create resource with undefined object.'));
     }
 
-    return getUrl(this.environment, this.newRequest().follow('ec:assets'))
+    return getUrl(this[environmentSymbol], this.newRequest().follow('ec:assets'))
     .then((url) => {
       const superagentRequest = superagent.post(url);
 
@@ -627,7 +628,7 @@ export default class DataManagerResource extends Resource {
         }
       }
 
-      return superagentPost(this.environment, superagentRequest);
+      return superagentPost(this[environmentSymbol], superagentRequest);
     })
     .then((response) => {
       const urls = response._links['ec:asset'].map((link) => {
@@ -649,7 +650,7 @@ export default class DataManagerResource extends Resource {
     .then(() => {
       const request = this.newRequest()
       .follow('ec:datamananger/export');
-      return get(this.environment, request);
+      return get(this[environmentSymbol], request);
     })
     .then(([res]) => res);
   }

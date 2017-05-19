@@ -1,0 +1,19 @@
+{
+  "permissions": [
+    "model_with_underscore:get:*",
+    "contains_entries:get:*",
+    "allFields:get:*",
+    "entry:get:*"
+  ],
+  "_links": {
+    "curies": {
+      "name": "01bd8e08",
+      "href": "https://datamanager.entrecode.de/api/doc/01bd8e08/relation/{rel}",
+      "templated": true
+    },
+    "self": {
+      "name": "permissions",
+      "href": "https://datamanager.entrecode.de/api/01bd8e08/_permissions"
+    }
+  }
+}

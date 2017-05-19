@@ -18,6 +18,8 @@ const emitter = require('../lib/EventEmitter').default;
 const TokenStore = require('../lib/TokenStore');
 
 const nockMock = require('./mocks/nock');
+const resolver = require('./mocks/resolver');
+const TraversonMock = require('./mocks/TraversonMock');
 
 nock.disableNetConnect();
 chai.should();
@@ -28,7 +30,8 @@ traverson.registerMediaType(traversonHal.mediaType, traversonHal);
 describe('Core', () => {
   let core;
   beforeEach(() => {
-    core = new Core.default('https://datamanager.entrecode.de'); // eslint-disable-line new-cap
+    core = new Core.default({ live: 'https://datamanager.entrecode.de' }); // eslint-disable-line
+                                                                           // new-cap
     nockMock.reset();
   });
   it('should be instance of Core', () => {
@@ -39,7 +42,7 @@ describe('Core', () => {
     throws.should.throw(Error);
   });
   it('should set token', () => {
-    const stub = sinon.stub(core.tokenStore, 'set');
+    const stub = sinon.stub(core[Core.tokenStoreSymbol], 'set');
     core.setToken('token');
     stub.should.have.been.calledWith('token');
   });
@@ -48,7 +51,7 @@ describe('Core', () => {
     throws.should.throw(Error);
   });
   it('should set user agent', () => {
-    const stub = sinon.stub(core.tokenStore, 'setUserAgent');
+    const stub = sinon.stub(core[Core.tokenStoreSymbol], 'setUserAgent');
     core.setUserAgent('useragent');
     stub.should.have.been.calledWith('useragent');
   });
@@ -60,22 +63,38 @@ describe('Core', () => {
     core.newRequest().should.be.instanceOf(traverson._Builder);
   });
   it('should return traverson Builder newRequest with continue', () => {
-    core.traversal.continue = () => core.traversal; // simulate traversal with continue
+    // simulate traversal with continue
+    core[Core.traversalSymbol].continue = () => core[Core.traversalSymbol];
     core.newRequest().should.be.instanceOf(traverson._Builder);
   });
   it('should return traverson Builder follow', () => {
-    core.environment = 'live';
-    return core.follow('ec:dm-stats').should.eventually.be.instanceOf(traverson._Builder);
+    const stub = sinon.stub(helper, 'get');
+    stub.onFirstCall().returns(resolver('dm-list.json'));
+    stub.onSecondCall().throws(new Error('not in tests my friend'));
+
+    return core.follow('ec:dm-stats').should.eventually.be.instanceOf(TraversonMock)
+    .notify(() => stub.restore());
   });
   it('should return traverson Builder follow cached', () => {
-    core.environment = 'live';
+    const stub = sinon.stub(helper, 'get');
+    stub.onFirstCall().returns(resolver('dm-list.json'));
+    stub.onSecondCall().throws(new Error('not in tests my friend'));
+
     return core.follow('ec:dm-stats')
-    .then(() => core.follow('ec:dm-stats').should.eventually.be.instanceOf(traverson._Builder));
+    .then(() => core.follow('ec:dm-stats')
+    .should.eventually.be.instanceOf(TraversonMock)
+    .notify(() => stub.restore()));
   });
   it('should reject on follow missing link', () => {
-    core.environment = 'live';
+    const stub = sinon.stub(helper, 'get');
+    stub.onFirstCall().returns(resolver('dm-list.json'));
+    stub.onSecondCall().returns(resolver('dm-list.json'));
+    stub.onThirdCall().throws(new Error('not in tests my friend'));
+
     return core.follow('ec:dm-stats')
-    .then(() => core.follow('missing').should.be.rejectedWith('Could not follow missing. Link not present in root response.'));
+    .then(() => core.follow('missing')
+    .should.be.rejectedWith('Could not follow missing. Link not present in root response.')
+    .notify(() => stub.restore()));
   });
   it('should return link', () => {
     core.environment = 'live';
@@ -95,7 +114,7 @@ describe('Core', () => {
   });
   it('should throw on undefined traversal', () => {
     const throws = () => {
-      core.traversal = null;
+      core[Core.traversalSymbol] = null;
       core.newRequest();
     };
     throws.should.throw(Error);
@@ -500,7 +519,7 @@ describe('Network Helper', () => {
         code: 2102,
         status: 404,
         detail: 'title',
-      });
+      }, { 'Content-Type': 'application/json' });
 
       return helper.superagentGet('https://entrecode.de', {}).should.be.rejectedWith(Problem);
     });
@@ -595,6 +614,24 @@ describe('optionsToQuery', () => {
       page: 1,
     };
     helper.optionsToQuery(obj).should.have.property('page', 1);
+  });
+  it('should have levels', () => {
+    const obj = {
+      _levels: 5,
+    };
+    helper.optionsToQuery(obj).should.have.property('_levels', 5);
+  });
+  it('should not have levels, 1', () => {
+    const obj = {
+      _levels: 1,
+    };
+    helper.optionsToQuery(obj).should.not.have.property('_levels');
+  });
+  it('should not have levels, 6', () => {
+    const obj = {
+      _levels: 6,
+    };
+    helper.optionsToQuery(obj).should.not.have.property('_levels');
   });
   it('should sort one item', () => {
     const obj = {

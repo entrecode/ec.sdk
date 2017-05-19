@@ -7,6 +7,12 @@ import { del, get, put } from '../helper';
 
 traverson.registerMediaType(HalAdapter.mediaType, HalAdapter);
 
+export const resourceSymbol = Symbol('_resource');
+export const environmentSymbol = Symbol('_environment');
+export const traversalSymbol = Symbol('_traversal');
+
+const dirtySymbol = Symbol('_dirty');
+
 /**
  * Generic resource class. Represents {@link https://tools.ietf.org/html/draft-kelly-json-hal-08
  * HAL resources}.
@@ -26,25 +32,25 @@ export default class Resource {
    * @param {environment} environment the environment this resource is associated to.
    * @param {?object} traversal traversal from which traverson can continue.
    */
-  constructor(resource, environment, traversal) {
-    this.environment = environment || 'live';
-    this.dirty = false;
-    this.resource = halfred.parse(JSON.parse(JSON.stringify(resource)));
+  constructor(resource, environment = 'live', traversal) {
+    this[environmentSymbol] = environment;
+    this[dirtySymbol] = false;
+    this[resourceSymbol] = halfred.parse(JSON.parse(JSON.stringify(resource)));
 
-    if (typeof this.environment !== 'string') {
+    if (typeof this[environmentSymbol] !== 'string') {
       throw new Error('environment must be a string');
     }
 
     if (traversal) {
-      this.traversal = traversal;
+      this[traversalSymbol] = traversal;
     } else {
-      this.traversal = traverson.from(this.resource.link('self').href).jsonHal();
+      this[traversalSymbol] = traverson.from(this[resourceSymbol].link('self').href).jsonHal();
     }
 
     Object.defineProperties(this, {
       isDirty: {
         enumerable: false,
-        get: () => this.dirty,
+        get: () => this[dirtySymbol],
       },
       dirty: {
         enumerable: false,
@@ -54,7 +60,7 @@ export default class Resource {
       },
       traversal: {
         enumerable: false,
-      }
+      },
     });
   }
 
@@ -69,10 +75,10 @@ export default class Resource {
    * @returns {Object} traverson request builder instance.
    */
   newRequest() {
-    if ({}.hasOwnProperty.call(this.traversal, 'continue')) {
-      return this.traversal.continue().newRequest();
+    if ('continue' in this[traversalSymbol]) {
+      return this[traversalSymbol].continue().newRequest();
     }
-    return this.traversal.newRequest();
+    return this[traversalSymbol].newRequest();
   }
 
   /**
@@ -83,13 +89,13 @@ export default class Resource {
    */
   resolve() {
     return get(
-      this.environment,
+      this[environmentSymbol],
       this.newRequest().follow('self')
     )
     .then(([res, traversal]) => {
-      this.resource = halfred.parse(res);
-      this.traversal = traversal;
-      this.dirty = false;
+      this[resourceSymbol] = halfred.parse(res);
+      this[traversalSymbol] = traversal;
+      this[dirtySymbol] = false;
       return this;
     });
   }
@@ -101,8 +107,8 @@ export default class Resource {
    * @returns {undefined}
    */
   reset() {
-    this.resource = halfred.parse(this.resource.original());
-    this.dirty = false;
+    this[resourceSymbol] = halfred.parse(this[resourceSymbol].original());
+    this[dirtySymbol] = false;
   }
 
   /**
@@ -112,17 +118,13 @@ export default class Resource {
    *   be the same object but with refreshed data.
    */
   save() {
-    const out = {};
-    Object.keys(this.resource.original()).forEach((key) => {
-      out[key] = this.resource[key];
-    });
-
-    return validator.validate(out, this.resource.link('self').profile)
-    .then(() => put(this.environment, this.newRequest().follow('self'), out))
+    const out = this.toOriginal();
+    return validator.validate(out, this[resourceSymbol].link('self').profile)
+    .then(() => put(this[environmentSymbol], this.newRequest().follow('self'), out))
     .then(([res, traversal]) => {
-      this.resource = halfred.parse(res);
-      this.traversal = traversal;
-      this.dirty = false;
+      this[resourceSymbol] = halfred.parse(res);
+      this[traversalSymbol] = traversal;
+      this[dirtySymbol] = false;
       return this;
     });
   }
@@ -133,7 +135,7 @@ export default class Resource {
    * @returns {Promise<undefined>} Promise will resolve on success and reject otherwise.
    */
   del() {
-    return del(this.environment, this.newRequest().follow('self'));
+    return del(this[environmentSymbol], this.newRequest().follow('self'));
   }
 
   /**
@@ -145,7 +147,7 @@ export default class Resource {
    * @returns {boolean} whether or not a link with the given name was found.
    */
   hasLink(link) {
-    return this.resource.link(link) !== null;
+    return this[resourceSymbol].link(link) !== null;
   }
 
   /**
@@ -156,7 +158,7 @@ export default class Resource {
    * @returns {object|null} the link with the given name or null.
    */
   getLink(link) {
-    return this.resource.link(link);
+    return this[resourceSymbol].link(link);
   }
 
   /**
@@ -174,12 +176,12 @@ export default class Resource {
    * @returns {Promise<Resource|ResourceClass>} the resource identified by the link.
    */
   followLink(link, ResourceClass) {
-    return get(this.environment, this.newRequest().follow(link))
+    return get(this[environmentSymbol], this.newRequest().follow(link))
     .then(([res, traversal]) => {
       if (ResourceClass) {
-        return new ResourceClass(res, this.environment, traversal);
+        return new ResourceClass(res, this[environmentSymbol], traversal);
       }
-      return new Resource(res, this.environment, traversal);
+      return new Resource(res, this[environmentSymbol], traversal);
     });
   }
 
@@ -192,7 +194,7 @@ export default class Resource {
    */
   get(properties) {
     if (!properties || !Array.isArray(properties) || properties.length === 0) {
-      return Object.assign({}, this.resource);
+      return Object.assign({}, this[resourceSymbol]);
     }
     const out = {};
     properties.forEach((property) => {
@@ -212,8 +214,8 @@ export default class Resource {
       throw new Error('Resource cannot be undefined.');
     }
 
-    Object.assign(this.resource, resource);
-    this.dirty = true;
+    Object.assign(this[resourceSymbol], resource);
+    this[dirtySymbol] = true;
     return this;
   }
 
@@ -228,7 +230,7 @@ export default class Resource {
       throw new Error('Property name cannot be undefined');
     }
 
-    return this.resource[property];
+    return this[resourceSymbol][property];
   }
 
   /**
@@ -239,8 +241,16 @@ export default class Resource {
    * @returns {Resource} this Resource for chainability
    */
   setProperty(property, value) {
-    this.dirty = true;
-    this.resource[property] = value;
+    this[dirtySymbol] = true;
+    this[resourceSymbol][property] = value;
     return this;
+  }
+
+  toOriginal() {
+    const out = {};
+    Object.keys(this[resourceSymbol].original()).forEach((key) => {
+      out[key] = this[resourceSymbol][key];
+    });
+    return out;
   }
 }

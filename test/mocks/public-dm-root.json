@@ -1,0 +1,206 @@
+{
+  "dataManagerID": "48e18a34-cf64-4f4a-bc47-45323a7f0e44",
+  "title": "Test DM",
+  "description": "hier kann alles getestet werden",
+  "locales": [
+    "de-DE"
+  ],
+  "defaultLocale": "de-DE",
+  "models": [
+    {
+      "title": "allFields",
+      "description": "",
+      "modelID": "00e6b675-ddca-4930-9696-d2e735a484b4",
+      "titleField": "_id",
+      "hexColor": "#159588",
+      "_ref": "https://datamanager.entrecode.de/model?modelID=00e6b675-ddca-4930-9696-d2e735a484b4"
+    },
+    {
+      "title": "contains_entries",
+      "description": "",
+      "modelID": "5a215d0a-84a4-468e-98ba-8673dfb2cc17",
+      "titleField": "_id",
+      "hexColor": "#d23738",
+      "_ref": "https://datamanager.entrecode.de/model?modelID=5a215d0a-84a4-468e-98ba-8673dfb2cc17"
+    },
+    {
+      "title": "entry",
+      "description": "kjhgfd",
+      "modelID": "e3d2c523-d70f-4adc-a445-cd076e865b97",
+      "titleField": "_id",
+      "hexColor": "#d23738",
+      "_ref": "https://datamanager.entrecode.de/model?modelID=e3d2c523-d70f-4adc-a445-cd076e865b97"
+    },
+    {
+      "title": "json_entry",
+      "description": "",
+      "modelID": "bc56120c-9ad9-4f41-84aa-f475d81cf50a",
+      "titleField": "json",
+      "hexColor": "#d23738",
+      "_ref": "https://datamanager.entrecode.de/model?modelID=bc56120c-9ad9-4f41-84aa-f475d81cf50a"
+    },
+    {
+      "title": "model_with_underscore",
+      "description": "ghk",
+      "modelID": "573a12b8-3e58-4ebb-94b7-1cd2063f4f27",
+      "titleField": "_id",
+      "hexColor": "#d23738",
+      "_ref": "https://datamanager.entrecode.de/model?modelID=573a12b8-3e58-4ebb-94b7-1cd2063f4f27"
+    },
+    {
+      "title": "muffin",
+      "description": "",
+      "modelID": "3adfe4c0-588f-4e5b-bc5e-d69162ed2a40",
+      "titleField": "title",
+      "hexColor": "#d23738",
+      "_ref": "https://datamanager.entrecode.de/model?modelID=3adfe4c0-588f-4e5b-bc5e-d69162ed2a40"
+    },
+    {
+      "title": "withaAsset",
+      "description": "",
+      "modelID": "5a5a9103-2218-4979-9ec5-d8173a442cbb",
+      "titleField": "_id",
+      "hexColor": "#d23738",
+      "_ref": "https://datamanager.entrecode.de/model?modelID=5a5a9103-2218-4979-9ec5-d8173a442cbb"
+    }
+  ],
+  "account": {
+    "accountID": "49518e7d-a8b0-444a-b829-7fe3c86810ab",
+    "email": null,
+    "pending": false,
+    "hasPassword": false,
+    "oauth": [],
+    "roles": [
+      {
+        "roleID": "6c7dd95c-2dee-4f97-8e9e-ff272118a2c0",
+        "name": "Anonymous Users",
+        "label": ""
+      }
+    ]
+  },
+  "config": {},
+  "_links": {
+    "curies": {
+      "name": "beefbeef",
+      "href": "https://datamanager.entrecode.de/api/doc/beefbeef/relation/{rel}",
+      "templated": true
+    },
+    "self": {
+      "name": "Test DM",
+      "href": "https://datamanager.entrecode.de/api/beefbeef"
+    },
+    "_permissions": {
+      "href": "https://datamanager.entrecode.de/api/beefbeef/_permissions",
+      "name": "permissions"
+    },
+    "beefbeef:allFields": {
+      "profile": "https://datamanager.entrecode.de/api/schema/beefbeef/allFields",
+      "href": "https://datamanager.entrecode.de/api/beefbeef/allFields{?_created,_createdFrom,_createdTo,_creator,_fields,_id,_levels,_modified,_modifiedFrom,_modifiedTo,_private,asset,assets,assets~,boolean,created,createdFrom,createdTo,datetime,datetimeFrom,datetimeTo,decimal,decimalFrom,decimalTo,email,email~,entries,entries~,entry,formattedText~,id,location,locationFrom,locationTo,modified,modifiedFrom,modifiedTo,number,numberFrom,numberTo,page,phone,phone~,private,size,sort,text,text~,url,url~}",
+      "name": "allFields list",
+      "templated": true
+    },
+    "beefbeef:allFields/_permissions": {
+      "href": "https://datamanager.entrecode.de/api/beefbeef/_permissions/allFields",
+      "name": "allFields permissions"
+    },
+    "beefbeef:contains_entries": {
+      "profile": "https://datamanager.entrecode.de/api/schema/beefbeef/contains_entries",
+      "href": "https://datamanager.entrecode.de/api/beefbeef/contains_entries{?_created,_createdFrom,_createdTo,_creator,_fields,_id,_levels,_modified,_modifiedFrom,_modifiedTo,_private,ad,ad~,created,createdFrom,createdTo,entries,entries~,id,modified,modifiedFrom,modifiedTo,page,private,size,sort}",
+      "name": "contains_entries list",
+      "templated": true
+    },
+    "beefbeef:contains_entries/_permissions": {
+      "href": "https://datamanager.entrecode.de/api/beefbeef/_permissions/contains_entries",
+      "name": "contains_entries permissions"
+    },
+    "beefbeef:entry": {
+      "profile": "https://datamanager.entrecode.de/api/schema/beefbeef/entry",
+      "href": "https://datamanager.entrecode.de/api/beefbeef/entry{?_created,_createdFrom,_createdTo,_creator,_fields,_id,_levels,_modified,_modifiedFrom,_modifiedTo,_private,created,createdFrom,createdTo,id,modified,modifiedFrom,modifiedTo,page,private,size,sort,title,title~}",
+      "name": "entry list",
+      "templated": true
+    },
+    "beefbeef:entry/_permissions": {
+      "href": "https://datamanager.entrecode.de/api/beefbeef/_permissions/entry",
+      "name": "entry permissions"
+    },
+    "beefbeef:json_entry": {
+      "profile": "https://datamanager.entrecode.de/api/schema/beefbeef/json_entry",
+      "href": "https://datamanager.entrecode.de/api/beefbeef/json_entry{?_created,_createdFrom,_createdTo,_creator,_fields,_id,_levels,_modified,_modifiedFrom,_modifiedTo,_private,created,createdFrom,createdTo,id,modified,modifiedFrom,modifiedTo,page,private,size,sort}",
+      "name": "json_entry list",
+      "templated": true
+    },
+    "beefbeef:json_entry/_permissions": {
+      "href": "https://datamanager.entrecode.de/api/beefbeef/_permissions/json_entry",
+      "name": "json_entry permissions"
+    },
+    "beefbeef:model_with_underscore": {
+      "profile": "https://datamanager.entrecode.de/api/schema/beefbeef/model_with_underscore",
+      "href": "https://datamanager.entrecode.de/api/beefbeef/model_with_underscore{?_created,_createdFrom,_createdTo,_creator,_fields,_id,_levels,_modified,_modifiedFrom,_modifiedTo,_private,created,createdFrom,createdTo,id,modified,modifiedFrom,modifiedTo,page,private,size,sort}",
+      "name": "model_with_underscore list",
+      "templated": true
+    },
+    "beefbeef:model_with_underscore/_permissions": {
+      "href": "https://datamanager.entrecode.de/api/beefbeef/_permissions/model_with_underscore",
+      "name": "model_with_underscore permissions"
+    },
+    "beefbeef:muffin": {
+      "profile": "https://datamanager.entrecode.de/api/schema/beefbeef/muffin",
+      "href": "https://datamanager.entrecode.de/api/beefbeef/muffin{?_created,_createdFrom,_createdTo,_creator,_fields,_id,_levels,_modified,_modifiedFrom,_modifiedTo,_private,account,created,createdFrom,createdTo,description~,id,modified,modifiedFrom,modifiedTo,page,price,priceFrom,priceTo,private,size,sort,title,title~}",
+      "name": "muffin list",
+      "templated": true
+    },
+    "beefbeef:muffin/_permissions": {
+      "href": "https://datamanager.entrecode.de/api/beefbeef/_permissions/muffin",
+      "name": "muffin permissions"
+    },
+    "beefbeef:withaAsset": {
+      "profile": "https://datamanager.entrecode.de/api/schema/beefbeef/withaAsset",
+      "href": "https://datamanager.entrecode.de/api/beefbeef/withaAsset{?_created,_createdFrom,_createdTo,_creator,_fields,_id,_levels,_modified,_modifiedFrom,_modifiedTo,_private,asset,created,createdFrom,createdTo,id,modified,modifiedFrom,modifiedTo,page,private,size,sort}",
+      "name": "withaAsset list",
+      "templated": true
+    },
+    "beefbeef:withaAsset/_permissions": {
+      "href": "https://datamanager.entrecode.de/api/beefbeef/_permissions/withaAsset",
+      "name": "withaAsset permissions"
+    },
+    "ec:api/assets": {
+      "profile": "https://entrecode.de/schema/assets",
+      "href": "https://datamanager.entrecode.de/asset/beefbeef{?assetID,created,createdFrom,createdTo,created~,creator,dataManagerID,deleted,deletedFrom,deletedTo,deleted~,page,size,sort,tag,title,title~,type,type~}",
+      "templated": true
+    },
+    "beefbeef:_auth/anonymous": {
+      "name": "Register new anonymous account (POST)",
+      "href": "https://datamanager.entrecode.de/api/beefbeef/_auth/account{?validUntil}",
+      "templated": true
+    },
+    "beefbeef:_auth/signup": {
+      "name": "Register new account (POST)",
+      "href": "https://datamanager.entrecode.de/api/beefbeef/_auth/signup{?clientID,invite}",
+      "templated": true
+    },
+    "beefbeef:_auth/login": {
+      "name": "Sign in to an existing account",
+      "href": "https://datamanager.entrecode.de/api/beefbeef/_auth/login{?clientID}",
+      "templated": true
+    },
+    "beefbeef:_auth/logout": {
+      "name": "Logout",
+      "href": "https://datamanager.entrecode.de/api/beefbeef/_auth/logout{?clientID,token}",
+      "templated": true
+    },
+    "beefbeef:_auth/password-reset": {
+      "name": "Request a password reset",
+      "href": "https://datamanager.entrecode.de/api/beefbeef/_auth/password-reset{?clientID,email}",
+      "templated": true
+    },
+    "beefbeef:_auth/email-available": {
+      "name": "Test if given email is already registered",
+      "href": "https://datamanager.entrecode.de/api/beefbeef/_auth/email{?email}",
+      "templated": true
+    },
+    "beefbeef:_auth/public-key.pem": {
+      "name": "Public key for JWT validation",
+      "href": "https://datamanager.entrecode.de/api/beefbeef/_auth/public-key.pem"
+    }
+  }
+}

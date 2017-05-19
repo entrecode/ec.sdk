@@ -15,8 +15,6 @@ export default class ClientList extends ListResource {
    * @param {?object} traversal traversal from which traverson can continue.
    */
   constructor(resource, environment, traversal) {
-    super(resource, environment, 'ec:acc/client', traversal);
-    this.ListClass = ClientList;
-    this.ItemClass = ClientResource;
+    super(resource, environment, 'ec:acc/client', traversal, ClientList, ClientResource);
   }
 }

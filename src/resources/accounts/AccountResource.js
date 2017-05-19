@@ -1,6 +1,6 @@
 import ShiroTrie from 'shiro-trie';
 
-import Resource from '../Resource';
+import Resource, {environmentSymbol} from '../Resource';
 import TokenList from './TokenList';
 import { get } from '../../helper';
 
@@ -143,8 +143,8 @@ export default class AccountResource extends Resource {
     .then(() => {
       const request = this.newRequest().follow('ec:account/tokens');
 
-      return get(this.environment, request)
-      .then(([tokenList, traversal]) => new TokenList(tokenList, this.environment, traversal));
+      return get(this[environmentSymbol], request)
+      .then(([tokenList, traversal]) => new TokenList(tokenList, this[environmentSymbol], traversal));
     });
   }
 

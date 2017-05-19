@@ -1,7 +1,9 @@
-import Core from './Core';
+import Core, { environmentSymbol, eventsSymbol, tokenStoreSymbol } from './Core';
 import { get, post } from './helper';
 import AccountResource from './resources/accounts/AccountResource';
-import TokenStoreFactory from './TokenStore';
+
+export const meLoadedTimeSymbol = Symbol('_meLoadedTime');
+const meSymbol = Symbol('_me');
 
 const urls = {
   live: 'https://accounts.entrecode.de/',
@@ -29,14 +31,12 @@ export default class Session extends Core {
    *
    * @param {?environment} environment the environment to connect to.
    */
-  constructor(environment) {
+  constructor(environment = 'live') {
     if (environment && !{}.hasOwnProperty.call(urls, environment)) {
       throw new Error('invalid environment specified');
     }
 
-    super(urls[environment || 'live']);
-    this.environment = environment || 'live';
-    this.tokenStore = TokenStoreFactory(environment || 'live');
+    super(urls, environment);
   }
 
   /**
@@ -54,7 +54,7 @@ export default class Session extends Core {
       throw new Error('ec.sdk currently only supports client \'rest\'');
     }
 
-    this.tokenStore.setClientID(clientID);
+    this[tokenStoreSymbol].setClientID(clientID);
     return this;
   }
 
@@ -69,11 +69,7 @@ export default class Session extends Core {
   login(email, password) {
     return Promise.resolve()
     .then(() => {
-      if (this.tokenStore.has()) {
-        throw new Error('already logged in or old token present. logout first');
-      }
-
-      if (!this.tokenStore.hasClientID()) {
+      if (!this[tokenStoreSymbol].hasClientID()) {
         throw new Error('clientID must be set with Session#setClientID(clientID: string)');
       }
       if (!email) {
@@ -86,12 +82,12 @@ export default class Session extends Core {
       return this.follow('ec:auth/login');
     })
     .then((request) => {
-      request.withTemplateParameters({ clientID: this.tokenStore.getClientID() });
-      return post(this.environment, request, { email, password });
+      request.withTemplateParameters({ clientID: this[tokenStoreSymbol].getClientID() });
+      return post(this[environmentSymbol], request, { email, password });
     })
     .then(([token]) => {
-      this.tokenStore.set(token.token);
-      this.events.emit('login', token.token);
+      this[tokenStoreSymbol].set(token.token);
+      this[eventsSymbol].emit('login', token.token);
 
       return token.token;
     });
@@ -106,26 +102,26 @@ export default class Session extends Core {
   logout() {
     return Promise.resolve()
     .then(() => {
-      if (!this.tokenStore.has()) {
+      if (!this[tokenStoreSymbol].has()) {
         return Promise.resolve();
       }
 
-      if (!this.tokenStore.hasClientID()) {
+      if (!this[tokenStoreSymbol].hasClientID()) {
         throw new Error('clientID must be set with Session#setClientID(clientID: string)');
       }
 
       return this.follow('ec:auth/logout')
       .then((request) => {
         request.withTemplateParameters({
-          clientID: this.tokenStore.getClientID(),
-          token: this.token,
+          clientID: this[tokenStoreSymbol].getClientID(),
+          token: this[tokenStoreSymbol].get(),
         });
-        return post(this.environment, request);
+        return post(this[environmentSymbol], request);
       });
     })
     .then(() => {
-      this.events.emit('logout');
-      this.tokenStore.del();
+      this[eventsSymbol].emit('logout');
+      this[tokenStoreSymbol].del();
       return Promise.resolve();
     });
   }
@@ -143,18 +139,18 @@ export default class Session extends Core {
         throw new Error('permission must be defined');
       }
 
-      if (this.me && new Date() - this.meLoadedTime <= 300000) { // 5 Minutes
+      if (this[meSymbol] && new Date() - this[meLoadedTimeSymbol] <= 300000) { // 5 Minutes
         return undefined;
       }
 
       return this.follow('ec:account')
-      .then(request => get(this.environment, request))
+      .then(request => get(this[environmentSymbol], request))
       .then(([res, traversal]) => {
-        this.me = new AccountResource(res, this.environment, traversal)
-        this.meLoadedTime = new Date();
+        this[meSymbol] = new AccountResource(res, this[environmentSymbol], traversal)
+        this[meLoadedTimeSymbol] = new Date();
         return undefined;
       });
     })
-    .then(() => this.me.checkPermission(permission));
+    .then(() => this[meSymbol].checkPermission(permission));
   }
 }

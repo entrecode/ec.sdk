@@ -1,5 +1,6 @@
 import superagent from 'superagent';
 import locale from 'locale';
+import validator from 'json-schema-remote';
 
 import Problem from './Problem';
 import events from './EventEmitter';
@@ -88,7 +89,7 @@ function traversonWrapper(func, environment, t, body) {
       return resolve(res);
     };
 
-    t.addRequestOptions({ headers: { Accept: 'application/hal+json' } });
+    t.withRequestOptions({ headers: { Accept: 'application/hal+json' } });
 
     const store = TokenStoreFactory(environment);
     if (store.has()) {
@@ -282,7 +283,7 @@ export function superagentFormPost(url, form) {
  * @access private
  *
  * @param {string} url the url to get
- * @param {object} headers additional headers
+ * @param {object?} headers additional headers
  * @returns {Promise} Promise resolving to response body.
  */
 export function superagentGet(url, headers) {
@@ -389,6 +390,10 @@ export function optionsToQuery(options, templateURL) {
         } else {
           throw new Error('sort must be either Array or String.');
         }
+      } else if (key === '_levels') {
+        if (options[key] > 1 && options[key] <= 5) {
+          out[key] = options[key]; // eslint-disable-line no-underscore-dangle
+        }
       } else if (typeof options[key] === 'string') {
         out[key] = options[key];
       } else if (typeof options[key] === 'object') {
@@ -447,6 +452,8 @@ export function optionsToQuery(options, templateURL) {
 
 /**
  * Helper for negotiating files from assets.
+ *
+ * @private
  *
  * @param {AssetResource} asset - The asset from which negotiation should occur.
  * @param {boolean} image - true if it is an image negotiation.
@@ -513,4 +520,20 @@ export function fileNegotiate(asset, image, thumb, size, requestedLocale) {
   }
   // if the requested size is larger than the original image, we take the largest possible one
   return largest.url;
-};
+}
+
+export function getSchema(link) {
+  return Promise.resolve()
+  .then(() => {
+    const schema = validator.getSchema(link);
+    if (schema) {
+      return schema;
+    }
+
+    return superagentGet(link)
+    .then((loadedSchema) => {
+      validator.preload(link, loadedSchema);
+      return loadedSchema;
+    });
+  });
+}

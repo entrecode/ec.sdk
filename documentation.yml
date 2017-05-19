@@ -7,6 +7,7 @@ toc:
   - Session
   - Accounts
   - DataManager
+  - PublicAPI
   - environment
   - name: Events and Errors
     file: ./src/doc/3-events-errors.md
@@ -57,3 +58,19 @@ toc:
   - TemplateList
   - DMStatsResource
   - DMStatsList
+  - AssetResource
+  - AssetList
+  - DeletedAssetResource
+  - DeletedAssetList
+  - TagResource
+  - TagList
+  - name: PublicAPI Resources
+    file: ./src/doc/8-public-api-resources.md
+  - EntryResource
+  - createEntry
+  - EntryList
+  - createList
+  - PublicAssetList
+  - PublicAssetResource
+  - PublicTagList
+  - PublicTagResource

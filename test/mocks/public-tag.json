@@ -1,0 +1,22 @@
+{
+  "count": 10,
+  "tag": "test",
+  "_links": {
+    "collection": {
+      "profile": "https://entrecode.de/schema/tags",
+      "href": "https://datamanager.entrecode.de/tag/01bd8e08"
+    },
+    "ec:api/assets/with-tag": {
+      "profile": "https://entrecode.de/schema/assets",
+      "href": "https://datamanager.entrecode.de/asset/01bd8e08?tag=test"
+    },
+    "self": {
+      "profile": "https://entrecode.de/schema/tag",
+      "href": "https://datamanager.entrecode.de/tag/01bd8e08?tag=test"
+    },
+    "curies": {
+      "href": "https://doc.entrecode.de/data_manager/#relation-{rel}",
+      "templated": true
+    }
+  }
+}

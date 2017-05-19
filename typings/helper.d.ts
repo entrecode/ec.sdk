@@ -18,7 +18,7 @@ export function del(environment: environment, t: any): Promise<any>;
 
 export function superagentFormPost(url: string, form: any): Promise<string>;
 
-export function superagentGet(url: string, headers: any): Promise<any>;
+export function superagentGet(url: string, headers?: any): Promise<any>;
 
 export function superagentGetPiped(url: string, pipe: stream.Writable): Promise<void>;
 

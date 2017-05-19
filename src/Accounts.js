@@ -1,6 +1,6 @@
 import validator from 'json-schema-remote';
 
-import Core from './Core';
+import Core, { environmentSymbol, tokenStoreSymbol } from './Core';
 import {
   get,
   getEmpty,
@@ -18,7 +18,6 @@ import InvalidPermissionsResource from './resources/accounts/InvalidPermissionsR
 import InvitesResource from './resources/accounts/InvitesResource';
 import GroupList from './resources/accounts/GroupList';
 import GroupResource from './resources/accounts/GroupResource';
-import TokenStoreFactory from './TokenStore';
 
 const urls = {
   live: 'https://accounts.entrecode.de/',
@@ -40,14 +39,8 @@ export default class Accounts extends Core {
    *
    * @param {?environment} environment the {@link environment} to connect to.
    */
-  constructor(environment) {
-    if (environment && !{}.hasOwnProperty.call(urls, environment)) {
-      throw new Error('invalid environment specified');
-    }
-
-    super(urls[environment || 'live']);
-    this.environment = environment || 'live';
-    this.tokenStore = TokenStoreFactory(environment || 'live');
+  constructor(environment = 'live') {
+    super(urls, environment);
   }
 
   /**
@@ -65,7 +58,7 @@ export default class Accounts extends Core {
       throw new Error('ec.sdk currently only supports client \'rest\'');
     }
 
-    this.tokenStore.setClientID(clientID);
+    this[tokenStoreSymbol].setClientID(clientID);
     return this;
   }
 
@@ -91,17 +84,20 @@ export default class Accounts extends Core {
   accountList(options) {
     return Promise.resolve()
     .then(() => {
-      if (options && Object.keys(options).length === 1 && 'accountID' in options) {
+      if (
+        options && Object.keys(options).length === 1 && 'accountID' in options
+        && (typeof options.accountID === 'string' || (!('any' in options.accountID) && !('all' in options.accountID)))
+      ) {
         throw new Error('Providing only an accountID in AccountList filter will result in single resource response. Please use Accounts#account');
       }
 
       return this.follow('ec:accounts/options');
     })
     .then((request) => {
-      request.withTemplateParameters(optionsToQuery(options, this.resource.link('ec:accounts/options').href));
-      return get(this.environment, request);
+      request.withTemplateParameters(optionsToQuery(options, this.getLink('ec:accounts/options').href));
+      return get(this[environmentSymbol], request);
     })
-    .then(([res, traversal]) => new AccountList(res, this.environment, traversal));
+    .then(([res, traversal]) => new AccountList(res, this[environmentSymbol], traversal));
   }
 
   /**
@@ -126,9 +122,9 @@ export default class Accounts extends Core {
     })
     .then((request) => {
       request.withTemplateParameters({ accountid: accountID });
-      return get(this.environment, request);
+      return get(this[environmentSymbol], request);
     })
-    .then(([res, traversal]) => new AccountResource(res, this.environment, traversal));
+    .then(([res, traversal]) => new AccountResource(res, this[environmentSymbol], traversal));
   }
 
   /**
@@ -145,8 +141,8 @@ export default class Accounts extends Core {
   me() {
     return Promise.resolve()
     .then(() => this.follow('ec:account'))
-    .then(request => get(this.environment, request))
-    .then(([res, traversal]) => new AccountResource(res, this.environment, traversal));
+    .then(request => get(this[environmentSymbol], request))
+    .then(([res, traversal]) => new AccountResource(res, this[environmentSymbol], traversal));
   }
 
   /**
@@ -171,17 +167,20 @@ export default class Accounts extends Core {
   groupList(options) {
     return Promise.resolve()
     .then(() => {
-      if (options && Object.keys(options).length === 1 && 'groupID' in options) {
+      if (
+        options && Object.keys(options).length === 1 && 'groupID' in options
+        && (typeof options.groupID === 'string' || (!('any' in options.groupID) && !('all' in options.groupID)))
+      ) {
         throw new Error('Providing only an groupID in GroupList filter will result in single resource response. Please use Accounts#groupList');
       }
 
       return this.follow('ec:acc/groups/options');
     })
     .then((request) => {
-      request.withTemplateParameters(optionsToQuery(options, this.resource.link('ec:acc/groups/options').href));
-      return get(this.environment, request);
+      request.withTemplateParameters(optionsToQuery(options, this.getLink('ec:acc/groups/options').href));
+      return get(this[environmentSymbol], request);
     })
-    .then(([res, traversal]) => new GroupList(res, this.environment, traversal));
+    .then(([res, traversal]) => new GroupList(res, this[environmentSymbol], traversal));
   }
 
   /**
@@ -207,9 +206,9 @@ export default class Accounts extends Core {
     })
     .then((request) => {
       request.withTemplateParameters({ groupid: groupID });
-      return get(this.environment, request);
+      return get(this[environmentSymbol], request);
     })
-    .then(([res, traversal]) => new GroupResource(res, this.environment, traversal));
+    .then(([res, traversal]) => new GroupResource(res, this[environmentSymbol], traversal));
   }
 
   /**
@@ -228,10 +227,9 @@ export default class Accounts extends Core {
     })
     .then(link => validator.validate(group, `${link.profile}-template`))
     .then(() => this.follow('ec:acc/groups'))
-    .then(request => post(this.environment, request, group))
-    .then(([c, traversal]) => new ClientResource(c, this.environment, traversal));
+    .then(request => post(this[environmentSymbol], request, group))
+    .then(([c, traversal]) => new ClientResource(c, this[environmentSymbol], traversal));
   }
-
 
   /**
    * Load the {@link ClientList}.
@@ -261,17 +259,20 @@ export default class Accounts extends Core {
   clientList(options) {
     return Promise.resolve()
     .then(() => {
-      if (options && Object.keys(options).length === 1 && 'clientID' in options) {
+      if (
+        options && Object.keys(options).length === 1 && 'clientID' in options
+        && (typeof options.clientID === 'string' || (!('any' in options.clientID) && !('all' in options.clientID)))
+      ) {
         throw new Error('Providing only an clientID in ClientList filter will result in single resource response. Please use Accounts#client');
       }
 
       return this.follow('ec:acc/clients/options');
     })
     .then((request) => {
-      request.withTemplateParameters(optionsToQuery(options, this.resource.link('ec:acc/clients/options').href));
-      return get(this.environment, request);
+      request.withTemplateParameters(optionsToQuery(options, this.getLink('ec:acc/clients/options').href));
+      return get(this[environmentSymbol], request);
     })
-    .then(([res, traversal]) => new ClientList(res, this.environment, traversal));
+    .then(([res, traversal]) => new ClientList(res, this[environmentSymbol], traversal));
   }
 
   /**
@@ -297,9 +298,9 @@ export default class Accounts extends Core {
     })
     .then((request) => {
       request.withTemplateParameters({ clientid: clientID });
-      return get(this.environment, request);
+      return get(this[environmentSymbol], request);
     })
-    .then(([res, traversal]) => new ClientResource(res, this.environment, traversal));
+    .then(([res, traversal]) => new ClientResource(res, this[environmentSymbol], traversal));
   }
 
   /**
@@ -318,8 +319,8 @@ export default class Accounts extends Core {
     })
     .then(link => validator.validate(client, link.profile))
     .then(() => this.follow('ec:acc/clients'))
-    .then(request => post(this.environment, request, client))
-    .then(([c, traversal]) => new ClientResource(c, this.environment, traversal));
+    .then(request => post(this[environmentSymbol], request, client))
+    .then(([c, traversal]) => new ClientResource(c, this[environmentSymbol], traversal));
   }
 
   /**
@@ -336,7 +337,7 @@ export default class Accounts extends Core {
    */
   createApiToken() {
     return this.follow('ec:auth/create-anonymous')
-    .then(request => post(this.environment, request, {}))
+    .then(request => post(this[environmentSymbol], request, {}))
     .then(([tokenResponse]) => tokenResponse);
   }
 
@@ -361,8 +362,8 @@ export default class Accounts extends Core {
    */
   invites() {
     return this.follow('ec:invites')
-    .then(request => get(this.environment, request))
-    .then(([invites, traversal]) => new InvitesResource(invites, this.environment, traversal));
+    .then(request => get(this[environmentSymbol], request))
+    .then(([invites, traversal]) => new InvitesResource(invites, this[environmentSymbol], traversal));
   }
 
   /**
@@ -388,8 +389,8 @@ export default class Accounts extends Core {
 
       return this.follow('ec:invites');
     })
-    .then(request => post(this.environment, request, { count: count || 1 }))
-    .then(([invites, traversal]) => new InvitesResource(invites, this.environment, traversal));
+    .then(request => post(this[environmentSymbol], request, { count: count || 1 }))
+    .then(([invites, traversal]) => new InvitesResource(invites, this[environmentSymbol], traversal));
   }
 
   /**
@@ -406,9 +407,9 @@ export default class Accounts extends Core {
    */
   invalidPermissions() {
     return this.follow('ec:invalid-permissions')
-    .then(request => get(this.environment, request))
+    .then(request => get(this[environmentSymbol], request))
     .then(([resource, traversal]) =>
-      new InvalidPermissionsResource(resource, this.environment, traversal));
+      new InvalidPermissionsResource(resource, this[environmentSymbol], traversal));
   }
 
   /**
@@ -438,7 +439,7 @@ export default class Accounts extends Core {
     })
     .then((request) => {
       request.withTemplateParameters({ email });
-      return get(this.environment, request);
+      return get(this[environmentSymbol], request);
     })
     .then(([a]) => a.available);
   }
@@ -456,7 +457,7 @@ export default class Accounts extends Core {
    * @param {string} email email for the new account
    * @param {string} password password for the new account
    * @param {string?} invite optional invite. signup can be declined without invite.
-   * @returns {Promise<string>} Promise resolving the newly created {@link AccountResource}
+   * @returns {Promise<string>} Promise resolving the token
    */
   signup(email, password, invite) {
     return Promise.resolve()
@@ -467,7 +468,7 @@ export default class Accounts extends Core {
       if (!password) {
         throw new Error('password must be defined');
       }
-      if (!this.tokenStore.hasClientID()) {
+      if (!this[tokenStoreSymbol].hasClientID()) {
         throw new Error('clientID must be set with Account#setClientID(clientID: string)');
       }
 
@@ -475,14 +476,14 @@ export default class Accounts extends Core {
     })
     .then((request) => {
       request.withTemplateParameters({
-        clientID: this.tokenStore.getClientID(),
+        clientID: this[tokenStoreSymbol].getClientID(),
         invite,
       });
-      return getUrl(this.environment, request);
+      return getUrl(this[environmentSymbol], request);
     })
     .then(url => superagentFormPost(url, { email, password }))
     .then((token) => {
-      this.tokenStore.set(token.token);
+      this[tokenStoreSymbol].set(token.token);
       return Promise.resolve(token.token);
     });
   }
@@ -503,17 +504,17 @@ export default class Accounts extends Core {
       if (!email) {
         throw new Error('email must be defined');
       }
-      if (!this.tokenStore.hasClientID()) {
+      if (!this[tokenStoreSymbol].hasClientID()) {
         throw new Error('clientID must be set with Account#setClientID(clientID: string)');
       }
 
       return this.follow('ec:auth/password-reset');
     }).then((request) => {
       request.withTemplateParameters({
-        clientID: this.tokenStore.getClientID(),
+        clientID: this[tokenStoreSymbol].getClientID(),
         email,
       });
-      return getEmpty(this.environment, request);
+      return getEmpty(this[environmentSymbol], request);
     });
   }
 
@@ -534,12 +535,12 @@ export default class Accounts extends Core {
         throw new Error('email must be defined');
       }
 
-      if (!this.tokenStore.has()) {
+      if (!this[tokenStoreSymbol].has()) {
         throw new Error('not logged in.');
       }
 
       return this.follow('ec:auth/change-email');
     })
-    .then(request => postEmpty(this.environment, request, { email }));
+    .then(request => postEmpty(this[environmentSymbol], request, { email }));
   }
 }

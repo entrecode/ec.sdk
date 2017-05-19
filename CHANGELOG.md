@@ -1,3 +1,45 @@
+<a name="0.4.0"></a>
+# 0.4.0 (2017-05-19)
+
+* release version 0.4.0 ([5f76e86](https://github.com/entrecode/ec.sdk/commit/5f76e86))
+* test: fixed tests, added more ([1a03a34](https://github.com/entrecode/ec.sdk/commit/1a03a34))
+* feat: add validation of dm-clients on create ([f2e9cf7](https://github.com/entrecode/ec.sdk/commit/f2e9cf7))
+* feat: any, all filter of id fields in lists allowed CMS-2790 ([cb1080c](https://github.com/entrecode/ec.sdk/commit/cb1080c))
+* feat: API connector for public api CMS-2763 ([7cd2080](https://github.com/entrecode/ec.sdk/commit/7cd2080))
+* feat: asset file helper in EntryResource CMS-2782 ([e1692a2](https://github.com/entrecode/ec.sdk/commit/e1692a2))
+* feat: create anonymous in public api CMS-2767 ([e39e1f3](https://github.com/entrecode/ec.sdk/commit/e39e1f3))
+* feat: do not block login on old token ([122d096](https://github.com/entrecode/ec.sdk/commit/122d096))
+* feat: email available check public api CMS-2768 ([ac60bd3](https://github.com/entrecode/ec.sdk/commit/ac60bd3))
+* feat: entry list class CMS-2765 ([aee1ab8](https://github.com/entrecode/ec.sdk/commit/aee1ab8))
+* feat: entry, entryList, createEntry in PublicAPICMS-2765 ([0ef9676](https://github.com/entrecode/ec.sdk/commit/0ef9676))
+* feat: load “me” in public api CMS-2771 ([2324252](https://github.com/entrecode/ec.sdk/commit/2324252))
+* feat: nested entries CMS-2778 ([9a55b7b](https://github.com/entrecode/ec.sdk/commit/9a55b7b))
+* feat: public api user signup CMS-2769 ([0f30b6d](https://github.com/entrecode/ec.sdk/commit/0f30b6d))
+* feat: public assts/tags CMS-2773, CMS-2774 ([6269bbd](https://github.com/entrecode/ec.sdk/commit/6269bbd))
+* feat: public global asset helper CMS-2772 ([4ad6496](https://github.com/entrecode/ec.sdk/commit/4ad6496))
+* feat: public model, getSchema CMS-2764 ([5701f88](https://github.com/entrecode/ec.sdk/commit/5701f88))
+* feat: public permissions check CMS-2777 ([edeb716](https://github.com/entrecode/ec.sdk/commit/edeb716))
+* feat: reset password public api CMS-2770 ([ac5a465](https://github.com/entrecode/ec.sdk/commit/ac5a465))
+* feat: signin/signout in public api CMS-2762 ([0bfc93a](https://github.com/entrecode/ec.sdk/commit/0bfc93a))
+* feat: simple EntryResource CMS-2766 ([578c6d6](https://github.com/entrecode/ec.sdk/commit/578c6d6))
+* feat: support for _levels parameter in options CMS-2765 ([b71d467](https://github.com/entrecode/ec.sdk/commit/b71d467))
+* feat: typings for CMS-2767 ([f5ff0b7](https://github.com/entrecode/ec.sdk/commit/f5ff0b7))
+* feat: typings for CMS-2768 CMS-2769 CMS-2770 ([1907fcc](https://github.com/entrecode/ec.sdk/commit/1907fcc))
+* feat: typings update for entry related functions ([ca847a1](https://github.com/entrecode/ec.sdk/commit/ca847a1))
+* fix: detection of single resource query in public api ([a077ed5](https://github.com/entrecode/ec.sdk/commit/a077ed5))
+* fix: handling of single item get in public api ([87e72ee](https://github.com/entrecode/ec.sdk/commit/87e72ee))
+* fix: reloading of root response CMS-2779 ([4c17ba1](https://github.com/entrecode/ec.sdk/commit/4c17ba1))
+* fix: test fix for CMS-2779 ([15c9f29](https://github.com/entrecode/ec.sdk/commit/15c9f29))
+* refactor: do not use getAllItems on getItem(n) for better performance ([55f30ea](https://github.com/entrecode/ec.sdk/commit/55f30ea))
+* refactor: renamed create functions for Entry classes ([aa8423f](https://github.com/entrecode/ec.sdk/commit/aa8423f))
+* refactor: use Symbols for private properties CMS-2781 ([59d21d6](https://github.com/entrecode/ec.sdk/commit/59d21d6))
+* docs: updated documentation order ([4d3dd22](https://github.com/entrecode/ec.sdk/commit/4d3dd22))
+* docs: updated EntryResource doc ([2918aa6](https://github.com/entrecode/ec.sdk/commit/2918aa6))
+* chore: build before coverage tasks ([f893a15](https://github.com/entrecode/ec.sdk/commit/f893a15))
+* chore: fixed typo in changelog ([c86672e](https://github.com/entrecode/ec.sdk/commit/c86672e))
+
+
+
 <a name="0.3.0"></a>
 # 0.3.0 (2017-05-03)
 
@@ -72,7 +114,7 @@ before:
 ```json
 {
   filter: {
-    property: ‘exactFilter’
+    property: 'exactFilter'
   }
 }
 ```
@@ -81,7 +123,7 @@ after:
 
 ```json
 {
-  property: ‘exactFilter’
+  property: 'exactFilter'
 }
 ```
 

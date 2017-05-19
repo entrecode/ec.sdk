@@ -150,14 +150,18 @@ describe('DataManager class', () => {
   it('should load template resource', () => {
     const dm = new DataManager('live');
     const stub = sinon.stub(helper, 'get');
-    stub.returns(resolver('template-single.json'));
+    stub.onFirstCall().returns(resolver('dm-list.json'));
+    stub.onSecondCall().returns(resolver('template-single.json'));
 
     return dm.template('id')
-    .then((model) => {
-      model.should.be.instanceof(TemplateResource);
+    .then((template) => {
+      template.should.be.instanceof(TemplateResource);
       stub.restore();
     })
-    .catch(() => stub.restore());
+    .catch((err) => {
+      stub.restore();
+      throw err;
+    });
   });
   it('should be rejected on undefined templateID', () => {
     const dm = new DataManager('live');
@@ -214,14 +218,18 @@ describe('DataManager class', () => {
   it('should load stats resource', () => {
     const dm = new DataManager('live');
     const stub = sinon.stub(helper, 'get');
-    stub.returns(resolver('dm-stats-single.json'));
+    stub.onFirstCall().returns(resolver('dm-list.json'));
+    stub.onSecondCall().returns(resolver('dm-stats-single.json'));
 
     return dm.stats('id')
     .then((model) => {
       model.should.be.instanceof(DMStatsResource);
       stub.restore();
     })
-    .catch(() => stub.restore());
+    .catch((err) => {
+      stub.restore();
+      throw err;
+    });
   });
   it('should be rejected on undefined dataManagerID', () => {
     const dm = new DataManager('live');
@@ -413,7 +421,10 @@ describe('DataManager Resource', () => {
       model.should.be.instanceof(ModelList);
       stub.restore();
     })
-    .catch(() => stub.restore());
+    .catch((err) => {
+      stub.restore();
+      throw err;
+    });
   });
   it('should throw on model list filtered with modelID', () => {
     return resource.modelList({ modelID: 'id' })
@@ -432,7 +443,10 @@ describe('DataManager Resource', () => {
       model.should.be.instanceof(ModelResource);
       stub.restore();
     })
-    .catch(() => stub.restore());
+    .catch((err) => {
+      stub.restore();
+      throw err;
+    });
   });
   it('should be rejected on undefined modelID', () => {
     return resource.model().should.be.rejectedWith('modelID must be defined');
@@ -447,7 +461,10 @@ describe('DataManager Resource', () => {
       list.should.be.instanceof(DMClientList);
       stub.restore();
     })
-    .catch(() => stub.restore());
+    .catch((err) => {
+      stub.restore();
+      throw err;
+    });
   });
   it('should throw on client list filtered with clientID', () => {
     return resource.clientList({ clientID: 'id' })
@@ -466,7 +483,10 @@ describe('DataManager Resource', () => {
       model.should.be.instanceof(DMClientResource);
       stub.restore();
     })
-    .catch(() => stub.restore());
+    .catch((err) => {
+      stub.restore();
+      throw err;
+    });
   });
   it('should be rejected on undefined clientID', () => {
     return resource.client().should.be.rejectedWith('clientID must be defined');
@@ -484,16 +504,21 @@ describe('DataManager Resource', () => {
     .then((clientJSON) => {
       stub.returns(Promise.resolve([clientJSON, resource.traversal]));
       const create = Object.assign({}, {
-        clientID: resource.clientID,
-        callbackURL: resource.callbackURL,
-        disableStrategies: resource.disableStrategies,
-        hexColor: resource.hexColor,
+        clientID: clientJSON.clientID,
+        callbackURL: clientJSON.callbackURL,
+        tokenMethod: clientJSON.tokenMethod,
+        disableStrategies: clientJSON.disableStrategies,
+        hexColor: clientJSON.hexColor,
       });
       return resource.createClient(create);
     })
     .then(() => {
       stub.should.be.called.once;
       stub.restore();
+    })
+    .catch((err) => {
+      stub.restore();
+      throw err;
     });
   });
   it('should be rejected on undefined client', () => {
@@ -509,7 +534,10 @@ describe('DataManager Resource', () => {
       list.should.be.instanceof(DMAccountList);
       stub.restore();
     })
-    .catch(() => stub.restore());
+    .catch((err) => {
+      stub.restore();
+      throw err;
+    });
   });
   it('should throw on account list filtered with accountID', () => {
     return resource.accountList({ accountID: 'id' })
@@ -528,7 +556,10 @@ describe('DataManager Resource', () => {
       model.should.be.instanceof(DMAccountResource);
       stub.restore();
     })
-    .catch(() => stub.restore());
+    .catch((err) => {
+      stub.restore();
+      throw err;
+    });
   });
   it('should be rejected on undefined accountID', () => {
     return resource.account().should.be.rejectedWith('accountID must be defined');
@@ -543,7 +574,10 @@ describe('DataManager Resource', () => {
       list.should.be.instanceof(RoleList);
       stub.restore();
     })
-    .catch(() => stub.restore());
+    .catch((err) => {
+      stub.restore();
+      throw err;
+    });
   });
   it('should throw on role list filtered with roleID', () => {
     return resource.roleList({ roleID: 'id' })
@@ -562,7 +596,10 @@ describe('DataManager Resource', () => {
       model.should.be.instanceof(RoleResource);
       stub.restore();
     })
-    .catch(() => stub.restore());
+    .catch((err) => {
+      stub.restore();
+      throw err;
+    });
   });
   it('should be rejected on undefined roleID', () => {
     return resource.role().should.be.rejectedWith('roleID must be defined');
@@ -610,7 +647,10 @@ describe('DataManager Resource', () => {
       model.should.be.instanceof(DMStatsResource);
       stub.restore();
     })
-    .catch(() => stub.restore());
+    .catch((err) => {
+      stub.restore();
+      throw err;
+    });
   });
 
   it('should load asset list', () => {
@@ -622,7 +662,10 @@ describe('DataManager Resource', () => {
       list.should.be.instanceof(AssetList);
       stub.restore();
     })
-    .catch(() => stub.restore());
+    .catch((err) => {
+      stub.restore();
+      throw err;
+    });
   });
   it('should throw on asset list filtered with assetID', () => {
     return resource.assetList({ assetID: 'id' })
@@ -641,7 +684,10 @@ describe('DataManager Resource', () => {
       model.should.be.instanceof(AssetResource);
       stub.restore();
     })
-    .catch(() => stub.restore());
+    .catch((err) => {
+      stub.restore();
+      throw err;
+    });
   });
   it('should be rejected on undefined assetID', () => {
     return resource.asset().should.be.rejectedWith('assetID must be defined');

@@ -1,5 +1,9 @@
-import Resource from '../Resource';
+import Resource, { environmentSymbol, resourceSymbol } from '../Resource';
 import DMStatsResource from './DMStatsResource';
+
+const nameSymbol = Symbol('_name');
+const listClassSymbol = Symbol('_listClass');
+const itemClassSymbol = Symbol('_itemClass');
 
 /**
  * DMStats list class
@@ -16,9 +20,9 @@ export default class DMStatsList extends Resource {
    */
   constructor(resource, environment, traversal) {
     super(resource, environment, traversal);
-    this.name = 'dataManagers';
-    this.ListClass = DMStatsList;
-    this.ItemClass = DMStatsResource;
+    this[nameSymbol] = 'dataManagers';
+    this[listClassSymbol] = DMStatsList;
+    this[itemClassSymbol] = DMStatsResource;
   }
 
   /**
@@ -28,8 +32,8 @@ export default class DMStatsList extends Resource {
    * @returns {Array<Resource|ResourceClass>} an array of all list items.
    */
   getAllItems() {
-    const array = this.resource[this.name] || [];
-    return array.map(resource => new this.ItemClass(resource, this.environment));
+    const array = this[resourceSymbol][this[nameSymbol]] || [];
+    return array.map(resource => new this[itemClassSymbol](resource, this[environmentSymbol]));
   }
 
   /**
@@ -43,11 +47,11 @@ export default class DMStatsList extends Resource {
     if (n === undefined) { // undefined check
       throw new Error('Index must be defined.');
     }
-    const array = this.resource[this.name] || [];
+    const array = this[resourceSymbol][this[nameSymbol]] || [];
     if (!array || array.length === 0) {
       throw new Error('Cannot get n\'th item of empty list.');
     }
-    return new this.ItemClass(array[n], this.environment);
+    return new this[itemClassSymbol](array[n], this[environmentSymbol]);
   }
 
   /**

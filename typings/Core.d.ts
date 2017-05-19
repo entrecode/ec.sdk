@@ -9,7 +9,7 @@ export declare class Core {
 
   setUserAgent(agent: string): Core;
 
-  on(label: string, callback: () => void): void;
+  on(label: string, callback: (param: Error | string) => void): void;
 
   removeListener(label: string, callback: () => void): boolean;
 }

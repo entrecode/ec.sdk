@@ -41,7 +41,7 @@ describe('Model ListResource', () => {
   it('should be instance of ModelList', () => {
     list.should.be.instanceOf(ModelList);
   });
-  it('should have AccountResource items', () => {
+  it('should have ModelResource items', () => {
     list.getAllItems().forEach(item => item.should.be.instanceOf(ModelResource));
   });
 });

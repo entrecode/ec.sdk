@@ -1,0 +1,368 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "https://datamanager.entrecode.de/api/schema/beefbeef/allFields?template=post",
+  "type": "object",
+  "allOf": [
+    {
+      "$ref": "https://entrecode.de/schema/hal#definitions/halResource"
+    },
+    {
+      "additionalProperties": false,
+      "properties": {
+        "_links": {
+          "$ref": "https://entrecode.de/schema/hal#_links"
+        },
+        "_id": {
+          "type": "string",
+          "pattern": "^[0-9A-Za-z-_]{7,14}$",
+          "title": "id",
+          "description": "Unique identifier for this entry."
+        },
+        "id": {
+          "type": "string",
+          "pattern": "^[0-9A-Za-z-_]{7,14}$",
+          "title": "id",
+          "description": "Unique identifier for this entry."
+        },
+        "private": {
+          "type": "boolean",
+          "description": "Indicates if an entry was posted private."
+        },
+        "_created": {
+          "type": "string",
+          "format": "date-time",
+          "title": "datetime",
+          "description": "Timestamp of the creation of this entry."
+        },
+        "created": {
+          "type": "string",
+          "format": "date-time",
+          "title": "datetime",
+          "description": "Timestamp of the creation of this entry."
+        },
+        "_creator": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "title": "account",
+          "description": "Creator of this entry."
+        },
+        "creator": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "title": "account",
+          "description": "Creator of this entry."
+        },
+        "_modified": {
+          "type": "string",
+          "format": "date-time",
+          "title": "datetime",
+          "description": "Timestamp of the last modification of this entry."
+        },
+        "modified": {
+          "type": "string",
+          "format": "date-time",
+          "title": "datetime",
+          "description": "Timestamp of the last modification of this entry."
+        },
+        "_modelTitleField": {
+          "type": "string",
+          "description": "Indicates which field is the title field of the model."
+        },
+        "_modelTitle": {
+          "type": "string",
+          "description": "The title of the model this entry is part of.",
+          "pattern": "^[a-zA-Z0-9_\\-]{1,256}$"
+        },
+        "_entryTitle": {
+          "description": "Shorthand for entry title."
+        },
+        "text": {
+          "type": "string",
+          "title": "text",
+          "description": "",
+          "default": ""
+        },
+        "formattedText": {
+          "type": "string",
+          "title": "formattedText",
+          "description": "",
+          "default": ""
+        },
+        "_assets_formattedText": {
+          "type": "array",
+          "items": {
+            "oneOf": [
+              {
+                "type": "string",
+                "pattern": "^[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-4[0-9A-Fa-f]{3}-[89ABab][0-9A-Fa-f]{3}-[0-9A-Fa-f]{12}$"
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "assetID": {
+                    "oneOf": [
+                      {
+                        "type": "null"
+                      },
+                      {
+                        "type": "string",
+                        "pattern": "^[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-4[0-9A-Fa-f]{3}-[89ABab][0-9A-Fa-f]{3}-[0-9A-Fa-f]{12}$"
+                      }
+                    ]
+                  }
+                }
+              }
+            ]
+          }
+        },
+        "number": {
+          "type": "number",
+          "multipleOf": 1,
+          "title": "number",
+          "description": "",
+          "default": 0
+        },
+        "decimal": {
+          "type": "number",
+          "title": "decimal",
+          "description": "",
+          "default": 0
+        },
+        "boolean": {
+          "type": "boolean",
+          "title": "boolean",
+          "description": "",
+          "default": false
+        },
+        "datetime": {
+          "type": "string",
+          "format": "date-time",
+          "title": "datetime",
+          "description": "",
+          "default": "2017-02-08T14:54:49.700Z"
+        },
+        "location": {
+          "$ref": "http://json-schema.org/geo",
+          "title": "location",
+          "description": "",
+          "default": {
+            "latitude": 0,
+            "longitude": 0
+          }
+        },
+        "email": {
+          "type": "string",
+          "format": "email",
+          "title": "email",
+          "description": "",
+          "default": "noreply@entrecode.de"
+        },
+        "url": {
+          "type": "string",
+          "format": "url",
+          "title": "url",
+          "description": "",
+          "default": "entrecode.de"
+        },
+        "phone": {
+          "type": "string",
+          "title": "phone",
+          "description": "",
+          "default": "0"
+        },
+        "json": {
+          "type": [
+            "object",
+            "array"
+          ],
+          "title": "json",
+          "description": "",
+          "default": {}
+        },
+        "entry": {
+          "title": "entry<>",
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string",
+              "pattern": "^[0-9A-Za-z-_]{7,14}$"
+            },
+            {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "pattern": "^[0-9A-Za-z-_]{7,14}$"
+                }
+              }
+            }
+          ],
+          "description": "",
+          "default": "EJlJtSrkgl"
+        },
+        "entries": {
+          "type": "array",
+          "items": {
+            "title": "entry<undefined>",
+            "oneOf": [
+              {
+                "type": "string",
+                "pattern": "^[0-9A-Za-z-_]{7,14}$"
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "pattern": "^[0-9A-Za-z-_]{7,14}$"
+                  }
+                }
+              }
+            ]
+          },
+          "title": "entries<contains_entries>",
+          "minItems": 1,
+          "description": "",
+          "default": [
+            "EJlJtSrkgl"
+          ]
+        },
+        "asset": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string",
+              "pattern": "^[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-4[0-9A-Fa-f]{3}-[89ABab][0-9A-Fa-f]{3}-[0-9A-Fa-f]{12}$"
+            },
+            {
+              "type": "object",
+              "properties": {
+                "assetID": {
+                  "oneOf": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "type": "string",
+                      "pattern": "^[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-4[0-9A-Fa-f]{3}-[89ABab][0-9A-Fa-f]{3}-[0-9A-Fa-f]{12}$"
+                    }
+                  ]
+                }
+              }
+            }
+          ],
+          "title": "asset",
+          "description": "",
+          "default": "5ded1488-3c85-4aa7-b274-150c3503cc35"
+        },
+        "assets": {
+          "type": "array",
+          "items": {
+            "oneOf": [
+              {
+                "type": "string",
+                "pattern": "^[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-4[0-9A-Fa-f]{3}-[89ABab][0-9A-Fa-f]{3}-[0-9A-Fa-f]{12}$"
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "assetID": {
+                    "oneOf": [
+                      {
+                        "type": "null"
+                      },
+                      {
+                        "type": "string",
+                        "pattern": "^[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-4[0-9A-Fa-f]{3}-[89ABab][0-9A-Fa-f]{3}-[0-9A-Fa-f]{12}$"
+                      }
+                    ]
+                  }
+                }
+              }
+            ]
+          },
+          "title": "assets",
+          "description": "",
+          "default": null
+        },
+        "emptyAssets": {
+          "type": "array",
+          "items": {
+            "oneOf": [
+              {
+                "type": "string",
+                "pattern": "^[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-4[0-9A-Fa-f]{3}-[89ABab][0-9A-Fa-f]{3}-[0-9A-Fa-f]{12}$"
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "assetID": {
+                    "oneOf": [
+                      {
+                        "type": "null"
+                      },
+                      {
+                        "type": "string",
+                        "pattern": "^[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-4[0-9A-Fa-f]{3}-[89ABab][0-9A-Fa-f]{3}-[0-9A-Fa-f]{12}$"
+                      }
+                    ]
+                  }
+                }
+              }
+            ]
+          },
+          "title": "assets",
+          "description": "",
+          "default": null
+        },
+        "account": {
+          "oneOf": [
+            {
+              "$ref": "https://entrecode.de/schema/uuidV4"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "account",
+          "description": ""
+        },
+        "role": {
+          "oneOf": [
+            {
+              "$ref": "https://entrecode.de/schema/uuidV4"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "role",
+          "description": ""
+        }
+      },
+      "required": [
+        "text",
+        "formattedText",
+        "number",
+        "decimal",
+        "boolean",
+        "datetime",
+        "location",
+        "email",
+        "url",
+        "phone",
+        "json",
+        "entry",
+        "entries"
+      ]
+    }
+  ]
+}
