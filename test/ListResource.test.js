@@ -67,6 +67,10 @@ describe('ListResource', () => {
     const throws = () => list.getItem();
     throws.should.throw(Error);
   });
+  it('should throw on getItem with out of bounds index', () => {
+    const throws = () => list.getItem(1000);
+    throws.should.throw(Error);
+  });
   it('should throw on getItem with empty list', () => {
     return new Promise((resolve, reject) => {
       fs.readFile(`${__dirname}/mocks/dm-list-empty.json`, 'utf-8', (err, res) => {
