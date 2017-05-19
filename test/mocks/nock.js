@@ -10,6 +10,7 @@ module.exports = {
     .get('/datamanager-template').replyWithFile(200, `${__dirname}/schema/dm-template.json`, { 'Content-Type': 'application/json' })
     .get('/dm-template-template').replyWithFile(200, `${__dirname}/schema/dm-template-template.json`, { 'Content-Type': 'application/json' })
     .get('/dm-role-template').replyWithFile(200, `${__dirname}/schema/dm-role-template.json`, { 'Content-Type': 'application/json' })
+    .get('/dm-client').replyWithFile(200, `${__dirname}/schema/dm-client.json`, { 'Content-Type': 'application/json' })
     .get('/group-template').replyWithFile(200, `${__dirname}/schema/group-template.json`, { 'Content-Type': 'application/json' })
     .get('/datetime').replyWithFile(200, `${__dirname}/schema/datetime.json`, { 'Content-Type': 'application/json' })
     .get('/uuidV4').replyWithFile(200, `${__dirname}/schema/uuidV4.json`, { 'Content-Type': 'application/json' })

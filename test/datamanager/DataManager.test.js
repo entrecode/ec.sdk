@@ -484,10 +484,11 @@ describe('DataManager Resource', () => {
     .then((clientJSON) => {
       stub.returns(Promise.resolve([clientJSON, resource.traversal]));
       const create = Object.assign({}, {
-        clientID: resource.clientID,
-        callbackURL: resource.callbackURL,
-        disableStrategies: resource.disableStrategies,
-        hexColor: resource.hexColor,
+        clientID: clientJSON.clientID,
+        callbackURL: clientJSON.callbackURL,
+        tokenMethod: clientJSON.tokenMethod,
+        disableStrategies: clientJSON.disableStrategies,
+        hexColor: clientJSON.hexColor,
       });
       return resource.createClient(create);
     })

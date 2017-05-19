@@ -246,9 +246,10 @@ export default class DataManagerResource extends Resource {
       if (!client) {
         throw new Error('Cannot create resource with undefined object.');
       }
-      // TODO schema validation
-      return post(this.newRequest().follow('ec:dm-clients'), client);
+      return this[resourceSymbol].link('ec:dm-client/by-id');
     })
+    .then(link => validator.validate(client, `${link.profile}`))
+    .then(() => post(this.newRequest().follow('ec:dm-clients'), client))
     .then(([dm, traversal]) => new DMClientResource(dm, this[environmentSymbol], traversal));
   }
 

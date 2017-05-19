@@ -1,0 +1,46 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "https://entrecode.de/schema/dm-client",
+  "type": "object",
+  "properties": {
+    "clientID": {
+      "type": "string",
+      "pattern": "^[0-9a-z\\-_]+$"
+    },
+    "callbackURL": {
+      "type": "string",
+      "format": "uri"
+    },
+    "tokenMethod": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "query",
+          "cookie",
+          "body"
+        ]
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "disableStrategies": {
+      "type": "array",
+      "items": {
+        "type": [
+          "string"
+        ]
+      }
+    },
+    "hexColor": {
+      "type": "string",
+      "pattern": "^#[A-Fa-f0-9]{6}$"
+    }
+  },
+  "required": [
+    "clientID",
+    "callbackURL",
+    "tokenMethod",
+    "disableStrategies",
+    "hexColor"
+  ]
+}
