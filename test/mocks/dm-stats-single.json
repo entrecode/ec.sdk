@@ -62,6 +62,10 @@
     "ec:datamanagers": {
       "profile": "https://entrecode.de/schema/datamanagers",
       "href": "https://datamanager.entrecode.de"
+    },
+    "self": {
+      "profile": "https://entrecode.de/schema/datamanagers",
+      "href": "https://datamanager.entrecode.de/stats?dataManagerID=6fa28c7a-58a4-4486-aae5-09ecdc5fdfa1"
     }
   }
 }

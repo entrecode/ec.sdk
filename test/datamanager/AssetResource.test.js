@@ -60,7 +60,10 @@ describe('Asset ListResource', () => {
       l.should.be.instanceof(DeletedAssetList);
       stub.restore();
     })
-    .catch(() => stub.restore());
+    .catch((err) => {
+      stub.restore();
+      throw err;
+    });
   });
   it('should throw on asset list filtered with assetID', () => {
     return list.deletedAssetList({ assetID: 'id' })
@@ -79,7 +82,10 @@ describe('Asset ListResource', () => {
       model.should.be.instanceof(DeletedAssetResource);
       stub.restore();
     })
-    .catch(() => stub.restore());
+    .catch((err) => {
+      stub.restore();
+      throw err;
+    });
   });
   it('should be rejected on undefined assetID', () => {
     return list.deletedAsset().should.be.rejectedWith('assetID must be defined');
@@ -116,7 +122,10 @@ describe('Asset ListResource', () => {
       model.should.be.instanceof(TagResource);
       stub.restore();
     })
-    .catch(() => stub.restore());
+    .catch((err) => {
+      stub.restore();
+      throw err;
+    });
   });
   it('should be rejected on undefined tag', () => {
     return list.tag().should.be.rejectedWith('tag must be defined');

@@ -76,7 +76,10 @@ describe('Asset ListResource', () => {
       model.should.be.instanceof(PublicTagResource);
       stub.restore();
     })
-    .catch(() => stub.restore());
+    .catch((err) => {
+      stub.restore();
+      throw err;
+    });
   });
   it('should be rejected on undefined tag', () => {
     return list.tag().should.be.rejectedWith('tag must be defined');

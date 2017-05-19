@@ -432,6 +432,21 @@ describe('PublicAPI', () => {
       throw err;
     });
   });
+  it('should resolve on entry, level ', () => {
+    const stub = sinon.stub(helper, 'get');
+    stub.onFirstCall().returns(resolver('public-dm-root.json'));
+    stub.onSecondCall().returns(resolver('public-entry.json'));
+
+    return api.entry('allFields', '1234567', 2)
+    .then((entry) => {
+      entry.should.be.instanceof(EntryResource);
+      stub.restore();
+    })
+    .catch((err) => {
+      stub.restore();
+      throw err;
+    });
+  });
   it('should throw on undefined model', () => {
     return api.entry()
     .should.be.rejectedWith('model must be defined');
@@ -493,14 +508,18 @@ describe('PublicAPI', () => {
 
   it('should load asset list', () => {
     const stub = sinon.stub(helper, 'get');
-    stub.returns(resolver('asset-list.json'));
+    stub.onFirstCall().returns(resolver('public-dm-root.json'));
+    stub.onSecondCall().returns(resolver('asset-list.json'));
 
     return api.assetList()
     .then((list) => {
       list.should.be.instanceof(PublicAssetList);
       stub.restore();
     })
-    .catch(() => stub.restore());
+    .catch((err) => {
+      stub.restore();
+      throw err;
+    });
   });
   it('should throw on asset list filtered with assetID', () => {
     return api.assetList({ assetID: 'id' })
@@ -515,7 +534,10 @@ describe('PublicAPI', () => {
       model.should.be.instanceof(PublicAssetResource);
       stub.restore();
     })
-    .catch(() => stub.restore());
+    .catch((err) => {
+      stub.restore();
+      throw err;
+    });
   });
   it('should be rejected on undefined assetID', () => {
     return api.asset().should.be.rejectedWith('assetID must be defined');

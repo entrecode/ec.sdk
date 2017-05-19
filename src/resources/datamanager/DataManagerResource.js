@@ -291,8 +291,8 @@ export default class DataManagerResource extends Resource {
       }
 
       const request = this.newRequest()
-      .follow('ec:dm-account/options')
-      .withTemplateParameters(optionsToQuery(o, this[resourceSymbol].link('ec.dm-account/options').href));
+      .follow('ec:dm-accounts/options')
+      .withTemplateParameters(optionsToQuery(o, this[resourceSymbol].link('ec:dm-accounts/options').href));
       return get(this[environmentSymbol], request);
     })
     .then(([res, traversal]) => new DMAccountList(res, this[environmentSymbol], traversal));
@@ -369,7 +369,7 @@ export default class DataManagerResource extends Resource {
 
       const request = this.newRequest()
       .follow('ec:dm-roles/options')
-      .withTemplateParameters(optionsToQuery(o, this[resourceSymbol].link('ec.dm-roles/options').href));
+      .withTemplateParameters(optionsToQuery(o, this[resourceSymbol].link('ec:dm-roles/options').href));
       return get(this[environmentSymbol], request);
     })
     .then(([res, traversal]) => new RoleList(res, this[environmentSymbol], traversal));

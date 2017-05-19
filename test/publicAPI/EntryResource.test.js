@@ -47,6 +47,9 @@ describe('Entry List', () => {
   it('should have ModelResource items', () => {
     list.getAllItems().forEach(item => item.should.be.instanceOf(EntryResource.default));
   });
+  it('should have ModelResource items', () => {
+    list.getItem(0).should.be.instanceOf(EntryResource.default);
+  });
 });
 
 describe('Entry Resource', () => {
