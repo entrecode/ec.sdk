@@ -50,13 +50,6 @@ describe('Session class', () => {
     return session.login('andre@entrecode.de', 'mysecret').should.eventually.be.fulfilled
     .and.notify(() => stub.restore());
   });
-  it('should reject when already logged in', () => {
-    const session = new Session();
-    session[tokenStoreSymbol].set('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJlbnRyZWNvZGVUZXN0IiwiaWF0IjoxNDg1NzgzNTg4LCJleHAiOjQ2NDE0NTcxODgsImF1ZCI6IlRlc3QiLCJzdWIiOiJ0ZXN0QGVudHJlY29kZS5kZSJ9.Vhrq5GR2hNz-RoAhdlnIIWHelPciBPCemEa74s7cXn8');
-    session.setClientID('rest');
-
-    return new Session().login('user', 'mysecret').should.be.rejectedWith('already logged in or old token present. logout first');
-  });
   it('should be rejected on unset clientID', () => {
     const session = new Session();
     session[tokenStoreSymbol].del();

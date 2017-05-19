@@ -69,10 +69,6 @@ export default class Session extends Core {
   login(email, password) {
     return Promise.resolve()
     .then(() => {
-      if (this[tokenStoreSymbol].has()) {
-        throw new Error('already logged in or old token present. logout first');
-      }
-
       if (!this[tokenStoreSymbol].hasClientID()) {
         throw new Error('clientID must be set with Session#setClientID(clientID: string)');
       }
