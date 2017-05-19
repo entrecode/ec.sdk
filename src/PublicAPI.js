@@ -401,7 +401,15 @@ export default class PublicAPI extends Core {
         throw new Error('model must be defined');
       }
 
-      if (options && Object.keys(options).length === 1 && ('id' in options || '_id' in options)) {
+      if (
+        options && Object.keys(options).length === 1
+        &&
+        (
+          (options.id && (typeof options.id === 'string' || (!('any' in options.id) && !('all' in options.id))))
+          ||
+          (options._id && (typeof options._id === 'string' || (!('any' in options._id) && !('all' in options._id))))
+        )
+      ) {
         throw new Error('Providing only an id/_id in entryList filter will result in single resource response. Please use PublicAPI#entry');
       }
 
