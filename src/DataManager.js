@@ -60,7 +60,10 @@ export default class DataManager extends Core {
   dataManagerList(options) {
     return Promise.resolve()
     .then(() => {
-      if (options && Object.keys(options).length === 1 && 'dataManagerID' in options) {
+      if (
+        options && Object.keys(options).length === 1 && 'dataManagerID' in options
+        && (typeof options.dataManagerID === 'string' || (!('any' in options.dataManagerID) && !('all' in options.dataManagerID)))
+      ) {
         throw new Error('Providing only an dataManagerID in DataManagerList filter will result in single resource response. Please use DataManager#get');
       }
 

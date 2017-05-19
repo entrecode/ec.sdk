@@ -84,7 +84,10 @@ export default class Accounts extends Core {
   accountList(options) {
     return Promise.resolve()
     .then(() => {
-      if (options && Object.keys(options).length === 1 && 'accountID' in options) {
+      if (
+        options && Object.keys(options).length === 1 && 'accountID' in options
+        && (typeof options.accountID === 'string' || (!('any' in options.accountID) && !('all' in options.accountID)))
+      ) {
         throw new Error('Providing only an accountID in AccountList filter will result in single resource response. Please use Accounts#account');
       }
 
@@ -164,7 +167,10 @@ export default class Accounts extends Core {
   groupList(options) {
     return Promise.resolve()
     .then(() => {
-      if (options && Object.keys(options).length === 1 && 'groupID' in options) {
+      if (
+        options && Object.keys(options).length === 1 && 'groupID' in options
+        && (typeof options.groupID === 'string' || (!('any' in options.groupID) && !('all' in options.groupID)))
+      ) {
         throw new Error('Providing only an groupID in GroupList filter will result in single resource response. Please use Accounts#groupList');
       }
 
@@ -253,7 +259,10 @@ export default class Accounts extends Core {
   clientList(options) {
     return Promise.resolve()
     .then(() => {
-      if (options && Object.keys(options).length === 1 && 'clientID' in options) {
+      if (
+        options && Object.keys(options).length === 1 && 'clientID' in options
+        && (typeof options.clientID === 'string' || (!('any' in options.clientID) && !('all' in options.clientID)))
+      ) {
         throw new Error('Providing only an clientID in ClientList filter will result in single resource response. Please use Accounts#client');
       }
 

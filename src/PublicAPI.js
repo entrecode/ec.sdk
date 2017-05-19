@@ -95,7 +95,6 @@ export default class PublicAPI extends Core {
     .then(() => {
       const out = {};
       this.models.forEach((model) => {
-        // TODO proper model object
         out[model.title] = model;
       });
       this[modelCacheSymbol] = out;
@@ -348,7 +347,7 @@ export default class PublicAPI extends Core {
   getSchema(model, method = 'get') {
     return Promise.resolve()
     .then(() => {
-      if (!model) { // todo validate model title?
+      if (!model) {
         throw new Error('model must be defined');
       }
 
@@ -403,12 +402,9 @@ export default class PublicAPI extends Core {
 
       if (
         options && Object.keys(options).length === 1
-        &&
-        (
-          (options.id && (typeof options.id === 'string' || (!('any' in options.id) && !('all' in options.id))))
-          ||
-          (options._id && (typeof options._id === 'string' || (!('any' in options._id) && !('all' in options._id))))
-        )
+        && ((options.id && (typeof options.id === 'string' || (!('any' in options.id) && !('all' in options.id))))
+        ||
+        (options._id && (typeof options._id === 'string' || (!('any' in options._id) && !('all' in options._id)))))
       ) {
         throw new Error('Providing only an id/_id in entryList filter will result in single resource response. Please use PublicAPI#entry');
       }
