@@ -173,15 +173,14 @@ export default class Resource {
    *
    * @param {string} link the link name.
    * @param {class} ResourceClass override the default resource class ({@link Resource}).
+   * @param {string?} name the name of the embedded resources
+   * @param {object?} schema schema for {@link EntryResources}
    * @returns {Promise<Resource|ResourceClass>} the resource identified by the link.
    */
-  followLink(link, ResourceClass) {
+  followLink(link, ResourceClass = Resource, name, schema) {
     return get(this[environmentSymbol], this.newRequest().follow(link))
     .then(([res, traversal]) => {
-      if (ResourceClass) {
-        return new ResourceClass(res, this[environmentSymbol], traversal);
-      }
-      return new Resource(res, this[environmentSymbol], traversal);
+      return new ResourceClass(res, this[environmentSymbol], traversal, name, schema);
     });
   }
 

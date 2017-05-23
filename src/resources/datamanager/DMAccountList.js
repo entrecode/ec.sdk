@@ -15,6 +15,6 @@ export default class DMAccountList extends ListResource {
    * @param {?object} traversal traversal from which traverson can continue.
    */
   constructor(resource, environment, traversal) {
-    super(resource, environment, 'ec:dm-account', traversal, DMAccountList, DMAccountResource);
+    super(resource, environment, traversal, 'ec:dm-account', undefined, DMAccountList, DMAccountResource);
   }
 }

@@ -1,5 +1,5 @@
 import { get, optionsToQuery } from '../../helper';
-import { resourceSymbol, environmentSymbol } from '../Resource';
+import { environmentSymbol, resourceSymbol } from '../Resource';
 import ListResource from '../ListResource';
 import PublicAssetResource from './PublicAssetResource';
 import TagList from './PublicTagList';
@@ -20,7 +20,7 @@ export default class PublicAssetList extends ListResource {
    * @param {?object} traversal traversal from which traverson can continue.
    */
   constructor(resource, environment, traversal) {
-    super(resource, environment, 'ec:api/assets', traversal, PublicAssetList, PublicAssetResource);
+    super(resource, environment, traversal, 'ec:api/assets', undefined, PublicAssetList, PublicAssetResource);
   }
 
   /**

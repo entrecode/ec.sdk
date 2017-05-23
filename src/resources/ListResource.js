@@ -22,13 +22,13 @@ export default class ListResource extends Resource {
    *
    * @param {object} resource resource loaded from the API.
    * @param {environment} environment the environment this resource is associated to.
-   * @param {?string} name name of the embedded resources.
    * @param {?object} traversal traversal from which traverson can continue.
+   * @param {?string} name name of the embedded resources.
+   * @param {object?} itemSchema optional schema for list items
    * @param {ListResource} ListClass Class constructor for list types
    * @param {Resource} ItemClass Class constructor for item types
-   * @param {object?} itemSchema optional schema for list items
    */
-  constructor(resource, environment, name, traversal, ListClass = ListResource, ItemClass = Resource, itemSchema) {
+  constructor(resource, environment, traversal, name, itemSchema, ListClass = ListResource, ItemClass = Resource) {
     super(resource, environment, traversal);
 
     Object.defineProperties(this, {
@@ -117,7 +117,7 @@ export default class ListResource extends Resource {
    * @returns {Promise<Resource|ResourceClass>} the resource identified by the link.
    */
   followFirstLink() {
-    return this.followLink('first', this[listClassSymbol]);
+    return this.followLink('first', this[listClassSymbol], this[nameSymbol], this[itemSchemaSymbol]);
   }
 
   /**
@@ -138,7 +138,7 @@ export default class ListResource extends Resource {
    * @returns {Promise<Resource|ResourceClass>} the resource identified by the link.
    */
   followNextLink() {
-    return this.followLink('next', this[listClassSymbol]);
+    return this.followLink('next', this[listClassSymbol], this[nameSymbol], this[itemSchemaSymbol]);
   }
 
   /**
@@ -159,7 +159,7 @@ export default class ListResource extends Resource {
    * @returns {Promise<Resource|ResourceClass>} the resource identified by the link.
    */
   followPrevLink() {
-    return this.followLink('prev', this[listClassSymbol]);
+    return this.followLink('prev', this[listClassSymbol], this[nameSymbol], this[itemSchemaSymbol]);
   }
 }
 

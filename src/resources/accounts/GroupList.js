@@ -15,6 +15,6 @@ export default class GroupList extends ListResource {
    * @param {?object} traversal traversal from which traverson can continue.
    */
   constructor(resource, environment, traversal) {
-    super(resource, environment, 'ec:acc/groups', traversal, GroupList, GroupResource);
+    super(resource, environment, traversal, 'ec:acc/groups', undefined, GroupList, GroupResource);
   }
 }

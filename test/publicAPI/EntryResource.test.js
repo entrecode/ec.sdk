@@ -32,7 +32,7 @@ describe('Entry List', () => {
   });
   beforeEach(() => {
     mock.reset();
-    return EntryList.createList(listJson, 'live', 'beefbeef:allFields')
+    return EntryList.createList(listJson, 'live', undefined, 'beefbeef:allFields')
     .then(l => list = l); // eslint-disable-line no-return-assign
   });
   afterEach(() => {

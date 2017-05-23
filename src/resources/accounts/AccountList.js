@@ -15,6 +15,6 @@ export default class AccountList extends ListResource {
    * @param {?object} traversal traversal from which traverson can continue.
    */
   constructor(resource, environment, traversal) {
-    super(resource, environment, 'ec:account', traversal, AccountList, AccountResource);
+    super(resource, environment, traversal, 'ec:account', undefined, AccountList, AccountResource);
   }
 }
