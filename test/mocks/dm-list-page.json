@@ -1,11 +1,11 @@
 {
-  "msg": "Welcome to entrecode Data Manager v0.12.13 (w1240, write)",
+  "msg": "Welcome to entrecode Data Manager v0.12.13 (w14261, write)",
   "count": 2,
   "total": 4,
   "_links": {
     "self": {
       "profile": "https://entrecode.de/schema/datamanagers",
-      "href": "https://datamanager.entrecode.de/?title~=test&size=2"
+      "href": "https://datamanager.entrecode.de/?title~=test&page=2&size=2"
     },
     "curies": {
       "href": "https://doc.entrecode.de/data_manager/#relation-{rel}",
@@ -42,51 +42,63 @@
       "href": "https://datamanager.entrecode.de/{?created,createdFrom,createdTo,created~,datamanagerid,description~,page,size,sort,title,title~}",
       "templated": true
     },
-    "next": {
-      "href": "https://datamanager.entrecode.de/?title~=test&size=2&page=2"
+    "prev": {
+      "href": "https://datamanager.entrecode.de/?title~=test&size=2"
+    },
+    "first": {
+      "href": "https://datamanager.entrecode.de/?title~=test&size=2"
     }
   },
   "_embedded": {
     "ec:datamanager": [
       {
-        "created": "2015-12-01T14:33:03.498Z",
-        "dataManagerID": "bbbff362-62f2-4513-b034-eeb7c3427ce8",
+        "created": "2015-11-23T15:55:19.148Z",
+        "dataManagerID": "7e2fd960-b8ab-419f-8c8f-90da12b2a9d0",
         "defaultLocale": null,
-        "description": "without models",
+        "description": "This Data Manager contains test data for the ec.datamanager javascript SDK. (Allow all public rights).",
         "config": {
-          "users": null
+          "users": {
+            "google": null,
+            "facebook": null,
+            "password": true,
+            "anonymous": true
+          }
         },
         "hexColor": "#9B2FAE",
         "locales": [],
         "rights": [],
         "publicAssetRights": [
           "get",
-          "getTags"
+          "put",
+          "postPrivate",
+          "postPublic",
+          "getTags",
+          "editTags"
         ],
-        "shortID": "aa3b242e",
-        "title": "ec.datamanager-sdk-tests-3",
+        "shortID": "58b9a1f5",
+        "title": "ec.datamanager-sdk-tests-1",
         "_links": {
           "self": {
             "profile": "https://entrecode.de/schema/datamanager",
-            "href": "https://datamanager.entrecode.de/?dataManagerID=bbbff362-62f2-4513-b034-eeb7c3427ce8",
-            "title": "ec.datamanager-sdk-tests-3"
+            "href": "https://datamanager.entrecode.de/?dataManagerID=7e2fd960-b8ab-419f-8c8f-90da12b2a9d0",
+            "title": "ec.datamanager-sdk-tests-1"
           },
           "collection": {
             "profile": "https://entrecode.de/schema/datamanagers",
             "href": "https://datamanager.entrecode.de"
           },
           "ec:api": {
-            "href": "https://datamanager.entrecode.de/api/aa3b242e"
+            "href": "https://datamanager.entrecode.de/api/58b9a1f5"
           },
           "ec:api-doc": {
-            "href": "https://datamanager.entrecode.de/api/doc/aa3b242e"
+            "href": "https://datamanager.entrecode.de/api/doc/58b9a1f5"
           },
           "ec:api-doc/build": {
-            "href": "https://datamanager.entrecode.de/api/doc/aa3b242e/generate"
+            "href": "https://datamanager.entrecode.de/api/doc/58b9a1f5/generate"
           },
           "ec:assets": {
             "profile": "https://entrecode.de/schema/assets",
-            "href": "https://datamanager.entrecode.de/asset?dataManagerID=bbbff362-62f2-4513-b034-eeb7c3427ce8"
+            "href": "https://datamanager.entrecode.de/asset?dataManagerID=7e2fd960-b8ab-419f-8c8f-90da12b2a9d0"
           },
           "ec:assets/options": {
             "href": "https://datamanager.entrecode.de/asset{?assetID,created,createdFrom,createdTo,created~,creator,dataManagerID,deleted,deletedFrom,deletedTo,deleted~,page,size,sort,tag,title,title~,type,type~}",
@@ -94,7 +106,7 @@
           },
           "ec:models": {
             "profile": "https://entrecode.de/schema/models",
-            "href": "https://datamanager.entrecode.de/model?dataManagerID=bbbff362-62f2-4513-b034-eeb7c3427ce8"
+            "href": "https://datamanager.entrecode.de/model?dataManagerID=7e2fd960-b8ab-419f-8c8f-90da12b2a9d0"
           },
           "ec:models/options": {
             "href": "https://datamanager.entrecode.de/model{?dataManagerID,modelID,page,size,sort,title,titleFrom,titleTo,title~}",
@@ -102,7 +114,7 @@
           },
           "ec:dm-clients": {
             "profile": "https://entrecode.de/schema/dm-clients",
-            "href": "https://datamanager.entrecode.de/client?dataManagerID=bbbff362-62f2-4513-b034-eeb7c3427ce8"
+            "href": "https://datamanager.entrecode.de/client?dataManagerID=7e2fd960-b8ab-419f-8c8f-90da12b2a9d0"
           },
           "ec:dm-clients/options": {
             "href": "https://datamanager.entrecode.de/client{?callbackURL,callbackURL~,clientID,clientID~,dataManagerID,datamanagerid,page,size,sort}",
@@ -110,7 +122,7 @@
           },
           "ec:dm-accounts": {
             "profile": "https://entrecode.de/schema/dm-accounts",
-            "href": "https://datamanager.entrecode.de/account?dataManagerID=bbbff362-62f2-4513-b034-eeb7c3427ce8"
+            "href": "https://datamanager.entrecode.de/account?dataManagerID=7e2fd960-b8ab-419f-8c8f-90da12b2a9d0"
           },
           "ec:dm-accounts/options": {
             "href": "https://datamanager.entrecode.de/account{?accountID,accountID~,dataManagerID,email,email~,hasPassword,page,roles,size,sort}",
@@ -118,7 +130,7 @@
           },
           "ec:dm-roles": {
             "profile": "https://entrecode.de/schema/dm-roles",
-            "href": "https://datamanager.entrecode.de/role?dataManagerID=bbbff362-62f2-4513-b034-eeb7c3427ce8"
+            "href": "https://datamanager.entrecode.de/role?dataManagerID=7e2fd960-b8ab-419f-8c8f-90da12b2a9d0"
           },
           "ec:dm-role/by-id": {
             "profile": "https://entrecode.de/schema/dm-role-template",
@@ -129,56 +141,66 @@
             "templated": true
           },
           "ec:datamanager/export": {
-            "href": "https://datamanager.entrecode.de/export?dataManagerID=bbbff362-62f2-4513-b034-eeb7c3427ce8"
+            "href": "https://datamanager.entrecode.de/export?dataManagerID=7e2fd960-b8ab-419f-8c8f-90da12b2a9d0"
           },
           "ec:datamanager/update-from-template": {
-            "href": "https://datamanager.entrecode.de/?dataManagerID=bbbff362-62f2-4513-b034-eeb7c3427ce8&_templateID={templateID}",
+            "href": "https://datamanager.entrecode.de/?dataManagerID=7e2fd960-b8ab-419f-8c8f-90da12b2a9d0&_templateID={templateID}",
             "templated": true
           },
           "ec:dm-stats": {
-            "href": "https://datamanager.entrecode.de/stats?dataManagerID=bbbff362-62f2-4513-b034-eeb7c3427ce8"
+            "href": "https://datamanager.entrecode.de/stats?dataManagerID=7e2fd960-b8ab-419f-8c8f-90da12b2a9d0"
           }
         }
       },
       {
-        "created": "2015-11-30T11:03:15.207Z",
-        "dataManagerID": "768823d9-e015-4452-b8f3-6061133c5775",
-        "defaultLocale": null,
-        "description": "",
+        "created": "2015-10-07T12:09:20.491Z",
+        "dataManagerID": "48e18a34-cf64-4f4a-bc47-45323a7f0e44",
+        "defaultLocale": "de-DE",
+        "description": "hier kann alles getestet werden",
         "config": {
-          "users": null
+          "users": {
+            "google": null,
+            "facebook": null,
+            "password": true,
+            "anonymous": true
+          }
         },
-        "hexColor": "#9B2FAE",
-        "locales": [],
+        "hexColor": "#F1453D",
+        "locales": [
+          "de-DE"
+        ],
         "rights": [],
         "publicAssetRights": [
           "get",
-          "getTags"
+          "getTags",
+          "put",
+          "postprivate",
+          "postPublic"
         ],
-        "shortID": "3d52509f",
-        "title": "ec.datamanager-sdk-tests-2",
+        "shortID": "01bd8e08",
+        "title": "Test DM",
         "_links": {
           "self": {
             "profile": "https://entrecode.de/schema/datamanager",
-            "href": "https://datamanager.entrecode.de/?dataManagerID=768823d9-e015-4452-b8f3-6061133c5775",
-            "title": "ec.datamanager-sdk-tests-2"
+            "href": "https://datamanager.entrecode.de/?dataManagerID=48e18a34-cf64-4f4a-bc47-45323a7f0e44",
+            "title": "Test DM"
           },
           "collection": {
             "profile": "https://entrecode.de/schema/datamanagers",
             "href": "https://datamanager.entrecode.de"
           },
           "ec:api": {
-            "href": "https://datamanager.entrecode.de/api/3d52509f"
+            "href": "https://datamanager.entrecode.de/api/01bd8e08"
           },
           "ec:api-doc": {
-            "href": "https://datamanager.entrecode.de/api/doc/3d52509f"
+            "href": "https://datamanager.entrecode.de/api/doc/01bd8e08"
           },
           "ec:api-doc/build": {
-            "href": "https://datamanager.entrecode.de/api/doc/3d52509f/generate"
+            "href": "https://datamanager.entrecode.de/api/doc/01bd8e08/generate"
           },
           "ec:assets": {
             "profile": "https://entrecode.de/schema/assets",
-            "href": "https://datamanager.entrecode.de/asset?dataManagerID=768823d9-e015-4452-b8f3-6061133c5775"
+            "href": "https://datamanager.entrecode.de/asset?dataManagerID=48e18a34-cf64-4f4a-bc47-45323a7f0e44"
           },
           "ec:assets/options": {
             "href": "https://datamanager.entrecode.de/asset{?assetID,created,createdFrom,createdTo,created~,creator,dataManagerID,deleted,deletedFrom,deletedTo,deleted~,page,size,sort,tag,title,title~,type,type~}",
@@ -186,7 +208,7 @@
           },
           "ec:models": {
             "profile": "https://entrecode.de/schema/models",
-            "href": "https://datamanager.entrecode.de/model?dataManagerID=768823d9-e015-4452-b8f3-6061133c5775"
+            "href": "https://datamanager.entrecode.de/model?dataManagerID=48e18a34-cf64-4f4a-bc47-45323a7f0e44"
           },
           "ec:models/options": {
             "href": "https://datamanager.entrecode.de/model{?dataManagerID,modelID,page,size,sort,title,titleFrom,titleTo,title~}",
@@ -194,7 +216,7 @@
           },
           "ec:dm-clients": {
             "profile": "https://entrecode.de/schema/dm-clients",
-            "href": "https://datamanager.entrecode.de/client?dataManagerID=768823d9-e015-4452-b8f3-6061133c5775"
+            "href": "https://datamanager.entrecode.de/client?dataManagerID=48e18a34-cf64-4f4a-bc47-45323a7f0e44"
           },
           "ec:dm-clients/options": {
             "href": "https://datamanager.entrecode.de/client{?callbackURL,callbackURL~,clientID,clientID~,dataManagerID,datamanagerid,page,size,sort}",
@@ -202,7 +224,7 @@
           },
           "ec:dm-accounts": {
             "profile": "https://entrecode.de/schema/dm-accounts",
-            "href": "https://datamanager.entrecode.de/account?dataManagerID=768823d9-e015-4452-b8f3-6061133c5775"
+            "href": "https://datamanager.entrecode.de/account?dataManagerID=48e18a34-cf64-4f4a-bc47-45323a7f0e44"
           },
           "ec:dm-accounts/options": {
             "href": "https://datamanager.entrecode.de/account{?accountID,accountID~,dataManagerID,email,email~,hasPassword,page,roles,size,sort}",
@@ -210,7 +232,7 @@
           },
           "ec:dm-roles": {
             "profile": "https://entrecode.de/schema/dm-roles",
-            "href": "https://datamanager.entrecode.de/role?dataManagerID=768823d9-e015-4452-b8f3-6061133c5775"
+            "href": "https://datamanager.entrecode.de/role?dataManagerID=48e18a34-cf64-4f4a-bc47-45323a7f0e44"
           },
           "ec:dm-role/by-id": {
             "profile": "https://entrecode.de/schema/dm-role-template",
@@ -221,14 +243,14 @@
             "templated": true
           },
           "ec:datamanager/export": {
-            "href": "https://datamanager.entrecode.de/export?dataManagerID=768823d9-e015-4452-b8f3-6061133c5775"
+            "href": "https://datamanager.entrecode.de/export?dataManagerID=48e18a34-cf64-4f4a-bc47-45323a7f0e44"
           },
           "ec:datamanager/update-from-template": {
-            "href": "https://datamanager.entrecode.de/?dataManagerID=768823d9-e015-4452-b8f3-6061133c5775&_templateID={templateID}",
+            "href": "https://datamanager.entrecode.de/?dataManagerID=48e18a34-cf64-4f4a-bc47-45323a7f0e44&_templateID={templateID}",
             "templated": true
           },
           "ec:dm-stats": {
-            "href": "https://datamanager.entrecode.de/stats?dataManagerID=768823d9-e015-4452-b8f3-6061133c5775"
+            "href": "https://datamanager.entrecode.de/stats?dataManagerID=48e18a34-cf64-4f4a-bc47-45323a7f0e44"
           }
         }
       }

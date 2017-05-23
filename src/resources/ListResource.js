@@ -5,6 +5,25 @@ const listClassSymbol = Symbol('_listClass');
 const itemClassSymbol = Symbol('_itemClass');
 const itemSchemaSymbol = Symbol('_itmeSchema');
 
+function map(list, iterator, results = []) {
+  return list.getAllItems().map(entry =>
+    res =>
+      Promise.resolve()
+      .then(() => iterator(entry))
+      .then((result) => {
+        res.push(result);
+        return res;
+      }))
+  .reduce((current, next) => current.then(next), Promise.resolve(results))
+  .then((res) => {
+    if (!list.hasNextLink()) {
+      return res;
+    }
+    return list.followNextLink()
+    .then(next => map(next, iterator, res));
+  });
+}
+
 /**
  * Generic list resource class. Represents {@link
   * https://tools.ietf.org/html/draft-kelly-json-hal-08 HAL resources} with added support for lists.
@@ -160,6 +179,10 @@ export default class ListResource extends Resource {
    */
   followPrevLink() {
     return this.followLink('prev', this[listClassSymbol], this[nameSymbol], this[itemSchemaSymbol]);
+  }
+
+  map(iterator) {
+    return map(this, iterator);
   }
 }
 
