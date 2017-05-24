@@ -20,4 +20,6 @@ export declare class ListResource extends Resource {
   hasPrevLink(): boolean;
 
   followPrevLink(): Promise<any>;
+
+  map(iterator: (item: Resource) => any | Promise<any>): Array<any>;
 }
