@@ -181,6 +181,13 @@ export default class ListResource extends Resource {
     return this.followLink('prev', this[listClassSymbol], this[nameSymbol], this[itemSchemaSymbol]);
   }
 
+  /**
+   * The map() method creates a new array with the results of calling a provided function on every
+   * item in this list. It will use {@link ListResource#followNextLink}.
+   *
+   * @param {function} iterator function that produces an element of the new array.
+   * @returns {Promise} returns Promise resolving to the new array.
+   */
   map(iterator) {
     return map(this, iterator);
   }
