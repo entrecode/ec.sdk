@@ -12,7 +12,8 @@
       "templated": true
     },
     "ec:app-stats": {
-      "href": "https://appserver.entrecode.de/stats"
+      "href": "https://appserver.entrecode.de/stats{?appID}",
+      "templated": true
     },
     "ec:apps/types": {
       "profile": "https://entrecode.de/schema/app-plugin-types",

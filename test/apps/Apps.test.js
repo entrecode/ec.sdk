@@ -15,8 +15,8 @@ const Apps = require('../../lib/Apps').default;
 const AppList = require('../../lib/resources/apps/AppList').default;
 const AppResource = require('../../lib/resources/apps/AppResource').default;
 const TypesResource = require('../../lib/resources/apps/TypesResource').default;
-// const AppStatsList = require('../../lib/resources/apps/AppStatsList').defautl;
-// const AppStatsResource = require('../../lib/resources/apps/AppStatsResource').default;
+const AppStatsList = require('../../lib/resources/apps/AppStatsList').default;
+const AppStatsResource = require('../../lib/resources/apps/AppStatsResource').default;
 // const PlatformList = require('../../lib/resources/apps/PlatformList').default;
 // const PlatformResource = require('../../lib/resources/apps/PlatformResource').default;
 
@@ -131,7 +131,7 @@ describe('Apps class', () => {
     });
   });
 
-  it.skip('should load stats list', () => {
+  it('should load stats list', () => {
     const apps = new Apps('live');
     const stub = sinon.stub(helper, 'get');
     stub.returns(resolver('app-stats-list.json'));
@@ -148,15 +148,15 @@ describe('Apps class', () => {
       throw err;
     });
   });
-  it.skip('should load stats resource', () => {
+  it('should load stats resource', () => {
     const apps = new Apps('live');
     const stub = sinon.stub(helper, 'get');
     stub.onFirstCall().returns(resolver('app-list.json'));
     stub.onSecondCall().returns(resolver('app-stats-single.json'));
 
     return apps.stats('id')
-    .then((model) => {
-      model.should.be.instanceof(AppStatsResource);
+    .then((stat) => {
+      stat.should.be.instanceof(AppStatsResource);
       stub.restore();
     })
     .catch((err) => {
@@ -164,7 +164,7 @@ describe('Apps class', () => {
       throw err;
     });
   });
-  it.skip('should be rejected on undefined appID', () => {
+  it('should be rejected on undefined appID', () => {
     const apps = new Apps('live');
     return apps.stats().should.be.rejectedWith('appID must be defined');
   });

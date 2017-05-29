@@ -5,6 +5,8 @@ import { get, optionsToQuery, post } from './helper';
 import AppList from './resources/apps/AppList';
 import AppResource from './resources/apps/AppResource';
 import TypesResource from './resources/apps/TypesResource';
+import AppStatsList from './resources/apps/AppStatsList';
+import AppStatsResource from './resources/apps/AppStatsResource';
 
 const urls = {
   live: 'https://appserver.entrecode.de/',
@@ -106,5 +108,46 @@ export default class Apps extends Core {
     .then(([res, traversal]) => new TypesResource(res, this[environmentSymbol], traversal));
   }
 
-  // TODO app-stats resource
+  /**
+   * Load the {@link AppStatsList}.
+   *
+   * @example
+   * return apps.statsList()
+   * .then(stats => {
+   *   return show(stats.getAllItems());
+   * });
+   *
+   *
+   * @returns {Promise<AppStatsList>} Promise resolving to AppStatsList
+   */
+  statsList() {
+    return Promise.resolve()
+    .then(() => this.follow('ec:app-stats'))
+    .then(request => get(this[environmentSymbol], request))
+    .then(([res, traversal]) => new AppStatsList(res, this[environmentSymbol], traversal));
+  }
+
+  /**
+   * Load a single {@link AppStatsResource}.
+   *
+   * @example
+   * return dm.stats('id')
+   * .then(stats => {
+   *   return show(stats);
+   * });
+   *
+   * @param {string} appID the appID
+   * @returns {Promise<AppStatsResource>} Promise resolving to AppStatsResource
+   */
+  stats(appID) {
+    return Promise.resolve()
+    .then(() => {
+      if (!appID) {
+        throw new Error('appID must be defined');
+      }
+      return this.follow('ec:app-stats');
+    })
+    .then(request => get(this[environmentSymbol], request.withTemplateParameters({ appID })))
+    .then(([res]) => new AppStatsResource(res, this[environmentSymbol]));
+  }
 }
