@@ -5,6 +5,7 @@ module.exports = {
     nock.disableNetConnect();
 
     nock('https://entrecode.de/schema')
+    .get('/app-template').replyWithFile(200, `${__dirname}/schema/app-template.json`, { 'Content-Type': 'application/json' })
     .get('/client').replyWithFile(200, `${__dirname}/schema/client.json`, { 'Content-Type': 'application/json' })
     .get('/datamanager').replyWithFile(200, `${__dirname}/schema/dm.json`, { 'Content-Type': 'application/json' })
     .get('/datamanager-template').replyWithFile(200, `${__dirname}/schema/dm-template.json`, { 'Content-Type': 'application/json' })
@@ -26,6 +27,9 @@ module.exports = {
 
     nock('https://accounts.entrecode.de')
     .get('/').replyWithFile(200, `${__dirname}/accounts-root.json`, { 'Content-Type': 'application/json' });
+
+    nock('https://appserver.entrecode.de')
+    .get('/').replyWithFile(200, `${__dirname}/app-list.json`, { 'Content-Type': 'application/json' });
 
     nock('https://datamanager.entrecode.de')
     .get('/').replyWithFile(200, `${__dirname}/dm-list.json`, { 'Content-Type': 'application/json' })
