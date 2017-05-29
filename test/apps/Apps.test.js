@@ -14,6 +14,7 @@ const ListResource = require('../../lib/resources/ListResource').default;
 const Apps = require('../../lib/Apps').default;
 const AppList = require('../../lib/resources/apps/AppList').default;
 const AppResource = require('../../lib/resources/apps/AppResource').default;
+const TypesResource = require('../../lib/resources/apps/TypesResource').default;
 // const AppStatsList = require('../../lib/resources/apps/AppStatsList').defautl;
 // const AppStatsResource = require('../../lib/resources/apps/AppStatsResource').default;
 // const PlatformList = require('../../lib/resources/apps/PlatformList').default;
@@ -111,6 +112,23 @@ describe('Apps class', () => {
   it('should be rejected on create with undefined', () => {
     return new Apps('live').create()
     .should.be.rejectedWith('Cannot create resource with undefined object');
+  });
+
+  it('should load types', () => {
+    const apps = new Apps('live');
+    const stub = sinon.stub(helper, 'get');
+    stub.onFirstCall().returns(resolver('app-list.json'));
+    stub.onSecondCall().returns(resolver('app-types.json'));
+
+    return apps.types()
+    .then((res) => {
+      res.should.be.instanceof(TypesResource);
+      stub.restore();
+    })
+    .catch((err) => {
+      stub.restore();
+      throw err;
+    });
   });
 
   it.skip('should load stats list', () => {

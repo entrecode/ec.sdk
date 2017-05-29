@@ -1,9 +1,10 @@
 import validator from 'json-schema-remote';
 
 import Core, { environmentSymbol } from './Core';
-import { get, post, optionsToQuery } from './helper';
+import { get, optionsToQuery, post } from './helper';
 import AppList from './resources/apps/AppList';
 import AppResource from './resources/apps/AppResource';
+import TypesResource from './resources/apps/TypesResource';
 
 const urls = {
   live: 'https://appserver.entrecode.de/',
@@ -98,6 +99,12 @@ export default class Apps extends Core {
     .then(([dm, traversal]) => new AppResource(dm, this[environmentSymbol], traversal));
   }
 
-  // TODO Types resource
+  types() {
+    return Promise.resolve()
+    .then(() => this.follow('ec:apps/types'))
+    .then(request => get(this[environmentSymbol], request))
+    .then(([res, traversal]) => new TypesResource(res, this[environmentSymbol], traversal));
+  }
+
   // TODO app-stats resource
 }
