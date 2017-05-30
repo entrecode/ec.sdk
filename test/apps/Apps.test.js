@@ -360,6 +360,37 @@ describe('Apps Resource', () => {
   it('should be rejected on undefined codeSourceID', () => {
     return resource.codeSource().should.be.rejectedWith('codeSourceID must be defined');
   });
+  it('should create codeSource', () => {
+    const stub = sinon.stub(helper, 'post');
+    return new Promise((resolve, reject) => {
+      fs.readFile(`${__dirname}/../mocks/codesource-single.json`, 'utf-8', (err, res) => {
+        if (err) {
+          return reject(err);
+        }
+        return resolve(JSON.parse(res));
+      });
+    })
+    .then((json) => {
+      stub.returns(Promise.resolve([json, resource.traversal]));
+      const create = Object.assign({}, {
+        codeSourceID: json.codeSourceID,
+        codeSourceType: json.codeSourceType,
+        config: json.config,
+      });
+      return resource.createCodeSource(create);
+    })
+    .then(() => {
+      stub.should.be.called.once;
+      stub.restore();
+    })
+    .catch((err) => {
+      stub.restore();
+      throw err;
+    });
+  });
+  it('should be rejected on undefined client', () => {
+    return resource.createCodeSource().should.be.rejectedWith('Cannot create resource with undefined object.');
+  });
 
   it('should load dataSource list', () => {
     const stub = sinon.stub(helper, 'get');
@@ -396,6 +427,37 @@ describe('Apps Resource', () => {
   it('should be rejected on undefined dataSourceID', () => {
     return resource.dataSource().should.be.rejectedWith('dataSourceID must be defined');
   });
+  it('should create dataSource', () => {
+    const stub = sinon.stub(helper, 'post');
+    return new Promise((resolve, reject) => {
+      fs.readFile(`${__dirname}/../mocks/datasource-single.json`, 'utf-8', (err, res) => {
+        if (err) {
+          return reject(err);
+        }
+        return resolve(JSON.parse(res));
+      });
+    })
+    .then((json) => {
+      stub.returns(Promise.resolve([json, resource.traversal]));
+      const create = Object.assign({}, {
+        dataSourceID: json.dataSourceID,
+        dataSourceType: json.dataSourceType,
+        config: json.config,
+      });
+      return resource.createDataSource(create);
+    })
+    .then(() => {
+      stub.should.be.called.once;
+      stub.restore();
+    })
+    .catch((err) => {
+      stub.restore();
+      throw err;
+    });
+  });
+  it('should be rejected on undefined client', () => {
+    return resource.createDataSource().should.be.rejectedWith('Cannot create resource with undefined object.');
+  });
 
   it('should load target list', () => {
     const stub = sinon.stub(helper, 'get');
@@ -431,5 +493,36 @@ describe('Apps Resource', () => {
   });
   it('should be rejected on undefined targetID', () => {
     return resource.target().should.be.rejectedWith('targetID must be defined');
+  });
+  it('should create target', () => {
+    const stub = sinon.stub(helper, 'post');
+    return new Promise((resolve, reject) => {
+      fs.readFile(`${__dirname}/../mocks/target-single.json`, 'utf-8', (err, res) => {
+        if (err) {
+          return reject(err);
+        }
+        return resolve(JSON.parse(res));
+      });
+    })
+    .then((json) => {
+      stub.returns(Promise.resolve([json, resource.traversal]));
+      const create = Object.assign({}, {
+        targetID: json.targetID,
+        targetType: json.targetType,
+        config: json.config,
+      });
+      return resource.createTarget(create);
+    })
+    .then(() => {
+      stub.should.be.called.once;
+      stub.restore();
+    })
+    .catch((err) => {
+      stub.restore();
+      throw err;
+    });
+  });
+  it('should be rejected on undefined client', () => {
+    return resource.createTarget().should.be.rejectedWith('Cannot create resource with undefined object.');
   });
 });

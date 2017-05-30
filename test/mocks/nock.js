@@ -17,6 +17,9 @@ module.exports = {
     .get('/uuidV4').replyWithFile(200, `${__dirname}/schema/uuidV4.json`, { 'Content-Type': 'application/json' })
     .get('/locale').replyWithFile(200, `${__dirname}/schema/locale.json`, { 'Content-Type': 'application/json' })
     .get('/hexcolor').replyWithFile(200, `${__dirname}/schema/hexcolor.json`, { 'Content-Type': 'application/json' })
+    .get('/codesource-template').replyWithFile(200, `${__dirname}/schema/codesource-template.json`, { 'Content-Type': 'application/json' })
+    .get('/datasource-template').replyWithFile(200, `${__dirname}/schema/datasource-template.json`, { 'Content-Type': 'application/json' })
+    .get('/target-template').replyWithFile(200, `${__dirname}/schema/target-template.json`, { 'Content-Type': 'application/json' })
     .get('/hal').replyWithFile(200, `${__dirname}/schema/hal.json`, { 'Content-Type': 'application/json' });
 
     nock('http://json-schema.org')

@@ -1,5 +1,7 @@
-import { get, optionsToQuery } from '../../helper';
-import Resource, { environmentSymbol } from '../Resource';
+import validator from 'json-schema-remote';
+
+import { get, post, optionsToQuery } from '../../helper';
+import Resource, { environmentSymbol, resourceSymbol } from '../Resource';
 import PlatformList from './PlatformList';
 import PlatformResource from './PlatformResource';
 import CodeSourceList from './CodeSourceList';
@@ -160,6 +162,25 @@ export default class AppResource extends Resource {
   }
 
   /**
+   * Create a new codeSource.
+   *
+   * @param {object} codeSource object representing the codeSource.
+   * @returns {Promise<CodeSourceResource>} the newly created CodeSourceResource
+   */
+  createCodeSource(codeSource) {
+    return Promise.resolve()
+    .then(() => {
+      if (!codeSource) {
+        throw new Error('Cannot create resource with undefined object.');
+      }
+      return this[resourceSymbol].link('ec:app/codesource/by-id');
+    })
+    .then(link => validator.validate(codeSource, `${link.profile}-template`))
+    .then(() => post(this.newRequest().follow('ec:app/codesources'), codeSource))
+    .then(([dm, traversal]) => new CodeSourceResource(dm, this[environmentSymbol], traversal));
+  }
+
+  /**
    * Load a {@link DataSourceList} of {@link CodeSourceResource} filtered by the values specified
    * by the options parameter.
    *
@@ -207,6 +228,25 @@ export default class AppResource extends Resource {
   }
 
   /**
+   * Create a new dataSource.
+   *
+   * @param {object} dataSource object representing the dataSource.
+   * @returns {Promise<DataSourceResource>} the newly created DataSourceResource
+   */
+  createDataSource(dataSource) {
+    return Promise.resolve()
+    .then(() => {
+      if (!dataSource) {
+        throw new Error('Cannot create resource with undefined object.');
+      }
+      return this[resourceSymbol].link('ec:app/datasource/by-id');
+    })
+    .then(link => validator.validate(dataSource, `${link.profile}-template`))
+    .then(() => post(this.newRequest().follow('ec:app/datasources'), dataSource))
+    .then(([dm, traversal]) => new DataSourceResource(dm, this[environmentSymbol], traversal));
+  }
+
+  /**
    * Load a {@link TargetList} of {@link TargetResource} filtered by the values specified
    * by the options parameter.
    *
@@ -251,5 +291,24 @@ export default class AppResource extends Resource {
       return get(this[environmentSymbol], request);
     })
     .then(([res, traversal]) => new TargetResource(res, this[environmentSymbol], traversal));
+  }
+
+  /**
+   * Create a new target.
+   *
+   * @param {object} target object representing the target.
+   * @returns {Promise<TargetResource>} the newly created TargetResource
+   */
+  createTarget(target) {
+    return Promise.resolve()
+    .then(() => {
+      if (!target) {
+        throw new Error('Cannot create resource with undefined object.');
+      }
+      return this[resourceSymbol].link('ec:app/target/by-id');
+    })
+    .then(link => validator.validate(target, `${link.profile}-template`))
+    .then(() => post(this.newRequest().follow('ec:app/targets'), target))
+    .then(([dm, traversal]) => new TargetResource(dm, this[environmentSymbol], traversal));
   }
 }

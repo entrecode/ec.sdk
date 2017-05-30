@@ -1,0 +1,17 @@
+{
+  "id": "https://entrecode.de/schema/target-template",
+  "type": "object",
+  "properties": {
+    "targetType": {
+      "type": "string"
+    },
+    "config": {
+      "type": "object"
+    }
+  },
+  "required": [
+    "targetType",
+    "config"
+  ],
+  "$schema": "http://json-schema.org/draft-04/schema#"
+}
