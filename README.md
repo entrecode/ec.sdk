@@ -38,7 +38,12 @@ dataManager.setToken(accessToken);
 
 dataManager.dataManagerList()
 .then(list => doSomthingWith(list))
-.catch(console.log);
+.catch(console.error);
+
+const accounts = new Accounts(); // This uses 'live' environment
+accounts.me() // This has token from 'dataManager'
+.then(me => show(me))
+.catch(console.error)
 ```
 
 ##### Node
@@ -57,7 +62,6 @@ dataManager.dataManagerList()
 > This is not officially supported. Mainly exists for usage in jsfiddles or similar.
 
 ```html
-<!-- Good Luck :D - We have a browserified build in ./dist/ -->
 <script src="https://unpkg.com/ec.sdk/dist/ec.sdk.min.js"></script>
 <script>
     console.log('My development stack is bad and I should feel bad');
