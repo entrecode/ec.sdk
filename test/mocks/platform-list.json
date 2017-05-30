@@ -1,0 +1,143 @@
+{
+  "count": 2,
+  "total": 2,
+  "_links": {
+    "self": {
+      "profile": "https://entrecode.de/schema/platforms",
+      "href": "https://appserver.entrecode.de/platform?appID=9f83b67a-cb95-4f60-9d82-7c66d4a81e24"
+    },
+    "curies": {
+      "href": "https://doc.entrecode.de/app_manager/#relation-{rel}",
+      "templated": true
+    },
+    "ec:app/platform/by-id": {
+      "profile": "https://entrecode.de/schema/platform",
+      "href": "https://appserver.entrecode.de/platform{?platformID}",
+      "templated": true
+    },
+    "ec:apps": {
+      "profile": "https://entrecode.de/schema/apps",
+      "href": "https://appserver.entrecode.de"
+    },
+    "ec:app/platforms/options": {
+      "href": "https://appserver.entrecode.de/platform{?appID,codeSourceID,dataSourceID,page,platformID,platformType,platformType~,size,sort,title,title~}",
+      "templated": true
+    }
+  },
+  "_embedded": {
+    "ec:app/platform": [
+      {
+        "platformID": "1c9af9e3-c14e-4bd8-af2f-ea6795b912f0",
+        "title": "ionic-android",
+        "config": {},
+        "platformType": "ionic-android",
+        "_links": {
+          "self": {
+            "profile": "https://entrecode.de/schema/platform",
+            "href": "https://appserver.entrecode.de/platform?platformID=1c9af9e3-c14e-4bd8-af2f-ea6795b912f0"
+          },
+          "collection": {
+            "profile": "https://entrecode.de/schema/platforms",
+            "href": "https://appserver.entrecode.de/platform?appID=9f83b67a-cb95-4f60-9d82-7c66d4a81e24"
+          },
+          "ec:app": {
+            "profile": "https://entrecode.de/schema/app",
+            "href": "https://appserver.entrecode.de/?appID=9f83b67a-cb95-4f60-9d82-7c66d4a81e24"
+          },
+          "ec:app/codesource": {
+            "profile": "https://entrecode.de/schema/codesource",
+            "href": "https://appserver.entrecode.de/codesource?codeSourceID=2ce3f1cf-729e-4c12-b858-b7ec370b7faf"
+          },
+          "ec:app/datasource": {
+            "profile": "https://entrecode.de/schema/datasource",
+            "href": "https://appserver.entrecode.de/datasource?dataSourceID=24cc9adb-cb48-4e63-8298-489830146c20"
+          },
+          "ec:app/target": {
+            "profile": "https://entrecode.de/schema/target",
+            "href": "https://appserver.entrecode.de/target?targetID=6e704cae-70b4-4e7a-b882-befca792c5da"
+          },
+          "ec:app/deployment/latest": {
+            "profile": "https://entrecode.de/schema/deployment",
+            "href": "https://appserver.entrecode.de/platform/deployment?deploymentID=1050"
+          },
+          "ec:app/build/latest": {
+            "profile": "https://entrecode.de/schema/build",
+            "href": "https://appserver.entrecode.de/platform/build?buildID=694"
+          },
+          "ec:app/deployments": {
+            "profile": "https://entrecode.de/schema/deployments",
+            "href": "https://appserver.entrecode.de/platform/deployment?platformID=1c9af9e3-c14e-4bd8-af2f-ea6795b912f0"
+          },
+          "ec:app/builds": {
+            "profile": "https://entrecode.de/schema/builds",
+            "href": "https://appserver.entrecode.de/platform/build?platformID=1c9af9e3-c14e-4bd8-af2f-ea6795b912f0"
+          },
+          "ec:app/builds/options": {
+            "href": "https://appserver.entrecode.de/platform/build{?buildID,page,platformID,size,sort}",
+            "templated": true
+          },
+          "ec:app/deployments/options": {
+            "href": "https://appserver.entrecode.de/platform/deployment{?buildID,deploymentID,page,platformID,size,sort,targetID}",
+            "templated": true
+          }
+        }
+      },
+      {
+        "platformID": "229b4384-fcfa-437b-833e-fc779a3f8f4c",
+        "title": "ionic-simple",
+        "config": {},
+        "platformType": "ionic-simple",
+        "_links": {
+          "self": {
+            "profile": "https://entrecode.de/schema/platform",
+            "href": "https://appserver.entrecode.de/platform?platformID=229b4384-fcfa-437b-833e-fc779a3f8f4c"
+          },
+          "collection": {
+            "profile": "https://entrecode.de/schema/platforms",
+            "href": "https://appserver.entrecode.de/platform?appID=9f83b67a-cb95-4f60-9d82-7c66d4a81e24"
+          },
+          "ec:app": {
+            "profile": "https://entrecode.de/schema/app",
+            "href": "https://appserver.entrecode.de/?appID=9f83b67a-cb95-4f60-9d82-7c66d4a81e24"
+          },
+          "ec:app/codesource": {
+            "profile": "https://entrecode.de/schema/codesource",
+            "href": "https://appserver.entrecode.de/codesource?codeSourceID=2ce3f1cf-729e-4c12-b858-b7ec370b7faf"
+          },
+          "ec:app/datasource": {
+            "profile": "https://entrecode.de/schema/datasource",
+            "href": "https://appserver.entrecode.de/datasource?dataSourceID=24cc9adb-cb48-4e63-8298-489830146c20"
+          },
+          "ec:app/target": {
+            "profile": "https://entrecode.de/schema/target",
+            "href": "https://appserver.entrecode.de/target?targetID=6e704cae-70b4-4e7a-b882-befca792c5da"
+          },
+          "ec:app/deployment/latest": {
+            "profile": "https://entrecode.de/schema/deployment",
+            "href": "https://appserver.entrecode.de/platform/deployment?deploymentID=1051"
+          },
+          "ec:app/build/latest": {
+            "profile": "https://entrecode.de/schema/build",
+            "href": "https://appserver.entrecode.de/platform/build?buildID=734"
+          },
+          "ec:app/deployments": {
+            "profile": "https://entrecode.de/schema/deployments",
+            "href": "https://appserver.entrecode.de/platform/deployment?platformID=229b4384-fcfa-437b-833e-fc779a3f8f4c"
+          },
+          "ec:app/builds": {
+            "profile": "https://entrecode.de/schema/builds",
+            "href": "https://appserver.entrecode.de/platform/build?platformID=229b4384-fcfa-437b-833e-fc779a3f8f4c"
+          },
+          "ec:app/builds/options": {
+            "href": "https://appserver.entrecode.de/platform/build{?buildID,page,platformID,size,sort}",
+            "templated": true
+          },
+          "ec:app/deployments/options": {
+            "href": "https://appserver.entrecode.de/platform/deployment{?buildID,deploymentID,page,platformID,size,sort,targetID}",
+            "templated": true
+          }
+        }
+      }
+    ]
+  }
+}

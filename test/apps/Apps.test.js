@@ -17,8 +17,8 @@ const AppResource = require('../../lib/resources/apps/AppResource').default;
 const TypesResource = require('../../lib/resources/apps/TypesResource').default;
 const AppStatsList = require('../../lib/resources/apps/AppStatsList').default;
 const AppStatsResource = require('../../lib/resources/apps/AppStatsResource').default;
-// const PlatformList = require('../../lib/resources/apps/PlatformList').default;
-// const PlatformResource = require('../../lib/resources/apps/PlatformResource').default;
+const PlatformList = require('../../lib/resources/apps/PlatformList').default;
+const PlatformResource = require('../../lib/resources/apps/PlatformResource').default;
 
 const nock = require('../mocks/nock.js');
 
@@ -283,7 +283,7 @@ describe('Apps Resource', () => {
     });
   });
 
-  it.skip('should load platform list', () => {
+  it('should load platform list', () => {
     const stub = sinon.stub(helper, 'get');
     stub.returns(resolver('platform-list.json'));
 
@@ -297,11 +297,11 @@ describe('Apps Resource', () => {
       throw err;
     });
   });
-  it.skip('should throw on platform list filtered with platformID', () => {
+  it('should throw on platform list filtered with platformID', () => {
     return resource.platformList({ platformID: 'id' })
-    .should.be.rejectedWith('Cannot filter platformList only by platformID. Use AppResource#platform() instead');
+    .should.be.rejectedWith('Cannot filter platformList only by platformID. Use AppResource#platform instead');
   });
-  it.skip('should load platform resource', () => {
+  it('should load platform resource', () => {
     const stub = sinon.stub(helper, 'get');
     stub.returns(resolver('platform-single.json'));
 
@@ -315,7 +315,7 @@ describe('Apps Resource', () => {
       throw err;
     });
   });
-  it.skip('should be rejected on undefined platformID', () => {
+  it('should be rejected on undefined platformID', () => {
     return resource.platform().should.be.rejectedWith('platformID must be defined');
   });
 });
