@@ -1,0 +1,38 @@
+{
+  "targetID": "6e704cae-70b4-4e7a-b882-befca792c5da",
+  "targetType": "zipDownload",
+  "config": {
+    "id": "test",
+    "name": "test",
+    "_title": "download",
+    "basepath": "test"
+  },
+  "_links": {
+    "self": {
+      "profile": "https://entrecode.de/schema/target",
+      "href": "https://appserver.entrecode.de/target?targetID=6e704cae-70b4-4e7a-b882-befca792c5da"
+    },
+    "collection": {
+      "profile": "https://entrecode.de/schema/targets",
+      "href": "https://appserver.entrecode.de/target?appID=9f83b67a-cb95-4f60-9d82-7c66d4a81e24"
+    },
+    "ec:app": {
+      "profile": "https://entrecode.de/schema/app",
+      "href": "https://appserver.entrecode.de?appID=9f83b67a-cb95-4f60-9d82-7c66d4a81e24"
+    },
+    "ec:app/platform": [
+      {
+        "profile": "https://entrecode.de/schema/platform",
+        "href": "https://appserver.entrecode.de/platform?platformID=229b4384-fcfa-437b-833e-fc779a3f8f4c"
+      },
+      {
+        "profile": "https://entrecode.de/schema/platform",
+        "href": "https://appserver.entrecode.de/platform?platformID=1c9af9e3-c14e-4bd8-af2f-ea6795b912f0"
+      }
+    ],
+    "ec:app/deployments": {
+      "profile": "https://entrecode.de/schema/deployments",
+      "href": "https://appserver.entrecode.de/platform/deployment?targetID=6e704cae-70b4-4e7a-b882-befca792c5da"
+    }
+  }
+}

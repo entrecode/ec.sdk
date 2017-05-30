@@ -19,6 +19,12 @@ const AppStatsList = require('../../lib/resources/apps/AppStatsList').default;
 const AppStatsResource = require('../../lib/resources/apps/AppStatsResource').default;
 const PlatformList = require('../../lib/resources/apps/PlatformList').default;
 const PlatformResource = require('../../lib/resources/apps/PlatformResource').default;
+const CodeSourceList = require('../../lib/resources/apps/CodeSourceList').default;
+const CodeSourceResource = require('../../lib/resources/apps/CodeSourceResource').default;
+const DataSourceList = require('../../lib/resources/apps/DataSourceList').default;
+const DataSourceResource = require('../../lib/resources/apps/DataSourceResource').default;
+const TargetList = require('../../lib/resources/apps/TargetList').default;
+const TargetResource = require('../../lib/resources/apps/TargetResource').default;
 
 const nock = require('../mocks/nock.js');
 
@@ -317,5 +323,113 @@ describe('Apps Resource', () => {
   });
   it('should be rejected on undefined platformID', () => {
     return resource.platform().should.be.rejectedWith('platformID must be defined');
+  });
+
+  it('should load codeSource list', () => {
+    const stub = sinon.stub(helper, 'get');
+    stub.returns(resolver('codesource-list.json'));
+
+    return resource.codeSourceList()
+    .then((list) => {
+      list.should.be.instanceof(CodeSourceList);
+      stub.restore();
+    })
+    .catch((err) => {
+      stub.restore();
+      throw err;
+    });
+  });
+  it('should throw on codeSource list filtered with codeSourceID', () => {
+    return resource.codeSourceList({ codeSourceID: 'id' })
+    .should.be.rejectedWith('Cannot filter codeSourceList only by codeSourceID. Use AppResource#codeSource instead');
+  });
+  it('should load codeSource resource', () => {
+    const stub = sinon.stub(helper, 'get');
+    stub.returns(resolver('codesource-single.json'));
+
+    return resource.codeSource('id')
+    .then((model) => {
+      model.should.be.instanceof(CodeSourceResource);
+      stub.restore();
+    })
+    .catch((err) => {
+      stub.restore();
+      throw err;
+    });
+  });
+  it('should be rejected on undefined codeSourceID', () => {
+    return resource.codeSource().should.be.rejectedWith('codeSourceID must be defined');
+  });
+
+  it('should load dataSource list', () => {
+    const stub = sinon.stub(helper, 'get');
+    stub.returns(resolver('datasource-list.json'));
+
+    return resource.dataSourceList()
+    .then((list) => {
+      list.should.be.instanceof(DataSourceList);
+      stub.restore();
+    })
+    .catch((err) => {
+      stub.restore();
+      throw err;
+    });
+  });
+  it('should throw on dataSource list filtered with dataSourceID', () => {
+    return resource.dataSourceList({ dataSourceID: 'id' })
+    .should.be.rejectedWith('Cannot filter dataSourceList only by dataSourceID. Use AppResource#dataSource instead');
+  });
+  it('should load dataSource resource', () => {
+    const stub = sinon.stub(helper, 'get');
+    stub.returns(resolver('datasource-single.json'));
+
+    return resource.dataSource('id')
+    .then((model) => {
+      model.should.be.instanceof(DataSourceResource);
+      stub.restore();
+    })
+    .catch((err) => {
+      stub.restore();
+      throw err;
+    });
+  });
+  it('should be rejected on undefined dataSourceID', () => {
+    return resource.dataSource().should.be.rejectedWith('dataSourceID must be defined');
+  });
+
+  it('should load target list', () => {
+    const stub = sinon.stub(helper, 'get');
+    stub.returns(resolver('target-list.json'));
+
+    return resource.targetList()
+    .then((list) => {
+      list.should.be.instanceof(TargetList);
+      stub.restore();
+    })
+    .catch((err) => {
+      stub.restore();
+      throw err;
+    });
+  });
+  it('should throw on target list filtered with targetID', () => {
+    return resource.targetList({ targetID: 'id' })
+    .should.be.rejectedWith('Cannot filter targetList only by targetID. Use AppResource#target instead');
+  });
+  it('should load target resource', () => {
+    const stub = sinon.stub(helper, 'get');
+    stub.returns(resolver('target-single.json'));
+
+    return resource.target('id')
+    .then((model) => {
+      model.should.be.instanceof(TargetResource);
+      stub.restore();
+    })
+    .catch((err) => {
+      stub.restore();
+      throw err;
+    });
+  });
+  it('should be rejected on undefined targetID', () => {
+    return resource.target().should.be.rejectedWith('targetID must be defined');
   });
 });

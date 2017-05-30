@@ -1,0 +1,32 @@
+{
+  "codeSourceID": "2ce3f1cf-729e-4c12-b858-b7ec370b7faf",
+  "codeSourceType": "remoteGit",
+  "config": {
+    "_title": "ionic-seed",
+    "giturl": "ssh://git@stash.entrecode.de:7999/seed/ec.ionic-seed.git"
+  },
+  "_links": {
+    "self": {
+      "profile": "https://entrecode.de/schema/codeSource",
+      "href": "https://appserver.entrecode.de/codesource?codeSourceID=2ce3f1cf-729e-4c12-b858-b7ec370b7faf"
+    },
+    "collection": {
+      "profile": "https://entrecode.de/schema/codeSources",
+      "href": "https://appserver.entrecode.de/codesource?appID=9f83b67a-cb95-4f60-9d82-7c66d4a81e24"
+    },
+    "ec:app": {
+      "profile": "https://entrecode.de/schema/app",
+      "href": "https://appserver.entrecode.de?appID=9f83b67a-cb95-4f60-9d82-7c66d4a81e24"
+    },
+    "ec:app/platform": [
+      {
+        "profile": "https://entrecode.de/schema/platform",
+        "href": "https://appserver.entrecode.de/platform?platformID=1c9af9e3-c14e-4bd8-af2f-ea6795b912f0"
+      },
+      {
+        "profile": "https://entrecode.de/schema/platform",
+        "href": "https://appserver.entrecode.de/platform?platformID=229b4384-fcfa-437b-833e-fc779a3f8f4c"
+      }
+    ]
+  }
+}
