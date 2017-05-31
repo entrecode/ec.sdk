@@ -324,6 +324,152 @@ describe('Apps Resource', () => {
   it('should be rejected on undefined platformID', () => {
     return resource.platform().should.be.rejectedWith('platformID must be defined');
   });
+  it('should create platform, 1', () => {
+    const stub = sinon.stub(helper, 'post');
+    return new Promise((resolve, reject) => {
+      fs.readFile(`${__dirname}/../mocks/platform-single.json`, 'utf-8', (err, res) => {
+        if (err) {
+          return reject(err);
+        }
+        return resolve(JSON.parse(res));
+      });
+    })
+    .then((json) => {
+      stub.returns(Promise.resolve([json, resource.traversal]));
+      const create = Object.assign({}, {
+        title: json.title,
+        platformType: json.platformType,
+        config: json.config,
+        _links: json._links,
+      });
+      return resource.createPlatform(create);
+    })
+    .then(() => {
+      stub.should.be.called.once;
+      stub.restore();
+    })
+    .catch((err) => {
+      stub.restore();
+      throw err;
+    });
+  });
+  it('should create platform, 2', () => {
+    const stub = sinon.stub(helper, 'post');
+    return Promise.all([
+      new Promise((resolve, reject) => {
+        fs.readFile(`${__dirname}/../mocks/platform-single.json`, 'utf-8', (err, res) => {
+          if (err) {
+            return reject(err);
+          }
+          return resolve(JSON.parse(res));
+        });
+      }),
+      new Promise((resolve, reject) => {
+        fs.readFile(`${__dirname}/../mocks/codesource-single.json`, 'utf-8', (err, res) => {
+          if (err) {
+            return reject(err);
+          }
+          return resolve(new CodeSourceResource(JSON.parse(res)));
+        });
+      }),
+      new Promise((resolve, reject) => {
+        fs.readFile(`${__dirname}/../mocks/datasource-single.json`, 'utf-8', (err, res) => {
+          if (err) {
+            return reject(err);
+          }
+          return resolve(new DataSourceResource(JSON.parse(res)));
+        });
+      }),
+      new Promise((resolve, reject) => {
+        fs.readFile(`${__dirname}/../mocks/target-single.json`, 'utf-8', (err, res) => {
+          if (err) {
+            return reject(err);
+          }
+          return resolve(new TargetResource(JSON.parse(res)));
+        });
+      }),
+    ])
+    .then(([json, cs, ds, t]) => {
+      stub.returns(Promise.resolve([json, resource.traversal]));
+      const create = Object.assign({}, {
+        title: json.title,
+        platformType: json.platformType,
+        config: json.config,
+        codeSource: cs,
+        dataSource: ds,
+        target: t,
+      });
+      return resource.createPlatform(create);
+    })
+    .then(() => {
+      stub.should.be.called.once;
+      stub.restore();
+    })
+    .catch((err) => {
+      stub.restore();
+      throw err;
+    });
+  });
+  it('should create platform, 3', () => {
+    const stub = sinon.stub(helper, 'post');
+    return Promise.all([
+      new Promise((resolve, reject) => {
+        fs.readFile(`${__dirname}/../mocks/platform-single.json`, 'utf-8', (err, res) => {
+          if (err) {
+            return reject(err);
+          }
+          return resolve(JSON.parse(res));
+        });
+      }),
+      new Promise((resolve, reject) => {
+        fs.readFile(`${__dirname}/../mocks/codesource-single.json`, 'utf-8', (err, res) => {
+          if (err) {
+            return reject(err);
+          }
+          return resolve(new CodeSourceResource(JSON.parse(res)));
+        });
+      }),
+      new Promise((resolve, reject) => {
+        fs.readFile(`${__dirname}/../mocks/datasource-single.json`, 'utf-8', (err, res) => {
+          if (err) {
+            return reject(err);
+          }
+          return resolve(new DataSourceResource(JSON.parse(res)));
+        });
+      }),
+      new Promise((resolve, reject) => {
+        fs.readFile(`${__dirname}/../mocks/target-single.json`, 'utf-8', (err, res) => {
+          if (err) {
+            return reject(err);
+          }
+          return resolve(new TargetResource(JSON.parse(res)));
+        });
+      }),
+    ])
+    .then(([json, cs, ds, t]) => {
+      stub.returns(Promise.resolve([json, resource.traversal]));
+      const create = Object.assign({}, {
+        title: json.title,
+        platformType: json.platformType,
+        config: json.config,
+        codeSource: cs,
+        dataSource: ds,
+        target: [t],
+      });
+      return resource.createPlatform(create);
+    })
+    .then(() => {
+      stub.should.be.called.once;
+      stub.restore();
+    })
+    .catch((err) => {
+      stub.restore();
+      throw err;
+    });
+  });
+  it('should be rejected on undefined platform', () => {
+    return resource.createPlatform().should.be.rejectedWith('Cannot create resource with undefined object.');
+  });
 
   it('should load codeSource list', () => {
     const stub = sinon.stub(helper, 'get');
@@ -373,7 +519,6 @@ describe('Apps Resource', () => {
     .then((json) => {
       stub.returns(Promise.resolve([json, resource.traversal]));
       const create = Object.assign({}, {
-        codeSourceID: json.codeSourceID,
         codeSourceType: json.codeSourceType,
         config: json.config,
       });

@@ -22,6 +22,8 @@ export declare class AppResource extends Resource {
 
   platform(platformID: string): PlatformResource;
 
+  createPlatform(platform: any): PlatformResource;
+
   codeSourceList(options?: filterOptions): CodeSourceList;
 
   codeSource(codeSourceID: string): CodeSourceResource;

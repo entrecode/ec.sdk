@@ -20,11 +20,13 @@ module.exports = {
     .get('/codesource-template').replyWithFile(200, `${__dirname}/schema/codesource-template.json`, { 'Content-Type': 'application/json' })
     .get('/datasource-template').replyWithFile(200, `${__dirname}/schema/datasource-template.json`, { 'Content-Type': 'application/json' })
     .get('/target-template').replyWithFile(200, `${__dirname}/schema/target-template.json`, { 'Content-Type': 'application/json' })
+    .get('/platform-template').replyWithFile(200, `${__dirname}/schema/platform-template.json`, { 'Content-Type': 'application/json' })
     .get('/hal').replyWithFile(200, `${__dirname}/schema/hal.json`, { 'Content-Type': 'application/json' });
 
     nock('http://json-schema.org')
     .get('/draft-04/schema').replyWithFile(200, `${__dirname}/schema/schema.json`, { 'Content-Type': 'application/json' })
     .get('/geo').replyWithFile(200, `${__dirname}/schema/geo.json`, { 'Content-Type': 'application/json' });
+
     nock('https://schema.getpostman.com')
     .get('/json/collection/v1.0.0/').replyWithFile(200, `${__dirname}/schema/postman-collection.json`, { 'Content-Type': 'application/json' });
 

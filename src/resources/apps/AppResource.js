@@ -1,6 +1,6 @@
 import validator from 'json-schema-remote';
 
-import { get, post, optionsToQuery } from '../../helper';
+import { get, optionsToQuery, post } from '../../helper';
 import Resource, { environmentSymbol, resourceSymbol } from '../Resource';
 import PlatformList from './PlatformList';
 import PlatformResource from './PlatformResource';
@@ -115,6 +115,90 @@ export default class AppResource extends Resource {
   }
 
   /**
+   * Creates a new platform for this app. You will have to have a {@link CodeSourceResource},
+   * {@link DataSourceResource}, and one or more {@link TargetResource}. In the `ec.API` this is
+   * performed as a POST request containing the plugins as links in HALs `_links` object - This is
+   * also an option here. But for convenience you can put the Resources into the object directly.
+   * See the example below for details.
+   *
+   * @example
+   * const platform = {
+   *   title: 'MyAwesomePlatform',
+   *   platformType: 'website',
+   *   config: {
+   *     // …
+   *   },
+   *   codeSource = codeSourceResource,
+   *   dataSource = dataSourceResource,
+   *   target = [targetResource1, targetResource2],
+   * };
+   *
+   * // this would be ok as well
+   * const otherPlatform = {
+   *   title: 'MyAwesomePlatform',
+   *   platformType: 'website',
+   *   config: {
+   *     // …
+   *   },
+   *   _links: {
+   *     "ec:app/codesource": {
+   *        href: "…",
+   *     },
+   *     "ec:app/datasource": {
+   *        href: "…",
+   *     },
+   *     "ec:app/target": {
+   *        href: "…",
+   *     },
+   *   }
+   * }
+   *
+   * app.createPlatform(platform)
+   * .then(platform => doSomethingWith(platform));
+   *
+   * @param {object} platform platform to create
+   * @returns {Promise<PlatformResource>}
+   */
+  createPlatform(platform) {
+    return Promise.resolve()
+    .then(() => {
+      if (!platform) {
+        throw new Error('Cannot create resource with undefined object.');
+      }
+
+      const out = Object.assign({}, platform);
+
+      if (!('_links' in out)) {
+        out._links = {};
+      }
+
+      if (out.codeSource) {
+        out._links['ec:app/codesource'] = out.codeSource.getLink('self');
+        delete out.codeSource;
+      }
+
+      if (out.dataSource) {
+        out._links['ec:app/datasource'] = out.dataSource.getLink('self');
+        delete out.dataSource;
+      }
+
+      if (out.target) {
+        if (!Array.isArray(out.target)) {
+          out.target = [out.target];
+        }
+
+        out._links['ec:app/target'] = out.target.map(target => target.getLink('self'));
+        delete out.target;
+      }
+
+      return validator.validate(out, `${this.getLink('ec:app/platform/by-id').profile}-template`)
+      .then(() => out);
+    })
+    .then(out => post(this.newRequest().follow('ec:app/platforms'), out))
+    .then(([res, traversal]) => new PlatformResource(res, this[environmentSymbol], traversal));
+  }
+
+  /**
    * Load a {@link CodeSourceList} of {@link CodeSourceResource} filtered by the values specified
    * by the options parameter.
    *
@@ -177,7 +261,7 @@ export default class AppResource extends Resource {
     })
     .then(link => validator.validate(codeSource, `${link.profile}-template`))
     .then(() => post(this.newRequest().follow('ec:app/codesources'), codeSource))
-    .then(([dm, traversal]) => new CodeSourceResource(dm, this[environmentSymbol], traversal));
+    .then(([res, traversal]) => new CodeSourceResource(res, this[environmentSymbol], traversal));
   }
 
   /**
