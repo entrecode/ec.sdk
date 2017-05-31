@@ -1,0 +1,268 @@
+{
+  "buildID": 734,
+  "started": "2017-03-23T12:13:21.572Z",
+  "finished": "2017-03-23T12:17:37.011Z",
+  "successful": "success",
+  "buildLocation": {
+    "type": "zipFileFromS3",
+    "config": {
+      "key": "build.download734.zip",
+      "size": 7267976,
+      "bucket": "ec-appserver-builds-backup"
+    }
+  },
+  "events": [
+    {
+      "buildEventID": "46073",
+      "buildEventType": "info",
+      "timestamp": "2017-03-23T12:13:21.59+00:00",
+      "message": "Build Command received. Starting...",
+      "temporary": false,
+      "info": {}
+    },
+    {
+      "buildEventID": "46074",
+      "buildEventType": "info",
+      "timestamp": "2017-03-23T12:13:23.158+00:00",
+      "message": "Starting build…",
+      "temporary": false,
+      "info": {
+        "platformID": "229b4384-fcfa-437b-833e-fc779a3f8f4c"
+      }
+    },
+    {
+      "buildEventID": "46075",
+      "buildEventType": "verbose",
+      "timestamp": "2017-03-23T12:13:23.264+00:00",
+      "message": "Created temp dir.",
+      "temporary": true,
+      "info": {}
+    },
+    {
+      "buildEventID": "46076",
+      "buildEventType": "info",
+      "timestamp": "2017-03-23T12:13:23.265+00:00",
+      "message": "loading dataSource and codeSource",
+      "temporary": true,
+      "info": {
+        "codeSourceType": "remoteGit",
+        "dataSourceType": "stub"
+      }
+    },
+    {
+      "buildEventID": "46077",
+      "buildEventType": "info",
+      "timestamp": "2017-03-23T12:13:23.266+00:00",
+      "message": "Stub dataSource loaded",
+      "temporary": false,
+      "info": {}
+    },
+    {
+      "buildEventID": "46078",
+      "buildEventType": "info",
+      "timestamp": "2017-03-23T12:13:23.776+00:00",
+      "message": "dataSource and codeSource loaded",
+      "temporary": false,
+      "info": {}
+    },
+    {
+      "buildEventID": "46079",
+      "buildEventType": "info",
+      "timestamp": "2017-03-23T12:13:23.777+00:00",
+      "message": "starting platform build",
+      "temporary": true,
+      "info": {
+        "platformType": "ionic-simple"
+      }
+    },
+    {
+      "buildEventID": "46080",
+      "buildEventType": "warn",
+      "timestamp": "2017-03-23T12:13:32.63+00:00",
+      "message": "bower ionic#1.3.1         invalid-meta for:/tmp/1d13ce5474fd9c97a5084b9e6f0ed9c8/bower/bf2802b39384aa9e0b0a44f3fe9ee12a-69-znB3Y7/bower.json\nbower ionic#1.3.1         invalid-meta The \"main\" field cannot contain globs (example: \"*.js\")\nbower ionic#1.3.1         invalid-meta The \"main\" field has to contain only 1 file per filetype; found multiple .js files: [\"js/ionic.js\",\"js/ionic-angular.js\"]\n",
+      "temporary": true,
+      "info": {}
+    },
+    {
+      "buildEventID": "46081",
+      "buildEventType": "info",
+      "timestamp": "2017-03-23T12:13:32.632+00:00",
+      "message": "command 'npm install --only=prod' successful.",
+      "temporary": true,
+      "info": {}
+    },
+    {
+      "buildEventID": "46082",
+      "buildEventType": "warn",
+      "timestamp": "2017-03-23T12:15:23.897+00:00",
+      "message": "npm WARN deprecated gulp-clean-css@2.4.0: breaking changes from clean-css 4.x. Please install gulp-clean-css 3.x\nnpm WARN deprecated node-uuid@1.4.8: Use uuid module instead\nnpm WARN deprecated node-uuid@1.4.7: Use uuid module instead\nnpm WARN deprecated minimatch@2.0.10: Please update to minimatch 3.0.2 or higher to avoid a RegExp DoS issue\nnpm WARN deprecated minimatch@0.2.14: Please update to minimatch 3.0.2 or higher to avoid a RegExp DoS issue\nnpm WARN deprecated graceful-fs@1.2.3: graceful-fs v3.0.0 and before will fail on node releases >= v7.0. Please update to graceful-fs@^4.0.0 as soon as possible. Use 'npm ls graceful-fs' to find it in the tree.\nnpm WARN deprecated minimatch@0.3.0: Please update to minimatch 3.0.2 or higher to avoid a RegExp DoS issue\nnpm WARN deprecated node-uuid@1.3.3: Use uuid module instead\nnpm WARN prefer global npm@2.15.11 should be installed with -g\nnpm WARN prefer global node-gyp@3.6.0 should be installed with -g\nnpm WARN optional SKIPPING OPTIONAL DEPENDENCY: fsevents@^1.0.0 (node_modules/chokidar/node_modules/fsevents):\nnpm WARN notsup SKIPPING OPTIONAL DEPENDENCY: Unsupported platform for fsevents@1.1.1: wanted {\"os\":\"darwin\",\"arch\":\"any\"} (current: {\"os\":\"linux\",\"arch\":\"x64\"})\nnpm WARN In ionic@2.2.1 replacing bundled version of cross-spawn with cross-spawn@4.0.2\nnpm WARN In ionic@2.2.1 replacing bundled version of mime-types with mime-types@2.0.14\nnpm WARN In ionic@2.2.1 replacing bundled version of semver with semver@4.2.0\nnpm WARN In ionic@2.2.1 replacing bundled version of form-data with form-data@0.2.0\nnpm WARN In ionic@2.2.1 replacing bundled version of request with request@2.51.0\nnpm WARN In ionic@2.2.1 replacing bundled version of ionic-app-lib with ionic-app-lib@2.2.0\n",
+      "temporary": true,
+      "info": {}
+    },
+    {
+      "buildEventID": "46083",
+      "buildEventType": "info",
+      "timestamp": "2017-03-23T12:15:23.901+00:00",
+      "message": "command 'npm install --only=dev' successful.",
+      "temporary": true,
+      "info": {}
+    },
+    {
+      "buildEventID": "46084",
+      "buildEventType": "warn",
+      "timestamp": "2017-03-23T12:16:17.546+00:00",
+      "message": "splash ios Default-Portrait@~ipadpro.png (2048x2732) skipped, source image splash.png (2208x2208) too small\nsplash ios Default-Landscape@~ipadpro.png (2732x2048) skipped, source image splash.png (2208x2208) too small\n(node:227) DeprecationWarning: sys is deprecated. Use util instead.\n(node:227) DeprecationWarning: util.puts is deprecated. Use console.log instead.\n(node:511) DeprecationWarning: sys is deprecated. Use util instead.\n(node:511) DeprecationWarning: util.puts is deprecated. Use console.log instead.\n",
+      "temporary": true,
+      "info": {}
+    },
+    {
+      "buildEventID": "46085",
+      "buildEventType": "info",
+      "timestamp": "2017-03-23T12:16:17.549+00:00",
+      "message": "command 'npm run prepare' successful.",
+      "temporary": true,
+      "info": {}
+    },
+    {
+      "buildEventID": "46086",
+      "buildEventType": "warn",
+      "timestamp": "2017-03-23T12:17:31.508+00:00",
+      "message": "Note: Some input files use or override a deprecated API.\nNote: Recompile with -Xlint:deprecation for details.\nNote: /usr/src/app/lib/ecAppServer_build_734_383v4u3n7cbG40/platforms/android/src/org/apache/cordova/splashscreen/SplashScreen.java uses or overrides a deprecated API.\nNote: Recompile with -Xlint:deprecation for details.\n",
+      "temporary": true,
+      "info": {}
+    },
+    {
+      "buildEventID": "46087",
+      "buildEventType": "info",
+      "timestamp": "2017-03-23T12:17:31.509+00:00",
+      "message": "command 'npm run buildAndroid' successful.",
+      "temporary": true,
+      "info": {}
+    },
+    {
+      "buildEventID": "46088",
+      "buildEventType": "info",
+      "timestamp": "2017-03-23T12:17:31.519+00:00",
+      "message": "start bundling of release content",
+      "temporary": true,
+      "info": {}
+    },
+    {
+      "buildEventID": "46089",
+      "buildEventType": "info",
+      "timestamp": "2017-03-23T12:17:32.147+00:00",
+      "message": "platform build succeeded",
+      "temporary": false,
+      "info": {}
+    },
+    {
+      "buildEventID": "46090",
+      "buildEventType": "info",
+      "timestamp": "2017-03-23T12:17:32.149+00:00",
+      "message": "Starting buildBackup S3 plugin deployment.",
+      "temporary": false,
+      "info": {}
+    },
+    {
+      "buildEventID": "46091",
+      "buildEventType": "verbose",
+      "timestamp": "2017-03-23T12:17:32.152+00:00",
+      "message": "Creating zip file…",
+      "temporary": true,
+      "info": {}
+    },
+    {
+      "buildEventID": "46092",
+      "buildEventType": "verbose",
+      "timestamp": "2017-03-23T12:17:34.475+00:00",
+      "message": "Upload to s3…",
+      "temporary": true,
+      "info": {
+        "key": "build.download734.zip",
+        "file": "/usr/src/app/lib/ecAppServer_build_734_383v4u3n7cbG40/build.download734.zip",
+        "bucket": "ec-appserver-builds-backup"
+      }
+    },
+    {
+      "buildEventID": "46093",
+      "buildEventType": "verbose",
+      "timestamp": "2017-03-23T12:17:34.986+00:00",
+      "message": "… uploaded.",
+      "temporary": true,
+      "info": {
+        "key": "build.download734.zip",
+        "file": "/usr/src/app/lib/ecAppServer_build_734_383v4u3n7cbG40/build.download734.zip",
+        "bucket": "ec-appserver-builds-backup"
+      }
+    },
+    {
+      "buildEventID": "46094",
+      "buildEventType": "verbose",
+      "timestamp": "2017-03-23T12:17:34.987+00:00",
+      "message": "Removing local zip…",
+      "temporary": true,
+      "info": {
+        "file": "/usr/src/app/lib/ecAppServer_build_734_383v4u3n7cbG40/build.download734.zip"
+      }
+    },
+    {
+      "buildEventID": "46095",
+      "buildEventType": "verbose",
+      "timestamp": "2017-03-23T12:17:34.99+00:00",
+      "message": "… removed.",
+      "temporary": true,
+      "info": {
+        "file": "/usr/src/app/lib/ecAppServer_build_734_383v4u3n7cbG40/build.download734.zip"
+      }
+    },
+    {
+      "buildEventID": "46096",
+      "buildEventType": "info",
+      "timestamp": "2017-03-23T12:17:34.991+00:00",
+      "message": "Finished buildBackup S3 plugin deployment",
+      "temporary": false,
+      "info": {}
+    },
+    {
+      "buildEventID": "46097",
+      "buildEventType": "info",
+      "timestamp": "2017-03-23T12:17:36.969+00:00",
+      "message": "… build command handled.",
+      "temporary": false,
+      "info": {
+        "type": "zipFileFromS3",
+        "config": {
+          "key": "build.download734.zip",
+          "size": 7267976,
+          "bucket": "ec-appserver-builds-backup"
+        }
+      }
+    },
+    {
+      "buildEventID": "46098",
+      "buildEventType": "info",
+      "timestamp": "2017-03-23T12:17:36.97+00:00",
+      "message": "{\"type\":\"zipFileFromS3\",\"config\":{\"bucket\":\"ec-appserver-builds-backup\",\"key\":\"build.download734.zip\",\"size\":7267976}}",
+      "temporary": false,
+      "info": {}
+    }
+  ],
+  "_links": {
+    "self": {
+      "profile": "https://entrecode.de/schema/build",
+      "href": "https://appserver.entrecode.de/platform/build?buildID=734"
+    },
+    "collection": {
+      "profile": "https://entrecode.de/schema/builds",
+      "href": "https://appserver.entrecode.de/platform/build?platformID=229b4384-fcfa-437b-833e-fc779a3f8f4c"
+    },
+    "ec:app/platform": {
+      "profile": "https://entrecode.de/schema/platform",
+      "href": "https://appserver.entrecode.de/platform?platformID=229b4384-fcfa-437b-833e-fc779a3f8f4c"
+    },
+    "ec:app": {
+      "profile": "https://entrecode.de/schema/app",
+      "href": "https://appserver.entrecode.de/appID=9f83b67a-cb95-4f60-9d82-7c66d4a81e24"
+    }
+  }
+}

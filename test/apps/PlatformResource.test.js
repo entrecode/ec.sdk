@@ -5,9 +5,14 @@ const sinon = require('sinon');
 const sinonChai = require('sinon-chai');
 const fs = require('fs');
 
-const PlatformResource = require('../../lib/resources/apps/PlatformResource').default;
-const PlatformList = require('../../lib/resources/apps/PlatformList').default;
+const helper = require('../../lib/helper');
+const resolver = require('../mocks/resolver');
+
 const Resource = require('../../lib/resources/Resource').default;
+const PlatformList = require('../../lib/resources/apps/PlatformList').default;
+const PlatformResource = require('../../lib/resources/apps/PlatformResource').default;
+const BuildList = require('../../lib/resources/apps/BuildList').default;
+const BuildResource = require('../../lib/resources/apps/BuildResource').default;
 
 chai.should();
 chai.use(sinonChai);
@@ -109,5 +114,55 @@ describe('Platform Resource', () => {
 
       spy.restore();
     });
+  });
+
+  it('should load build list', () => {
+    const stub = sinon.stub(helper, 'get');
+    stub.returns(resolver('build-list.json'));
+
+    return resource.buildList()
+    .then((buildList) => {
+      buildList.should.be.instanceof(BuildList);
+      stub.restore();
+    })
+    .catch((err) => {
+      stub.restore();
+      throw err;
+    });
+  });
+  it('should be rejected on buildList filtered with buildID and platformID', () => {
+    return resource.buildList({ buildID: 'id', platformID: 'id' })
+    .should.be.rejectedWith('Cannot filter buildList only by buildID and platformID. Use PlatformResource#build() instead');
+  });
+  it('should load latest build resource', () => {
+    const stub = sinon.stub(helper, 'get');
+    stub.returns(resolver('build-single.json'));
+
+    return resource.latestBuild()
+    .then((build) => {
+      build.should.be.instanceof(BuildResource);
+      stub.restore();
+    })
+    .catch((err) => {
+      stub.restore();
+      throw err;
+    });
+  });
+  it('should load build resource', () => {
+    const stub = sinon.stub(helper, 'get');
+    stub.returns(resolver('build-single.json'));
+
+    return resource.build('id')
+    .then((build) => {
+      build.should.be.instanceof(BuildResource);
+      stub.restore();
+    })
+    .catch((err) => {
+      stub.restore();
+      throw err;
+    });
+  });
+  it('should be rejected on undefined buildID', () => {
+    return resource.build().should.be.rejectedWith('buildID must be defined');
   });
 });
