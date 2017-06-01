@@ -11,6 +11,10 @@ const resolver = require('../mocks/resolver');
 const Resource = require('../../lib/resources/Resource').default;
 const PlatformList = require('../../lib/resources/apps/PlatformList').default;
 const PlatformResource = require('../../lib/resources/apps/PlatformResource').default;
+const TargetList = require('../../lib/resources/apps/TargetList').default;
+const TargetResource = require('../../lib/resources/apps/TargetResource').default;
+const CodeSourceResource = require('../../lib/resources/apps/CodeSourceResource').default;
+const DataSourceResource = require('../../lib/resources/apps/DataSourceResource').default;
 const BuildList = require('../../lib/resources/apps/BuildList').default;
 const BuildResource = require('../../lib/resources/apps/BuildResource').default;
 const DeploymentList = require('../../lib/resources/apps/DeploymentList').default;
@@ -168,6 +172,21 @@ describe('Platform Resource', () => {
     return resource.build().should.be.rejectedWith('buildID must be defined');
   });
 
+  it('should create new Build', () => {
+    const stub = sinon.stub(helper, 'post');
+    stub.returns(resolver('build-single.json'));
+
+    return resource.createBuild()
+    .then(() => {
+      stub.should.be.called.once;
+      stub.restore();
+    })
+    .catch((err) => {
+      stub.restore();
+      throw err;
+    });
+  });
+
   it('should load deployment list', () => {
     const stub = sinon.stub(helper, 'get');
     stub.returns(resolver('deployment-list.json'));
@@ -217,4 +236,169 @@ describe('Platform Resource', () => {
   it('should be rejected on undefined deploymentID', () => {
     return resource.deployment().should.be.rejectedWith('deploymentID must be defined');
   });
+
+  it('should create Deployment, string - string', () => {
+    const stub = sinon.stub(helper, 'post');
+    stub.returns(resolver('deployment-single.json'));
+
+    return resource.createDeployment('id', 'id')
+    .then(() => {
+      stub.should.be.called.once;
+      stub.restore();
+    })
+    .catch((err) => {
+      stub.restore();
+      throw err;
+    });
+  });
+  it('should create Deployment, array - BuildResource', () => {
+    const stub = sinon.stub(helper, 'post');
+    stub.returns(resolver('deployment-single.json'));
+
+    return resource.createDeployment(['id'], new BuildResource({ buildID: 'id' }, undefined, {}))
+    .then(() => {
+      stub.should.be.called.once;
+      stub.restore();
+    })
+    .catch((err) => {
+      stub.restore();
+      throw err;
+    });
+  });
+  it('should create Deployment, TargetResource - string', () => {
+    const stub = sinon.stub(helper, 'post');
+    stub.returns(resolver('deployment-single.json'));
+
+    return resource.createDeployment(new TargetResource({ targetID: 'id' }, undefined, {}), 'id')
+    .then(() => {
+      stub.should.be.called.once;
+      stub.restore();
+    })
+    .catch((err) => {
+      stub.restore();
+      throw err;
+    });
+  });
+  it('should create Deployment, Array.TargetResource - string', () => {
+    const stub = sinon.stub(helper, 'post');
+    stub.returns(resolver('deployment-single.json'));
+
+    return resource.createDeployment([new TargetResource({ targetID: 'id' }, undefined, {})], 'id')
+    .then(() => {
+      stub.should.be.called.once;
+      stub.restore();
+    })
+    .catch((err) => {
+      stub.restore();
+      throw err;
+    });
+  });
+  it('should create Deployment, TargetList - string', () => {
+    const stub = sinon.stub(helper, 'post');
+    stub.returns(resolver('deployment-single.json'));
+
+    const target = new TargetList({
+      _embedded: {
+        'ec:app/target': {
+          targetID: 'id',
+          _links: {
+            self: {
+              href: 'mockedLink',
+            },
+          },
+        },
+      },
+    }, undefined, {});
+    return resource.createDeployment(target, 'id')
+    .then(() => {
+      stub.should.be.called.once;
+      stub.restore();
+    })
+    .catch((err) => {
+      stub.restore();
+      throw err;
+    });
+  });
+  it('should be rejected on undefined buildID', () => {
+    resource.createDeployment('id')
+    .should.be.rejectedWith('Must specify build to deploy');
+  });
+  it('should be rejected on undefined targetIDs', () => {
+    resource.createDeployment(undefined, 'id')
+    .should.be.rejectedWith('Must specify targets to deploy to');
+  });
+
+  it('should deploy latest build', () => {
+    const stub = sinon.stub(helper, 'post');
+    stub.returns(resolver('deployment-single.json'));
+
+    return resource.deployLatestBuild('id')
+    .then(() => {
+      stub.should.be.called.once;
+      stub.restore();
+    })
+    .catch((err) => {
+      stub.restore();
+      throw err;
+    });
+  });
+  it('should be rejected on platform without latest build', () => {
+    return new Promise((resolve, reject) => {
+      fs.readFile(`${__dirname}/../mocks/platform-single-nobuild-nodeployment.json`, 'utf-8', (err, res) => {
+        if (err) {
+          return reject(err);
+        }
+        return resolve(JSON.parse(res));
+      });
+    })
+    .then((json) => {
+      return new PlatformResource(json).deployLatestBuild('id')
+      .should.be.rejectedWith('No latest build found');
+    });
+  });
+
+  it('should load codeSource', () => {
+    const stub = sinon.stub(helper, 'get');
+    stub.returns(resolver('codesource-single.json'));
+
+    return resource.codeSource()
+    .then((cs) => {
+      cs.should.be.instanceof(CodeSourceResource);
+      stub.restore();
+    })
+    .catch((err) => {
+      stub.restore();
+      throw err;
+    });
+  });
+  it('should load dataSource', () => {
+    const stub = sinon.stub(helper, 'get');
+    stub.returns(resolver('datasource-single.json'));
+
+    return resource.dataSource()
+    .then((ds) => {
+      ds.should.be.instanceof(DataSourceResource);
+      stub.restore();
+    })
+    .catch((err) => {
+      stub.restore();
+      throw err;
+    });
+  });
+  it('should load targets', () => {
+    const stub = sinon.stub(helper, 'get');
+    stub.returns(resolver('target-list.json'));
+
+    return resource.targets()
+    .then((list) => {
+      list.should.be.instanceof(TargetList);
+      stub.restore();
+    })
+    .catch((err) => {
+      stub.restore();
+      throw err;
+    });
+  });
+
+  // todo getter setter plugins
 });

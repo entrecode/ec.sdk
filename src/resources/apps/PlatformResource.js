@@ -1,9 +1,19 @@
-import { get, optionsToQuery } from '../../helper';
-import Resource, { environmentSymbol } from '../Resource';
+import querystring from 'querystring';
+import traverson from 'traverson';
+import traversonHal from 'traverson-hal';
+
+import { get, optionsToQuery, post } from '../../helper';
+import Resource, { environmentSymbol, resourceSymbol } from '../Resource';
 import BuildList from './BuildList';
 import BuildResource from './BuildResource';
 import DeploymentList from './DeploymentList';
 import DeploymentResource from './DeploymentResource';
+import CodeSourceResource from './CodeSourceResource';
+import DataSourceResource from './DataSourceResource';
+import TargetList from './TargetList';
+import TargetResource from './TargetResource';
+
+traverson.registerMediaType(traversonHal.mediaType, traversonHal);
 
 /**
  * PlatformResource class
@@ -115,6 +125,16 @@ export default class PlatformResource extends Resource {
   }
 
   /**
+   * Start a new build for this platform.
+   *
+   * @returns {Promise<BuildResource>} The created build, probably in running state.
+   */
+  createBuild() {
+    return post(this[environmentSymbol], this.newRequest().follow('ec:app/builds'))
+    .then(([res, traversal]) => new BuildResource(res, this[environmentSymbol], traversal));
+  }
+
+  /**
    * Get the latest {@link BuildResource} identified by buildID.
    *
    * @param {string} buildID id of the build.
@@ -185,6 +205,65 @@ export default class PlatformResource extends Resource {
   }
 
   /**
+   * Start a new deployment for this platform.
+   *
+   * @param {targetIDsInput} targetIDs targets to which the build should be deployed.
+   * @param {buildIDInput} buildID build which should be deployed.
+   * @returns {Promise<DeploymentResource>} The created deployment, probably in running state.
+   */
+  createDeployment(targetIDs, buildID) {
+    return Promise.resolve()
+    .then(() => {
+      if (!buildID) {
+        throw new Error('Must specify build to deploy');
+      }
+      if (buildID instanceof BuildResource) {
+        buildID = buildID.buildID;
+      }
+      if (!targetIDs) {
+        throw new Error('Must specify targets to deploy to');
+      }
+      if (targetIDs instanceof TargetList) {
+        targetIDs = targetIDs.getAllItems();
+      } else if (!Array.isArray(targetIDs)) {
+        targetIDs = [targetIDs];
+      }
+
+      targetIDs = targetIDs.map(target => target instanceof TargetResource ? target.targetID : target);
+
+      const request = this.newRequest()
+      .follow('ec:app/deployments')
+      .withTemplateParameters({
+        platformID: this.platformID,
+        buildID,
+        targetID: targetIDs.join(','),
+      });
+
+      return post(this[environmentSymbol], request);
+    })
+    .then(([res, traversal]) => new DeploymentResource(res, this[environmentSymbol], traversal));
+  }
+
+  /**
+   * Start a new deployment of the latest build for this platform.
+   *
+   * @param {targetIDsInput} targetIDs targets to which the build should be deployed.
+   * @returns {Promise<DeploymentResource>} The created deployment, probably in running state.
+   */
+  deployLatestBuild(targetIDs) {
+    return Promise.resolve()
+    .then(() => {
+      const link = this.getLink('ec:app/build/latest');
+      if (!link) {
+        throw Error('No latest build found');
+      }
+      const buildID = querystring.parse(link.href.split('?')[1]).buildID;
+
+      return this.createDeployment(targetIDs, buildID);
+    });
+  }
+
+  /**
    * Get the latest {@link DeploymentResource} identified by deploymentID.
    *
    * @returns {Promise<DeploymentResource>} resolves to the deployment which should be loaded.
@@ -198,4 +277,56 @@ export default class PlatformResource extends Resource {
     })
     .then(([res, traversal]) => new DeploymentResource(res, this[environmentSymbol], traversal));
   }
+
+  /**
+   * Get the {@link CodeSourceResource} of this platform.
+   *
+   * @returns {Promise<CodeSourceResource>} resolves to the codeSource
+   */
+  codeSource() {
+    return get(this[environmentSymbol], this.newRequest().follow('ec:app/codesource'))
+    .then(([res, traversal]) => new CodeSourceResource(res, this[environmentSymbol], traversal));
+  }
+
+  /**
+   * Get the {@link DataSourceResource} of this platform.
+   *
+   * @returns {Promise<DataSourceResource>} resolves to the datasource
+   */
+  dataSource() {
+    return get(this[environmentSymbol], this.newRequest().follow('ec:app/datasource'))
+    .then(([res, traversal]) => new DataSourceResource(res, this[environmentSymbol], traversal));
+  }
+
+  /**
+   * Get a {@link TargetList} of this platform with all assigned {@link TargetResource}s.
+   *
+   * @returns {Promise<TargetList>} resolves to the list of assigned targets
+   */
+  targets() {
+    return Promise.resolve()
+    .then(() => {
+      const link = this.getLink('ec:app/target');
+      const split = link.href.split('?');
+      const qs = querystring.parse(split[1]);
+      qs.targetID = this[resourceSymbol].linkArray('ec:app/target')
+      .map(l => querystring.parse(l.href.split('?')[1]).targetID)
+      .join(',');
+
+      return get(this[environmentSymbol], traverson.from(`${split[0]}?${querystring.stringify(qs)}`).jsonHal());
+    })
+    .then(([res, traversal]) => new TargetList(res, this[environmentSymbol], traversal));
+  }
+
+  // TODO getter setter plugins
 }
+
+/**
+ * @typedef {string|Array<string>|TargetResource|Array<TargetResource>|TargetList} targetIDsInput
+ * @access private
+ */
+
+/**
+ * @typedef {string|BuildResource} buildIDInput
+ * @access private
+ */

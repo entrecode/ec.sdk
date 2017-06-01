@@ -194,7 +194,7 @@ export default class AppResource extends Resource {
       return validator.validate(out, `${this.getLink('ec:app/platform/by-id').profile}-template`)
       .then(() => out);
     })
-    .then(out => post(this.newRequest().follow('ec:app/platforms'), out))
+    .then(out => post(this[environmentSymbol], this.newRequest().follow('ec:app/platforms'), out))
     .then(([res, traversal]) => new PlatformResource(res, this[environmentSymbol], traversal));
   }
 
@@ -260,7 +260,7 @@ export default class AppResource extends Resource {
       return this[resourceSymbol].link('ec:app/codesource/by-id');
     })
     .then(link => validator.validate(codeSource, `${link.profile}-template`))
-    .then(() => post(this.newRequest().follow('ec:app/codesources'), codeSource))
+    .then(() => post(this[environmentSymbol], this.newRequest().follow('ec:app/codesources'), codeSource))
     .then(([res, traversal]) => new CodeSourceResource(res, this[environmentSymbol], traversal));
   }
 
@@ -326,7 +326,7 @@ export default class AppResource extends Resource {
       return this[resourceSymbol].link('ec:app/datasource/by-id');
     })
     .then(link => validator.validate(dataSource, `${link.profile}-template`))
-    .then(() => post(this.newRequest().follow('ec:app/datasources'), dataSource))
+    .then(() => post(this[environmentSymbol], this.newRequest().follow('ec:app/datasources'), dataSource))
     .then(([dm, traversal]) => new DataSourceResource(dm, this[environmentSymbol], traversal));
   }
 
@@ -392,7 +392,7 @@ export default class AppResource extends Resource {
       return this[resourceSymbol].link('ec:app/target/by-id');
     })
     .then(link => validator.validate(target, `${link.profile}-template`))
-    .then(() => post(this.newRequest().follow('ec:app/targets'), target))
+    .then(() => post(this[environmentSymbol], this.newRequest().follow('ec:app/targets'), target))
     .then(([dm, traversal]) => new TargetResource(dm, this[environmentSymbol], traversal));
   }
 }

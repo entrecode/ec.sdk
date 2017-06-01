@@ -2,6 +2,12 @@ import { Resource } from '../Resource';
 import { filterOptions } from '../../interfaces';
 import { BuildResource } from './BuildResource';
 import { BuildList } from './BuildList';
+import { DeploymentResource } from './DeploymentResource';
+import { DeploymentList } from './DeploymentList';
+import { CodeSourceResource } from './CodeSourceResource';
+import { DataSourceResource } from './DataSourceResource';
+import { TargetList } from './TargetList';
+import { TargetResource } from './TargetResource';
 
 export declare class PlatformResource extends Resource {
   constructor(resource: any, environment: string, traversal?: any);
@@ -15,6 +21,7 @@ export declare class PlatformResource extends Resource {
 
   build(buildID: string): Promise<BuildResource>;
 
+  createBuild(): Promise<BuildResource>;
 
   latestBuild(): Promise<BuildResource>;
 
@@ -22,4 +29,17 @@ export declare class PlatformResource extends Resource {
 
   deployment(deploymentID: string): Promise<DeploymentResource>;
 
+  createDeployment(targetIDs: targetIDsType, buildID: buildIDType);
+
+  deployLatestBuild(targetIDs: targetIDsType): Promise<DeploymentResource>;
+
+  codeSource(): Promise<CodeSourceResource>;
+
+  dataSource(): Promise<DataSourceResource>;
+
+  targets(): Promise<TargetList>;
 }
+
+type targetIDsType = string | TargetResource | Array<string> | Array<TargetResource> | TargetList;
+
+type buildIDType = string | BuildResource;
