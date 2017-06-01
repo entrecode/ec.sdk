@@ -13,6 +13,8 @@ const PlatformList = require('../../lib/resources/apps/PlatformList').default;
 const PlatformResource = require('../../lib/resources/apps/PlatformResource').default;
 const BuildList = require('../../lib/resources/apps/BuildList').default;
 const BuildResource = require('../../lib/resources/apps/BuildResource').default;
+const DeploymentList = require('../../lib/resources/apps/DeploymentList').default;
+const DeploymentResource = require('../../lib/resources/apps/DeploymentResource').default;
 
 chai.should();
 chai.use(sinonChai);
@@ -164,5 +166,55 @@ describe('Platform Resource', () => {
   });
   it('should be rejected on undefined buildID', () => {
     return resource.build().should.be.rejectedWith('buildID must be defined');
+  });
+
+  it('should load deployment list', () => {
+    const stub = sinon.stub(helper, 'get');
+    stub.returns(resolver('deployment-list.json'));
+
+    return resource.deploymentList()
+    .then((deploymentList) => {
+      deploymentList.should.be.instanceof(DeploymentList);
+      stub.restore();
+    })
+    .catch((err) => {
+      stub.restore();
+      throw err;
+    });
+  });
+  it('should be rejected on deploymentList filtered with deploymentID and platformID', () => {
+    return resource.deploymentList({ deploymentID: 'id', platformID: 'id' })
+    .should.be.rejectedWith('Cannot filter deploymentList only by deploymentID and platformID. Use PlatformResource#deployment() instead');
+  });
+  it('should load latest deployment resource', () => {
+    const stub = sinon.stub(helper, 'get');
+    stub.returns(resolver('deployment-single.json'));
+
+    return resource.latestDeployment()
+    .then((deployment) => {
+      deployment.should.be.instanceof(DeploymentResource);
+      stub.restore();
+    })
+    .catch((err) => {
+      stub.restore();
+      throw err;
+    });
+  });
+  it('should load deployment resource', () => {
+    const stub = sinon.stub(helper, 'get');
+    stub.returns(resolver('deployment-single.json'));
+
+    return resource.deployment('id')
+    .then((deployment) => {
+      deployment.should.be.instanceof(DeploymentResource);
+      stub.restore();
+    })
+    .catch((err) => {
+      stub.restore();
+      throw err;
+    });
+  });
+  it('should be rejected on undefined deploymentID', () => {
+    return resource.deployment().should.be.rejectedWith('deploymentID must be defined');
   });
 });

@@ -2,6 +2,8 @@ import { get, optionsToQuery } from '../../helper';
 import Resource, { environmentSymbol } from '../Resource';
 import BuildList from './BuildList';
 import BuildResource from './BuildResource';
+import DeploymentList from './DeploymentList';
+import DeploymentResource from './DeploymentResource';
 
 /**
  * PlatformResource class
@@ -126,5 +128,75 @@ export default class PlatformResource extends Resource {
       return get(this[environmentSymbol], request);
     })
     .then(([res, traversal]) => new BuildResource(res, this[environmentSymbol], traversal));
+  }
+
+  /**
+   * Load a {@link DeploymentList} of {@link DeploymentResource} filtered by the values specified
+   * by the options parameter.
+   *
+   * @param {filterOptions?} options the filter options.
+   * @returns {Promise<DeploymentList>} resolves to app list with applied filters.
+   */
+  deploymentList(options) {
+    return Promise.resolve()
+    .then(() => {
+      const o = {};
+
+      if (options) {
+        Object.assign(o, options);
+      }
+
+      o.platformID = this.platformID;
+
+      if (
+        Object.keys(o).length === 2 && 'platformID' in o && 'deploymentID' in o
+        && (typeof o.platformID === 'string' || (!('any' in o.platformID) && !('all' in o.platformID)))
+        && (typeof o.deploymentID === 'string' || (!('any' in o.deploymentID) && !('all' in o.deploymentID)))
+      ) {
+        throw new Error('Cannot filter deploymentList only by deploymentID and platformID. Use PlatformResource#deployment() instead');
+      }
+
+      const request = this.newRequest()
+      .follow('ec:app/deployments/options')
+      .withTemplateParameters(optionsToQuery(o, this.getLink('ec:app/deployments/options').href));
+      return get(this[environmentSymbol], request);
+    })
+    .then(([res, traversal]) => new DeploymentList(res, this[environmentSymbol], traversal));
+  }
+
+  /**
+   * Get a single {@link DeploymentResource} identified by deploymentID.
+   *
+   * @param {string} deploymentID id of the deployment.
+   * @returns {Promise<DeploymentResource>} resolves to the deployment which should be loaded.
+   */
+  deployment(deploymentID) {
+    return Promise.resolve()
+    .then(() => {
+      if (!deploymentID) {
+        throw new Error('deploymentID must be defined');
+      }
+      const request = this.newRequest()
+      .follow('ec:app/deployments/options')
+      .withTemplateParameters({ deploymentID });
+      return get(this[environmentSymbol], request);
+    })
+    .then(([res, traversal]) => new DeploymentResource(res, this[environmentSymbol], traversal));
+  }
+
+  /**
+   * Get the latest {@link DeploymentResource} identified by deploymentID.
+   *
+   * @param {string} deploymentID id of the deployment.
+   * @returns {Promise<DeploymentResource>} resolves to the deployment which should be loaded.
+   */
+  latestDeployment() {
+    return Promise.resolve()
+    .then(() => {
+      const request = this.newRequest()
+      .follow('ec:app/deployment/latest');
+      return get(this[environmentSymbol], request);
+    })
+    .then(([res, traversal]) => new DeploymentResource(res, this[environmentSymbol], traversal));
   }
 }
