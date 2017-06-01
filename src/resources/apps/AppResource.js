@@ -105,7 +105,7 @@ export default class AppResource extends Resource {
       if (!platformID) {
         throw new Error('platformID must be defined');
       }
-      return this.newRequest().follow('ec:app/platforms/options');
+      return this.newRequest().follow('ec:app/platform/by-id');
     })
     .then((request) => {
       request.withTemplateParameters({ platformID });
@@ -236,7 +236,7 @@ export default class AppResource extends Resource {
       if (!codeSourceID) {
         throw new Error('codeSourceID must be defined');
       }
-      return this.newRequest().follow('ec:app/codesources/options');
+      return this.newRequest().follow('ec:app/codesource/by-id');
     })
     .then((request) => {
       request.withTemplateParameters({ codeSourceID });
@@ -302,7 +302,7 @@ export default class AppResource extends Resource {
       if (!dataSourceID) {
         throw new Error('dataSourceID must be defined');
       }
-      return this.newRequest().follow('ec:app/datasources/options');
+      return this.newRequest().follow('ec:app/datasource/by-id');
     })
     .then((request) => {
       request.withTemplateParameters({ dataSourceID });
@@ -368,7 +368,7 @@ export default class AppResource extends Resource {
       if (!targetID) {
         throw new Error('targetID must be defined');
       }
-      return this.newRequest().follow('ec:app/targets/options');
+      return this.newRequest().follow('ec:app/target/by-id');
     })
     .then((request) => {
       request.withTemplateParameters({ targetID });

@@ -49,4 +49,5 @@ export default class BuildResource extends Resource {
   }
 
   // TODO deploy
+  // TODO refresh (only every 5 seconds)
 }

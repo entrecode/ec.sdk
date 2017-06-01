@@ -11,11 +11,15 @@ export declare class PlatformResource extends Resource {
   config: any;
   platformType: string;
 
-  buildList(options?: filterOptions): BuildList;
+  buildList(options?: filterOptions): Promise<BuildList>;
 
-  build(buildID: string): BuildResource;
+  build(buildID: string): Promise<BuildResource>;
 
-  latestBuild(): BuildResource;
 
-  createBuild(): BuildResource;
+  latestBuild(): Promise<BuildResource>;
+
+  deploymentList(options?: filterOptions): Promise<DeploymentList>;
+
+  deployment(deploymentID: string): Promise<DeploymentResource>;
+
 }

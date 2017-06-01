@@ -187,7 +187,6 @@ export default class PlatformResource extends Resource {
   /**
    * Get the latest {@link DeploymentResource} identified by deploymentID.
    *
-   * @param {string} deploymentID id of the deployment.
    * @returns {Promise<DeploymentResource>} resolves to the deployment which should be loaded.
    */
   latestDeployment() {
