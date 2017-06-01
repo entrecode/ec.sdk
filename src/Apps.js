@@ -34,7 +34,6 @@ export default class Apps extends Core {
     super(urls, environment);
   }
 
-
   /**
    * Load a {@link AppList} of {@link AppResource} filtered by the values specified
    * by the options parameter.
@@ -101,6 +100,12 @@ export default class Apps extends Core {
     .then(([dm, traversal]) => new AppResource(dm, this[environmentSymbol], traversal));
   }
 
+  /**
+   * Load the {@link TypesResource}. This resource contains information about all available plugin
+   * types.
+   *
+   * @returns {Promise<TypesResource>} Promise resolving to types resource.
+   */
   types() {
     return Promise.resolve()
     .then(() => this.follow('ec:apps/types'))
