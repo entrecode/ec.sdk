@@ -48,6 +48,5 @@ export default class BuildResource extends Resource {
     });
   }
 
-  // TODO deploy
-  // TODO refresh (only every 5 seconds)
+  // TODO deploy? users must have targetIDs, they are on platform, PlatformResource#createDeployment should suffice
 }

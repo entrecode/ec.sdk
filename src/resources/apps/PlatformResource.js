@@ -232,7 +232,7 @@ export default class PlatformResource extends Resource {
       targetIDs = targetIDs.map(target => target instanceof TargetResource ? target.targetID : target);
 
       const request = this.newRequest()
-      .follow('ec:app/deployments')
+      .follow('ec:app/deployments/options')
       .withTemplateParameters({
         platformID: this.platformID,
         buildID,

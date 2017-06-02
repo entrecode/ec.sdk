@@ -18,27 +18,27 @@ export declare class AppResource extends Resource {
   hexColor: string;
   created: Date;
 
-  platformList(options?: filterOptions): PlatformList;
+  platformList(options?: filterOptions): Promise<PlatformList>;
 
-  platform(platformID: string): PlatformResource;
+  platform(platformID: string): Promise<PlatformResource>;
 
-  createPlatform(platform: any): PlatformResource;
+  createPlatform(platform: any): Promise<PlatformResource>;
 
-  codeSourceList(options?: filterOptions): CodeSourceList;
+  codeSourceList(options?: filterOptions): Promise<CodeSourceList>;
 
-  codeSource(codeSourceID: string): CodeSourceResource;
+  codeSource(codeSourceID: string): Promise<CodeSourceResource>;
 
-  createCodeSource(codeSource: any): CodeSourceResource;
+  createCodeSource(codeSource: any): Promise<CodeSourceResource>;
 
-  dataSourceList(options?: filterOptions): DataSourceList;
+  dataSourceList(options?: filterOptions): Promise<DataSourceList>;
 
-  dataSource(codeSourceID: string): DataSourceResource;
+  dataSource(codeSourceID: string): Promise<DataSourceResource>;
 
-  createDataSource(codeSource: any): DataSourceResource;
+  createDataSource(codeSource: any): Promise<DataSourceResource>;
 
-  targetList(options?: filterOptions): TargetList;
+  targetList(options?: filterOptions): Promise<TargetList>;
 
-  target(codeSourceID: string): TargetResource;
+  target(codeSourceID: string): Promise<TargetResource>;
 
-  createTarget(codeSource: any): TargetResource;
+  createTarget(codeSource: any): Promise<TargetResource>;
 }

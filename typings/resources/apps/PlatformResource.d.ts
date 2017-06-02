@@ -29,7 +29,7 @@ export declare class PlatformResource extends Resource {
 
   deployment(deploymentID: string): Promise<DeploymentResource>;
 
-  createDeployment(targetIDs: targetIDsType, buildID: buildIDType);
+  createDeployment(targetIDs: targetIDsType, buildID: buildIDType): Promise<DeploymentResource>;
 
   deployLatestBuild(targetIDs: targetIDsType): Promise<DeploymentResource>;
 
