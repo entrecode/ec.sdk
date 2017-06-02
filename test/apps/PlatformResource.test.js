@@ -361,7 +361,7 @@ describe('Platform Resource', () => {
     const stub = sinon.stub(helper, 'get');
     stub.returns(resolver('codesource-single.json'));
 
-    return resource.codeSource()
+    return resource.loadCodeSource()
     .then((cs) => {
       cs.should.be.instanceof(CodeSourceResource);
       stub.restore();
@@ -375,7 +375,7 @@ describe('Platform Resource', () => {
     const stub = sinon.stub(helper, 'get');
     stub.returns(resolver('datasource-single.json'));
 
-    return resource.dataSource()
+    return resource.loadDataSource()
     .then((ds) => {
       ds.should.be.instanceof(DataSourceResource);
       stub.restore();
@@ -389,7 +389,7 @@ describe('Platform Resource', () => {
     const stub = sinon.stub(helper, 'get');
     stub.returns(resolver('target-list.json'));
 
-    return resource.targets()
+    return resource.loadTargets()
     .then((list) => {
       list.should.be.instanceof(TargetList);
       stub.restore();
@@ -400,5 +400,89 @@ describe('Platform Resource', () => {
     });
   });
 
-  // todo getter setter plugins
+  it('should getCodeSource id', () => {
+    resource.getCodeSource().should.be.equal('2ce3f1cf-729e-4c12-b858-b7ec370b7faf');
+  });
+  it('should getDataSource id', () => {
+    resource.getDataSource().should.be.equal('24cc9adb-cb48-4e63-8298-489830146c20');
+  });
+  it('should getTargets ids', () => {
+    resource.getTargets().map(t => t.should.be.equal('6e704cae-70b4-4e7a-b882-befca792c5da'));
+  });
+
+  it('should setCodeSource, id', () => {
+    resource.setCodeSource('00000000-0000-4444-8888-000000000000');
+    resource.getCodeSource().should.be.equal('00000000-0000-4444-8888-000000000000');
+  });
+  it('should setCodeSource, CodeSourceResource', () => {
+    resource.setCodeSource(new CodeSourceResource({
+      _links: {
+        self: {
+          href: 'https://appserver.entrecode.de/codesource?codeSourceID=00000000-0000-4444-8888-000000000000',
+        },
+      },
+    }));
+    resource.getCodeSource().should.be.equal('00000000-0000-4444-8888-000000000000');
+  });
+  it('should setDataSource, id', () => {
+    resource.setDataSource('00000000-0000-4444-8888-000000000000');
+    resource.getDataSource().should.be.equal('00000000-0000-4444-8888-000000000000');
+  });
+  it('should setDataSource, DataSourceResource', () => {
+    resource.setDataSource(new DataSourceResource({
+      _links: {
+        self: {
+          href: 'https://appserver.entrecode.de/datasource?dataSourceID=00000000-0000-4444-8888-000000000000',
+        },
+      },
+    }));
+    resource.getDataSource().should.be.equal('00000000-0000-4444-8888-000000000000');
+  });
+  it('should setTargets, mixed', () => {
+    resource.setTargets([
+      '00000000-0000-4444-8888-000000000000',
+      new TargetResource({
+        _links: {
+          self: {
+            href: 'https://appserver.entrecode.de/target?targetID=00000000-0000-4444-8888-000000000000',
+          },
+        },
+      }),
+    ]);
+    resource.getTargets().should.have.property('length', 2);
+    resource.getTargets().map(t => t.should.be.equal('00000000-0000-4444-8888-000000000000'));
+  });
+
+  it('should addTarget, id', () => {
+    resource.addTarget('00000000-0000-4444-8888-000000000000');
+    resource.hasTarget('00000000-0000-4444-8888-000000000000').should.be.true;
+  });
+  it('should addTarget, TargetResource', () => {
+    resource.addTarget(new TargetResource({
+      _links: {
+        self: {
+          href: 'https://appserver.entrecode.de/target?targetID=00000000-0000-4444-8888-000000000000',
+        },
+      },
+    }));
+    resource.hasTarget('00000000-0000-4444-8888-000000000000').should.be.true;
+  });
+  it('should removeTarget, id', () => {
+    resource.addTarget('00000000-0000-4444-8888-000000000000');
+    resource.removeTarget('00000000-0000-4444-8888-000000000000');
+    resource.hasTarget('00000000-0000-4444-8888-000000000000').should.be.false;
+  });
+  it('should removeTarget, TargetID', () => {
+    resource.addTarget('00000000-0000-4444-8888-000000000000');
+    resource.removeTarget(new TargetResource({
+      targetID: '00000000-0000-4444-8888-000000000000',
+    }, undefined, {}));
+    resource.hasTarget('00000000-0000-4444-8888-000000000000').should.be.false;
+  });
+  it('should be true on hasTarget', () => {
+    resource.hasTarget('6e704cae-70b4-4e7a-b882-befca792c5da').should.be.true;
+  });
+  it('should be false on hasTarget', () => {
+    resource.hasTarget('00000000-0000-4444-8888-000000000000').should.be.false;
+  });
 });

@@ -33,11 +33,29 @@ export declare class PlatformResource extends Resource {
 
   deployLatestBuild(targetIDs: targetIDsType): Promise<DeploymentResource>;
 
-  codeSource(): Promise<CodeSourceResource>;
+  loadCodeSource(): Promise<CodeSourceResource>;
 
-  dataSource(): Promise<DataSourceResource>;
+  loadDataSource(): Promise<DataSourceResource>;
 
-  targets(): Promise<TargetList>;
+  loadTargets(): Promise<TargetList>;
+
+  getCodeSource(): string;
+
+  setCodeSource(codeSource: string | CodeSourceResource): string | CodeSourceResource;
+
+  getDataSource(): string;
+
+  setDataSource(dataSource: string | DataSourceResource): string | DataSourceResource;
+
+  getTargets(): Array<string>;
+
+  setTargets(targets: Array<string | TargetResource>): Array<string | TargetResource>;
+
+  addTarget(target: string | TargetResource): string | TargetResource;
+
+  removeTarget(target: string | TargetResource): void;
+
+  hasTarget(target: string | TargetResource): boolean;
 }
 
 type targetIDsType = string | TargetResource | Array<string> | Array<TargetResource> | TargetList;

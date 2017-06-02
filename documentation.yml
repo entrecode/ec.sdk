@@ -51,6 +51,10 @@ toc:
   - DataSourceList
   - TargetResource
   - TargetList
+  - BuildResource
+  - BuildList
+  - DeploymentResource
+  - DeploymentList
   - name: DataManager Resources
     file: ./src/doc/7-datamanager-resources.md
   - DataManagerResource

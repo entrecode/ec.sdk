@@ -283,7 +283,7 @@ export default class PlatformResource extends Resource {
    *
    * @returns {Promise<CodeSourceResource>} resolves to the codeSource
    */
-  codeSource() {
+  loadCodeSource() {
     return get(this[environmentSymbol], this.newRequest().follow('ec:app/codesource'))
     .then(([res, traversal]) => new CodeSourceResource(res, this[environmentSymbol], traversal));
   }
@@ -293,7 +293,7 @@ export default class PlatformResource extends Resource {
    *
    * @returns {Promise<DataSourceResource>} resolves to the datasource
    */
-  dataSource() {
+  loadDataSource() {
     return get(this[environmentSymbol], this.newRequest().follow('ec:app/datasource'))
     .then(([res, traversal]) => new DataSourceResource(res, this[environmentSymbol], traversal));
   }
@@ -303,7 +303,7 @@ export default class PlatformResource extends Resource {
    *
    * @returns {Promise<TargetList>} resolves to the list of assigned targets
    */
-  targets() {
+  loadTargets() {
     return Promise.resolve()
     .then(() => {
       const link = this.getLink('ec:app/target');
@@ -318,7 +318,90 @@ export default class PlatformResource extends Resource {
     .then(([res, traversal]) => new TargetList(res, this[environmentSymbol], traversal));
   }
 
-  // TODO getter setter plugins
+  getCodeSource() {
+    const link = this.getLink('ec:app/codesource');
+    return querystring.parse(link.href.split('?')[1]).codeSourceID;
+  }
+
+  setCodeSource(codeSource) { // ID, Resource
+    let link = codeSource instanceof CodeSourceResource ? codeSource.getLink('self') : undefined;
+
+    if (!link) {
+      const baseLink = this.getLink('ec:app').href.split('?')[0];
+      link = { href: `${baseLink}codesource?${querystring.stringify({ codeSourceID: codeSource })}` };
+    }
+
+    this[resourceSymbol]._links['ec:app/codesource'] = [link];
+
+    return codeSource;
+  }
+
+  getDataSource() {
+    const link = this.getLink('ec:app/datasource');
+    return querystring.parse(link.href.split('?')[1]).dataSourceID;
+  }
+
+  setDataSource(dataSource) { // ID, Resource
+    let link = dataSource instanceof DataSourceResource ? dataSource.getLink('self') : undefined;
+
+    if (!link) {
+      const baseLink = this.getLink('ec:app').href.split('?')[0];
+      link = { href: `${baseLink}datasource?${querystring.stringify({ dataSourceID: dataSource })}` };
+    }
+
+    this[resourceSymbol]._links['ec:app/datasource'] = [link];
+
+    return dataSource;
+  }
+
+  getTargets() {
+    const links = this[resourceSymbol].linkArray('ec:app/target');
+    return links.map(link => querystring.parse(link.href.split('?')[1]).targetID);
+  }
+
+  setTargets(targets) { // Array ID, Resource
+    const links = targets.map((target) => {
+      const link = target instanceof TargetResource ? target.getLink('self') : undefined;
+      if (link) {
+        return link;
+      }
+
+      const baseLink = this.getLink('ec:app').href.split('?')[0];
+      return { href: `${baseLink}target?${querystring.stringify({ targetID: target })}` };
+    });
+
+    this[resourceSymbol]._links['ec:app/target'] = links;
+
+    return targets;
+  }
+
+  addTarget(target) {
+    let link = target instanceof TargetResource ? target.getLink('self') : undefined;
+
+    if (!link) {
+      const baseLink = this.getLink('ec:app').href.split('?')[0];
+      link = { href: `${baseLink}target?${querystring.stringify({ targetID: target })}` };
+    }
+
+    this[resourceSymbol]._links['ec:app/target'].push(link);
+
+    return target;
+  }
+
+  removeTarget(target) {
+    const targetID = target instanceof TargetResource ? target.targetID : target;
+
+    this[resourceSymbol]._links['ec:app/target'] = this[resourceSymbol].linkArray('ec:app/target')
+    .filter(link => link.href.indexOf(targetID) === -1);
+  }
+
+  hasTarget(target) {
+    const targetID = target instanceof TargetResource ? target.targetID : target;
+
+    return !!this[resourceSymbol]
+    .linkArray('ec:app/target')
+    .find(link => link.href.indexOf(targetID) !== -1);
+  }
 }
 
 /**
