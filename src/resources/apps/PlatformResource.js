@@ -406,10 +406,8 @@ export default class PlatformResource extends Resource {
 
 /**
  * @typedef {string|Array<string>|TargetResource|Array<TargetResource>|TargetList} targetIDsInput
- * @access private
  */
 
 /**
  * @typedef {string|BuildResource} buildIDInput
- * @access private
  */
