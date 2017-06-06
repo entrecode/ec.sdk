@@ -1,0 +1,18 @@
+{
+  "id": "https://entrecode.de/schema/app-template",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string"
+    },
+    "hexColor": {
+      "type": "string",
+      "pattern": "^#[A-Fa-f0-9]{6}$"
+    }
+  },
+  "required": [
+    "title",
+    "hexColor"
+  ],
+  "$schema": "http://json-schema.org/draft-04/schema#"
+}

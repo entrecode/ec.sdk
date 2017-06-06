@@ -249,7 +249,7 @@ export default class DataManagerResource extends Resource {
       return this[resourceSymbol].link('ec:dm-client/by-id');
     })
     .then(link => validator.validate(client, `${link.profile}`))
-    .then(() => post(this.newRequest().follow('ec:dm-clients'), client))
+    .then(() => post(this[environmentSymbol], this.newRequest().follow('ec:dm-clients'), client))
     .then(([dm, traversal]) => new DMClientResource(dm, this[environmentSymbol], traversal));
   }
 
@@ -416,7 +416,7 @@ export default class DataManagerResource extends Resource {
       return this[resourceSymbol].link('ec:dm-role/by-id');
     })
     .then(link => validator.validate(role, `${link.profile}-template`))
-    .then(() => post(this.newRequest().follow('ec:dm-roles'), role))
+    .then(() => post(this[environmentSymbol], this.newRequest().follow('ec:dm-roles'), role))
     .then(([dm, traversal]) => new RoleResource(dm, this[environmentSymbol], traversal));
   }
 

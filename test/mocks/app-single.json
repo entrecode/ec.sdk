@@ -1,0 +1,77 @@
+{
+  "appID": "3fa43646-dec1-48dd-87e5-db16333ddae0",
+  "shortID": "55bd7f6d",
+  "created": "2017-05-19T15:58:26.186Z",
+  "title": "Superfit-Test App",
+  "hexColor": "#FC2E2A",
+  "_links": {
+    "self": {
+      "profile": "https://entrecode.de/schema/app",
+      "href": "https://appserver.entrecode.de/?appID=3fa43646-dec1-48dd-87e5-db16333ddae0"
+    },
+    "collection": {
+      "profile": "https://entrecode.de/schema/apps",
+      "href": "https://appserver.entrecode.de"
+    },
+    "ec:app/platforms": {
+      "profile": "https://entrecode.de/schema/platforms",
+      "href": "https://appserver.entrecode.de/platform?appID=3fa43646-dec1-48dd-87e5-db16333ddae0"
+    },
+    "ec:app/platform/by-id": {
+      "profile": "https://entrecode.de/schema/platform",
+      "href": "https://appserver.entrecode.de/platform{?platformID}"
+    },
+    "ec:app/platforms/options": {
+      "href": "https://appserver.entrecode.de/platform{?appID,codeSourceID,dataSourceID,page,platformID,platformType,platformType~,size,sort,title,title~}",
+      "templated": true
+    },
+    "ec:app/codesources": {
+      "profile": "https://entrecode.de/schema/codesources",
+      "href": "https://appserver.entrecode.de/codesource?appID=3fa43646-dec1-48dd-87e5-db16333ddae0"
+    },
+    "ec:app/codesource/by-id": {
+      "profile": "https://entrecode.de/schema/codesource",
+      "href": "https://appserver.entrecode.de/codesourc{?codeSourceID}"
+    },
+    "ec:app/codesources/options": {
+      "href": "https://appserver.entrecode.de/codesource{?appID,codeSourceID,codeSourceType,codeSourceType~,page,size,sort}",
+      "templated": true
+    },
+    "ec:app/datasources": {
+      "profile": "https://entrecode.de/schema/datasources",
+      "href": "https://appserver.entrecode.de/datasource?appID=3fa43646-dec1-48dd-87e5-db16333ddae0"
+    },
+    "ec:app/datasource/by-id": {
+      "profile": "https://entrecode.de/schema/datasource",
+      "href": "https://appserver.entrecode.de/datasource{?dataSourceID}"
+    },
+    "ec:app/datasources/options": {
+      "href": "https://appserver.entrecode.de/datasource{?appID,dataSourceID,dataSourceType,dataSourceType~,page,size,sort}",
+      "templated": true
+    },
+    "ec:app/targets": {
+      "profile": "https://entrecode.de/schema/targets",
+      "href": "https://appserver.entrecode.de/target?appID=3fa43646-dec1-48dd-87e5-db16333ddae0"
+    },
+    "ec:app/target/by-id": {
+      "profile": "https://entrecode.de/schema/target",
+      "href": "https://appserver.entrecode.de/target{?targetID}"
+    },
+    "ec:app/targets/options": {
+      "href": "https://appserver.entrecode.de/target{?appID,page,size,sort,targetID,targetType,targetType~}",
+      "templated": true
+    },
+    "ec:app/platform": [
+      {
+        "profile": "https://entrecode.de/schema/platform",
+        "title": "Superfit-Test Website",
+        "href": "https://appserver.entrecode.de/platform?platformID=c2586d48-757e-467b-9d49-0aac11d5614c"
+      },
+      {
+        "profile": "https://entrecode.de/schema/platform",
+        "title": "Superfit-Test Clubapp",
+        "href": "https://appserver.entrecode.de/platform?platformID=410ce1a4-b44d-4e44-98fb-351604529214"
+      }
+    ]
+  }
+}

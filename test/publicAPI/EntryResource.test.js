@@ -10,6 +10,7 @@ const Resource = require('../../lib/resources/Resource').default;
 const ListResource = require('../../lib/resources/ListResource').default;
 const EntryList = require('../../lib/resources/publicAPI/EntryList');
 const EntryResource = require('../../lib/resources/publicAPI/EntryResource');
+const PublicAssetResource = require('../../lib/resources/publicAPI/PublicAssetResource').default;
 
 const should = chai.should();
 chai.use(sinonChai);
@@ -32,7 +33,7 @@ describe('Entry List', () => {
   });
   beforeEach(() => {
     mock.reset();
-    return EntryList.createList(listJson, 'live', 'beefbeef:allFields')
+    return EntryList.createList(listJson, 'live', undefined, 'beefbeef:allFields')
     .then(l => list = l); // eslint-disable-line no-return-assign
   });
   afterEach(() => {
@@ -57,6 +58,7 @@ describe('Entry Resource', () => {
   let resource;
   let getSpy;
   let setSpy;
+  let asset;
   before(() =>
     new Promise((resolve, reject) => {
       fs.readFile(`${__dirname}/../mocks/public-entry.json`, 'utf-8', (err, res) => {
@@ -68,6 +70,17 @@ describe('Entry Resource', () => {
     })
     .then((json) => {
       resourceJson = json;
+      return new Promise((resolve, reject) => {
+        fs.readFile(`${__dirname}/../mocks/public-asset.json`, 'utf-8', (err, res) => {
+          if (err) {
+            return reject(err);
+          }
+          return resolve(JSON.parse(res));
+        });
+      });
+    })
+    .then((json) => {
+      asset = new PublicAssetResource(json);
     }));
   beforeEach(() => {
     mock.reset();
@@ -206,11 +219,12 @@ describe('Entry Resource', () => {
   });
   it('should set asset field, object', () => {
     resource.asset = { assetID: 'df96ce29-d5a1-4a6f-9094-62506b708378' };
-    setSpy.should.have.been.calledWith('asset', 'df96ce29-d5a1-4a6f-9094-62506b708378');
+    setSpy.should.have.been.calledWith('asset', { assetID: 'df96ce29-d5a1-4a6f-9094-62506b708378' });
   });
-  it.skip('should set asset field, AssetResource', () => {
-    resource.asset = { assetID: 'df96ce29-d5a1-4a6f-9094-62506b708378' };
-    setSpy.should.have.been.calledWith('asset', 'df96ce29-d5a1-4a6f-9094-62506b708378');
+  it('should set asset field, AssetResource', () => {
+    const original = asset.toOriginal();
+    resource.asset = asset;
+    setSpy.should.have.been.calledWith('asset', original);
   });
   it('should throw on set asset field, invalid object', () => {
     const throws = () => resource.asset = { invalid: 'object' };
@@ -227,11 +241,12 @@ describe('Entry Resource', () => {
   });
   it('should set assets field, object', () => {
     resource.assets = [{ assetID: 'df96ce29-d5a1-4a6f-9094-62506b708378' }];
-    setSpy.should.have.been.calledWith('assets', ['df96ce29-d5a1-4a6f-9094-62506b708378']);
+    setSpy.should.have.been.calledWith('assets', [{ assetID: 'df96ce29-d5a1-4a6f-9094-62506b708378' }]);
   });
-  it.skip('should set assets field, AssetResource', () => {
-    resource.assets = [{ assetID: 'df96ce29-d5a1-4a6f-9094-62506b708378' }];
-    setSpy.should.have.been.calledWith('assets', ['df96ce29-d5a1-4a6f-9094-62506b708378']);
+  it('should set assets field, AssetResource', () => {
+    const original = asset.toOriginal();
+    resource.assets = [asset];
+    setSpy.should.have.been.calledWith('assets', [original]);
   });
   it('should throw on set assets field, not an array', () => {
     const throws = () => resource.assets = {};
@@ -368,6 +383,17 @@ describe('Entry Resource with nested', () => {
       entry.should.be.instanceOf(EntryResource.default);
     });
   });
+  it('should get nested asset, asset', () => {
+    res.asset.should.be.instanceOf(PublicAssetResource);
+  });
+  it('should get nested asset, assets', () => {
+    res.assets.forEach((asset) => {
+      asset.should.be.instanceOf(PublicAssetResource);
+    });
+    res.assets.forEach((asset) => {
+      asset.should.be.instanceOf(PublicAssetResource);
+    });
+  });
 });
 
 describe('Entry Resource with nested and array links', () => {
@@ -404,6 +430,17 @@ describe('Entry Resource with nested and array links', () => {
     });
     res.entries.forEach((entry) => {
       entry.should.be.instanceOf(EntryResource.default);
+    });
+  });
+  it('should get nested asset, asset', () => {
+    res.asset.should.be.instanceOf(PublicAssetResource);
+  });
+  it('should get nested asset, assets', () => {
+    res.assets.forEach((asset) => {
+      asset.should.be.instanceOf(PublicAssetResource);
+    });
+    res.assets.forEach((asset) => {
+      asset.should.be.instanceOf(PublicAssetResource);
     });
   });
 });

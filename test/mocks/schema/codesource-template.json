@@ -1,0 +1,17 @@
+{
+  "id": "https://entrecode.de/schema/codesource-template",
+  "type": "object",
+  "properties": {
+    "codeSourceType": {
+      "type": "string"
+    },
+    "config": {
+      "type": "object"
+    }
+  },
+  "required": [
+    "codeSourceType",
+    "config"
+  ],
+  "$schema": "http://json-schema.org/draft-04/schema#"
+}

@@ -1,0 +1,324 @@
+{
+  "platformTypes": [
+    {
+      "type": "ionic-android",
+      "configSchema": {
+        "id": "https://appserver.entrecode.de/schema/types/platform-type/ionic-android",
+        "type": "object",
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "required": [
+          "id"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[A-Fa-f0-9]{8}$"
+          }
+        }
+      },
+      "typeConfig": {}
+    },
+    {
+      "type": "simpleWebsite",
+      "configSchema": {
+        "id": "https://appserver.entrecode.de/schema/types/platform-type/simplewebsite",
+        "type": "object",
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "required": [
+          "buildDir"
+        ],
+        "properties": {
+          "buildDir": {
+            "type": "string"
+          }
+        }
+      },
+      "typeConfig": {}
+    },
+    {
+      "type": "website",
+      "configSchema": {
+        "id": "https://appserver.entrecode.de/schema/types/platform-type/website",
+        "type": "object",
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "required": [
+          "id"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[A-Fa-f0-9]{8}$"
+          },
+          "url": {
+            "type": "string"
+          },
+          "branch": {
+            "type": "string"
+          },
+          "giturl": {
+            "type": "string"
+          }
+        }
+      },
+      "typeConfig": {}
+    },
+    {
+      "type": "ionic-simple",
+      "configSchema": {
+        "id": "https://appserver.entrecode.de/schema/types/platform-type/ionic-simple",
+        "type": "object",
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "required": [
+          "id"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[A-Fa-f0-9]{8}$"
+          }
+        }
+      },
+      "typeConfig": {}
+    },
+    {
+      "type": "ionic-ios",
+      "configSchema": {
+        "id": "https://appserver.entrecode.de/schema/types/platform-type/ionic-ios",
+        "type": "object",
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "required": [
+          "id"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[A-Fa-f0-9]{8}$"
+          }
+        }
+      },
+      "typeConfig": {}
+    },
+    {
+      "type": "staticWebsite",
+      "configSchema": {},
+      "typeConfig": {}
+    },
+    {
+      "type": "staticWebsite2",
+      "configSchema": {},
+      "typeConfig": {}
+    },
+    {
+      "type": "ionic",
+      "configSchema": {
+        "id": "https://appserver.entrecode.de/schema/types/platform-type/ionic",
+        "type": "object",
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "required": [
+          "id"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[A-Fa-f0-9]{8}$"
+          }
+        }
+      },
+      "typeConfig": {}
+    }
+  ],
+  "codeSourceTypes": [
+    {
+      "type": "remoteGit",
+      "configSchema": {
+        "id": "https://appserver.entrecode.de/schema/types/code-source/remoteGit",
+        "type": "object",
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "required": [
+          "giturl"
+        ],
+        "properties": {
+          "giturl": {
+            "type": "string"
+          }
+        }
+      },
+      "typeConfig": {},
+      "restrictToPlatformType": null
+    },
+    {
+      "type": "zipFileFromS3",
+      "configSchema": {
+        "id": "https://appserver.entrecode.de/schema/types/code-source/zipFileFromS3",
+        "type": "object",
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "required": [
+          "bucket",
+          "key"
+        ],
+        "properties": {
+          "key": {
+            "type": "string"
+          },
+          "bucket": {
+            "type": "string"
+          }
+        }
+      },
+      "typeConfig": {},
+      "restrictToPlatformType": null
+    },
+    {
+      "type": "stub",
+      "configSchema": {},
+      "typeConfig": {},
+      "restrictToPlatformType": null
+    }
+  ],
+  "dataSourceTypes": [
+    {
+      "type": "singleEntry",
+      "configSchema": {
+        "id": "https://appserver.entrecode.de/schema/types/data-source/singleEntry",
+        "type": "object",
+        "oneOf": [
+          {
+            "required": [
+              "entryID",
+              "model",
+              "id"
+            ]
+          },
+          {
+            "required": [
+              "entryID",
+              "model",
+              "url"
+            ]
+          }
+        ],
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[A-Fa-f0-9]{8}$"
+          },
+          "url": {
+            "type": "string",
+            "format": "url"
+          },
+          "model": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9_\\-]{1,256}$"
+          },
+          "levels": {
+            "type": "integer",
+            "maximum": 5,
+            "minimum": 1
+          },
+          "entryID": {
+            "type": "string",
+            "pattern": "^[0-9A-Za-z\\-_]{7,14}$"
+          }
+        }
+      },
+      "typeConfig": {},
+      "restrictToPlatformType": null
+    },
+    {
+      "type": "ownDataManager",
+      "configSchema": {
+        "id": "https://appserver.entrecode.de/schema/types/data-source/own-data-manager",
+        "type": "object",
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "required": [
+          "url"
+        ],
+        "properties": {
+          "url": {
+            "type": "string",
+            "format": "url"
+          },
+          "token": {
+            "type": "string"
+          }
+        }
+      },
+      "typeConfig": {},
+      "restrictToPlatformType": null
+    },
+    {
+      "type": "stub",
+      "configSchema": {},
+      "typeConfig": {},
+      "restrictToPlatformType": null
+    }
+  ],
+  "targetTypes": [
+    {
+      "type": "entrecodeS3Testing",
+      "configSchema": {},
+      "typeConfig": {},
+      "restrictToPlatformType": null
+    },
+    {
+      "type": "backupS3",
+      "configSchema": {},
+      "typeConfig": {},
+      "restrictToPlatformType": null
+    },
+    {
+      "type": "localWebServer",
+      "configSchema": {
+        "id": "https://appserver.entrecode.de/schema/types/target-type/localWebServer",
+        "type": "object",
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "required": [
+          "path"
+        ],
+        "properties": {
+          "path": {
+            "type": "string"
+          }
+        }
+      },
+      "typeConfig": {},
+      "restrictToPlatformType": null
+    },
+    {
+      "type": "entrecodeS3",
+      "configSchema": {
+        "id": "https://appserver.entrecode.de/schema/types/target-type/entrecodeS3",
+        "type": "object",
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "properties": {
+          "cloudfrontID": {
+            "type": "string"
+          }
+        }
+      },
+      "typeConfig": {},
+      "restrictToPlatformType": null
+    },
+    {
+      "type": "zipDownload",
+      "configSchema": {},
+      "typeConfig": {},
+      "restrictToPlatformType": null
+    }
+  ],
+  "_links": {
+    "self": {
+      "profile": "https://entrecode.de/schema/app-plugin-types",
+      "href": "https://appserver.entrecode.de/plugintypes"
+    },
+    "ec:apps": {
+      "profile": "https://entrecode.de/schema/apps",
+      "href": "https://appserver.entrecode.de"
+    },
+    "curies": {
+      "href": "https://doc.entrecode.de/app_manager/#relation-{rel}",
+      "templated": true
+    }
+  }
+}

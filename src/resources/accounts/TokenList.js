@@ -15,6 +15,6 @@ export default class TokenList extends ListResource {
    * @param {?object} traversal traversal from which traverson can continue.
    */
   constructor(resource, environment, traversal) {
-    super(resource, environment, 'ec:account/token', traversal, TokenList, TokenResource);
+    super(resource, environment, traversal, 'ec:account/token', undefined, TokenList, TokenResource);
   }
 }

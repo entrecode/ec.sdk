@@ -1,4 +1,4 @@
-# ec.api-sdk
+# ec.sdk
 
 > SDK for most APIs of AppCMS by entrecode. By entrecode.
 > 
@@ -13,26 +13,45 @@ Documentation can be found [here](https://entrecode.github.io/ec.sdk/).
 ## Basic Usage
 
 ```sh
-npm i --save ec.api
+npm i --save ec.sdk
 ```
 
 ##### ES6 / Webpack
 
 ```js
-import {DataManager, Accounts} from 'ec.api';
+// in webpack.config.js
+const config = {
+  // …
+  node: {
+    fs: 'empty',
+    Buffer: true,
+    net: 'empty',
+    tls: 'empty',
+  },
+};
 
-const dataManager = new DataManager('live').setToken(accessToken);
+// in your code
+import { DataManager, Accounts } from 'ec.sdk';
+
+const dataManager = new DataManager('live');
+dataManager.setToken(accessToken);
 
 dataManager.dataManagerList()
 .then(list => doSomthingWith(list))
-.catch(console.log);
+.catch(console.error);
+
+const accounts = new Accounts(); // This uses 'live' environment
+accounts.me() // This has token from 'dataManager'
+.then(me => show(me))
+.catch(console.error)
 ```
 
 ##### Node
 
 ```js
-const ec = require('ec.api');
-const dataManager = new ec.DataManager('live').setToken(accessToken);
+const ec = require('ec.sdk');
+const dataManager = new ec.DataManager('live');
+dataManager.setToken(accessToken);
 
 dataManager.dataManagerList()
 .then(list => doSomthingWith(list))
@@ -43,12 +62,12 @@ dataManager.dataManagerList()
 > This is not officially supported. Mainly exists for usage in jsfiddles or similar.
 
 ```html
-<!-- Good Luck :D - We have a browserified build in ./dist/ -->
 <script src="https://unpkg.com/ec.sdk/dist/ec.sdk.min.js"></script>
 <script>
     console.log('My development stack is bad and I should feel bad');
     
-    var dataManager = new ec.DataManager('live').setToken(accessToken);
+    var dataManager = new ec.DataManager('live');
+    dataManager.setToken(accessToken);
     dataManager.list()
     .then(list => doSomthingWith(list))
     .catch(console.log);

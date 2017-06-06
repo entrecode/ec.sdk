@@ -1,0 +1,243 @@
+{
+  "count": 1,
+  "total": 1,
+  "_links": {
+    "self": {
+      "profile": "https://entrecode.de/schema/deployments",
+      "href": "https://appserver.entrecode.de/platform/deployment?platformID=229b4384-fcfa-437b-833e-fc779a3f8f4c"
+    },
+    "curies": {
+      "href": "https://doc.entrecode.de/app_manager/#relation-{rel}",
+      "templated": true
+    },
+    "ec:app/deployment/by-id": {
+      "profile": "https://entrecode.de/schema/deployment",
+      "href": "https://appserver.entrecode.de/platform/deployment{?deploymentID}",
+      "templated": true
+    },
+    "ec:app": {
+      "profile": "https://entrecode.de/schema/app",
+      "href": "https://appserver.entrecode.de/?appID=9f83b67a-cb95-4f60-9d82-7c66d4a81e24"
+    },
+    "ec:app/deployments/options": {
+      "href": "https://appserver.entrecode.de/platform/deployment{?buildID,deploymentID,page,platformID,size,sort,targetID}",
+      "templated": true
+    }
+  },
+  "_embedded": {
+    "ec:app/deployment": {
+      "deploymentID": 1051,
+      "buildID": 693,
+      "platformID": "229b4384-fcfa-437b-833e-fc779a3f8f4c",
+      "targetIDs": [
+        "6e704cae-70b4-4e7a-b882-befca792c5da"
+      ],
+      "started": "2017-03-03T14:35:12.754Z",
+      "finished": "2017-03-03T14:35:20.079Z",
+      "results": [
+        "https://cdn3.entrecode.de/deployment.download1051.zip"
+      ],
+      "successful": "success",
+      "events": [
+        {
+          "deploymentEventID": "44521",
+          "deploymentEventType": "info",
+          "timestamp": "2017-03-03T14:35:12.772+00:00",
+          "message": "ZipFile Plugin: Loading file from s3.",
+          "temporary": true,
+          "info": {}
+        },
+        {
+          "deploymentEventID": "44529",
+          "deploymentEventType": "info",
+          "timestamp": "2017-03-03T14:35:18.267+00:00",
+          "message": "deploying to selected targets",
+          "temporary": true,
+          "info": {}
+        },
+        {
+          "deploymentEventID": "44537",
+          "deploymentEventType": "info",
+          "timestamp": "2017-03-03T14:35:20.007+00:00",
+          "message": "https://cdn3.entrecode.de/deployment.download1051.zip",
+          "temporary": false,
+          "info": {}
+        },
+        {
+          "deploymentEventID": "44519",
+          "deploymentEventType": "verbose",
+          "timestamp": "2017-03-03T14:35:12.77+00:00",
+          "message": "Created temp dir.",
+          "temporary": true,
+          "info": {}
+        },
+        {
+          "deploymentEventID": "44525",
+          "deploymentEventType": "info",
+          "timestamp": "2017-03-03T14:35:18.258+00:00",
+          "message": "ZipFile Plugin: Zip content successfully unzipped and written.",
+          "temporary": false,
+          "info": {}
+        },
+        {
+          "deploymentEventID": "44524",
+          "deploymentEventType": "info",
+          "timestamp": "2017-03-03T14:35:13.056+00:00",
+          "message": "ZipFile Plugin: File unzipped. Saving content.",
+          "temporary": true,
+          "info": {}
+        },
+        {
+          "deploymentEventID": "44526",
+          "deploymentEventType": "info",
+          "timestamp": "2017-03-03T14:35:18.26+00:00",
+          "message": "ZipFile Plugin: Removing downloaded zip file.",
+          "temporary": true,
+          "info": {}
+        },
+        {
+          "deploymentEventID": "44523",
+          "deploymentEventType": "info",
+          "timestamp": "2017-03-03T14:35:12.945+00:00",
+          "message": "ZipFile Plugin: Unzipping file.",
+          "temporary": true,
+          "info": {}
+        },
+        {
+          "deploymentEventID": "44528",
+          "deploymentEventType": "info",
+          "timestamp": "2017-03-03T14:35:18.266+00:00",
+          "message": "ZipFile Plugin: … successfully fetched and unzipped file.",
+          "temporary": false,
+          "info": {}
+        },
+        {
+          "deploymentEventID": "44522",
+          "deploymentEventType": "info",
+          "timestamp": "2017-03-03T14:35:12.944+00:00",
+          "message": "ZipFile Plugin: File successfully loaded and written.",
+          "temporary": false,
+          "info": {}
+        },
+        {
+          "deploymentEventID": "44527",
+          "deploymentEventType": "info",
+          "timestamp": "2017-03-03T14:35:18.265+00:00",
+          "message": "ZipFile Plugin: Successfully removed zip file.",
+          "temporary": false,
+          "info": {}
+        },
+        {
+          "deploymentEventID": "44533",
+          "deploymentEventType": "verbose",
+          "timestamp": "2017-03-03T14:35:19.994+00:00",
+          "message": "… uploaded.",
+          "temporary": true,
+          "info": {
+            "key": "deployment.download1051.zip",
+            "file": "/usr/src/app/lib/deploy/deployment.download1051.zip",
+            "bucket": "ec-appserver-zip"
+          }
+        },
+        {
+          "deploymentEventID": "44532",
+          "deploymentEventType": "verbose",
+          "timestamp": "2017-03-03T14:35:19.789+00:00",
+          "message": "Upload to s3…",
+          "temporary": true,
+          "info": {
+            "key": "deployment.download1051.zip",
+            "file": "/usr/src/app/lib/deploy/deployment.download1051.zip",
+            "bucket": "ec-appserver-zip"
+          }
+        },
+        {
+          "deploymentEventID": "44534",
+          "deploymentEventType": "verbose",
+          "timestamp": "2017-03-03T14:35:19.999+00:00",
+          "message": "Removing local zip…",
+          "temporary": true,
+          "info": {
+            "file": "/usr/src/app/lib/deploy/deployment.download1051.zip"
+          }
+        },
+        {
+          "deploymentEventID": "44530",
+          "deploymentEventType": "info",
+          "timestamp": "2017-03-03T14:35:18.268+00:00",
+          "message": "Starting zipDownload S3 plugin deployment.",
+          "temporary": false,
+          "info": {}
+        },
+        {
+          "deploymentEventID": "44536",
+          "deploymentEventType": "info",
+          "timestamp": "2017-03-03T14:35:20.002+00:00",
+          "message": "Finished zipDownload S3 plugin deployment",
+          "temporary": false,
+          "info": {}
+        },
+        {
+          "deploymentEventID": "44531",
+          "deploymentEventType": "verbose",
+          "timestamp": "2017-03-03T14:35:18.268+00:00",
+          "message": "Creating zip file…",
+          "temporary": true,
+          "info": {}
+        },
+        {
+          "deploymentEventID": "44535",
+          "deploymentEventType": "verbose",
+          "timestamp": "2017-03-03T14:35:20.001+00:00",
+          "message": "… removed.",
+          "temporary": true,
+          "info": {
+            "file": "/usr/src/app/lib/deploy/deployment.download1051.zip"
+          }
+        },
+        {
+          "deploymentEventID": "44538",
+          "deploymentEventType": "info",
+          "timestamp": "2017-03-03T14:35:20.07+00:00",
+          "message": "… finished target deployment.",
+          "temporary": false,
+          "info": {}
+        },
+        {
+          "deploymentEventID": "44520",
+          "deploymentEventType": "info",
+          "timestamp": "2017-03-03T14:35:12.771+00:00",
+          "message": "ZipFile Plugin: Fetching zipFile…",
+          "temporary": true,
+          "info": {}
+        }
+      ],
+      "_links": {
+        "self": {
+          "profile": "https://entrecode.de/schema/deployment",
+          "href": "https://appserver.entrecode.de/platform/deployment?deploymentID=1051"
+        },
+        "collection": {
+          "profile": "https://entrecode.de/schema/deployments",
+          "href": "https://appserver.entrecode.de/platform/deployment?platformID=229b4384-fcfa-437b-833e-fc779a3f8f4c"
+        },
+        "ec:app": {
+          "profile": "https://entrecode.de/schema/app",
+          "href": "https://appserver.entrecode.de/?appID=9f83b67a-cb95-4f60-9d82-7c66d4a81e24"
+        },
+        "ec:app/platform": {
+          "profile": "https://entrecode.de/schema/platform",
+          "href": "https://appserver.entrecode.de/platform?platformID=229b4384-fcfa-437b-833e-fc779a3f8f4c"
+        },
+        "ec:app/build": {
+          "profile": "https://entrecode.de/schema/build",
+          "href": "https://appserver.entrecode.de/platform/build?buildID=693"
+        },
+        "ec:app/target": {
+          "profile": "https://entrecode.de/schema/target",
+          "href": "https://appserver.entrecode.de/target?targetID=6e704cae-70b4-4e7a-b882-befca792c5da"
+        }
+      }
+    }
+  }
+}

@@ -5,8 +5,8 @@ const chaiAsPromised = require('chai-as-promised');
 const fs = require('fs');
 const sinon = require('sinon');
 const sinonChai = require('sinon-chai');
+const nock = require('nock');
 
-const core = require('../lib/Core');
 const helper = require('../lib/helper');
 const resolver = require('./mocks/resolver');
 const Resource = require('../lib/resources/Resource').default;
@@ -15,6 +15,7 @@ const ListResource = require('../lib/resources/ListResource').default;
 chai.should();
 chai.use(sinonChai);
 chai.use(chaiAsPromised);
+nock.disableNetConnect();
 
 describe('ListResource', () => {
   let listJson;
@@ -145,6 +146,33 @@ describe('ListResource', () => {
       property.should.be.equal(list.getProperty(name));
 
       spy.restore();
+    });
+  });
+
+  it('should map over entries, sync iterator', () => {
+    nock('https://datamanager.entrecode.de')
+    .get('/?title~=test&size=2')
+    .replyWithFile(200, `${__dirname}/mocks/dm-list.json`, { 'Content-Type': 'application/json' })
+    .get('/?title~=test&size=2&page=2')
+    .replyWithFile(200, `${__dirname}/mocks/dm-list-page.json`, { 'Content-Type': 'application/json' });
+
+    return list.map(dm => dm.getProperty('dataManagerID'))
+    .then((result) => {
+      result.should.be.array;
+      result.length.should.be.equal(4);
+    });
+  });
+  it('should map over entries, promise iterator', () => {
+    nock('https://datamanager.entrecode.de')
+    .get('/?title~=test&size=2')
+    .replyWithFile(200, `${__dirname}/mocks/dm-list.json`, { 'Content-Type': 'application/json' })
+    .get('/?title~=test&size=2&page=2')
+    .replyWithFile(200, `${__dirname}/mocks/dm-list-page.json`, { 'Content-Type': 'application/json' });
+
+    return list.map(dm => Promise.resolve(dm.getProperty('dataManagerID')))
+    .then((result) => {
+      result.should.be.array;
+      result.length.should.be.equal(4);
     });
   });
 });

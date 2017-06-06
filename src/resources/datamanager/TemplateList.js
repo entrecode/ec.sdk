@@ -15,6 +15,6 @@ export default class TemplateList extends ListResource {
    * @param {?object} traversal traversal from which traverson can continue.
    */
   constructor(resource, environment, traversal) {
-    super(resource, environment, 'ec:dm-template', traversal, TemplateList, TemplateResource);
+    super(resource, environment, traversal, 'ec:dm-template', undefined, TemplateList, TemplateResource);
   }
 }

@@ -1,0 +1,396 @@
+{
+  "count": 10,
+  "total": 34,
+  "_links": {
+    "ec:apps": {
+      "profile": "https://entrecode.de/schema/apps",
+      "href": "https://appserver.entrecode.de"
+    },
+    "self": {
+      "profile": "https://entrecode.de/schema/app",
+      "href": "/stats"
+    },
+    "ec:app-stat/options": {
+      "href": "https://appserver.entrecode.de/stats{?appID,page,size,sort}",
+      "templated": true
+    }
+  },
+  "_embedded": {
+    "ec:app-stat": [
+      {
+        "appID": "7e44a03e-ff5b-4c1a-b0bb-e8a10ee028da",
+        "title": "Capmarcon",
+        "totalBuilds": "99",
+        "totalBuildSize": "49160303",
+        "monthlyBuilds": {
+          "2017-01": 13,
+          "2017-05": 2,
+          "2016-05": 2,
+          "2016-08": 7,
+          "2017-04": 6,
+          "2016-07": 8,
+          "2017-02": 8,
+          "2016-12": 7,
+          "2017-03": 11,
+          "2016-09": 7,
+          "2016-10": 2,
+          "2016-06": 14,
+          "2016-11": 12
+        },
+        "totalDeployments": "176",
+        "monthlyDeployments": {
+          "2017-01": 13,
+          "2017-05": 2,
+          "2016-05": 4,
+          "2016-08": 8,
+          "2017-04": 6,
+          "2016-01": 8,
+          "2016-07": 9,
+          "2017-02": 8,
+          "2016-12": 7,
+          "2017-03": 10,
+          "2016-03": 39,
+          "2016-04": 5,
+          "2016-09": 4,
+          "2016-10": 2,
+          "2016-02": 14,
+          "2016-06": 26,
+          "2016-11": 11
+        },
+        "usedCodeSources": [
+          "remoteGit"
+        ],
+        "usedDataSources": [
+          "ownDataManager"
+        ],
+        "usedTargets": [
+          "entrecodeS3"
+        ],
+        "usedPlatforms": [
+          "staticWebsite"
+        ],
+        "_links": {
+          "self": {
+            "href": "https://appserver.entrecode.de/stats?appID=7e44a03e-ff5b-4c1a-b0bb-e8a10ee028da"
+          },
+          "collection": {
+            "href": "https://appserver.entrecode.de/stats"
+          },
+          "ec:app": {
+            "profile": "https://entrecode.de/schema/app",
+            "href": "https://appserver.entrecode.de/?appID=7e44a03e-ff5b-4c1a-b0bb-e8a10ee028da"
+          }
+        }
+      },
+      {
+        "appID": "95c77f27-9ab2-429f-bbee-777a41d477b0",
+        "title": "Catmania App",
+        "totalBuilds": "8",
+        "totalBuildSize": "4818682",
+        "monthlyBuilds": {
+          "2016-06": 7,
+          "2016-08": 1
+        },
+        "totalDeployments": "7",
+        "monthlyDeployments": {
+          "2016-06": 6,
+          "2016-08": 1
+        },
+        "usedCodeSources": [
+          "stub"
+        ],
+        "usedDataSources": [
+          "singleEntry"
+        ],
+        "usedTargets": [
+          "entrecodeS3",
+          "entrecodeS3Testing"
+        ],
+        "usedPlatforms": [
+          "website"
+        ],
+        "_links": {
+          "self": {
+            "href": "https://appserver.entrecode.de/stats?appID=95c77f27-9ab2-429f-bbee-777a41d477b0"
+          },
+          "collection": {
+            "href": "https://appserver.entrecode.de/stats"
+          },
+          "ec:app": {
+            "profile": "https://entrecode.de/schema/app",
+            "href": "https://appserver.entrecode.de/?appID=95c77f27-9ab2-429f-bbee-777a41d477b0"
+          }
+        }
+      },
+      {
+        "appID": "9846adb7-8901-4681-a616-2b4d17474866",
+        "title": "clubapp",
+        "totalBuilds": null,
+        "totalBuildSize": null,
+        "monthlyBuilds": null,
+        "totalDeployments": null,
+        "monthlyDeployments": null,
+        "usedCodeSources": null,
+        "usedDataSources": null,
+        "usedTargets": null,
+        "usedPlatforms": null,
+        "_links": {
+          "self": {
+            "href": "https://appserver.entrecode.de/stats?appID=9846adb7-8901-4681-a616-2b4d17474866"
+          },
+          "collection": {
+            "href": "https://appserver.entrecode.de/stats"
+          },
+          "ec:app": {
+            "profile": "https://entrecode.de/schema/app",
+            "href": "https://appserver.entrecode.de/?appID=9846adb7-8901-4681-a616-2b4d17474866"
+          }
+        }
+      },
+      {
+        "appID": "5e01bbcb-e8f3-4266-ac6e-a86988a7b1b9",
+        "title": "CrossZoneLive App",
+        "totalBuilds": "132",
+        "totalBuildSize": "1065119291",
+        "monthlyBuilds": {
+          "2017-04": 123,
+          "2017-05": 9
+        },
+        "totalDeployments": "141",
+        "monthlyDeployments": {
+          "2017-04": 134,
+          "2017-05": 7
+        },
+        "usedCodeSources": [
+          "remoteGit",
+          "stub"
+        ],
+        "usedDataSources": [
+          "singleEntry",
+          "stub"
+        ],
+        "usedTargets": [
+          "zipDownload",
+          "entrecodeS3Testing",
+          "entrecodeS3"
+        ],
+        "usedPlatforms": [
+          "website",
+          "ionic-simple"
+        ],
+        "_links": {
+          "self": {
+            "href": "https://appserver.entrecode.de/stats?appID=5e01bbcb-e8f3-4266-ac6e-a86988a7b1b9"
+          },
+          "collection": {
+            "href": "https://appserver.entrecode.de/stats"
+          },
+          "ec:app": {
+            "profile": "https://entrecode.de/schema/app",
+            "href": "https://appserver.entrecode.de/?appID=5e01bbcb-e8f3-4266-ac6e-a86988a7b1b9"
+          }
+        }
+      },
+      {
+        "appID": "0d7c43be-6392-4fca-a962-3424383cd7a8",
+        "title": "ec.food",
+        "totalBuilds": null,
+        "totalBuildSize": null,
+        "monthlyBuilds": null,
+        "totalDeployments": "1",
+        "monthlyDeployments": {
+          "2015-09": 1
+        },
+        "usedCodeSources": [
+          "remoteGit"
+        ],
+        "usedDataSources": [
+          "ownDataManager"
+        ],
+        "usedTargets": [
+          "entrecodeS3"
+        ],
+        "usedPlatforms": [
+          "staticWebsite"
+        ],
+        "_links": {
+          "self": {
+            "href": "https://appserver.entrecode.de/stats?appID=0d7c43be-6392-4fca-a962-3424383cd7a8"
+          },
+          "collection": {
+            "href": "https://appserver.entrecode.de/stats"
+          },
+          "ec:app": {
+            "profile": "https://entrecode.de/schema/app",
+            "href": "https://appserver.entrecode.de/?appID=0d7c43be-6392-4fca-a962-3424383cd7a8"
+          }
+        }
+      },
+      {
+        "appID": "9dff83ff-d3df-4ef5-ab17-9bd8347945dd",
+        "title": "Fitinn App",
+        "totalBuilds": "46",
+        "totalBuildSize": "30283093",
+        "monthlyBuilds": {
+          "2016-11": 11,
+          "2016-10": 16,
+          "2016-09": 3,
+          "2017-03": 1,
+          "2016-12": 7,
+          "2017-02": 1,
+          "2016-08": 3,
+          "2017-05": 1,
+          "2017-01": 3
+        },
+        "totalDeployments": "61",
+        "monthlyDeployments": {
+          "2016-11": 11,
+          "2016-10": 23,
+          "2016-09": 6,
+          "2017-03": 1,
+          "2016-12": 10,
+          "2017-02": 2,
+          "2016-08": 2,
+          "2017-01": 6
+        },
+        "usedCodeSources": [
+          "stub"
+        ],
+        "usedDataSources": [
+          "singleEntry"
+        ],
+        "usedTargets": [
+          "entrecodeS3Testing",
+          "entrecodeS3"
+        ],
+        "usedPlatforms": [
+          "website"
+        ],
+        "_links": {
+          "self": {
+            "href": "https://appserver.entrecode.de/stats?appID=9dff83ff-d3df-4ef5-ab17-9bd8347945dd"
+          },
+          "collection": {
+            "href": "https://appserver.entrecode.de/stats"
+          },
+          "ec:app": {
+            "profile": "https://entrecode.de/schema/app",
+            "href": "https://appserver.entrecode.de/?appID=9dff83ff-d3df-4ef5-ab17-9bd8347945dd"
+          }
+        }
+      },
+      {
+        "appID": "144e69a1-6f79-4b40-b012-d949cfa17484",
+        "title": "h",
+        "totalBuilds": null,
+        "totalBuildSize": null,
+        "monthlyBuilds": null,
+        "totalDeployments": null,
+        "monthlyDeployments": null,
+        "usedCodeSources": null,
+        "usedDataSources": null,
+        "usedTargets": null,
+        "usedPlatforms": null,
+        "_links": {
+          "self": {
+            "href": "https://appserver.entrecode.de/stats?appID=144e69a1-6f79-4b40-b012-d949cfa17484"
+          },
+          "collection": {
+            "href": "https://appserver.entrecode.de/stats"
+          },
+          "ec:app": {
+            "profile": "https://entrecode.de/schema/app",
+            "href": "https://appserver.entrecode.de/?appID=144e69a1-6f79-4b40-b012-d949cfa17484"
+          }
+        }
+      },
+      {
+        "appID": "ef1d55f8-263f-4fd1-a74a-6ab6a5978361",
+        "title": "h",
+        "totalBuilds": null,
+        "totalBuildSize": null,
+        "monthlyBuilds": null,
+        "totalDeployments": null,
+        "monthlyDeployments": null,
+        "usedCodeSources": null,
+        "usedDataSources": null,
+        "usedTargets": null,
+        "usedPlatforms": null,
+        "_links": {
+          "self": {
+            "href": "https://appserver.entrecode.de/stats?appID=ef1d55f8-263f-4fd1-a74a-6ab6a5978361"
+          },
+          "collection": {
+            "href": "https://appserver.entrecode.de/stats"
+          },
+          "ec:app": {
+            "profile": "https://entrecode.de/schema/app",
+            "href": "https://appserver.entrecode.de/?appID=ef1d55f8-263f-4fd1-a74a-6ab6a5978361"
+          }
+        }
+      },
+      {
+        "appID": "44ecb874-40a8-4ad0-9a6a-d5427f85cf64",
+        "title": "h",
+        "totalBuilds": null,
+        "totalBuildSize": null,
+        "monthlyBuilds": null,
+        "totalDeployments": null,
+        "monthlyDeployments": null,
+        "usedCodeSources": null,
+        "usedDataSources": null,
+        "usedTargets": null,
+        "usedPlatforms": null,
+        "_links": {
+          "self": {
+            "href": "https://appserver.entrecode.de/stats?appID=44ecb874-40a8-4ad0-9a6a-d5427f85cf64"
+          },
+          "collection": {
+            "href": "https://appserver.entrecode.de/stats"
+          },
+          "ec:app": {
+            "profile": "https://entrecode.de/schema/app",
+            "href": "https://appserver.entrecode.de/?appID=44ecb874-40a8-4ad0-9a6a-d5427f85cf64"
+          }
+        }
+      },
+      {
+        "appID": "28844aa1-2be5-4a8f-ae9d-4340cfd600e1",
+        "title": "hector.cs.mygymactive",
+        "totalBuilds": null,
+        "totalBuildSize": null,
+        "monthlyBuilds": null,
+        "totalDeployments": "14",
+        "monthlyDeployments": {
+          "2015-09": 12,
+          "2016-03": 1,
+          "2015-10": 1
+        },
+        "usedCodeSources": [
+          "remoteGit"
+        ],
+        "usedDataSources": [
+          "ownDataManager"
+        ],
+        "usedTargets": [
+          "entrecodeS3"
+        ],
+        "usedPlatforms": [
+          "staticWebsite"
+        ],
+        "_links": {
+          "self": {
+            "href": "https://appserver.entrecode.de/stats?appID=28844aa1-2be5-4a8f-ae9d-4340cfd600e1"
+          },
+          "collection": {
+            "href": "https://appserver.entrecode.de/stats"
+          },
+          "ec:app": {
+            "profile": "https://entrecode.de/schema/app",
+            "href": "https://appserver.entrecode.de/?appID=28844aa1-2be5-4a8f-ae9d-4340cfd600e1"
+          }
+        }
+      }
+    ]
+  }
+}

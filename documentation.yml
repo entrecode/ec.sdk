@@ -6,6 +6,7 @@ toc:
   - Core
   - Session
   - Accounts
+  - Apps
   - DataManager
   - PublicAPI
   - environment
@@ -37,6 +38,25 @@ toc:
   - InvalidPermissionsResource
   - name: AppManager Resources
     file: ./src/doc/6-appmanager-resources.md
+  - AppResource
+  - AppList
+  - TypesResource
+  - AppStatsResource
+  - AppStatsList
+  - PlatformResource
+  - targetIDsInput
+  - buildIDInput
+  - PlatformList
+  - CodeSourceResource
+  - CodeSourceList
+  - DataSourceResource
+  - DataSourceList
+  - TargetResource
+  - TargetList
+  - BuildResource
+  - BuildList
+  - DeploymentResource
+  - DeploymentList
   - name: DataManager Resources
     file: ./src/doc/7-datamanager-resources.md
   - DataManagerResource

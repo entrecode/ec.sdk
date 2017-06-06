@@ -1,3 +1,34 @@
+<a name="0.5.0"></a>
+# 0.5.0 (2017-06-06)
+
+* release version 0.5.0 ([e9c9f2c](https://github.com/entrecode/ec.sdk/commit/e9c9f2c))
+* doc: add doc for ListResource.map() ([6734424](https://github.com/entrecode/ec.sdk/commit/6734424))
+* doc: adds missing doc ([8822b2a](https://github.com/entrecode/ec.sdk/commit/8822b2a))
+* doc: adds sort order for Apps documentation ([90a141a](https://github.com/entrecode/ec.sdk/commit/90a141a))
+* doc: extends example in readme ([a85119b](https://github.com/entrecode/ec.sdk/commit/a85119b))
+* doc: updated readme with webpack.config part ([0082c97](https://github.com/entrecode/ec.sdk/commit/0082c97))
+* fix: a lot typing fixes ([fb169a6](https://github.com/entrecode/ec.sdk/commit/fb169a6))
+* fix: fixed typings and small other things CMS-2801 ([eeaecbe](https://github.com/entrecode/ec.sdk/commit/eeaecbe))
+* fix: support next, prev, first links for EntryList correctly ([158a8e7](https://github.com/entrecode/ec.sdk/commit/158a8e7))
+* feat: add convenience relations CMS-2800 ([ede6d8b](https://github.com/entrecode/ec.sdk/commit/ede6d8b))
+* feat: AppResource, AppList, basic Apps API Connector CMS-2567 ([b113fac](https://github.com/entrecode/ec.sdk/commit/b113fac))
+* feat: AppStatsList and AppStatsResource CMS-2573 ([2cab8ef](https://github.com/entrecode/ec.sdk/commit/2cab8ef))
+* feat: build resource CMS-2571 ([928f78f](https://github.com/entrecode/ec.sdk/commit/928f78f))
+* feat: convenient functions in TypesResource ([65c76ac](https://github.com/entrecode/ec.sdk/commit/65c76ac))
+* feat: create platform CMS-2797 ([0c5301c](https://github.com/entrecode/ec.sdk/commit/0c5301c))
+* feat: deployment resource CMS-2572 ([a05e9dd](https://github.com/entrecode/ec.sdk/commit/a05e9dd))
+* feat: getter/setter for platform plugins CMS-2802 ([b8d6989](https://github.com/entrecode/ec.sdk/commit/b8d6989))
+* feat: list.map function in ListResource CMS-2609 ([f131469](https://github.com/entrecode/ec.sdk/commit/f131469))
+* feat: PlatformList, PlatformResource CMS-2569 ([6d15d09](https://github.com/entrecode/ec.sdk/commit/6d15d09))
+* feat: plugin create CMS-2570 ([12cde86](https://github.com/entrecode/ec.sdk/commit/12cde86))
+* feat: plugin resources CMS-2570 ([12c8d6e](https://github.com/entrecode/ec.sdk/commit/12c8d6e))
+* feat: public assets nested in entries CMS-2794 ([35ff58f](https://github.com/entrecode/ec.sdk/commit/35ff58f))
+* feat: TypesResource CMS-2568 ([4599d77](https://github.com/entrecode/ec.sdk/commit/4599d77))
+* feat: typings for ListResource#map() CMS-2609 ([237dcd9](https://github.com/entrecode/ec.sdk/commit/237dcd9))
+* refactor: removed duplicate tests of cliendID ([3cf2fa5](https://github.com/entrecode/ec.sdk/commit/3cf2fa5))
+
+
+
 <a name="0.4.0"></a>
 # 0.4.0 (2017-05-19)
 
@@ -111,7 +142,7 @@
 
 before:
 
-```json
+```js
 {
   filter: {
     property: 'exactFilter'
@@ -121,7 +152,7 @@ before:
 
 after:
 
-```json
+```js
 {
   property: 'exactFilter'
 }

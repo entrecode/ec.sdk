@@ -19,8 +19,8 @@ export default class EntryList extends ListResource {
    * @param {object} schema JSON Schema for list items.
    * @param {object?} traversal traversal from which traverson can continue.
    */
-  constructor(resource, environment, name, schema, traversal) {
-    super(resource, environment, name, traversal, EntryList, EntryResource, schema);
+  constructor(resource, environment, traversal, name, schema) {
+    super(resource, environment, traversal, name, schema, EntryList, EntryResource);
   }
 }
 
@@ -30,16 +30,16 @@ export default class EntryList extends ListResource {
  *
  * @param {object} resource loaded resource
  * @param {environment} environment the environment of this resource
- * @param {string} name name of the embedded items
  * @param {object?} traversal traversal for continuing
+ * @param {string} name name of the embedded items
  * @returns {Promise<EntryResource>} {@link Promise} resolving to the newly created {@link
   *   EntryResource}
  */
-export function createList(resource, environment, name, traversal) {
+export function createList(resource, environment, traversal, name) {
   return Promise.resolve()
   .then(() => {
     const res = halfred.parse(resource);
     return getSchema(res.link('self').profile);
   })
-  .then(schema => new EntryList(resource, environment, name, schema, traversal));
+  .then(schema => new EntryList(resource, environment, traversal, name, schema));
 }

@@ -3,6 +3,7 @@ import validator from 'json-schema-remote';
 
 import { fileNegotiate, getSchema } from '../../helper';
 import Resource, { resourceSymbol } from '../Resource';
+import PublicAssetResource from './PublicAssetResource';
 
 const schemaSymbol = Symbol('_schema');
 const shortIDSymbol = Symbol('_shortID');
@@ -199,13 +200,22 @@ export default class EntryResource extends Resource {
           };
           break;
         case 'asset':
-          property.get = () => this.getProperty(key);
+          property.get = () => {
+            const asset = this.getProperty(key);
+            if (typeof asset === 'object' && !(asset instanceof PublicAssetResource)) {
+              this[resourceSymbol][key] = new PublicAssetResource(asset, environment);
+            }
+
+            return this.getProperty(key);
+          };
           property.set = (val) => {
             let value;
             if (typeof val === 'string') {
               value = val;
+            } else if (val instanceof PublicAssetResource) {
+              value = val.toOriginal();
             } else if (typeof val === 'object' && 'assetID' in val) {
-              value = val.assetID;
+              value = val;
             } else {
               throw new Error('only string and object/AssetResource supported as input type');
             }
@@ -215,7 +225,20 @@ export default class EntryResource extends Resource {
           };
           break;
         case 'assets':
-          property.get = () => this.getProperty(key);
+          property.get = () => {
+            const assets = this.getProperty(key);
+            this[resourceSymbol][key] = assets.map((asset) => {
+              if (typeof asset === 'object') {
+                if (asset instanceof PublicAssetResource) {
+                  return asset;
+                }
+
+                return new PublicAssetResource(asset, environment);
+              }
+              return asset;
+            });
+            return this.getProperty(key);
+          };
           property.set = (val) => {
             if (!Array.isArray(val)) {
               throw new Error('only array supported as input type');
@@ -225,8 +248,11 @@ export default class EntryResource extends Resource {
               if (typeof v === 'string') {
                 return v;
               }
+              if (v instanceof PublicAssetResource) {
+                return v.toOriginal();
+              }
               if (typeof v === 'object' && 'assetID' in v) {
-                return v.assetID;
+                return v;
               }
               throw new Error('only string and object/AssetResource supported as input type');
             });

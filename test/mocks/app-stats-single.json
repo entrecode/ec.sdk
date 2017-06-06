@@ -1,0 +1,65 @@
+{
+  "appID": "7e44a03e-ff5b-4c1a-b0bb-e8a10ee028da",
+  "title": "Capmarcon",
+  "totalBuilds": "99",
+  "totalBuildSize": "49160303",
+  "monthlyBuilds": {
+    "2017-01": 13,
+    "2017-05": 2,
+    "2016-05": 2,
+    "2016-08": 7,
+    "2017-04": 6,
+    "2016-07": 8,
+    "2017-02": 8,
+    "2016-12": 7,
+    "2017-03": 11,
+    "2016-09": 7,
+    "2016-10": 2,
+    "2016-06": 14,
+    "2016-11": 12
+  },
+  "totalDeployments": "176",
+  "monthlyDeployments": {
+    "2017-01": 13,
+    "2017-05": 2,
+    "2016-05": 4,
+    "2016-08": 8,
+    "2017-04": 6,
+    "2016-01": 8,
+    "2016-07": 9,
+    "2017-02": 8,
+    "2016-12": 7,
+    "2017-03": 10,
+    "2016-03": 39,
+    "2016-04": 5,
+    "2016-09": 4,
+    "2016-10": 2,
+    "2016-02": 14,
+    "2016-06": 26,
+    "2016-11": 11
+  },
+  "usedCodeSources": [
+    "remoteGit"
+  ],
+  "usedDataSources": [
+    "ownDataManager"
+  ],
+  "usedTargets": [
+    "entrecodeS3"
+  ],
+  "usedPlatforms": [
+    "staticWebsite"
+  ],
+  "_links": {
+    "self": {
+      "href": "https://appserver.entrecode.de/stats?appID=7e44a03e-ff5b-4c1a-b0bb-e8a10ee028da"
+    },
+    "collection": {
+      "href": "https://appserver.entrecode.de/stats"
+    },
+    "ec:app": {
+      "profile": "https://entrecode.de/schema/app",
+      "href": "https://appserver.entrecode.de/?appID=7e44a03e-ff5b-4c1a-b0bb-e8a10ee028da"
+    }
+  }
+}

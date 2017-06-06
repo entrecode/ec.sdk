@@ -24,7 +24,7 @@ export default class AssetList extends ListResource {
    * @param {?object} traversal traversal from which traverson can continue.
    */
   constructor(resource, environment, traversal) {
-    super(resource, environment, 'ec:asset', traversal, AssetList, AssetResource);
+    super(resource, environment, traversal, 'ec:asset', undefined, AssetList, AssetResource);
 
     /* eslint no-underscore-dangle:0 */
     this[dataManagerIDSymbol] = resource._links.self.href.substr(resource._links.self.href.indexOf('dataManagerID') + 14);

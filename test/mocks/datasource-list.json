@@ -1,0 +1,60 @@
+{
+  "count": 1,
+  "total": 1,
+  "_links": {
+    "self": {
+      "profile": "https://entrecode.de/schema/dataSources",
+      "href": "https://appserver.entrecode.de/datasource?appID=9f83b67a-cb95-4f60-9d82-7c66d4a81e24"
+    },
+    "curies": {
+      "href": "https://doc.entrecode.de/app_manager/#relation-{rel}",
+      "templated": true
+    },
+    "ec:apps": {
+      "profile": "https://entrecode.de/schema/apps",
+      "href": "https://appserver.entrecode.de"
+    },
+    "ec:app/datasource/by-id": {
+      "profile": "https://entrecode.de/schema/dataSource",
+      "href": "https://appserver.entrecode.de/datasource{?dataSourceID}",
+      "templated": true
+    },
+    "ec:app/datasources/options": {
+      "href": "https://appserver.entrecode.de/datasource{?appID,dataSourceID,dataSourceType,dataSourceType~,page,size,sort}",
+      "templated": true
+    }
+  },
+  "_embedded": {
+    "ec:app/datasource": {
+      "dataSourceID": "24cc9adb-cb48-4e63-8298-489830146c20",
+      "dataSourceType": "stub",
+      "config": {
+        "_title": "stub"
+      },
+      "_links": {
+        "self": {
+          "profile": "https://entrecode.de/schema/dataSource",
+          "href": "https://appserver.entrecode.de/datasource?dataSourceID=24cc9adb-cb48-4e63-8298-489830146c20"
+        },
+        "collection": {
+          "profile": "https://entrecode.de/schema/dataSources",
+          "href": "https://appserver.entrecode.de/datasource?appID=9f83b67a-cb95-4f60-9d82-7c66d4a81e24"
+        },
+        "ec:app": {
+          "profile": "https://entrecode.de/schema/app",
+          "href": "https://appserver.entrecode.de?appID=9f83b67a-cb95-4f60-9d82-7c66d4a81e24"
+        },
+        "ec:app/platform": [
+          {
+            "profile": "https://entrecode.de/schema/platform",
+            "href": "https://appserver.entrecode.de/platform?platformID=1c9af9e3-c14e-4bd8-af2f-ea6795b912f0"
+          },
+          {
+            "profile": "https://entrecode.de/schema/platform",
+            "href": "https://appserver.entrecode.de/platform?platformID=229b4384-fcfa-437b-833e-fc779a3f8f4c"
+          }
+        ]
+      }
+    }
+  }
+}

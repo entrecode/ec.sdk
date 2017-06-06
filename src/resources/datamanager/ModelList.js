@@ -15,6 +15,6 @@ export default class ModelList extends ListResource {
    * @param {?object} traversal traversal from which traverson can continue.
    */
   constructor(resource, environment, traversal) {
-    super(resource, environment, 'ec:model', traversal, ModelList, ModelResource);
+    super(resource, environment, traversal, 'ec:model', undefined, ModelList, ModelResource);
   }
 }

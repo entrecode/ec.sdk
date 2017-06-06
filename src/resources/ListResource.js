@@ -5,6 +5,25 @@ const listClassSymbol = Symbol('_listClass');
 const itemClassSymbol = Symbol('_itemClass');
 const itemSchemaSymbol = Symbol('_itmeSchema');
 
+function map(list, iterator, results = []) {
+  return list.getAllItems().map(entry =>
+    res =>
+      Promise.resolve()
+      .then(() => iterator(entry))
+      .then((result) => {
+        res.push(result);
+        return res;
+      }))
+  .reduce((current, next) => current.then(next), Promise.resolve(results))
+  .then((res) => {
+    if (!list.hasNextLink()) {
+      return res;
+    }
+    return list.followNextLink()
+    .then(next => map(next, iterator, res));
+  });
+}
+
 /**
  * Generic list resource class. Represents {@link
   * https://tools.ietf.org/html/draft-kelly-json-hal-08 HAL resources} with added support for lists.
@@ -22,13 +41,13 @@ export default class ListResource extends Resource {
    *
    * @param {object} resource resource loaded from the API.
    * @param {environment} environment the environment this resource is associated to.
-   * @param {?string} name name of the embedded resources.
    * @param {?object} traversal traversal from which traverson can continue.
+   * @param {?string} name name of the embedded resources.
+   * @param {object?} itemSchema optional schema for list items
    * @param {ListResource} ListClass Class constructor for list types
    * @param {Resource} ItemClass Class constructor for item types
-   * @param {object?} itemSchema optional schema for list items
    */
-  constructor(resource, environment, name, traversal, ListClass = ListResource, ItemClass = Resource, itemSchema) {
+  constructor(resource, environment, traversal, name, itemSchema, ListClass = ListResource, ItemClass = Resource) {
     super(resource, environment, traversal);
 
     Object.defineProperties(this, {
@@ -117,7 +136,7 @@ export default class ListResource extends Resource {
    * @returns {Promise<Resource|ResourceClass>} the resource identified by the link.
    */
   followFirstLink() {
-    return this.followLink('first', this[listClassSymbol]);
+    return this.followLink('first', this[listClassSymbol], this[nameSymbol], this[itemSchemaSymbol]);
   }
 
   /**
@@ -138,7 +157,7 @@ export default class ListResource extends Resource {
    * @returns {Promise<Resource|ResourceClass>} the resource identified by the link.
    */
   followNextLink() {
-    return this.followLink('next', this[listClassSymbol]);
+    return this.followLink('next', this[listClassSymbol], this[nameSymbol], this[itemSchemaSymbol]);
   }
 
   /**
@@ -159,7 +178,18 @@ export default class ListResource extends Resource {
    * @returns {Promise<Resource|ResourceClass>} the resource identified by the link.
    */
   followPrevLink() {
-    return this.followLink('prev', this[listClassSymbol]);
+    return this.followLink('prev', this[listClassSymbol], this[nameSymbol], this[itemSchemaSymbol]);
+  }
+
+  /**
+   * The map() method creates a new array with the results of calling a provided function on every
+   * item in this list. It will use {@link ListResource#followNextLink}.
+   *
+   * @param {function} iterator function that produces an element of the new array.
+   * @returns {Promise} returns Promise resolving to the new array.
+   */
+  map(iterator) {
+    return map(this, iterator);
   }
 }
 

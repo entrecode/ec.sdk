@@ -8,7 +8,7 @@ In order to use this SDK you should be familiar with ec.APIs and the concepts be
 
 For every ec.API you will find an API connector. Use one of those to connect to a certain ec.API. Login and logout are special cases and are done in [Session](#Session) API connector.
 
-All API connectors of a certain [environment](#environment) share some information. The most important one is any access token either received with [Session#login](#Session#login) or by calling [Core#setToken](#Core#setToken). This means you can specifiy the token on any API connector and it will be automatically used by all other API connectors. If any API connector will receives a token related Error ([Problem](#Problem)) it will be automatically removed from all API connectors and a [logout event](#eventeventlogout) is fired.
+All API connectors of a certain [environment](#environment) share some information. The most important one is any access token either received with [Session#login](#Session#login) or by calling [Core#setToken](#Core#setToken). This means you can specifiy the token on any API connector and it will be automatically used by all other API connectors. If any API connector will receives a token related Error ([Problem](#Problem)) it will be automatically removed from all API connectors and a [logout event](#eventeventlogout) is triggered.
 
 Every action you take in the ec.sdk will be validated before it will send as a request to ec.APIs. This means that the provided json schemas are used.
 
@@ -20,7 +20,7 @@ import { Session, Accounts, DataManager } from 'ec.sdk';
 import { AccountResource } from 'ec.sdk/typings/resources/AccountResource';
 import { DataManagerResource } from 'ec.sdk/typings/resources/DataManagerResource';
 
-class myExample {
+class MyExample {
   session: Session;
   accounts: Accounts;
   dataManager: DataManager;
@@ -69,3 +69,4 @@ class myExample {
   }
 }
 ```
+
