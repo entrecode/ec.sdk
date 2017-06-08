@@ -16,7 +16,7 @@ export const urls = {
 };
 
 /**
- * API connector for {@link https://doc.entrecode.de/en/latest/data_manager/ Accounts API}. It
+ * API connector for {@link https://doc.entrecode.de/en/latest/data_manager/ DataManager API}. It
  * contains APIs for DataManagers, Models, Fields, Hooks, and Policies.
  *
  * @class
