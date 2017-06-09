@@ -1,4 +1,5 @@
 import { Core } from './Core';
+import { environment } from './interfaces';
 
 export declare class Session extends Core {
   constructor(environment?: environment);
@@ -11,5 +12,3 @@ export declare class Session extends Core {
 
   checkPermission(permission: string): Promise<boolean>;
 }
-
-type environment = 'live' | 'stage' | 'nightly' | 'develop';

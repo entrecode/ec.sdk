@@ -1,5 +1,5 @@
 import { Core } from './Core';
-import { assetInput, assetOptions, filterOptions } from './interfaces';
+import { assetInput, assetOptions, environment, filterOptions } from './interfaces';
 import { EntryList } from './resources/publicAPI/EntryList';
 import { EntryResource } from './resources/publicAPI/EntryResource';
 import { PublicAssetList } from './resources/publicAPI/PublicAssetList';
@@ -52,5 +52,3 @@ export declare class PublicAPI extends Core {
 
   getImageThumbUrl(assetID: string, size?: number, locale?: string): Promise<string>;
 }
-
-type environment = 'live' | 'stage' | 'nightly' | 'develop';

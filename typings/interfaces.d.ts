@@ -24,3 +24,5 @@ export interface assetOptions {
   title?: string,
   tags?: Array<string>
 }
+
+export type environment = 'live' | 'stage' | 'nightly' | 'develop';

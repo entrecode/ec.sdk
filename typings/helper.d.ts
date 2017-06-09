@@ -1,6 +1,6 @@
 import * as stream from 'stream';
 import { AssetResource } from './resources/datamanager/AssetResource';
-type environment = 'live' | 'stage' | 'nightly' | 'develop';
+import { environment } from './interfaces';
 
 export function get(environment: environment, t: any): Promise<any>;
 
