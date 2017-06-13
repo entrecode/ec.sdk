@@ -22,7 +22,7 @@ const resolver = require('./mocks/resolver');
 const TraversonMock = require('./mocks/TraversonMock');
 
 nock.disableNetConnect();
-chai.should();
+const should = chai.should();
 chai.use(chaiAsPromised);
 chai.use(sinonChai);
 traverson.registerMediaType(traversonHal.mediaType, traversonHal);
@@ -129,6 +129,30 @@ describe('Core', () => {
     emitter.listeners.get('removeTest').length.should.be.equal(1);
     core.removeListener('removeTest', listener);
     emitter.listeners.get('removeTest').length.should.be.equal(0);
+  });
+  it('should preload schema', () => {
+    nock('https://entrecode.de/')
+    .get('/schema/error')
+    .reply(200, {
+      $schema: 'http://json-schema.org/draft-04/schema#',
+      id: 'https://entrecode.de/schema/error',
+    });
+
+    return core.preloadSchemas('https://entrecode.de/schema/error').should.resolve;
+  });
+  it('should preload schemas', () => {
+    nock('https://entrecode.de/')
+    .get('/schema/error')
+    .times(2)
+    .reply(200, {
+      $schema: 'http://json-schema.org/draft-04/schema#',
+      id: 'https://entrecode.de/schema/error',
+    });
+
+    return core.preloadSchemas([
+      'https://entrecode.de/schema/error',
+      'https://entrecode.de/schema/error',
+    ]).should.resolve;
   });
 });
 

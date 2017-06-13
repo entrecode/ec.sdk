@@ -3,7 +3,7 @@ import HalAdapter from 'traverson-hal';
 import halfred from 'halfred';
 import TokenStoreFactory from './TokenStore';
 import events from './EventEmitter';
-import { get } from './helper';
+import { get, getSchema } from './helper';
 
 traverson.registerMediaType(HalAdapter.mediaType, HalAdapter);
 
@@ -212,5 +212,24 @@ export default class Core {
    */
   getLink(link) {
     return this[resourceSymbol].link(link);
+  }
+
+  /**
+   * This function preloads all schemas identified by schemas property.
+   *
+   * @param {string|Array<string>} schemas JSONSchema URL or array of JSONSchema URLs
+   * @returns {Promise<undefined>} Promise resolving when all schemas are successfully loaded.
+   */
+  preloadSchemas(schemas) {
+    return Promise.resolve()
+    .then(() => {
+      if (typeof schemas === 'string') {
+        schemas = [schemas];
+      }
+
+      return schemas.map(schema => getSchema(schema))
+      .reduce((a, b) => a.then(b), Promise.resolve());
+    })
+    .then(() => Promise.resolve());
   }
 }
