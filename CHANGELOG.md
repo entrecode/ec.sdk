@@ -1,3 +1,12 @@
+<a name="0.5.2"></a>
+## 0.5.2 (2017-06-14)
+
+* release version 0.5.2 ([f5828b1](https://github.com/entrecode/ec.sdk/commit/f5828b1))
+* chore: no git hooks in release script ([4285ddf](https://github.com/entrecode/ec.sdk/commit/4285ddf))
+* fix: handling of _fields property in filter ([b6df5b6](https://github.com/entrecode/ec.sdk/commit/b6df5b6))
+
+
+
 <a name="0.5.1"></a>
 ## 0.5.1 (2017-06-14)
 
