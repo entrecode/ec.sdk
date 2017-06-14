@@ -1,5 +1,5 @@
 import { Core } from './Core';
-import { assetInput, assetOptions, filterOptions } from './interfaces';
+import { assetInput, assetOptions, environment, filterOptions } from './interfaces';
 import { EntryList } from './resources/publicAPI/EntryList';
 import { EntryResource } from './resources/publicAPI/EntryResource';
 import { PublicAssetList } from './resources/publicAPI/PublicAssetList';
@@ -32,7 +32,7 @@ export declare class PublicAPI extends Core {
 
   entryList(model: string, options?: filterOptions): Promise<EntryList>;
 
-  entry(model: string, id: string, levels: number): Promise<EntryResource>;
+  entry(model: string, id: string, options: number | { _levels?: number, _fields?: number }): Promise<EntryResource>;
 
   createEntry(model:string, entry: any): Promise<EntryResource>;
 
@@ -52,5 +52,3 @@ export declare class PublicAPI extends Core {
 
   getImageThumbUrl(assetID: string, size?: number, locale?: string): Promise<string>;
 }
-
-type environment = 'live' | 'stage' | 'nightly' | 'develop';

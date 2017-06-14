@@ -3,6 +3,7 @@ export interface filterOptions {
   page?: number,
   sort?: Array<string>,
   _levels?: string,
+  _fields?: Array<string>,
   [key: string]: filterType
 }
 
@@ -24,3 +25,5 @@ export interface assetOptions {
   title?: string,
   tags?: Array<string>
 }
+
+export type environment = 'live' | 'stage' | 'nightly' | 'develop';

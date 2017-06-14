@@ -1,7 +1,7 @@
 import { Core } from './Core';
 import { AccountList } from './resources/accounts/AccountList';
 import { AccountResource } from './resources/accounts/AccountResource';
-import { filterOptions } from './interfaces';
+import { environment, filterOptions } from './interfaces';
 import { InvitesResource } from './resources/accounts/InvitesResource';
 import { ClientList } from './resources/accounts/ClientList';
 import { ClientResource } from './resources/accounts/ClientResource';
@@ -55,5 +55,3 @@ interface tokenResponse {
   iat: number;
   exp: number
 }
-
-type environment = 'live' | 'stage' | 'nightly' | 'develop';

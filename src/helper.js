@@ -391,9 +391,17 @@ export function optionsToQuery(options, templateURL) {
           throw new Error('sort must be either Array or String.');
         }
       } else if (key === '_levels') {
-        if (options[key] > 1 && options[key] <= 5) {
-          out[key] = options[key]; // eslint-disable-line no-underscore-dangle
+        if (!Number.isInteger(options[key])) {
+          throw new Error('_levels must be integer');
         }
+        if (options[key] > 1 && options[key] <= 5) {
+          out[key] = options[key];
+        }
+      } else if (key === '_fields') {
+        if (!Array.isArray(options[key])) {
+          throw new Error('_fields must be integer');
+        }
+        out[key] = options[key];
       } else if (typeof options[key] === 'string') {
         out[key] = options[key];
       } else if (typeof options[key] === 'object') {

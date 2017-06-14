@@ -130,6 +130,30 @@ describe('Core', () => {
     core.removeListener('removeTest', listener);
     emitter.listeners.get('removeTest').length.should.be.equal(0);
   });
+  it('should preload schema', () => {
+    nock('https://entrecode.de/')
+    .get('/schema/error')
+    .reply(200, {
+      $schema: 'http://json-schema.org/draft-04/schema#',
+      id: 'https://entrecode.de/schema/error',
+    });
+
+    return core.preloadSchemas('https://entrecode.de/schema/error').should.resolve;
+  });
+  it('should preload schemas', () => {
+    nock('https://entrecode.de/')
+    .get('/schema/error')
+    .times(2)
+    .reply(200, {
+      $schema: 'http://json-schema.org/draft-04/schema#',
+      id: 'https://entrecode.de/schema/error',
+    });
+
+    return core.preloadSchemas([
+      'https://entrecode.de/schema/error',
+      'https://entrecode.de/schema/error',
+    ]).should.resolve;
+  });
 });
 
 describe('Network Helper', () => {
@@ -633,6 +657,12 @@ describe('optionsToQuery', () => {
     };
     helper.optionsToQuery(obj).should.not.have.property('_levels');
   });
+  it('should throw on invalid levels, NaN', () => {
+    const throws = () => {
+      helper.optionsToQuery({ _levels: 'string' });
+    };
+    throws.should.throw(Error);
+  });
   it('should sort one item', () => {
     const obj = {
       sort: 'name',
@@ -648,6 +678,19 @@ describe('optionsToQuery', () => {
   it('should throw on invalid sort', () => {
     const throws = () => {
       helper.optionsToQuery({ sort: 1 });
+    };
+    throws.should.throw(Error);
+  });
+  it('should have _fields filter', () => {
+    const obj = {
+      _fields: ['aField'],
+    };
+    helper.optionsToQuery(obj)._fields.should.deep.equal(['aField']); // eslint-disable-line
+                                                                      // no-underscore-dangle
+  });
+  it('should throw on invalid _fields', () => {
+    const throws = () => {
+      helper.optionsToQuery({ _fields: 'notAnArray' });
     };
     throws.should.throw(Error);
   });

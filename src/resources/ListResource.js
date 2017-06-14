@@ -206,13 +206,14 @@ export default class ListResource extends Resource {
  * });
  * // for filter see below
  *
- * @typedef {{size: number, page: number, sort: array<string>, property: filter}} filterOptions
+ * @typedef {{size: number, page: number, sort: array<string>, _levels: number, _fields:
+ *   Array<string>, property: filter}} filterOptions
  */
 
 /**
  *
- * {@link filterOptions} can contain key value pairs with filter options. These object will be
- * applied when loading a {@link ListResource}.
+ * {@link filterOptions} can contain key value pairs with filter options for entry fields. These
+ * object will be applied when loading a {@link ListResource}.
  *
  * @example
  * accounts.accountList({

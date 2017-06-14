@@ -1,7 +1,7 @@
 import { Core } from './Core';
 import { DataManagerResource } from './resources/datamanager/DataManagerResource';
 import { DataManagerList } from './resources/datamanager/DataManagerList';
-import { filterOptions } from './interfaces';
+import { environment, filterOptions } from './interfaces';
 import { TemplateList } from './resources/datamanager/TemplateList';
 import { TemplateResource } from './resources/datamanager/TemplateResource';
 import { DMStatsList } from './resources/datamanager/DMStatsList';
@@ -32,5 +32,3 @@ export declare class DataManager extends Core {
 
   getImageThumbUrl(assetID: string, size?: number, locale?: string): Promise<string>;
 }
-
-type environment = 'live' | 'stage' | 'nightly' | 'develop';

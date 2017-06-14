@@ -1,4 +1,5 @@
 import { Resource } from '../Resource';
+import { environment } from '../../interfaces';
 
 export declare class EntryResource extends Resource {
   constructor(resource: any, environment: environment, schema: any, traversal: any);
@@ -21,5 +22,3 @@ export declare class EntryResource extends Resource {
 }
 
 export declare function createEntry(resource: any, environment: environment, traversal: any): Promise<EntryResource>;
-
-type environment = 'live' | 'stage' | 'nightly' | 'develop';
