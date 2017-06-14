@@ -401,7 +401,7 @@ export function optionsToQuery(options, templateURL) {
         if (!Array.isArray(options[key])) {
           throw new Error('_fields must be integer');
         }
-        out[key] = options[key];
+        out[key] = options[key].join(',');
       } else if (typeof options[key] === 'string') {
         out[key] = options[key];
       } else if (typeof options[key] === 'object') {
