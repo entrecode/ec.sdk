@@ -1,3 +1,14 @@
+<a name="0.5.1"></a>
+## 0.5.1 (2017-06-14)
+
+* release version 0.5.1 ([05785c3](https://github.com/entrecode/ec.sdk/commit/05785c3))
+* feat: _fields filter for PublicAPI entry and entry list CMS-2816 ([3093fd7](https://github.com/entrecode/ec.sdk/commit/3093fd7))
+* feat: export environment type in typings ([fe2c15c](https://github.com/entrecode/ec.sdk/commit/fe2c15c))
+* feat: preloadSchemas CMS-2815 ([0be491f](https://github.com/entrecode/ec.sdk/commit/0be491f))
+* doc: fixes typo in docs ([b2a86c4](https://github.com/entrecode/ec.sdk/commit/b2a86c4))
+
+
+
 <a name="0.5.0"></a>
 # 0.5.0 (2017-06-06)
 

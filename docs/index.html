@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset='utf-8' />
-  <title>ec.sdk 0.5.0 | Documentation</title>
+  <title>ec.sdk 0.5.1 | Documentation</title>
   <meta name='viewport' content='width=device-width,initial-scale=1'>
   <link href='assets/bass.css' type='text/css' rel='stylesheet' />
   <link href='assets/style.css' type='text/css' rel='stylesheet' />
@@ -14,7 +14,7 @@
       <div class='fixed xs-hide fix-3 overflow-auto max-height-100'>
         <div class='py1 px2'>
           <h3 class='mb0 no-anchor'>ec.sdk</h3>
-          <div class='mb1'><code>0.5.0</code></div>
+          <div class='mb1'><code>0.5.1</code></div>
           <input
             placeholder='Filter'
             id='filter-input'
@@ -85,6 +85,12 @@
                         href='#Core#getLink'
                         class='regular pre-open'>
                         #getLink
+                      </a></li>
+                      
+                      <li><a
+                        href='#Core#preloadSchemas'
+                        class='regular pre-open'>
+                        #preloadSchemas
                       </a></li>
                       
                     </ul>
@@ -3644,6 +3650,74 @@ session.login(email, password)
       </div>
     </div>
   
+    <div class='border-bottom' id='Core#preloadSchemas'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>preloadSchemas(schemas)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>This function preloads all schemas identified by schemas property.</p>
+
+
+  <div class='pre p1 fill-light mt0'>preloadSchemas(schemas: (<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>>)): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/undefined">undefined</a>></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>schemas</span> <code class='quiet'>((<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>>))</code>
+	    JSONSchema URL or array of JSONSchema URLs
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/undefined">undefined</a>></code>:
+        Promise resolving when all schemas are successfully loaded.
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
 </div>
 
   
@@ -6076,7 +6150,7 @@ types.</p>
   </div>
   
 
-  <p>API connector for <a href="https://doc.entrecode.de/en/latest/data_manager/">Accounts API</a>. It
+  <p>API connector for <a href="https://doc.entrecode.de/en/latest/data_manager/">DataManager API</a>. It
 contains APIs for DataManagers, Models, Fields, Hooks, and Policies.</p>
 
 
@@ -8042,7 +8116,7 @@ load.</p>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>entry(model, id, levels)</span>
+            <span class='code strong strong truncate'>entry(model, id, options = {})</span>
         </div>
       </div>
       <div class="clearfix display-none toggle-target">
@@ -8053,7 +8127,7 @@ load.</p>
   <p>Load a single <a href="#entryresource">EntryResource</a>.</p>
 
 
-  <div class='pre p1 fill-light mt0'>entry(model: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, levels: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#entryresource">EntryResource</a>></div>
+  <div class='pre p1 fill-light mt0'>entry(model: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, options: (<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)?): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#entryresource">EntryResource</a>></div>
   
   
 
@@ -8088,8 +8162,10 @@ load.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>levels</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>)</code>
-	    number of levels to request
+            <span class='code bold'>options</span> <code class='quiet'>((<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)?
+            = <code>{}</code>)</code>
+	    options for this entry
+request
 
           </div>
           
@@ -11208,7 +11284,7 @@ sorts of filter to a list request.</p>
   
     <p>
       Type:
-      {size: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>, page: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>, sort: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">array</a>&#x3C;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>>, property: <a href="#filter">filter</a>}
+      {size: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>, page: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>, sort: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">array</a>&#x3C;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>>, _levels: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>, _fields: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>>, property: <a href="#filter">filter</a>}
     </p>
   
   
@@ -11265,8 +11341,8 @@ accounts.accountList({
   </div>
   
 
-  <p><a href="#filteroptions">filterOptions</a> can contain key value pairs with filter options. These object will be
-applied when loading a <a href="#listresource">ListResource</a>.</p>
+  <p><a href="#filteroptions">filterOptions</a> can contain key value pairs with filter options for entry fields. These
+object will be applied when loading a <a href="#listresource">ListResource</a>.</p>
 
 
   <div class='pre p1 fill-light mt0'>filter</div>
