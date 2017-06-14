@@ -269,7 +269,7 @@ export function superagentFormPost(url, form) {
   .then(res => Promise.resolve(res.body ? res.body : {}))
   .catch((err) => {
     let problem;
-    if ({}.hasOwnProperty.call(err, 'status')) {
+    if ('status' in err && 'response' in err && 'body' in err.response) {
       problem = new Problem(err.response.body);
     }
     events.emit('error', problem || err);
@@ -297,7 +297,7 @@ export function superagentGet(url, headers) {
   .then(res => Promise.resolve(res.body ? res.body : {}))
   .catch((err) => {
     let problem;
-    if ('status' in err) {
+    if ('status' in err && 'response' in err && 'body' in err.response) {
       problem = new Problem(err.response.body);
     }
     events.emit('error', problem || err);
