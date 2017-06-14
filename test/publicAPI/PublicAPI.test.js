@@ -455,6 +455,14 @@ describe('PublicAPI', () => {
     return api.entry('allFields')
     .should.be.rejectedWith('id must be defined');
   });
+  it('should throw on invalid _levels', () => {
+    return api.entry('allFields', '1234567', { _levels: 'string' })
+    .should.be.rejectedWith('_levels must be integer');
+  });
+  it('should throw on invalid _fields', () => {
+    return api.entry('allFields', '1234567', { _fields: 'string' })
+    .should.be.rejectedWith('_fields must be Array<string>');
+  });
 
   it('should create entry', () => {
     const getStub = sinon.stub(helper, 'get');

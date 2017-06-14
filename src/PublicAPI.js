@@ -429,10 +429,11 @@ export default class PublicAPI extends Core {
    *
    * @param {string} model name of the model for which the list should be loaded
    * @param {string} id the entry id
-   * @param {number} levels number of levels to request
+   * @param {number|object?} options options for this entry
+   *   request
    * @returns {Promise<EntryResource>} Promise resolving to EntryResource
    */
-  entry(model, id, levels) {
+  entry(model, id, options = {}) {
     return Promise.resolve()
     .then(() => {
       if (!model) {
@@ -443,14 +444,23 @@ export default class PublicAPI extends Core {
         throw new Error('id must be defined');
       }
 
+      if (Number.isInteger(options)) {
+        options = { _levels: options };
+      }
+
+      if ('_levels' in options && !Number.isInteger(options._levels)) {
+        throw new Error('_levels must be integer');
+      }
+
+      if ('_fields' in options && !Array.isArray(options._fields)) {
+        throw new Error('_fields must be Array<string>');
+      }
+
       return this.follow(`${this[shortIDSymbol]}:${model}`);
     })
     .then((request) => {
-      const parameters = { _id: id };
-      if (levels && levels > 1) {
-        parameters._levels = levels; // eslint-disable-line no-underscore-dangle
-      }
-      request.withTemplateParameters(parameters);
+      options._id = id;
+      request.withTemplateParameters(options);
       return get(this[environmentSymbol], request);
     })
     .then(([res, traversal]) => createEntry(res, this[environmentSymbol], traversal));
