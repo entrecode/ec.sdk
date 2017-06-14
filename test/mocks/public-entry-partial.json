@@ -1,0 +1,24 @@
+{
+  "_id": "B17u3r5lx-",
+  "_created": "2017-05-10T13:29:19.893Z",
+  "_creator": null,
+  "_modified": "2017-05-15T12:56:30.906Z",
+  "id": "B17u3r5lx-",
+  "created": "2017-05-10T13:29:19.893Z",
+  "modified": "2017-05-15T12:56:30.906Z",
+  "private": false,
+  "text": "asdf",
+  "_links": {
+    "collection": {
+      "profile": "https://datamanager.entrecode.de/api/schema/beefbeef/allFields",
+      "href": "https://datamanager.entrecode.de/api/beefbeef/allFields"
+    },
+    "self": {
+      "profile": "https://datamanager.entrecode.de/api/schema/beefbeef/allFields",
+      "href": "https://datamanager.entrecode.de/api/beefbeef/allFields?_id=B17u3r5lx-"
+    }
+  },
+  "_modelTitleField": "_id",
+  "_modelTitle": "allFields",
+  "_entryTitle": "B17u3r5lx-"
+}

@@ -106,7 +106,7 @@ export default class EntryResource extends Resource {
     this[shortIDSymbol] = getShortID(this[resourceSymbol]);
 
     Object.keys(this[schemaSymbol].allOf[1].properties).forEach((key) => {
-      if (!skip.includes(key)) {
+      if (!skip.includes(key) && key in resource) {
         const type = this.getFieldType(key);
         const property = {
           enumerable: true,
