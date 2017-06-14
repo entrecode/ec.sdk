@@ -422,7 +422,7 @@ describe('PublicAPI', () => {
     stub.onFirstCall().returns(resolver('public-dm-root.json'));
     stub.onSecondCall().returns(resolver('public-entry.json'));
 
-    return api.entry('allFields', '1234567')
+    return api.entry('allFields', '1234567', { _fields: ['a', 'b'] })
     .then((entry) => {
       entry.should.be.instanceof(EntryResource);
       stub.restore();

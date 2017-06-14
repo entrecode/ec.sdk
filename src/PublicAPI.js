@@ -456,6 +456,10 @@ export default class PublicAPI extends Core {
         throw new Error('_fields must be Array<string>');
       }
 
+      if ('_fields' in options) {
+        options._fields = options._fields.join(',');
+      }
+
       return this.follow(`${this[shortIDSymbol]}:${model}`);
     })
     .then((request) => {

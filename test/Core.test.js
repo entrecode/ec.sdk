@@ -683,10 +683,9 @@ describe('optionsToQuery', () => {
   });
   it('should have _fields filter', () => {
     const obj = {
-      _fields: ['aField'],
+      _fields: ['aField', 'anotherField'],
     };
-    helper.optionsToQuery(obj)._fields.should.deep.equal(['aField']); // eslint-disable-line
-                                                                      // no-underscore-dangle
+    helper.optionsToQuery(obj).should.have.property('_fields', 'aField,anotherField');
   });
   it('should throw on invalid _fields', () => {
     const throws = () => {
