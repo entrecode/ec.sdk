@@ -1,3 +1,13 @@
+<a name="0.5.3"></a>
+## 0.5.3 (2017-06-21)
+
+* release version 0.5.3 ([6044b03](https://github.com/entrecode/ec.sdk/commit/6044b03))
+* fix: creation of EntryList parameter order wrong ([39e0b15](https://github.com/entrecode/ec.sdk/commit/39e0b15))
+* fix: detection of Promblem in superagent helper CMS-2813 ([7dfa398](https://github.com/entrecode/ec.sdk/commit/7dfa398))
+* feat: only available properties in EntryResource CMS-2817 ([c1b0959](https://github.com/entrecode/ec.sdk/commit/c1b0959))
+
+
+
 <a name="0.5.2"></a>
 ## 0.5.2 (2017-06-14)
 
