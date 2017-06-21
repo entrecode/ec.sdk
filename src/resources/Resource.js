@@ -35,7 +35,11 @@ export default class Resource {
   constructor(resource, environment = 'live', traversal) {
     this[environmentSymbol] = environment;
     this[dirtySymbol] = false;
-    this[resourceSymbol] = halfred.parse(JSON.parse(JSON.stringify(resource)));
+    if (resource instanceof halfred.Resource) {
+      this[resourceSymbol] = halfred.parse(JSON.parse(JSON.stringify(resource.original())));
+    } else {
+      this[resourceSymbol] = halfred.parse(JSON.parse(JSON.stringify(resource)));
+    }
 
     if (typeof this[environmentSymbol] !== 'string') {
       throw new Error('environment must be a string');
