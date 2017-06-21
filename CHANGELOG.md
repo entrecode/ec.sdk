@@ -1,3 +1,11 @@
+<a name="0.5.4"></a>
+## 0.5.4 (2017-06-21)
+
+* release version 0.5.4 ([2a1f4e3](https://github.com/entrecode/ec.sdk/commit/2a1f4e3))
+* fix: parsing of already parsed resources ([86a1d35](https://github.com/entrecode/ec.sdk/commit/86a1d35))
+
+
+
 <a name="0.5.3"></a>
 ## 0.5.3 (2017-06-21)
 
