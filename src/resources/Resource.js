@@ -79,7 +79,7 @@ export default class Resource {
    * @returns {Object} traverson request builder instance.
    */
   newRequest() {
-    if ('continue' in this[traversalSymbol]) {
+    if (typeof this[traversalSymbol].continue === 'function') {
       return this[traversalSymbol].continue().newRequest();
     }
     return this[traversalSymbol].newRequest();
