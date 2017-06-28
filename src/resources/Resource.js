@@ -165,6 +165,18 @@ export default class Resource {
     return this[resourceSymbol].link(link);
   }
 
+
+  /**
+   * Get all {@link https://tools.ietf.org/html/draft-kelly-json-hal-08#section-5 links} with
+   * the given name.
+   *
+   * @param {string} link the link name.
+   * @returns {Array<object>|null} the link with the given name or null.
+   */
+  getLinks(link) {
+    return this[resourceSymbol].linkArray(link);
+  }
+
   /**
    * Get all {@link https://tools.ietf.org/html/draft-kelly-json-hal-08#section-5 links} of this
    * resource.
