@@ -20,7 +20,7 @@ export declare class PublicAPI extends Core {
 
   emailAvailable(email: string): Promise<boolean>;
 
-  signup(email: string, password: string, invite: string): Promise<string>;
+  signup(email: string, password: string, invite?: string): Promise<string>;
 
   resetPassword(email: string): Promise<undefined>;
 
