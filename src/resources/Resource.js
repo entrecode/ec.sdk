@@ -166,6 +166,16 @@ export default class Resource {
   }
 
   /**
+   * Get all {@link https://tools.ietf.org/html/draft-kelly-json-hal-08#section-5 links} of this
+   * resource.
+   *
+   * @returns {object} object which has an array for each link.
+   */
+  allLinks() {
+    return this[resourceSymbol].allLinks();
+  }
+
+  /**
    * @private
    *
    * @typedef {class} ResourceClass

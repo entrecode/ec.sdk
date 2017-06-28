@@ -17,6 +17,8 @@ export declare class Resource {
 
   getLink(link: string): any;
 
+  allLinks(): { [key: string]: Array<any> }
+
   get(properties: any): any;
 
   set(resource: any): any;

@@ -127,6 +127,9 @@ describe('Resource', () => {
   it('should return undefined in getLink', () => {
     should.not.exist(resource.getLink('missing'));
   });
+  it('should get object with all links', () => {
+    Object.keys(resource.allLinks()).should.have.property('length', 19)
+  });
   it('should call get on followLink', () => {
     const stub = sinon.stub(helper, 'get');
     stub.returns(resolver('dm-single.json'), resource._traversal);
