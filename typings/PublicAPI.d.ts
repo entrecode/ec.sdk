@@ -8,6 +8,16 @@ import { PublicAssetResource } from './resources/publicAPI/PublicAssetResource';
 export declare class PublicAPI extends Core {
   constructor(id: string, environment?: environment);
 
+  shortID: string;
+  dataManagerID: string;
+  title: string;
+  description: string;
+  locales: Array<string>;
+  defaultLocale: string;
+  models: Array<any>;
+  account: any;
+  config: any;
+
   resolve(reload: boolean): PublicAPI;
 
   modelList(): any;
@@ -34,7 +44,7 @@ export declare class PublicAPI extends Core {
 
   entry(model: string, id: string, options: number | { _levels?: number, _fields?: number }): Promise<EntryResource>;
 
-  createEntry(model:string, entry: any): Promise<EntryResource>;
+  createEntry(model: string, entry: any): Promise<EntryResource>;
 
   checkPermission(permission): Promise<boolean>;
 
