@@ -1,3 +1,16 @@
+<a name="0.5.5"></a>
+## 0.5.5 (2017-06-29)
+
+* release version 0.5.5 ([95e2ba4](https://github.com/entrecode/ec.sdk/commit/95e2ba4))
+* feat: Resource#allLinks added ([ba62f8a](https://github.com/entrecode/ec.sdk/commit/ba62f8a))
+* feat: Resource#getLinks for all link objects of a given key ([4c804d5](https://github.com/entrecode/ec.sdk/commit/4c804d5))
+* feat: shortID property for PublicAPI ([560af28](https://github.com/entrecode/ec.sdk/commit/560af28))
+* fix: add stream dependency so projects with angular cli work ([0526b4d](https://github.com/entrecode/ec.sdk/commit/0526b4d))
+* fix: more resilient detection of traversons continue in Resource ([5dda38e](https://github.com/entrecode/ec.sdk/commit/5dda38e))
+* fix: typings in PublicAPI invite property optional in signup ([54cf9b8](https://github.com/entrecode/ec.sdk/commit/54cf9b8))
+
+
+
 <a name="0.5.4"></a>
 ## 0.5.4 (2017-06-21)
 
