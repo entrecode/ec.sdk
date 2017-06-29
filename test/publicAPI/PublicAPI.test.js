@@ -55,6 +55,9 @@ describe('PublicAPI', () => {
     const throws = () => new Api.default('beefbeef', 'notvalid'); // eslint-disable-line new-cap
     throws.should.throw(Error);
   });
+  it('should return shortID on shortID', () => {
+    api.shortID.should.be.equal('beefbeef');
+  });
 
   ['dataManagerID', 'title', 'description', 'locales',
     'defaultLocale', 'models', 'account', 'config']

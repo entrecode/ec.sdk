@@ -53,6 +53,11 @@ export default class PublicAPI extends Core {
     super({ [environment]: `${urls[environment]}api/${id}` }, environment);
     this[shortIDSymbol] = id;
 
+    Object.defineProperty(this, 'shortID', {
+      enumerable: false,
+      get: () => this[shortIDSymbol],
+    });
+
     ['dataManagerID', 'title', 'description', 'locales',
       'defaultLocale', 'models', 'account', 'config']
     .forEach((property) => {

@@ -79,7 +79,7 @@ export default class Resource {
    * @returns {Object} traverson request builder instance.
    */
   newRequest() {
-    if ('continue' in this[traversalSymbol]) {
+    if (typeof this[traversalSymbol].continue === 'function') {
       return this[traversalSymbol].continue().newRequest();
     }
     return this[traversalSymbol].newRequest();
@@ -163,6 +163,28 @@ export default class Resource {
    */
   getLink(link) {
     return this[resourceSymbol].link(link);
+  }
+
+
+  /**
+   * Get all {@link https://tools.ietf.org/html/draft-kelly-json-hal-08#section-5 links} with
+   * the given name.
+   *
+   * @param {string} link the link name.
+   * @returns {Array<object>|null} the link with the given name or null.
+   */
+  getLinks(link) {
+    return this[resourceSymbol].linkArray(link);
+  }
+
+  /**
+   * Get all {@link https://tools.ietf.org/html/draft-kelly-json-hal-08#section-5 links} of this
+   * resource.
+   *
+   * @returns {object} object which has an array for each link.
+   */
+  allLinks() {
+    return this[resourceSymbol].allLinks();
   }
 
   /**

@@ -127,6 +127,17 @@ describe('Resource', () => {
   it('should return undefined in getLink', () => {
     should.not.exist(resource.getLink('missing'));
   });
+  it('should return links in getLinks', () => {
+    resource.getLinks('self').should.be.deep.equal([{
+      href: 'https://datamanager.entrecode.de/?dataManagerID=48e18a34-cf64-4f4a-bc47-45323a7f0e44',
+      profile: 'https://entrecode.de/schema/datamanager',
+      templated: false,
+      title: 'Test DM',
+    }]);
+  });
+  it('should get object with all links', () => {
+    Object.keys(resource.allLinks()).should.have.property('length', 19)
+  });
   it('should call get on followLink', () => {
     const stub = sinon.stub(helper, 'get');
     stub.returns(resolver('dm-single.json'), resource._traversal);
