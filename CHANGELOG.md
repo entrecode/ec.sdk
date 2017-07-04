@@ -1,3 +1,11 @@
+<a name="0.5.6"></a>
+## 0.5.6 (2017-07-04)
+
+* release version 0.5.6 ([779c54b](https://github.com/entrecode/ec.sdk/commit/779c54b))
+* fix: nestedEntry support for null values ([a4c7544](https://github.com/entrecode/ec.sdk/commit/a4c7544))
+
+
+
 <a name="0.5.5"></a>
 ## 0.5.5 (2017-06-29)
 
