@@ -392,6 +392,14 @@ describe('Entry Resource with nested', () => {
   it('should get nested entry, entry', () => {
     res.entry.should.be.instanceOf(EntryResource.default);
   });
+  it('should get null on entry', () => {
+    const nullJson = Object.assign({}, resJson);
+    nullJson.entry = null;
+    return EntryResource.createEntry(nullJson)
+    .then((r) => {
+      should.equal(r.entry, null);
+    });
+  });
   it('should get nested entry, entries', () => {
     res.entries.forEach((entry) => {
       entry.should.be.instanceOf(EntryResource.default);
@@ -402,6 +410,14 @@ describe('Entry Resource with nested', () => {
   });
   it('should get nested asset, asset', () => {
     res.asset.should.be.instanceOf(PublicAssetResource);
+  });
+  it('should get null on asset', () => {
+    const nullJson = Object.assign({}, resJson);
+    nullJson.asset = null;
+    return EntryResource.createEntry(nullJson)
+    .then((r) => {
+      should.equal(r.asset, null);
+    });
   });
   it('should get nested asset, assets', () => {
     res.assets.forEach((asset) => {

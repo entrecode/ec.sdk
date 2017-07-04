@@ -132,6 +132,9 @@ export default class EntryResource extends Resource {
         case 'entry':
           property.get = () => {
             const entry = this.getProperty(key);
+            if (!entry) {
+              return entry;
+            }
             if (typeof entry === 'object' && !(entry instanceof EntryResource)) {
               let link = entry._links.self;
               if (Array.isArray(link)) {
@@ -202,6 +205,9 @@ export default class EntryResource extends Resource {
         case 'asset':
           property.get = () => {
             const asset = this.getProperty(key);
+            if (!asset) {
+              return asset;
+            }
             if (typeof asset === 'object' && !(asset instanceof PublicAssetResource)) {
               this[resourceSymbol][key] = new PublicAssetResource(asset, environment);
             }
