@@ -41,7 +41,7 @@ export const resourceSymbol = Symbol('_resource');
  * @class
  */
 export default class Core {
-  constructor(urls, environment = 'live') {
+  constructor(urls, environment = 'live', cookieModifier = '') {
     if (!urls) {
       throw new Error('urls must be defined');
     }
@@ -51,8 +51,8 @@ export default class Core {
     }
 
     this[eventsSymbol] = events;
-    this[environmentSymbol] = environment;
-    this[tokenStoreSymbol] = TokenStoreFactory(environment);
+    this[environmentSymbol] = environment + cookieModifier;
+    this[tokenStoreSymbol] = TokenStoreFactory(environment + cookieModifier);
     this[traversalSymbol] = traverson.from(urls[environment]).jsonHal();
   }
 

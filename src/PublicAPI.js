@@ -32,7 +32,11 @@ const shortIDSymbol = Symbol('_shortID');
 const modelCacheSymbol = Symbol('_modelCache');
 
 /**
- * API connector for public APIs. This is the successor of ec.datamanager.js
+ * API connector for public APIs. This is the successor of ec.datamanager.js.
+ *
+ * When instantiating this as an ecUser please set the ecUser flag to true. This will use the
+ * tokenStore for ecUsers and not the ones for each Data Manager. If you don't do this you must set
+ * the token with `publicAPI.setToken(session.getToken());`.
  */
 export default class PublicAPI extends Core {
   /**
@@ -40,8 +44,9 @@ export default class PublicAPI extends Core {
    *
    * @param {string} id shortID of the desired DataManager.
    * @param {environment?} environment the environment to connect to.
+   * @param {boolean} ecUser if you are an ecUser it is best to set this to true
    */
-  constructor(id, environment = 'live') {
+  constructor(id, environment = 'live', ecUser = false) {
     if (!id || !/[a-f0-9]{8}/i.test(id)) {
       throw new Error('must provide valid shortID');
     }
@@ -50,7 +55,7 @@ export default class PublicAPI extends Core {
       throw new Error('invalid environment specified');
     }
 
-    super({ [environment]: `${urls[environment]}api/${id}` }, environment);
+    super({ [environment]: `${urls[environment]}api/${id}` }, environment, !ecUser ? id : '');
     this[shortIDSymbol] = id;
 
     Object.defineProperty(this, 'shortID', {

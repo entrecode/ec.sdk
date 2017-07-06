@@ -45,15 +45,21 @@ describe('Core', () => {
     const stub = sinon.stub(core[Core.tokenStoreSymbol], 'set');
     core.setToken('token');
     stub.should.have.been.calledWith('token');
+    stub.restore();
   });
   it('should throw on undefined token', () => {
     const throws = () => core.setToken();
     throws.should.throw(Error);
   });
+  it('should get token, with token', () => {
+    core[Core.tokenStoreSymbol].token = 'token';
+    core.getToken().should.be.equal('token');
+  });
   it('should set user agent', () => {
     const stub = sinon.stub(core[Core.tokenStoreSymbol], 'setUserAgent');
     core.setUserAgent('useragent');
     stub.should.have.been.calledWith('useragent');
+    stub.restore();
   });
   it('should throw on undefined user agent', () => {
     const throws = () => core.setUserAgent();
