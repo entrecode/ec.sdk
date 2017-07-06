@@ -143,6 +143,18 @@ export default class Core {
   }
 
   /**
+   * If you want to have access to the currently used token you can call this function.
+   *
+   * @example
+   * console.log(accounts.getToken()); // will log current token
+   *
+   * @returns {string} currently used token
+   */
+  getToken() {
+    return this[tokenStoreSymbol].get();
+  }
+
+  /**
    * If you want to add additional information to the user agent used bed ec.sdk you can use this
    * function to add any string.
    *

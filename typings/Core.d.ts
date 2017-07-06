@@ -7,6 +7,8 @@ export declare class Core {
 
   setToken(token: string): Core;
 
+  getToken(): string;
+
   setUserAgent(agent: string): Core;
 
   on(label: string, callback: (param: Error | string) => void): void;
