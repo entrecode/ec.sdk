@@ -503,16 +503,17 @@ export default class PublicAPI extends Core {
    * Checks a permission for the currently logged in public user
    *
    * @param {string} permission the permission to check.
+   * @param {boolean} refresh whether or not it should use a cached response
    * @returns {Promise<boolean>} true if user has permission, false otherwise.
    */
-  checkPermission(permission) {
+  checkPermission(permission, refresh = false) {
     return Promise.resolve()
     .then(() => {
       if (!permission) {
         throw new Error('permission must be defined');
       }
 
-      if (this.permissions && new Date() - this.permissionsLoadedTime <= 300000) { // 5 Minutes
+      if (!refresh && this.permissions && new Date() - this.permissionsLoadedTime <= 300000) { // 5 Minutes
         return undefined;
       }
 

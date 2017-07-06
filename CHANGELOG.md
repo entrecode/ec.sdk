@@ -1,3 +1,11 @@
+<a name="0.5.7"></a>
+## 0.5.7 (2017-07-06)
+
+* release version 0.5.7 ([97d8c7d](https://github.com/entrecode/ec.sdk/commit/97d8c7d))
+* feat: checkPermission with force refresh MYC-628 ([9e7b052](https://github.com/entrecode/ec.sdk/commit/9e7b052))
+
+
+
 <a name="0.5.6"></a>
 ## 0.5.6 (2017-07-04)
 

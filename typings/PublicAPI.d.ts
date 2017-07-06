@@ -46,7 +46,7 @@ export declare class PublicAPI extends Core {
 
   createEntry(model: string, entry: any): Promise<EntryResource>;
 
-  checkPermission(permission): Promise<boolean>;
+  checkPermission(permission: string, refresh?: boolean): Promise<boolean>;
 
   assetList(options?: filterOptions): PublicAssetList;
 

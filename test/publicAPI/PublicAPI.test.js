@@ -380,6 +380,25 @@ describe('PublicAPI', () => {
     .then(() => api.checkPermission('entry:get:read'))
     .then((ok) => {
       ok.should.be.true;
+      stub.should.have.callCount(2);
+      stub.restore();
+    })
+    .catch((err) => {
+      stub.restore();
+      throw err;
+    });
+  });
+  it('should check permission cached, refresh', () => {
+    const stub = sinon.stub(helper, 'get');
+    stub.onFirstCall().returns(resolver('public-dm-root.json'));
+    stub.onSecondCall().returns(resolver('public-permissions.json'));
+    stub.onThirdCall().returns(resolver('public-permissions.json'));
+
+    return api.checkPermission('entry:get:read')
+    .then(() => api.checkPermission('entry:get:read', true))
+    .then((ok) => {
+      ok.should.be.true;
+      stub.should.have.callCount(3);
       stub.restore();
     })
     .catch((err) => {
