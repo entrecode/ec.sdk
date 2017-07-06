@@ -16,7 +16,7 @@ interface filter {
   all?: Array<string>
 }
 
-type filterType = number | string | filter;
+type filterType = Array<string> | number | string | filter;
 
 export type assetInput = string | any;
 
