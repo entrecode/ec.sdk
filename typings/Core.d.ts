@@ -1,11 +1,13 @@
 export declare class Core {
-  constructor(url: string);
+  constructor(urls: any, environment: string, cookieModifier?: string);
 
   newRequest(): any;
 
   follow(link: string): any;
 
   setToken(token: string): Core;
+
+  getToken(): string;
 
   setUserAgent(agent: string): Core;
 

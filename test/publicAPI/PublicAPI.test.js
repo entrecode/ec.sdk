@@ -41,7 +41,12 @@ describe('PublicAPI', () => {
   it('should be instance of PublicAPI with live env', () => {
     api = new Api.default('beefbeef'); // eslint-disable-line new-cap
     api.should.be.instanceOf(Api.default);
-    api[environmentSymbol].should.be.equal('live');
+    api[environmentSymbol].should.be.equal('livebeefbeef');
+  });
+  it('should be instance of PublicAPI with stage env and ecUser', () => {
+    api = new Api.default('beefbeef', 'stage', true); // eslint-disable-line new-cap
+    api.should.be.instanceOf(Api.default);
+    api[environmentSymbol].should.be.equal('stage');
   });
   it('should throw on missing id', () => {
     const throws = () => new Api.default(); // eslint-disable-line new-cap

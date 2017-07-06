@@ -41,7 +41,7 @@ export const resourceSymbol = Symbol('_resource');
  * @class
  */
 export default class Core {
-  constructor(urls, environment = 'live') {
+  constructor(urls, environment = 'live', cookieModifier = '') {
     if (!urls) {
       throw new Error('urls must be defined');
     }
@@ -51,8 +51,8 @@ export default class Core {
     }
 
     this[eventsSymbol] = events;
-    this[environmentSymbol] = environment;
-    this[tokenStoreSymbol] = TokenStoreFactory(environment);
+    this[environmentSymbol] = environment + cookieModifier;
+    this[tokenStoreSymbol] = TokenStoreFactory(environment + cookieModifier);
     this[traversalSymbol] = traverson.from(urls[environment]).jsonHal();
   }
 
@@ -140,6 +140,18 @@ export default class Core {
 
     this[tokenStoreSymbol].set(token);
     return this;
+  }
+
+  /**
+   * If you want to have access to the currently used token you can call this function.
+   *
+   * @example
+   * console.log(accounts.getToken()); // will log current token
+   *
+   * @returns {string} currently used token
+   */
+  getToken() {
+    return this[tokenStoreSymbol].get();
   }
 
   /**

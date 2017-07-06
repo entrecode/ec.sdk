@@ -6,7 +6,7 @@ import { PublicAssetList } from './resources/publicAPI/PublicAssetList';
 import { PublicAssetResource } from './resources/publicAPI/PublicAssetResource';
 
 export declare class PublicAPI extends Core {
-  constructor(id: string, environment?: environment);
+  constructor(id: string, environment?: environment, ecUser?: boolean);
 
   shortID: string;
   dataManagerID: string;

@@ -1,3 +1,13 @@
+<a name="0.6.0"></a>
+# 0.6.0 (2017-07-06)
+
+* release version 0.6.0 ([d730046](https://github.com/entrecode/ec.sdk/commit/d730046))
+* feat: getToken support ([d1f33ba](https://github.com/entrecode/ec.sdk/commit/d1f33ba))
+* feat: tokens separated by Data Manager CMS-2828 ([ad920af](https://github.com/entrecode/ec.sdk/commit/ad920af))
+* refactor: more resilient filterOptions typings ([293557d](https://github.com/entrecode/ec.sdk/commit/293557d))
+
+
+
 <a name="0.5.7"></a>
 ## 0.5.7 (2017-07-06)
 
