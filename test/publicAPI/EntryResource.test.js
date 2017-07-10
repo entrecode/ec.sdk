@@ -408,6 +408,15 @@ describe('Entry Resource with nested', () => {
       entry.should.be.instanceOf(EntryResource.default);
     });
   });
+  it('should get empty array, entries', () => {
+    const nullJson = Object.assign({}, resJson);
+    nullJson.entries = null;
+    return EntryResource.createEntry(nullJson)
+    .then((r) => {
+      r.entries.should.be.an.array;
+      r.entries.should.have.property('length', 0);
+    });
+  });
   it('should get nested asset, asset', () => {
     res.asset.should.be.instanceOf(PublicAssetResource);
   });
@@ -425,6 +434,15 @@ describe('Entry Resource with nested', () => {
     });
     res.assets.forEach((asset) => {
       asset.should.be.instanceOf(PublicAssetResource);
+    });
+  });
+  it('should get empty array, assets', () => {
+    const nullJson = Object.assign({}, resJson);
+    nullJson.assets = null;
+    return EntryResource.createEntry(nullJson)
+    .then((r) => {
+      r.assets.should.be.an.array;
+      r.assets.should.have.property('length', 0);
     });
   });
 });

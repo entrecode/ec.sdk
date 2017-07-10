@@ -163,7 +163,11 @@ export default class EntryResource extends Resource {
           break;
         case 'entries':
           property.get = () => {
-            const entries = this.getProperty(key);
+            let entries = this.getProperty(key);
+            if (!entries) {
+              this.setProperty(key, []);
+              entries = [];
+            }
             this[resourceSymbol][key] = entries.map((entry) => {
               if (typeof entry === 'object') {
                 if (entry instanceof EntryResource) {
@@ -232,7 +236,11 @@ export default class EntryResource extends Resource {
           break;
         case 'assets':
           property.get = () => {
-            const assets = this.getProperty(key);
+            let assets = this.getProperty(key);
+            if (!assets) {
+              this.setProperty(key, []);
+              assets = [];
+            }
             this[resourceSymbol][key] = assets.map((asset) => {
               if (typeof asset === 'object') {
                 if (asset instanceof PublicAssetResource) {
