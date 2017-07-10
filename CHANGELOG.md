@@ -1,3 +1,12 @@
+<a name="0.6.1"></a>
+## 0.6.1 (2017-07-10)
+
+* release version 0.6.1 ([86983ec](https://github.com/entrecode/ec.sdk/commit/86983ec))
+* feat: handle null values on entries/assets fields ([4b984e1](https://github.com/entrecode/ec.sdk/commit/4b984e1))
+* chore: add node 8 to travis config ([9533d9a](https://github.com/entrecode/ec.sdk/commit/9533d9a))
+
+
+
 <a name="0.6.0"></a>
 # 0.6.0 (2017-07-06)
 
