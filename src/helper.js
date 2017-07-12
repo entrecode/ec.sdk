@@ -294,7 +294,7 @@ export function superagentGet(url, headers) {
   }
 
   return request
-  .then(res => Promise.resolve(res.body ? res.body : {}))
+  .then(res => res.body ? res.body : {})
   .catch((err) => {
     let problem;
     if ('status' in err && 'response' in err && 'body' in err.response) {

@@ -733,7 +733,7 @@ export default class PublicAPI extends Core {
 
     const url = `${urls[this[environmentSymbol]]}files/${assetID}/url`;
     return superagentGet(url, { 'Accept-Language': locale })
-    .then(([res]) => res.url);
+    .then((res) => res.url);
   }
 
   /**
@@ -751,7 +751,7 @@ export default class PublicAPI extends Core {
 
     const url = `${urls[this[environmentSymbol]]}files/${assetID}/url${size ? `?size=${size}` : ''}`;
     return superagentGet(url, { 'Accept-Language': locale })
-    .then(([res]) => res.url);
+    .then((res) => res.url);
   }
 
   /**
@@ -769,6 +769,6 @@ export default class PublicAPI extends Core {
 
     const url = `${urls[this[environmentSymbol]]}files/${assetID}/url?thumb${size ? `&size=${size}` : ''}`;
     return superagentGet(url, { 'Accept-Language': locale })
-    .then(([res]) => res.url);
+    .then((res) => res.url);
   }
 }
