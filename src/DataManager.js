@@ -8,7 +8,7 @@ import TemplateList from './resources/datamanager/TemplateList';
 import TemplateResource from './resources/datamanager/TemplateResource';
 import DMStatsList from './resources/datamanager/DMStatsList';
 
-export const urls = {
+const urls = {
   live: 'https://datamanager.entrecode.de/',
   stage: 'https://datamanager.cachena.entrecode.de/',
   nightly: 'https://datamanager.buffalo.entrecode.de/',
@@ -241,8 +241,8 @@ export default class DataManager extends Core {
     }
 
     const url = `${urls[this[environmentSymbol]]}files/${assetID}/url`;
-    return superagentGet(url, { 'Accept-Language': locale })
-    .then(([res]) => res.url);
+    return superagentGet(url, locale ? { 'Accept-Language': locale } : {})
+    .then((res) => res.url);
   }
 
   /**
@@ -259,8 +259,8 @@ export default class DataManager extends Core {
     }
 
     const url = `${urls[this[environmentSymbol]]}files/${assetID}/url${size ? `?size=${size}` : ''}`;
-    return superagentGet(url, { 'Accept-Language': locale })
-    .then(([res]) => res.url);
+    return superagentGet(url, locale ? { 'Accept-Language': locale } : {})
+    .then((res) => res.url);
   }
 
   /**
@@ -277,7 +277,7 @@ export default class DataManager extends Core {
     }
 
     const url = `${urls[this[environmentSymbol]]}files/${assetID}/url?thumb${size ? `&size=${size}` : ''}`;
-    return superagentGet(url, { 'Accept-Language': locale })
-    .then(([res]) => res.url);
+    return superagentGet(url, locale ? { 'Accept-Language': locale } : {})
+    .then((res) => res.url);
   }
 }

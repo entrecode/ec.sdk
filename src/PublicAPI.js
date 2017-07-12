@@ -15,7 +15,6 @@ import {
   superagentGet,
   superagentPost
 } from './helper';
-import { urls } from './DataManager';
 import { createList } from './resources/publicAPI/EntryList';
 import { createEntry } from './resources/publicAPI/EntryResource';
 import Core, {
@@ -30,6 +29,15 @@ import PublicAssetResource from './resources/publicAPI/PublicAssetResource';
 
 const shortIDSymbol = Symbol('_shortID');
 const modelCacheSymbol = Symbol('_modelCache');
+
+const urls = {
+  live: 'https://datamanager.entrecode.de/',
+  stage: 'https://datamanager.cachena.entrecode.de/',
+  nightly: 'https://datamanager.buffalo.entrecode.de/',
+  develop: 'http://localhost:7471/',
+};
+
+const assetBaseURLSymbol = Symbol('assetBaseURL');
 
 /**
  * API connector for public APIs. This is the successor of ec.datamanager.js.
@@ -57,6 +65,7 @@ export default class PublicAPI extends Core {
 
     super({ [environment]: `${urls[environment]}api/${id}` }, environment, !ecUser ? id : '');
     this[shortIDSymbol] = id;
+    this[assetBaseURLSymbol] = urls[environment];
 
     Object.defineProperty(this, 'shortID', {
       enumerable: false,
@@ -731,9 +740,9 @@ export default class PublicAPI extends Core {
       return Promise.reject(new Error('assetID must be defined'));
     }
 
-    const url = `${urls[this[environmentSymbol]]}files/${assetID}/url`;
-    return superagentGet(url, { 'Accept-Language': locale })
-    .then(([res]) => res.url);
+    const url = `${this[assetBaseURLSymbol]}files/${assetID}/url`;
+    return superagentGet(url, locale ? { 'Accept-Language': locale } : {})
+    .then((res) => res.url);
   }
 
   /**
@@ -749,9 +758,9 @@ export default class PublicAPI extends Core {
       return Promise.reject(new Error('assetID must be defined'));
     }
 
-    const url = `${urls[this[environmentSymbol]]}files/${assetID}/url${size ? `?size=${size}` : ''}`;
-    return superagentGet(url, { 'Accept-Language': locale })
-    .then(([res]) => res.url);
+    const url = `${this[assetBaseURLSymbol]}files/${assetID}/url${size ? `?size=${size}` : ''}`;
+    return superagentGet(url, locale ? { 'Accept-Language': locale } : {})
+    .then((res) => res.url);
   }
 
   /**
@@ -767,8 +776,8 @@ export default class PublicAPI extends Core {
       return Promise.reject(new Error('assetID must be defined'));
     }
 
-    const url = `${urls[this[environmentSymbol]]}files/${assetID}/url?thumb${size ? `&size=${size}` : ''}`;
-    return superagentGet(url, { 'Accept-Language': locale })
-    .then(([res]) => res.url);
+    const url = `${this[assetBaseURLSymbol]}files/${assetID}/url?thumb${size ? `&size=${size}` : ''}`;
+    return superagentGet(url, locale ? { 'Accept-Language': locale } : {})
+    .then((res) => res.url);
   }
 }

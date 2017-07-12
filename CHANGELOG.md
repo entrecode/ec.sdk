@@ -1,3 +1,13 @@
+<a name="0.6.2"></a>
+## 0.6.2 (2017-07-12)
+
+* release version 0.6.2 ([9bd2ac2](https://github.com/entrecode/ec.sdk/commit/9bd2ac2))
+* fix: asset helper in publicAPI url templating ([c657329](https://github.com/entrecode/ec.sdk/commit/c657329))
+* fix: response handling of superagentGet responses ([41a68e2](https://github.com/entrecode/ec.sdk/commit/41a68e2))
+* fix: undefined locale header in file api of publicAPI ([6597b83](https://github.com/entrecode/ec.sdk/commit/6597b83))
+
+
+
 <a name="0.6.1"></a>
 ## 0.6.1 (2017-07-10)
 

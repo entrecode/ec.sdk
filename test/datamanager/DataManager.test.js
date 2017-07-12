@@ -239,7 +239,7 @@ describe('DataManager class', () => {
   it('should get best file', () => {
     const dm = new DataManager('live');
     const stub = sinon.stub(helper, 'superagentGet');
-    stub.returns(resolver('best-file.json'));
+    stub.returns(resolver('best-file.json', undefined, true));
 
     return dm.getFileUrl('id')
     .should.eventually.be.equal('https://cdn2.entrecode.de/files/01bd8e08/J2DJfjfEVby3KcxGNrJyFdEz_512.png')
@@ -252,7 +252,7 @@ describe('DataManager class', () => {
   it('should get best image', () => {
     const dm = new DataManager('live');
     const stub = sinon.stub(helper, 'superagentGet');
-    stub.returns(resolver('best-file.json'));
+    stub.returns(resolver('best-file.json', undefined, true));
 
     return dm.getImageUrl('id')
     .should.eventually.be.equal('https://cdn2.entrecode.de/files/01bd8e08/J2DJfjfEVby3KcxGNrJyFdEz_512.png')
@@ -261,7 +261,7 @@ describe('DataManager class', () => {
   it('should get best image with size', () => {
     const dm = new DataManager('live');
     const stub = sinon.stub(helper, 'superagentGet');
-    stub.returns(resolver('best-file.json'));
+    stub.returns(resolver('best-file.json', undefined, true));
 
     return dm.getImageUrl('id', 2)
     .should.eventually.be.equal('https://cdn2.entrecode.de/files/01bd8e08/J2DJfjfEVby3KcxGNrJyFdEz_512.png')
@@ -274,7 +274,7 @@ describe('DataManager class', () => {
   it('should get best thumb', () => {
     const dm = new DataManager('live');
     const stub = sinon.stub(helper, 'superagentGet');
-    stub.returns(resolver('best-file.json'));
+    stub.returns(resolver('best-file.json', undefined, true));
 
     return dm.getImageThumbUrl('id')
     .should.eventually.be.equal('https://cdn2.entrecode.de/files/01bd8e08/J2DJfjfEVby3KcxGNrJyFdEz_512.png')
@@ -283,7 +283,7 @@ describe('DataManager class', () => {
   it('should get best thumb with size', () => {
     const dm = new DataManager('live');
     const stub = sinon.stub(helper, 'superagentGet');
-    stub.returns(resolver('best-file.json'));
+    stub.returns(resolver('best-file.json', undefined, true));
 
     return dm.getImageThumbUrl('id', 2)
     .should.eventually.be.equal('https://cdn2.entrecode.de/files/01bd8e08/J2DJfjfEVby3KcxGNrJyFdEz_512.png')
