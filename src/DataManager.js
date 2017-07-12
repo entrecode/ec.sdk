@@ -8,7 +8,7 @@ import TemplateList from './resources/datamanager/TemplateList';
 import TemplateResource from './resources/datamanager/TemplateResource';
 import DMStatsList from './resources/datamanager/DMStatsList';
 
-export const urls = {
+const urls = {
   live: 'https://datamanager.entrecode.de/',
   stage: 'https://datamanager.cachena.entrecode.de/',
   nightly: 'https://datamanager.buffalo.entrecode.de/',
