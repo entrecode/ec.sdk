@@ -324,6 +324,10 @@ export default class EntryResource extends Resource {
     });
   }
 
+  save() {
+    return super.save(`${this[resourceSymbol].link('self').profile}?template=put`);
+  }
+
   /**
    * Get the field type for a given property in this {@link EntryResource}
    *

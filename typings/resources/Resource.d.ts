@@ -9,7 +9,7 @@ export declare class Resource {
 
   reset(): void;
 
-  save(): Promise<any>
+  save(overwriteSchemaUrl: string): Promise<any>
 
   del(): Promise<void>;
 

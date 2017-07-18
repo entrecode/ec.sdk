@@ -118,12 +118,14 @@ export default class Resource {
   /**
    * Saves this {@link Resource}.
    *
+   * @param {string} overwriteSchemaUrl? Other schema url to overwrite the one in
+   *   `_link.self.profile`. Mainly for internal use.
    * @returns {Promise<Resource>} Promise will resolve to the saved Resource. Will
    *   be the same object but with refreshed data.
    */
-  save() {
+  save(overwriteSchemaUrl) {
     const out = this.toOriginal();
-    return validator.validate(out, this[resourceSymbol].link('self').profile)
+    return validator.validate(out, overwriteSchemaUrl || this[resourceSymbol].link('self').profile)
     .then(() => put(this[environmentSymbol], this.newRequest().follow('self'), out))
     .then(([res, traversal]) => {
       this[resourceSymbol] = halfred.parse(res);
