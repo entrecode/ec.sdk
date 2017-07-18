@@ -1,3 +1,13 @@
+<a name="0.6.3"></a>
+## 0.6.3 (2017-07-18)
+
+* release version 0.6.3 ([03feb29](https://github.com/entrecode/ec.sdk/commit/03feb29))
+* fix: another fix for Problem detection in superagent helper ([c399c48](https://github.com/entrecode/ec.sdk/commit/c399c48))
+* fix: schema handling for EntryResource#save() CMS-2844 ([1f9ce99](https://github.com/entrecode/ec.sdk/commit/1f9ce99))
+* chore: new editor config ([2caf81c](https://github.com/entrecode/ec.sdk/commit/2caf81c))
+
+
+
 <a name="0.6.2"></a>
 ## 0.6.2 (2017-07-12)
 
