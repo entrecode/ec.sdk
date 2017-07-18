@@ -12,6 +12,9 @@
         "_links": {
           "$ref": "https://entrecode.de/schema/hal#_links"
         },
+        "_embedded": {
+          "$ref": "https://entrecode.de/schema/hal#_embedded"
+        },
         "_id": {
           "type": "string",
           "pattern": "^[0-9A-Za-z-_]{7,14}$",

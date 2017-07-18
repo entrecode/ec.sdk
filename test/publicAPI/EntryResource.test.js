@@ -4,8 +4,10 @@ const chai = require('chai');
 const sinon = require('sinon');
 const sinonChai = require('sinon-chai');
 const fs = require('fs');
+const resolver = require('../mocks/resolver');
 const mock = require('../mocks/nock');
 
+const helper = require('../../lib/helper');
 const Resource = require('../../lib/resources/Resource').default;
 const ListResource = require('../../lib/resources/ListResource').default;
 const EntryList = require('../../lib/resources/publicAPI/EntryList');
@@ -122,6 +124,21 @@ describe('Entry Resource', () => {
   it('should throw on undefined schema', () => {
     const throws = () => new EntryResource.default(resourceJson); // eslint-disable-line new-cap
     throws.should.throw('schema must be defined');
+  });
+  it('should call put on save', () => {
+    mock.reset();
+    const stub = sinon.stub(helper, 'put');
+    stub.returns(resolver('public-entry.json', resource._traversal));
+
+    return resource.save()
+    .then(() => {
+      stub.should.be.called.once;
+      stub.restore();
+    })
+    .catch((err) => {
+      stub.restore();
+      throw err;
+    });
   });
 
   it('should get field type', () => {
