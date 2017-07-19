@@ -118,7 +118,7 @@ export default class Resource {
   /**
    * Saves this {@link Resource}.
    *
-   * @param {string} overwriteSchemaUrl? Other schema url to overwrite the one in
+   * @param {string?} overwriteSchemaUrl Other schema url to overwrite the one in
    *   `_link.self.profile`. Mainly for internal use.
    * @returns {Promise<Resource>} Promise will resolve to the saved Resource. Will
    *   be the same object but with refreshed data.
