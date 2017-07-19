@@ -2880,6 +2880,12 @@
                       </a></li>
                       
                       <li><a
+                        href='#EntryResource#save'
+                        class='regular pre-open'>
+                        #save
+                      </a></li>
+                      
+                      <li><a
                         href='#EntryResource#getFieldType'
                         class='regular pre-open'>
                         #getFieldType
@@ -9974,7 +9980,7 @@ afterwards.</p>
   <p>Saves this <a href="#resource">Resource</a>.</p>
 
 
-  <div class='pre p1 fill-light mt0'>save(overwriteSchemaUrl: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#resource">Resource</a>></div>
+  <div class='pre p1 fill-light mt0'>save(overwriteSchemaUrl: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#resource">Resource</a>></div>
   
   
 
@@ -9991,8 +9997,8 @@ afterwards.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>overwriteSchemaUrl</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
-	    ? Other schema url to overwrite the one in
+            <span class='code bold'>overwriteSchemaUrl</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?)</code>
+	    Other schema url to overwrite the one in
 
 <code>_link.self.profile</code>
 . Mainly for internal use.
@@ -25159,6 +25165,61 @@ required JSON Schemas won't be stored in the cache.</p>
 
   
 
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='EntryResource#save'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>save()</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Saves this <a href="#entryresource">EntryResource</a>.</p>
+
+
+  <div class='pre p1 fill-light mt0'>save(): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#entryresource">EntryResource</a>></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#entryresource">EntryResource</a>></code>:
+        Promise will resolve to the saved EntryResource. Will
+be the same object but with refreshed data.
+
+      
+    
   
 
   
