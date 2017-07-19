@@ -6,6 +6,8 @@ export declare class EntryResource extends Resource {
 
   [key: string]: any;
 
+  save(): Promise<EntryResource>
+
   getFieldType(property: string): string;
 
   getTitle(property: string): Array<string> | string;

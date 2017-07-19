@@ -324,6 +324,12 @@ export default class EntryResource extends Resource {
     });
   }
 
+  /**
+   * Saves this {@link EntryResource}.
+   *
+   * @returns {Promise<EntryResource>} Promise will resolve to the saved EntryResource. Will
+   *   be the same object but with refreshed data.
+   */
   save() {
     return super.save(`${this[resourceSymbol].link('self').profile}?template=put`);
   }
