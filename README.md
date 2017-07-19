@@ -1,5 +1,7 @@
 # ec.sdk
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/entrecode/ec.sdk.svg)](https://greenkeeper.io/)
+
 > SDK for most APIs of AppCMS by entrecode. By entrecode.
 > 
 > This is under active development and not yet ready for use!
