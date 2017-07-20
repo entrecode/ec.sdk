@@ -1,3 +1,15 @@
+<a name="0.6.4"></a>
+## 0.6.4 (2017-07-20)
+
+* release version 0.6.4 ([0f92878](https://github.com/entrecode/ec.sdk/commit/0f92878))
+* feat: sanity checks for filter options CMS-2820 ([e4287e6](https://github.com/entrecode/ec.sdk/commit/e4287e6))
+* doc: add new docs build ([5912036](https://github.com/entrecode/ec.sdk/commit/5912036))
+* doc: fixed some doc issues ([3b4066c](https://github.com/entrecode/ec.sdk/commit/3b4066c))
+* doc: fixed some doc issues ([fb84f5b](https://github.com/entrecode/ec.sdk/commit/fb84f5b))
+* chore: new path to node and eslint, editor config ([a9ac9fa](https://github.com/entrecode/ec.sdk/commit/a9ac9fa))
+
+
+
 <a name="0.6.3"></a>
 ## 0.6.3 (2017-07-18)
 
