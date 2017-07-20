@@ -381,6 +381,9 @@ export function optionsToQuery(options, templateURL) {
   if (options) {
     Object.keys(options).forEach((key) => {
       if (['size', 'page'].includes(key)) {
+        if (!Number.isInteger(options[key])) {
+          throw new Error(`${key} must be integer, is ${typeof options[key]}: ${options[key]}`);
+        }
         out[key] = options[key];
       } else if (key === 'sort') {
         if (Array.isArray(options.sort)) {
@@ -388,21 +391,25 @@ export function optionsToQuery(options, templateURL) {
         } else if (typeof options.sort === 'string') {
           out.sort = options.sort;
         } else {
-          throw new Error('sort must be either Array or String.');
+          throw new Error(`sort must be either Array or String, is ${typeof options.sort}`);
         }
       } else if (key === '_levels') {
         if (!Number.isInteger(options[key])) {
-          throw new Error('_levels must be integer');
+          throw new Error('_levels must be integer, is ' + typeof options[key]);
         }
         if (options[key] > 1 && options[key] <= 5) {
           out[key] = options[key];
         }
       } else if (key === '_fields') {
         if (!Array.isArray(options[key])) {
-          throw new Error('_fields must be integer');
+          throw new Error('_fields must be an array');
+        }
+        const invalid = options[key].filter(val => typeof val !== 'string');
+        if (invalid.length > 0) {
+          throw new Error('_fields array must contain only strings');
         }
         out[key] = options[key].join(',');
-      } else if (typeof options[key] === 'string') {
+      } else if (typeof options[key] === 'string' || typeof options[key] === 'number') {
         out[key] = options[key];
       } else if (typeof options[key] === 'object') {
         Object.keys(options[key]).forEach((searchKey) => {
@@ -411,12 +418,19 @@ export function optionsToQuery(options, templateURL) {
           case 'search':
           case 'from':
           case 'to':
+            if (!(typeof options[key][searchKey] === 'string' || typeof options[key][searchKey] === 'number')) {
+              throw new Error(`${key}.${searchKey} must be string or number, is ${typeof options[key][searchKey]}: ${options[key][searchKey]}`);
+            }
             out[`${key}${modifier[searchKey]}`] = options[key][searchKey];
             break;
           case 'any':
           case 'all':
             if (!Array.isArray(options[key][searchKey])) {
               throw new Error(`${key}.${searchKey} must be an Array.`);
+            }
+            const invalid = options[key][searchKey].filter((val) => !(typeof val === 'string' || typeof val === 'number'));
+            if (invalid.length > 0) {
+              throw new Error(`${key}.${searchKey} array must contain only stirngs or numbers`);
             }
             out[key] = options[key][searchKey].join(modifier[searchKey]);
             break;
