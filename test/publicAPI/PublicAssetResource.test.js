@@ -200,7 +200,7 @@ describe('Asset Resource', () => {
       const spy = sinon.spy(resource, 'getProperty');
 
       const property = resource[name];
-      spy.should.have.been.called.once;
+      spy.should.have.been.calledOnce;
       spy.should.have.been.calledWith(name);
       property.toISOString().should.be.equal(resource.getProperty(name));
 
@@ -214,7 +214,7 @@ describe('Asset Resource', () => {
       const spy = sinon.spy(resource, 'getProperty');
 
       const property = resource[name];
-      spy.should.have.been.called.once;
+      spy.should.have.been.calledOnce;
       spy.should.have.been.calledWith(name);
       property.should.be.equal(resource.getProperty(name));
 
@@ -228,7 +228,7 @@ describe('Asset Resource', () => {
       const spy = sinon.spy(resource, 'setProperty');
 
       resource[name] = resource.getProperty(name);
-      spy.should.have.been.called.once;
+      spy.should.have.been.calledOnce;
       spy.should.have.been.calledWith(name, resource.getProperty(name));
 
       spy.restore();

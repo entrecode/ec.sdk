@@ -83,7 +83,7 @@ describe('Resource', () => {
 
     return resource.save()
     .then(() => {
-      stub.should.be.called.once;
+      stub.should.be.calledOnce;
       stub.restore();
     })
     .catch((err) => {
@@ -102,7 +102,7 @@ describe('Resource', () => {
 
     return resource.del()
     .then(() => {
-      stub.should.be.called.once;
+      stub.should.be.calledOnce;
       stub.restore();
     })
     .catch((err) => {
@@ -144,7 +144,7 @@ describe('Resource', () => {
 
     return resource.followLink('self')
     .then(() => {
-      stub.should.be.called.once;
+      stub.should.be.calledOnce;
       stub.restore();
     });
   });
@@ -231,7 +231,7 @@ describe('Resource', () => {
 
     return resource.resolve()
     .then(() => {
-      stub.should.be.called.once;
+      stub.should.be.calledOnce;
       stub.restore();
     });
   });
