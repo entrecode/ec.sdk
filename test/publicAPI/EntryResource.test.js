@@ -132,7 +132,7 @@ describe('Entry Resource', () => {
 
     return resource.save()
     .then(() => {
-      stub.should.be.called.once;
+      stub.should.be.calledOnce;
       stub.restore();
     })
     .catch((err) => {
@@ -430,7 +430,7 @@ describe('Entry Resource with nested', () => {
     nullJson.entries = null;
     return EntryResource.createEntry(nullJson)
     .then((r) => {
-      r.entries.should.be.an.array;
+      r.entries.should.be.an('array');
       r.entries.should.have.property('length', 0);
     });
   });
@@ -458,7 +458,7 @@ describe('Entry Resource with nested', () => {
     nullJson.assets = null;
     return EntryResource.createEntry(nullJson)
     .then((r) => {
-      r.assets.should.be.an.array;
+      r.assets.should.be.an('array');
       r.assets.should.have.property('length', 0);
     });
   });

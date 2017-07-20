@@ -22,7 +22,7 @@ describe('Token handling', () => {
   });
   it('should get token store', () => {
     const store1 = TokenStore.default('live');
-    store1.should.be.defined; // eslint-disable-line no-unused-expressions
+    store1.should.be.exist; // eslint-disable-line no-unused-expressions
   });
   it('should get identical token store', () => {
     const store1 = TokenStore.default();
