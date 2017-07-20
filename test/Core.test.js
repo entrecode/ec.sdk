@@ -639,11 +639,23 @@ describe('optionsToQuery', () => {
     };
     helper.optionsToQuery(obj).should.have.property('size', 1);
   });
+  it('should throw on size not an integer', () => {
+    const throws = () => {
+      helper.optionsToQuery({ size: 'string' });
+    };
+    throws.should.throw(Error);
+  });
   it('should have page', () => {
     const obj = {
       page: 1,
     };
     helper.optionsToQuery(obj).should.have.property('page', 1);
+  });
+  it('should throw on page not an integer', () => {
+    const throws = () => {
+      helper.optionsToQuery({ page: 'string' });
+    };
+    throws.should.throw(Error);
   });
   it('should have levels', () => {
     const obj = {
@@ -699,13 +711,29 @@ describe('optionsToQuery', () => {
     };
     throws.should.throw(Error);
   });
+  it('should throw on invalid _fields items', () => {
+    const throws = () => {
+      helper.optionsToQuery({ _fields: [{}] });
+    };
+    throws.should.throw(Error);
+  });
   it('should have exact filter on string property', () => {
     const obj = { property: 'exact' };
     helper.optionsToQuery(obj).should.have.property('property', 'exact');
   });
+  it('should have exact filter on number property', () => {
+    const obj = { property: 0 };
+    helper.optionsToQuery(obj).should.have.property('property', 0);
+  });
   it('should have exact filter', () => {
     const obj = { property: { exact: 'value' } };
     helper.optionsToQuery(obj).should.have.property('property', 'value');
+  });
+  it('should throw on object exact filter', () => {
+    const throws = () => {
+      helper.optionsToQuery({ property: { exact: {} } });
+    };
+    throws.should.throw(Error);
   });
   it('should have search filter', () => {
     const obj = { property: { search: 'value' } };
@@ -729,6 +757,12 @@ describe('optionsToQuery', () => {
     };
     throws.should.throw(Error);
   });
+  it('should throw on any filter invalid item', () => {
+    const throws = () => {
+      helper.optionsToQuery({ property: { any: [{}] } });
+    };
+    throws.should.throw(Error);
+  });
   it('should have all filter', () => {
     const obj = { property: { all: ['value1', 'value2'] } };
     helper.optionsToQuery(obj).should.have.property('property', 'value1+value2');
@@ -739,9 +773,18 @@ describe('optionsToQuery', () => {
     };
     throws.should.throw(Error);
   });
+  it('should throw on all filter invalid item', () => {
+    const throws = () => {
+      helper.optionsToQuery({ property: { all: [{}] } });
+    };
+    throws.should.throw(Error);
+  });
   it('should throw on invalid filter property value', () => {
     const throws = () => {
-      helper.optionsToQuery({ property: 1 });
+      helper.optionsToQuery({
+        property: () => {
+        }
+      });
     };
     throws.should.throw(Error);
   });
