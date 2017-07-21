@@ -79,7 +79,7 @@ describe('Session class', () => {
   });
   it('should be successful on no token', () => {
     const session = new Session();
-    return session.logout().should.be.eventually.fullfilled;
+    return session.logout().should.be.eventually.fulfilled;
   });
   it('should be rejected on unset clientID', () => {
     const session = new Session();

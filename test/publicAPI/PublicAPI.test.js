@@ -73,7 +73,7 @@ describe('PublicAPI', () => {
 
       return api.resolve()
       .then(() => {
-        api[property].should.be.defined;
+        api[property].should.exist;
         stub.restore();
       })
       .catch((err) => {
@@ -214,7 +214,7 @@ describe('PublicAPI', () => {
     .and.notify(() => stub.restore());
   });
   it('should be successful on no token', () => {
-    return api.logout().should.be.eventually.fullfilled;
+    return api.logout().should.be.eventually.fulfilled;
   });
   it('should be rejected on unset clientID', () => {
     api[tokenStoreSymbol].set('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJlbnRyZWNvZGVUZXN0IiwiaWF0IjoxNDg1NzgzNTg4LCJleHAiOjQ2NDE0NTcxODgsImF1ZCI6IlRlc3QiLCJzdWIiOiJ0ZXN0QGVudHJlY29kZS5kZSJ9.Vhrq5GR2hNz-RoAhdlnIIWHelPciBPCemEa74s7cXn8');
@@ -634,7 +634,7 @@ describe('PublicAPI', () => {
       tags: ['helloTag'],
     }))
     .then((response) => {
-      response.should.be.function;
+      response.should.be.a('function');
       stubGetUrl.restore();
       stubSuperagentPost.restore();
     })
@@ -678,7 +678,7 @@ describe('PublicAPI', () => {
       tags: ['whatwhat'],
     })
     .then((response) => {
-      response.should.be.function;
+      response.should.be.a('function');
       stubGetUrl.restore();
       stubSuperagentPost.restore();
       global.FormData = undefined;
@@ -766,7 +766,7 @@ describe('PublicAPI', () => {
       tags: ['helloTag'],
     }))
     .then((response) => {
-      response.should.be.function;
+      response.should.be.a('function');
       stubGetUrl.restore();
       stubSuperagentPost.restore();
     })
@@ -847,7 +847,7 @@ describe('PublicAPI', () => {
       tags: ['whatwhat'],
     })
     .then((response) => {
-      response.should.be.function;
+      response.should.be.a('function');
       stubGetUrl.restore();
       stubSuperagentPost.restore();
       global.FormData = undefined;

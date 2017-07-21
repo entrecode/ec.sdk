@@ -40,7 +40,7 @@ describe('ListResource', () => {
   });
   it('should return list of Resources on getAllItems', () => {
     const items = list.getAllItems();
-    items.should.be.an.array;
+    items.should.be.an('array');
     items.map(item => item.should.be.instanceOf(Resource));
   });
   it('should return empty array on getAllItems', () => {
@@ -55,7 +55,7 @@ describe('ListResource', () => {
     .then((emptyList) => {
       list = new ListResource(emptyList);
       const items = list.getAllItems();
-      items.should.be.an.array;
+      items.should.be.an('array');
       items.length.should.be.equal(0);
     });
   });
@@ -108,7 +108,7 @@ describe('ListResource', () => {
     return list.followFirstLink()
     .then((l) => {
       l.should.be.instanceOf(ListResource);
-      stub.should.be.called.once;
+      stub.should.be.calledOnce;
       stub.restore();
     });
   });
@@ -118,7 +118,7 @@ describe('ListResource', () => {
 
     return list.followNextLink()
     .then(() => {
-      stub.should.be.called.once;
+      stub.should.be.calledOnce;
       stub.restore();
     });
   });
@@ -128,7 +128,7 @@ describe('ListResource', () => {
 
     return list.followPrevLink()
     .then(() => {
-      stub.should.be.called.once;
+      stub.should.be.calledOnce;
       stub.restore();
     });
   });
@@ -141,7 +141,7 @@ describe('ListResource', () => {
       const spy = sinon.spy(list, 'getProperty');
 
       const property = list[name];
-      spy.should.have.been.called.once;
+      spy.should.have.been.calledOnce;
       spy.should.have.been.calledWith(name);
       property.should.be.equal(list.getProperty(name));
 
@@ -158,7 +158,7 @@ describe('ListResource', () => {
 
     return list.map(dm => dm.getProperty('dataManagerID'))
     .then((result) => {
-      result.should.be.array;
+      result.should.be.an('array');
       result.length.should.be.equal(4);
     });
   });
@@ -171,7 +171,7 @@ describe('ListResource', () => {
 
     return list.map(dm => Promise.resolve(dm.getProperty('dataManagerID')))
     .then((result) => {
-      result.should.be.array;
+      result.should.be.an('array');
       result.length.should.be.equal(4);
     });
   });

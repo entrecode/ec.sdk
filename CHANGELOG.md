@@ -1,3 +1,15 @@
+<a name="0.6.5"></a>
+## 0.6.5 (2017-07-21)
+
+* release version 0.6.5 ([27c544c](https://github.com/entrecode/ec.sdk/commit/27c544c))
+* fix: typo in typings ([84606c3](https://github.com/entrecode/ec.sdk/commit/84606c3))
+* test: fixed all broken assertions ([d14673e](https://github.com/entrecode/ec.sdk/commit/d14673e))
+* docs: reordered badges ([9159f4a](https://github.com/entrecode/ec.sdk/commit/9159f4a))
+* docs(readme): add Greenkeeper badge ([c8033ec](https://github.com/entrecode/ec.sdk/commit/c8033ec))
+* chore(package): update dependencies ([518d29b](https://github.com/entrecode/ec.sdk/commit/518d29b))
+
+
+
 <a name="0.6.4"></a>
 ## 0.6.4 (2017-07-20)
 

@@ -91,7 +91,7 @@ describe('Platform Resource', () => {
       const spy = sinon.spy(resource, 'getProperty');
 
       const property = resource[name];
-      spy.should.have.been.called.once;
+      spy.should.have.been.calledOnce;
       spy.should.have.been.calledWith(name);
       property.should.be.equal(resource.getProperty(name));
 
@@ -105,7 +105,7 @@ describe('Platform Resource', () => {
       const spy = sinon.spy(resource, 'getProperty');
 
       const property = resource[name];
-      spy.should.have.been.called.once;
+      spy.should.have.been.calledOnce;
       spy.should.have.been.calledWith(name);
       property.should.be.equal(resource.getProperty(name));
 
@@ -115,7 +115,7 @@ describe('Platform Resource', () => {
       const spy = sinon.spy(resource, 'setProperty');
 
       resource[name] = resource.getProperty(name);
-      spy.should.have.been.called.once;
+      spy.should.have.been.calledOnce;
       spy.should.have.been.calledWith(name, resource.getProperty(name));
 
       spy.restore();
@@ -178,7 +178,7 @@ describe('Platform Resource', () => {
 
     return resource.createBuild()
     .then(() => {
-      stub.should.be.called.once;
+      stub.should.be.calledOnce;
       stub.restore();
     })
     .catch((err) => {
@@ -243,7 +243,7 @@ describe('Platform Resource', () => {
 
     return resource.createDeployment('id', 'id')
     .then(() => {
-      stub.should.be.called.once;
+      stub.should.be.calledOnce;
       stub.restore();
     })
     .catch((err) => {
@@ -257,7 +257,7 @@ describe('Platform Resource', () => {
 
     return resource.createDeployment(['id'], new BuildResource({ buildID: 'id' }, undefined, {}))
     .then(() => {
-      stub.should.be.called.once;
+      stub.should.be.calledOnce;
       stub.restore();
     })
     .catch((err) => {
@@ -271,7 +271,7 @@ describe('Platform Resource', () => {
 
     return resource.createDeployment(new TargetResource({ targetID: 'id' }, undefined, {}), 'id')
     .then(() => {
-      stub.should.be.called.once;
+      stub.should.be.calledOnce;
       stub.restore();
     })
     .catch((err) => {
@@ -285,7 +285,7 @@ describe('Platform Resource', () => {
 
     return resource.createDeployment([new TargetResource({ targetID: 'id' }, undefined, {})], 'id')
     .then(() => {
-      stub.should.be.called.once;
+      stub.should.be.calledOnce;
       stub.restore();
     })
     .catch((err) => {
@@ -311,7 +311,7 @@ describe('Platform Resource', () => {
     }, undefined, {});
     return resource.createDeployment(target, 'id')
     .then(() => {
-      stub.should.be.called.once;
+      stub.should.be.calledOnce;
       stub.restore();
     })
     .catch((err) => {
@@ -334,7 +334,7 @@ describe('Platform Resource', () => {
 
     return resource.deployLatestBuild('id')
     .then(() => {
-      stub.should.be.called.once;
+      stub.should.be.calledOnce;
       stub.restore();
     })
     .catch((err) => {

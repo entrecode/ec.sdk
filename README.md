@@ -4,7 +4,8 @@
 > 
 > This is under active development and not yet ready for use!
 
-[![npm version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Coverage Status][cover-image]][cover-url] [![NSP Status][nsp-image]][nsp-url] [![Code Climate][cc-image]][cc-url] [![Inline docs][doc-image]][doc-url]
+[![npm version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Coverage Status][cover-image]][cover-url] [![Inline docs][doc-image]][doc-url] [![Greenkeeper badge](https://badges.greenkeeper.io/entrecode/ec.sdk.svg)](https://greenkeeper.io/) [![Code Climate][cc-image]][cc-url] [![NSP Status][nsp-image]][nsp-url]
+
 
 ## Documentation
 

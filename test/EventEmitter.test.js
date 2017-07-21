@@ -30,7 +30,7 @@ describe('Event Emitter', () => {
   it('should call spy', () => {
     emitter.on('test', spy);
     emitter.emit('test', 'hello');
-    spy.should.have.been.called.once;
+    spy.should.have.been.calledOnce;
   });
   it('should remove listener', () => {
     emitter.on('test', spy);

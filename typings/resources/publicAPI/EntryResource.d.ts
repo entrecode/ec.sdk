@@ -6,7 +6,7 @@ export declare class EntryResource extends Resource {
 
   [key: string]: any;
 
-  save(): Promise<EntryResource>
+  save(): Promise<EntryResource>;
 
   getFieldType(property: string): string;
 
