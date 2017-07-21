@@ -1,3 +1,11 @@
+<a name="0.6.6"></a>
+## 0.6.6 (2017-07-21)
+
+* release version 0.6.6 ([35a01c2](https://github.com/entrecode/ec.sdk/commit/35a01c2))
+* chore: adds new npm auth token, hopefully fix deployment builds ([807b7bc](https://github.com/entrecode/ec.sdk/commit/807b7bc))
+
+
+
 <a name="0.6.5"></a>
 ## 0.6.5 (2017-07-21)
 
