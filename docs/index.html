@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset='utf-8' />
-  <title>ec.sdk 0.6.4 | Documentation</title>
+  <title>ec.sdk 0.6.5 | Documentation</title>
   <meta name='viewport' content='width=device-width,initial-scale=1'>
   <link href='assets/bass.css' type='text/css' rel='stylesheet' />
   <link href='assets/style.css' type='text/css' rel='stylesheet' />
@@ -14,7 +14,7 @@
       <div class='fixed xs-hide fix-3 overflow-auto max-height-100'>
         <div class='py1 px2'>
           <h3 class='mb0 no-anchor'>ec.sdk</h3>
-          <div class='mb1'><code>0.6.4</code></div>
+          <div class='mb1'><code>0.6.5</code></div>
           <input
             placeholder='Filter'
             id='filter-input'
@@ -3245,7 +3245,7 @@
 directly. Use one of the other API connectors instead.</p>
 
 
-  <div class='pre p1 fill-light mt0'>new Core()</div>
+  <div class='pre p1 fill-light mt0'>new Core(urls: any, environment: any, cookieModifier: any)</div>
   
   
 
@@ -3256,6 +3256,37 @@ directly. Use one of the other API connectors instead.</p>
   
   
 
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>urls</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>environment</span> <code class='quiet'>(any
+            = <code>&#39;live&#39;</code>)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>cookieModifier</span> <code class='quiet'>(any
+            = <code>&#39;&#39;</code>)</code>
+	    
+          </div>
+          
+        </div>
+      
+    </div>
   
 
   
@@ -3829,7 +3860,7 @@ session.login(email, password)
 to all other API connectors of the same <a href="#environment">environment</a>.</p>
 
 
-  <div class='pre p1 fill-light mt0'>new Session()</div>
+  <div class='pre p1 fill-light mt0'>new Session(environment: any)</div>
   
   
     <p>
@@ -3847,6 +3878,20 @@ to all other API connectors of the same <a href="#environment">environment</a>.<
   
   
 
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>environment</span> <code class='quiet'>(any
+            = <code>&#39;live&#39;</code>)</code>
+	    
+          </div>
+          
+        </div>
+      
+    </div>
   
 
   
@@ -3877,7 +3922,7 @@ to all other API connectors of the same <a href="#environment">environment</a>.<
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>constructor(environment = 'live')</span>
+            <span class='code strong strong truncate'>constructor(environment)</span>
         </div>
       </div>
       <div class="clearfix display-none toggle-target">
@@ -3888,7 +3933,7 @@ to all other API connectors of the same <a href="#environment">environment</a>.<
   <p>Creates a new instance of <a href="#session">Session</a> API connector.</p>
 
 
-  <div class='pre p1 fill-light mt0'>constructor(environment: <a href="#environment">environment</a>??)</div>
+  <div class='pre p1 fill-light mt0'>constructor(environment: <a href="#environment">environment</a>?)</div>
   
   
 
@@ -3905,7 +3950,7 @@ to all other API connectors of the same <a href="#environment">environment</a>.<
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>environment</span> <code class='quiet'>(<a href="#environment">environment</a>??
+            <span class='code bold'>environment</span> <code class='quiet'>(<a href="#environment">environment</a>?
             = <code>&#39;live&#39;</code>)</code>
 	    the environment to connect to.
 
@@ -4231,7 +4276,7 @@ this for ec.accounts only. It contains APIs for profile editing (change email, r
 signup…), permissions, clients, and groups.</p>
 
 
-  <div class='pre p1 fill-light mt0'>new Accounts()</div>
+  <div class='pre p1 fill-light mt0'>new Accounts(environment: any)</div>
   
   
     <p>
@@ -4249,6 +4294,20 @@ signup…), permissions, clients, and groups.</p>
   
   
 
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>environment</span> <code class='quiet'>(any
+            = <code>&#39;live&#39;</code>)</code>
+	    
+          </div>
+          
+        </div>
+      
+    </div>
   
 
   
@@ -4269,7 +4328,7 @@ signup…), permissions, clients, and groups.</p>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>constructor(environment = 'live')</span>
+            <span class='code strong strong truncate'>constructor(environment)</span>
         </div>
       </div>
       <div class="clearfix display-none toggle-target">
@@ -4280,7 +4339,7 @@ signup…), permissions, clients, and groups.</p>
   <p>Creates a new instance of <a href="#accounts">Accounts</a> API connector.</p>
 
 
-  <div class='pre p1 fill-light mt0'>constructor(environment: <a href="#environment">environment</a>??)</div>
+  <div class='pre p1 fill-light mt0'>constructor(environment: <a href="#environment">environment</a>?)</div>
   
   
 
@@ -4297,7 +4356,7 @@ signup…), permissions, clients, and groups.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>environment</span> <code class='quiet'>(<a href="#environment">environment</a>??
+            <span class='code bold'>environment</span> <code class='quiet'>(<a href="#environment">environment</a>?
             = <code>&#39;live&#39;</code>)</code>
 	    the 
 <a href="#environment">environment</a>
@@ -5716,7 +5775,7 @@ token response.
   <p>This API connector can be used for Appserver APIs.</p>
 
 
-  <div class='pre p1 fill-light mt0'>new Apps()</div>
+  <div class='pre p1 fill-light mt0'>new Apps(environment: any)</div>
   
   
     <p>
@@ -5734,6 +5793,20 @@ token response.
   
   
 
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>environment</span> <code class='quiet'>(any
+            = <code>&#39;live&#39;</code>)</code>
+	    
+          </div>
+          
+        </div>
+      
+    </div>
   
 
   
@@ -5754,7 +5827,7 @@ token response.
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>constructor(environment = 'live')</span>
+            <span class='code strong strong truncate'>constructor(environment)</span>
         </div>
       </div>
       <div class="clearfix display-none toggle-target">
@@ -5765,7 +5838,7 @@ token response.
   <p>Creates a new instance of <a href="#apps">Apps</a> API connector.</p>
 
 
-  <div class='pre p1 fill-light mt0'>constructor(environment: <a href="#environment">environment</a>??)</div>
+  <div class='pre p1 fill-light mt0'>constructor(environment: <a href="#environment">environment</a>?)</div>
   
   
 
@@ -5782,7 +5855,7 @@ token response.
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>environment</span> <code class='quiet'>(<a href="#environment">environment</a>??
+            <span class='code bold'>environment</span> <code class='quiet'>(<a href="#environment">environment</a>?
             = <code>&#39;live&#39;</code>)</code>
 	    the environment to connect to.
 
@@ -6238,7 +6311,7 @@ types.</p>
 contains APIs for DataManagers, Models, Fields, Hooks, and Policies.</p>
 
 
-  <div class='pre p1 fill-light mt0'>new DataManager()</div>
+  <div class='pre p1 fill-light mt0'>new DataManager(environment: any)</div>
   
   
     <p>
@@ -6256,6 +6329,20 @@ contains APIs for DataManagers, Models, Fields, Hooks, and Policies.</p>
   
   
 
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>environment</span> <code class='quiet'>(any
+            = <code>&#39;live&#39;</code>)</code>
+	    
+          </div>
+          
+        </div>
+      
+    </div>
   
 
   
@@ -6276,7 +6363,7 @@ contains APIs for DataManagers, Models, Fields, Hooks, and Policies.</p>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>constructor(environment = 'live')</span>
+            <span class='code strong strong truncate'>constructor(environment)</span>
         </div>
       </div>
       <div class="clearfix display-none toggle-target">
@@ -6287,7 +6374,7 @@ contains APIs for DataManagers, Models, Fields, Hooks, and Policies.</p>
   <p>Creates a new instance of <a href="#datamanager">DataManager</a> API connector.</p>
 
 
-  <div class='pre p1 fill-light mt0'>constructor(environment: <a href="#environment">environment</a>??)</div>
+  <div class='pre p1 fill-light mt0'>constructor(environment: <a href="#environment">environment</a>?)</div>
   
   
 
@@ -6304,7 +6391,7 @@ contains APIs for DataManagers, Models, Fields, Hooks, and Policies.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>environment</span> <code class='quiet'>(<a href="#environment">environment</a>??
+            <span class='code bold'>environment</span> <code class='quiet'>(<a href="#environment">environment</a>?
             = <code>&#39;live&#39;</code>)</code>
 	    the environment to connect to.
 
@@ -7191,7 +7278,7 @@ tokenStore for ecUsers and not the ones for each Data Manager. If you don't do t
 the token with <code>publicAPI.setToken(session.getToken());</code>.</p>
 
 
-  <div class='pre p1 fill-light mt0'>new PublicAPI()</div>
+  <div class='pre p1 fill-light mt0'>new PublicAPI(id: any, environment: any, ecUser: any)</div>
   
   
     <p>
@@ -7209,6 +7296,37 @@ the token with <code>publicAPI.setToken(session.getToken());</code>.</p>
   
   
 
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>id</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>environment</span> <code class='quiet'>(any
+            = <code>&#39;live&#39;</code>)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>ecUser</span> <code class='quiet'>(any
+            = <code>false</code>)</code>
+	    
+          </div>
+          
+        </div>
+      
+    </div>
   
 
   
@@ -7229,7 +7347,7 @@ the token with <code>publicAPI.setToken(session.getToken());</code>.</p>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>constructor(id, environment = 'live', ecUser = false)</span>
+            <span class='code strong strong truncate'>constructor(id, environment, ecUser)</span>
         </div>
       </div>
       <div class="clearfix display-none toggle-target">
@@ -7240,7 +7358,7 @@ the token with <code>publicAPI.setToken(session.getToken());</code>.</p>
   <p>Creates a new instance of <a href="#publicapi">PublicAPI</a> API connector.</p>
 
 
-  <div class='pre p1 fill-light mt0'>constructor(id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, environment: <a href="#environment">environment</a>??, ecUser: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>?)</div>
+  <div class='pre p1 fill-light mt0'>constructor(id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, environment: <a href="#environment">environment</a>?, ecUser: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>)</div>
   
   
 
@@ -7266,7 +7384,7 @@ the token with <code>publicAPI.setToken(session.getToken());</code>.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>environment</span> <code class='quiet'>(<a href="#environment">environment</a>??
+            <span class='code bold'>environment</span> <code class='quiet'>(<a href="#environment">environment</a>?
             = <code>&#39;live&#39;</code>)</code>
 	    the environment to connect to.
 
@@ -7276,7 +7394,7 @@ the token with <code>publicAPI.setToken(session.getToken());</code>.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>ecUser</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>?
+            <span class='code bold'>ecUser</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>
             = <code>false</code>)</code>
 	    if you are an ecUser it is best to set this to true
 
@@ -8045,7 +8163,7 @@ token response.
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>getSchema(model, method = 'get')</span>
+            <span class='code strong strong truncate'>getSchema(model, method)</span>
         </div>
       </div>
       <div class="clearfix display-none toggle-target">
@@ -8057,7 +8175,7 @@ token response.
 load.</p>
 
 
-  <div class='pre p1 fill-light mt0'>getSchema(model: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, method: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>></div>
+  <div class='pre p1 fill-light mt0'>getSchema(model: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, method: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>></div>
   
   
 
@@ -8083,7 +8201,7 @@ load.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>method</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?
+            <span class='code bold'>method</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>
             = <code>&#39;get&#39;</code>)</code>
 	    the method for which the JSON Schema should be loaded
 
@@ -8213,7 +8331,7 @@ load.</p>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>entry(model, id, options = {})</span>
+            <span class='code strong strong truncate'>entry(model, id, options)</span>
         </div>
       </div>
       <div class="clearfix display-none toggle-target">
@@ -8224,7 +8342,7 @@ load.</p>
   <p>Load a single <a href="#entryresource">EntryResource</a>.</p>
 
 
-  <div class='pre p1 fill-light mt0'>entry(model: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, options: (<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)?): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#entryresource">EntryResource</a>></div>
+  <div class='pre p1 fill-light mt0'>entry(model: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, options: (<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#entryresource">EntryResource</a>></div>
   
   
 
@@ -8259,7 +8377,7 @@ load.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>options</span> <code class='quiet'>((<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)?
+            <span class='code bold'>options</span> <code class='quiet'>((<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)
             = <code>{}</code>)</code>
 	    options for this entry
 request
@@ -8387,7 +8505,7 @@ request
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>checkPermission(permission, refresh = false)</span>
+            <span class='code strong strong truncate'>checkPermission(permission, refresh)</span>
         </div>
       </div>
       <div class="clearfix display-none toggle-target">
@@ -8398,7 +8516,7 @@ request
   <p>Checks a permission for the currently logged in public user</p>
 
 
-  <div class='pre p1 fill-light mt0'>checkPermission(permission: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, refresh: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>?): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>></div>
+  <div class='pre p1 fill-light mt0'>checkPermission(permission: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, refresh: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>></div>
   
   
 
@@ -8424,7 +8542,7 @@ request
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>refresh</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>?
+            <span class='code bold'>refresh</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>
             = <code>false</code>)</code>
 	    whether or not it should use a cached response
 
@@ -8622,7 +8740,7 @@ request
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>createAsset(input, options = {})</span>
+            <span class='code strong strong truncate'>createAsset(input, options)</span>
         </div>
       </div>
       <div class="clearfix display-none toggle-target">
@@ -8633,7 +8751,7 @@ request
   <p>Create a new asset.</p>
 
 
-  <div class='pre p1 fill-light mt0'>createAsset(input: (<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>), options: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#publicassetresource">PublicAssetResource</a>>></div>
+  <div class='pre p1 fill-light mt0'>createAsset(input: (<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>), options: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#publicassetresource">PublicAssetResource</a>>></div>
   
   
 
@@ -8660,7 +8778,7 @@ a readStream, or an object containing a buffer.
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>options</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?
+            <span class='code bold'>options</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>
             = <code>{}</code>)</code>
 	    options for creating an asset.
 
@@ -8701,7 +8819,7 @@ a readStream, or an object containing a buffer.
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>createAssets(input, options = {})</span>
+            <span class='code strong strong truncate'>createAssets(input, options)</span>
         </div>
       </div>
       <div class="clearfix display-none toggle-target">
@@ -8712,7 +8830,7 @@ a readStream, or an object containing a buffer.
   <p>Create multiple new asset.</p>
 
 
-  <div class='pre p1 fill-light mt0'>createAssets(input: (<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">array</a>&#x3C;(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)>), options: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#assetlist">AssetList</a>>></div>
+  <div class='pre p1 fill-light mt0'>createAssets(input: (<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">array</a>&#x3C;(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)>), options: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#assetlist">AssetList</a>>></div>
   
   
 
@@ -8739,7 +8857,7 @@ FormData object, a array of readStreams, or an array containing buffers.
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>options</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?
+            <span class='code bold'>options</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>
             = <code>{}</code>)</code>
 	    options for creating an asset.
 
@@ -9070,6 +9188,37 @@ used as key to store tokens into cookies (for browsers).</p>
   
 
   
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>urls</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>environment</span> <code class='quiet'>(any
+            = <code>&#39;live&#39;</code>)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>cookieModifier</span> <code class='quiet'>(any
+            = <code>&#39;&#39;</code>)</code>
+	    
+          </div>
+          
+        </div>
+      
+    </div>
+  
 
   
 
@@ -9136,7 +9285,7 @@ Problems also comply to <a href="https://tools.ietf.org/html/draft-kelly-json-ha
 getLinks).</p>
 
 
-  <div class='pre p1 fill-light mt0'>new Problem()</div>
+  <div class='pre p1 fill-light mt0'>new Problem(error: any)</div>
   
   
     <p>
@@ -9154,6 +9303,19 @@ getLinks).</p>
   
   
 
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>error</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+    </div>
   
 
   
@@ -9738,7 +9900,7 @@ parameter.</p>
   <p>Generic resource class. Represents <a href="https://tools.ietf.org/html/draft-kelly-json-hal-08">HAL resources</a>.</p>
 
 
-  <div class='pre p1 fill-light mt0'>new Resource()</div>
+  <div class='pre p1 fill-light mt0'>new Resource(resource: any, environment: any, traversal: any)</div>
   
   
 
@@ -9749,6 +9911,36 @@ parameter.</p>
   
   
 
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>resource</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>environment</span> <code class='quiet'>(any
+            = <code>&#39;live&#39;</code>)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>traversal</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+    </div>
   
 
   
@@ -9781,7 +9973,7 @@ parameter.</p>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>constructor(resource, environment = 'live', traversal)</span>
+            <span class='code strong strong truncate'>constructor(resource, environment, traversal)</span>
         </div>
       </div>
       <div class="clearfix display-none toggle-target">
@@ -9792,7 +9984,7 @@ parameter.</p>
   <p>Creates a new <a href="#resource">Resource</a>.</p>
 
 
-  <div class='pre p1 fill-light mt0'>constructor(resource: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, environment: <a href="#environment">environment</a>?, traversal: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</div>
+  <div class='pre p1 fill-light mt0'>constructor(resource: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, environment: <a href="#environment">environment</a>, traversal: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</div>
   
   
 
@@ -9818,7 +10010,7 @@ parameter.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>environment</span> <code class='quiet'>(<a href="#environment">environment</a>?
+            <span class='code bold'>environment</span> <code class='quiet'>(<a href="#environment">environment</a>
             = <code>&#39;live&#39;</code>)</code>
 	    the environment this resource is associated to.
 
@@ -10356,7 +10548,7 @@ resource.</p>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>followLink(link, ResourceClass = Resource, name, schema)</span>
+            <span class='code strong strong truncate'>followLink(link, ResourceClass, name, schema)</span>
         </div>
       </div>
       <div class="clearfix display-none toggle-target">
@@ -10368,7 +10560,7 @@ resource.</p>
 returns a <a href="#resource">Resource</a> with the loaded result.</p>
 
 
-  <div class='pre p1 fill-light mt0'>followLink(link: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, ResourceClass: class?, name: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?, schema: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;(<a href="#resource">Resource</a> | ResourceClass)></div>
+  <div class='pre p1 fill-light mt0'>followLink(link: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, ResourceClass: class, name: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?, schema: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;(<a href="#resource">Resource</a> | ResourceClass)></div>
   
   
 
@@ -10394,7 +10586,7 @@ returns a <a href="#resource">Resource</a> with the loaded result.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>ResourceClass</span> <code class='quiet'>(class?
+            <span class='code bold'>ResourceClass</span> <code class='quiet'>(class
             = <code>Resource</code>)</code>
 	    override the default resource class (
 <a href="#resource">Resource</a>
@@ -10760,7 +10952,7 @@ when properties array is empty or undefined.</p>
   <p>Generic list resource class. Represents <a href="https://tools.ietf.org/html/draft-kelly-json-hal-08">HAL resources</a> with added support for lists.</p>
 
 
-  <div class='pre p1 fill-light mt0'>new ListResource()</div>
+  <div class='pre p1 fill-light mt0'>new ListResource(resource: any, environment: any, traversal: any, name: any, itemSchema: any, ListClass: any, ItemClass: any)</div>
   
   
     <p>
@@ -10778,6 +10970,69 @@ when properties array is empty or undefined.</p>
   
   
 
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>resource</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>environment</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>traversal</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>name</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>itemSchema</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>ListClass</span> <code class='quiet'>(any
+            = <code>ListResource</code>)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>ItemClass</span> <code class='quiet'>(any
+            = <code>Resource</code>)</code>
+	    
+          </div>
+          
+        </div>
+      
+    </div>
   
 
   
@@ -10817,7 +11072,7 @@ when properties array is empty or undefined.</p>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>constructor(resource, environment, traversal, name, itemSchema, ListClass = ListResource, ItemClass = Resource)</span>
+            <span class='code strong strong truncate'>constructor(resource, environment, traversal, name, itemSchema, ListClass, ItemClass)</span>
         </div>
       </div>
       <div class="clearfix display-none toggle-target">
@@ -10828,7 +11083,7 @@ when properties array is empty or undefined.</p>
   <p>Creates a new <a href="#listresource">ListResource</a>.</p>
 
 
-  <div class='pre p1 fill-light mt0'>constructor(resource: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, environment: <a href="#environment">environment</a>, traversal: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?, name: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?, itemSchema: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?, ListClass: <a href="#listresource">ListResource</a>?, ItemClass: <a href="#resource">Resource</a>?)</div>
+  <div class='pre p1 fill-light mt0'>constructor(resource: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, environment: <a href="#environment">environment</a>, traversal: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?, name: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?, itemSchema: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?, ListClass: <a href="#listresource">ListResource</a>, ItemClass: <a href="#resource">Resource</a>)</div>
   
   
 
@@ -10890,7 +11145,7 @@ when properties array is empty or undefined.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>ListClass</span> <code class='quiet'>(<a href="#listresource">ListResource</a>?
+            <span class='code bold'>ListClass</span> <code class='quiet'>(<a href="#listresource">ListResource</a>
             = <code>ListResource</code>)</code>
 	    Class constructor for list types
 
@@ -10900,7 +11155,7 @@ when properties array is empty or undefined.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>ItemClass</span> <code class='quiet'>(<a href="#resource">Resource</a>?
+            <span class='code bold'>ItemClass</span> <code class='quiet'>(<a href="#resource">Resource</a>
             = <code>Resource</code>)</code>
 	    Class constructor for item types
 
@@ -11683,7 +11938,7 @@ object will be applied when loading a <a href="#listresource">ListResource</a>.<
   <p>Account resource class</p>
 
 
-  <div class='pre p1 fill-light mt0'>new AccountResource()</div>
+  <div class='pre p1 fill-light mt0'>new AccountResource(resource: any, environment: any, traversal: any)</div>
   
   
     <p>
@@ -11701,6 +11956,35 @@ object will be applied when loading a <a href="#listresource">ListResource</a>.<
   
   
 
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>resource</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>environment</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>traversal</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+    </div>
   
 
   
@@ -12144,7 +12428,7 @@ permissions and all group permissions.</p>
   <p>Account list resource class.</p>
 
 
-  <div class='pre p1 fill-light mt0'>new AccountList()</div>
+  <div class='pre p1 fill-light mt0'>new AccountList(resource: any, environment: any, traversal: any)</div>
   
   
     <p>
@@ -12162,6 +12446,35 @@ permissions and all group permissions.</p>
   
   
 
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>resource</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>environment</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>traversal</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+    </div>
   
 
   
@@ -12282,7 +12595,7 @@ permissions and all group permissions.</p>
   <p>TokenResource class</p>
 
 
-  <div class='pre p1 fill-light mt0'>new TokenResource()</div>
+  <div class='pre p1 fill-light mt0'>new TokenResource(resource: any, environment: any, traversal: any)</div>
   
   
     <p>
@@ -12300,6 +12613,35 @@ permissions and all group permissions.</p>
   
   
 
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>resource</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>environment</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>traversal</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+    </div>
   
 
   
@@ -12478,7 +12820,7 @@ permissions and all group permissions.</p>
   <p>Token list class</p>
 
 
-  <div class='pre p1 fill-light mt0'>new TokenList()</div>
+  <div class='pre p1 fill-light mt0'>new TokenList(resource: any, environment: any, traversal: any)</div>
   
   
     <p>
@@ -12496,6 +12838,35 @@ permissions and all group permissions.</p>
   
   
 
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>resource</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>environment</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>traversal</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+    </div>
   
 
   
@@ -12616,7 +12987,7 @@ permissions and all group permissions.</p>
   <p>ClientResource class</p>
 
 
-  <div class='pre p1 fill-light mt0'>new ClientResource()</div>
+  <div class='pre p1 fill-light mt0'>new ClientResource(resource: any, environment: any, traversal: any)</div>
   
   
     <p>
@@ -12634,6 +13005,35 @@ permissions and all group permissions.</p>
   
   
 
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>resource</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>environment</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>traversal</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+    </div>
   
 
   
@@ -12780,7 +13180,7 @@ permissions and all group permissions.</p>
   <p>Client list class</p>
 
 
-  <div class='pre p1 fill-light mt0'>new ClientList()</div>
+  <div class='pre p1 fill-light mt0'>new ClientList(resource: any, environment: any, traversal: any)</div>
   
   
     <p>
@@ -12798,6 +13198,35 @@ permissions and all group permissions.</p>
   
   
 
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>resource</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>environment</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>traversal</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+    </div>
   
 
   
@@ -12970,7 +13399,7 @@ permissions and all group permissions.</p>
   <p>GroupResource class</p>
 
 
-  <div class='pre p1 fill-light mt0'>new GroupResource()</div>
+  <div class='pre p1 fill-light mt0'>new GroupResource(resource: any, environment: any, traversal: any)</div>
   
   
     <p>
@@ -12988,6 +13417,35 @@ permissions and all group permissions.</p>
   
   
 
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>resource</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>environment</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>traversal</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+    </div>
   
 
   
@@ -13202,7 +13660,7 @@ permissions and all group permissions.</p>
   <p>GroupList list class</p>
 
 
-  <div class='pre p1 fill-light mt0'>new GroupList()</div>
+  <div class='pre p1 fill-light mt0'>new GroupList(resource: any, environment: any, traversal: any)</div>
   
   
     <p>
@@ -13220,6 +13678,35 @@ permissions and all group permissions.</p>
   
   
 
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>resource</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>environment</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>traversal</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+    </div>
   
 
   
@@ -13340,7 +13827,7 @@ permissions and all group permissions.</p>
   <p>Invites Resource. Will contain an <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a> containing all unused invites.</p>
 
 
-  <div class='pre p1 fill-light mt0'>new InvitesResource()</div>
+  <div class='pre p1 fill-light mt0'>new InvitesResource(resource: any, environment: any, traversal: any)</div>
   
   
     <p>
@@ -13358,6 +13845,35 @@ permissions and all group permissions.</p>
   
   
 
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>resource</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>environment</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>traversal</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+    </div>
   
 
   
@@ -13490,7 +14006,7 @@ permissions and all group permissions.</p>
   <p>InvalidPermissionsResource class</p>
 
 
-  <div class='pre p1 fill-light mt0'>new InvalidPermissionsResource()</div>
+  <div class='pre p1 fill-light mt0'>new InvalidPermissionsResource(resource: any, environment: any, traversal: any)</div>
   
   
     <p>
@@ -13508,6 +14024,35 @@ permissions and all group permissions.</p>
   
   
 
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>resource</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>environment</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>traversal</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+    </div>
   
 
   
@@ -13666,7 +14211,7 @@ permissions and all group permissions.</p>
   <p>AppResource class</p>
 
 
-  <div class='pre p1 fill-light mt0'>new AppResource()</div>
+  <div class='pre p1 fill-light mt0'>new AppResource(resource: any, environment: any, traversal: any)</div>
   
   
     <p>
@@ -13684,6 +14229,35 @@ permissions and all group permissions.</p>
   
   
 
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>resource</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>environment</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>traversal</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+    </div>
   
 
   
@@ -14706,7 +15280,7 @@ by the options parameter.</p>
   <p>App list class</p>
 
 
-  <div class='pre p1 fill-light mt0'>new AppList()</div>
+  <div class='pre p1 fill-light mt0'>new AppList(resource: any, environment: any, traversal: any)</div>
   
   
     <p>
@@ -14724,6 +15298,35 @@ by the options parameter.</p>
   
   
 
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>resource</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>environment</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>traversal</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+    </div>
   
 
   
@@ -14844,7 +15447,7 @@ by the options parameter.</p>
   <p>TypesResource class</p>
 
 
-  <div class='pre p1 fill-light mt0'>new TypesResource()</div>
+  <div class='pre p1 fill-light mt0'>new TypesResource(resource: any, environment: any, traversal: any)</div>
   
   
     <p>
@@ -14862,6 +15465,35 @@ by the options parameter.</p>
   
   
 
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>resource</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>environment</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>traversal</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+    </div>
   
 
   
@@ -15964,7 +16596,7 @@ by the options parameter.</p>
   <p>AppStatsResource class</p>
 
 
-  <div class='pre p1 fill-light mt0'>new AppStatsResource()</div>
+  <div class='pre p1 fill-light mt0'>new AppStatsResource(resource: any, environment: any, traversal: any)</div>
   
   
     <p>
@@ -15982,6 +16614,35 @@ by the options parameter.</p>
   
   
 
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>resource</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>environment</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>traversal</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+    </div>
   
 
   
@@ -16184,7 +16845,7 @@ by the options parameter.</p>
   <p>AppStats list class</p>
 
 
-  <div class='pre p1 fill-light mt0'>new AppStatsList()</div>
+  <div class='pre p1 fill-light mt0'>new AppStatsList(resource: any, environment: any, traversal: any)</div>
   
   
     <p>
@@ -16202,6 +16863,35 @@ by the options parameter.</p>
   
   
 
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>resource</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>environment</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>traversal</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+    </div>
   
 
   
@@ -16322,7 +17012,7 @@ by the options parameter.</p>
   <p>PlatformResource class</p>
 
 
-  <div class='pre p1 fill-light mt0'>new PlatformResource()</div>
+  <div class='pre p1 fill-light mt0'>new PlatformResource(resource: any, environment: any, traversal: any)</div>
   
   
     <p>
@@ -16340,6 +17030,35 @@ by the options parameter.</p>
   
   
 
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>resource</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>environment</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>traversal</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+    </div>
   
 
   
@@ -17352,7 +18071,7 @@ by the options parameter.</p>
   <p>Platform list class</p>
 
 
-  <div class='pre p1 fill-light mt0'>new PlatformList()</div>
+  <div class='pre p1 fill-light mt0'>new PlatformList(resource: any, environment: any, traversal: any)</div>
   
   
     <p>
@@ -17370,6 +18089,35 @@ by the options parameter.</p>
   
   
 
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>resource</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>environment</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>traversal</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+    </div>
   
 
   
@@ -17490,7 +18238,7 @@ by the options parameter.</p>
   <p>CodeSourceResource class</p>
 
 
-  <div class='pre p1 fill-light mt0'>new CodeSourceResource()</div>
+  <div class='pre p1 fill-light mt0'>new CodeSourceResource(resource: any, environment: any, traversal: any)</div>
   
   
     <p>
@@ -17508,6 +18256,35 @@ by the options parameter.</p>
   
   
 
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>resource</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>environment</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>traversal</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+    </div>
   
 
   
@@ -17654,7 +18431,7 @@ by the options parameter.</p>
   <p>CodeSource list class</p>
 
 
-  <div class='pre p1 fill-light mt0'>new CodeSourceList()</div>
+  <div class='pre p1 fill-light mt0'>new CodeSourceList(resource: any, environment: any, traversal: any)</div>
   
   
     <p>
@@ -17672,6 +18449,35 @@ by the options parameter.</p>
   
   
 
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>resource</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>environment</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>traversal</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+    </div>
   
 
   
@@ -17792,7 +18598,7 @@ by the options parameter.</p>
   <p>DataSourceResource class</p>
 
 
-  <div class='pre p1 fill-light mt0'>new DataSourceResource()</div>
+  <div class='pre p1 fill-light mt0'>new DataSourceResource(resource: any, environment: any, traversal: any)</div>
   
   
     <p>
@@ -17810,6 +18616,35 @@ by the options parameter.</p>
   
   
 
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>resource</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>environment</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>traversal</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+    </div>
   
 
   
@@ -17956,7 +18791,7 @@ by the options parameter.</p>
   <p>DataSource list class</p>
 
 
-  <div class='pre p1 fill-light mt0'>new DataSourceList()</div>
+  <div class='pre p1 fill-light mt0'>new DataSourceList(resource: any, environment: any, traversal: any)</div>
   
   
     <p>
@@ -17974,6 +18809,35 @@ by the options parameter.</p>
   
   
 
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>resource</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>environment</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>traversal</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+    </div>
   
 
   
@@ -18094,7 +18958,7 @@ by the options parameter.</p>
   <p>TargetResource class</p>
 
 
-  <div class='pre p1 fill-light mt0'>new TargetResource()</div>
+  <div class='pre p1 fill-light mt0'>new TargetResource(resource: any, environment: any, traversal: any)</div>
   
   
     <p>
@@ -18112,6 +18976,35 @@ by the options parameter.</p>
   
   
 
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>resource</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>environment</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>traversal</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+    </div>
   
 
   
@@ -18258,7 +19151,7 @@ by the options parameter.</p>
   <p>Target list class</p>
 
 
-  <div class='pre p1 fill-light mt0'>new TargetList()</div>
+  <div class='pre p1 fill-light mt0'>new TargetList(resource: any, environment: any, traversal: any)</div>
   
   
     <p>
@@ -18276,6 +19169,35 @@ by the options parameter.</p>
   
   
 
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>resource</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>environment</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>traversal</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+    </div>
   
 
   
@@ -18396,7 +19318,7 @@ by the options parameter.</p>
   <p>BuildResource class</p>
 
 
-  <div class='pre p1 fill-light mt0'>new BuildResource()</div>
+  <div class='pre p1 fill-light mt0'>new BuildResource(resource: any, environment: any, traversal: any)</div>
   
   
     <p>
@@ -18414,6 +19336,35 @@ by the options parameter.</p>
   
   
 
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>resource</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>environment</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>traversal</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+    </div>
   
 
   
@@ -18546,7 +19497,7 @@ by the options parameter.</p>
   <p>CodeSource list class</p>
 
 
-  <div class='pre p1 fill-light mt0'>new BuildList()</div>
+  <div class='pre p1 fill-light mt0'>new BuildList(resource: any, environment: any, traversal: any)</div>
   
   
     <p>
@@ -18564,6 +19515,35 @@ by the options parameter.</p>
   
   
 
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>resource</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>environment</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>traversal</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+    </div>
   
 
   
@@ -18684,7 +19664,7 @@ by the options parameter.</p>
   <p>DeploymentResource class</p>
 
 
-  <div class='pre p1 fill-light mt0'>new DeploymentResource()</div>
+  <div class='pre p1 fill-light mt0'>new DeploymentResource(resource: any, environment: any, traversal: any)</div>
   
   
     <p>
@@ -18702,6 +19682,35 @@ by the options parameter.</p>
   
   
 
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>resource</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>environment</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>traversal</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+    </div>
   
 
   
@@ -18834,7 +19843,7 @@ by the options parameter.</p>
   <p>CodeSource list class</p>
 
 
-  <div class='pre p1 fill-light mt0'>new DeploymentList()</div>
+  <div class='pre p1 fill-light mt0'>new DeploymentList(resource: any, environment: any, traversal: any)</div>
   
   
     <p>
@@ -18852,6 +19861,35 @@ by the options parameter.</p>
   
   
 
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>resource</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>environment</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>traversal</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+    </div>
   
 
   
@@ -18987,7 +20025,7 @@ by the options parameter.</p>
   <p>DataManager resource class.</p>
 
 
-  <div class='pre p1 fill-light mt0'>new DataManagerResource()</div>
+  <div class='pre p1 fill-light mt0'>new DataManagerResource(resource: any, environment: any, traversal: any)</div>
   
   
     <p>
@@ -19005,6 +20043,35 @@ by the options parameter.</p>
   
   
 
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>resource</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>environment</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>traversal</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+    </div>
   
 
   
@@ -20164,7 +21231,7 @@ by the options parameter.</p>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>createAsset(input, options = {})</span>
+            <span class='code strong strong truncate'>createAsset(input, options)</span>
         </div>
       </div>
       <div class="clearfix display-none toggle-target">
@@ -20175,7 +21242,7 @@ by the options parameter.</p>
   <p>Create a new asset.</p>
 
 
-  <div class='pre p1 fill-light mt0'>createAsset(input: (<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>), options: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#assetresource">AssetResource</a>>></div>
+  <div class='pre p1 fill-light mt0'>createAsset(input: (<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>), options: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#assetresource">AssetResource</a>>></div>
   
   
 
@@ -20202,7 +21269,7 @@ a readStream, or an object containing a buffer.
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>options</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?
+            <span class='code bold'>options</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>
             = <code>{}</code>)</code>
 	    options for creating an asset.
 
@@ -20243,7 +21310,7 @@ a readStream, or an object containing a buffer.
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>createAssets(input, options = {})</span>
+            <span class='code strong strong truncate'>createAssets(input, options)</span>
         </div>
       </div>
       <div class="clearfix display-none toggle-target">
@@ -20254,7 +21321,7 @@ a readStream, or an object containing a buffer.
   <p>Create multiple new asset.</p>
 
 
-  <div class='pre p1 fill-light mt0'>createAssets(input: (<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">array</a>&#x3C;(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)>), options: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#assetlist">AssetList</a>>></div>
+  <div class='pre p1 fill-light mt0'>createAssets(input: (<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">array</a>&#x3C;(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)>), options: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#assetlist">AssetList</a>>></div>
   
   
 
@@ -20281,7 +21348,7 @@ FormData object, a array of readStreams, or an array containing buffers.
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>options</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?
+            <span class='code bold'>options</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>
             = <code>{}</code>)</code>
 	    options for creating an asset.
 
@@ -20398,7 +21465,7 @@ FormData object, a array of readStreams, or an array containing buffers.
   <p>DataManager list resource class.</p>
 
 
-  <div class='pre p1 fill-light mt0'>new DataManagerList()</div>
+  <div class='pre p1 fill-light mt0'>new DataManagerList(resource: any, environment: any, traversal: any)</div>
   
   
     <p>
@@ -20416,6 +21483,35 @@ FormData object, a array of readStreams, or an array containing buffers.
   
   
 
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>resource</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>environment</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>traversal</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+    </div>
   
 
   
@@ -20536,7 +21632,7 @@ FormData object, a array of readStreams, or an array containing buffers.
   <p>Model resource class</p>
 
 
-  <div class='pre p1 fill-light mt0'>new ModelResource()</div>
+  <div class='pre p1 fill-light mt0'>new ModelResource(resource: any, environment: any, traversal: any)</div>
   
   
     <p>
@@ -20554,6 +21650,35 @@ FormData object, a array of readStreams, or an array containing buffers.
   
   
 
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>resource</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>environment</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>traversal</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+    </div>
   
 
   
@@ -20763,7 +21888,7 @@ FormData object, a array of readStreams, or an array containing buffers.
   <p>Model list resource class.</p>
 
 
-  <div class='pre p1 fill-light mt0'>new ModelList()</div>
+  <div class='pre p1 fill-light mt0'>new ModelList(resource: any, environment: any, traversal: any)</div>
   
   
     <p>
@@ -20781,6 +21906,35 @@ FormData object, a array of readStreams, or an array containing buffers.
   
   
 
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>resource</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>environment</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>traversal</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+    </div>
   
 
   
@@ -21188,7 +22342,7 @@ FormData object, a array of readStreams, or an array containing buffers.
   <p>DM Account resource class</p>
 
 
-  <div class='pre p1 fill-light mt0'>new DMAccountResource()</div>
+  <div class='pre p1 fill-light mt0'>new DMAccountResource(resource: any, environment: any, traversal: any)</div>
   
   
     <p>
@@ -21206,6 +22360,35 @@ FormData object, a array of readStreams, or an array containing buffers.
   
   
 
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>resource</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>environment</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>traversal</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+    </div>
   
 
   
@@ -21359,7 +22542,7 @@ FormData object, a array of readStreams, or an array containing buffers.
   <p>Account list resource class.</p>
 
 
-  <div class='pre p1 fill-light mt0'>new DMAccountList()</div>
+  <div class='pre p1 fill-light mt0'>new DMAccountList(resource: any, environment: any, traversal: any)</div>
   
   
     <p>
@@ -21377,6 +22560,35 @@ FormData object, a array of readStreams, or an array containing buffers.
   
   
 
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>resource</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>environment</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>traversal</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+    </div>
   
 
   
@@ -21497,7 +22709,7 @@ FormData object, a array of readStreams, or an array containing buffers.
   <p>DMClientResource class</p>
 
 
-  <div class='pre p1 fill-light mt0'>new DMClientResource()</div>
+  <div class='pre p1 fill-light mt0'>new DMClientResource(resource: any, environment: any, traversal: any)</div>
   
   
     <p>
@@ -21515,6 +22727,35 @@ FormData object, a array of readStreams, or an array containing buffers.
   
   
 
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>resource</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>environment</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>traversal</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+    </div>
   
 
   
@@ -21654,7 +22895,7 @@ FormData object, a array of readStreams, or an array containing buffers.
   <p>Client list class</p>
 
 
-  <div class='pre p1 fill-light mt0'>new DMClientList()</div>
+  <div class='pre p1 fill-light mt0'>new DMClientList(resource: any, environment: any, traversal: any)</div>
   
   
     <p>
@@ -21672,6 +22913,35 @@ FormData object, a array of readStreams, or an array containing buffers.
   
   
 
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>resource</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>environment</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>traversal</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+    </div>
   
 
   
@@ -21792,7 +23062,7 @@ FormData object, a array of readStreams, or an array containing buffers.
   <p>Role resource class</p>
 
 
-  <div class='pre p1 fill-light mt0'>new RoleResource()</div>
+  <div class='pre p1 fill-light mt0'>new RoleResource(resource: any, environment: any, traversal: any)</div>
   
   
     <p>
@@ -21810,6 +23080,35 @@ FormData object, a array of readStreams, or an array containing buffers.
   
   
 
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>resource</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>environment</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>traversal</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+    </div>
   
 
   
@@ -21977,7 +23276,7 @@ FormData object, a array of readStreams, or an array containing buffers.
   <p>Client list class</p>
 
 
-  <div class='pre p1 fill-light mt0'>new RoleList()</div>
+  <div class='pre p1 fill-light mt0'>new RoleList(resource: any, environment: any, traversal: any)</div>
   
   
     <p>
@@ -21995,6 +23294,35 @@ FormData object, a array of readStreams, or an array containing buffers.
   
   
 
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>resource</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>environment</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>traversal</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+    </div>
   
 
   
@@ -22115,7 +23443,7 @@ FormData object, a array of readStreams, or an array containing buffers.
   <p>Template resource class</p>
 
 
-  <div class='pre p1 fill-light mt0'>new TemplateResource()</div>
+  <div class='pre p1 fill-light mt0'>new TemplateResource(resource: any, environment: any, traversal: any, resolved: any)</div>
   
   
     <p>
@@ -22133,6 +23461,44 @@ FormData object, a array of readStreams, or an array containing buffers.
   
   
 
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>resource</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>environment</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>traversal</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>resolved</span> <code class='quiet'>(any
+            = <code>false</code>)</code>
+	    
+          </div>
+          
+        </div>
+      
+    </div>
   
 
   
@@ -22193,7 +23559,7 @@ FormData object, a array of readStreams, or an array containing buffers.
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>constructor(resource, environment, traversal, resolved = false)</span>
+            <span class='code strong strong truncate'>constructor(resource, environment, traversal, resolved)</span>
         </div>
       </div>
       <div class="clearfix display-none toggle-target">
@@ -22204,7 +23570,7 @@ FormData object, a array of readStreams, or an array containing buffers.
   <p>Creates a new <a href="#templateresource">TemplateResource</a>.</p>
 
 
-  <div class='pre p1 fill-light mt0'>constructor(resource: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, environment: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, traversal: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?, resolved: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>??)</div>
+  <div class='pre p1 fill-light mt0'>constructor(resource: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, environment: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, traversal: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?, resolved: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>?)</div>
   
   
 
@@ -22248,7 +23614,7 @@ FormData object, a array of readStreams, or an array containing buffers.
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>resolved</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>??
+            <span class='code bold'>resolved</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>?
             = <code>false</code>)</code>
 	    whether or not this resource is already resolved
 
@@ -22439,7 +23805,7 @@ FormData object, a array of readStreams, or an array containing buffers.
   <p>Template list class</p>
 
 
-  <div class='pre p1 fill-light mt0'>new TemplateList()</div>
+  <div class='pre p1 fill-light mt0'>new TemplateList(resource: any, environment: any, traversal: any)</div>
   
   
     <p>
@@ -22457,6 +23823,35 @@ FormData object, a array of readStreams, or an array containing buffers.
   
   
 
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>resource</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>environment</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>traversal</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+    </div>
   
 
   
@@ -22577,7 +23972,7 @@ FormData object, a array of readStreams, or an array containing buffers.
   <p>DMStatsResource class</p>
 
 
-  <div class='pre p1 fill-light mt0'>new DMStatsResource()</div>
+  <div class='pre p1 fill-light mt0'>new DMStatsResource(resource: any, environment: any, traversal: any)</div>
   
   
     <p>
@@ -22595,6 +23990,35 @@ FormData object, a array of readStreams, or an array containing buffers.
   
   
 
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>resource</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>environment</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>traversal</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+    </div>
   
 
   
@@ -22727,7 +24151,7 @@ FormData object, a array of readStreams, or an array containing buffers.
   <p>DMStats list class</p>
 
 
-  <div class='pre p1 fill-light mt0'>new DMStatsList()</div>
+  <div class='pre p1 fill-light mt0'>new DMStatsList(resource: any, environment: any, traversal: any)</div>
   
   
     <p>
@@ -22745,6 +24169,35 @@ FormData object, a array of readStreams, or an array containing buffers.
   
   
 
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>resource</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>environment</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>traversal</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+    </div>
   
 
   
@@ -23041,7 +24494,7 @@ FormData object, a array of readStreams, or an array containing buffers.
   <p>AssetResource class</p>
 
 
-  <div class='pre p1 fill-light mt0'>new AssetResource()</div>
+  <div class='pre p1 fill-light mt0'>new AssetResource(resource: any, environment: any, traversal: any)</div>
   
   
     <p>
@@ -23059,6 +24512,35 @@ FormData object, a array of readStreams, or an array containing buffers.
   
   
 
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>resource</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>environment</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>traversal</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+    </div>
   
 
   
@@ -23448,7 +24930,7 @@ FormData object, a array of readStreams, or an array containing buffers.
   <p>Asset list class</p>
 
 
-  <div class='pre p1 fill-light mt0'>new AssetList()</div>
+  <div class='pre p1 fill-light mt0'>new AssetList(resource: any, environment: any, traversal: any)</div>
   
   
     <p>
@@ -23466,6 +24948,35 @@ FormData object, a array of readStreams, or an array containing buffers.
   
   
 
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>resource</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>environment</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>traversal</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+    </div>
   
 
   
@@ -23991,7 +25502,7 @@ provided. Url otherwise.
   <p>DeletedAssetResource class</p>
 
 
-  <div class='pre p1 fill-light mt0'>new DeletedAssetResource()</div>
+  <div class='pre p1 fill-light mt0'>new DeletedAssetResource(resource: any, environment: any, traversal: any)</div>
   
   
     <p>
@@ -24009,6 +25520,35 @@ provided. Url otherwise.
   
   
 
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>resource</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>environment</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>traversal</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+    </div>
   
 
   
@@ -24506,7 +26046,7 @@ provided. Url otherwise.
   <p>Asset list class</p>
 
 
-  <div class='pre p1 fill-light mt0'>new DeletedAssetList()</div>
+  <div class='pre p1 fill-light mt0'>new DeletedAssetList(resource: any, environment: any, traversal: any)</div>
   
   
     <p>
@@ -24524,6 +26064,35 @@ provided. Url otherwise.
   
   
 
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>resource</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>environment</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>traversal</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+    </div>
   
 
   
@@ -24644,7 +26213,7 @@ provided. Url otherwise.
   <p>Tag resource class</p>
 
 
-  <div class='pre p1 fill-light mt0'>new TagResource()</div>
+  <div class='pre p1 fill-light mt0'>new TagResource(resource: any, environment: any, traversal: any)</div>
   
   
     <p>
@@ -24662,6 +26231,35 @@ provided. Url otherwise.
   
   
 
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>resource</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>environment</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>traversal</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+    </div>
   
 
   
@@ -24801,7 +26399,7 @@ provided. Url otherwise.
   <p>Tag list resource class.</p>
 
 
-  <div class='pre p1 fill-light mt0'>new TagList()</div>
+  <div class='pre p1 fill-light mt0'>new TagList(resource: any, environment: any, traversal: any)</div>
   
   
     <p>
@@ -24819,6 +26417,35 @@ provided. Url otherwise.
   
   
 
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>resource</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>environment</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>traversal</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+    </div>
   
 
   
@@ -24962,7 +26589,7 @@ EntryResource will need to be instantiated with EntryResource#createEntry, other
 required JSON Schemas won't be stored in the cache.</p>
 
 
-  <div class='pre p1 fill-light mt0'>new EntryResource()</div>
+  <div class='pre p1 fill-light mt0'>new EntryResource(resource: any, environment: any, schema: any, traversal: any)</div>
   
   
     <p>
@@ -24980,6 +26607,43 @@ required JSON Schemas won't be stored in the cache.</p>
   
   
 
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>resource</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>environment</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>schema</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>traversal</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+    </div>
   
 
   
@@ -25831,7 +27495,7 @@ before creating the EntryResource.</p>
   <p>Entry list class</p>
 
 
-  <div class='pre p1 fill-light mt0'>new EntryList()</div>
+  <div class='pre p1 fill-light mt0'>new EntryList(resource: any, environment: any, traversal: any, name: any, schema: any)</div>
   
   
     <p>
@@ -25849,6 +27513,51 @@ before creating the EntryResource.</p>
   
   
 
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>resource</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>environment</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>traversal</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>name</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>schema</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+    </div>
   
 
   
@@ -26086,7 +27795,7 @@ before creating the EntryList.</p>
   <p>PublicAsset list class</p>
 
 
-  <div class='pre p1 fill-light mt0'>new PublicAssetList()</div>
+  <div class='pre p1 fill-light mt0'>new PublicAssetList(resource: any, environment: any, traversal: any)</div>
   
   
     <p>
@@ -26104,6 +27813,35 @@ before creating the EntryList.</p>
   
   
 
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>resource</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>environment</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>traversal</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+    </div>
   
 
   
@@ -26391,7 +28129,7 @@ before creating the EntryList.</p>
   <p>PublicAssetResource class</p>
 
 
-  <div class='pre p1 fill-light mt0'>new PublicAssetResource()</div>
+  <div class='pre p1 fill-light mt0'>new PublicAssetResource(resource: any, environment: any, traversal: any)</div>
   
   
     <p>
@@ -26409,6 +28147,35 @@ before creating the EntryList.</p>
   
   
 
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>resource</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>environment</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>traversal</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+    </div>
   
 
   
@@ -26798,7 +28565,7 @@ before creating the EntryList.</p>
   <p>Tag list resource class.</p>
 
 
-  <div class='pre p1 fill-light mt0'>new PublicTagList()</div>
+  <div class='pre p1 fill-light mt0'>new PublicTagList(resource: any, environment: any, traversal: any)</div>
   
   
     <p>
@@ -26816,6 +28583,35 @@ before creating the EntryList.</p>
   
   
 
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>resource</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>environment</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>traversal</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+    </div>
   
 
   
@@ -26936,7 +28732,7 @@ before creating the EntryList.</p>
   <p>PublicTag resource class</p>
 
 
-  <div class='pre p1 fill-light mt0'>new PublicTagResource()</div>
+  <div class='pre p1 fill-light mt0'>new PublicTagResource(resource: any, environment: any, traversal: any)</div>
   
   
     <p>
@@ -26954,6 +28750,35 @@ before creating the EntryList.</p>
   
   
 
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>resource</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>environment</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>traversal</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+    </div>
   
 
   
