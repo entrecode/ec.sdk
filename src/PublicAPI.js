@@ -509,7 +509,8 @@ export default class PublicAPI extends Core {
       return this.link(`${this[shortIDSymbol]}:${model}`);
     })
     .then(link => validator.validate(entry, `${link.profile}?template=post`))
-    .then(() => post(this[environmentSymbol], this.newRequest(), entry))
+    .then(() => this.follow(`${this[shortIDSymbol]}:${model}`))
+    .then(request => post(this[environmentSymbol], request, entry))
     .then(([res, traversal]) => createEntry(res, this[environmentSymbol], traversal));
   }
 
