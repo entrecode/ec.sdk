@@ -1,3 +1,15 @@
+<a name="0.6.7"></a>
+## 0.6.7 (2017-08-04)
+
+* release version 0.6.7 ([331a0fc](https://github.com/entrecode/ec.sdk/commit/331a0fc))
+* chore: require json-schema-remote 1.2.2, will remove warnings from webpack ([9678e62](https://github.com/entrecode/ec.sdk/commit/9678e62))
+* chore(package): update documentation to version 5.1.0 ([d5d1d28](https://github.com/entrecode/ec.sdk/commit/d5d1d28)), closes [#2](https://github.com/entrecode/ec.sdk/issues/2)
+* chore(package): update sinon to version 3.0.0 ([9c19924](https://github.com/entrecode/ec.sdk/commit/9c19924))
+* fix: PublicAPI#createEntry follow link ([5f1d983](https://github.com/entrecode/ec.sdk/commit/5f1d983))
+* doc: fixed typo in doc ([1562f34](https://github.com/entrecode/ec.sdk/commit/1562f34))
+
+
+
 <a name="0.6.6"></a>
 ## 0.6.6 (2017-07-21)
 

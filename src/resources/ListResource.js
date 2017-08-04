@@ -222,7 +222,7 @@ export default class ListResource extends Resource {
  *   },
  *   language: 'de', // language is exactly 'de'
  *   active: {
- *     exactly: 'active', // is (exactly) in active state
+ *     exact: 'active', // is (exactly) in active state
  *   },
  *   created: {
  *     from: new Date(new Date().getTime() - 60000), // created 10minutes or less ago
