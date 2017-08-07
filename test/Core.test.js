@@ -725,13 +725,27 @@ describe('optionsToQuery', () => {
     const obj = { property: 0 };
     helper.optionsToQuery(obj).should.have.property('property', 0);
   });
+  it('should have exact filter on boolean property', () => {
+    const obj = { property: true };
+    helper.optionsToQuery(obj).should.have.property('property', true);
+  });
+  it('should have exact filter on date property', () => {
+    const date = new Date();
+    const obj = { property: date };
+    helper.optionsToQuery(obj).should.have.property('property', date.toISOString());
+  });
   it('should have exact filter', () => {
     const obj = { property: { exact: 'value' } };
     helper.optionsToQuery(obj).should.have.property('property', 'value');
   });
-  it('should throw on object exact filter', () => {
+  it('should have exact filter with date', () => {
+    const date = new Date()
+    const obj = { property: { exact: date } };
+    helper.optionsToQuery(obj).should.have.property('property', date.toISOString());
+  });
+  it('should throw on array exact filter', () => {
     const throws = () => {
-      helper.optionsToQuery({ property: { exact: {} } });
+      helper.optionsToQuery({ property: { exact: [] } });
     };
     throws.should.throw(Error);
   });

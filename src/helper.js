@@ -132,7 +132,7 @@ function traversonWrapper(func, environment, t, body) {
  * @param {object} t request builder
  * @returns {Promise} resolves to the response from the API.
  */
-export function get(environment, t) {
+export function get (environment, t) {
   return traversonWrapper('get', environment, t);
 }
 
@@ -409,8 +409,10 @@ export function optionsToQuery(options, templateURL) {
           throw new Error('_fields array must contain only strings');
         }
         out[key] = options[key].join(',');
-      } else if (typeof options[key] === 'string' || typeof options[key] === 'number') {
+      } else if (typeof options[key] === 'string' || typeof options[key] === 'number' || typeof options[key] === 'boolean') {
         out[key] = options[key];
+      } else if (options[key] instanceof Date) {
+        out[key] = options[key].toISOString();
       } else if (typeof options[key] === 'object') {
         Object.keys(options[key]).forEach((searchKey) => {
           switch (searchKey) {
@@ -418,10 +420,14 @@ export function optionsToQuery(options, templateURL) {
           case 'search':
           case 'from':
           case 'to':
-            if (!(typeof options[key][searchKey] === 'string' || typeof options[key][searchKey] === 'number')) {
-              throw new Error(`${key}.${searchKey} must be string or number, is ${typeof options[key][searchKey]}: ${options[key][searchKey]}`);
+            if (Array.isArray(options[key][searchKey])) {
+              throw new Error(`${key}.${searchKey} must not be of type Array`)
             }
-            out[`${key}${modifier[searchKey]}`] = options[key][searchKey];
+            if (options[key][searchKey] instanceof Date) {
+              out[`${key}${modifier[searchKey]}`] = options[key][searchKey].toISOString();
+            } else {
+              out[`${key}${modifier[searchKey]}`] = options[key][searchKey];
+            }
             break;
           case 'any':
           case 'all':
