@@ -44,6 +44,7 @@ export default class GroupResource extends Resource {
         },
       },
     });
+    this.countProperties();
   }
 
   /**

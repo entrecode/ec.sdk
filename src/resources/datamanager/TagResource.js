@@ -31,5 +31,6 @@ export default class TagResource extends Resource {
         get: () => this.getProperty('count'),
       },
     });
+    this.countProperties();
   }
 }

@@ -44,5 +44,6 @@ export default class DataSourceResource extends Resource {
         },
       },
     });
+    this.countProperties();
   }
 }

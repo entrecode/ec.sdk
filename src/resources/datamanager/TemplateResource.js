@@ -55,6 +55,7 @@ export default class TemplateResource extends Resource {
         get: () => this.getProperty('version'),
       },
     });
+    this.countProperties();
   }
 
   resolve() {

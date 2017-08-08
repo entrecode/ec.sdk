@@ -65,6 +65,7 @@ export default class AppResource extends Resource {
         },
       },
     });
+    this.countProperties();
   }
 
   /**

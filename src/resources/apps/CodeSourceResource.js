@@ -44,5 +44,6 @@ export default class CodeSourceResource extends Resource {
         },
       },
     });
+    this.countProperties();
   }
 }

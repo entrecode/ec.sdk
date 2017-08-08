@@ -12,6 +12,7 @@ export const environmentSymbol = Symbol('_environment');
 export const traversalSymbol = Symbol('_traversal');
 
 const dirtySymbol = Symbol('_dirty');
+const resourceProperties = Symbol('resourceProperties');
 
 /**
  * Generic resource class. Represents {@link https://tools.ietf.org/html/draft-kelly-json-hal-08
@@ -35,11 +36,13 @@ export default class Resource {
   constructor(resource, environment = 'live', traversal) {
     this[environmentSymbol] = environment;
     this[dirtySymbol] = false;
+    let r;
     if (resource instanceof halfred.Resource) {
-      this[resourceSymbol] = halfred.parse(JSON.parse(JSON.stringify(resource.original())));
+      r = resource.original();
     } else {
-      this[resourceSymbol] = halfred.parse(JSON.parse(JSON.stringify(resource)));
+      r = resource;
     }
+    this[resourceSymbol] = halfred.parse(JSON.parse(JSON.stringify(r)));
 
     if (typeof this[environmentSymbol] !== 'string') {
       throw new Error('environment must be a string');
@@ -66,6 +69,11 @@ export default class Resource {
         enumerable: false,
       },
     });
+    this.countProperties();
+  }
+
+  countProperties() {
+    this[resourceProperties] = Object.keys(this);
   }
 
   /**
@@ -167,7 +175,6 @@ export default class Resource {
     return this[resourceSymbol].link(link);
   }
 
-
   /**
    * Get all {@link https://tools.ietf.org/html/draft-kelly-json-hal-08#section-5 links} with
    * the given name.
@@ -219,7 +226,7 @@ export default class Resource {
    * @param {array<string>} properties array of properties to select.
    * @returns {object} object containing selected properties.
    */
-  get(properties) {
+  get (properties) {
     if (!properties || !Array.isArray(properties) || properties.length === 0) {
       return Object.assign({}, this[resourceSymbol]);
     }
@@ -236,7 +243,7 @@ export default class Resource {
    * @param {object} resource object with properties to assign.
    * @returns {Resource} this Resource for chainability
    */
-  set(resource) {
+  set (resource) {
     if (!resource) {
       throw new Error('Resource cannot be undefined.');
     }
@@ -275,6 +282,12 @@ export default class Resource {
 
   toOriginal() {
     const out = {};
+
+    const keys = Object.keys(this);
+    if (this[resourceProperties].length !== keys.length) {
+      throw new Error(`Additional properties found: ${keys.filter(k => !this[resourceProperties].includes(k)).join(', ')}`);
+    }
+
     Object.keys(this[resourceSymbol].original()).forEach((key) => {
       out[key] = this[resourceSymbol][key];
     });
