@@ -1,3 +1,13 @@
+<a name="0.6.8"></a>
+## 0.6.8 (2017-08-08)
+
+* release version 0.6.8 ([582af4f](https://github.com/entrecode/ec.sdk/commit/582af4f))
+* feat: resources with additional properties will throw on save CMS-2883 ([bce4557](https://github.com/entrecode/ec.sdk/commit/bce4557))
+* fix: more types allowed on filter CMS-2882 ([8013ec8](https://github.com/entrecode/ec.sdk/commit/8013ec8))
+* chore(package): update documentation to version 5.1.1 ([c390e54](https://github.com/entrecode/ec.sdk/commit/c390e54))
+
+
+
 <a name="0.6.7"></a>
 ## 0.6.7 (2017-08-04)
 
