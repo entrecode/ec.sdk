@@ -102,6 +102,7 @@ export default class AccountResource extends Resource {
         },
       },
     });
+    this.countProperties();
   }
 
   /**

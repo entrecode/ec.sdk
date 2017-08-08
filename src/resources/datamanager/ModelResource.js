@@ -114,6 +114,7 @@ export default class ModelResource extends Resource {
         },
       },
     });
+    this.countProperties();
   }
 }
 

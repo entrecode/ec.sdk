@@ -37,6 +37,7 @@ export default class TypesResource extends Resource {
         get: () => this.getProperty('targetTypes'),
       },
     });
+    this.countProperties();
   }
 
   /**

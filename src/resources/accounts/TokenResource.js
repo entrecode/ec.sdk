@@ -58,5 +58,6 @@ export default class TokenResource extends Resource {
         get: () => new Date(this.getProperty('validUntil')),
       },
     });
+    this.countProperties();
   }
 }

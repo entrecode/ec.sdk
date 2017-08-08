@@ -61,6 +61,7 @@ export default class AssetResource extends Resource {
         get: () => this.getProperty('files'),
       },
     });
+    this.countProperties();
   }
 
   /**

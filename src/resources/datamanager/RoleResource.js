@@ -72,5 +72,6 @@ export default class RoleResource extends Resource {
         },
       },
     });
+    this.countProperties();
   }
 }

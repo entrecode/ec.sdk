@@ -42,5 +42,6 @@ export default class DMAccountResource extends Resource {
         get: () => this.getProperty('oauth'),
       },
     });
+    this.countProperties();
   }
 }

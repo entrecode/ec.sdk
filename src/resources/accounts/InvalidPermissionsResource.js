@@ -33,5 +33,6 @@ export default class InvalidPermissionsResource extends Resource {
         get: () => this.getProperty('invalidGroupPermissions'),
       },
     });
+    this.countProperties();
   }
 }

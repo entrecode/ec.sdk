@@ -65,6 +65,7 @@ export default class ListResource extends Resource {
     this[itemClassSymbol] = ItemClass;
     this[itemSchemaSymbol] = itemSchema;
     this[nameSymbol] = name || Object.keys(this[resourceSymbol].allEmbeddedResources())[0];
+    this.countProperties();
   }
 
   /**

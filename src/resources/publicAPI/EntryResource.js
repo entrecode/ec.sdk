@@ -322,6 +322,7 @@ export default class EntryResource extends Resource {
         }
       }
     });
+    this.countProperties();
   }
 
   /**

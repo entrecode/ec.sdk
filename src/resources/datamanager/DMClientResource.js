@@ -39,5 +39,6 @@ export default class DMClientResource extends ClientResource {
         },
       },
     });
+    this.countProperties();
   }
 }

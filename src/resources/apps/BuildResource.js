@@ -46,7 +46,6 @@ export default class BuildResource extends Resource {
         get: () => this.getProperty('events'),
       },
     });
+    this.countProperties();
   }
-
-  // TODO deploy? users must have targetIDs, they are on platform, PlatformResource#createDeployment should suffice
 }

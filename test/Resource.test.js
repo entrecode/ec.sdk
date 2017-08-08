@@ -235,4 +235,13 @@ describe('Resource', () => {
       stub.restore();
     });
   });
+  it('should throw on get unknown property', () => {
+    const throws = () => {
+      resource.missing = 'yes its missing';
+      return resource.save();
+    };
+    throws.should.throw(`Additional properties found: missing`);
+  });
+  it('should throw on get unknown property', () => {
+  });
 });

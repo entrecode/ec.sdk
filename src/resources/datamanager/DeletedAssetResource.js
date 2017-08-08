@@ -53,6 +53,7 @@ export default class DeletedAssetResource extends Resource {
         get: () => this.getProperty('files'),
       },
     });
+    this.countProperties();
   }
 
   /**

@@ -85,7 +85,7 @@ export default class DMStatsResource extends Resource {
         enumerable: true,
         get: () => this.getProperty('monthlyHooks'),
       },
-
     });
+    this.countProperties();
   }
 }

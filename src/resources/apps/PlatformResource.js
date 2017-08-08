@@ -68,6 +68,7 @@ export default class PlatformResource extends Resource {
         },
       },
     });
+    this.countProperties();
   }
 
   /**

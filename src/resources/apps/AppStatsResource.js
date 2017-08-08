@@ -76,5 +76,6 @@ export default class AppStatsResource extends Resource {
         get: () => this.getProperty('usedPlatforms'),
       },
     });
+    this.countProperties();
   }
 }

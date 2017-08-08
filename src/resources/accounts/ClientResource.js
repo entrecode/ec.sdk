@@ -44,6 +44,7 @@ export default class ClientResource extends Resource {
         },
       },
     });
+    this.countProperties();
   }
 }
 

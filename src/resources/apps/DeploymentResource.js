@@ -58,5 +58,6 @@ export default class DeploymentResource extends Resource {
         get: () => this.getProperty('results'),
       },
     });
+    this.countProperties();
   }
 }

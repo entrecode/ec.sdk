@@ -44,5 +44,6 @@ export default class TargetResource extends Resource {
         },
       },
     });
+    this.countProperties();
   }
 }
