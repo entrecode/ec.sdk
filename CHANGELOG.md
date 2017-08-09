@@ -1,3 +1,11 @@
+<a name="0.6.9"></a>
+## 0.6.9 (2017-08-09)
+
+* release version 0.6.9 ([9f44937](https://github.com/entrecode/ec.sdk/commit/9f44937))
+* feat: PublicAPI#getAuthLink for auth link retrieval ([3625690](https://github.com/entrecode/ec.sdk/commit/3625690))
+
+
+
 <a name="0.6.8"></a>
 ## 0.6.8 (2017-08-08)
 
