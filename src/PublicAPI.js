@@ -397,6 +397,17 @@ export default class PublicAPI extends Core {
   }
 
   /**
+   * This is a short hand for {@link Core#link} for auth links in public APIs. It will load
+   * `${shortID}:_auth/${name}` link.
+   *
+   * @param {string} name Name of the auth link to get.
+   * @returns {Promise<object>}
+   */
+  getAuthLink(name) {
+    return this.link(`${this.shortID}:_auth/${name}`);
+  }
+
+  /**
    * Load the {@link EntryList}.
    *
    * @example
@@ -422,8 +433,8 @@ export default class PublicAPI extends Core {
       if (
         options && Object.keys(options).length === 1
         && ((options.id && (typeof options.id === 'string' || (!('any' in options.id) && !('all' in options.id))))
-        ||
-        (options._id && (typeof options._id === 'string' || (!('any' in options._id) && !('all' in options._id)))))
+          ||
+          (options._id && (typeof options._id === 'string' || (!('any' in options._id) && !('all' in options._id)))))
       ) {
         throw new Error('Providing only an id/_id in entryList filter will result in single resource response. Please use PublicAPI#entry');
       }
