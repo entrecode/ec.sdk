@@ -1,3 +1,11 @@
+<a name="0.6.10"></a>
+## 0.6.10 (2017-08-09)
+
+* release version 0.6.10 ([6673a9f](https://github.com/entrecode/ec.sdk/commit/6673a9f))
+* feat: template parameter on PublicAPI#getAuthLink ([0ec07c8](https://github.com/entrecode/ec.sdk/commit/0ec07c8))
+
+
+
 <a name="0.6.9"></a>
 ## 0.6.9 (2017-08-09)
 
