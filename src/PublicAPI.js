@@ -403,8 +403,12 @@ export default class PublicAPI extends Core {
    * @param {string} name Name of the auth link to get.
    * @returns {Promise<object>}
    */
-  getAuthLink(name) {
-    return this.link(`${this.shortID}:_auth/${name}`);
+  getAuthLink(name, templateParameter = {}) {
+    return this.follow(`${this.shortID}:_auth/${name}`)
+    .then(request => {
+      request.withTemplateParameters(templateParameter);
+      return getUrl(this[environmentSymbol], request);
+    });
   }
 
   /**
