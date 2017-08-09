@@ -40,6 +40,8 @@ export declare class PublicAPI extends Core {
 
   getSchema(model: string, method?: string): Promise<any>;
 
+  getAuthLink(name: string, templateParameter?: any): Promise<string>;
+
   entryList(model: string, options?: filterOptions): Promise<EntryList>;
 
   entry(model: string, id: string, options: number | { _levels?: number, _fields?: number }): Promise<EntryResource>;
