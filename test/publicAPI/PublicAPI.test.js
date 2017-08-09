@@ -48,6 +48,9 @@ describe('PublicAPI', () => {
     api.should.be.instanceOf(Api.default);
     api[environmentSymbol].should.be.equal('stage');
   });
+  it('should get auth link', () => {
+    api.getAuthLink('anonymous').should.eventually.be.fulfilled;
+  });
   it('should throw on missing id', () => {
     const throws = () => new Api.default(); // eslint-disable-line new-cap
     throws.should.throw(Error);
