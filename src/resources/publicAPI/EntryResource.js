@@ -114,7 +114,13 @@ export default class EntryResource extends Resource {
 
         switch (type) {
         case 'datetime':
-          property.get = () => new Date(this.getProperty(key));
+          property.get = () => {
+            const val = this.getProperty(key);
+            if(val === undefined || val === null){
+              return val;
+            }
+            return new Date(val);
+          },
           property.set = (val) => {
             let v;
             if (val instanceof Date) {
