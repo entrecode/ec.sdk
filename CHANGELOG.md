@@ -1,3 +1,20 @@
+<a name="0.6.11"></a>
+## 0.6.11 (2017-08-22)
+
+* release version 0.6.11 ([8c374e8](https://github.com/entrecode/ec.sdk/commit/8c374e8))
+* chore: add package-lock.json to release script ([58957a2](https://github.com/entrecode/ec.sdk/commit/58957a2))
+* chore: adds package lock ([d0ae0c1](https://github.com/entrecode/ec.sdk/commit/d0ae0c1))
+* chore: no Babel file watcher pls ([f97bc29](https://github.com/entrecode/ec.sdk/commit/f97bc29))
+* chore(package): update documentation to version 5.2.0 ([76b5564](https://github.com/entrecode/ec.sdk/commit/76b5564))
+* chore(package): update documentation to version 5.2.1 ([2f16540](https://github.com/entrecode/ec.sdk/commit/2f16540))
+* feat: EntryResource#getTitle() now for entry and nested elements CMS-2901 ([7b572fd](https://github.com/entrecode/ec.sdk/commit/7b572fd))
+* feat: PublicResource#getLevelCount for returning # of levels CMS-2900 ([485fd28](https://github.com/entrecode/ec.sdk/commit/485fd28))
+* fix: getAllItems on PublicAssetList broken CMS-2907 ([9ab3a21](https://github.com/entrecode/ec.sdk/commit/9ab3a21))
+* fix: getter for date time fields returned 1.1.1970 for null dates ([01f4071](https://github.com/entrecode/ec.sdk/commit/01f4071))
+* fix: typings fixes for public assets CMS-2906 ([65f59bd](https://github.com/entrecode/ec.sdk/commit/65f59bd))
+
+
+
 <a name="0.6.10"></a>
 ## 0.6.10 (2017-08-09)
 
