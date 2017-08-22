@@ -50,13 +50,13 @@ export declare class PublicAPI extends Core {
 
   checkPermission(permission: string, refresh?: boolean): Promise<boolean>;
 
-  assetList(options?: filterOptions): PublicAssetList;
+  assetList(options?: filterOptions): Promise<PublicAssetList>;
 
-  asset(assetID: string): PublicAssetResource;
+  asset(assetID: string): Promise<PublicAssetResource>;
 
   createAsset(input: assetInput, options: assetOptions): () => Promise<PublicAssetResource>;
 
-  createAsset(input: Array<assetInput>, options: assetOptions): () => Promise<PublicAssetList>;
+  createAssets(input: Array<assetInput>, options: assetOptions): () => Promise<PublicAssetList>;
 
   getFileUrl(assetID: string, locale?: string): Promise<string>;
 
