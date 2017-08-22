@@ -336,6 +336,15 @@ describe('Entry Resource', () => {
   it('should get entry title', () => {
     resource.getTitle().should.be.equal('B17u3r5lx-');
   });
+  it('should get entry title of nested entry', () => {
+    resource.getTitle('entry').should.be.equal('EJlJtSrkgl');
+  });
+  it('should get entry title of nested entries', () => {
+    resource.getTitle('entries').should.have.members(['EJlJtSrkgl']);
+  });
+  it('should be undefined on missing field title', () => {
+    should.equal(resource.getTitle('notAvailable'), undefined);
+  });
   it('should get model title', () => {
     resource.getModelTitle().should.be.equal('allFields');
   });

@@ -10,7 +10,7 @@ export declare class EntryResource extends Resource {
 
   getFieldType(property: string): string;
 
-  getTitle(property: string): Array<string> | string;
+  getTitle(property?: string): Array<string> | string;
 
   getModelTitle(): string;
 
