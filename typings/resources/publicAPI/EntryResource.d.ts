@@ -16,6 +16,8 @@ export declare class EntryResource extends Resource {
 
   getModelTitleField(): string;
 
+  getLevelCount(): number;
+
   getFileUrl(field: string, locale: string): string;
 
   getImageUrl(field: string, size: number, locale: string): string;

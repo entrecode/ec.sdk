@@ -101,7 +101,7 @@ describe('Entry Resource', () => {
   it('should be instance of Resource', () => {
     resource.should.be.instanceOf(Resource);
   });
-  it('should be instance of TokenResource', () => {
+  it('should be instance of EntryResource', () => {
     resource.should.be.instanceOf(EntryResource.default);
   });
   it('should not have properties missing in source', () => {
@@ -164,6 +164,9 @@ describe('Entry Resource', () => {
       ],
     });
     should.not.exist(res.getFieldType('prop'));
+  });
+  it('should get levels', () => {
+    resource.getLevelCount().should.be.equal(1);
   });
 
   it('should get field with default getter', () => {
@@ -414,6 +417,9 @@ describe('Entry Resource with nested', () => {
   });
   afterEach(() => {
     res = null;
+  });
+  it('should get levels', () => {
+    res.getLevelCount().should.be.equal(2);
   });
   it('should get nested entry, entry', () => {
     res.entry.should.be.instanceOf(EntryResource.default);
