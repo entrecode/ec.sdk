@@ -114,20 +114,26 @@ export default class EntryResource extends Resource {
 
         switch (type) {
         case 'datetime':
-          property.get = () => new Date(this.getProperty(key));
-          property.set = (val) => {
-            let v;
-            if (val instanceof Date) {
-              v = val.toISOString();
-            } else if (typeof val === 'string' && datetimeRegex.test(val)) {
-              v = val;
-            } else {
-              throw new Error('input must be a Date or date string');
+          property.get = () => {
+            const val = this.getProperty(key);
+            if (val === undefined || val === null) {
+              return val;
             }
+            return new Date(val);
+          },
+            property.set = (val) => {
+              let v;
+              if (val instanceof Date) {
+                v = val.toISOString();
+              } else if (typeof val === 'string' && datetimeRegex.test(val)) {
+                v = val;
+              } else {
+                throw new Error('input must be a Date or date string');
+              }
 
-            this.setProperty(key, v);
-            return val;
-          };
+              this.setProperty(key, v);
+              return val;
+            };
           break;
         case 'entry':
           property.get = () => {
@@ -346,12 +352,27 @@ export default class EntryResource extends Resource {
   }
 
   /**
-   * Get the title of this {@link EntryResource}.
+   * Get the title from this {@link EntryResource}. Either the entryTitle when no property value is
+   * provided. When one is provided the title of the nested element is returned.
    *
-   * @returns {string} title of this entry
+   * @returns {string} title The title of either the element or the entry.
    */
-  getTitle() {
-    return this.getProperty('_entryTitle');
+  getTitle(property) {
+    if (!property) {
+      return this.getProperty('_entryTitle');
+    }
+
+    const links = this[resourceSymbol].linkArray(`${this[shortIDSymbol]}:${this.getModelTitle()}/${property}`);
+
+    if (!links) {
+      return undefined;
+    }
+
+    if (['entries', 'assets'].includes(this.getFieldType(property))) {
+      return links.map(l => l.title);
+    }
+
+    return links[0].title;
   }
 
   /**
@@ -370,6 +391,21 @@ export default class EntryResource extends Resource {
    */
   getModelTitleField() {
     return this.getProperty('_modelTitleField');
+  }
+
+  /**
+   * Get the number of levels this entry was loaded with.
+   *
+   * @returns {number} Number of levels (1-5)
+   */
+  getLevelCount() {
+    let link = this[resourceSymbol].link('self').href;
+
+    if (link.indexOf('_levels') === -1) {
+      return 1;
+    }
+
+    return Number.parseInt(link.substr(link.indexOf('_levels') + '_levels'.length + 1))
   }
 
   /**

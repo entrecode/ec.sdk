@@ -101,7 +101,7 @@ describe('Entry Resource', () => {
   it('should be instance of Resource', () => {
     resource.should.be.instanceOf(Resource);
   });
-  it('should be instance of TokenResource', () => {
+  it('should be instance of EntryResource', () => {
     resource.should.be.instanceOf(EntryResource.default);
   });
   it('should not have properties missing in source', () => {
@@ -164,6 +164,9 @@ describe('Entry Resource', () => {
       ],
     });
     should.not.exist(res.getFieldType('prop'));
+  });
+  it('should get levels', () => {
+    resource.getLevelCount().should.be.equal(1);
   });
 
   it('should get field with default getter', () => {
@@ -336,6 +339,15 @@ describe('Entry Resource', () => {
   it('should get entry title', () => {
     resource.getTitle().should.be.equal('B17u3r5lx-');
   });
+  it('should get entry title of nested entry', () => {
+    resource.getTitle('entry').should.be.equal('EJlJtSrkgl');
+  });
+  it('should get entry title of nested entries', () => {
+    resource.getTitle('entries').should.have.members(['EJlJtSrkgl']);
+  });
+  it('should be undefined on missing field title', () => {
+    should.equal(resource.getTitle('notAvailable'), undefined);
+  });
   it('should get model title', () => {
     resource.getModelTitle().should.be.equal('allFields');
   });
@@ -405,6 +417,9 @@ describe('Entry Resource with nested', () => {
   });
   afterEach(() => {
     res = null;
+  });
+  it('should get levels', () => {
+    res.getLevelCount().should.be.equal(2);
   });
   it('should get nested entry, entry', () => {
     res.entry.should.be.instanceOf(EntryResource.default);

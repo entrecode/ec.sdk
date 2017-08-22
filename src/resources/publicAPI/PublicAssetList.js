@@ -20,7 +20,7 @@ export default class PublicAssetList extends ListResource {
    * @param {?object} traversal traversal from which traverson can continue.
    */
   constructor(resource, environment, traversal) {
-    super(resource, environment, traversal, 'ec:api/assets', undefined, PublicAssetList, PublicAssetResource);
+    super(resource, environment, traversal, 'ec:api/asset', undefined, PublicAssetList, PublicAssetResource);
   }
 
   /**
