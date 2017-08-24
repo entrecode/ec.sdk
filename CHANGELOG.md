@@ -1,3 +1,13 @@
+<a name="0.6.12"></a>
+## 0.6.12 (2017-08-24)
+
+* release version 0.6.12 ([63ed1a8](https://github.com/entrecode/ec.sdk/commit/63ed1a8))
+* feat: _entryTitle field in EntryResource CMS-2911 ([8c4384d](https://github.com/entrecode/ec.sdk/commit/8c4384d))
+* chore: updated package-lock ([42c43a9](https://github.com/entrecode/ec.sdk/commit/42c43a9))
+* chore(package): update documentation to version 5.2.2 ([7cd070a](https://github.com/entrecode/ec.sdk/commit/7cd070a))
+
+
+
 <a name="0.6.11"></a>
 ## 0.6.11 (2017-08-22)
 
