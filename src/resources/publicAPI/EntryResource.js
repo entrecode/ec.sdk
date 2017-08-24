@@ -76,6 +76,7 @@ function getShortID(resource) {
  * @prop {Date} created created date (_created defined as well)
  * @prop {Date} modified last modified date (_modified defined as well)
  * @prop {string} creator public user which created thie entry (_creator defined as well)
+ * @prop {string} _entryTitle the title of this entry
  *
  * @prop {Date|string} datetime fields with type datetime
  * @prop {EntryResource|object|string} entry fields with type entry
@@ -120,20 +121,20 @@ export default class EntryResource extends Resource {
               return val;
             }
             return new Date(val);
-          },
-            property.set = (val) => {
-              let v;
-              if (val instanceof Date) {
-                v = val.toISOString();
-              } else if (typeof val === 'string' && datetimeRegex.test(val)) {
-                v = val;
-              } else {
-                throw new Error('input must be a Date or date string');
-              }
+          };
+          property.set = (val) => {
+            let v;
+            if (val instanceof Date) {
+              v = val.toISOString();
+            } else if (typeof val === 'string' && datetimeRegex.test(val)) {
+              v = val;
+            } else {
+              throw new Error('input must be a Date or date string');
+            }
 
-              this.setProperty(key, v);
-              return val;
-            };
+            this.setProperty(key, v);
+            return val;
+          };
           break;
         case 'entry':
           property.get = () => {
@@ -329,6 +330,10 @@ export default class EntryResource extends Resource {
       }
     });
     this.countProperties();
+    Object.defineProperty(this, '_entryTitle', {
+      enumerable: false,
+      get: () => this.getProperty('_entryTitle'),
+    });
   }
 
   /**
@@ -355,6 +360,8 @@ export default class EntryResource extends Resource {
    * Get the title from this {@link EntryResource}. Either the entryTitle when no property value is
    * provided. When one is provided the title of the nested element is returned.
    *
+   * @prop {string?} property - The field name from which the title should be loaded. Undefined for
+   *   the entry title.
    * @returns {string} title The title of either the element or the entry.
    */
   getTitle(property) {

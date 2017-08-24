@@ -5,6 +5,7 @@ export declare class EntryResource extends Resource {
   constructor(resource: any, environment: environment, schema: any, traversal: any);
 
   [key: string]: any;
+  _entryTitle: String;
 
   save(): Promise<EntryResource>;
 

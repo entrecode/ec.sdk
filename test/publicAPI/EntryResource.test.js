@@ -141,6 +141,9 @@ describe('Entry Resource', () => {
     });
   });
 
+  it('should get _entryTitle', () => {
+    resource._entryTitle.should.be.equal('B17u3r5lx-');
+  });
   it('should get field type', () => {
     resource.getFieldType('entry').should.be.equal('entry');
   });
