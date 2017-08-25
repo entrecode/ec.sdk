@@ -186,6 +186,11 @@ describe('Entry Resource', () => {
     resource.datetime.should.be.instanceOf(Date);
     getSpy.should.have.been.calledWith('datetime');
   });
+  it('should get datetime null', () => {
+    resource.datetime = null;
+    should.equal(resource.datetime, null);
+    getSpy.should.have.been.calledWith('datetime');
+  });
   it('should set datetime field, date', () => {
     const date = new Date();
     resource.datetime = date;
@@ -196,9 +201,13 @@ describe('Entry Resource', () => {
     resource.datetime = date.toISOString();
     setSpy.should.have.been.calledWith('datetime', date.toISOString());
   });
+  it('should set datetime field, null', () => {
+    resource.datetime = null;
+    setSpy.should.have.been.calledWith('datetime', null);
+  });
   it('should throw on set datetime field, not date string', () => {
     const throws = () => resource.datetime = 'hehe';
-    throws.should.throw('input must be a Date or date string');
+    throws.should.throw('input must be a Date, date string or null');
   });
 
   it('should get entry field', () => {
@@ -218,9 +227,13 @@ describe('Entry Resource', () => {
     resource.entry = resource;
     setSpy.should.have.been.calledWith('entry', original);
   });
+  it('should set entry field, null', () => {
+    resource.entry = null;
+    setSpy.should.have.been.calledWith('entry', null);
+  });
   it('should throw on set entry field, invalid object', () => {
     const throws = () => resource.entry = { invalid: 'object' };
-    throws.should.throw('only string and object/EntryResource supported as input type');
+    throws.should.throw('input must be a String, object/EntryResource or null');
   });
 
   it('should get entries field', () => {
@@ -266,9 +279,13 @@ describe('Entry Resource', () => {
     resource.asset = asset;
     setSpy.should.have.been.calledWith('asset', original);
   });
+  it('should set asset field, null', () => {
+    resource.asset = null;
+    setSpy.should.have.been.calledWith('asset', null);
+  });
   it('should throw on set asset field, invalid object', () => {
     const throws = () => resource.asset = { invalid: 'object' };
-    throws.should.throw('only string and object/AssetResource supported as input type');
+    throws.should.throw('only string, object/AssetResource, and null supported as input type');
   });
 
   it('should get assets field', () => {
@@ -313,9 +330,13 @@ describe('Entry Resource', () => {
     resource.account = { accountID: 'df96ce29-d5a1-4a6f-9094-62506b708378' };
     setSpy.should.have.been.calledWith('account', 'df96ce29-d5a1-4a6f-9094-62506b708378');
   });
+  it('should set account field, null', () => {
+    resource.account = null;
+    setSpy.should.have.been.calledWith('account', null);
+  });
   it('should throw on set account field, invalid object', () => {
     const throws = () => resource.account = { invalid: 'object' };
-    throws.should.throw('only string and object/DMAccountResource supported as input type');
+    throws.should.throw('only string, object/DMAccountResource, and null supported as input type');
   });
 
   it('should get role field', () => {
@@ -334,9 +355,13 @@ describe('Entry Resource', () => {
     resource.role = { roleID: 'df96ce29-d5a1-4a6f-9094-62506b708378' };
     setSpy.should.have.been.calledWith('role', 'df96ce29-d5a1-4a6f-9094-62506b708378');
   });
+  it('should set role field, null', () => {
+    resource.role = null;
+    setSpy.should.have.been.calledWith('role', null);
+  });
   it('should throw on set role field, invalid object', () => {
     const throws = () => resource.role = { invalid: 'object' };
-    throws.should.throw('only string and object/RoleResource supported as input type');
+    throws.should.throw('only string, object/RoleResource, and null supported as input type');
   });
 
   it('should get entry title', () => {
