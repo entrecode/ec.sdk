@@ -56,7 +56,7 @@ export declare class PublicAPI extends Core {
 
   createAsset(input: assetInput, options: assetOptions): Promise<() => PublicAssetResource>;
 
-  createAssets(input: Array<assetInput>, options: assetOptions): Promise<() => PublicAssetList>;
+  createAssets(input: any | Array<assetInput>, options: assetOptions): Promise<() => PublicAssetList>;
 
   getFileUrl(assetID: string, locale?: string): Promise<string>;
 
