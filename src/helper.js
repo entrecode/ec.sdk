@@ -92,12 +92,26 @@ function traversonWrapper(func, environment, t, body) {
     t.withRequestOptions({ headers: { Accept: 'application/hal+json' } });
 
     const store = TokenStoreFactory(environment);
+    let secondStore;
+    if (!store.has()) {
+      // when no token is present see if we have a public environment (with shortID)
+      // if so look in second store
+      const result = /^(live|stage|nightly|develop|test)[A-Fa-f0-9]{8}$/.exec(environment);
+      if (result) {
+        secondStore = TokenStoreFactory(result[1]);
+      }
+    }
+
     if (store.has()) {
       t.addRequestOptions({ headers: { Authorization: `Bearer ${store.get()}` } });
+    } else if (secondStore && secondStore.has()) {
+      t.addRequestOptions({ headers: { Authorization: `Bearer ${secondStore.get()}` } });
     }
 
     if (store.hasUserAgent()) {
       t.addRequestOptions({ headers: { 'X-User-Agent': `${store.getUserAgent()} ec.sdk/${packageJson.version}` } });
+    } else if (secondStore && secondStore.hasUserAgent()) {
+      t.addRequestOptions({ headers: { 'X-User-Agent': `${secondStore.getUserAgent()} ec.sdk/${packageJson.version}` } });
     } else {
       t.addRequestOptions({ headers: { 'X-User-Agent': `ec.sdk/${packageJson.version}` } });
     }
