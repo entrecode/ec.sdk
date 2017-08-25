@@ -511,7 +511,7 @@ export default class PublicAPI extends Core {
    * @param {object} entry object representing the entry.
    * @returns {Promise<EntryResource>} the newly created EntryResource
    */
-  createEntry(model, entry) {
+  createEntry(model, entry, levels) {
     return Promise.resolve()
     .then(() => {
       if (!model) {
@@ -521,11 +521,21 @@ export default class PublicAPI extends Core {
       if (!entry) {
         throw new Error('Cannot create resource with undefined object.');
       }
+
+      if (levels < 1 || levels >= 5) {
+        throw new Error('levels must be between 1 and 5');
+      }
+
       return this.link(`${this[shortIDSymbol]}:${model}`);
     })
     .then(link => validator.validate(entry, `${link.profile}?template=post`))
     .then(() => this.follow(`${this[shortIDSymbol]}:${model}`))
-    .then(request => post(this[environmentSymbol], request, entry))
+    .then(request => {
+      if (levels) {
+        request.withTemplateParameters({ _levels: levels });
+      }
+      return post(this[environmentSymbol], request, entry)
+    })
     .then(([res, traversal]) => createEntry(res, this[environmentSymbol], traversal));
   }
 

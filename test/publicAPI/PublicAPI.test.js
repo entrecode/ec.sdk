@@ -531,6 +531,43 @@ describe('PublicAPI', () => {
       throw err;
     });
   });
+  it('should create entry, levels', () => {
+    const getStub = sinon.stub(helper, 'get');
+    getStub.returns(resolver('public-dm-root.json'));
+    const postStub = sinon.stub(helper, 'post');
+    postStub.returns(resolver('public-entry.json'));
+
+    return api.createEntry('allFields', {
+      text: 'hehe',
+      formattedText: 'hehe',
+      number: 1,
+      decimal: 1.1,
+      boolean: true,
+      datetime: new Date().toISOString(),
+      location: {
+        latitude: 0,
+        longitude: 0,
+      },
+      email: 'someone@anything.com',
+      url: 'https://anything.com',
+      phone: '+49 11 8 33',
+      json: {},
+      entry: '1234567',
+      entries: [
+        '1234567',
+      ],
+    }, 1)
+    .then((entry) => {
+      entry.should.be.instanceOf(EntryResource);
+      getStub.restore();
+      postStub.restore();
+    })
+    .catch((err) => {
+      getStub.restore();
+      postStub.restore();
+      throw err;
+    });
+  });
   it('should throw on undefined model', () => {
     return api.createEntry()
     .should.be.rejectedWith('model must be defined');
@@ -542,6 +579,14 @@ describe('PublicAPI', () => {
   it('should throw on invalid entry', () => {
     return api.createEntry('allFields', {})
     .should.be.rejectedWith('JSON Schema Validation error');
+  });
+  it('should throw on levels 0', () => {
+    return api.createEntry('allFields', {}, 0)
+    .should.be.rejectedWith('levels must be between 1 and 5');
+  });
+  it('should throw on levels 5', () => {
+    return api.createEntry('allFields', {}, 5)
+    .should.be.rejectedWith('levels must be between 1 and 5');
   });
 
   it('should load asset list', () => {

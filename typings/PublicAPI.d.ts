@@ -46,7 +46,7 @@ export declare class PublicAPI extends Core {
 
   entry(model: string, id: string, options: number | { _levels?: number, _fields?: number }): Promise<EntryResource>;
 
-  createEntry(model: string, entry: any): Promise<EntryResource>;
+  createEntry(model: string, entry: any, levels?: number): Promise<EntryResource>;
 
   checkPermission(permission: string, refresh?: boolean): Promise<boolean>;
 
