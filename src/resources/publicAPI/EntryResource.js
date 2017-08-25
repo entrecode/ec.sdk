@@ -126,10 +126,10 @@ export default class EntryResource extends Resource {
             let v;
             if (val instanceof Date) {
               v = val.toISOString();
-            } else if (typeof val === 'string' && datetimeRegex.test(val)) {
+            } else if (val === null || (typeof val === 'string' && datetimeRegex.test(val))) {
               v = val;
             } else {
-              throw new Error('input must be a Date or date string');
+              throw new Error('input must be a Date, date string or null');
             }
 
             this.setProperty(key, v);
@@ -154,14 +154,14 @@ export default class EntryResource extends Resource {
           };
           property.set = (val) => {
             let value;
-            if (typeof val === 'string') {
+            if (val === null || typeof val === 'string') {
               value = val;
             } else if (val instanceof EntryResource) {
               value = val.toOriginal();
             } else if (typeof val === 'object' && '_id' in val) {
               value = val;
             } else {
-              throw new Error('only string and object/EntryResource supported as input type');
+              throw new Error('input must be a String, object/EntryResource or null');
             }
 
             this.setProperty(key, value);
@@ -227,14 +227,14 @@ export default class EntryResource extends Resource {
           };
           property.set = (val) => {
             let value;
-            if (typeof val === 'string') {
+            if (val === null || typeof val === 'string') {
               value = val;
             } else if (val instanceof PublicAssetResource) {
               value = val.toOriginal();
             } else if (typeof val === 'object' && 'assetID' in val) {
               value = val;
             } else {
-              throw new Error('only string and object/AssetResource supported as input type');
+              throw new Error('only string, object/AssetResource, and null supported as input type');
             }
 
             this.setProperty(key, value);
@@ -286,12 +286,12 @@ export default class EntryResource extends Resource {
           property.get = () => this.getProperty(key);
           property.set = (val) => {
             let value;
-            if (typeof val === 'string') {
+            if (val === null || typeof val === 'string') {
               value = val;
             } else if (typeof val === 'object' && 'accountID' in val) {
               value = val.accountID;
             } else {
-              throw new Error('only string and object/DMAccountResource supported as input type');
+              throw new Error('only string, object/DMAccountResource, and null supported as input type');
             }
 
             this.setProperty(key, value);
@@ -302,12 +302,12 @@ export default class EntryResource extends Resource {
           property.get = () => this.getProperty(key);
           property.set = (val) => {
             let value;
-            if (typeof val === 'string') {
+            if (val === null || typeof val === 'string') {
               value = val;
             } else if (typeof val === 'object' && 'roleID' in val) {
               value = val.roleID;
             } else {
-              throw new Error('only string and object/RoleResource supported as input type');
+              throw new Error('only string, object/RoleResource, and null supported as input type');
             }
 
             this.setProperty(key, value);

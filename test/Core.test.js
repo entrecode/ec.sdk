@@ -201,6 +201,17 @@ describe('Network Helper', () => {
         traversal.should.have.nested.property('requestOptions.headers.Authorization', `Bearer ${token}`);
       });
     });
+    it('should be resolved with token, first load from publicToken store', () => {
+      nock('https://entrecode.de')
+      .get('/').replyWithFile(200, `${__dirname}/mocks/dm-list.json`);
+      const token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJlbnRyZWNvZGVUZXN0IiwiaWF0IjoxNDg1NzgzNTg4LCJleHAiOjQ2NDE0NTcxODgsImF1ZCI6IlRlc3QiLCJzdWIiOiJ0ZXN0QGVudHJlY29kZS5kZSJ9.Vhrq5GR2hNz-RoAhdlnIIWHelPciBPCemEa74s7cXn8';
+      store.set(token);
+
+      return helper.get('testbeefbeef', traversal)
+      .then(() => {
+        traversal.should.have.nested.property('requestOptions.headers.Authorization', `Bearer ${token}`);
+      });
+    });
     it('should be rejected', () => {
       nock('https://entrecode.de')
       .get('/').reply(404, {
@@ -291,13 +302,24 @@ describe('Network Helper', () => {
         traversal.should.have.nested.property('requestOptions.headers.X-User-Agent', `ec.sdk/${packageJson.version}`);
       });
     });
-    it('shuold add custom user agent', () => {
+    it('should add custom user agent', () => {
       nock('https://entrecode.de')
       .get('/').replyWithFile(200, `${__dirname}/mocks/dm-list.json`);
 
       store.agent = 'test/0.0.1';
 
       return helper.get('test', traversal)
+      .then(() => {
+        traversal.should.have.nested.property('requestOptions.headers.X-User-Agent', `test/0.0.1 ec.sdk/${packageJson.version}`);
+      });
+    });
+    it('should add custom user agent, from secondStore', () => {
+      nock('https://entrecode.de')
+      .get('/').replyWithFile(200, `${__dirname}/mocks/dm-list.json`);
+
+      store.agent = 'test/0.0.1';
+
+      return helper.get('testbeefbeef', traversal)
       .then(() => {
         traversal.should.have.nested.property('requestOptions.headers.X-User-Agent', `test/0.0.1 ec.sdk/${packageJson.version}`);
       });

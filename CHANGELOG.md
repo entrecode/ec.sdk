@@ -1,3 +1,12 @@
+<a name="0.6.13"></a>
+## 0.6.13 (2017-08-25)
+
+* release version 0.6.13 ([393d5fa](https://github.com/entrecode/ec.sdk/commit/393d5fa))
+* fix: null value handling in EntryResource CMS-2909, CMS-2910 ([7cc4986](https://github.com/entrecode/ec.sdk/commit/7cc4986))
+* fix: token handling for publicAPIs with logged in ecUser (via Session) CMS-2916 ([514d4f0](https://github.com/entrecode/ec.sdk/commit/514d4f0))
+
+
+
 <a name="0.6.12"></a>
 ## 0.6.12 (2017-08-24)
 
