@@ -82,8 +82,8 @@ function getShortID(resource) {
  * @prop {Date|string} datetime fields with type datetime
  * @prop {EntryResource|LiteEntryResource} entry fields with type entry
  * @prop {Array<EntryResource|LiteEntryResource>} entries fields with type entries
- * @prop {AssetResource|object|string} asset fields with type asset
- * @prop {Array<AssetResource|object|string>} assets fields with type assets
+ * @prop {AssetResource} asset fields with type asset
+ * @prop {Array<AssetResource>} assets fields with type assets
  * @prop {DMAccountResource|object|string} account fields with type account
  * @prop {RoleResource|object|string} role fields with type role
  * @prop {string|object|array|number} other field with all other types
@@ -237,6 +237,10 @@ export default class EntryResource extends LiteEntryResource {
             }
             if (typeof asset === 'object' && !(asset instanceof PublicAssetResource)) {
               this[resourceSymbol][key] = new PublicAssetResource(asset, environment);
+            } else if (typeof asset !== 'object') {
+              this[resourceSymbol][key] = new PublicAssetResource(
+                this[resourceSymbol].embeddedResource(`${this[shortIDSymbol]}:${this.getModelTitle()}/${key}/asset`),
+                environment);
             }
 
             return this.getProperty(key);
@@ -259,20 +263,18 @@ export default class EntryResource extends LiteEntryResource {
           break;
         case 'assets':
           property.get = () => {
-            let assets = this.getProperty(key);
-            if (!assets) {
-              this.setProperty(key, []);
-              assets = [];
-            }
-            this[resourceSymbol][key] = assets.map((asset) => {
+            const assets = this.getProperty(key) || [];
+            this[resourceSymbol][key] = assets.map((asset, index) => {
               if (typeof asset === 'object') {
                 if (asset instanceof PublicAssetResource) {
                   return asset;
                 }
 
                 return new PublicAssetResource(asset, environment);
+              } else {
+                const embeds = this[resourceSymbol].embeddedArray(`${this[shortIDSymbol]}:${this.getModelTitle()}/${key}/asset`);
+                return new PublicAssetResource(embeds[index], environment);
               }
-              return asset;
             });
             return this.getProperty(key);
           };

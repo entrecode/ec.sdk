@@ -8,9 +8,11 @@ import querystring from 'querystring';
  * basic functionality useful for showing unresolved (read: not loaded nested) entries.
  *
  * @prop {String} _entryTitle - The entry title of this LiteEntryResource
+ * @prop {String} environment - The entries environment
+ * @prop {object} traversal - traversal from which to continue
  */
 export default class LiteEntryResource extends Resource {
-  constructor(liteResource, environment) {
+  constructor(liteResource, environment, traversal) {
     if (!('_links' in liteResource)) {
       const qs = querystring.parse(liteResource.href.substr(liteResource.href.indexOf('?') + 1));
       liteResource = {
@@ -26,7 +28,7 @@ export default class LiteEntryResource extends Resource {
         _entryTitle: liteResource.title,
       };
     }
-    super(liteResource, environment);
+    super(liteResource, environment, traversal);
 
     Object.defineProperties(this, {
       _entryTitle: {

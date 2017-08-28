@@ -279,7 +279,7 @@ describe('Entry Resource', () => {
   });
 
   it('should get asset field', () => {
-    resource.asset.should.be.equal('2bf325a9-c8f9-4e7d-b244-faa1090a479d');
+    resource.asset.assetID.should.be.equal('2bf325a9-c8f9-4e7d-b244-faa1090a479d');
     getSpy.should.have.been.calledWith('asset');
   });
   it('should set asset field, string', () => {
@@ -305,7 +305,9 @@ describe('Entry Resource', () => {
   });
 
   it('should get assets field', () => {
-    resource.assets.should.deep.equal(['2bf325a9-c8f9-4e7d-b244-faa1090a479d']);
+    const assets = resource.assets;
+    assets.should.have.property('length', 1);
+    assets[0].should.have.property('assetID', '2bf325a9-c8f9-4e7d-b244-faa1090a479d');
     getSpy.should.have.been.calledWith('assets');
   });
   it('should set assets field, string', () => {
