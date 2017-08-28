@@ -86,6 +86,7 @@ toc:
   - TagList
   - name: PublicAPI Resources
     file: ./src/doc/8-public-api-resources.md
+  - LiteEntryResource
   - EntryResource
   - createEntry
   - EntryList
