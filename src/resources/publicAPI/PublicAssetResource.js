@@ -2,6 +2,8 @@ import Resource, { environmentSymbol, resourceSymbol } from '../Resource';
 import { fileNegotiate, superagentGet } from '../../helper';
 import halfred from 'halfred';
 
+const resolvedSymbol = Symbol('resolved');
+
 /**
  * PublicAssetResource class. PublicAssetResources can be obtained via two methods. Either by
  * loading a Asset resource directly or by accessing it via an Entry which was not loaded with
@@ -32,10 +34,12 @@ export default class PublicAssetResource extends Resource {
   constructor(resource, environment, traversal) {
     super(resource, environment, traversal);
 
+    this[resolvedSymbol] = 'tags' in this[resourceSymbol];
+
     Object.defineProperties(this, {
       isResolved: {
         enumerable: false,
-        get: () => 'tags' in this[resourceSymbol],
+        get: () => this[resolvedSymbol],
       },
       assetID: {
         enumerable: true,
@@ -104,6 +108,7 @@ export default class PublicAssetResource extends Resource {
     return superagentGet(this.getLink('self').href, { Accept: 'application/json' }, this[environmentSymbol])
     .then(resource => {
       this[resourceSymbol] = halfred.parse(resource);
+      this[resolvedSymbol] = true;
 
       Object.defineProperty(this, 'tags', {
         enumerable: true,
