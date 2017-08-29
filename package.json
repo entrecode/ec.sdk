@@ -17,7 +17,7 @@
     "changelog": "conventional-changelog -i CHANGELOG.md -s",
     "coveralls": "npm run buildNode && istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R dot --recursive && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js",
     "coverage": "npm run buildNode && istanbul cover ./node_modules/mocha/bin/_mocha -- -R dot --recursive && open ./coverage/lcov-report/index.html",
-    "docs": "documentation build src/** -c documentation.yml -f html -o docs --sort-order alpha",
+    "docs": "documentation build src/** -c documentation.yml -f html -o docs",
     "test": "npm run buildNode && mocha --recursive",
     "testTravis": "npm run build && mocha --recursive"
   },
