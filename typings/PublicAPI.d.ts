@@ -46,7 +46,7 @@ export declare class PublicAPI extends Core {
 
   entry(model: string, id: string, options: number | { _levels?: number, _fields?: number }): Promise<EntryResource>;
 
-  createEntry(model: string, entry: any): Promise<EntryResource>;
+  createEntry(model: string, entry: any, levels?: number): Promise<EntryResource>;
 
   checkPermission(permission: string, refresh?: boolean): Promise<boolean>;
 
@@ -54,9 +54,9 @@ export declare class PublicAPI extends Core {
 
   asset(assetID: string): Promise<PublicAssetResource>;
 
-  createAsset(input: assetInput, options: assetOptions): () => Promise<PublicAssetResource>;
+  createAsset(input: assetInput, options?: assetOptions): Promise<() => Promise<PublicAssetResource>>;
 
-  createAssets(input: Array<assetInput>, options: assetOptions): () => Promise<PublicAssetList>;
+  createAssets(input: any | Array<assetInput>, options?: assetOptions): Promise<() => Promise<PublicAssetList>>;
 
   getFileUrl(assetID: string, locale?: string): Promise<string>;
 

@@ -300,11 +300,38 @@ export function superagentFormPost(url, form) {
  * @param {object?} headers additional headers
  * @returns {Promise} Promise resolving to response body.
  */
-export function superagentGet(url, headers) {
+export function superagentGet(url, headers, environment) {
   const request = superagent.get(url);
 
   if (headers) {
     request.set(headers);
+  }
+
+  if (environment) {
+    const store = TokenStoreFactory(environment);
+    let secondStore;
+    if (!store.has()) {
+      // when no token is present see if we have a public environment (with shortID)
+      // if so look in second store
+      const result = /^(live|stage|nightly|develop|test)[A-Fa-f0-9]{8}$/.exec(environment);
+      if (result) {
+        secondStore = TokenStoreFactory(result[1]);
+      }
+    }
+
+    if (store.has()) {
+      request.set('Authorization', `Bearer ${store.get()}`);
+    } else if (secondStore && secondStore.has()) {
+      request.set('Authorization', `Bearer ${secondStore.get()}`);
+    }
+
+    if (store.hasUserAgent()) {
+      request.set('X-User-Agent', `${store.getUserAgent()} ec.sdk/${packageJson.version}`);
+    } else if (secondStore && secondStore.hasUserAgent()) {
+      request.set('X-User-Agent', `${secondStore.getUserAgent()} ec.sdk/${packageJson.version}`);
+    } else {
+      request.set('X-User-Agent', `ec.sdk/${packageJson.version}`);
+    }
   }
 
   return request
@@ -342,12 +369,26 @@ export function superagentPost(environment, request) {
   request.set('Accept', 'application/hal+json');
 
   const store = TokenStoreFactory(environment);
+  let secondStore;
+  if (!store.has()) {
+    // when no token is present see if we have a public environment (with shortID)
+    // if so look in second store
+    const result = /^(live|stage|nightly|develop|test)[A-Fa-f0-9]{8}$/.exec(environment);
+    if (result) {
+      secondStore = TokenStoreFactory(result[1]);
+    }
+  }
+
   if (store.has()) {
     request.set('Authorization', `Bearer ${store.get()}`);
+  } else if (secondStore && secondStore.has()) {
+    request.set('Authorization', `Bearer ${secondStore.get()}`);
   }
 
   if (store.hasUserAgent()) {
     request.set('X-User-Agent', `${store.getUserAgent()} ec.sdk/${packageJson.version}`);
+  } else if (secondStore && secondStore.hasUserAgent()) {
+    request.set('X-User-Agent', `${secondStore.getUserAgent()} ec.sdk/${packageJson.version}`);
   } else {
     request.set('X-User-Agent', `ec.sdk/${packageJson.version}`);
   }

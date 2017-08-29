@@ -12,6 +12,7 @@ const Resource = require('../../lib/resources/Resource').default;
 const ListResource = require('../../lib/resources/ListResource').default;
 const EntryList = require('../../lib/resources/publicAPI/EntryList');
 const EntryResource = require('../../lib/resources/publicAPI/EntryResource');
+const LiteEntryResource = require('../../lib/resources/publicAPI/LiteEntryResource');
 const PublicAssetResource = require('../../lib/resources/publicAPI/PublicAssetResource').default;
 
 const should = chai.should();
@@ -177,8 +178,8 @@ describe('Entry Resource', () => {
     getSpy.should.have.been.calledWith('_id');
   });
   it('should set field with default setter', () => {
-    resource.id = '1234567';
-    setSpy.should.have.been.calledWith('_id', '1234567');
+    resource.number = 1234567;
+    setSpy.should.have.been.calledWith('number', 1234567);
   });
 
   it('should get datetime field', () => {
@@ -211,7 +212,12 @@ describe('Entry Resource', () => {
   });
 
   it('should get entry field', () => {
-    resource.entry.should.be.equal('EJlJtSrkgl');
+    resource.entry.should.be.instanceOf(LiteEntryResource.default);
+    getSpy.should.have.been.calledWith('entry');
+  });
+  it('should get entry field #2', () => {
+    const entry = resource.entry;
+    resource.entry.should.be.instanceOf(LiteEntryResource.default);
     getSpy.should.have.been.calledWith('entry');
   });
   it('should set entry field, string', () => {
@@ -233,12 +239,22 @@ describe('Entry Resource', () => {
   });
   it('should throw on set entry field, invalid object', () => {
     const throws = () => resource.entry = { invalid: 'object' };
-    throws.should.throw('input must be a String, object/EntryResource or null');
+    throws.should.throw('input must be a String, object/[Lite]EntryResource or null');
   });
 
   it('should get entries field', () => {
-    resource.entries.should.deep.equal(['EJlJtSrkgl']);
+    const entries = resource.entries;
+    entries.should.have.property('length', 1);
+    entries[0].should.be.instanceOf(LiteEntryResource.default);
+    entries[0].should.have.property('_id', 'EJlJtSrkgl');
     getSpy.should.have.been.calledWith('entries');
+  });
+  it('should get entries field #2', () => {
+    let entries = resource.entries;
+    entries = resource.entries;
+    entries.should.have.property('length', 1);
+    entries[0].should.be.instanceOf(LiteEntryResource.default);
+    entries[0].should.have.property('_id', 'EJlJtSrkgl');
   });
   it('should set entries field, string', () => {
     resource.entries = ['1234567'];
@@ -259,11 +275,11 @@ describe('Entry Resource', () => {
   });
   it('should throw on set entries field, invalid object', () => {
     const throws = () => resource.entries = [{ invalid: 'object' }];
-    throws.should.throw('only string and object/EntryResource supported as input type');
+    throws.should.throw('only string and object/[Lite]EntryResource supported as input type');
   });
 
   it('should get asset field', () => {
-    resource.asset.should.be.equal('2bf325a9-c8f9-4e7d-b244-faa1090a479d');
+    resource.asset.assetID.should.be.equal('2bf325a9-c8f9-4e7d-b244-faa1090a479d');
     getSpy.should.have.been.calledWith('asset');
   });
   it('should set asset field, string', () => {
@@ -289,7 +305,9 @@ describe('Entry Resource', () => {
   });
 
   it('should get assets field', () => {
-    resource.assets.should.deep.equal(['2bf325a9-c8f9-4e7d-b244-faa1090a479d']);
+    const assets = resource.assets;
+    assets.should.have.property('length', 1);
+    assets[0].should.have.property('assetID', '2bf325a9-c8f9-4e7d-b244-faa1090a479d');
     getSpy.should.have.been.calledWith('assets');
   });
   it('should set assets field, string', () => {
@@ -553,5 +571,86 @@ describe('Entry Resource with nested and array links', () => {
     res.assets.forEach((asset) => {
       asset.should.be.instanceOf(PublicAssetResource);
     });
+  });
+});
+
+describe('LiteEntry Resource', () => {
+  let resourceJson;
+  let resource;
+  let getSpy;
+  before(() =>
+    new Promise((resolve, reject) => {
+      fs.readFile(`${__dirname}/../mocks/public-lite-entry.json`, 'utf-8', (err, res) => {
+        if (err) {
+          return reject(err);
+        }
+        return resolve(JSON.parse(res));
+      });
+    })
+    .then((json) => {
+      resourceJson = json;
+      return new Promise((resolve, reject) => {
+        fs.readFile(`${__dirname}/../mocks/public-asset.json`, 'utf-8', (err, res) => {
+          if (err) {
+            return reject(err);
+          }
+          return resolve(JSON.parse(res));
+        });
+      });
+    })
+    .then((json) => {
+      asset = new PublicAssetResource(json);
+    }));
+  beforeEach(() => {
+    mock.reset();
+    resource = new LiteEntryResource.default(resourceJson);
+    getSpy = sinon.spy(resource, 'getProperty');
+  });
+  afterEach(() => {
+    resource = null;
+    getSpy.reset();
+  });
+  it('should be instance of Resource', () => {
+    resource.should.be.instanceOf(Resource);
+  });
+  it('should be instance of LiteEntryResource', () => {
+    resource.should.be.instanceOf(LiteEntryResource.default);
+  });
+  it('should throw on save', () => {
+    const throws = () => resource.save();
+    throws.should.throw('LiteEntryResource cannot be saved')
+  });
+  it('should resolve', () => {
+    const stub = sinon.stub(helper, 'superagentGet');
+    stub.returns(resolver('public-entry.json', null, true));
+
+    return resource.resolve()
+    .then((res) => {
+      res.should.be.instanceOf(EntryResource.default)
+      stub.restore();
+    })
+    .catch((err) => {
+      stub.restore();
+      throw err;
+    });
+  });
+  it('should get id', () => {
+    resource.id.should.be.equal('B17u3r5lx-');
+  });
+  it('should get _id', () => {
+    resource._id.should.be.equal('B17u3r5lx-');
+  });
+  it('should get _entryTitle', () => {
+    resource._entryTitle.should.be.equal('B17u3r5lx-');
+  });
+  it('should get entry title', () => {
+    resource.getTitle().should.be.equal('B17u3r5lx-');
+  });
+  it('should throw on getTitle with fields property', () => {
+    const throws = () => resource.getTitle('asdf');
+    throws.should.throw('getTitle with field argument not supported by LiteEntryResource');
+  });
+  it('should get model title', () => {
+    resource.getModelTitle().should.be.equal('allFields');
   });
 });

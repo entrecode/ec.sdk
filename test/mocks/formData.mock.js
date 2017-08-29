@@ -3,7 +3,7 @@ class FormData {
     this.fields = {};
   }
 
-  field(k, v) {
+  set(k, v) {
     this.fields[k] = v;
   }
 

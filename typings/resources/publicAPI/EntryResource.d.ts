@@ -1,19 +1,13 @@
-import { Resource } from '../Resource';
 import { environment } from '../../interfaces';
+import { LiteEntryResource } from './LiteEntryResource';
 
-export declare class EntryResource extends Resource {
+export declare class EntryResource extends LiteEntryResource {
   constructor(resource: any, environment: environment, schema: any, traversal: any);
 
   [key: string]: any;
   _entryTitle: String;
 
-  save(): Promise<EntryResource>;
-
   getFieldType(property: string): string;
-
-  getTitle(property?: string): Array<string> | string;
-
-  getModelTitle(): string;
 
   getModelTitleField(): string;
 

@@ -111,7 +111,7 @@ describe('Asset Resource', () => {
   it('should be instance of Resource', () => {
     resource.should.be.instanceOf(Resource);
   });
-  it('should be instance of TokenResource', () => {
+  it('should be instance of PublicAssetResource', () => {
     resource.should.be.instanceOf(PublicAssetResource);
   });
   it('should get file url', () => {
@@ -193,7 +193,6 @@ describe('Asset Resource', () => {
     });
   });
 
-
   const dateGetter = ['created'];
   dateGetter.forEach((name) => {
     it(`should call resource.getProperty with ${name}`, () => {
@@ -223,6 +222,131 @@ describe('Asset Resource', () => {
   });
 
   const setter = ['title', 'tags'];
+  setter.forEach((name) => {
+    it(`should call resource.setProperty with ${name}`, () => {
+      const spy = sinon.spy(resource, 'setProperty');
+
+      resource[name] = resource.getProperty(name);
+      spy.should.have.been.calledOnce;
+      spy.should.have.been.calledWith(name, resource.getProperty(name));
+
+      spy.restore();
+    });
+  });
+});
+
+describe('Lite Asset Resource', () => {
+  let resourceJson;
+  let resource;
+  before(() => {
+    return new Promise((resolve, reject) => {
+      fs.readFile(`${__dirname}/../mocks/public-lite-asset.json`, 'utf-8', (err, res) => {
+        if (err) {
+          return reject(err);
+        }
+        return resolve(JSON.parse(res));
+      });
+    })
+    .then((json) => {
+      resourceJson = json;
+    });
+  });
+  beforeEach(() => {
+    resource = new PublicAssetResource(resourceJson);
+  });
+  afterEach(() => {
+    resource = null;
+  });
+  it('should be instance of Resource', () => {
+    resource.should.be.instanceOf(Resource);
+  });
+  it('should be instance of PublicAssetResource', () => {
+    resource.should.be.instanceOf(PublicAssetResource);
+  });
+  it('should resolve', () => {
+    const stub = sinon.stub(helper, 'superagentGet');
+    stub.returns(resolver('public-asset.json', null, true));
+
+    return resource.resolve()
+    .then((res) => {
+      res.should.be.instanceof(PublicAssetResource);
+      res.tags.should.have.property('length', 0);
+      stub.restore();
+    })
+    .catch((err) => {
+      stub.restore();
+      throw err;
+    });
+  });
+  it('should resolve already resolved', () => {
+    const stub = sinon.stub(helper, 'superagentGet');
+    stub.returns(resolver('public-asset.json', null, true));
+
+    return resource.resolve()
+    .then((res) => {
+      res.should.be.instanceof(PublicAssetResource);
+      res.tags.should.have.property('length', 0);
+      stub.should.have.been.calledOnce;
+      return res.resolve();
+    })
+    .then((res) => {
+      res.should.be.instanceof(PublicAssetResource);
+      res.tags.should.have.property('length', 0);
+      stub.should.have.been.calledOnce;
+      stub.restore();
+    })
+    .catch((err) => {
+      stub.restore();
+      throw err;
+    });
+  });
+  it('should be able to set tags on resolved', () => {
+    const stub = sinon.stub(helper, 'superagentGet');
+    stub.returns(resolver('public-asset.json', null, true));
+
+    return resource.resolve()
+    .then((res) => {
+      res.should.be.instanceof(PublicAssetResource);
+      res.tags.should.have.property('length', 0);
+      res.tags = ['hehe'];
+      res.tags.should.have.property('length', 1);
+      stub.restore();
+    })
+    .catch((err) => {
+      stub.restore();
+      throw err;
+    });
+  });
+
+  const dateGetter = ['created'];
+  dateGetter.forEach((name) => {
+    it(`should call resource.getProperty with ${name}`, () => {
+      const spy = sinon.spy(resource, 'getProperty');
+
+      const property = resource[name];
+      spy.should.have.been.calledOnce;
+      spy.should.have.been.calledWith(name);
+      property.toISOString().should.be.equal(resource.getProperty(name));
+
+      spy.restore();
+    });
+  });
+
+  const getter = ['assetID', 'title', 'type', 'files'];
+  getter.forEach((name) => {
+    it(`should call resource.getProperty with ${name}`, () => {
+      const spy = sinon.spy(resource, 'getProperty');
+
+      const property = resource[name];
+      spy.should.have.been.calledOnce;
+      spy.should.have.been.calledWith(name);
+      property.should.be.equal(resource.getProperty(name));
+
+      spy.restore();
+    });
+  });
+
+  const setter = ['title'];
   setter.forEach((name) => {
     it(`should call resource.setProperty with ${name}`, () => {
       const spy = sinon.spy(resource, 'setProperty');

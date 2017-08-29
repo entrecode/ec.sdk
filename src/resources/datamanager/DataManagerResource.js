@@ -553,7 +553,7 @@ export default class DataManagerResource extends Resource {
 
       if (options.title) {
         if (isFormData) {
-          input.field('title', options.title);
+          input.set('title', options.title);
         } else {
           superagentRequest.field('title', options.title);
         }
@@ -561,7 +561,7 @@ export default class DataManagerResource extends Resource {
 
       if (options.tags) {
         if (isFormData) {
-          input.field('tags', options.tags);
+          input.set('tags', options.tags);
         } else {
           superagentRequest.field('tags', options.tags);
         }
@@ -615,7 +615,7 @@ export default class DataManagerResource extends Resource {
       }
       if (options.title) {
         if (isFormData) {
-          input.field('title', options.title);
+          input.set('title', options.title);
         } else {
           superagentRequest.field('title', options.title);
         }
@@ -623,7 +623,7 @@ export default class DataManagerResource extends Resource {
 
       if (options.tags) {
         if (isFormData) {
-          input.field('tags', options.tags);
+          input.set('tags', options.tags);
         } else {
           superagentRequest.field('tags', options.tags);
         }

@@ -2,8 +2,9 @@ import halfred from 'halfred';
 import validator from 'json-schema-remote';
 
 import { fileNegotiate, getSchema } from '../../helper';
-import Resource, { resourceSymbol } from '../Resource';
+import { resourceSymbol, environmentSymbol } from '../Resource';
 import PublicAssetResource from './PublicAssetResource';
+import LiteEntryResource from './LiteEntryResource';
 
 const schemaSymbol = Symbol('_schema');
 const shortIDSymbol = Symbol('_shortID');
@@ -12,6 +13,7 @@ const datetimeRegex = /^(?:[1-9]\d{3}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1\d|2[0-8])
 
 const skip = [
   'id',
+  '_id',
   'created',
   'modified',
   'creator',
@@ -23,7 +25,6 @@ const skip = [
   '_modelTitleField',
 ];
 const underscore = [
-  '_id',
   '_created',
   '_modified',
   '_creator',
@@ -79,15 +80,15 @@ function getShortID(resource) {
  * @prop {string} _entryTitle the title of this entry
  *
  * @prop {Date|string} datetime fields with type datetime
- * @prop {EntryResource|object|string} entry fields with type entry
- * @prop {Array<EntryResource|object|string>} entries fields with type entries
- * @prop {AssetResource|object|string} asset fields with type asset
- * @prop {Array<AssetResource|object|string>} assets fields with type assets
+ * @prop {EntryResource|LiteEntryResource} entry fields with type entry
+ * @prop {Array<EntryResource|LiteEntryResource>} entries fields with type entries
+ * @prop {AssetResource} asset fields with type asset
+ * @prop {Array<AssetResource>} assets fields with type assets
  * @prop {DMAccountResource|object|string} account fields with type account
  * @prop {RoleResource|object|string} role fields with type role
  * @prop {string|object|array|number} other field with all other types
  */
-export default class EntryResource extends Resource {
+export default class EntryResource extends LiteEntryResource {
   /**
    * Creates a new EntryResource
    *
@@ -142,14 +143,27 @@ export default class EntryResource extends Resource {
             if (!entry) {
               return entry;
             }
-            if (typeof entry === 'object' && !(entry instanceof EntryResource)) {
+            if (typeof entry === 'object'
+              && !(entry instanceof EntryResource)
+              && !(entry instanceof LiteEntryResource)) {
+              // if it is an object but not one of the Resource types it was loaded nested
+              // so convert to EntryResource
               let link = entry._links.self;
               if (Array.isArray(link)) {
                 link = link[0];
               }
               const entrySchema = validator.getSchema(link.profile);
               this[resourceSymbol][key] = new EntryResource(entry, environment, entrySchema);
+            } else if (typeof entry === 'object' && entry instanceof LiteEntryResource) {
+              // if it is an object and of type LiteEntryResource its one of the resource types
+              // so just return it
+              return entry;
+            } else {
+              // if it is none of the above we convert it to LiteEntryResouce
+              const liteResource = this.getLink(`${this[shortIDSymbol]}:${this.getModelTitle()}/${key}`);
+              this[resourceSymbol][key] = new LiteEntryResource(liteResource, this[environmentSymbol]);
             }
+
             return this.getProperty(key);
           };
           property.set = (val) => {
@@ -159,9 +173,10 @@ export default class EntryResource extends Resource {
             } else if (val instanceof EntryResource) {
               value = val.toOriginal();
             } else if (typeof val === 'object' && '_id' in val) {
+              // this handles generic objects and LiteEntryResources
               value = val;
             } else {
-              throw new Error('input must be a String, object/EntryResource or null');
+              throw new Error('input must be a String, object/[Lite]EntryResource or null');
             }
 
             this.setProperty(key, value);
@@ -170,14 +185,11 @@ export default class EntryResource extends Resource {
           break;
         case 'entries':
           property.get = () => {
-            let entries = this.getProperty(key);
-            if (!entries) {
-              this.setProperty(key, []);
-              entries = [];
-            }
-            this[resourceSymbol][key] = entries.map((entry) => {
+            const entries = this.getProperty(key) || [];
+            this[resourceSymbol][key] = entries.map((entry, index) => {
               if (typeof entry === 'object') {
-                if (entry instanceof EntryResource) {
+                if (entry instanceof EntryResource
+                  || entry instanceof LiteEntryResource) {
                   return entry;
                 }
 
@@ -187,8 +199,10 @@ export default class EntryResource extends Resource {
                 }
                 const entrySchema = validator.getSchema(link.profile);
                 return new EntryResource(entry, environment, entrySchema);
+              } else {
+                const links = this[resourceSymbol].linkArray(`${this[shortIDSymbol]}:${this.getModelTitle()}/${key}`);
+                return new LiteEntryResource(links[index]);
               }
-              return entry;
             });
             return this.getProperty(key);
           };
@@ -205,9 +219,11 @@ export default class EntryResource extends Resource {
                 return v.toOriginal();
               }
               if (typeof v === 'object' && '_id' in v) {
+                // this handles generic objects and LiteEntryResources
+
                 return v;
               }
-              throw new Error('only string and object/EntryResource supported as input type');
+              throw new Error('only string and object/[Lite]EntryResource supported as input type');
             });
             this.setProperty(key, value);
             return val;
@@ -221,6 +237,10 @@ export default class EntryResource extends Resource {
             }
             if (typeof asset === 'object' && !(asset instanceof PublicAssetResource)) {
               this[resourceSymbol][key] = new PublicAssetResource(asset, environment);
+            } else if (typeof asset !== 'object') {
+              this[resourceSymbol][key] = new PublicAssetResource(
+                this[resourceSymbol].embeddedResource(`${this[shortIDSymbol]}:${this.getModelTitle()}/${key}/asset`),
+                environment);
             }
 
             return this.getProperty(key);
@@ -243,20 +263,18 @@ export default class EntryResource extends Resource {
           break;
         case 'assets':
           property.get = () => {
-            let assets = this.getProperty(key);
-            if (!assets) {
-              this.setProperty(key, []);
-              assets = [];
-            }
-            this[resourceSymbol][key] = assets.map((asset) => {
+            const assets = this.getProperty(key) || [];
+            this[resourceSymbol][key] = assets.map((asset, index) => {
               if (typeof asset === 'object') {
                 if (asset instanceof PublicAssetResource) {
                   return asset;
                 }
 
                 return new PublicAssetResource(asset, environment);
+              } else {
+                const embeds = this[resourceSymbol].embeddedArray(`${this[shortIDSymbol]}:${this.getModelTitle()}/${key}/asset`);
+                return new PublicAssetResource(embeds[index], environment);
               }
-              return asset;
             });
             return this.getProperty(key);
           };
@@ -330,10 +348,6 @@ export default class EntryResource extends Resource {
       }
     });
     this.countProperties();
-    Object.defineProperty(this, '_entryTitle', {
-      enumerable: false,
-      get: () => this.getProperty('_entryTitle'),
-    });
   }
 
   /**
@@ -357,25 +371,25 @@ export default class EntryResource extends Resource {
   }
 
   /**
-   * Get the title from this {@link EntryResource}. Either the entryTitle when no property value is
+   * Get the title from this {@link EntryResource}. Either the entryTitle when no field value is
    * provided. When one is provided the title of the nested element is returned.
    *
-   * @prop {string?} property - The field name from which the title should be loaded. Undefined for
+   * @prop {string?} field - The field name from which the title should be loaded. Undefined for
    *   the entry title.
    * @returns {string} title The title of either the element or the entry.
    */
-  getTitle(property) {
-    if (!property) {
+  getTitle(field) {
+    if (!field) {
       return this.getProperty('_entryTitle');
     }
 
-    const links = this[resourceSymbol].linkArray(`${this[shortIDSymbol]}:${this.getModelTitle()}/${property}`);
+    const links = this[resourceSymbol].linkArray(`${this[shortIDSymbol]}:${this.getModelTitle()}/${field}`);
 
     if (!links) {
       return undefined;
     }
 
-    if (['entries', 'assets'].includes(this.getFieldType(property))) {
+    if (['entries', 'assets'].includes(this.getFieldType(field))) {
       return links.map(l => l.title);
     }
 
