@@ -1,9 +1,9 @@
 <a name="0.7.0"></a>
 # 0.7.0 (2017-08-29)
 
-*  feat: allow createEntry with direct loading of nested elements CMS-2905 ([b7e0cd6](https://github.com/entrecode/ec.sdk/commit/b7e0cd6))
-* BREAKING CHANGE: feat: "Lite" PublicAssetResource for better handling of entries. Used for ec-form.  ([88a3639](https://github.com/entrecode/ec.sdk/commit/88a3639))
-* BREAKING CHANGE: feat: LiteEntryResource for better handling of entry title. Used for ec-form. CMS-2 ([ec21a79](https://github.com/entrecode/ec.sdk/commit/ec21a79))
+* feat: allow createEntry with direct loading of nested elements CMS-2905 ([b7e0cd6](https://github.com/entrecode/ec.sdk/commit/b7e0cd6))
+* feat: "Lite" PublicAssetResource for better handling of entries. Used for ec-form. ([88a3639](https://github.com/entrecode/ec.sdk/commit/88a3639))
+* feat: LiteEntryResource for better handling of entry title. Used for ec-form. CMS-2 ([ec21a79](https://github.com/entrecode/ec.sdk/commit/ec21a79))
 * release version 0.7.0 ([7d842ac](https://github.com/entrecode/ec.sdk/commit/7d842ac))
 * refactor: manually set isResolved flag for PublicAssetResource ([b8ed06e](https://github.com/entrecode/ec.sdk/commit/b8ed06e))
 * fix: another fix for those createAsset(s) typings 😀 ([18d00da](https://github.com/entrecode/ec.sdk/commit/18d00da))
@@ -13,8 +13,56 @@
 * fix: token handling for superagent helper as well CMS-2916 ([1933169](https://github.com/entrecode/ec.sdk/commit/1933169))
 * fix: typings for PublicAPI#createAsset(s) ([9c5e7fc](https://github.com/entrecode/ec.sdk/commit/9c5e7fc))
 
+### BREAKING CHANGE:
 
+* feat: "Lite" PublicAssetResource for better handling of entries. Used for ec-form.
 
+    Since version 0.7.0 the ec.sdk supports "Lite" PublicAssetResources. Those are used to better support EntryResources in ec-forms. They are a stripped down versions of PublicAssetResources containing everything but `tags`. The reason to add this was better support of title handling for linked entries.
+
+    Migration is straight forward, just add `.assetID` on all linked entry types when you don't use nested assets.
+
+    Before:
+
+    ```js
+    publicAPI.entry('myModel', entryID)
+    .then((entry) => {
+      console.log(entry.asset); // would print `assetID`
+    });
+```
+
+    After:
+
+    ```js
+    publicAPI.entry('myModel', entryID)
+    .then((entry) => {
+      console.log(entry.asset.assetID); // would print `assetID`
+    });
+    ```
+
+* feat: LiteEntryResource for better handling of entry title. Used for ec-form.
+
+    Since version 0.7.0 the ec.sdk supports LiteEntryResources. Those are used to better support EntryResources in ec-forms. They are a stripped down versions of EntryResources only containing `id`, `_id`, `_entryTitle`, and `getModelTitle()`. The reason to add this was better support of title handling for linked entries.
+
+    Migration is straight forward, just add `.id` on all linked entry types when you don't use nested entries.
+
+    Before:
+
+    ```js
+    publicAPI.entry('myModel', entryID)
+    .then((entry) => {
+      console.log(entry.linkedEntry); // would print `entryID`
+    });
+    ```
+
+    After:
+
+    ```js
+    publicAPI.entry('myModel', entryID)
+    .then((entry) => {
+      console.log(entry.linkedEntry.id); // would print `entryID`
+    });
+    ```
+    
 <a name="0.6.13"></a>
 ## 0.6.13 (2017-08-25)
 
