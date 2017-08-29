@@ -1,3 +1,20 @@
+<a name="0.7.0"></a>
+# 0.7.0 (2017-08-29)
+
+*  feat: allow createEntry with direct loading of nested elements CMS-2905 ([b7e0cd6](https://github.com/entrecode/ec.sdk/commit/b7e0cd6))
+* BREAKING CHANGE: feat: "Lite" PublicAssetResource for better handling of entries. Used for ec-form.  ([88a3639](https://github.com/entrecode/ec.sdk/commit/88a3639))
+* BREAKING CHANGE: feat: LiteEntryResource for better handling of entry title. Used for ec-form. CMS-2 ([ec21a79](https://github.com/entrecode/ec.sdk/commit/ec21a79))
+* release version 0.7.0 ([7d842ac](https://github.com/entrecode/ec.sdk/commit/7d842ac))
+* refactor: manually set isResolved flag for PublicAssetResource ([b8ed06e](https://github.com/entrecode/ec.sdk/commit/b8ed06e))
+* fix: another fix for those createAsset(s) typings 😀 ([18d00da](https://github.com/entrecode/ec.sdk/commit/18d00da))
+* fix: FormData in createAsset(s) has set function, not field ([64794a7](https://github.com/entrecode/ec.sdk/commit/64794a7))
+* fix: input type for createAssets ([ee07643](https://github.com/entrecode/ec.sdk/commit/ee07643))
+* fix: options are optional on createAsset(s) ([e8a8569](https://github.com/entrecode/ec.sdk/commit/e8a8569))
+* fix: token handling for superagent helper as well CMS-2916 ([1933169](https://github.com/entrecode/ec.sdk/commit/1933169))
+* fix: typings for PublicAPI#createAsset(s) ([9c5e7fc](https://github.com/entrecode/ec.sdk/commit/9c5e7fc))
+
+
+
 <a name="0.6.13"></a>
 ## 0.6.13 (2017-08-25)
 
