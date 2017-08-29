@@ -118,6 +118,7 @@ export default class PublicAssetResource extends Resource {
           return value;
         },
       });
+      this.countProperties();
 
       return this;
     });

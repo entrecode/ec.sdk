@@ -1,3 +1,15 @@
+<a name="0.7.1"></a>
+## 0.7.1 (2017-08-29)
+
+* release version 0.7.1 ([91387e4](https://github.com/entrecode/ec.sdk/commit/91387e4))
+* fix: count properties when PublicAssetResource is resolved ([3e5496e](https://github.com/entrecode/ec.sdk/commit/3e5496e))
+* fix: getter/setter for linked types must handle missing links/embeds CMS-2924 ([9634ec1](https://github.com/entrecode/ec.sdk/commit/9634ec1))
+* revert: chore: documentation alphabetically CMS-2922 ([ff2154c](https://github.com/entrecode/ec.sdk/commit/ff2154c))
+* chore: changelog fix for breaking change ([527c7d8](https://github.com/entrecode/ec.sdk/commit/527c7d8))
+* chore: documentation alphabetically CMS-2922 ([14d29cd](https://github.com/entrecode/ec.sdk/commit/14d29cd))
+
+
+
 <a name="0.7.0"></a>
 # 0.7.0 (2017-08-29)
 

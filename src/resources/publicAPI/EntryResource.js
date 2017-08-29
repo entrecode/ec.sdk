@@ -2,7 +2,7 @@ import halfred from 'halfred';
 import validator from 'json-schema-remote';
 
 import { fileNegotiate, getSchema } from '../../helper';
-import { resourceSymbol, environmentSymbol } from '../Resource';
+import { environmentSymbol, resourceSymbol } from '../Resource';
 import PublicAssetResource from './PublicAssetResource';
 import LiteEntryResource from './LiteEntryResource';
 
@@ -161,7 +161,9 @@ export default class EntryResource extends LiteEntryResource {
             } else {
               // if it is none of the above we convert it to LiteEntryResouce
               const liteResource = this.getLink(`${this[shortIDSymbol]}:${this.getModelTitle()}/${key}`);
-              this[resourceSymbol][key] = new LiteEntryResource(liteResource, this[environmentSymbol]);
+              if (liteResource) {
+                this[resourceSymbol][key] = new LiteEntryResource(liteResource, this[environmentSymbol]);
+              }
             }
 
             return this.getProperty(key);
@@ -186,7 +188,7 @@ export default class EntryResource extends LiteEntryResource {
         case 'entries':
           property.get = () => {
             const entries = this.getProperty(key) || [];
-            this[resourceSymbol][key] = entries.map((entry, index) => {
+            this[resourceSymbol][key] = entries.map((entry) => {
               if (typeof entry === 'object') {
                 if (entry instanceof EntryResource
                   || entry instanceof LiteEntryResource) {
@@ -201,7 +203,13 @@ export default class EntryResource extends LiteEntryResource {
                 return new EntryResource(entry, environment, entrySchema);
               } else {
                 const links = this[resourceSymbol].linkArray(`${this[shortIDSymbol]}:${this.getModelTitle()}/${key}`);
-                return new LiteEntryResource(links[index]);
+                if (links) {
+                  const link = links.find(link => link.href.indexOf(entry) !== -1);
+                  if (link) {
+                    return new LiteEntryResource(link);
+                  }
+                }
+                return entry;
               }
             });
             return this.getProperty(key);
@@ -238,9 +246,10 @@ export default class EntryResource extends LiteEntryResource {
             if (typeof asset === 'object' && !(asset instanceof PublicAssetResource)) {
               this[resourceSymbol][key] = new PublicAssetResource(asset, environment);
             } else if (typeof asset !== 'object') {
-              this[resourceSymbol][key] = new PublicAssetResource(
-                this[resourceSymbol].embeddedResource(`${this[shortIDSymbol]}:${this.getModelTitle()}/${key}/asset`),
-                environment);
+              const embedded = this[resourceSymbol].embeddedResource(`${this[shortIDSymbol]}:${this.getModelTitle()}/${key}/asset`);
+              if (embedded) {
+                this[resourceSymbol][key] = new PublicAssetResource(embedded, environment);
+              }
             }
 
             return this.getProperty(key);
@@ -264,7 +273,7 @@ export default class EntryResource extends LiteEntryResource {
         case 'assets':
           property.get = () => {
             const assets = this.getProperty(key) || [];
-            this[resourceSymbol][key] = assets.map((asset, index) => {
+            this[resourceSymbol][key] = assets.map((asset) => {
               if (typeof asset === 'object') {
                 if (asset instanceof PublicAssetResource) {
                   return asset;
@@ -273,7 +282,13 @@ export default class EntryResource extends LiteEntryResource {
                 return new PublicAssetResource(asset, environment);
               } else {
                 const embeds = this[resourceSymbol].embeddedArray(`${this[shortIDSymbol]}:${this.getModelTitle()}/${key}/asset`);
-                return new PublicAssetResource(embeds[index], environment);
+                if (embeds) {
+                  const embed = embeds.find(embed => embed.assetID === asset);
+                  if (embed) {
+                    return new PublicAssetResource(embed, environment);
+                  }
+                }
+                return asset;
               }
             });
             return this.getProperty(key);
