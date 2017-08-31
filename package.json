@@ -28,7 +28,7 @@
     "json-schema-remote": "^1.2.2",
     "jwt-decode": "^2.2.0",
     "locale": "^0.1.0",
-    "shiro-trie": "^0.3.13",
+    "shiro-trie": "^0.4.0",
     "stream": "0.0.2",
     "superagent": "^3.6.0",
     "traverson": "^6.0.2",
