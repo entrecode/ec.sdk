@@ -145,7 +145,7 @@ export default class DataManagerResource extends Resource {
       return get(
         this[environmentSymbol],
         this.newRequest().follow('ec:models/options')
-        .withTemplateParameters(optionsToQuery(o, this[resourceSymbol].link('ec:models/options').href))
+        .withTemplateParameters(optionsToQuery(o, this.getLink('ec:models/options').href))
       );
     })
     .then(([resource, traversal]) => new ModelList(resource, this[environmentSymbol], traversal));
@@ -217,7 +217,7 @@ export default class DataManagerResource extends Resource {
 
       const request = this.newRequest()
       .follow('ec:dm-clients/options')
-      .withTemplateParameters(optionsToQuery(o, this[resourceSymbol].link('ec:dm-clients/options').href));
+      .withTemplateParameters(optionsToQuery(o, this.getLink('ec:dm-clients/options').href));
       return get(this[environmentSymbol], request);
     })
     .then(([res, traversal]) => new DMClientList(res, this[environmentSymbol], traversal));
@@ -261,7 +261,7 @@ export default class DataManagerResource extends Resource {
       if (!client) {
         throw new Error('Cannot create resource with undefined object.');
       }
-      return this[resourceSymbol].link('ec:dm-client/by-id');
+      return this.getLink('ec:dm-client/by-id');
     })
     .then((link: any) => validator.validate(client, `${link.profile}`))
     .then(() => post(this[environmentSymbol], this.newRequest().follow('ec:dm-clients'), client))
@@ -307,7 +307,7 @@ export default class DataManagerResource extends Resource {
 
       const request = this.newRequest()
       .follow('ec:dm-accounts/options')
-      .withTemplateParameters(optionsToQuery(o, this[resourceSymbol].link('ec:dm-accounts/options').href));
+      .withTemplateParameters(optionsToQuery(o, this.getLink('ec:dm-accounts/options').href));
       return get(this[environmentSymbol], request);
     })
     .then(([res, traversal]) => new DMAccountList(res, this[environmentSymbol], traversal));
@@ -384,7 +384,7 @@ export default class DataManagerResource extends Resource {
 
       const request = this.newRequest()
       .follow('ec:dm-roles/options')
-      .withTemplateParameters(optionsToQuery(o, this[resourceSymbol].link('ec:dm-roles/options').href));
+      .withTemplateParameters(optionsToQuery(o, this.getLink('ec:dm-roles/options').href));
       return get(this[environmentSymbol], request);
     })
     .then(([res, traversal]) => new RoleList(res, this[environmentSymbol], traversal));
@@ -428,7 +428,7 @@ export default class DataManagerResource extends Resource {
       if (!role) {
         throw new Error('Cannot create resource with undefined object.');
       }
-      return this[resourceSymbol].link('ec:dm-role/by-id');
+      return this.getLink('ec:dm-role/by-id');
     })
     .then((link: any) => validator.validate(role, `${link.profile}-template`))
     .then(() => post(this[environmentSymbol], this.newRequest().follow('ec:dm-roles'), role))
@@ -501,7 +501,7 @@ export default class DataManagerResource extends Resource {
 
       const request = this.newRequest()
       .follow('ec:assets/options')
-      .withTemplateParameters(optionsToQuery(o, this[resourceSymbol].link('ec:assets/options').href));
+      .withTemplateParameters(optionsToQuery(o, this.getLink('ec:assets/options').href));
       return get(this[environmentSymbol], request);
     })
     .then(([res, traversal]) => new AssetList(res, this[environmentSymbol], traversal));

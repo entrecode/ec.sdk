@@ -53,7 +53,7 @@ export default class Resource {
     if (traversal) {
       this[traversalSymbol] = traversal;
     } else {
-      this[traversalSymbol] = traverson.from(this[resourceSymbol].link('self').href).jsonHal();
+      this[traversalSymbol] = traverson.from(this.getLink('self').href).jsonHal();
     }
 
     Object.defineProperties(this, {
@@ -185,7 +185,7 @@ export default class Resource {
    * @param {string} link the link name.
    * @returns {Array<object>|null} the link with the given name or null.
    */
-  getLinks(link: string): Array<string> {
+  getLinks(link: string): Array<any> {
     return this[resourceSymbol].linkArray(link);
   }
 

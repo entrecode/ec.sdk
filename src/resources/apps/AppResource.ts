@@ -12,7 +12,6 @@ import TargetList from './TargetList';
 import TargetResource from './TargetResource';
 import { environment, filterOptions } from '../ListResource';
 
-const resourceSymbol = Symbol.for('resource');
 const environmentSymbol = Symbol.for('environment');
 
 validator.setLoggingFunction(() => {
@@ -271,7 +270,7 @@ export default class AppResource extends Resource {
       if (!codeSource) {
         throw new Error('Cannot create resource with undefined object.');
       }
-      return this[resourceSymbol].link('ec:app/codesource/by-id');
+      return this.getLink('ec:app/codesource/by-id');
     })
     .then((link: any) => validator.validate(codeSource, `${link.profile}-template`))
     .then(() => post(this[environmentSymbol], this.newRequest().follow('ec:app/codesources'), codeSource))
@@ -337,7 +336,7 @@ export default class AppResource extends Resource {
       if (!dataSource) {
         throw new Error('Cannot create resource with undefined object.');
       }
-      return this[resourceSymbol].link('ec:app/datasource/by-id');
+      return this.getLink('ec:app/datasource/by-id');
     })
     .then((link: any) => validator.validate(dataSource, `${link.profile}-template`))
     .then(() => post(this[environmentSymbol], this.newRequest().follow('ec:app/datasources'), dataSource))
@@ -403,7 +402,7 @@ export default class AppResource extends Resource {
       if (!target) {
         throw new Error('Cannot create resource with undefined object.');
       }
-      return this[resourceSymbol].link('ec:app/target/by-id');
+      return this.getLink('ec:app/target/by-id');
     })
     .then((link: any) => validator.validate(target, `${link.profile}-template`))
     .then(() => post(this[environmentSymbol], this.newRequest().follow('ec:app/targets'), target))

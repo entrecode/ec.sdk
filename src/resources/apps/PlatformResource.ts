@@ -323,8 +323,8 @@ export default class PlatformResource extends Resource {
       const link = this.getLink('ec:app/target');
       const split = link.href.split('?');
       const qs = querystring.parse(split[1]);
-      qs.targetID = this[resourceSymbol].linkArray('ec:app/target')
-      .map(l => querystring.parse(l.href.split('?')[1]).targetID)
+      qs.targetID = this.getLinks('ec:app/target')
+      .map((l: any) => querystring.parse(l.href.split('?')[1]).targetID)
       .join(',');
 
       return get(this[environmentSymbol], traverson.from(`${split[0]}?${querystring.stringify(qs)}`).jsonHal());
@@ -369,8 +369,8 @@ export default class PlatformResource extends Resource {
   }
 
   getTargets(): Array<string> {
-    const links = this[resourceSymbol].linkArray('ec:app/target');
-    return links.map(link => querystring.parse(link.href.split('?')[1]).targetID);
+    const links = this.getLinks('ec:app/target');
+    return links.map((link: any) => querystring.parse(link.href.split('?')[1]).targetID);
   }
 
   setTargets(targets: Array<string | TargetResource>) {

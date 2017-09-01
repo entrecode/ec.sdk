@@ -62,7 +62,7 @@ export default class PublicAssetList extends ListResource {
 
       const request = this.newRequest()
       .follow('ec:api/tags')
-      .withTemplateParameters(optionsToQuery(options, this[resourceSymbol].link('ec:api/tags').href));
+      .withTemplateParameters(optionsToQuery(options, this.getLink('ec:api/tags').href));
       return get(this[environmentSymbol], request);
     })
     .then(([res, traversal]) => new PublicTagList(res, this[environmentSymbol], traversal));

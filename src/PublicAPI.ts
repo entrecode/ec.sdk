@@ -395,7 +395,7 @@ export default class PublicAPI extends Core {
       return undefined;
     })
     .then(() => {
-      let link = this[resourceSymbol].link(`${this[shortIDSymbol]}:${model}`).profile;
+      let link = this.getLink(`${this[shortIDSymbol]}:${model}`).profile;
       if (method !== 'get') {
         link = link.split('?');
         if (link.length === 1) {
@@ -615,7 +615,7 @@ export default class PublicAPI extends Core {
       return this.follow('ec:api/assets');
     })
     .then((request) => {
-      request.withTemplateParameters(optionsToQuery(options, this[resourceSymbol].link('ec:api/assets').href));
+      request.withTemplateParameters(optionsToQuery(options, this.getLink('ec:api/assets').href));
       return get(this[environmentSymbol], request);
     })
     .then(([res, traversal]) => new PublicAssetList(res, this[environmentSymbol], traversal));

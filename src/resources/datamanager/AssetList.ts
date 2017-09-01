@@ -77,7 +77,7 @@ export default class AssetList extends ListResource {
 
       const request = this.newRequest()
       .follow('ec:assets/deleted/options')
-      .withTemplateParameters(optionsToQuery(o, this[resourceSymbol].link('ec:assets/deleted/options').href));
+      .withTemplateParameters(optionsToQuery(o, this.getLink('ec:assets/deleted/options').href));
       return get(this[environmentSymbol], request);
     })
     .then(([res, traversal]) => new DeletedAssetList(res, this[environmentSymbol], traversal));
@@ -154,7 +154,7 @@ export default class AssetList extends ListResource {
 
       const request = this.newRequest()
       .follow('ec:tags/options')
-      .withTemplateParameters(optionsToQuery(o, this[resourceSymbol].link('ec:tags/options').href));
+      .withTemplateParameters(optionsToQuery(o, this.getLink('ec:tags/options').href));
       return get(this[environmentSymbol], request);
     })
     .then(([res, traversal]) => new TagList(res, this[environmentSymbol], traversal));

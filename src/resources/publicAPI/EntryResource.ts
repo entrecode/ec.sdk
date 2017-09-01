@@ -209,9 +209,9 @@ export default class EntryResource extends LiteEntryResource {
                 const entrySchema = validator.getSchema(link.profile);
                 return new EntryResource(entry, environment, entrySchema);
               } else {
-                const links = this[resourceSymbol].linkArray(`${this[shortIDSymbol]}:${this.getModelTitle()}/${key}`);
+                const links = this.getLinks(`${this[shortIDSymbol]}:${this.getModelTitle()}/${key}`);
                 if (links) {
-                  const link = links.find(link => link.href.indexOf(entry) !== -1);
+                  const link = links.find((link: any) => link.href.indexOf(entry) !== -1);
                   if (link) {
                     return new LiteEntryResource(link, this[environmentSymbol]);
                   }
@@ -373,7 +373,7 @@ export default class EntryResource extends LiteEntryResource {
    *   be the same object but with refreshed data.
    */
   save(): Promise<EntryResource> {
-    return <Promise<EntryResource>>super.save(`${this[resourceSymbol].link('self').profile}?template=put`);
+    return <Promise<EntryResource>>super.save(`${this.getLink('self').profile}?template=put`);
   }
 
   /**
@@ -399,7 +399,7 @@ export default class EntryResource extends LiteEntryResource {
       return <string>this.getProperty('_entryTitle');
     }
 
-    const links = this[resourceSymbol].linkArray(`${this[shortIDSymbol]}:${this.getModelTitle()}/${field}`);
+    const links = this.getLinks(`${this[shortIDSymbol]}:${this.getModelTitle()}/${field}`);
 
     if (!links) {
       return undefined;
@@ -436,7 +436,7 @@ export default class EntryResource extends LiteEntryResource {
    * @returns {number} Number of levels (1-5)
    */
   getLevelCount(): number {
-    let link = this[resourceSymbol].link('self').href;
+    let link = this.getLink('self').href;
 
     if (link.indexOf('_levels') === -1) {
       return 1;
