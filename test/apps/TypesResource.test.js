@@ -113,7 +113,7 @@ describe('Types Resource', () => {
     resource.getAvailableCodeSources().should.have.property('length', 3);
   });
   it('should get available data sources', () => {
-    resource.getAvailableDataSource().should.have.property('length', 3);
+    resource.getAvailableDataSources().should.have.property('length', 3);
   });
   it('should get available targets', () => {
     resource.getAvailableTargets().should.have.property('length', 5);

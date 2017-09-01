@@ -7,8 +7,6 @@ const fs = require('fs');
 
 const DMClientResource = require('../../lib/resources/datamanager/DMClientResource').default;
 const DMClientList = require('../../lib/resources/datamanager/DMClientList').default;
-const ClientResource = require('../../lib/resources/accounts/ClientResource').default;
-const ClientList = require('../../lib/resources/accounts/ClientList').default;
 const Resource = require('../../lib/resources/Resource').default;
 const ListResource = require('../../lib/resources/ListResource').default;
 
@@ -39,9 +37,6 @@ describe('DMClient ListResource', () => {
   });
   it('should be instance of ListResource', () => {
     list.should.be.instanceOf(ListResource);
-  });
-  it('should be instance of ClientList', () => {
-    list.should.be.instanceOf(ClientList);
   });
   it('should be instance of DMClientList', () => {
     list.should.be.instanceOf(DMClientList);
@@ -75,9 +70,6 @@ describe('DMClient Resource', () => {
   });
   it('should be instance of Resource', () => {
     resource.should.be.instanceOf(Resource);
-  });
-  it('should be instance of ClientResource', () => {
-    resource.should.be.instanceOf(ClientResource);
   });
   it('should be instance of DMClientResource', () => {
     resource.should.be.instanceOf(DMClientResource);

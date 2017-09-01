@@ -83,6 +83,19 @@ describe('Group Resource', () => {
     const throws = () => resource.addPermission();
     throws.should.throw(Error);
   });
+  it('should add multiple permission', () => {
+    resource.permissions.should.have.property('length', 2);
+    resource.addPermissions(['acc:something', 'acc:anything']);
+    resource.permissions.should.have.property('length', 4);
+  });
+  it('should throw on undefined permissions', () => {
+    const throws = () => resource.addPermissions();
+    throws.should.throw(Error);
+  });
+  it('should throw on permissions not an array', () => {
+    const throws = () => resource.addPermissions('string');
+    throws.should.throw(Error);
+  });
 
   const getter = [
     'groupID', 'name', 'permissions',

@@ -40,7 +40,7 @@
     .then((entry) => {
       console.log(entry.asset); // would print `assetID`
     });
-```
+    ```
 
     After:
 

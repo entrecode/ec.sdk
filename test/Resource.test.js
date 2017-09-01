@@ -68,7 +68,7 @@ describe('Resource', () => {
   it('should restore state on reset call', () => {
     resource.setProperty('description', 'hello');
     resource.reset();
-    resource.get().should.have.property('description', 'hier kann alles getestet werden');
+    resource.getAll().should.have.property('description', 'hier kann alles getestet werden');
   });
   it('should be clean after reset', () => {
     resource.setProperty('description', 'hello');
@@ -156,7 +156,7 @@ describe('Resource', () => {
     .and.notify(() => stub.restore());
   });
   it('should return resource on get', () => {
-    const obj = resource.get();
+    const obj = resource.getAll();
     const check = ['created', 'dataManagerID', 'description', 'config', 'hexColor', 'locales', 'shortID', 'title'];
     check.forEach((property) => {
       obj.should.have.property(property, resource.getProperty(property));
@@ -165,7 +165,7 @@ describe('Resource', () => {
   });
   it('should only return selected properties', () => {
     const check = ['created', 'dataManagerID', 'description', 'config', 'hexColor', 'locales', 'shortID', 'title'];
-    const obj = resource.get(check);
+    const obj = resource.getAll(check);
     check.forEach((property) => {
       obj.should.have.property(property, resource.getProperty(property));
     });
@@ -181,9 +181,9 @@ describe('Resource', () => {
       title: 'new title',
     };
 
-    resource.set(newResource);
+    resource.setAll(newResource);
 
-    const obj = resource.get();
+    const obj = resource.getAll();
     ['created', 'description', 'config', 'hexColor', 'locales', 'title']
     .forEach((property) => {
       obj.should.have.property(property, newResource[property]);
@@ -195,9 +195,9 @@ describe('Resource', () => {
       title: 'new title',
     };
 
-    resource.set(newResource);
+    resource.setAll(newResource);
 
-    const obj = resource.get();
+    const obj = resource.getAll();
     ['description', 'title']
     .forEach((property) => {
       obj.should.have.property(property, newResource[property]);
@@ -205,9 +205,9 @@ describe('Resource', () => {
   });
   it('should throw on undefined value', () => {
     const throws = () => {
-      resource.set();
+      resource.setAll();
     };
-    throws.should.throw(Error);
+    throws.should.throw('Resource cannot be undefined.');
   });
   it('should return single property', () => {
     resource.getProperty('title').should.be.equal('Test DM');
