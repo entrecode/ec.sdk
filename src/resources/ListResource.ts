@@ -72,7 +72,11 @@ function map(list: ListResource, iterator: (resource: Resource) => Promise<any> 
 
 /**
  * Generic list resource class. Represents {@link
-  * https://tools.ietf.org/html/draft-kelly-json-hal-08 HAL resources} with added support for lists.
+  * https://tools.ietf.org/html/draft-kelly-json-hal-08 HAL resources} with added support for
+  * lists.
+ *
+ * Since version 0.8.1 ListResources are iterable, so you can use spread operator or for … of loops
+ * with them.
  *
  * @class
  *
@@ -96,23 +100,35 @@ export default class ListResource extends Resource {
   constructor(resource: any, environment: string, traversal: any, name: string, itemSchema: any, ListClass = ListResource, ItemClass = Resource) {
     super(resource, environment, traversal);
 
-    Object.defineProperties(this, {
-      count: {
-        enumerable: false,
-        get: () => this.getProperty('count'),
-      },
-      total: {
-        enumerable: false,
-        get: () => this.getProperty('total'),
-      },
-    });
-
     this[listClassSymbol] = ListClass;
     this[itemClassSymbol] = ItemClass;
     this[itemSchemaSymbol] = itemSchema;
     this[nameSymbol] = name || Object.keys(this[resourceSymbol].allEmbeddedResources())[0];
     this.countProperties();
   }
+
+  get count() {
+    return this.getProperty('count');
+  }
+
+  get total() {
+    return this.getProperty('total');
+  }
+
+  private index: number = 0;
+
+  [Symbol.iterator]() {
+    return {
+      next: () => {
+        if (this.index < this.count) {
+          return { value: this.getItem(this.index++), done: false };
+        } else {
+          this.index = 0;
+          return { done: true };
+        }
+      }
+    }
+  };
 
   /**
    * Get all list items {@link https://tools.ietf.org/html/draft-kelly-json-hal-08#section-4.1.2

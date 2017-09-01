@@ -175,4 +175,17 @@ describe('ListResource', () => {
       result.length.should.be.equal(4);
     });
   });
+  it('should implement iterator, spread operator', () => {
+    const array = [...list];
+    array.should.have.property('length', 2);
+  });
+  it('should implement iterator, for of', () => {
+    const array = [];
+
+    for (const item of list) {
+      array.push(item);
+    }
+
+    array.should.have.property('length', 2);
+  });
 });
