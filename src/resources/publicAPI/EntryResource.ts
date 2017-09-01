@@ -21,19 +21,17 @@ const skip: Array<string> = [
   'id',
   '_id',
   'created',
+  '_created',
   'modified',
+  '_modified',
   'creator',
+  '_creator',
   'private',
   '_links',
   '_embedded',
   '_entryTitle',
   '_modelTitle',
   '_modelTitleField',
-];
-const underscore = [
-  '_created',
-  '_modified',
-  '_creator',
 ];
 
 function getFieldType(schema, property) {
@@ -95,8 +93,7 @@ function getShortID(resource) {
  * @prop {string|object|array|number} other field with all other types
  */
 export default class EntryResource extends LiteEntryResource {
-  [key: string]: any;
-  _entryTitle: String;
+  [key: string]: any; // TODO ?
 
   /**
    * Creates a new EntryResource
@@ -358,12 +355,33 @@ export default class EntryResource extends LiteEntryResource {
         }
 
         Object.defineProperty(this, key, property);
-        if (underscore.indexOf(key) !== -1) {
-          Object.defineProperty(this, key.slice(1), property);
-        }
       }
     });
     this.countProperties();
+  }
+
+  get created() {
+    return new Date(this.getProperty('_created'));
+  }
+
+  get _created() {
+    return new Date(this.getProperty('_created'));
+  }
+
+  get modified() {
+    return new Date(this.getProperty('_modified'));
+  }
+
+  get _modified() {
+    return new Date(this.getProperty('_modified'));
+  }
+
+  get creator() {
+    return <string>this.getProperty('_creator');
+  }
+
+  get _creator() {
+    return <string>this.getProperty('_creator');
   }
 
   /**

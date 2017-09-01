@@ -10,7 +10,7 @@ const environmentSymbol = Symbol.for('environment');
 const resourceSymbol = Symbol.for('resource');
 const traversalSymbol = Symbol.for('traversal');
 const dirtySymbol = Symbol('dirty');
-const resourceProperties = Symbol('resourceProperties');
+const resourcePropertiesSymbol = Symbol('resourceProperties');
 
 traverson.registerMediaType(HalAdapter.mediaType, HalAdapter);
 validator.setLoggingFunction(() => {
@@ -75,7 +75,7 @@ export default class Resource {
   }
 
   countProperties(): void {
-    this[resourceProperties] = Object.keys(this);
+    this[resourcePropertiesSymbol] = Object.keys(this);
   }
 
   /**
@@ -288,8 +288,8 @@ export default class Resource {
     const out = {};
 
     const keys = Object.keys(this);
-    if (this[resourceProperties].length !== keys.length) {
-      throw new Error(`Additional properties found: ${keys.filter(k => !this[resourceProperties].includes(k)).join(', ')}`);
+    if (this[resourcePropertiesSymbol].length !== keys.length) {
+      throw new Error(`Additional properties found: ${keys.filter(k => !this[resourcePropertiesSymbol].includes(k)).join(', ')}`);
     }
 
     Object.keys(this[resourceSymbol].original()).forEach((key) => {

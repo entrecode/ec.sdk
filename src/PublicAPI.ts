@@ -52,16 +52,6 @@ const urls = {
  * the token with `publicAPI.setToken(session.getToken());`.
  */
 export default class PublicAPI extends Core {
-  shortID: string;
-  dataManagerID: string;
-  title: string;
-  description: string;
-  locales: Array<string>;
-  defaultLocale: string;
-  models: Array<any>;
-  account: any;
-  config: any;
-
   /**
    * Creates a new instance of {@link PublicAPI} API connector.
    *
@@ -95,6 +85,42 @@ export default class PublicAPI extends Core {
         get: () => this[resourceSymbol][property],
       });
     });
+  }
+
+  get shortID() {
+    return <string>this[resourceSymbol].shortID;
+  }
+
+  get dataManagerID() {
+    return <string>this[resourceSymbol].dataManagerID;
+  }
+
+  get title() {
+    return <string>this[resourceSymbol].title;
+  }
+
+  get description() {
+    return <string>this[resourceSymbol].description;
+  }
+
+  get locales() {
+    return <Array<string>>this[resourceSymbol].locales;
+  }
+
+  get defaultLocale() {
+    return <string>this[resourceSymbol].defaultLocale;
+  }
+
+  get models() {
+    return <Array<any>>this[resourceSymbol].models;
+  }
+
+  get account() {
+    return <any>this[resourceSymbol].account;
+  }
+
+  get config() {
+    return <any>this[resourceSymbol].config;
   }
 
   /**
