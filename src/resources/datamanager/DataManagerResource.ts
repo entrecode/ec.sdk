@@ -15,11 +15,11 @@ import ModelResource from './ModelResource';
 import Resource from '../Resource';
 import RoleList from './RoleList';
 import RoleResource from './RoleResource';
-import { environment, filterOptions } from '../ListResource';
+import { filterOptions } from '../ListResource';
 import { get, getUrl, optionsToQuery, post, superagentPost } from '../../helper';
+import { environment } from '../../Core';
 
 const environmentSymbol = Symbol.for('environment');
-const resourceSymbol = Symbol.for('resource');
 
 validator.setLoggingFunction(() => {
 });

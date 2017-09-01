@@ -4,7 +4,7 @@ import * as validator from 'json-schema-remote';
 import Resource from '../Resource';
 import DataManagerResource from './DataManagerResource';
 import { get, post, put } from '../../helper';
-import { environment } from '../ListResource';
+import { environment } from '../../Core';
 
 const environmentSymbol = Symbol.for('environment');
 const resourceSymbol = Symbol.for('resource');

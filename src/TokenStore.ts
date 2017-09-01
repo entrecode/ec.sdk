@@ -1,6 +1,6 @@
 import * as cookie from 'browser-cookies'; // js-cookie
 import * as jwtDecode from 'jwt-decode';
-import { environment } from './resources/ListResource';
+import { environment } from './Core';
 
 /**
  * Map for storing all tokenStores.
@@ -30,7 +30,7 @@ export class TokenStore {
    * @constructor
    * @param {environment} environment The environment for which to store tokens.
    */
-  constructor(environment: environment|string = 'live') {
+  constructor(environment: environment | string = 'live') {
     this.environment = environment;
     this.token = undefined;
     this.clientID = undefined;
@@ -186,7 +186,7 @@ export class TokenStore {
  * @param {environment} environment the environment for which the token store should be created
  * @returns {TokenStore} The created token store
  */
-export default function TokenStoreFactory(environment: environment|string = 'live'): TokenStore {
+export default function TokenStoreFactory(environment: environment | string = 'live'): TokenStore {
   if (!stores.has(environment)) {
     stores.set(environment, new TokenStore(environment));
   }

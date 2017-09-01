@@ -3,10 +3,11 @@ import * as stream from 'stream';
 import AssetResource from './AssetResource';
 import DeletedAssetList from './DeletedAssetList';
 import DeletedAssetResource from './DeletedAssetResource';
-import ListResource, { environment, filterOptions } from '../ListResource';
+import ListResource, { filterOptions } from '../ListResource';
 import TagList from './TagList';
 import TagResource from './TagResource';
 import { get, getUrl, optionsToQuery, superagentGetPiped } from '../../helper';
+import { environment } from '../../Core';
 
 const environmentSymbol = Symbol.for('environment');
 const resourceSymbol = Symbol.for('resource');

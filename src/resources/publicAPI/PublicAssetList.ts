@@ -1,8 +1,9 @@
-import ListResource, { environment, filterOptions } from '../ListResource';
+import ListResource, { filterOptions } from '../ListResource';
 import PublicAssetResource from './PublicAssetResource';
 import PublicTagList from './PublicTagList';
 import PublicTagResource from './PublicTagResource';
 import { get, optionsToQuery } from '../../helper';
+import { environment } from '../../Core';
 
 const environmentSymbol = Symbol.for('environment');
 const resourceSymbol = Symbol.for('resource');

@@ -4,9 +4,9 @@ import AppList from './resources/apps/AppList';
 import AppResource from './resources/apps/AppResource';
 import AppStatsList from './resources/apps/AppStatsList';
 import AppStatsResource from './resources/apps/AppStatsResource';
-import Core from './Core';
+import Core, { environment } from './Core';
 import TypesResource from './resources/apps/TypesResource';
-import { environment, filterOptions } from './resources/ListResource';
+import { filterOptions } from './resources/ListResource';
 import { get, optionsToQuery, post } from './helper';
 
 const environmentSymbol = Symbol.for('environment');

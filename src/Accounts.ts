@@ -4,12 +4,12 @@ import AccountList from './resources/accounts/AccountList';
 import AccountResource from './resources/accounts/AccountResource';
 import ClientList from './resources/accounts/ClientList';
 import ClientResource from './resources/accounts/ClientResource';
-import Core from './Core';
+import Core, { environment } from './Core';
 import InvalidPermissionsResource from './resources/accounts/InvalidPermissionsResource';
 import InvitesResource from './resources/accounts/InvitesResource';
 import GroupList from './resources/accounts/GroupList';
 import GroupResource from './resources/accounts/GroupResource';
-import { environment, filterOptions } from './resources/ListResource';
+import {filterOptions } from './resources/ListResource';
 import {
   get,
   getEmpty,

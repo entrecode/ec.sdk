@@ -1,8 +1,9 @@
 import * as halfred from 'halfred';
 
 import EntryResource from './EntryResource';
-import ListResource, { environment } from '../ListResource';
+import ListResource  from '../ListResource';
 import { getSchema } from '../../helper';
+import { environment } from '../../Core';
 
 /**
  * Entry list class

@@ -1,6 +1,6 @@
 import Resource from '../Resource';
-import { environment } from '../ListResource';
 import { del, fileNegotiate } from '../../helper';
+import { environment } from '../../Core';
 
 const environmentSymbol = Symbol.for('environment');
 

@@ -1,5 +1,5 @@
 import Resource from '../Resource';
-import { environment } from '../ListResource';
+import { environment } from '../../Core';
 
 /**
  * DMClientResource class

@@ -4,12 +4,12 @@ import * as ShiroTrie from 'shiro-trie';
 import * as superagent from 'superagent';
 import * as validator from 'json-schema-remote';
 
-import Core from './Core';
+import Core, { environment } from './Core';
 import EntryList, { createList } from './resources/publicAPI/EntryList';
 import EntryResource, { createEntry } from './resources/publicAPI/EntryResource';
 import PublicAssetList from './resources/publicAPI/PublicAssetList';
 import PublicAssetResource from './resources/publicAPI/PublicAssetResource';
-import { environment, filterOptions } from './resources/ListResource';
+import { filterOptions } from './resources/ListResource';
 import {
   get,
   getEmpty,

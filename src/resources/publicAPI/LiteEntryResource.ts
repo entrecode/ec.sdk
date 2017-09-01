@@ -2,8 +2,8 @@ import * as querystring from 'querystring';
 
 import EntryResource, { createEntry } from './EntryResource';
 import Resource from '../Resource';
-import { environment } from '../ListResource';
 import { superagentGet } from '../../helper';
+import { environment } from '../../Core';
 
 const environmentSymbol = Symbol.for('environment');
 

@@ -4,7 +4,6 @@ import * as halfred from 'halfred';
 
 import events from './EventEmitter';
 import TokenStoreFactory from './TokenStore';
-import { environment } from './resources/ListResource';
 import { get, getSchema } from './helper';
 
 const resourceSymbol = Symbol.for('resource');
@@ -247,3 +246,5 @@ export default class Core {
     .then(() => Promise.resolve());
   }
 }
+
+export type environment = 'live' | 'stage' | 'nightly' | 'develop';

@@ -3,7 +3,7 @@ import * as ShiroTrie from 'shiro-trie';
 import Resource from '../Resource';
 import TokenList from './TokenList';
 import { get } from '../../helper';
-import { environment } from '../ListResource';
+import { environment } from '../../Core';
 
 const environmentSymbol = Symbol.for('environment');
 

@@ -268,8 +268,6 @@ export default class ListResource extends Resource {
  * @access private
  */
 
-export type environment = 'live' | 'stage' | 'nightly' | 'develop';
-
 export type filterOptions = {
   size?: number,
   page?: number,

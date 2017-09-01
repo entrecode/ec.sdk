@@ -1,5 +1,6 @@
-import ListResource, { environment } from '../ListResource';
+import ListResource from '../ListResource';
 import TagResource from './TagResource';
+import { environment } from '../../Core';
 
 /**
  * Tag list resource class.

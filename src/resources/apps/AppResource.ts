@@ -10,7 +10,8 @@ import DataSourceList from './DataSourceList';
 import DataSourceResource from './DataSourceResource';
 import TargetList from './TargetList';
 import TargetResource from './TargetResource';
-import { environment, filterOptions } from '../ListResource';
+import { filterOptions } from '../ListResource';
+import { environment } from '../../Core';
 
 const environmentSymbol = Symbol.for('environment');
 

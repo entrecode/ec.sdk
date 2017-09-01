@@ -1,5 +1,6 @@
-import ListResource, { environment } from '../ListResource';
 import ModelResource from './ModelResource';
+import ListResource from '../ListResource';
+import { environment } from '../../Core';
 
 /**
  * Model list resource class.

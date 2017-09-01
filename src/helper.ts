@@ -5,11 +5,12 @@ import * as validator from 'json-schema-remote';
 import events from './EventEmitter';
 import Problem from './Problem';
 import TokenStoreFactory, { TokenStore } from './TokenStore';
-import { environment, filterOptions } from './resources/ListResource';
+import { filterOptions } from './resources/ListResource';
 
 import AssetResource from './resources/datamanager/AssetResource';
 import DeletedAssetResource from './resources/datamanager/DeletedAssetResource';
 import PublicAssetResource from './resources/publicAPI/PublicAssetResource';
+import { environment } from './Core';
 
 const packageJson = require('../package.json');
 

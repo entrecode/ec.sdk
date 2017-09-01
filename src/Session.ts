@@ -1,7 +1,6 @@
-import Core from './Core';
+import Core, { environment } from './Core';
 import { get, post } from './helper';
 import AccountResource from './resources/accounts/AccountResource';
-import { environment } from './resources/ListResource';
 
 const tokenStoreSymbol = Symbol.for('tokenStore');
 const eventsSymbol = Symbol.for('events');

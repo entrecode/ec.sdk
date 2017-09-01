@@ -3,8 +3,8 @@ import * as validator from 'json-schema-remote';
 
 import LiteEntryResource from './LiteEntryResource';
 import PublicAssetResource from './PublicAssetResource';
-import { environment } from '../ListResource';
 import { fileNegotiate, getSchema } from '../../helper';
+import { environment } from '../../Core';
 
 const environmentSymbol = Symbol.for('environment');
 const resourceSymbol = Symbol.for('resource');

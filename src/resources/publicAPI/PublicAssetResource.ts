@@ -1,10 +1,7 @@
-import * as halfred from 'halfred';
-
 import Resource from '../Resource';
-import { environment } from '../ListResource';
-import { fileNegotiate, superagentGet } from '../../helper';
+import { fileNegotiate } from '../../helper';
+import { environment } from '../../Core';
 
-const environmentSymbol = Symbol.for('environment');
 const resourceSymbol = Symbol.for('resource');
 const resolvedSymbol = Symbol('resolved');
 

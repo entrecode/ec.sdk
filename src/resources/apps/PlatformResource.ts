@@ -12,7 +12,8 @@ import CodeSourceResource from './CodeSourceResource';
 import DataSourceResource from './DataSourceResource';
 import TargetList from './TargetList';
 import TargetResource from './TargetResource';
-import { environment, filterOptions } from '../ListResource';
+import { environment } from '../../Core';
+import { filterOptions } from '../ListResource';
 
 const resourceSymbol = Symbol.for('resource');
 const environmentSymbol = Symbol.for('environment');

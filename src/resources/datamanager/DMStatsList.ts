@@ -1,6 +1,6 @@
 import Resource from '../Resource';
 import DMStatsResource from './DMStatsResource';
-import { environment } from '../ListResource';
+import { environment } from '../../Core';
 
 const resourceSymbol = Symbol.for('resource');
 const environmentSymbol = Symbol.for('environment');

@@ -1,6 +1,7 @@
 import ClientList from '../accounts/ClientList';
 import DMClientResource from './DMClientResource';
-import ListResource, { environment } from '../ListResource';
+import ListResource from '../ListResource';
+import { environment } from '../../Core';
 
 /**
  * Client list class

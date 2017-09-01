@@ -1,5 +1,6 @@
-import ListResource, { environment } from '../ListResource';
+import ListResource from '../ListResource';
 import TargetResource from './TargetResource';
+import { environment } from '../../Core';
 
 /**
  * Target list class
