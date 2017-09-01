@@ -1,11 +1,13 @@
 import * as halfred from 'halfred';
 import * as validator from 'json-schema-remote';
 
-import { fileNegotiate, getSchema } from '../../helper';
-import { environmentSymbol, resourceSymbol } from '../Resource';
-import PublicAssetResource from './PublicAssetResource';
 import LiteEntryResource from './LiteEntryResource';
+import PublicAssetResource from './PublicAssetResource';
 import { environment } from '../ListResource';
+import { fileNegotiate, getSchema } from '../../helper';
+
+const environmentSymbol = Symbol.for('environment');
+const resourceSymbol = Symbol.for('resource');
 
 validator.setLoggingFunction(() => {
 });

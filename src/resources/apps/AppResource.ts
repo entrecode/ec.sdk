@@ -1,7 +1,7 @@
 import * as validator from 'json-schema-remote';
 
 import { get, optionsToQuery, post } from '../../helper';
-import Resource, { environmentSymbol, resourceSymbol } from '../Resource';
+import Resource from '../Resource';
 import PlatformList from './PlatformList';
 import PlatformResource from './PlatformResource';
 import CodeSourceList from './CodeSourceList';
@@ -12,9 +12,11 @@ import TargetList from './TargetList';
 import TargetResource from './TargetResource';
 import { environment, filterOptions } from '../ListResource';
 
+const resourceSymbol = Symbol.for('resource');
+const environmentSymbol = Symbol.for('environment');
+
 validator.setLoggingFunction(() => {
 });
-
 
 /**
  * AppResource class

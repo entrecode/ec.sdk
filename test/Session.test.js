@@ -7,8 +7,9 @@ const sinonChai = require('sinon-chai');
 
 const helper = require('../lib/helper');
 const Session = require('../lib/Session').default;
-const meLoadedTimeSymbol = require('../lib/Session').meLoadedTimeSymbol;
-const tokenStoreSymbol = require('../lib/Core').tokenStoreSymbol;
+
+const meLoadedTimeSymbol = Symbol.for('meLoadedTime');
+const tokenStoreSymbol = Symbol.for('tokenStore');
 
 chai.should();
 chai.use(sinonChai);

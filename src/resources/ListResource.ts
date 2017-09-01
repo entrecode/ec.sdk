@@ -1,9 +1,11 @@
-import Resource, { environmentSymbol, resourceSymbol } from './Resource';
+import Resource from './Resource';
 
-const nameSymbol = Symbol('_name');
-const listClassSymbol = Symbol('_listClass');
+const environmentSymbol = Symbol.for('environment');
+const resourceSymbol = Symbol.for('resource');
 const itemClassSymbol = Symbol('_itemClass');
 const itemSchemaSymbol = Symbol('_itmeSchema');
+const listClassSymbol = Symbol('_listClass');
+const nameSymbol = Symbol('_name');
 
 function map(list: ListResource, iterator: (resource: Resource) => Promise<any> | any, results: Array<Resource> = []) {
   return list.getAllItems().map(entry =>
@@ -73,7 +75,7 @@ function map(list: ListResource, iterator: (resource: Resource) => Promise<any> 
 /**
  * Generic list resource class. Represents {@link
   * https://tools.ietf.org/html/draft-kelly-json-hal-08 HAL resources} with added support for
-  * lists.
+ * lists.
  *
  * Since version 0.8.1 ListResources are iterable, so you can use spread operator or for … of loops
  * with them.

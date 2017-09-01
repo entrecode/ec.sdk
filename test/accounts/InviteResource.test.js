@@ -6,6 +6,9 @@ const fs = require('fs');
 const Resource = require('../../lib/resources/Resource');
 const InvitesResource = require('../../lib/resources/accounts/InvitesResource').default;
 
+const environmentSymbol = Symbol.for('environment');
+const traversalSymbol = Symbol.for('traversal');
+
 const should = chai.should();
 
 describe('InvitesResource', () => {
@@ -34,8 +37,8 @@ describe('InvitesResource', () => {
   });
   it('should instantiate with traversal and environment', () => {
     const res = new Resource.default(resourceJson, 'stage', {});
-    res[Resource.environmentSymbol].should.be.equal('stage');
-    should.exist(res[Resource.traversalSymbol]);
+    res[environmentSymbol].should.be.equal('stage');
+    should.exist(res[traversalSymbol]);
   });
   it('should get invites', () => {
     const invites = resource.invites;

@@ -1,18 +1,19 @@
 import * as traverson from 'traverson';
 import * as HalAdapter from 'traverson-hal';
 import * as halfred from 'halfred';
-import TokenStoreFactory from './TokenStore';
+
 import events from './EventEmitter';
-import { get, getSchema } from './helper';
+import TokenStoreFactory from './TokenStore';
 import { environment } from './resources/ListResource';
+import { get, getSchema } from './helper';
+
+const resourceSymbol = Symbol.for('resource');
+const tokenStoreSymbol = Symbol.for('tokenStore');
+const traversalSymbol = Symbol.for('traversal');
+const eventsSymbol = Symbol.for('events');
+const environmentSymbol = Symbol.for('environment');
 
 traverson['registerMediaType'](HalAdapter.mediaType, HalAdapter);
-
-export const tokenStoreSymbol = Symbol('_tokenStore');
-export const traversalSymbol = Symbol('_traversal');
-export const eventsSymbol = Symbol('_events');
-export const environmentSymbol = Symbol('_environment');
-export const resourceSymbol = Symbol('_resource');
 
 /**
  * You can define which API should be used with the environment parameter. Internally this is also

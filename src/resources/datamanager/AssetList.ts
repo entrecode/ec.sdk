@@ -1,15 +1,16 @@
 import * as stream from 'stream';
 
-import { get, getUrl, optionsToQuery, superagentGetPiped } from '../../helper';
-import ListResource, { environment, filterOptions } from '../ListResource';
-import { environmentSymbol, resourceSymbol } from '../Resource';
 import AssetResource from './AssetResource';
 import DeletedAssetList from './DeletedAssetList';
 import DeletedAssetResource from './DeletedAssetResource';
+import ListResource, { environment, filterOptions } from '../ListResource';
 import TagList from './TagList';
 import TagResource from './TagResource';
+import { get, getUrl, optionsToQuery, superagentGetPiped } from '../../helper';
 
-const dataManagerIDSymbol = Symbol('_dataManagerID');
+const environmentSymbol = Symbol.for('environment');
+const resourceSymbol = Symbol.for('resource');
+const dataManagerIDSymbol = Symbol('dataManagerID');
 /**
  * Asset list class
  *

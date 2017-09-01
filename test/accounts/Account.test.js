@@ -18,7 +18,8 @@ const GroupResource = require('../../lib/resources/accounts/GroupResource').defa
 const InvitesResource = require('../../lib/resources/accounts/InvitesResource').default;
 const InvalidPermissionsResource = require('../../lib/resources/accounts/InvalidPermissionsResource').default;
 const Resource = require('../../lib/resources/Resource').default;
-const tokenStoreSymbol = require('../../lib/Core').tokenStoreSymbol;
+
+const tokenStoreSymbol = Symbol.for('tokenStore');
 
 const nock = require('../mocks/nock.js');
 

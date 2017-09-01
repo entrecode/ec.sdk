@@ -1,6 +1,6 @@
 import Resource from '../Resource';
-import { fileNegotiate } from '../../helper';
 import { environment } from '../ListResource';
+import { fileNegotiate } from '../../helper';
 
 /**
  * AssetResource class

@@ -21,6 +21,9 @@ const nockMock = require('./mocks/nock');
 const resolver = require('./mocks/resolver');
 const TraversonMock = require('./mocks/TraversonMock');
 
+const tokenStoreSymbol = Symbol.for('tokenStore');
+const traversalSymbol = Symbol.for('traversal');
+
 nock.disableNetConnect();
 chai.should();
 chai.use(chaiAsPromised);
@@ -42,7 +45,7 @@ describe('Core', () => {
     throws.should.throw(Error);
   });
   it('should set token', () => {
-    const stub = sinon.stub(core[Core.tokenStoreSymbol], 'setToken');
+    const stub = sinon.stub(core[tokenStoreSymbol], 'setToken');
     core.setToken('token');
     stub.should.have.been.calledWith('token');
     stub.restore();
@@ -52,11 +55,11 @@ describe('Core', () => {
     throws.should.throw(Error);
   });
   it('should get token, with token', () => {
-    core[Core.tokenStoreSymbol].token = 'token';
+    core[tokenStoreSymbol].token = 'token';
     core.getToken().should.be.equal('token');
   });
   it('should set user agent', () => {
-    const stub = sinon.stub(core[Core.tokenStoreSymbol], 'setUserAgent');
+    const stub = sinon.stub(core[tokenStoreSymbol], 'setUserAgent');
     core.setUserAgent('useragent');
     stub.should.have.been.calledWith('useragent');
     stub.restore();
@@ -70,7 +73,7 @@ describe('Core', () => {
   });
   it('should return traverson Builder newRequest with continue', () => {
     // simulate traversal with continue
-    core[Core.traversalSymbol].continue = () => core[Core.traversalSymbol];
+    core[traversalSymbol].continue = () => core[traversalSymbol];
     core.newRequest().should.be.instanceOf(traverson._Builder);
   });
   it('should return traverson Builder follow', () => {
@@ -120,7 +123,7 @@ describe('Core', () => {
   });
   it('should throw on undefined traversal', () => {
     const throws = () => {
-      core[Core.traversalSymbol] = null;
+      core[traversalSymbol] = null;
       core.newRequest();
     };
     throws.should.throw(Error);

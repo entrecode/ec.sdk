@@ -1,15 +1,15 @@
-import * as superagent from 'superagent';
 import * as locale from 'locale';
+import * as superagent from 'superagent';
 import * as validator from 'json-schema-remote';
 
-import Problem from './Problem';
 import events from './EventEmitter';
+import Problem from './Problem';
 import TokenStoreFactory, { TokenStore } from './TokenStore';
 import { environment, filterOptions } from './resources/ListResource';
 
-import PublicAssetResource from './resources/publicAPI/PublicAssetResource';
-import DeletedAssetResource from './resources/datamanager/DeletedAssetResource';
 import AssetResource from './resources/datamanager/AssetResource';
+import DeletedAssetResource from './resources/datamanager/DeletedAssetResource';
+import PublicAssetResource from './resources/publicAPI/PublicAssetResource';
 
 const packageJson = require('../package.json');
 
@@ -155,7 +155,7 @@ function traversonWrapper(func: string, environment: environment, t: any, body?:
  * @param {object} t request builder
  * @returns {Promise} resolves to the response from the API.
  */
-export function get (environment: environment, t: any): Promise<any> {
+export function get(environment: environment, t: any): Promise<any> {
   return traversonWrapper('get', environment, t);
 }
 

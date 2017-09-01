@@ -10,9 +10,6 @@ const fs = require('fs');
 const resolver = require('../mocks/resolver');
 
 const Api = require('../../lib/PublicAPI');
-const environmentSymbol = require('../../lib/Core').environmentSymbol;
-const resourceSymbol = require('../../lib/Core').resourceSymbol;
-const tokenStoreSymbol = require('../../lib/Core').tokenStoreSymbol;
 const helper = require('../../lib/helper');
 
 const mock = require('../mocks/nock');
@@ -23,6 +20,10 @@ const EntryList = require('../../lib/resources/publicAPI/EntryList').default;
 const EntryResource = require('../../lib/resources/publicAPI/EntryResource').default;
 const PublicAssetList = require('../../lib/resources/publicAPI/PublicAssetList').default;
 const PublicAssetResource = require('../../lib/resources/publicAPI/PublicAssetResource').default;
+
+const environmentSymbol = Symbol.for('environment');
+const resourceSymbol = Symbol.for('resource');
+const tokenStoreSymbol = Symbol.for('tokenStore');
 
 chai.should();
 chai.use(chaiAsPromised);

@@ -1,22 +1,25 @@
-import * as validator from 'json-schema-remote';
-import * as superagent from 'superagent';
 import * as qs from 'querystring';
+import * as superagent from 'superagent';
+import * as validator from 'json-schema-remote';
 
-import { get, getUrl, optionsToQuery, post, superagentPost } from '../../helper';
-import ModelList from './ModelList';
-import ModelResource from './ModelResource';
-import DMClientList from './DMClientList';
-import DMClientResource from './DMClientResource';
-import DMAccountList from './DMAccountList';
-import DMAccountResource from './DMAccountResource';
-import RoleList from './RoleList';
-import RoleResource from './RoleResource';
 import AssetList from './AssetList';
 import AssetResource from './AssetResource';
+import DMAccountList from './DMAccountList';
+import DMAccountResource from './DMAccountResource';
+import DMClientList from './DMClientList';
+import DMClientResource from './DMClientResource';
 import DMStatsList from './DMStatsList';
-import Resource, { environmentSymbol, resourceSymbol } from '../Resource';
-import { environment, filterOptions } from '../ListResource';
 import DMStatsResource from './DMStatsResource';
+import ModelList from './ModelList';
+import ModelResource from './ModelResource';
+import Resource from '../Resource';
+import RoleList from './RoleList';
+import RoleResource from './RoleResource';
+import { environment, filterOptions } from '../ListResource';
+import { get, getUrl, optionsToQuery, post, superagentPost } from '../../helper';
+
+const environmentSymbol = Symbol.for('environment');
+const resourceSymbol = Symbol.for('resource');
 
 validator.setLoggingFunction(() => {
 });

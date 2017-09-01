@@ -1,5 +1,5 @@
-import ListResource, { environment } from '../ListResource';
 import DataManagerResource from './DataManagerResource';
+import ListResource, { environment } from '../ListResource';
 
 /**
  * DataManager list resource class.

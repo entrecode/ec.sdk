@@ -3,7 +3,7 @@ import * as traverson from 'traverson';
 import * as traversonHal from 'traverson-hal';
 
 import { get, optionsToQuery, post } from '../../helper';
-import Resource, { environmentSymbol, resourceSymbol } from '../Resource';
+import Resource from '../Resource';
 import BuildList from './BuildList';
 import BuildResource from './BuildResource';
 import DeploymentList from './DeploymentList';
@@ -13,6 +13,9 @@ import DataSourceResource from './DataSourceResource';
 import TargetList from './TargetList';
 import TargetResource from './TargetResource';
 import { environment, filterOptions } from '../ListResource';
+
+const resourceSymbol = Symbol.for('resource');
+const environmentSymbol = Symbol.for('environment');
 
 traverson.registerMediaType(traversonHal.mediaType, traversonHal);
 

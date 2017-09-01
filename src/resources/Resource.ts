@@ -1,21 +1,20 @@
-import * as traverson from 'traverson';
 import * as HalAdapter from 'traverson-hal';
 import * as halfred from 'halfred';
+import * as traverson from 'traverson';
 import * as validator from 'json-schema-remote';
 
-import { del, get, put } from '../helper';
 import ListResource from './ListResource';
+import { del, get, put } from '../helper';
+
+const environmentSymbol = Symbol.for('environment');
+const resourceSymbol = Symbol.for('resource');
+const traversalSymbol = Symbol.for('traversal');
+const dirtySymbol = Symbol('dirty');
+const resourceProperties = Symbol('resourceProperties');
 
 traverson.registerMediaType(HalAdapter.mediaType, HalAdapter);
 validator.setLoggingFunction(() => {
 });
-
-export const resourceSymbol = Symbol('_resource');
-export const environmentSymbol = Symbol('_environment');
-export const traversalSymbol = Symbol('_traversal');
-
-const dirtySymbol = Symbol('_dirty');
-const resourceProperties = Symbol('resourceProperties');
 
 /**
  * Generic resource class. Represents {@link https://tools.ietf.org/html/draft-kelly-json-hal-08

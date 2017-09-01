@@ -1,9 +1,12 @@
-import Core, { environmentSymbol, eventsSymbol, tokenStoreSymbol } from './Core';
+import Core from './Core';
 import { get, post } from './helper';
 import AccountResource from './resources/accounts/AccountResource';
 import { environment } from './resources/ListResource';
 
-export const meLoadedTimeSymbol = Symbol('_meLoadedTime');
+const tokenStoreSymbol = Symbol.for('tokenStore');
+const eventsSymbol = Symbol.for('events');
+const environmentSymbol = Symbol.for('environment');
+const meLoadedTimeSymbol = Symbol.for('meLoadedTime');
 const meSymbol = Symbol('_me');
 
 const urls = {

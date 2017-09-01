@@ -1,10 +1,11 @@
-import { get, optionsToQuery } from '../../helper';
-import { environmentSymbol, resourceSymbol } from '../Resource';
 import ListResource, { environment, filterOptions } from '../ListResource';
 import PublicAssetResource from './PublicAssetResource';
-import TagList, { default as PublicTagList } from './PublicTagList';
+import PublicTagList from './PublicTagList';
 import PublicTagResource from './PublicTagResource';
+import { get, optionsToQuery } from '../../helper';
 
+const environmentSymbol = Symbol.for('environment');
+const resourceSymbol = Symbol.for('resource');
 const dataManagerIDSymbol = Symbol('_dataManagerID');
 /**
  * PublicAsset list class
@@ -64,7 +65,7 @@ export default class PublicAssetList extends ListResource {
       .withTemplateParameters(optionsToQuery(options, this[resourceSymbol].link('ec:api/tags').href));
       return get(this[environmentSymbol], request);
     })
-    .then(([res, traversal]) => new TagList(res, this[environmentSymbol], traversal));
+    .then(([res, traversal]) => new PublicTagList(res, this[environmentSymbol], traversal));
   }
 
   /**
