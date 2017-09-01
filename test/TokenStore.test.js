@@ -35,31 +35,31 @@ describe('Token handling', () => {
     store1.should.not.be.equal(store2);
   });
   it('should set token', () => {
-    store.set(token);
+    store.setToken(token);
     store.token.should.be.equal(token);
   });
   it('should throw on undefined token', () => {
-    const throws = () => store.set();
+    const throws = () => store.setToken();
     throws.should.throw(Error);
   });
   it('should throw on invalid token', () => {
-    const throws = () => store.set('notAJwt');
+    const throws = () => store.setToken('notAJwt');
     throws.should.throw(Error);
   });
   it('should get token', () => {
-    store.set(token);
-    store.get().should.be.equal(token);
+    store.setToken(token);
+    store.getToken().should.be.equal(token);
   });
   it('should return true on has token', () => {
-    store.set(token);
-    store.has().should.be.equal(true);
+    store.setToken(token);
+    store.hasToken().should.be.equal(true);
   });
   it('should return false on has token', () => {
-    store.has().should.be.equal(false);
+    store.hasToken().should.be.equal(false);
   });
   it('should delete token', () => {
-    store.set(token);
-    store.del();
+    store.setToken(token);
+    store.deleteToken();
     should.not.exist(store.token);
   });
   it('should set clientID', () => {
@@ -139,39 +139,39 @@ describe('Token handling with cookie store', () => {
     store1.should.not.be.equal(store2);
   });
   it('should set token', () => {
-    store.set(token);
+    store.setToken(token);
     cookie.get('testToken').should.be.equal(token);
     store.token.should.be.equal(token);
   });
   it('should throw on undefined token', () => {
-    const throws = () => store.set();
+    const throws = () => store.setToken();
     throws.should.throw(Error);
   });
   it('should throw on invalid token', () => {
-    const throws = () => store.set('notAJwt');
+    const throws = () => store.setToken('notAJwt');
     throws.should.throw(Error);
   });
   it('should get token', () => {
-    store.set(token);
-    store.get().should.be.equal(token);
+    store.setToken(token);
+    store.getToken().should.be.equal(token);
   });
   it('should get token from cookie store', () => {
-    store.set(token);
+    store.setToken(token);
     store.token = undefined;
-    store.get().should.be.equal(token);
+    store.getToken().should.be.equal(token);
     store.token.should.be.equal(token);
   });
   it('should return true on has token', () => {
-    store.set(token);
-    store.has().should.be.equal(true);
+    store.setToken(token);
+    store.hasToken().should.be.equal(true);
   });
   it('should return false on has token', () => {
-    store.del();
-    store.has().should.be.equal(false);
+    store.deleteToken();
+    store.hasToken().should.be.equal(false);
   });
   it('should delete token', () => {
-    store.set(token);
-    store.del();
+    store.setToken(token);
+    store.deleteToken();
     should.not.exist(cookie.get('testToken'));
     should.not.exist(store.token);
   });

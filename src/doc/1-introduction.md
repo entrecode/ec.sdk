@@ -17,8 +17,8 @@ The following example will show you the basic usage within a typscript project. 
 #### Example
 ```js
 import { Session, Accounts, DataManager } from 'ec.sdk';
-import { AccountResource } from 'ec.sdk/typings/resources/AccountResource';
-import { DataManagerResource } from 'ec.sdk/typings/resources/DataManagerResource';
+import AccountResource from 'ec.sdk/src/resources/accounts/AccountResource';
+import DataManagerResource from 'ec.sdk/src/resources/datamanager/DataManagerResource';
 
 class MyExample {
   session: Session;
@@ -54,7 +54,7 @@ class MyExample {
       me.language = lang;
       return me.save();
     })
-    .then(meSaved => this.me = meSaved);
+    .then((meSaved: AccountResource) => this.me = meSaved);
   }
   
   loadDataManager(id) {

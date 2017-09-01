@@ -244,17 +244,19 @@ describe('Entry Resource', () => {
 
   it('should get entries field', () => {
     const entries = resource.entries;
-    entries.should.have.property('length', 1);
+    entries.should.have.property('length', 2);
     entries[0].should.be.instanceOf(LiteEntryResource.default);
     entries[0].should.have.property('_id', 'EJlJtSrkgl');
+    entries[1].should.be.equal('ejLjTsRKGl');
     getSpy.should.have.been.calledWith('entries');
   });
   it('should get entries field #2', () => {
     let entries = resource.entries;
     entries = resource.entries;
-    entries.should.have.property('length', 1);
+    entries.should.have.property('length', 2);
     entries[0].should.be.instanceOf(LiteEntryResource.default);
     entries[0].should.have.property('_id', 'EJlJtSrkgl');
+    entries[1].should.be.equal('ejLjTsRKGl');
   });
   it('should set entries field, string', () => {
     resource.entries = ['1234567'];
@@ -306,8 +308,9 @@ describe('Entry Resource', () => {
 
   it('should get assets field', () => {
     const assets = resource.assets;
-    assets.should.have.property('length', 1);
+    assets.should.have.property('length', 2);
     assets[0].should.have.property('assetID', '2bf325a9-c8f9-4e7d-b244-faa1090a479d');
+    assets[1].should.be.equal('5cd2b613-9cc7-4770-88b8-69906bfb796d');
     getSpy.should.have.been.calledWith('assets');
   });
   it('should set assets field, string', () => {

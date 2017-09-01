@@ -52,19 +52,19 @@ describe('Session class', () => {
   });
   it('should be rejected on unset clientID', () => {
     const session = new Session();
-    session[tokenStoreSymbol].del();
+    session[tokenStoreSymbol].deleteToken();
     session[tokenStoreSymbol].clientID = undefined;
     return session.login('user', 'mysecret').should.be.rejectedWith('clientID must be set with Session#setClientID');
   });
   it('should be rejected on undefined email', () => {
     const session = new Session();
-    session[tokenStoreSymbol].del();
+    session[tokenStoreSymbol].deleteToken();
     session.setClientID('rest');
     return session.login(null, 'mysecret').should.be.rejectedWith('email must be defined');
   });
   it('should be rejected on undefined password', () => {
     const session = new Session();
-    session[tokenStoreSymbol].del();
+    session[tokenStoreSymbol].deleteToken();
     session.setClientID('rest');
     return session.setClientID('rest').login('user', null).should.be.rejectedWith('password must be defined');
   });
@@ -83,7 +83,7 @@ describe('Session class', () => {
   });
   it('should be rejected on unset clientID', () => {
     const session = new Session();
-    session[tokenStoreSymbol].set('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJlbnRyZWNvZGVUZXN0IiwiaWF0IjoxNDg1NzgzNTg4LCJleHAiOjQ2NDE0NTcxODgsImF1ZCI6IlRlc3QiLCJzdWIiOiJ0ZXN0QGVudHJlY29kZS5kZSJ9.Vhrq5GR2hNz-RoAhdlnIIWHelPciBPCemEa74s7cXn8');
+    session[tokenStoreSymbol].setToken('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJlbnRyZWNvZGVUZXN0IiwiaWF0IjoxNDg1NzgzNTg4LCJleHAiOjQ2NDE0NTcxODgsImF1ZCI6IlRlc3QiLCJzdWIiOiJ0ZXN0QGVudHJlY29kZS5kZSJ9.Vhrq5GR2hNz-RoAhdlnIIWHelPciBPCemEa74s7cXn8');
     session[tokenStoreSymbol].clientID = undefined;
     return session.logout().should.be.rejectedWith('clientID must be set with Session#setClientID');
   });

@@ -42,7 +42,7 @@ describe('Core', () => {
     throws.should.throw(Error);
   });
   it('should set token', () => {
-    const stub = sinon.stub(core[Core.tokenStoreSymbol], 'set');
+    const stub = sinon.stub(core[Core.tokenStoreSymbol], 'setToken');
     core.setToken('token');
     stub.should.have.been.calledWith('token');
     stub.restore();
@@ -194,7 +194,7 @@ describe('Network Helper', () => {
       nock('https://entrecode.de')
       .get('/').replyWithFile(200, `${__dirname}/mocks/dm-list.json`);
       const token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJlbnRyZWNvZGVUZXN0IiwiaWF0IjoxNDg1NzgzNTg4LCJleHAiOjQ2NDE0NTcxODgsImF1ZCI6IlRlc3QiLCJzdWIiOiJ0ZXN0QGVudHJlY29kZS5kZSJ9.Vhrq5GR2hNz-RoAhdlnIIWHelPciBPCemEa74s7cXn8';
-      store.set(token);
+      store.setToken(token);
 
       return helper.get('test', traversal)
       .then(() => {
@@ -205,7 +205,7 @@ describe('Network Helper', () => {
       nock('https://entrecode.de')
       .get('/').replyWithFile(200, `${__dirname}/mocks/dm-list.json`);
       const token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJlbnRyZWNvZGVUZXN0IiwiaWF0IjoxNDg1NzgzNTg4LCJleHAiOjQ2NDE0NTcxODgsImF1ZCI6IlRlc3QiLCJzdWIiOiJ0ZXN0QGVudHJlY29kZS5kZSJ9.Vhrq5GR2hNz-RoAhdlnIIWHelPciBPCemEa74s7cXn8';
-      store.set(token);
+      store.setToken(token);
 
       return helper.get('testbeefbeef', traversal)
       .then(() => {
@@ -602,7 +602,7 @@ describe('Network Helper', () => {
       .post('/').reply(200, {});
 
       const liveStore = TokenStore.default('live');
-      liveStore.set('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ');
+      liveStore.setToken('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ');
       liveStore.setUserAgent('agent/1.0.0');
 
       return helper.superagentPost('live', superagent.post('https://entrecode.de'))

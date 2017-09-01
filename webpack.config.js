@@ -1,31 +1,37 @@
-const webpack = require('webpack');
 const path = require('path');
 
 // Webpack Config
 const webpackConfig = {
-  entry: {
-    main: './src/index.js',
-  },
+  entry: './src/index.ts',
+
+  devtool: 'inline-source-map',
 
   output: {
     publicPath: '',
-    path: path.resolve(__dirname, './dist'),
+    path: path.resolve(__dirname, 'dist'),
   },
 
-  plugins: [
-  ],
-
   module: {
+    rules: [
+      {
+        test: /\.tsx?$/,
+        use: [{ loader: 'ts-loader' }],
+      }
+    ]
+  },
+
+  resolve: {
+    extensions: ['.ts', '.tsx', '.js']
   },
 
   node: {
-  //  global: true,
-  //  crypto: 'empty',
-  //  __dirname: true,
-  //  __filename: true,
-  //  process: true,
-  // setImmediate: false,
-  //  clearImmediate: false,
+    //  global: true,
+    //  crypto: 'empty',
+    //  __dirname: true,
+    //  __filename: true,
+    //  process: true,
+    // setImmediate: false,
+    //  clearImmediate: false,
     fs: 'empty',
     Buffer: true,
     net: 'empty',

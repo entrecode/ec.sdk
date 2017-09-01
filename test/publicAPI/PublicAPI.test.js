@@ -188,23 +188,23 @@ describe('PublicAPI', () => {
     .and.notify(() => stub.restore());
   });
   it('should reject when already logged in', () => {
-    api[tokenStoreSymbol].set('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJlbnRyZWNvZGVUZXN0IiwiaWF0IjoxNDg1NzgzNTg4LCJleHAiOjQ2NDE0NTcxODgsImF1ZCI6IlRlc3QiLCJzdWIiOiJ0ZXN0QGVudHJlY29kZS5kZSJ9.Vhrq5GR2hNz-RoAhdlnIIWHelPciBPCemEa74s7cXn8');
+    api[tokenStoreSymbol].setToken('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJlbnRyZWNvZGVUZXN0IiwiaWF0IjoxNDg1NzgzNTg4LCJleHAiOjQ2NDE0NTcxODgsImF1ZCI6IlRlc3QiLCJzdWIiOiJ0ZXN0QGVudHJlY29kZS5kZSJ9.Vhrq5GR2hNz-RoAhdlnIIWHelPciBPCemEa74s7cXn8');
     api.setClientID('rest');
 
     return api.login('user', 'mysecret').should.be.rejectedWith('already logged in or old token present. logout first');
   });
   it('should be rejected on unset clientID', () => {
-    api[tokenStoreSymbol].del();
+    api[tokenStoreSymbol].deleteToken();
     api[tokenStoreSymbol].clientID = undefined;
     return api.login('user', 'mysecret').should.be.rejectedWith('clientID must be set with PublicAPI#setClientID');
   });
   it('should be rejected on undefined email', () => {
-    api[tokenStoreSymbol].del();
+    api[tokenStoreSymbol].deleteToken();
     api.setClientID('rest');
     return api.login(null, 'mysecret').should.be.rejectedWith('email must be defined');
   });
   it('should be rejected on undefined password', () => {
-    api[tokenStoreSymbol].del();
+    api[tokenStoreSymbol].deleteToken();
     api.setClientID('rest');
     return api.setClientID('rest').login('user', null).should.be.rejectedWith('password must be defined');
   });
@@ -220,7 +220,7 @@ describe('PublicAPI', () => {
     return api.logout().should.be.eventually.fulfilled;
   });
   it('should be rejected on unset clientID', () => {
-    api[tokenStoreSymbol].set('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJlbnRyZWNvZGVUZXN0IiwiaWF0IjoxNDg1NzgzNTg4LCJleHAiOjQ2NDE0NTcxODgsImF1ZCI6IlRlc3QiLCJzdWIiOiJ0ZXN0QGVudHJlY29kZS5kZSJ9.Vhrq5GR2hNz-RoAhdlnIIWHelPciBPCemEa74s7cXn8');
+    api[tokenStoreSymbol].setToken('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJlbnRyZWNvZGVUZXN0IiwiaWF0IjoxNDg1NzgzNTg4LCJleHAiOjQ2NDE0NTcxODgsImF1ZCI6IlRlc3QiLCJzdWIiOiJ0ZXN0QGVudHJlY29kZS5kZSJ9.Vhrq5GR2hNz-RoAhdlnIIWHelPciBPCemEa74s7cXn8');
     api[tokenStoreSymbol].clientID = undefined;
     return api.logout().should.be.rejectedWith('clientID must be set with PublicAPI#setClientID');
   });
@@ -247,13 +247,13 @@ describe('PublicAPI', () => {
     url.returns(Promise.resolve('https://accounts.entrecode.de/auth/signup?clientID=rest'));
     const token = sinon.stub(helper, 'superagentFormPost');
     token.returns(Promise.resolve({ token: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJlbnRyZWNvZGVUZXN0IiwiaWF0IjoxNDg1NzgzNTg4LCJleHAiOjQ2NDE0NTcxODgsImF1ZCI6IlRlc3QiLCJzdWIiOiJ0ZXN0QGVudHJlY29kZS5kZSJ9.Vhrq5GR2hNz-RoAhdlnIIWHelPciBPCemEa74s7cXn8' }));
-    api[tokenStoreSymbol].del();
-    api[tokenStoreSymbol].has().should.be.false;
+    api[tokenStoreSymbol].deleteToken();
+    api[tokenStoreSymbol].hasToken().should.be.false;
 
     return api.signup('someone@example.com', 'suchsecurewow')
     .then((tokenResponse) => {
       tokenResponse.should.be.equal('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJlbnRyZWNvZGVUZXN0IiwiaWF0IjoxNDg1NzgzNTg4LCJleHAiOjQ2NDE0NTcxODgsImF1ZCI6IlRlc3QiLCJzdWIiOiJ0ZXN0QGVudHJlY29kZS5kZSJ9.Vhrq5GR2hNz-RoAhdlnIIWHelPciBPCemEa74s7cXn8');
-      api[tokenStoreSymbol].has().should.be.true;
+      api[tokenStoreSymbol].hasToken().should.be.true;
       token.restore();
       url.restore();
     })

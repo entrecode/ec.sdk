@@ -31,7 +31,6 @@ toc:
   - TokenList
   - ClientResource
   - ClientList
-  - config
   - GroupResource
   - GroupList
   - InvitesResource
@@ -44,8 +43,6 @@ toc:
   - AppStatsResource
   - AppStatsList
   - PlatformResource
-  - targetIDsInput
-  - buildIDInput
   - PlatformList
   - CodeSourceResource
   - CodeSourceList
