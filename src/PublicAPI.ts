@@ -1,9 +1,15 @@
 import * as halfred from 'halfred';
 import * as qs from 'querystring';
 import * as ShiroTrie from 'shiro-trie';
-import * as validator from 'json-schema-remote';
 import * as superagent from 'superagent';
+import * as validator from 'json-schema-remote';
 
+import Core, { environment } from './Core';
+import EntryList, { createList } from './resources/publicAPI/EntryList';
+import EntryResource, { createEntry } from './resources/publicAPI/EntryResource';
+import PublicAssetList from './resources/publicAPI/PublicAssetList';
+import PublicAssetResource from './resources/publicAPI/PublicAssetResource';
+import { filterOptions } from './resources/ListResource';
 import {
   get,
   getEmpty,
@@ -15,18 +21,12 @@ import {
   superagentGet,
   superagentPost
 } from './helper';
-import { createList, default as EntryList } from './resources/publicAPI/EntryList';
-import { createEntry, default as EntryResource } from './resources/publicAPI/EntryResource';
-import Core, {
-  environmentSymbol,
-  eventsSymbol,
-  resourceSymbol,
-  tokenStoreSymbol,
-  traversalSymbol
-} from './Core';
-import PublicAssetList from './resources/publicAPI/PublicAssetList';
-import PublicAssetResource from './resources/publicAPI/PublicAssetResource';
-import { environment, filterOptions } from './resources/ListResource';
+
+const resourceSymbol = Symbol.for('resource');
+const tokenStoreSymbol = Symbol.for('tokenStore');
+const traversalSymbol = Symbol.for('traversal');
+const eventsSymbol = Symbol.for('events');
+const environmentSymbol = Symbol.for('environment');
 
 const shortIDSymbol = Symbol('_shortID');
 const modelCacheSymbol = Symbol('_modelCache');
@@ -395,7 +395,7 @@ export default class PublicAPI extends Core {
       return undefined;
     })
     .then(() => {
-      let link = this[resourceSymbol].link(`${this[shortIDSymbol]}:${model}`).profile;
+      let link = this.getLink(`${this[shortIDSymbol]}:${model}`).profile;
       if (method !== 'get') {
         link = link.split('?');
         if (link.length === 1) {
@@ -615,7 +615,7 @@ export default class PublicAPI extends Core {
       return this.follow('ec:api/assets');
     })
     .then((request) => {
-      request.withTemplateParameters(optionsToQuery(options, this[resourceSymbol].link('ec:api/assets').href));
+      request.withTemplateParameters(optionsToQuery(options, this.getLink('ec:api/assets').href));
       return get(this[environmentSymbol], request);
     })
     .then(([res, traversal]) => new PublicAssetList(res, this[environmentSymbol], traversal));

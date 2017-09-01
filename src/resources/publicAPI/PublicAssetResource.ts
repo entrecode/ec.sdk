@@ -1,8 +1,8 @@
-import Resource, { environmentSymbol, resourceSymbol } from '../Resource';
-import { fileNegotiate, superagentGet } from '../../helper';
-import * as halfred from 'halfred';
-import { environment } from '../ListResource';
+import Resource from '../Resource';
+import { fileNegotiate } from '../../helper';
+import { environment } from '../../Core';
 
+const resourceSymbol = Symbol.for('resource');
 const resolvedSymbol = Symbol('resolved');
 
 /**
@@ -36,51 +36,6 @@ export default class PublicAssetResource extends Resource {
     super(resource, environment, traversal);
 
     this[resolvedSymbol] = 'tags' in this[resourceSymbol];
-
-    /*
-    Object.defineProperties(this, {
-      isResolved: {
-        enumerable: false,
-        get: () => this[resolvedSymbol],
-      },
-      assetID: {
-        enumerable: true,
-        get: () => this.getProperty('assetID'),
-      },
-
-      title: {
-        enumerable: true,
-        get: () => this.getProperty('title'),
-        set: (value) => {
-          this.setProperty('title', value);
-          return value;
-        },
-      },
-      created: {
-        enumerable: true,
-        get: () => new Date(this.getProperty('created')),
-      },
-      type: {
-        enumerable: true,
-        get: () => this.getProperty('type'),
-      },
-      files: {
-        enumerable: true,
-        get: () => this.getProperty('files'),
-      },
-    });
-    if (this.isResolved) {
-      Object.defineProperty(this, 'tags', {
-        enumerable: true,
-        get: () => this.getProperty('tags'),
-        set: (value) => {
-          this.setProperty('tags', value);
-          return value;
-        },
-      });
-    }
-    */
-
     this.countProperties();
   }
 
@@ -142,28 +97,7 @@ export default class PublicAssetResource extends Resource {
    * @returns {Promise<PublicAssetResource>} Promise resolving to {@link PublicAssetResource}.
    */
   resolve(): Promise<PublicAssetResource> {
-    if (this['isResolved']) {
-      return Promise.resolve(this);
-    }
-    return superagentGet(this.getLink('self').href, { Accept: 'application/json' }, this[environmentSymbol])
-    .then(resource => {
-      this[resourceSymbol] = halfred.parse(resource);
-      this[resolvedSymbol] = true;
-
-      /*
-      Object.defineProperty(this, 'tags', {
-        enumerable: true,
-        get: () => this.getProperty('tags'),
-        set: (value) => {
-          this.setProperty('tags', value);
-          return value;
-        },
-      });
-      this.countProperties();
-      */
-
-      return this;
-    });
+    return <Promise<PublicAssetResource>>super.resolve()
   }
 
   /**

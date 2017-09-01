@@ -11,6 +11,9 @@ const traverson = require('traverson');
 const resolver = require('./mocks/resolver');
 const Resource = require('../lib/resources/Resource');
 
+const environmentSymbol = Symbol.for('environment');
+const traversalSymbol = Symbol.for('traversal');
+
 const schemaNock = require('./mocks/nock');
 
 const should = chai.should();
@@ -41,11 +44,11 @@ describe('Resource', () => {
   });
   it('should instantiate with traversal and environment', () => {
     const res = new Resource.default(resourceJson, 'stage', {});
-    res[Resource.environmentSymbol].should.be.equal('stage');
-    should.exist(res[Resource.traversalSymbol]);
+    res[environmentSymbol].should.be.equal('stage');
+    should.exist(res[traversalSymbol]);
   });
   it('should have environment live', () => {
-    resource[Resource.environmentSymbol].should.be.equal('live');
+    resource[environmentSymbol].should.be.equal('live');
   });
   it('should throw on non string environment', () => {
     const throws = () => new Resource.default(resourceJson, {});
@@ -55,7 +58,7 @@ describe('Resource', () => {
     resource.newRequest().should.be.instanceOf(traverson._Builder);
   });
   it('should return traverson builder on newRequest call with continue()', () => {
-    resource[Resource.traversalSymbol].continue = () => resource[Resource.traversalSymbol];
+    resource[traversalSymbol].continue = () => resource[traversalSymbol];
     resource.newRequest().should.be.instanceOf(traverson._Builder);
   });
   it('should be clean', () => {

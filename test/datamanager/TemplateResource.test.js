@@ -12,6 +12,8 @@ const DataManagerResource = require('../../lib/resources/datamanager/DataManager
 const Resource = require('../../lib/resources/Resource').default;
 const helper = require('../../lib/helper');
 
+const resolvedSymbol = Symbol.for('resolved');
+
 const resolver = require('../mocks/resolver');
 
 chai.should();
@@ -121,7 +123,7 @@ describe('Template Resource', () => {
     return resource.createDM()
     .then((dm) => {
       dm.should.be.instanceOf(DataManagerResource);
-      resource[TemplateResource.resolvedSymbol].should.be.true;
+      resource[resolvedSymbol].should.be.true;
       get.restore();
       post.restore();
     })

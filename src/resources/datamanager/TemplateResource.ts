@@ -1,12 +1,15 @@
 import * as halfred from 'halfred';
 import * as validator from 'json-schema-remote';
 
-import Resource, { environmentSymbol, resourceSymbol, traversalSymbol } from '../Resource';
+import Resource from '../Resource';
 import DataManagerResource from './DataManagerResource';
 import { get, post, put } from '../../helper';
-import { environment } from '../ListResource';
+import { environment } from '../../Core';
 
-export const resolvedSymbol = Symbol('_resolved');
+const environmentSymbol = Symbol.for('environment');
+const resourceSymbol = Symbol.for('resource');
+const traversalSymbol = Symbol.for('traversal');
+const resolvedSymbol = Symbol.for('resolved');
 
 validator.setLoggingFunction(() => {
 });
@@ -37,7 +40,6 @@ export default class TemplateResource extends Resource {
    * @param {object} resource resource loaded from the API.
    * @param {string} environment the environment this resource is associated to.
    * @param {?object} traversal traversal from which traverson can continue.
-   * @param {?boolean} resolved whether or not this resource is already resolved
    */
   constructor(resource: any, environment: environment, traversal?: any) {
     super(resource, environment, traversal);

@@ -1,17 +1,19 @@
 import * as validator from 'json-schema-remote';
 
-import Core, { environmentSymbol } from './Core';
-import { get, optionsToQuery, post, superagentGet } from './helper';
+import Core, { environment } from './Core';
 import DataManagerResource from './resources/datamanager/DataManagerResource';
 import DataManagerList from './resources/datamanager/DataManagerList';
+import DMStatsList from './resources/datamanager/DMStatsList';
+import DMStatsResource from './resources/datamanager/DMStatsResource';
 import TemplateList from './resources/datamanager/TemplateList';
 import TemplateResource from './resources/datamanager/TemplateResource';
-import DMStatsList from './resources/datamanager/DMStatsList';
-import { environment, filterOptions } from './resources/ListResource';
-import DMStatsResource from './resources/datamanager/DMStatsResource';
+import { filterOptions } from './resources/ListResource';
+import { get, optionsToQuery, post, superagentGet } from './helper';
 
 validator.setLoggingFunction(() => {
 });
+
+const environmentSymbol = Symbol.for('environment');
 
 const urls = {
   live: 'https://datamanager.entrecode.de/',

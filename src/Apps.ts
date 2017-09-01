@@ -1,13 +1,15 @@
 import * as validator from 'json-schema-remote';
 
-import Core, { environmentSymbol } from './Core';
-import { get, optionsToQuery, post } from './helper';
 import AppList from './resources/apps/AppList';
 import AppResource from './resources/apps/AppResource';
-import TypesResource from './resources/apps/TypesResource';
 import AppStatsList from './resources/apps/AppStatsList';
 import AppStatsResource from './resources/apps/AppStatsResource';
-import { environment, filterOptions } from './resources/ListResource';
+import Core, { environment } from './Core';
+import TypesResource from './resources/apps/TypesResource';
+import { filterOptions } from './resources/ListResource';
+import { get, optionsToQuery, post } from './helper';
+
+const environmentSymbol = Symbol.for('environment');
 
 validator.setLoggingFunction(() => {
 });

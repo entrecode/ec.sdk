@@ -3,7 +3,7 @@ import * as traverson from 'traverson';
 import * as traversonHal from 'traverson-hal';
 
 import { get, optionsToQuery, post } from '../../helper';
-import Resource, { environmentSymbol, resourceSymbol } from '../Resource';
+import Resource from '../Resource';
 import BuildList from './BuildList';
 import BuildResource from './BuildResource';
 import DeploymentList from './DeploymentList';
@@ -12,7 +12,11 @@ import CodeSourceResource from './CodeSourceResource';
 import DataSourceResource from './DataSourceResource';
 import TargetList from './TargetList';
 import TargetResource from './TargetResource';
-import { environment, filterOptions } from '../ListResource';
+import { environment } from '../../Core';
+import { filterOptions } from '../ListResource';
+
+const resourceSymbol = Symbol.for('resource');
+const environmentSymbol = Symbol.for('environment');
 
 traverson.registerMediaType(traversonHal.mediaType, traversonHal);
 
@@ -320,8 +324,8 @@ export default class PlatformResource extends Resource {
       const link = this.getLink('ec:app/target');
       const split = link.href.split('?');
       const qs = querystring.parse(split[1]);
-      qs.targetID = this[resourceSymbol].linkArray('ec:app/target')
-      .map(l => querystring.parse(l.href.split('?')[1]).targetID)
+      qs.targetID = this.getLinks('ec:app/target')
+      .map((l: any) => querystring.parse(l.href.split('?')[1]).targetID)
       .join(',');
 
       return get(this[environmentSymbol], traverson.from(`${split[0]}?${querystring.stringify(qs)}`).jsonHal());
@@ -366,8 +370,8 @@ export default class PlatformResource extends Resource {
   }
 
   getTargets(): Array<string> {
-    const links = this[resourceSymbol].linkArray('ec:app/target');
-    return links.map(link => querystring.parse(link.href.split('?')[1]).targetID);
+    const links = this.getLinks('ec:app/target');
+    return links.map((link: any) => querystring.parse(link.href.split('?')[1]).targetID);
   }
 
   setTargets(targets: Array<string | TargetResource>) {

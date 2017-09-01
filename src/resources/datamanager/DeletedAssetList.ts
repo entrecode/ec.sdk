@@ -1,5 +1,6 @@
-import ListResource, { environment } from '../ListResource';
 import DeletedAssetResource from './DeletedAssetResource';
+import ListResource from '../ListResource';
+import { environment } from '../../Core';
 
 /**
  * Asset list class

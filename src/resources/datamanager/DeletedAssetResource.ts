@@ -1,6 +1,8 @@
-import Resource, { environmentSymbol } from '../Resource';
+import Resource from '../Resource';
 import { del, fileNegotiate } from '../../helper';
-import { environment } from '../ListResource';
+import { environment } from '../../Core';
+
+const environmentSymbol = Symbol.for('environment');
 
 /**
  * DeletedAssetResource class

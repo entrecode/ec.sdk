@@ -1,8 +1,11 @@
-import Resource, { environmentSymbol } from '../Resource';
-import { superagentGet } from '../../helper';
-import EntryResource, { createEntry } from './EntryResource';
 import * as querystring from 'querystring';
-import { environment } from '../ListResource';
+
+import EntryResource, { createEntry } from './EntryResource';
+import Resource from '../Resource';
+import { superagentGet } from '../../helper';
+import { environment } from '../../Core';
+
+const environmentSymbol = Symbol.for('environment');
 
 /**
  * LiteEntryResources are what the name suggests. They are lite entries. They only provide some

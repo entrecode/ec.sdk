@@ -1,5 +1,6 @@
-import ListResource, { environment } from '../ListResource';
 import DMAccountResource from './DMAccountResource';
+import ListResource from '../ListResource';
+import { environment } from '../../Core';
 
 /**
  * Account list resource class.

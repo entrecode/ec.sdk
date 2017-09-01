@@ -1,3 +1,43 @@
+<a name="0.8.1"></a>
+## 0.8.1 (2017-09-01)
+
+* refactor: do not export Symbols use Symbol.for(…) ([aef1353](https://github.com/entrecode/ec.sdk/commit/aef1353))
+* refactor: environment type belongs to Core not ListResource ([a502a1d](https://github.com/entrecode/ec.sdk/commit/a502a1d))
+* refactor: major refactor. switched sources to typescript to get rid of extra typings files. ([cfc9a4e](https://github.com/entrecode/ec.sdk/commit/cfc9a4e))
+* refactor: PublicAssetResource#resolve to Resource#resolve CMS-2927 ([25154bb](https://github.com/entrecode/ec.sdk/commit/25154bb))
+* refactor: use this.getLinks and similar instead of this[resourceSymbol].links etc. ([fbd014a](https://github.com/entrecode/ec.sdk/commit/fbd014a))
+* feat: ListResources are now iterable CMS-2929 ([6f1e0d7](https://github.com/entrecode/ec.sdk/commit/6f1e0d7))
+* chore: changelog fix for breaking change ([527c7d8](https://github.com/entrecode/ec.sdk/commit/527c7d8))
+* chore: documentation alphabetically CMS-2922 ([14d29cd](https://github.com/entrecode/ec.sdk/commit/14d29cd))
+* chore: updated release script for improved conventional changelog version ([45eed87](https://github.com/entrecode/ec.sdk/commit/45eed87))
+* release version 0.7.1 ([91387e4](https://github.com/entrecode/ec.sdk/commit/91387e4))
+* release version 0.8.0 ([b72fb46](https://github.com/entrecode/ec.sdk/commit/b72fb46))
+* fix: count properties when PublicAssetResource is resolved ([3e5496e](https://github.com/entrecode/ec.sdk/commit/3e5496e))
+* fix: getter/setter for linked types must handle missing links/embeds CMS-2924 ([9634ec1](https://github.com/entrecode/ec.sdk/commit/9634ec1))
+* revert: chore: documentation alphabetically CMS-2922 ([ff2154c](https://github.com/entrecode/ec.sdk/commit/ff2154c))
+
+
+### BREAKING CHANGE
+
+* All import statements will change with this update. Also note that some bug were fixed during the refactor. Those also include some typos in function names, but only of functions I'm certain nobody is using. :-D
+
+Before:
+
+```js
+// …
+import { AccountResource } from 'ec.sdk/typings/resources/accounts/AccountResource';
+// …
+```
+
+After:
+
+```js
+// …
+import AccountResource from 'ec.sdk/src/resources/accounts/AccountResource';
+// …
+```
+
+
 <a name="0.8.0"></a>
 # 0.8.0 (2017-09-01)
 

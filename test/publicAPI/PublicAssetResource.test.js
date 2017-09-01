@@ -264,35 +264,13 @@ describe('Lite Asset Resource', () => {
     resource.should.be.instanceOf(PublicAssetResource);
   });
   it('should resolve', () => {
-    const stub = sinon.stub(helper, 'superagentGet');
-    stub.returns(resolver('public-asset.json', null, true));
+    const stub = sinon.stub(helper, 'get');
+    stub.returns(resolver('public-asset.json'));
 
     return resource.resolve()
     .then((res) => {
       res.should.be.instanceof(PublicAssetResource);
       res.tags.should.have.property('length', 0);
-      stub.restore();
-    })
-    .catch((err) => {
-      stub.restore();
-      throw err;
-    });
-  });
-  it('should resolve already resolved', () => {
-    const stub = sinon.stub(helper, 'superagentGet');
-    stub.returns(resolver('public-asset.json', null, true));
-
-    return resource.resolve()
-    .then((res) => {
-      res.should.be.instanceof(PublicAssetResource);
-      res.tags.should.have.property('length', 0);
-      stub.should.have.been.calledOnce;
-      return res.resolve();
-    })
-    .then((res) => {
-      res.should.be.instanceof(PublicAssetResource);
-      res.tags.should.have.property('length', 0);
-      stub.should.have.been.calledOnce;
       stub.restore();
     })
     .catch((err) => {
@@ -301,8 +279,8 @@ describe('Lite Asset Resource', () => {
     });
   });
   it('should be able to set tags on resolved', () => {
-    const stub = sinon.stub(helper, 'superagentGet');
-    stub.returns(resolver('public-asset.json', null, true));
+    const stub = sinon.stub(helper, 'get');
+    stub.returns(resolver('public-asset.json'));
 
     return resource.resolve()
     .then((res) => {

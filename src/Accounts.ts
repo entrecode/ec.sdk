@@ -1,6 +1,15 @@
 import * as validator from 'json-schema-remote';
 
-import Core, { environmentSymbol, tokenStoreSymbol } from './Core';
+import AccountList from './resources/accounts/AccountList';
+import AccountResource from './resources/accounts/AccountResource';
+import ClientList from './resources/accounts/ClientList';
+import ClientResource from './resources/accounts/ClientResource';
+import Core, { environment } from './Core';
+import InvalidPermissionsResource from './resources/accounts/InvalidPermissionsResource';
+import InvitesResource from './resources/accounts/InvitesResource';
+import GroupList from './resources/accounts/GroupList';
+import GroupResource from './resources/accounts/GroupResource';
+import {filterOptions } from './resources/ListResource';
 import {
   get,
   getEmpty,
@@ -10,15 +19,9 @@ import {
   postEmpty,
   superagentFormPost
 } from './helper';
-import AccountList from './resources/accounts/AccountList';
-import AccountResource from './resources/accounts/AccountResource';
-import ClientList from './resources/accounts/ClientList';
-import ClientResource from './resources/accounts/ClientResource';
-import InvalidPermissionsResource from './resources/accounts/InvalidPermissionsResource';
-import InvitesResource from './resources/accounts/InvitesResource';
-import GroupList from './resources/accounts/GroupList';
-import GroupResource from './resources/accounts/GroupResource';
-import { environment, filterOptions } from './resources/ListResource';
+
+const tokenStoreSymbol = Symbol.for('tokenStore');
+const environmentSymbol = Symbol.for('environment');
 
 validator.setLoggingFunction(() => {
 });
