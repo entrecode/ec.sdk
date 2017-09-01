@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset='utf-8' />
-  <title>ec.sdk 0.7.1 | Documentation</title>
+  <title>ec.sdk 0.8.0 | Documentation</title>
   <meta name='viewport' content='width=device-width,initial-scale=1'>
   <link href='assets/bass.css' type='text/css' rel='stylesheet' />
   <link href='assets/style.css' type='text/css' rel='stylesheet' />
@@ -14,7 +14,7 @@
       <div id='split-left' class='overflow-auto fs0 height-viewport-100'>
         <div class='py1 px2'>
           <h3 class='mb0 no-anchor'>ec.sdk</h3>
-          <div class='mb1'><code>0.7.1</code></div>
+          <div class='mb1'><code>0.8.0</code></div>
           <input
             placeholder='Filter'
             id='filter-input'
@@ -3196,8 +3196,8 @@
 <p>The following example will show you the basic usage within a typscript project. This is by all means not complete. So feel free to read on.</p>
 <h4>Example</h4>
 <pre class='hljs'><span class="hljs-keyword">import</span> { Session, Accounts, DataManager } <span class="hljs-keyword">from</span> <span class="hljs-string">'ec.sdk'</span>;
-<span class="hljs-keyword">import</span> { AccountResource } <span class="hljs-keyword">from</span> <span class="hljs-string">'ec.sdk/typings/resources/AccountResource'</span>;
-<span class="hljs-keyword">import</span> { DataManagerResource } <span class="hljs-keyword">from</span> <span class="hljs-string">'ec.sdk/typings/resources/DataManagerResource'</span>;
+<span class="hljs-keyword">import</span> AccountResource <span class="hljs-keyword">from</span> <span class="hljs-string">'ec.sdk/src/resources/accounts/AccountResource'</span>;
+<span class="hljs-keyword">import</span> DataManagerResource <span class="hljs-keyword">from</span> <span class="hljs-string">'ec.sdk/src/resources/datamanager/DataManagerResource'</span>;
 
 <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyExample</span> </span>{
   session: Session;
@@ -3233,7 +3233,7 @@
       me.language = lang;
       <span class="hljs-keyword">return</span> me.save();
     })
-    .then(<span class="hljs-function"><span class="hljs-params">meSaved</span> =&gt;</span> <span class="hljs-keyword">this</span>.me = meSaved);
+    .then(<span class="hljs-function">(<span class="hljs-params">meSaved: AccountResource</span>) =&gt;</span> <span class="hljs-keyword">this</span>.me = meSaved);
   }
   
   loadDataManager(id) {
