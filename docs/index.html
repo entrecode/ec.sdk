@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset='utf-8' />
-  <title>ec.sdk 0.8.0 | Documentation</title>
+  <title>ec.sdk 0.8.1 | Documentation</title>
   <meta name='viewport' content='width=device-width,initial-scale=1'>
   <link href='assets/bass.css' type='text/css' rel='stylesheet' />
   <link href='assets/style.css' type='text/css' rel='stylesheet' />
@@ -14,7 +14,7 @@
       <div id='split-left' class='overflow-auto fs0 height-viewport-100'>
         <div class='py1 px2'>
           <h3 class='mb0 no-anchor'>ec.sdk</h3>
-          <div class='mb1'><code>0.8.0</code></div>
+          <div class='mb1'><code>0.8.1</code></div>
           <input
             placeholder='Filter'
             id='filter-input'
@@ -11058,7 +11058,10 @@ when properties array is empty or undefined.</p>
   </div>
   
 
-  <p>Generic list resource class. Represents <a href="https://tools.ietf.org/html/draft-kelly-json-hal-08">HAL resources</a> with added support for lists.</p>
+  <p>Generic list resource class. Represents <a href="https://tools.ietf.org/html/draft-kelly-json-hal-08">HAL resources</a> with added support for
+lists.</p>
+<p>Since version 0.8.1 ListResources are iterable, so you can use spread operator or for … of loops
+with them.</p>
 
 
   <div class='pre p1 fill-light mt0'>new ListResource(resource: any, environment: any, traversal: any, name: any, itemSchema: any, ListClass: any, ItemClass: any)</div>
@@ -23805,7 +23808,7 @@ FormData object, a array of readStreams, or an array containing buffers.
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>constructor(resource, environment, traversal, resolved)</span>
+            <span class='code strong strong truncate'>constructor(resource, environment, traversal)</span>
         </div>
       </div>
       <div class="clearfix display-none toggle-target">
@@ -23816,7 +23819,7 @@ FormData object, a array of readStreams, or an array containing buffers.
   <p>Creates a new <a href="#templateresource">TemplateResource</a>.</p>
 
 
-  <div class='pre p1 fill-light mt0'>constructor(resource: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, environment: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, traversal: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?, resolved: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>?)</div>
+  <div class='pre p1 fill-light mt0'>constructor(resource: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, environment: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, traversal: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</div>
   
   
 
@@ -23853,15 +23856,6 @@ FormData object, a array of readStreams, or an array containing buffers.
           <div>
             <span class='code bold'>traversal</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</code>
 	    traversal from which traverson can continue.
-
-          </div>
-          
-        </div>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>resolved</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>?)</code>
-	    whether or not this resource is already resolved
 
           </div>
           
