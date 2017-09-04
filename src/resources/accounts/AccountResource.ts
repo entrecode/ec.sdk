@@ -105,18 +105,6 @@ export default class AccountResource extends Resource {
   }
 
   /**
-   * Returns an array of all permissions of this account. The array will contain the account
-   * permissions and all group permissions.
-   *
-   * @returns {array<string>} All permissions.
-   */
-  getAllPermissions(): Array<string> {
-    return this.groups
-    .map(g => g.permissions)
-    .reduce((all, current) => all.concat(current), this.permissions);
-  }
-
-  /**
    * Adds a new permission to permissions array.
    *
    * @param {string} value the permission to add.
@@ -151,21 +139,6 @@ export default class AccountResource extends Resource {
   }
 
   /**
-   * Load the {@link TokenList} for this account
-   *
-   * @returns {Promise<TokenList>} Promise resolving the token list
-   */
-  tokenList(): Promise<TokenList> {
-    return Promise.resolve()
-    .then(() => {
-      const request = this.newRequest().follow('ec:account/tokens');
-
-      return get(this[environmentSymbol], request)
-      .then(([tokenList, traversal]) => new TokenList(tokenList, this[environmentSymbol], traversal));
-    });
-  }
-
-  /**
    * Check if this Account has a given permission
    *
    * @param {string} permission the permission to check
@@ -180,5 +153,32 @@ export default class AccountResource extends Resource {
     trie.add(this.getAllPermissions());
 
     return trie.check(permission);
+  }
+
+  /**
+   * Returns an array of all permissions of this account. The array will contain the account
+   * permissions and all group permissions.
+   *
+   * @returns {array<string>} All permissions.
+   */
+  getAllPermissions(): Array<string> {
+    return this.groups
+    .map(g => g.permissions)
+    .reduce((all, current) => all.concat(current), this.permissions);
+  }
+
+  /**
+   * Load the {@link TokenList} for this account
+   *
+   * @returns {Promise<TokenList>} Promise resolving the token list
+   */
+  tokenList(): Promise<TokenList> {
+    return Promise.resolve()
+    .then(() => {
+      const request = this.newRequest().follow('ec:account/tokens');
+
+      return get(this[environmentSymbol], request)
+      .then(([tokenList, traversal]) => new TokenList(tokenList, this[environmentSymbol], traversal));
+    });
   }
 }

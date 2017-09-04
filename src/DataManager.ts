@@ -58,6 +58,47 @@ export default class DataManager extends Core {
   }
 
   /**
+   * Create a new template.
+   *
+   * @param {object} template object representing the template.
+   * @returns {Promise<TemplateResource>} the newly created TemplateResource
+   */
+  createTemplate(template: any): Promise<TemplateResource> {
+    return Promise.resolve()
+    .then(() => {
+      if (!template) {
+        throw new Error('Cannot create resource with undefined object.');
+      }
+      return this.link('ec:dm-template/by-id');
+    })
+    .then(link => validator.validate(template, `${link.profile}-template`))
+    .then(() => this.follow('ec:dm-templates'))
+    .then(request => post(request, template))
+    .then(([dm, traversal]) => new TemplateResource(dm, this[environmentSymbol], traversal));
+  }
+
+  /**
+   * Get a single {@link DataManagerResource} identified by dataManagerID.
+   *
+   * @param {string} dataManagerID id of the DataManager.
+   * @returns {Promise<DataManagerResource>} resolves to the DataManager which should be loaded.
+   */
+  dataManager(dataManagerID: string): Promise<DataManagerResource> {
+    return Promise.resolve()
+    .then(() => {
+      if (!dataManagerID) {
+        throw new Error('dataManagerID must be defined');
+      }
+      return this.follow('ec:datamanager/by-id');
+    })
+    .then((request) => {
+      request.withTemplateParameters({ dataManagerID });
+      return get(this[environmentSymbol], request);
+    })
+    .then(([res, traversal]) => new DataManagerResource(res, this[environmentSymbol], traversal));
+  }
+
+  /**
    * Load a {@link DataManagerList} of {@link DataManagerResource} filtered by the values specified
    * by the options parameter.
    *
@@ -84,24 +125,123 @@ export default class DataManager extends Core {
   }
 
   /**
-   * Get a single {@link DataManagerResource} identified by dataManagerID.
+   * Best file helper for files.
    *
-   * @param {string} dataManagerID id of the DataManager.
-   * @returns {Promise<DataManagerResource>} resolves to the DataManager which should be loaded.
+   * @param {string} assetID - the assetID
+   * @param {string?} locale - the locale
+   * @returns {Promise<string>} URL to the file
    */
-  dataManager(dataManagerID: string): Promise<DataManagerResource> {
+  getFileUrl(assetID: string, locale: string): Promise<string> {
+    if (!assetID) {
+      return Promise.reject(new Error('assetID must be defined'));
+    }
+
+    const url = `${urls[this[environmentSymbol]]}files/${assetID}/url`;
+    return superagentGet(url, locale ? { 'Accept-Language': locale } : {})
+    .then((res) => res.url);
+  }
+
+  /**
+   * Best file helper for image thumbnails.
+   *
+   * @param {string} assetID - the assetID
+   * @param {number?} size - the minimum size of the image
+   * @param {string?} locale - the locale
+   * @returns {Promise<string>} URL to the file
+   */
+  getImageThumbUrl(assetID: string, size: number, locale: string): Promise<string> {
+    if (!assetID) {
+      return Promise.reject(new Error('assetID must be defined'));
+    }
+
+    const url = `${urls[this[environmentSymbol]]}files/${assetID}/url?thumb${size ? `&size=${size}` : ''}`;
+    return superagentGet(url, locale ? { 'Accept-Language': locale } : {})
+    .then((res) => res.url);
+  }
+
+  /**
+   * Best file helper for images.
+   *
+   * @param {string} assetID - the assetID
+   * @param {number?} size - the minimum size of the image
+   * @param {string?} locale - the locale
+   * @returns {Promise<string>} URL to the file
+   */
+  getImageUrl(assetID: string, size: number, locale: string): Promise<string> {
+    if (!assetID) {
+      return Promise.reject(new Error('assetID must be defined'));
+    }
+
+    const url = `${urls[this[environmentSymbol]]}files/${assetID}/url${size ? `?size=${size}` : ''}`;
+    return superagentGet(url, locale ? { 'Accept-Language': locale } : {})
+    .then((res) => res.url);
+  }
+
+  /**
+   * Load a single {@link DMStatsResource}.
+   *
+   * @example
+   * return dm.stats('id')
+   * .then(stats => {
+   *   return show(stats);
+   * });
+   *
+   * @param {string} dataManagerID the dataManagerID
+   * @returns {Promise<DMStatsResource>} Promise resolving to DMStatsResource
+   */
+  stats(dataManagerID: string): Promise<DMStatsResource> {
     return Promise.resolve()
     .then(() => {
       if (!dataManagerID) {
         throw new Error('dataManagerID must be defined');
       }
-      return this.follow('ec:datamanager/by-id');
+      return this.follow('ec:dm-stats');
     })
-    .then((request) => {
-      request.withTemplateParameters({ dataManagerID });
-      return get(this[environmentSymbol], request);
+    .then(request => get(this[environmentSymbol], request.withTemplateParameters({ dataManagerID })))
+    .then(([res]) => new DMStatsList(res, this[environmentSymbol]).getFirstItem());
+  }
+
+  /**
+   * Load the {@link DMStatsList}.
+   *
+   * @example
+   * return dm.statsList()
+   * .then(templates => {
+   *   return show(templates.getAllItems());
+   * });
+   *
+   *
+   * @returns {Promise<TemplateList>} Promise resolving to DMStatsList
+   */
+  statsList(): Promise<DMStatsList> {
+    return Promise.resolve()
+    .then(() => this.follow('ec:dm-stats'))
+    .then(request => get(this[environmentSymbol], request))
+    .then(([res, traversal]) => new DMStatsList(res, this[environmentSymbol], traversal));
+  }
+
+  /**
+   * Load a single {@link TemplateResource}.
+   *
+   * @example
+   * return dm.template('thisOne')
+   * .then(template => {
+   *   return show(template);
+   * });
+   *
+   * @param {string} templateID the templateID
+   * @returns {Promise<TemplateResource>} Promise resolving to TemplateResource
+   */
+  template(templateID: string): Promise<TemplateResource> {
+    return Promise.resolve()
+    .then(() => {
+      if (!templateID) {
+        throw new Error('templateID must be defined');
+      }
+      return this.follow('ec:dm-templates/options');
     })
-    .then(([res, traversal]) => new DataManagerResource(res, this[environmentSymbol], traversal));
+    .then(request => get(this[environmentSymbol], request.withTemplateParameters({ templateID })))
+    .then(([res, traversal]) => new TemplateResource(res, this[environmentSymbol], traversal));
   }
 
   /**
@@ -146,145 +286,5 @@ export default class DataManager extends Core {
       return get(this[environmentSymbol], request);
     })
     .then(([res, traversal]) => new TemplateList(res, this[environmentSymbol], traversal));
-  }
-
-  /**
-   * Load a single {@link TemplateResource}.
-   *
-   * @example
-   * return dm.template('thisOne')
-   * .then(template => {
-   *   return show(template);
-   * });
-   *
-   * @param {string} templateID the templateID
-   * @returns {Promise<TemplateResource>} Promise resolving to TemplateResource
-   */
-  template(templateID: string): Promise<TemplateResource> {
-    return Promise.resolve()
-    .then(() => {
-      if (!templateID) {
-        throw new Error('templateID must be defined');
-      }
-      return this.follow('ec:dm-templates/options');
-    })
-    .then(request => get(this[environmentSymbol], request.withTemplateParameters({ templateID })))
-    .then(([res, traversal]) => new TemplateResource(res, this[environmentSymbol], traversal));
-  }
-
-  /**
-   * Create a new template.
-   *
-   * @param {object} template object representing the template.
-   * @returns {Promise<TemplateResource>} the newly created TemplateResource
-   */
-  createTemplate(template: any): Promise<TemplateResource> {
-    return Promise.resolve()
-    .then(() => {
-      if (!template) {
-        throw new Error('Cannot create resource with undefined object.');
-      }
-      return this.link('ec:dm-template/by-id');
-    })
-    .then(link => validator.validate(template, `${link.profile}-template`))
-    .then(() => this.follow('ec:dm-templates'))
-    .then(request => post(request, template))
-    .then(([dm, traversal]) => new TemplateResource(dm, this[environmentSymbol], traversal));
-  }
-
-  /**
-   * Load the {@link DMStatsList}.
-   *
-   * @example
-   * return dm.statsList()
-   * .then(templates => {
-   *   return show(templates.getAllItems());
-   * });
-   *
-   *
-   * @returns {Promise<TemplateList>} Promise resolving to DMStatsList
-   */
-  statsList(): Promise<DMStatsList> {
-    return Promise.resolve()
-    .then(() => this.follow('ec:dm-stats'))
-    .then(request => get(this[environmentSymbol], request))
-    .then(([res, traversal]) => new DMStatsList(res, this[environmentSymbol], traversal));
-  }
-
-  /**
-   * Load a single {@link DMStatsResource}.
-   *
-   * @example
-   * return dm.stats('id')
-   * .then(stats => {
-   *   return show(stats);
-   * });
-   *
-   * @param {string} dataManagerID the dataManagerID
-   * @returns {Promise<DMStatsResource>} Promise resolving to DMStatsResource
-   */
-  stats(dataManagerID: string): Promise<DMStatsResource> {
-    return Promise.resolve()
-    .then(() => {
-      if (!dataManagerID) {
-        throw new Error('dataManagerID must be defined');
-      }
-      return this.follow('ec:dm-stats');
-    })
-    .then(request => get(this[environmentSymbol], request.withTemplateParameters({ dataManagerID })))
-    .then(([res]) => new DMStatsList(res, this[environmentSymbol]).getFirstItem());
-  }
-
-  /**
-   * Best file helper for files.
-   *
-   * @param {string} assetID - the assetID
-   * @param {string?} locale - the locale
-   * @returns {Promise<string>} URL to the file
-   */
-  getFileUrl(assetID: string, locale: string): Promise<string> {
-    if (!assetID) {
-      return Promise.reject(new Error('assetID must be defined'));
-    }
-
-    const url = `${urls[this[environmentSymbol]]}files/${assetID}/url`;
-    return superagentGet(url, locale ? { 'Accept-Language': locale } : {})
-    .then((res) => res.url);
-  }
-
-  /**
-   * Best file helper for images.
-   *
-   * @param {string} assetID - the assetID
-   * @param {number?} size - the minimum size of the image
-   * @param {string?} locale - the locale
-   * @returns {Promise<string>} URL to the file
-   */
-  getImageUrl(assetID: string, size: number, locale: string): Promise<string> {
-    if (!assetID) {
-      return Promise.reject(new Error('assetID must be defined'));
-    }
-
-    const url = `${urls[this[environmentSymbol]]}files/${assetID}/url${size ? `?size=${size}` : ''}`;
-    return superagentGet(url, locale ? { 'Accept-Language': locale } : {})
-    .then((res) => res.url);
-  }
-
-  /**
-   * Best file helper for image thumbnails.
-   *
-   * @param {string} assetID - the assetID
-   * @param {number?} size - the minimum size of the image
-   * @param {string?} locale - the locale
-   * @returns {Promise<string>} URL to the file
-   */
-  getImageThumbUrl(assetID: string, size: number, locale: string): Promise<string> {
-    if (!assetID) {
-      return Promise.reject(new Error('assetID must be defined'));
-    }
-
-    const url = `${urls[this[environmentSymbol]]}files/${assetID}/url?thumb${size ? `&size=${size}` : ''}`;
-    return superagentGet(url, locale ? { 'Accept-Language': locale } : {})
-    .then((res) => res.url);
   }
 }

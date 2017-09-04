@@ -34,10 +34,6 @@ export default class ModelResource extends Resource {
     this.countProperties();
   }
 
-  get modelID() {
-    return <string>this.getProperty('modelID');
-  }
-
   get created() {
     return new Date(this.getProperty('created'))
   }
@@ -84,6 +80,10 @@ export default class ModelResource extends Resource {
 
   set locales(value: Array<string>) {
     this.setProperty('locales', value);
+  }
+
+  get modelID() {
+    return <string>this.getProperty('modelID');
   }
 
   get modified() {

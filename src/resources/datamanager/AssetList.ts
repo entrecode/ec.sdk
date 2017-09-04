@@ -34,6 +34,32 @@ export default class AssetList extends ListResource {
   }
 
   /**
+   * Load a single deleted {@link AssetResource}.
+   *
+   * @example
+   * return assetList.deletedAsset('thisOne')
+   * .then(asset => {
+   *   return show(asset);
+   * });
+   *
+   * @param {string} assetID the assetID
+   * @returns {Promise<DeletedAssetResource>} Promise resolving to AssetResource
+   */
+  deletedAsset(assetID: string): Promise<DeletedAssetResource> {
+    return Promise.resolve()
+    .then(() => {
+      if (!assetID) {
+        throw new Error('assetID must be defined');
+      }
+      const request = this.newRequest()
+      .follow('ec:assets/deleted/options')
+      .withTemplateParameters({ dataManagerID: this[dataManagerIDSymbol], assetID });
+      return get(this[environmentSymbol], request);
+    })
+    .then(([res, traversal]) => new DeletedAssetResource(res, this[environmentSymbol], traversal));
+  }
+
+  /**
    * Load the {@link DeletedAssetList}.
    *
    * @example
@@ -85,29 +111,53 @@ export default class AssetList extends ListResource {
   }
 
   /**
-   * Load a single deleted {@link AssetResource}.
+   * Download the contents of this {@link AssetList}. It will pipe the response to a writeable
+   * stream if one is provided. Otherwise it will simply return the url where the assets can be
+   * downloaded.
+   *
+   * @param {stream.Writable?} writeStream writable stream for direct downloading of zip file.
+   * @returns {Promise<void|string>} Promise resolving undefined if writeable stream is
+   * provided. Url otherwise.
+   */
+  download(writeStream?: stream): Promise<void> {
+    if (writeStream && !(writeStream instanceof stream.Writable)) {
+      return Promise.reject(new Error('writeStream must be instance of stream.Writable.'));
+    }
+
+    return getUrl(this[environmentSymbol], this.newRequest().follow('ec:assets/download'))
+    .then((url) => {
+      if (writeStream) {
+        return superagentGetPiped(url, writeStream);
+      }
+
+      return Promise.resolve(url);
+    });
+  }
+
+  /**
+   * Load a single deleted {@link TagResource}.
    *
    * @example
-   * return assetList.deletedAsset('thisOne')
-   * .then(asset => {
-   *   return show(asset);
+   * return assetList.tag('thisOne')
+   * .then(tag => {
+   *   return show(tag);
    * });
    *
-   * @param {string} assetID the assetID
-   * @returns {Promise<DeletedAssetResource>} Promise resolving to AssetResource
+   * @param {string} tag the tag
+   * @returns {Promise<TagResource>} Promise resolving to TagResource
    */
-  deletedAsset(assetID: string): Promise<DeletedAssetResource> {
+  tag(tag: string): Promise<TagResource> {
     return Promise.resolve()
     .then(() => {
-      if (!assetID) {
-        throw new Error('assetID must be defined');
+      if (!tag) {
+        throw new Error('tag must be defined');
       }
       const request = this.newRequest()
-      .follow('ec:assets/deleted/options')
-      .withTemplateParameters({ dataManagerID: this[dataManagerIDSymbol], assetID });
+      .follow('ec:tags/options')
+      .withTemplateParameters({ dataManagerID: this[dataManagerIDSymbol], tag });
       return get(this[environmentSymbol], request);
     })
-    .then(([res, traversal]) => new DeletedAssetResource(res, this[environmentSymbol], traversal));
+    .then(([res, traversal]) => new TagResource(res, this[environmentSymbol], traversal));
   }
 
   /**
@@ -159,55 +209,5 @@ export default class AssetList extends ListResource {
       return get(this[environmentSymbol], request);
     })
     .then(([res, traversal]) => new TagList(res, this[environmentSymbol], traversal));
-  }
-
-  /**
-   * Load a single deleted {@link TagResource}.
-   *
-   * @example
-   * return assetList.tag('thisOne')
-   * .then(tag => {
-   *   return show(tag);
-   * });
-   *
-   * @param {string} tag the tag
-   * @returns {Promise<TagResource>} Promise resolving to TagResource
-   */
-  tag(tag: string): Promise<TagResource> {
-    return Promise.resolve()
-    .then(() => {
-      if (!tag) {
-        throw new Error('tag must be defined');
-      }
-      const request = this.newRequest()
-      .follow('ec:tags/options')
-      .withTemplateParameters({ dataManagerID: this[dataManagerIDSymbol], tag });
-      return get(this[environmentSymbol], request);
-    })
-    .then(([res, traversal]) => new TagResource(res, this[environmentSymbol], traversal));
-  }
-
-  /**
-   * Download the contents of this {@link AssetList}. It will pipe the response to a writeable
-   * stream if one is provided. Otherwise it will simply return the url where the assets can be
-   * downloaded.
-   *
-   * @param {stream.Writable?} writeStream writable stream for direct downloading of zip file.
-   * @returns {Promise<void|string>} Promise resolving undefined if writeable stream is
-   * provided. Url otherwise.
-   */
-  download(writeStream?: stream): Promise<void> {
-    if (writeStream && !(writeStream instanceof stream.Writable)) {
-      return Promise.reject(new Error('writeStream must be instance of stream.Writable.'));
-    }
-
-    return getUrl(this[environmentSymbol], this.newRequest().follow('ec:assets/download'))
-    .then((url) => {
-      if (writeStream) {
-        return superagentGetPiped(url, writeStream);
-      }
-
-      return Promise.resolve(url);
-    });
   }
 }

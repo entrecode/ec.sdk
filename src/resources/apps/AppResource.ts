@@ -48,20 +48,8 @@ export default class AppResource extends Resource {
     return <string>this.getProperty('appID')
   }
 
-  get shortID() {
-    return <string>this.getProperty('shortID')
-  }
-
   get created() {
     return new Date(this.getProperty('created'))
-  }
-
-  get title() {
-    return <string>this.getProperty('title')
-  }
-
-  set title(value: string) {
-    this.setProperty('title', value);
   }
 
   get hexColor() {
@@ -72,51 +60,101 @@ export default class AppResource extends Resource {
     this.setProperty('hexColor', value);
   }
 
-  /**
-   * Load a {@link PlatformList} of {@link PlatformResource} filtered by the values specified
-   * by the options parameter.
-   *
-   * @param {filterOptions?} options the filter options.
-   * @returns {Promise<PlatformList>} resolves to app list with applied filters.
-   */
-  platformList(options?: filterOptions | any): Promise<PlatformList> {
-    return Promise.resolve()
-    .then(() => {
-      if (
-        options && Object.keys(options).length === 1 && 'platformID' in options
-        && (typeof options.platformID === 'string' || (!('any' in options.platformID) && !('all' in options.platformID)))
-      ) {
-        throw new Error('Cannot filter platformList only by platformID. Use AppResource#platform instead');
-      }
+  get shortID() {
+    return <string>this.getProperty('shortID')
+  }
 
-      return this.newRequest().follow('ec:app/platforms/options');
-    })
-    .then((request: any) => {
-      request.withTemplateParameters(optionsToQuery(options, this.getLink('ec:app/platforms/options').href));
-      return get(this[environmentSymbol], request);
-    })
-    .then(([res, traversal]) => new PlatformList(res, this[environmentSymbol], traversal));
+  get title() {
+    return <string>this.getProperty('title')
+  }
+
+  set title(value: string) {
+    this.setProperty('title', value);
   }
 
   /**
-   * Get a single {@link PlatformResource} identified by platformID.
+   * Get a single {@link CodeSourceResource} identified by codeSourceID.
    *
-   * @param {string} platformID id of the app.
-   * @returns {Promise<PlatformResource>} resolves to the platform which should be loaded.
+   * @param {string} codeSourceID id of the app.
+   * @returns {Promise<CodeSourceResource>} resolves to the codeSource which should be loaded.
    */
-  platform(platformID: string): Promise<PlatformResource> {
+  codeSource(codeSourceID: string): Promise<CodeSourceResource> {
     return Promise.resolve()
     .then(() => {
-      if (!platformID) {
-        throw new Error('platformID must be defined');
+      if (!codeSourceID) {
+        throw new Error('codeSourceID must be defined');
       }
-      return this.newRequest().follow('ec:app/platform/by-id');
+      return this.newRequest().follow('ec:app/codesource/by-id');
     })
     .then((request: any) => {
-      request.withTemplateParameters({ platformID });
+      request.withTemplateParameters({ codeSourceID });
       return get(this[environmentSymbol], request);
     })
-    .then(([res, traversal]) => new PlatformResource(res, this[environmentSymbol], traversal));
+    .then(([res, traversal]) => new CodeSourceResource(res, this[environmentSymbol], traversal));
+  }
+
+  /**
+   * Load a {@link CodeSourceList} of {@link CodeSourceResource} filtered by the values specified
+   * by the options parameter.
+   *
+   * @param {filterOptions?} options the filter options.
+   * @returns {Promise<CodeSourceList>} resolves to app list with applied filters.
+   */
+  codeSourceList(options?: filterOptions | any): Promise<CodeSourceList> {
+    return Promise.resolve()
+    .then(() => {
+      if (
+        options && Object.keys(options).length === 1 && 'codeSourceID' in options
+        && (typeof options.codeSourceID === 'string' || (!('any' in options.codeSourceID) && !('all' in options.codeSourceID)))
+      ) {
+        throw new Error('Cannot filter codeSourceList only by codeSourceID. Use AppResource#codeSource instead');
+      }
+
+      return this.newRequest().follow('ec:app/codesources/options');
+    })
+    .then((request: any) => {
+      request.withTemplateParameters(optionsToQuery(options, this.getLink('ec:app/codesources/options').href));
+      return get(this[environmentSymbol], request);
+    })
+    .then(([res, traversal]) => new CodeSourceList(res, this[environmentSymbol], traversal));
+  }
+
+  /**
+   * Create a new codeSource.
+   *
+   * @param {object} codeSource object representing the codeSource.
+   * @returns {Promise<CodeSourceResource>} the newly created CodeSourceResource
+   */
+  createCodeSource(codeSource: any): Promise<CodeSourceResource> {
+    return Promise.resolve()
+    .then(() => {
+      if (!codeSource) {
+        throw new Error('Cannot create resource with undefined object.');
+      }
+      return this.getLink('ec:app/codesource/by-id');
+    })
+    .then((link: any) => validator.validate(codeSource, `${link.profile}-template`))
+    .then(() => post(this[environmentSymbol], this.newRequest().follow('ec:app/codesources'), codeSource))
+    .then(([res, traversal]) => new CodeSourceResource(res, this[environmentSymbol], traversal));
+  }
+
+  /**
+   * Create a new dataSource.
+   *
+   * @param {object} dataSource object representing the dataSource.
+   * @returns {Promise<DataSourceResource>} the newly created DataSourceResource
+   */
+  createDataSource(dataSource: Promise<DataSourceResource>) {
+    return Promise.resolve()
+    .then(() => {
+      if (!dataSource) {
+        throw new Error('Cannot create resource with undefined object.');
+      }
+      return this.getLink('ec:app/datasource/by-id');
+    })
+    .then((link: any) => validator.validate(dataSource, `${link.profile}-template`))
+    .then(() => post(this[environmentSymbol], this.newRequest().follow('ec:app/datasources'), dataSource))
+    .then(([dm, traversal]) => new DataSourceResource(dm, this[environmentSymbol], traversal));
   }
 
   /**
@@ -204,69 +242,43 @@ export default class AppResource extends Resource {
   }
 
   /**
-   * Load a {@link CodeSourceList} of {@link CodeSourceResource} filtered by the values specified
-   * by the options parameter.
+   * Create a new target.
    *
-   * @param {filterOptions?} options the filter options.
-   * @returns {Promise<CodeSourceList>} resolves to app list with applied filters.
+   * @param {object} target object representing the target.
+   * @returns {Promise<TargetResource>} the newly created TargetResource
    */
-  codeSourceList(options?: filterOptions | any): Promise<CodeSourceList> {
+  createTarget(target: string): Promise<TargetResource> {
     return Promise.resolve()
     .then(() => {
-      if (
-        options && Object.keys(options).length === 1 && 'codeSourceID' in options
-        && (typeof options.codeSourceID === 'string' || (!('any' in options.codeSourceID) && !('all' in options.codeSourceID)))
-      ) {
-        throw new Error('Cannot filter codeSourceList only by codeSourceID. Use AppResource#codeSource instead');
-      }
-
-      return this.newRequest().follow('ec:app/codesources/options');
-    })
-    .then((request: any) => {
-      request.withTemplateParameters(optionsToQuery(options, this.getLink('ec:app/codesources/options').href));
-      return get(this[environmentSymbol], request);
-    })
-    .then(([res, traversal]) => new CodeSourceList(res, this[environmentSymbol], traversal));
-  }
-
-  /**
-   * Get a single {@link CodeSourceResource} identified by codeSourceID.
-   *
-   * @param {string} codeSourceID id of the app.
-   * @returns {Promise<CodeSourceResource>} resolves to the codeSource which should be loaded.
-   */
-  codeSource(codeSourceID: string): Promise<CodeSourceResource> {
-    return Promise.resolve()
-    .then(() => {
-      if (!codeSourceID) {
-        throw new Error('codeSourceID must be defined');
-      }
-      return this.newRequest().follow('ec:app/codesource/by-id');
-    })
-    .then((request: any) => {
-      request.withTemplateParameters({ codeSourceID });
-      return get(this[environmentSymbol], request);
-    })
-    .then(([res, traversal]) => new CodeSourceResource(res, this[environmentSymbol], traversal));
-  }
-
-  /**
-   * Create a new codeSource.
-   *
-   * @param {object} codeSource object representing the codeSource.
-   * @returns {Promise<CodeSourceResource>} the newly created CodeSourceResource
-   */
-  createCodeSource(codeSource: any): Promise<CodeSourceResource> {
-    return Promise.resolve()
-    .then(() => {
-      if (!codeSource) {
+      if (!target) {
         throw new Error('Cannot create resource with undefined object.');
       }
-      return this.getLink('ec:app/codesource/by-id');
+      return this.getLink('ec:app/target/by-id');
     })
-    .then((link: any) => validator.validate(codeSource, `${link.profile}-template`))
-    .then(() => post(this[environmentSymbol], this.newRequest().follow('ec:app/codesources'), codeSource))
-    .then(([res, traversal]) => new CodeSourceResource(res, this[environmentSymbol], traversal));
+    .then((link: any) => validator.validate(target, `${link.profile}-template`))
+    .then(() => post(this[environmentSymbol], this.newRequest().follow('ec:app/targets'), target))
+    .then(([dm, traversal]) => new TargetResource(dm, this[environmentSymbol], traversal));
+  }
+
+  /**
+   * Get a single {@link CodeSourceResource} identified by dataSourceID.
+   *
+   * @param {string} dataSourceID id of the app.
+   * @returns {Promise<CodeSourceResource>} resolves to the dataSource which should be loaded.
+   */
+  dataSource(dataSourceID: string): Promise<DataSourceResource> {
+    return Promise.resolve()
+    .then(() => {
+      if (!dataSourceID) {
+        throw new Error('dataSourceID must be defined');
+      }
+      return this.newRequest().follow('ec:app/datasource/by-id');
+    })
+    .then((request: any) => {
+      request.withTemplateParameters({ dataSourceID });
+      return get(this[environmentSymbol], request);
+    })
+    .then(([res, traversal]) => new DataSourceResource(res, this[environmentSymbol], traversal));
   }
 
   /**
@@ -296,43 +308,71 @@ export default class AppResource extends Resource {
   }
 
   /**
-   * Get a single {@link CodeSourceResource} identified by dataSourceID.
+   * Get a single {@link PlatformResource} identified by platformID.
    *
-   * @param {string} dataSourceID id of the app.
-   * @returns {Promise<CodeSourceResource>} resolves to the dataSource which should be loaded.
+   * @param {string} platformID id of the app.
+   * @returns {Promise<PlatformResource>} resolves to the platform which should be loaded.
    */
-  dataSource(dataSourceID: string): Promise<DataSourceResource> {
+  platform(platformID: string): Promise<PlatformResource> {
     return Promise.resolve()
     .then(() => {
-      if (!dataSourceID) {
-        throw new Error('dataSourceID must be defined');
+      if (!platformID) {
+        throw new Error('platformID must be defined');
       }
-      return this.newRequest().follow('ec:app/datasource/by-id');
+      return this.newRequest().follow('ec:app/platform/by-id');
     })
     .then((request: any) => {
-      request.withTemplateParameters({ dataSourceID });
+      request.withTemplateParameters({ platformID });
       return get(this[environmentSymbol], request);
     })
-    .then(([res, traversal]) => new DataSourceResource(res, this[environmentSymbol], traversal));
+    .then(([res, traversal]) => new PlatformResource(res, this[environmentSymbol], traversal));
   }
 
   /**
-   * Create a new dataSource.
+   * Load a {@link PlatformList} of {@link PlatformResource} filtered by the values specified
+   * by the options parameter.
    *
-   * @param {object} dataSource object representing the dataSource.
-   * @returns {Promise<DataSourceResource>} the newly created DataSourceResource
+   * @param {filterOptions?} options the filter options.
+   * @returns {Promise<PlatformList>} resolves to app list with applied filters.
    */
-  createDataSource(dataSource: Promise<DataSourceResource>) {
+  platformList(options?: filterOptions | any): Promise<PlatformList> {
     return Promise.resolve()
     .then(() => {
-      if (!dataSource) {
-        throw new Error('Cannot create resource with undefined object.');
+      if (
+        options && Object.keys(options).length === 1 && 'platformID' in options
+        && (typeof options.platformID === 'string' || (!('any' in options.platformID) && !('all' in options.platformID)))
+      ) {
+        throw new Error('Cannot filter platformList only by platformID. Use AppResource#platform instead');
       }
-      return this.getLink('ec:app/datasource/by-id');
+
+      return this.newRequest().follow('ec:app/platforms/options');
     })
-    .then((link: any) => validator.validate(dataSource, `${link.profile}-template`))
-    .then(() => post(this[environmentSymbol], this.newRequest().follow('ec:app/datasources'), dataSource))
-    .then(([dm, traversal]) => new DataSourceResource(dm, this[environmentSymbol], traversal));
+    .then((request: any) => {
+      request.withTemplateParameters(optionsToQuery(options, this.getLink('ec:app/platforms/options').href));
+      return get(this[environmentSymbol], request);
+    })
+    .then(([res, traversal]) => new PlatformList(res, this[environmentSymbol], traversal));
+  }
+
+  /**
+   * Get a single {@link TargetResource} identified by targetID.
+   *
+   * @param {string} targetID id of the app.
+   * @returns {Promise<TargetResource>} resolves to the target which should be loaded.
+   */
+  target(targetID: string): Promise<TargetResource> {
+    return Promise.resolve()
+    .then(() => {
+      if (!targetID) {
+        throw new Error('targetID must be defined');
+      }
+      return this.newRequest().follow('ec:app/target/by-id');
+    })
+    .then((request: any) => {
+      request.withTemplateParameters({ targetID });
+      return get(this[environmentSymbol], request);
+    })
+    .then(([res, traversal]) => new TargetResource(res, this[environmentSymbol], traversal));
   }
 
   /**
@@ -359,45 +399,5 @@ export default class AppResource extends Resource {
       return get(this[environmentSymbol], request);
     })
     .then(([res, traversal]) => new TargetList(res, this[environmentSymbol], traversal));
-  }
-
-  /**
-   * Get a single {@link TargetResource} identified by targetID.
-   *
-   * @param {string} targetID id of the app.
-   * @returns {Promise<TargetResource>} resolves to the target which should be loaded.
-   */
-  target(targetID: string): Promise<TargetResource> {
-    return Promise.resolve()
-    .then(() => {
-      if (!targetID) {
-        throw new Error('targetID must be defined');
-      }
-      return this.newRequest().follow('ec:app/target/by-id');
-    })
-    .then((request: any) => {
-      request.withTemplateParameters({ targetID });
-      return get(this[environmentSymbol], request);
-    })
-    .then(([res, traversal]) => new TargetResource(res, this[environmentSymbol], traversal));
-  }
-
-  /**
-   * Create a new target.
-   *
-   * @param {object} target object representing the target.
-   * @returns {Promise<TargetResource>} the newly created TargetResource
-   */
-  createTarget(target: string): Promise<TargetResource> {
-    return Promise.resolve()
-    .then(() => {
-      if (!target) {
-        throw new Error('Cannot create resource with undefined object.');
-      }
-      return this.getLink('ec:app/target/by-id');
-    })
-    .then((link: any) => validator.validate(target, `${link.profile}-template`))
-    .then(() => post(this[environmentSymbol], this.newRequest().follow('ec:app/targets'), target))
-    .then(([dm, traversal]) => new TargetResource(dm, this[environmentSymbol], traversal));
   }
 }

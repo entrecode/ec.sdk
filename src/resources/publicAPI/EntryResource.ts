@@ -360,38 +360,28 @@ export default class EntryResource extends LiteEntryResource {
     this.countProperties();
   }
 
-  get created() {
-    return new Date(this.getProperty('_created'));
-  }
-
   get _created() {
     return new Date(this.getProperty('_created'));
-  }
-
-  get modified() {
-    return new Date(this.getProperty('_modified'));
-  }
-
-  get _modified() {
-    return new Date(this.getProperty('_modified'));
-  }
-
-  get creator() {
-    return <string>this.getProperty('_creator');
   }
 
   get _creator() {
     return <string>this.getProperty('_creator');
   }
 
-  /**
-   * Saves this {@link EntryResource}.
-   *
-   * @returns {Promise<EntryResource>} Promise will resolve to the saved EntryResource. Will
-   *   be the same object but with refreshed data.
-   */
-  save(): Promise<EntryResource> {
-    return <Promise<EntryResource>>super.save(`${this.getLink('self').profile}?template=put`);
+  get _modified() {
+    return new Date(this.getProperty('_modified'));
+  }
+
+  get created() {
+    return new Date(this.getProperty('_created'));
+  }
+
+  get creator() {
+    return <string>this.getProperty('_creator');
+  }
+
+  get modified() {
+    return new Date(this.getProperty('_modified'));
   }
 
   /**
@@ -402,65 +392,6 @@ export default class EntryResource extends LiteEntryResource {
    */
   getFieldType(field: string): string {
     return getFieldType(this[schemaSymbol], field);
-  }
-
-  /**
-   * Get the title from this {@link EntryResource}. Either the entryTitle when no field value is
-   * provided. When one is provided the title of the nested element is returned.
-   *
-   * @prop {string?} field - The field name from which the title should be loaded. Undefined for
-   *   the entry title.
-   * @returns {string} title The title of either the element or the entry.
-   */
-  getTitle(field: string): string | Array<string> {
-    if (!field) {
-      return <string>this.getProperty('_entryTitle');
-    }
-
-    const links = this.getLinks(`${this[shortIDSymbol]}:${this.getModelTitle()}/${field}`);
-
-    if (!links) {
-      return undefined;
-    }
-
-    if (['entries', 'assets'].indexOf(this.getFieldType(field)) !== -1) {
-      return links.map(l => l.title);
-    }
-
-    return links[0].title;
-  }
-
-  /**
-   * Get the title of this {@link EntryResource}'s model.
-   *
-   * @returns {string} title of the entry's model
-   */
-  getModelTitle(): string {
-    return <string>this.getProperty('_modelTitle');
-  }
-
-  /**
-   * Get the title field of this {@link EntryResource}'s model.
-   *
-   * @returns {string} title field of this entry's model
-   */
-  getModelTitleField() {
-    return <string>this.getProperty('_modelTitleField');
-  }
-
-  /**
-   * Get the number of levels this entry was loaded with.
-   *
-   * @returns {number} Number of levels (1-5)
-   */
-  getLevelCount(): number {
-    let link = this.getLink('self').href;
-
-    if (link.indexOf('_levels') === -1) {
-      return 1;
-    }
-
-    return Number.parseInt(link.substr(link.indexOf('_levels') + '_levels'.length + 1))
   }
 
   /**
@@ -482,6 +413,33 @@ export default class EntryResource extends LiteEntryResource {
     }
 
     const results = assets.map(asset => fileNegotiate(asset, false, false, null, locale));
+
+    if (!isAssets) {
+      return results[0];
+    }
+    return results;
+  }
+
+  /**
+   * Best file helper for embedded assets image thumbnails.
+   *
+   * @param {string} field the asset field name
+   * @param {number?} size - the minimum size of the image
+   * @param {string?} locale - the locale
+   * @returns {string} URL to the file
+   */
+  getImageThumbUrl(field: string, size: number, locale: string): string | Array<string> {
+    const assets = this[resourceSymbol].embeddedArray(`${this[shortIDSymbol]}:${this.getModelTitle()}/${field}/asset`);
+    const isAssets = this.getFieldType(field) === 'assets';
+
+    if (!assets) {
+      if (isAssets) {
+        return [];
+      }
+      return undefined;
+    }
+
+    const results = assets.map(asset => fileNegotiate(asset, true, true, size, locale));
 
     if (!isAssets) {
       return results[0];
@@ -517,30 +475,72 @@ export default class EntryResource extends LiteEntryResource {
   }
 
   /**
-   * Best file helper for embedded assets image thumbnails.
+   * Get the number of levels this entry was loaded with.
    *
-   * @param {string} field the asset field name
-   * @param {number?} size - the minimum size of the image
-   * @param {string?} locale - the locale
-   * @returns {string} URL to the file
+   * @returns {number} Number of levels (1-5)
    */
-  getImageThumbUrl(field: string, size: number, locale: string): string | Array<string> {
-    const assets = this[resourceSymbol].embeddedArray(`${this[shortIDSymbol]}:${this.getModelTitle()}/${field}/asset`);
-    const isAssets = this.getFieldType(field) === 'assets';
+  getLevelCount(): number {
+    let link = this.getLink('self').href;
 
-    if (!assets) {
-      if (isAssets) {
-        return [];
-      }
+    if (link.indexOf('_levels') === -1) {
+      return 1;
+    }
+
+    return Number.parseInt(link.substr(link.indexOf('_levels') + '_levels'.length + 1))
+  }
+
+  /**
+   * Get the title of this {@link EntryResource}'s model.
+   *
+   * @returns {string} title of the entry's model
+   */
+  getModelTitle(): string {
+    return <string>this.getProperty('_modelTitle');
+  }
+
+  /**
+   * Get the title field of this {@link EntryResource}'s model.
+   *
+   * @returns {string} title field of this entry's model
+   */
+  getModelTitleField() {
+    return <string>this.getProperty('_modelTitleField');
+  }
+
+  /**
+   * Get the title from this {@link EntryResource}. Either the entryTitle when no field value is
+   * provided. When one is provided the title of the nested element is returned.
+   *
+   * @prop {string?} field - The field name from which the title should be loaded. Undefined for
+   *   the entry title.
+   * @returns {string} title The title of either the element or the entry.
+   */
+  getTitle(field: string): string | Array<string> {
+    if (!field) {
+      return <string>this.getProperty('_entryTitle');
+    }
+
+    const links = this.getLinks(`${this[shortIDSymbol]}:${this.getModelTitle()}/${field}`);
+
+    if (!links) {
       return undefined;
     }
 
-    const results = assets.map(asset => fileNegotiate(asset, true, true, size, locale));
-
-    if (!isAssets) {
-      return results[0];
+    if (['entries', 'assets'].indexOf(this.getFieldType(field)) !== -1) {
+      return links.map(l => l.title);
     }
-    return results;
+
+    return links[0].title;
+  }
+
+  /**
+   * Saves this {@link EntryResource}.
+   *
+   * @returns {Promise<EntryResource>} Promise will resolve to the saved EntryResource. Will
+   *   be the same object but with refreshed data.
+   */
+  save(): Promise<EntryResource> {
+    return <Promise<EntryResource>>super.save(`${this.getLink('self').profile}?template=put`);
   }
 }
 

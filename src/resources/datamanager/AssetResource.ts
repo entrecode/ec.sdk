@@ -33,12 +33,12 @@ export default class AssetResource extends Resource {
     return <string>this.getProperty('assetID');
   }
 
-  get title() {
-    return <string>this.getProperty('title');
+  get created() {
+    return new Date(this.getProperty('created'));
   }
 
-  set title(value: string) {
-    this.setProperty('title', value);
+  get files() {
+    return <Array<any>>this.getProperty('files');
   }
 
   get tags() {
@@ -49,16 +49,16 @@ export default class AssetResource extends Resource {
     this.setProperty('tags', value);
   }
 
-  get created() {
-    return new Date(this.getProperty('created'));
+  get title() {
+    return <string>this.getProperty('title');
+  }
+
+  set title(value: string) {
+    this.setProperty('title', value);
   }
 
   get type() {
     return <string>this.getProperty('type');
-  }
-
-  get files() {
-    return <Array<any>>this.getProperty('files');
   }
 
   /**
@@ -72,17 +72,6 @@ export default class AssetResource extends Resource {
   }
 
   /**
-   * Best file helper for images.
-   *
-   * @param {number?} size - the minimum size of the image
-   * @param {string?} locale - the locale
-   * @returns {string} URL to the file
-   */
-  getImageUrl(size: number, locale: string): string {
-    return fileNegotiate(this, true, false, size, locale);
-  }
-
-  /**
    * Best file helper for image thumbnails.
    *
    * @param {number?} size - the minimum size of the image
@@ -91,5 +80,16 @@ export default class AssetResource extends Resource {
    */
   getImageThumbUrl(size: number, locale: string): string {
     return fileNegotiate(this, true, true, size, locale);
+  }
+
+  /**
+   * Best file helper for images.
+   *
+   * @param {number?} size - the minimum size of the image
+   * @param {string?} locale - the locale
+   * @returns {string} URL to the file
+   */
+  getImageUrl(size: number, locale: string): string {
+    return fileNegotiate(this, true, false, size, locale);
   }
 }

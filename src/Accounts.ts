@@ -9,7 +9,7 @@ import InvalidPermissionsResource from './resources/accounts/InvalidPermissionsR
 import InvitesResource from './resources/accounts/InvitesResource';
 import GroupList from './resources/accounts/GroupList';
 import GroupResource from './resources/accounts/GroupResource';
-import {filterOptions } from './resources/ListResource';
+import { filterOptions } from './resources/ListResource';
 import {
   get,
   getEmpty,
@@ -51,18 +51,30 @@ export default class Accounts extends Core {
   }
 
   /**
-   * Set the clientID to use with the Accounts API. Currently only `rest` is supported.
+   * Get a single {@link AccountResource} identified by accountID.
    *
-   * @param {string} clientID the clientID.
-   * @returns {Accounts} this object for chainability
+   * @example
+   * return accounts.account(this.accountList.getItem(index).accountID)
+   * .then((account) => {
+   *   return show(account.email);
+   * });
+   *
+   * @param {string} accountID id of the Account.
+   * @returns {Promise<AccountResource>} resolves to the Account which should be loaded.
    */
-  setClientID(clientID: string): Accounts {
-    if (!clientID) {
-      throw new Error('ClientID must be defined');
-    }
-
-    this[tokenStoreSymbol].setClientID(clientID);
-    return this;
+  account(accountID: string): Promise<AccountResource> {
+    return Promise.resolve()
+    .then(() => {
+      if (!accountID) {
+        throw new Error('accountID must be defined');
+      }
+      return this.follow('ec:accounts/options');
+    })
+    .then((request) => {
+      request.withTemplateParameters({ accountid: accountID });
+      return get(this[environmentSymbol], request);
+    })
+    .then(([res, traversal]) => new AccountResource(res, this[environmentSymbol], traversal));
   }
 
   /**
@@ -104,134 +116,57 @@ export default class Accounts extends Core {
   }
 
   /**
-   * Get a single {@link AccountResource} identified by accountID.
+   * Change the logged in account to the given new email address.
    *
    * @example
-   * return accounts.account(this.accountList.getItem(index).accountID)
-   * .then((account) => {
-   *   return show(account.email);
-   * });
+   * return accounts.resetPassword(email)
+   * .then(() => show(`Email change startet. Please verify with your new address`))
    *
-   * @param {string} accountID id of the Account.
-   * @returns {Promise<AccountResource>} resolves to the Account which should be loaded.
+   * @param {string} email the new email
+   * @returns {Promise<void>} Promise resolving on success.
    */
-  account(accountID: string): Promise<AccountResource> {
+  changeEmail(email: string): Promise<void> {
     return Promise.resolve()
     .then(() => {
-      if (!accountID) {
-        throw new Error('accountID must be defined');
+      if (!email) {
+        throw new Error('email must be defined');
       }
-      return this.follow('ec:accounts/options');
+
+      if (!this[tokenStoreSymbol].hasToken()) {
+        throw new Error('not logged in.');
+      }
+
+      return this.follow('ec:auth/change-email');
+    })
+    .then(request => postEmpty(this[environmentSymbol], request, { email }));
+  }
+
+  /**
+   * Load a single {@link ClientResource}.
+   *
+   * @example
+   * return accounts.client('thisOne')
+   * .then(client => {
+   *   return show(client);
+   * });
+   *
+   * @param {string} clientID the clientID
+   * @returns {Promise<ClientResource>} Promise resolving to ClientResource
+   */
+  client(clientID: string): Promise<ClientResource> {
+    return Promise.resolve()
+    .then(() => {
+      if (!clientID) {
+        throw new Error('clientID must be defined');
+      }
+
+      return this.follow('ec:acc/client/options');
     })
     .then((request) => {
-      request.withTemplateParameters({ accountid: accountID });
+      request.withTemplateParameters({ clientid: clientID });
       return get(this[environmentSymbol], request);
     })
-    .then(([res, traversal]) => new AccountResource(res, this[environmentSymbol], traversal));
-  }
-
-  /**
-   * Get the {@link AccountResource} which is currently logged in.
-   *
-   * @example
-   * return accounts.me()
-   * .then((account) => {
-   *   return show(`Your are logged in as ${account.name || account.email}`);
-   * });
-   *
-   * @returns {Promise<AccountResource>} resolves to the Account which is logged in.
-   */
-  me(): Promise<AccountResource> {
-    return Promise.resolve()
-    .then(() => this.follow('ec:account'))
-    .then(request => get(this[environmentSymbol], request))
-    .then(([res, traversal]) => new AccountResource(res, this[environmentSymbol], traversal));
-  }
-
-  /**
-   * Load the {@link GroupList}
-   *
-   * @example
-   * return accounts.groupList({
-   *   filter: {
-   *     title: {
-   *       search: 'dev',
-   *     },
-   *   },
-   * })
-   * .then(groups => {
-   *   // all groups with 'dev' in the title
-   *   return Promise.all(groups.getAllItems.forEach(group => show(group)));
-   * });
-   *
-   * @param {filterOptions?} options filter options
-   * @returns {Promise<GroupList>} Promise resolving goup list
-   */
-  groupList(options?: filterOptions | any): Promise<GroupList> { // TODO remove any
-    return Promise.resolve()
-    .then(() => {
-      if (
-        options && Object.keys(options).length === 1 && 'groupID' in options
-        && (typeof options.groupID === 'string' || (!('any' in options.groupID) && !('all' in options.groupID)))
-      ) {
-        throw new Error('Providing only an groupID in GroupList filter will result in single resource response. Please use Accounts#groupList');
-      }
-
-      return this.follow('ec:acc/groups/options');
-    })
-    .then((request) => {
-      request.withTemplateParameters(optionsToQuery(options, this.getLink('ec:acc/groups/options').href));
-      return get(this[environmentSymbol], request);
-    })
-    .then(([res, traversal]) => new GroupList(res, this[environmentSymbol], traversal));
-  }
-
-  /**
-   * Load a single group
-   *
-   * @example
-   * return accounts.group(groupID)
-   * .then((group) => {
-   *   group.addPermission('can-view-stacktrace');
-   *   return group.save();
-   * });
-   *
-   * @param {string} groupID the id of the group
-   * @returns {Promise<GroupResource>} Promise resolving to the group
-   */
-  group(groupID: string): Promise<GroupResource> {
-    return Promise.resolve()
-    .then(() => {
-      if (!groupID) {
-        throw new Error('groupID must be defined');
-      }
-      return this.follow('ec:acc/clients/options');
-    })
-    .then((request) => {
-      request.withTemplateParameters({ groupid: groupID });
-      return get(this[environmentSymbol], request);
-    })
-    .then(([res, traversal]) => new GroupResource(res, this[environmentSymbol], traversal));
-  }
-
-  /**
-   * Create a new Group.
-   *
-   * @param {object} group object representing the group.
-   * @returns {Promise<GroupResource>} the newly created GroupResource
-   */
-  createGroup(group: any): Promise<GroupResource> {
-    return Promise.resolve()
-    .then(() => {
-      if (!group) {
-        throw new Error('Cannot create resource with undefined object.');
-      }
-      return this.link('ec:acc/group/by-id');
-    })
-    .then(link => validator.validate(group, `${link.profile}-template`))
-    .then(() => this.follow('ec:acc/groups'))
-    .then(request => post(this[environmentSymbol], request, group))
-    .then(([c, traversal]) => new GroupResource(c, this[environmentSymbol], traversal));
+    .then(([res, traversal]) => new ClientResource(res, this[environmentSymbol], traversal));
   }
 
   /**
@@ -279,31 +214,21 @@ export default class Accounts extends Core {
   }
 
   /**
-   * Load a single {@link ClientResource}.
+   * Creates a new API token with 100 years validity.
    *
    * @example
-   * return accounts.client('thisOne')
-   * .then(client => {
-   *   return show(client);
+   * return accounts.createAPIToken()
+   * .then((token) => {
+   *   return apiTokenCreated(token);
    * });
    *
-   * @param {string} clientID the clientID
-   * @returns {Promise<ClientResource>} Promise resolving to ClientResource
+   * @returns {Promise<{jwt: string, accountID: string, iat: number, exp: number}>} the created api
+   *   token response.
    */
-  client(clientID: string): Promise<ClientResource> {
-    return Promise.resolve()
-    .then(() => {
-      if (!clientID) {
-        throw new Error('clientID must be defined');
-      }
-
-      return this.follow('ec:acc/client/options');
-    })
-    .then((request) => {
-      request.withTemplateParameters({ clientid: clientID });
-      return get(this[environmentSymbol], request);
-    })
-    .then(([res, traversal]) => new ClientResource(res, this[environmentSymbol], traversal));
+  createApiToken(): Promise<tokenResponse> { // TODO advanced type
+    return this.follow('ec:auth/create-anonymous')
+    .then(request => post(this[environmentSymbol], request, {}))
+    .then(([tokenResponse]) => tokenResponse);
   }
 
   /**
@@ -327,46 +252,23 @@ export default class Accounts extends Core {
   }
 
   /**
-   * Creates a new API token with 100 years validity.
+   * Create a new Group.
    *
-   * @example
-   * return accounts.createAPIToken()
-   * .then((token) => {
-   *   return apiTokenCreated(token);
-   * });
-   *
-   * @returns {Promise<{jwt: string, accountID: string, iat: number, exp: number}>} the created api
-   *   token response.
+   * @param {object} group object representing the group.
+   * @returns {Promise<GroupResource>} the newly created GroupResource
    */
-  createApiToken(): Promise<tokenResponse> { // TODO advanced type
-    return this.follow('ec:auth/create-anonymous')
-    .then(request => post(this[environmentSymbol], request, {}))
-    .then(([tokenResponse]) => tokenResponse);
-  }
-
-  /**
-   * Load the {@link InvitesResource} with unused invites.
-   *
-   * @example
-   * return accounts.invites()
-   * .then((invites) => {
-   *   if (invites.invites.length < 5){
-   *     return Promise.resolve(invites.invites);
-   *   }
-   *   return accounts.createInvites(5 - invites.invites.length);
-   * })
-   * .then((invites) => {
-   *   return Promise.all(invites.invites.forEach((invite, index) => sendInvite(invite,
-   *   emails[index]);
-   * })
-   * .then(() => console.log('Invites send.');
-   *
-   * @returns {Promise<InvitesResource>} Promise resolving to the invites resource
-   */
-  invites(): Promise<InvitesResource> {
-    return this.follow('ec:invites')
-    .then(request => get(this[environmentSymbol], request))
-    .then(([invites, traversal]) => new InvitesResource(invites, this[environmentSymbol], traversal));
+  createGroup(group: any): Promise<GroupResource> {
+    return Promise.resolve()
+    .then(() => {
+      if (!group) {
+        throw new Error('Cannot create resource with undefined object.');
+      }
+      return this.link('ec:acc/group/by-id');
+    })
+    .then(link => validator.validate(group, `${link.profile}-template`))
+    .then(() => this.follow('ec:acc/groups'))
+    .then(request => post(this[environmentSymbol], request, group))
+    .then(([c, traversal]) => new GroupResource(c, this[environmentSymbol], traversal));
   }
 
   /**
@@ -394,25 +296,6 @@ export default class Accounts extends Core {
     })
     .then(request => post(this[environmentSymbol], request, { count: count || 1 }))
     .then(([invites, traversal]) => new InvitesResource(invites, this[environmentSymbol], traversal));
-  }
-
-  /**
-   * Get {@link InvalidPermissionsResource} to show all invalid permissions.
-   *
-   * @example
-   * return accounts.invalidPermissions()
-   * .then((invalidPermissions) => {
-   *   show(invalidPermissions.invalidAccountPermissions);
-   *   show(invalidPermissions.invalidGroupPermissions);
-   * });
-   *
-   * @returns {Promise<InvalidPermissionsResource>} Promise resolving to invalid permissions
-   */
-  invalidPermissions(): Promise<InvalidPermissionsResource> {
-    return this.follow('ec:invalid-permissions')
-    .then(request => get(this[environmentSymbol], request))
-    .then(([resource, traversal]) =>
-      new InvalidPermissionsResource(resource, this[environmentSymbol], traversal));
   }
 
   /**
@@ -445,6 +328,179 @@ export default class Accounts extends Core {
       return get(this[environmentSymbol], request);
     })
     .then(([a]) => a.available);
+  }
+
+  /**
+   * Load a single group
+   *
+   * @example
+   * return accounts.group(groupID)
+   * .then((group) => {
+   *   group.addPermission('can-view-stacktrace');
+   *   return group.save();
+   * });
+   *
+   * @param {string} groupID the id of the group
+   * @returns {Promise<GroupResource>} Promise resolving to the group
+   */
+  group(groupID: string): Promise<GroupResource> {
+    return Promise.resolve()
+    .then(() => {
+      if (!groupID) {
+        throw new Error('groupID must be defined');
+      }
+      return this.follow('ec:acc/clients/options');
+    })
+    .then((request) => {
+      request.withTemplateParameters({ groupid: groupID });
+      return get(this[environmentSymbol], request);
+    })
+    .then(([res, traversal]) => new GroupResource(res, this[environmentSymbol], traversal));
+  }
+
+  /**
+   * Load the {@link GroupList}
+   *
+   * @example
+   * return accounts.groupList({
+   *   filter: {
+   *     title: {
+   *       search: 'dev',
+   *     },
+   *   },
+   * })
+   * .then(groups => {
+   *   // all groups with 'dev' in the title
+   *   return Promise.all(groups.getAllItems.forEach(group => show(group)));
+   * });
+   *
+   * @param {filterOptions?} options filter options
+   * @returns {Promise<GroupList>} Promise resolving goup list
+   */
+  groupList(options?: filterOptions | any): Promise<GroupList> { // TODO remove any
+    return Promise.resolve()
+    .then(() => {
+      if (
+        options && Object.keys(options).length === 1 && 'groupID' in options
+        && (typeof options.groupID === 'string' || (!('any' in options.groupID) && !('all' in options.groupID)))
+      ) {
+        throw new Error('Providing only an groupID in GroupList filter will result in single resource response. Please use Accounts#groupList');
+      }
+
+      return this.follow('ec:acc/groups/options');
+    })
+    .then((request) => {
+      request.withTemplateParameters(optionsToQuery(options, this.getLink('ec:acc/groups/options').href));
+      return get(this[environmentSymbol], request);
+    })
+    .then(([res, traversal]) => new GroupList(res, this[environmentSymbol], traversal));
+  }
+
+  /**
+   * Get {@link InvalidPermissionsResource} to show all invalid permissions.
+   *
+   * @example
+   * return accounts.invalidPermissions()
+   * .then((invalidPermissions) => {
+   *   show(invalidPermissions.invalidAccountPermissions);
+   *   show(invalidPermissions.invalidGroupPermissions);
+   * });
+   *
+   * @returns {Promise<InvalidPermissionsResource>} Promise resolving to invalid permissions
+   */
+  invalidPermissions(): Promise<InvalidPermissionsResource> {
+    return this.follow('ec:invalid-permissions')
+    .then(request => get(this[environmentSymbol], request))
+    .then(([resource, traversal]) =>
+      new InvalidPermissionsResource(resource, this[environmentSymbol], traversal));
+  }
+
+  /**
+   * Load the {@link InvitesResource} with unused invites.
+   *
+   * @example
+   * return accounts.invites()
+   * .then((invites) => {
+   *   if (invites.invites.length < 5){
+   *     return Promise.resolve(invites.invites);
+   *   }
+   *   return accounts.createInvites(5 - invites.invites.length);
+   * })
+   * .then((invites) => {
+   *   return Promise.all(invites.invites.forEach((invite, index) => sendInvite(invite,
+   *   emails[index]);
+   * })
+   * .then(() => console.log('Invites send.');
+   *
+   * @returns {Promise<InvitesResource>} Promise resolving to the invites resource
+   */
+  invites(): Promise<InvitesResource> {
+    return this.follow('ec:invites')
+    .then(request => get(this[environmentSymbol], request))
+    .then(([invites, traversal]) => new InvitesResource(invites, this[environmentSymbol], traversal));
+  }
+
+  /**
+   * Get the {@link AccountResource} which is currently logged in.
+   *
+   * @example
+   * return accounts.me()
+   * .then((account) => {
+   *   return show(`Your are logged in as ${account.name || account.email}`);
+   * });
+   *
+   * @returns {Promise<AccountResource>} resolves to the Account which is logged in.
+   */
+  me(): Promise<AccountResource> {
+    return Promise.resolve()
+    .then(() => this.follow('ec:account'))
+    .then(request => get(this[environmentSymbol], request))
+    .then(([res, traversal]) => new AccountResource(res, this[environmentSymbol], traversal));
+  }
+
+  /**
+   * Start a password reset.
+   *
+   * @example
+   * return accounts.resetPassword(email)
+   * .then(() => show(`Password reset link send to ${email}`))
+   *
+   * @param {string} email email of the account
+   * @returns {Promise<void>} Promise resolving on success.
+   */
+  resetPassword(email: string): Promise<void> {
+    return Promise.resolve()
+    .then(() => {
+      if (!email) {
+        throw new Error('email must be defined');
+      }
+      if (!this[tokenStoreSymbol].hasClientID()) {
+        throw new Error('clientID must be set with Account#setClientID(clientID: string)');
+      }
+
+      return this.follow('ec:auth/password-reset');
+    }).then((request) => {
+      request.withTemplateParameters({
+        clientID: this[tokenStoreSymbol].getClientID(),
+        email,
+      });
+      return getEmpty(this[environmentSymbol], request);
+    });
+  }
+
+  /**
+   * Set the clientID to use with the Accounts API. Currently only `rest` is supported.
+   *
+   * @param {string} clientID the clientID.
+   * @returns {Accounts} this object for chainability
+   */
+  setClientID(clientID: string): Accounts {
+    if (!clientID) {
+      throw new Error('ClientID must be defined');
+    }
+
+    this[tokenStoreSymbol].setClientID(clientID);
+    return this;
   }
 
   /**
@@ -489,62 +545,6 @@ export default class Accounts extends Core {
       this[tokenStoreSymbol].setToken(token.token);
       return Promise.resolve(token.token);
     });
-  }
-
-  /**
-   * Start a password reset.
-   *
-   * @example
-   * return accounts.resetPassword(email)
-   * .then(() => show(`Password reset link send to ${email}`))
-   *
-   * @param {string} email email of the account
-   * @returns {Promise<void>} Promise resolving on success.
-   */
-  resetPassword(email: string): Promise<void> {
-    return Promise.resolve()
-    .then(() => {
-      if (!email) {
-        throw new Error('email must be defined');
-      }
-      if (!this[tokenStoreSymbol].hasClientID()) {
-        throw new Error('clientID must be set with Account#setClientID(clientID: string)');
-      }
-
-      return this.follow('ec:auth/password-reset');
-    }).then((request) => {
-      request.withTemplateParameters({
-        clientID: this[tokenStoreSymbol].getClientID(),
-        email,
-      });
-      return getEmpty(this[environmentSymbol], request);
-    });
-  }
-
-  /**
-   * Change the logged in account to the given new email address.
-   *
-   * @example
-   * return accounts.resetPassword(email)
-   * .then(() => show(`Email change startet. Please verify with your new address`))
-   *
-   * @param {string} email the new email
-   * @returns {Promise<void>} Promise resolving on success.
-   */
-  changeEmail(email: string): Promise<void> {
-    return Promise.resolve()
-    .then(() => {
-      if (!email) {
-        throw new Error('email must be defined');
-      }
-
-      if (!this[tokenStoreSymbol].hasToken()) {
-        throw new Error('not logged in.');
-      }
-
-      return this.follow('ec:auth/change-email');
-    })
-    .then(request => postEmpty(this[environmentSymbol], request, { email }));
   }
 }
 

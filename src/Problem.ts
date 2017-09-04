@@ -6,13 +6,13 @@
  * getLinks).
  */
 export default class Problem extends Error {
-  public title: string;
   public code: number;
   public detail: string;
-  public verbose: string;
-  public requestID: string;
   public remoteStack: string;
+  public requestID: string;
   public subErrors: Problem | any; // TODO Error
+  public title: string;
+  public verbose: string;
 
   /**
    * Creates a new {@link Problem} with the given error object. May contain embedded {@link
@@ -41,37 +41,12 @@ export default class Problem extends Error {
   }
 
   /**
-   * Get short string representation of this error.
+   * Get all {@link Problem}s as an array.
    *
-   * @returns {string} short string representation.
+   * @returns {array<Problem>} array of all problems.
    */
-  public short(): string {
-    return `${this.title} (${this.code})`;
-  }
-
-  /**
-   * Creates short string representation of all sub errors.
-   *
-   * @access private
-   *
-   * @returns {string} short representation of all sub errors.
-   */
-  private sub(): string {
-    let out = '\nSubErrors:\n';
-    this.subErrors.forEach((e) => {
-      out += `  ${e.short().split('\n').join('  \n')}\n`;
-    });
-    return out;
-  }
-
-  /**
-   * Get short string representation for this and all sub errors. Will contain newlines for each
-   * sub error.
-   *
-   * @returns {string} short string representation
-   */
-  public shortAll(): string {
-    return `${this.short()}${this.sub()}`;
+  public getAsArray(): Array<Problem> {
+    return [].concat(this, this.subErrors).filter(x => !!x);
   }
 
   /**
@@ -95,11 +70,36 @@ ${this.detail}${this.verbose ? ` - ${this.verbose}` : ''}${this.requestID ? ` ($
   }
 
   /**
-   * Get all {@link Problem}s as an array.
+   * Get short string representation of this error.
    *
-   * @returns {array<Problem>} array of all problems.
+   * @returns {string} short string representation.
    */
-  public getAsArray(): Array<Problem> {
-    return [].concat(this, this.subErrors).filter(x => !!x);
+  public short(): string {
+    return `${this.title} (${this.code})`;
+  }
+
+  /**
+   * Get short string representation for this and all sub errors. Will contain newlines for each
+   * sub error.
+   *
+   * @returns {string} short string representation
+   */
+  public shortAll(): string {
+    return `${this.short()}${this.sub()}`;
+  }
+
+  /**
+   * Creates short string representation of all sub errors.
+   *
+   * @access private
+   *
+   * @returns {string} short representation of all sub errors.
+   */
+  private sub(): string {
+    let out = '\nSubErrors:\n';
+    this.subErrors.forEach((e) => {
+      out += `  ${e.short().split('\n').join('  \n')}\n`;
+    });
+    return out;
   }
 }

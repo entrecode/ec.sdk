@@ -25,16 +25,16 @@ export default class DataSourceResource extends Resource {
     this.countProperties();
   }
 
-  get dataSourceID() {
-    return <string>this.getProperty('dataSourceID');
-  }
-
   get config() {
     return this.getProperty('config');
   }
 
   set config(value: any) {
     this.setProperty('config', value);
+  }
+
+  get dataSourceID() {
+    return <string>this.getProperty('dataSourceID');
   }
 
   get dataSourceType() {

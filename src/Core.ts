@@ -57,28 +57,6 @@ export default class Core {
     this[traversalSymbol] = traverson.from(urls[environment]).jsonHal();
   }
 
-  /**
-   * Creates a new {@link
-    * https://github.com/basti1302/traverson/blob/master/api.markdown#request-builder
-     * traverson request builder}
-   *  which can be used for a new request to the API.
-   *
-   * @access private
-   *
-   * @returns {Object} traverson request builder instance.
-   */
-  newRequest(): any {
-    if (!this[traversalSymbol]) {
-      throw new Error('Critical: Traversal invalid!');
-    }
-
-    if ('continue' in this[traversalSymbol]) {
-      return this[traversalSymbol].continue().newRequest();
-    }
-
-    return this[traversalSymbol].newRequest();
-  }
-
   follow(link: string): Promise<any> {
     return Promise.resolve()
     .then(() => {
@@ -98,6 +76,27 @@ export default class Core {
         return this.newRequest().follow(link);
       });
     });
+  }
+
+  /**
+   * Get a given link from the root resource
+   * @param {string} link
+   * @returns {any} link object
+   */
+  getLink(link: string): any {
+    return this[resourceSymbol].link(link);
+  }
+
+  /**
+   * If you want to have access to the currently used token you can call this function.
+   *
+   * @example
+   * console.log(accounts.getToken()); // will log current token
+   *
+   * @returns {string} currently used token
+   */
+  getToken(): string {
+    return this[tokenStoreSymbol].getToken();
   }
 
   link(link: string): Promise<any> {
@@ -122,57 +121,25 @@ export default class Core {
   }
 
   /**
-   * If you have an existing access token you can use it by calling this function. All
-   * subsequent requests will use the provided {@link https://jwt.io/ Json Web Token} with an
-   * Authorization header.
+   * Creates a new {@link
+    * https://github.com/basti1302/traverson/blob/master/api.markdown#request-builder
+     * traverson request builder}
+   *  which can be used for a new request to the API.
    *
-   * @example
-   * return accounts.me(); // will result in error
-   * accounts.setToken('aJwtToken');
-   * return accounts.mes(); // will resolve
+   * @access private
    *
-   * @param {string} token the existing token
-   * @returns {Core} this for chainability
+   * @returns {Object} traverson request builder instance.
    */
-  setToken(token: string): Core {
-    if (!token) {
-      throw new Error('Token must be defined');
+  newRequest(): any {
+    if (!this[traversalSymbol]) {
+      throw new Error('Critical: Traversal invalid!');
     }
 
-    this[tokenStoreSymbol].setToken(token);
-    return this;
-  }
-
-  /**
-   * If you want to have access to the currently used token you can call this function.
-   *
-   * @example
-   * console.log(accounts.getToken()); // will log current token
-   *
-   * @returns {string} currently used token
-   */
-  getToken(): string {
-    return this[tokenStoreSymbol].getToken();
-  }
-
-  /**
-   * If you want to add additional information to the user agent used bed ec.sdk you can use this
-   * function to add any string.
-   *
-   * @example
-   * accounts.setUserAgent('editor/0.15.3 (a comment)');
-   * // all subsequent requests will have user agent: editor/0.15.3 (a comment) ec.sdk/<version>
-   *
-   * @param {string} agent the user agent to add
-   * @return {Core} this for chainability
-   */
-  setUserAgent(agent: string): Core {
-    if (!agent) {
-      throw new Error('agent must be defined');
+    if ('continue' in this[traversalSymbol]) {
+      return this[traversalSymbol].continue().newRequest();
     }
 
-    this[tokenStoreSymbol].setUserAgent(agent);
-    return this;
+    return this[traversalSymbol].newRequest();
   }
 
   /**
@@ -198,6 +165,25 @@ export default class Core {
   }
 
   /**
+   * This function preloads all schemas identified by schemas property.
+   *
+   * @param {string|Array<string>} schemas JSONSchema URL or array of JSONSchema URLs
+   * @returns {Promise<undefined>} Promise resolving when all schemas are successfully loaded.
+   */
+  preloadSchemas(schemas: string | Array<string>): Promise<void> {
+    return Promise.resolve()
+    .then(() => {
+      if (typeof schemas === 'string') {
+        schemas = <Array<string>>[schemas];
+      }
+
+      return (<Array<string>>schemas).map(schema => getSchema(schema))
+      .reduce((a, b) => a.then(b), Promise.resolve());
+    })
+    .then(() => Promise.resolve());
+  }
+
+  /**
    * You can remov a previously attached listener from the underlying {@link EventEmitter} with
    * this function.
    *
@@ -219,31 +205,45 @@ export default class Core {
   }
 
   /**
-   * Get a given link from the root resource
-   * @param {string} link
-   * @returns {any} link object
+   * If you have an existing access token you can use it by calling this function. All
+   * subsequent requests will use the provided {@link https://jwt.io/ Json Web Token} with an
+   * Authorization header.
+   *
+   * @example
+   * return accounts.me(); // will result in error
+   * accounts.setToken('aJwtToken');
+   * return accounts.mes(); // will resolve
+   *
+   * @param {string} token the existing token
+   * @returns {Core} this for chainability
    */
-  getLink(link: string): any {
-    return this[resourceSymbol].link(link);
+  setToken(token: string): Core {
+    if (!token) {
+      throw new Error('Token must be defined');
+    }
+
+    this[tokenStoreSymbol].setToken(token);
+    return this;
   }
 
   /**
-   * This function preloads all schemas identified by schemas property.
+   * If you want to add additional information to the user agent used bed ec.sdk you can use this
+   * function to add any string.
    *
-   * @param {string|Array<string>} schemas JSONSchema URL or array of JSONSchema URLs
-   * @returns {Promise<undefined>} Promise resolving when all schemas are successfully loaded.
+   * @example
+   * accounts.setUserAgent('editor/0.15.3 (a comment)');
+   * // all subsequent requests will have user agent: editor/0.15.3 (a comment) ec.sdk/<version>
+   *
+   * @param {string} agent the user agent to add
+   * @return {Core} this for chainability
    */
-  preloadSchemas(schemas: string | Array<string>): Promise<void> {
-    return Promise.resolve()
-    .then(() => {
-      if (typeof schemas === 'string') {
-        schemas = <Array<string>>[schemas];
-      }
+  setUserAgent(agent: string): Core {
+    if (!agent) {
+      throw new Error('agent must be defined');
+    }
 
-      return (<Array<string>>schemas).map(schema => getSchema(schema))
-      .reduce((a, b) => a.then(b), Promise.resolve());
-    })
-    .then(() => Promise.resolve());
+    this[tokenStoreSymbol].setUserAgent(agent);
+    return this;
   }
 }
 

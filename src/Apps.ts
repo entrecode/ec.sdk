@@ -41,6 +41,27 @@ export default class Apps extends Core {
   }
 
   /**
+   * Get a single {@link AppResource} identified by appID.
+   *
+   * @param {string} appID id of the app.
+   * @returns {Promise<AppResource>} resolves to the app which should be loaded.
+   */
+  app(appID: string): Promise<AppResource> {
+    return Promise.resolve()
+    .then(() => {
+      if (!appID) {
+        throw new Error('appID must be defined');
+      }
+      return this.follow('ec:app/by-id');
+    })
+    .then((request) => {
+      request.withTemplateParameters({ appID });
+      return get(this[environmentSymbol], request);
+    })
+    .then(([res, traversal]) => new AppResource(res, this[environmentSymbol], traversal));
+  }
+
+  /**
    * Load a {@link AppList} of {@link AppResource} filtered by the values specified
    * by the options parameter.
    *
@@ -67,27 +88,6 @@ export default class Apps extends Core {
   }
 
   /**
-   * Get a single {@link AppResource} identified by appID.
-   *
-   * @param {string} appID id of the app.
-   * @returns {Promise<AppResource>} resolves to the app which should be loaded.
-   */
-  app(appID: string): Promise<AppResource> {
-    return Promise.resolve()
-    .then(() => {
-      if (!appID) {
-        throw new Error('appID must be defined');
-      }
-      return this.follow('ec:app/by-id');
-    })
-    .then((request) => {
-      request.withTemplateParameters({ appID });
-      return get(this[environmentSymbol], request);
-    })
-    .then(([res, traversal]) => new AppResource(res, this[environmentSymbol], traversal));
-  }
-
-  /**
    * Create a new App.
    *
    * @param {object} app object representing the app.
@@ -104,38 +104,6 @@ export default class Apps extends Core {
     .then(link => validator.validate(app, `${link.profile}-template`))
     .then(() => post(this[environmentSymbol], this.newRequest(), app))
     .then(([dm, traversal]) => new AppResource(dm, this[environmentSymbol], traversal));
-  }
-
-  /**
-   * Load the {@link TypesResource}. This resource contains information about all available plugin
-   * types.
-   *
-   * @returns {Promise<TypesResource>} Promise resolving to types resource.
-   */
-  types(): Promise<TypesResource> {
-    return Promise.resolve()
-    .then(() => this.follow('ec:apps/types'))
-    .then(request => get(this[environmentSymbol], request))
-    .then(([res, traversal]) => new TypesResource(res, this[environmentSymbol], traversal));
-  }
-
-  /**
-   * Load the {@link AppStatsList}.
-   *
-   * @example
-   * return apps.statsList()
-   * .then(stats => {
-   *   return show(stats.getAllItems());
-   * });
-   *
-   *
-   * @returns {Promise<AppStatsList>} Promise resolving to AppStatsList
-   */
-  statsList(): Promise<AppStatsList> {
-    return Promise.resolve()
-    .then(() => this.follow('ec:app-stats'))
-    .then(request => get(this[environmentSymbol], request))
-    .then(([res, traversal]) => new AppStatsList(res, this[environmentSymbol], traversal));
   }
 
   /**
@@ -160,5 +128,37 @@ export default class Apps extends Core {
     })
     .then(request => get(this[environmentSymbol], request.withTemplateParameters({ appID })))
     .then(([res]) => new AppStatsResource(res, this[environmentSymbol]));
+  }
+
+  /**
+   * Load the {@link AppStatsList}.
+   *
+   * @example
+   * return apps.statsList()
+   * .then(stats => {
+   *   return show(stats.getAllItems());
+   * });
+   *
+   *
+   * @returns {Promise<AppStatsList>} Promise resolving to AppStatsList
+   */
+  statsList(): Promise<AppStatsList> {
+    return Promise.resolve()
+    .then(() => this.follow('ec:app-stats'))
+    .then(request => get(this[environmentSymbol], request))
+    .then(([res, traversal]) => new AppStatsList(res, this[environmentSymbol], traversal));
+  }
+
+  /**
+   * Load the {@link TypesResource}. This resource contains information about all available plugin
+   * types.
+   *
+   * @returns {Promise<TypesResource>} Promise resolving to types resource.
+   */
+  types(): Promise<TypesResource> {
+    return Promise.resolve()
+    .then(() => this.follow('ec:apps/types'))
+    .then(request => get(this[environmentSymbol], request))
+    .then(([res, traversal]) => new TypesResource(res, this[environmentSymbol], traversal));
   }
 }

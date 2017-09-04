@@ -26,6 +26,32 @@ export default class PublicAssetList extends ListResource {
   }
 
   /**
+   * Load a single {@link PublicTagResource}.
+   *
+   * @example
+   * return assetList.tag('thisOne')
+   * .then(tag => {
+   *   return show(tag);
+   * });
+   *
+   * @param {string} tag the tag
+   * @returns {Promise<PublicTagResource>} Promise resolving to PublicTagResource
+   */
+  tag(tag: string): Promise<PublicTagResource> {
+    return Promise.resolve()
+    .then(() => {
+      if (!tag) {
+        throw new Error('tag must be defined');
+      }
+      const request = this.newRequest()
+      .follow('ec:api/tags')
+      .withTemplateParameters({ dataManagerID: this[dataManagerIDSymbol], tag });
+      return get(this[environmentSymbol], request);
+    })
+    .then(([res, traversal]) => new PublicTagResource(res, this[environmentSymbol], traversal));
+  }
+
+  /**
    * Load the {@link PublicTagList}.
    *
    * @example
@@ -67,31 +93,5 @@ export default class PublicAssetList extends ListResource {
       return get(this[environmentSymbol], request);
     })
     .then(([res, traversal]) => new PublicTagList(res, this[environmentSymbol], traversal));
-  }
-
-  /**
-   * Load a single {@link PublicTagResource}.
-   *
-   * @example
-   * return assetList.tag('thisOne')
-   * .then(tag => {
-   *   return show(tag);
-   * });
-   *
-   * @param {string} tag the tag
-   * @returns {Promise<PublicTagResource>} Promise resolving to PublicTagResource
-   */
-  tag(tag: string): Promise<PublicTagResource> {
-    return Promise.resolve()
-    .then(() => {
-      if (!tag) {
-        throw new Error('tag must be defined');
-      }
-      const request = this.newRequest()
-      .follow('ec:api/tags')
-      .withTemplateParameters({ dataManagerID: this[dataManagerIDSymbol], tag });
-      return get(this[environmentSymbol], request);
-    })
-    .then(([res, traversal]) => new PublicTagResource(res, this[environmentSymbol], traversal));
   }
 }

@@ -39,18 +39,31 @@ export default class Session extends Core {
   }
 
   /**
-   * Set the clientID to use with the Accounts API. Currently only `rest` is supported.
+   * Checks a permission for the currently logged in user
    *
-   * @param {string} clientID the clientID.
-   * @returns {Session} this object for chainability
+   * @param {string} permission the permission to check.
+   * @returns {Promise<boolean>} true if user has permission, false otherwise.
    */
-  setClientID(clientID: string): Session {
-    if (!clientID) {
-      throw new Error('ClientID must be defined');
-    }
+  checkPermission(permission: string): Promise<boolean> {
+    return Promise.resolve()
+    .then(() => {
+      if (!permission) {
+        throw new Error('permission must be defined');
+      }
 
-    this[tokenStoreSymbol].setClientID(clientID);
-    return this;
+      if (this[meSymbol] && new Date().getTime() - this[meLoadedTimeSymbol] <= 300000) { // 5 Minutes
+        return undefined;
+      }
+
+      return this.follow('ec:account')
+      .then(request => get(this[environmentSymbol], request))
+      .then(([res, traversal]) => {
+        this[meSymbol] = new AccountResource(res, this[environmentSymbol], traversal)
+        this[meLoadedTimeSymbol] = new Date();
+        return undefined;
+      });
+    })
+    .then(() => this[meSymbol].checkPermission(permission));
   }
 
   /**
@@ -122,30 +135,17 @@ export default class Session extends Core {
   }
 
   /**
-   * Checks a permission for the currently logged in user
+   * Set the clientID to use with the Accounts API. Currently only `rest` is supported.
    *
-   * @param {string} permission the permission to check.
-   * @returns {Promise<boolean>} true if user has permission, false otherwise.
+   * @param {string} clientID the clientID.
+   * @returns {Session} this object for chainability
    */
-  checkPermission(permission: string): Promise<boolean> {
-    return Promise.resolve()
-    .then(() => {
-      if (!permission) {
-        throw new Error('permission must be defined');
-      }
+  setClientID(clientID: string): Session {
+    if (!clientID) {
+      throw new Error('ClientID must be defined');
+    }
 
-      if (this[meSymbol] && new Date().getTime() - this[meLoadedTimeSymbol] <= 300000) { // 5 Minutes
-        return undefined;
-      }
-
-      return this.follow('ec:account')
-      .then(request => get(this[environmentSymbol], request))
-      .then(([res, traversal]) => {
-        this[meSymbol] = new AccountResource(res, this[environmentSymbol], traversal)
-        this[meLoadedTimeSymbol] = new Date();
-        return undefined;
-      });
-    })
-    .then(() => this[meSymbol].checkPermission(permission));
+    this[tokenStoreSymbol].setClientID(clientID);
+    return this;
   }
 }

@@ -25,16 +25,16 @@ export default class TargetResource extends Resource {
     this.countProperties();
   }
 
-  get targetID() {
-    return <string>this.getProperty('targetID');
-  }
-
   get config() {
     return this.getProperty('config');
   }
 
   set config(value) {
     this.setProperty('config', value);
+  }
+
+  get targetID() {
+    return <string>this.getProperty('targetID');
   }
 
   get targetType() {

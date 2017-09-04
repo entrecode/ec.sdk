@@ -39,13 +39,36 @@ export default class LiteEntryResource extends Resource {
     return <string>this.getProperty('_entryTitle');
   }
 
+  get _id() {
+    return <string>this.getProperty('id');
+  }
+
   get id() {
     return <string>this.getProperty('_id');
   }
 
-  get _id() {
-    return <string>this.getProperty('id');
-  }
+  /**
+   * Get the title of this {@link LiteEntryResource}'s model.
+   *
+   * @returns {string} title of the entry's model
+   */
+  getModelTitle(): string {
+    return this.getProperty('_modelTitle');
+  };
+
+  /**
+   * Get the title from this {@link EntryResource}. Note: field argument only works with proper
+   * {@link EntryResource}s and is only in this method signature to provide consistency.
+   *
+   * @prop {string?} field - Will throw if provided. Only for consistency.
+   * @returns {string} title The title of the entry.
+   */
+  getTitle(field: string): string | Array<string> {
+    if (field) {
+      throw new Error('getTitle with field argument not supported by LiteEntryResource');
+    }
+    return this.getProperty('_entryTitle');
+  };
 
   /**
    * In order to resolve this {@link LiteEntryResource} to a proper {@link EntryResource} call this
@@ -72,28 +95,5 @@ export default class LiteEntryResource extends Resource {
       throw new Error('LiteEntryResource cannot be saved');
     }
     return <Promise<EntryResource>>super.save(overwriteSchemaUrl);
-  };
-
-  /**
-   * Get the title from this {@link EntryResource}. Note: field argument only works with proper
-   * {@link EntryResource}s and is only in this method signature to provide consistency.
-   *
-   * @prop {string?} field - Will throw if provided. Only for consistency.
-   * @returns {string} title The title of the entry.
-   */
-  getTitle(field: string): string | Array<string> {
-    if (field) {
-      throw new Error('getTitle with field argument not supported by LiteEntryResource');
-    }
-    return this.getProperty('_entryTitle');
-  };
-
-  /**
-   * Get the title of this {@link LiteEntryResource}'s model.
-   *
-   * @returns {string} title of the entry's model
-   */
-  getModelTitle(): string {
-    return this.getProperty('_modelTitle');
   };
 }

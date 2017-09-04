@@ -27,23 +27,23 @@ export default class BuildResource extends Resource {
     return <string>this.getProperty('buildID');
   }
 
-  get started() {
-    return new Date(this.getProperty('started'));
-  }
-
-  get finished() {
-    return new Date(this.getProperty('finished'));
-  }
-
-  get successful() {
-    return <boolean>this.getProperty('successful');
-  }
-
   get buildLocation() {
     return this.getProperty('buildLocation');
   }
 
   get events() {
     return <Array<any>>this.getProperty('events');
+  }
+
+  get finished() {
+    return new Date(this.getProperty('finished'));
+  }
+
+  get started() {
+    return new Date(this.getProperty('started'));
+  }
+
+  get successful() {
+    return <boolean>this.getProperty('successful');
   }
 }

@@ -74,121 +74,6 @@ export default class Resource {
     this.countProperties();
   }
 
-  countProperties(): void {
-    this[resourcePropertiesSymbol] = Object.keys(this);
-  }
-
-  /**
-   * Creates a new {@link
-    * https://github.com/basti1302/traverson/blob/master/api.markdown#request-builder
-     * traverson request builder}
-   *  which can be used for a new request to the API.
-   *
-   * @access private
-   *
-   * @returns {Object} traverson request builder instance.
-   */
-  newRequest(): any {
-    if (typeof this[traversalSymbol].continue === 'function') {
-      return this[traversalSymbol].continue().newRequest();
-    }
-    return this[traversalSymbol].newRequest();
-  }
-
-  /**
-   * Reloads this {@link Resource}. Can be used when this resource was loaded from any {@link
-    * ListResource} from _embedded.
-   *
-   * @returns {Promise<Resource>} this resource
-   */
-  resolve(): Promise<Resource> {
-    return get(
-      this[environmentSymbol],
-      this.newRequest().follow('self')
-    )
-    .then(([res, traversal]) => {
-      this[resourceSymbol] = halfred.parse(res);
-      this[traversalSymbol] = traversal;
-      this[dirtySymbol] = false;
-      return this;
-    });
-  }
-
-  /**
-   * Reset this {@link Resource} to its initial state. {@link Resource#isDirty} will be false
-   * afterwards.
-   *
-   * @returns {undefined}
-   */
-  reset(): void {
-    this[resourceSymbol] = halfred.parse(this[resourceSymbol].original());
-    this[dirtySymbol] = false;
-  }
-
-  /**
-   * Saves this {@link Resource}.
-   *
-   * @param {string?} overwriteSchemaUrl Other schema url to overwrite the one in
-   *   `_link.self.profile`. Mainly for internal use.
-   * @returns {Promise<Resource>} Promise will resolve to the saved Resource. Will
-   *   be the same object but with refreshed data.
-   */
-  save(overwriteSchemaUrl?: string): Promise<Resource> {
-    const out = this.toOriginal();
-    // TODO dot notation
-    return validator.validate(out, overwriteSchemaUrl || this[resourceSymbol].link('self').profile)
-    .then(() => put(this[environmentSymbol], this.newRequest().follow('self'), out))
-    .then(([res, traversal]) => {
-      this[resourceSymbol] = halfred.parse(res);
-      this[traversalSymbol] = traversal;
-      this[dirtySymbol] = false;
-      return this;
-    });
-  }
-
-  /**
-   * Deletes this {@link Resource}.
-   *
-   * @returns {Promise<undefined>} Promise will resolve on success and reject otherwise.
-   */
-  del(): Promise<void> {
-    return del(this[environmentSymbol], this.newRequest().follow('self'));
-  }
-
-  /**
-   * Checks if this {@link Resource} has at least one {@link
-    * https://tools.ietf.org/html/draft-kelly-json-hal-08#section-5
-     * link}  with the given name.
-   *
-   * @param {string} link the link name.
-   * @returns {boolean} whether or not a link with the given name was found.
-   */
-  hasLink(link) {
-    return this[resourceSymbol].link(link) !== null;
-  }
-
-  /**
-   * Get the first {@link https://tools.ietf.org/html/draft-kelly-json-hal-08#section-5 link} with
-   * the given name.
-   *
-   * @param {string} link the link name.
-   * @returns {object|null} the link with the given name or null.
-   */
-  getLink(link: string): any {
-    return this[resourceSymbol].link(link);
-  }
-
-  /**
-   * Get all {@link https://tools.ietf.org/html/draft-kelly-json-hal-08#section-5 links} with
-   * the given name.
-   *
-   * @param {string} link the link name.
-   * @returns {Array<object>|null} the link with the given name or null.
-   */
-  getLinks(link: string): Array<any> {
-    return this[resourceSymbol].linkArray(link);
-  }
-
   /**
    * Get all {@link https://tools.ietf.org/html/draft-kelly-json-hal-08#section-5 links} of this
    * resource.
@@ -199,12 +84,18 @@ export default class Resource {
     return this[resourceSymbol].allLinks();
   }
 
+  countProperties(): void {
+    this[resourcePropertiesSymbol] = Object.keys(this);
+  }
+
   /**
-   * @private
+   * Deletes this {@link Resource}.
    *
-   * @typedef {function} ResourceClass
-   * @constructor
+   * @returns {Promise<undefined>} Promise will resolve on success and reject otherwise.
    */
+  del(): Promise<void> {
+    return del(this[environmentSymbol], this.newRequest().follow('self'));
+  }
 
   /**
    * Loads the given {@link https://tools.ietf.org/html/draft-kelly-json-hal-08#section-5 link} and
@@ -242,19 +133,25 @@ export default class Resource {
   }
 
   /**
-   * Will assign all properties in resource to this {@link Resource}.
+   * Get the first {@link https://tools.ietf.org/html/draft-kelly-json-hal-08#section-5 link} with
+   * the given name.
    *
-   * @param {object} resource object with properties to assign.
-   * @returns {Resource} this Resource for chainability
+   * @param {string} link the link name.
+   * @returns {object|null} the link with the given name or null.
    */
-  setAll(resource: any): any {
-    if (!resource) {
-      throw new Error('Resource cannot be undefined.');
-    }
+  getLink(link: string): any {
+    return this[resourceSymbol].link(link);
+  }
 
-    Object.assign(this[resourceSymbol], resource);
-    this[dirtySymbol] = true;
-    return this;
+  /**
+   * Get all {@link https://tools.ietf.org/html/draft-kelly-json-hal-08#section-5 links} with
+   * the given name.
+   *
+   * @param {string} link the link name.
+   * @returns {Array<object>|null} the link with the given name or null.
+   */
+  getLinks(link: string): Array<any> {
+    return this[resourceSymbol].linkArray(link);
   }
 
   /**
@@ -269,6 +166,109 @@ export default class Resource {
     }
 
     return this[resourceSymbol][property];
+  }
+
+  /**
+   * Checks if this {@link Resource} has at least one {@link
+    * https://tools.ietf.org/html/draft-kelly-json-hal-08#section-5
+     * link}  with the given name.
+   *
+   * @param {string} link the link name.
+   * @returns {boolean} whether or not a link with the given name was found.
+   */
+  hasLink(link) {
+    return this[resourceSymbol].link(link) !== null;
+  }
+
+  /**
+   * Creates a new {@link
+    * https://github.com/basti1302/traverson/blob/master/api.markdown#request-builder
+     * traverson request builder}
+   *  which can be used for a new request to the API.
+   *
+   * @access private
+   *
+   * @returns {Object} traverson request builder instance.
+   */
+  newRequest(): any {
+    if (typeof this[traversalSymbol].continue === 'function') {
+      return this[traversalSymbol].continue().newRequest();
+    }
+    return this[traversalSymbol].newRequest();
+  }
+
+  /**
+   * @private
+   *
+   * @typedef {function} ResourceClass
+   * @constructor
+   */
+
+  /**
+   * Reset this {@link Resource} to its initial state. {@link Resource#isDirty} will be false
+   * afterwards.
+   *
+   * @returns {undefined}
+   */
+  reset(): void {
+    this[resourceSymbol] = halfred.parse(this[resourceSymbol].original());
+    this[dirtySymbol] = false;
+  }
+
+  /**
+   * Reloads this {@link Resource}. Can be used when this resource was loaded from any {@link
+    * ListResource} from _embedded.
+   *
+   * @returns {Promise<Resource>} this resource
+   */
+  resolve(): Promise<Resource> {
+    return get(
+      this[environmentSymbol],
+      this.newRequest().follow('self')
+    )
+    .then(([res, traversal]) => {
+      this[resourceSymbol] = halfred.parse(res);
+      this[traversalSymbol] = traversal;
+      this[dirtySymbol] = false;
+      return this;
+    });
+  }
+
+  /**
+   * Saves this {@link Resource}.
+   *
+   * @param {string?} overwriteSchemaUrl Other schema url to overwrite the one in
+   *   `_link.self.profile`. Mainly for internal use.
+   * @returns {Promise<Resource>} Promise will resolve to the saved Resource. Will
+   *   be the same object but with refreshed data.
+   */
+  save(overwriteSchemaUrl?: string): Promise<Resource> {
+    const out = this.toOriginal();
+    // TODO dot notation
+    return validator.validate(out, overwriteSchemaUrl || this[resourceSymbol].link('self').profile)
+    .then(() => put(this[environmentSymbol], this.newRequest().follow('self'), out))
+    .then(([res, traversal]) => {
+      this[resourceSymbol] = halfred.parse(res);
+      this[traversalSymbol] = traversal;
+      this[dirtySymbol] = false;
+      return this;
+    });
+  }
+
+  /**
+   * Will assign all properties in resource to this {@link Resource}.
+   *
+   * @param {object} resource object with properties to assign.
+   * @returns {Resource} this Resource for chainability
+   */
+  setAll(resource: any): any {
+    if (!resource) {
+      throw new Error('Resource cannot be undefined.');
+    }
+
+    Object.assign(this[resourceSymbol], resource);
+    this[dirtySymbol] = true;
+    return this;
   }
 
   /**

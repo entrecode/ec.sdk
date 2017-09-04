@@ -28,32 +28,12 @@ export default class RoleResource extends Resource {
     this.countProperties();
   }
 
-  get roleID() {
-    return <string>this.getProperty('roleID');
+  get accounts() {
+    return <Array<string>>this.getProperty('accounts')
   }
 
-  get name() {
-    return <string>this.getProperty('name');
-  }
-
-  set name(value: string) {
-    this.setProperty('name', value);
-  }
-
-  get label() {
-    return <string>this.getProperty('label');
-  }
-
-  set label(value: string) {
-    this.setProperty('label', value);
-  }
-
-  get addUnregistered() {
-    return <boolean>this.getProperty('addUnregistered')
-  }
-
-  set addUnregistered(value: boolean) {
-    this.setProperty('addUnregistered', value);
+  set accounts(value: Array<string>) {
+    this.setProperty('accounts', value);
   }
 
   get addRegistered() {
@@ -64,11 +44,31 @@ export default class RoleResource extends Resource {
     this.setProperty('addRegistered', value);
   }
 
-  get accounts() {
-    return <Array<string>>this.getProperty('accounts')
+  get addUnregistered() {
+    return <boolean>this.getProperty('addUnregistered')
   }
 
-  set accounts(value: Array<string>) {
-    this.setProperty('accounts', value);
+  set addUnregistered(value: boolean) {
+    this.setProperty('addUnregistered', value);
+  }
+
+  get label() {
+    return <string>this.getProperty('label');
+  }
+
+  set label(value: string) {
+    this.setProperty('label', value);
+  }
+
+  get name() {
+    return <string>this.getProperty('name');
+  }
+
+  set name(value: string) {
+    this.setProperty('name', value);
+  }
+
+  get roleID() {
+    return <string>this.getProperty('roleID');
   }
 }

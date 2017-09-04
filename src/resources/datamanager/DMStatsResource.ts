@@ -23,16 +23,52 @@ export default class DMStatsResource extends Resource {
     this.countProperties();
   }
 
-  get dataManagerID() {
-    return <string>this.getProperty('dataManagerID');
-  }
-
-  get title() {
-    return <string>this.getProperty('title');
+  get assetCount() {
+    return <number>this.getProperty('assetCount');
   }
 
   get config() {
     return <any>this.getProperty('config');
+  }
+
+  get dataManagerID() {
+    return <string>this.getProperty('dataManagerID');
+  }
+
+  get entryCount() {
+    return <number>this.getProperty('entryCount');
+  }
+
+  get fileCount() {
+    return <number>this.getProperty('fileCount');
+  }
+
+  get fileSize() {
+    return <number>this.getProperty('fileSize');
+  }
+
+  get modelCount() {
+    return <number>this.getProperty('modelCount');
+  }
+
+  get monthlyHooks() {
+    return <Array<any>>this.getProperty('monthlyHooks');
+  }
+
+  get monthlyRequests() {
+    return <Array<any>>this.getProperty('monthlyRequests');
+  }
+
+  get numberAccounts() {
+    return <number>this.getProperty('numberAccounts');
+  }
+
+  get numberHookRequests() {
+    return <number>this.getProperty('numberHookRequests');
+  }
+
+  get numberRequests() {
+    return <number>this.getProperty('numberRequests');
   }
 
   get templateID() {
@@ -47,43 +83,7 @@ export default class DMStatsResource extends Resource {
     return <string>this.getProperty('templateVersion');
   }
 
-  get modelCount() {
-    return <number>this.getProperty('modelCount');
-  }
-
-  get entryCount() {
-    return <number>this.getProperty('entryCount');
-  }
-
-  get assetCount() {
-    return <number>this.getProperty('assetCount');
-  }
-
-  get fileCount() {
-    return <number>this.getProperty('fileCount');
-  }
-
-  get fileSize() {
-    return <number>this.getProperty('fileSize');
-  }
-
-  get numberAccounts() {
-    return <number>this.getProperty('numberAccounts');
-  }
-
-  get numberRequests() {
-    return <number>this.getProperty('numberRequests');
-  }
-
-  get numberHookRequests() {
-    return <number>this.getProperty('numberHookRequests');
-  }
-
-  get monthlyRequests() {
-    return <Array<any>>this.getProperty('monthlyRequests');
-  }
-
-  get monthlyHooks() {
-    return <Array<any>>this.getProperty('monthlyHooks');
+  get title() {
+    return <string>this.getProperty('title');
   }
 }
