@@ -72,7 +72,7 @@ function getShortID(resource) {
  * required JSON Schemas won't be stored in the cache.
  *
  * @example
- * publicAPI.getEntry('muffins', '1234567')
+ * publicAPI.entry('muffins', '1234567')
  * .then((muffin) => {
  *   show(muffin.title, muffin.deliciousness);
  * });

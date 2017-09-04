@@ -498,7 +498,7 @@ export default class PublicAPI extends Core {
    * Load a single {@link EntryResource}.
    *
    * @example
-   * return dm.entry('myModel', '1234567')
+   * return api.entry('myModel', '1234567')
    * .then(entry => {
    *   return show(entry);
    * });
