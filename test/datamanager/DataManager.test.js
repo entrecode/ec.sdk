@@ -29,6 +29,7 @@ const DMStatsResource = require('../../lib/resources/datamanager/DMStatsResource
 const AssetList = require('../../lib/resources/datamanager/AssetList').default;
 const AssetResource = require('../../lib/resources/datamanager/AssetResource').default;
 const Resource = require('../../lib/resources/Resource').default;
+const PublicAPI = require('../../lib/PublicAPI').default;
 
 const nock = require('../mocks/nock.js');
 
@@ -996,5 +997,10 @@ describe('DataManager Resource', () => {
       stub.restore();
       throw err;
     });
+  });
+
+  it('should get public API', () => {
+    resource.getPublicAPI().should.be.instanceOf(PublicAPI);
+    resource.getPublicAPI().should.have.property('shortID', 'beefbeef');
   });
 });
