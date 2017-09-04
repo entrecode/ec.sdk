@@ -18,8 +18,10 @@ import RoleResource from './RoleResource';
 import { filterOptions } from '../ListResource';
 import { get, getUrl, optionsToQuery, post, superagentPost } from '../../helper';
 import { environment } from '../../Core';
+import PublicAPI from '../../PublicAPI';
 
 const environmentSymbol = Symbol.for('environment');
+const apiSymbol = Symbol('api');
 
 validator.setLoggingFunction(() => {
 });
@@ -661,6 +663,18 @@ export default class DataManagerResource extends Resource {
       return get(this[environmentSymbol], request);
     })
     .then(([res]) => res);
+  }
+
+  /**
+   * Get an {@link PublicAPI} instance for this DataManagerResource
+   *
+   * @returns {PublicAPI} PublicAPI instance
+   */
+  getPublicAPI(): PublicAPI {
+    if (!this[apiSymbol]) {
+      this[apiSymbol] = new PublicAPI(this.shortID, this[environmentSymbol], true);
+    }
+    return this[apiSymbol];
   }
 }
 
