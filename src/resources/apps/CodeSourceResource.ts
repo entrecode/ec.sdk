@@ -11,10 +11,6 @@ import { environment } from '../../Core';
  * @prop {string} codeSourceType - codeSource type
  */
 export default class CodeSourceResource extends Resource {
-  codeSourceID: string;
-  config: any;
-  codeSourceType: string;
-
   /**
    * Creates a new {@link CodeSourceResource}.
    *
@@ -26,29 +22,26 @@ export default class CodeSourceResource extends Resource {
    */
   constructor(resource: any, environment: environment, traversal?: any) {
     super(resource, environment, traversal);
-
-    Object.defineProperties(this, {
-      codeSourceID: {
-        enumerable: true,
-        get: () => this.getProperty('codeSourceID'),
-      },
-      config: {
-        enumerable: true,
-        get: () => this.getProperty('config'),
-        set: (value) => {
-          this.setProperty('config', value);
-          return value;
-        },
-      },
-      codeSourceType: {
-        enumerable: true,
-        get: () => this.getProperty('codeSourceType'),
-        set: (value) => {
-          this.setProperty('codeSourceType', value);
-          return value;
-        },
-      },
-    });
     this.countProperties();
+  }
+
+  get codeSourceID() {
+    return <string>this.getProperty('codeSourceID');
+  }
+
+  get config() {
+    return this.getProperty('config');
+  }
+
+  set config(value: any) {
+    this.setProperty('config', value);
+  }
+
+  get codeSourceType() {
+    return this.getProperty('codeSourceType');
+  }
+
+  set codeSourceType(value: string) {
+    this.setProperty('codeSourceType', value);
   }
 }

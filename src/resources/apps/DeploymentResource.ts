@@ -9,16 +9,6 @@ import { environment } from '../../Core';
  * @prop {string} deploymentID - the id
  */
 export default class DeploymentResource extends Resource {
-  deploymentID: string;
-  buildID: string;
-  platformID: string;
-  targetIDs: Array<string>;
-  started: Date;
-  finished: Date;
-  successful: string;
-  events: Array<any>;
-  results: Array<any>;
-
   /**
    * Creates a new {@link DeploymentResource}.
    *
@@ -30,45 +20,42 @@ export default class DeploymentResource extends Resource {
    */
   constructor(resource: any, environment: environment, traversal?: any) {
     super(resource, environment, traversal);
-
-    Object.defineProperties(this, {
-      deploymentID: {
-        enumerable: true,
-        get: () => this.getProperty('deploymentID'),
-      },
-      buildID: {
-        enumerable: true,
-        get: () => this.getProperty('buildID'),
-      },
-      platformID: {
-        enumerable: true,
-        get: () => this.getProperty('platformID'),
-      },
-      targetIDs: {
-        enumerable: true,
-        get: () => this.getProperty('targetIDs'),
-      },
-      started: {
-        enumerable: true,
-        get: () => new Date(this.getProperty('started')),
-      },
-      finished: {
-        enumerable: true,
-        get: () => new Date(this.getProperty('finished')),
-      },
-      successful: {
-        enumerable: true,
-        get: () => this.getProperty('successful'),
-      },
-      events: {
-        enumerable: true,
-        get: () => this.getProperty('events'),
-      },
-      results: {
-        enumerable: true,
-        get: () => this.getProperty('results'),
-      },
-    });
     this.countProperties();
+  }
+
+  get deploymentID() {
+    return <string>this.getProperty('deploymentID');
+  }
+
+  get buildID() {
+    return this.getProperty('buildID');
+  }
+
+  get platformID() {
+    return <string>this.getProperty('platformID');
+  }
+
+  get targetIDs() {
+    return <Array<string>>this.getProperty('targetIDs');
+  }
+
+  get started() {
+    return new Date(this.getProperty('started'));
+  }
+
+  get finished() {
+    return new Date(this.getProperty('finished'));
+  }
+
+  get successful() {
+    return <boolean>this.getProperty('successful');
+  }
+
+  get events() {
+    return <Array<string>>this.getProperty('events');
+  }
+
+  get results() {
+    return <Array<any>>this.getProperty('results');
   }
 }

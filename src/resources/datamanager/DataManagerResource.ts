@@ -39,13 +39,6 @@ validator.setLoggingFunction(() => {
  * @prop {string}         title           - Title of the dataManager
  */
 export default class DataManagerResource extends Resource {
-  dataManagerID: string;
-  config: any;
-  description: string;
-  hexColor: string;
-  locales: Array<string>;
-  title: string;
-
   /**
    * Creates a new {@link DataManagerResource}.
    *
@@ -57,63 +50,59 @@ export default class DataManagerResource extends Resource {
    */
   constructor(resource: any, environment: environment, traversal?: any) {
     super(resource, environment, traversal);
-
-    Object.defineProperties(this, {
-      dataManagerID: {
-        enumerable: true,
-        get: () => this.getProperty('dataManagerID'),
-      },
-
-      config: {
-        enumerable: true,
-        get: () => this.getProperty('config'),
-        set: (value) => {
-          this.setProperty('config', value);
-          return value;
-        },
-      },
-      created: {
-        enumerable: true,
-        get: () => new Date(this.getProperty('created')),
-      },
-      description: {
-        enumerable: true,
-        get: () => this.getProperty('description'),
-        set: (value) => {
-          this.setProperty('description', value);
-          return value;
-        },
-      },
-      hexColor: {
-        enumerable: true,
-        get: () => this.getProperty('hexColor'),
-        set: (value) => {
-          this.setProperty('hexColor', value);
-          return value;
-        },
-      },
-      locales: {
-        enumerable: true,
-        get: () => this.getProperty('locales'),
-        set: (value) => {
-          this.setProperty('locales', value);
-          return value;
-        },
-      },
-      shortID: {
-        enumerable: true,
-        get: () => this.getProperty('shortID'),
-      },
-      title: {
-        enumerable: true,
-        get: () => this.getProperty('title'),
-        set: (value) => {
-          this.setProperty('title', value);
-          return value;
-        },
-      },
-    });
     this.countProperties();
+  }
+
+  get dataManagerID() {
+    return <string>this.getProperty('dataManagerID');
+  }
+
+  get config() {
+    return this.getProperty('config');
+  }
+
+  set config(value: any) {
+    this.setProperty('config', value);
+  }
+
+  get created() {
+    return new Date(this.getProperty('created'));
+  }
+
+  get description() {
+    return this.getProperty('description')
+  }
+
+  set description(value: string) {
+    this.setProperty('description', value);
+  }
+
+  get hexColor() {
+    return <string>this.getProperty('hexColor');
+  }
+
+  set hexColor(value: string) {
+    this.setProperty('hexColor', value);
+  }
+
+  get locales() {
+    return <Array<string>>this.getProperty('locales');
+  }
+
+  set locales(value: Array<string>) {
+    this.setProperty('locales', value);
+  }
+
+  get shortID() {
+    return <string>this.getProperty('shortID');
+  }
+
+  get title() {
+    return <string>this.getProperty('title');
+  }
+
+  set title(value: string) {
+    this.setProperty('title', value);
   }
 
   /**

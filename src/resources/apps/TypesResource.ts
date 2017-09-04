@@ -8,11 +8,6 @@ import { environment } from '../../Core';
  *
  */
 export default class TypesResource extends Resource {
-  platformTypes: Array<any>;
-  codeSourceTypes: Array<any>;
-  dataSourceTypes: Array<any>;
-  targetTypes: Array<any>;
-
   /**
    * Creates a new {@link AppResource}.
    *
@@ -24,26 +19,23 @@ export default class TypesResource extends Resource {
    */
   constructor(resource: any, environment: environment, traversal?: any) {
     super(resource, environment, traversal);
-
-    Object.defineProperties(this, {
-      platformTypes: {
-        enumerable: true,
-        get: () => this.getProperty('platformTypes'),
-      },
-      codeSourceTypes: {
-        enumerable: true,
-        get: () => this.getProperty('codeSourceTypes'),
-      },
-      dataSourceTypes: {
-        enumerable: true,
-        get: () => this.getProperty('dataSourceTypes'),
-      },
-      targetTypes: {
-        enumerable: true,
-        get: () => this.getProperty('targetTypes'),
-      },
-    });
     this.countProperties();
+  }
+
+  get platformTypes() {
+    return <Array<string>>this.getProperty('platformTypes');
+  }
+
+  get codeSourceTypes() {
+    return <Array<string>>this.getProperty('codeSourceTypes');
+  }
+
+  get dataSourceTypes() {
+    return <Array<string>>this.getProperty('dataSourceTypes');
+  }
+
+  get targetTypes() {
+    return <Array<string>>this.getProperty('targetTypes');
   }
 
   /**
