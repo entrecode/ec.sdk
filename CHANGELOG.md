@@ -1,3 +1,12 @@
+<a name="0.8.3"></a>
+## 0.8.3 (2017-09-04)
+
+* release version 0.8.3 ([4258ea0](https://github.com/entrecode/ec.sdk/commit/4258ea0))
+* chore: release script back to working version ([675d1a8](https://github.com/entrecode/ec.sdk/commit/675d1a8))
+* feat: DataManagerResource#getPublicAPI() for creating a PublicAPI from Data Manager CMS-2933 ([62df352](https://github.com/entrecode/ec.sdk/commit/62df352))
+
+
+
 <a name="0.8.2"></a>
 ## 0.8.2 (2017-09-04)
 
