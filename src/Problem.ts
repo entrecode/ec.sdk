@@ -23,11 +23,7 @@ export default class Problem extends Error {
   public constructor(error: Problem | any) {
     super(error.title);
 
-    ['title', 'code', 'status', 'type', 'detail', 'verbose', 'requestID'].forEach((property) => {
-      if (property in error) {
-        this[property] = error[property];
-      }
-    });
+    Object.assign(this, error);
 
     if ('stack' in error) {
       this.remoteStack = error.stack;

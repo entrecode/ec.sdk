@@ -1,3 +1,19 @@
+<a name="0.8.2"></a>
+## 0.8.2 (2017-09-04)
+
+* chore: dot reporter for tests ([66b552c](https://github.com/entrecode/ec.sdk/commit/66b552c))
+* chore: package patches, new package-lock ([b9b58b1](https://github.com/entrecode/ec.sdk/commit/b9b58b1))
+* chore(package): update documentation to version 5.3.0 ([ce7d408](https://github.com/entrecode/ec.sdk/commit/ce7d408))
+* fix: changelog mix up ([1894f89](https://github.com/entrecode/ec.sdk/commit/1894f89))
+* fix: main file fix, browser build fix ([c31adf6](https://github.com/entrecode/ec.sdk/commit/c31adf6))
+* fix: manually create index.js to match index.js in root dir ([1a49999](https://github.com/entrecode/ec.sdk/commit/1a49999))
+* fix: typings fix for event listeners ([d1e6744](https://github.com/entrecode/ec.sdk/commit/d1e6744))
+* refactor: getter setter instead of Object.defineProperty for API Connectors an PublicAPI CMS-2932 ([74b6df2](https://github.com/entrecode/ec.sdk/commit/74b6df2))
+* refactor: moved index into root directory ([5df4f1e](https://github.com/entrecode/ec.sdk/commit/5df4f1e))
+* refactor: switch to proper getter/setter CMS-2932 ([ca04bc0](https://github.com/entrecode/ec.sdk/commit/ca04bc0))
+
+
+
 <a name="0.8.1"></a>
 ## 0.8.1 (2017-09-01)
 

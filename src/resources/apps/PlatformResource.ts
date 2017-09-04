@@ -31,11 +31,6 @@ traverson.registerMediaType(traversonHal.mediaType, traversonHal);
  * @prop {string} platformType - platform type
  */
 export default class PlatformResource extends Resource {
-  platformID: string;
-  title: string;
-  config: any;
-  platformType: string;
-
   /**
    * Creates a new {@link PlatformResource}.
    *
@@ -47,38 +42,35 @@ export default class PlatformResource extends Resource {
    */
   constructor(resource: any, environment: environment, traversal?: any) {
     super(resource, environment, traversal);
-
-    Object.defineProperties(this, {
-      platformID: {
-        enumerable: true,
-        get: () => this.getProperty('platformID'),
-      },
-      title: {
-        enumerable: true,
-        get: () => this.getProperty('title'),
-        set: (value) => {
-          this.setProperty('title', value);
-          return value;
-        },
-      },
-      config: {
-        enumerable: true,
-        get: () => this.getProperty('config'),
-        set: (value) => {
-          this.setProperty('config', value);
-          return value;
-        },
-      },
-      platformType: {
-        enumerable: true,
-        get: () => this.getProperty('platformType'),
-        set: (value) => {
-          this.setProperty('platformType', value);
-          return value;
-        },
-      },
-    });
     this.countProperties();
+  }
+
+  get platformID() {
+    return <string>this.getProperty('platformID');
+  }
+
+  get title() {
+    return <string>this.getProperty('title');
+  }
+
+  set title(value: string) {
+    this.setProperty('title', value);
+  }
+
+  get config() {
+    return this.getProperty('config');
+  }
+
+  set config(value: any) {
+    this.setProperty('config', value);
+  }
+
+  get platformType() {
+    return <string>this.getProperty('platformType');
+  }
+
+  set platformType(value: string) {
+    this.setProperty('platformType', value);
   }
 
   /**

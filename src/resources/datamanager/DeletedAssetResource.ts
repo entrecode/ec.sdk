@@ -17,13 +17,6 @@ const environmentSymbol = Symbol.for('environment');
  * @prop {array<object>} files   - all files associated with this asset
  */
 export default class DeletedAssetResource extends Resource {
-  assetID: string;
-  title: string;
-  tags: Array<string>;
-  created: Date;
-  type: string;
-  files: Array<any>;
-
   /**
    * Creates a new {@link DeletedAssetResource}.
    *
@@ -35,35 +28,31 @@ export default class DeletedAssetResource extends Resource {
    */
   constructor(resource: any, environment: environment, traversal?: any) {
     super(resource, environment, traversal);
-
-    Object.defineProperties(this, {
-      assetID: {
-        enumerable: true,
-        get: () => this.getProperty('assetID'),
-      },
-
-      title: {
-        enumerable: true,
-        get: () => this.getProperty('title'),
-      },
-      tags: {
-        enumerable: true,
-        get: () => this.getProperty('tags'),
-      },
-      created: {
-        enumerable: true,
-        get: () => new Date(this.getProperty('created')),
-      },
-      type: {
-        enumerable: true,
-        get: () => this.getProperty('type'),
-      },
-      files: {
-        enumerable: true,
-        get: () => this.getProperty('files'),
-      },
-    });
     this.countProperties();
+  }
+
+  get assetID() {
+    return <string>this.getProperty('assetID');
+  }
+
+  get title() {
+    return <string>this.getProperty('title');
+  }
+
+  get tags() {
+    return <Array<string>>this.getProperty('tags');
+  }
+
+  get created() {
+    return new Date(this.getProperty('created'));
+  }
+
+  get type() {
+    return <string>this.getProperty('type');
+  }
+
+  get files() {
+    return <Array<any>>this.getProperty('files');
   }
 
   /**

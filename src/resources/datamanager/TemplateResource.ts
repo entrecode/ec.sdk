@@ -26,12 +26,6 @@ validator.setLoggingFunction(() => {
  * @prop {string} version - version of the tempalte
  */
 export default class TemplateResource extends Resource {
-  templateID: string;
-  name: string;
-  collection: Object;
-  dataSchema: Object;
-  version: Object;
-
   /**
    * Creates a new {@link TemplateResource}.
    *
@@ -45,30 +39,27 @@ export default class TemplateResource extends Resource {
     super(resource, environment, traversal);
 
     this[resolvedSymbol] = 'collection' in resource;
-
-    Object.defineProperties(this, {
-      templateID: {
-        enumerable: true,
-        get: () => this.getProperty('templateID'),
-      },
-      name: {
-        enumerable: true,
-        get: () => this.getProperty('name'),
-      },
-      collection: {
-        enumerable: true,
-        get: () => this.getProperty('collection'),
-      },
-      dataSchema: {
-        enumerable: true,
-        get: () => this.getProperty('dataSchema'),
-      },
-      version: {
-        enumerable: true,
-        get: () => this.getProperty('version'),
-      },
-    });
     this.countProperties();
+  }
+
+  get templateID() {
+    return <string>this.getProperty('templateID');
+  }
+
+  get name() {
+    return <string>this.getProperty('name');
+  }
+
+  get collection() {
+    return <string>this.getProperty('collection');
+  }
+
+  get dataSchema() {
+    return <any>this.getProperty('dataSchema');
+  }
+
+  get version() {
+    return <string>this.getProperty('version');
   }
 
   resolve(): Promise<TemplateResource> {

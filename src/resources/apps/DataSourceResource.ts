@@ -11,10 +11,6 @@ import { environment } from '../../Core';
  * @prop {string} dataSourceType - dataSource type
  */
 export default class DataSourceResource extends Resource {
-  dataSourceID: string;
-  config: any;
-  dataSourceType: string;
-
   /**
    * Creates a new {@link DataSourceResource}.
    *
@@ -26,29 +22,26 @@ export default class DataSourceResource extends Resource {
    */
   constructor(resource: any, environment: environment, traversal?: any) {
     super(resource, environment, traversal);
-
-    Object.defineProperties(this, {
-      dataSourceID: {
-        enumerable: true,
-        get: () => this.getProperty('dataSourceID'),
-      },
-      config: {
-        enumerable: true,
-        get: () => this.getProperty('config'),
-        set: (value) => {
-          this.setProperty('config', value);
-          return value;
-        },
-      },
-      dataSourceType: {
-        enumerable: true,
-        get: () => this.getProperty('dataSourceType'),
-        set: (value) => {
-          this.setProperty('dataSourceType', value);
-          return value;
-        },
-      },
-    });
     this.countProperties();
+  }
+
+  get dataSourceID() {
+    return <string>this.getProperty('dataSourceID');
+  }
+
+  get config() {
+    return this.getProperty('config');
+  }
+
+  set config(value: any) {
+    this.setProperty('config', value);
+  }
+
+  get dataSourceType() {
+    return <string>this.getProperty('dataSourceType');
+  }
+
+  set dataSourceType(value: string) {
+    this.setProperty('dataSourceType', value);
   }
 }

@@ -15,13 +15,6 @@ import { environment } from '../../Core';
  * @prop {array<object>} files   - all files associated with this asset
  */
 export default class AssetResource extends Resource {
-  assetID: string;
-  title: string;
-  tags: Array<string>;
-  created: Date;
-  type: string;
-  files: Array<any>;
-
   /**
    * Creates a new {@link AssetResource}.
    *
@@ -33,43 +26,39 @@ export default class AssetResource extends Resource {
    */
   constructor(resource: any, environment: environment, traversal?: any) {
     super(resource, environment, traversal);
-
-    Object.defineProperties(this, {
-      assetID: {
-        enumerable: true,
-        get: () => this.getProperty('assetID'),
-      },
-
-      title: {
-        enumerable: true,
-        get: () => this.getProperty('title'),
-        set: (value) => {
-          this.setProperty('title', value);
-          return value;
-        },
-      },
-      tags: {
-        enumerable: true,
-        get: () => this.getProperty('tags'),
-        set: (value) => {
-          this.setProperty('tags', value);
-          return value;
-        },
-      },
-      created: {
-        enumerable: true,
-        get: () => new Date(this.getProperty('created')),
-      },
-      type: {
-        enumerable: true,
-        get: () => this.getProperty('type'),
-      },
-      files: {
-        enumerable: true,
-        get: () => this.getProperty('files'),
-      },
-    });
     this.countProperties();
+  }
+
+  get assetID() {
+    return <string>this.getProperty('assetID');
+  }
+
+  get title() {
+    return <string>this.getProperty('title');
+  }
+
+  set title(value: string) {
+    this.setProperty('title', value);
+  }
+
+  get tags() {
+    return <Array<string>>this.getProperty('tags');
+  }
+
+  set tags(value: Array<string>) {
+    this.setProperty('tags', value);
+  }
+
+  get created() {
+    return new Date(this.getProperty('created'));
+  }
+
+  get type() {
+    return <string>this.getProperty('type');
+  }
+
+  get files() {
+    return <Array<any>>this.getProperty('files');
   }
 
   /**

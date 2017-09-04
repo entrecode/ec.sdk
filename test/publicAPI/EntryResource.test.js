@@ -142,6 +142,31 @@ describe('Entry Resource', () => {
     });
   });
 
+  it('should get id', () => {
+    resource.id.should.be.equal('B17u3r5lx-');
+  });
+  it('should get _id', () => {
+    resource._id.should.be.equal('B17u3r5lx-');
+  });
+  it('should get created', () => {
+    resource.created.toISOString().should.be.equal('2017-05-10T13:29:19.893Z');
+  });
+  it('should get _created', () => {
+    resource._created.toISOString().should.be.equal('2017-05-10T13:29:19.893Z');
+  });
+  it('should get modified', () => {
+    resource.modified.toISOString().should.be.equal('2017-05-15T12:56:30.906Z');
+  });
+  it('should get _modified', () => {
+    resource._modified.toISOString().should.be.equal('2017-05-15T12:56:30.906Z');
+  });
+  it('should get creator', () => {
+    should.equal(resource.creator, null)
+  });
+  it('should get _creator', () => {
+    should.equal(resource._creator, null)
+  });
+
   it('should get _entryTitle', () => {
     resource._entryTitle.should.be.equal('B17u3r5lx-');
   });

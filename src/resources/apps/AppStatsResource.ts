@@ -19,18 +19,6 @@ import { environment } from '../../Core';
  * @prop {Array<string>} usedPlatforms - platforms used by this app
  */
 export default class AppStatsResource extends Resource {
-  appID: string;
-  title: string;
-  totalBuilds: string;
-  totalBuildSize: string;
-  monthlyBuilds: any;
-  totalDeployments: string;
-  monthlyDeployments: any;
-  usedCodeSources: Array<string>;
-  usedDataSources: Array<string>;
-  usedTargets: Array<string>;
-  usedPlatforms: Array<string>;
-
   /**
    * Creates a new {@link AppStatsResource}.
    *
@@ -42,53 +30,50 @@ export default class AppStatsResource extends Resource {
    */
   constructor(resource: any, environment: environment, traversal?: any) {
     super(resource, environment, traversal);
-
-    Object.defineProperties(this, {
-      appID: {
-        enumerable: true,
-        get: () => this.getProperty('appID'),
-      },
-      title: {
-        enumerable: true,
-        get: () => this.getProperty('title'),
-      },
-      totalBuilds: {
-        enumerable: true,
-        get: () => this.getProperty('totalBuilds'),
-      },
-      totalBuildSize: {
-        enumerable: true,
-        get: () => this.getProperty('totalBuildSize'),
-      },
-      monthlyBuilds: {
-        enumerable: true,
-        get: () => this.getProperty('monthlyBuilds'),
-      },
-      totalDeployments: {
-        enumerable: true,
-        get: () => this.getProperty('totalDeployments'),
-      },
-      monthlyDeployments: {
-        enumerable: true,
-        get: () => this.getProperty('monthlyDeployments'),
-      },
-      usedCodeSources: {
-        enumerable: true,
-        get: () => this.getProperty('usedCodeSources'),
-      },
-      usedDataSources: {
-        enumerable: true,
-        get: () => this.getProperty('usedDataSources'),
-      },
-      usedTargets: {
-        enumerable: true,
-        get: () => this.getProperty('usedTargets'),
-      },
-      usedPlatforms: {
-        enumerable: true,
-        get: () => this.getProperty('usedPlatforms'),
-      },
-    });
     this.countProperties();
+  }
+
+  get appID() {
+    return <string>this.getProperty('appID')
+  }
+
+  get title() {
+    return <string>this.getProperty('title')
+  }
+
+  get totalBuilds() {
+    return <number>this.getProperty('totalBuilds')
+  }
+
+  get totalBuildSize() {
+    return <number>this.getProperty('totalBuildSize')
+  }
+
+  get monthlyBuilds() {
+    return this.getProperty('monthlyBuilds')
+  }
+
+  get totalDeployments() {
+    return <number>this.getProperty('totalDeployments')
+  }
+
+  get monthlyDeployments() {
+    return this.getProperty('monthlyDeployments')
+  }
+
+  get usedCodeSources() {
+    return <Array<string>>this.getProperty('usedCodeSources')
+  }
+
+  get usedDataSources() {
+    return <Array<string>>this.getProperty('usedDataSources')
+  }
+
+  get usedTargets() {
+    return <Array<string>>this.getProperty('usedTargets')
+  }
+
+  get usedPlatforms() {
+    return <Array<string>>this.getProperty('usedPlatforms')
   }
 }

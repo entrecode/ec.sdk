@@ -9,8 +9,6 @@ import { environment } from '../../Core';
  * @prop {Array<string>} invites - Array of unused invites
  */
 export default class InvitesResource extends Resource {
-  invites: Array<string>;
-
   /**
    * Creates a new {@link InvitesResource}.
    *
@@ -22,13 +20,10 @@ export default class InvitesResource extends Resource {
    */
   constructor(resource: any, environment: environment, traversal?: any) {
     super(resource, environment, traversal);
-
-    Object.defineProperties(this, {
-      invites: {
-        enumerable: true,
-        get: () => this.getProperty('invites'),
-      },
-    });
     this.countProperties();
+  }
+
+  get invites() {
+    return <Array<string>>this.getProperty('invites');
   }
 }

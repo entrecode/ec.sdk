@@ -33,21 +33,18 @@ export default class LiteEntryResource extends Resource {
       };
     }
     super(liteResource, environment, traversal);
+  }
 
-    Object.defineProperties(this, {
-      _entryTitle: {
-        enumerable: false,
-        get: () => this.getProperty('_entryTitle'),
-      },
-      id: {
-        enumerable: true,
-        get: () => this.getProperty('_id'),
-      },
-      _id: {
-        enumerable: true,
-        get: () => this.getProperty('_id'),
-      }
-    });
+  get _entryTitle() {
+    return <string>this.getProperty('_entryTitle');
+  }
+
+  get id() {
+    return <string>this.getProperty('_id');
+  }
+
+  get _id() {
+    return <string>this.getProperty('id');
   }
 
   /**
