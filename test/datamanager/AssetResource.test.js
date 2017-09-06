@@ -193,6 +193,9 @@ describe('Asset Resource', () => {
   it('should be instance of TokenResource', () => {
     resource.should.be.instanceOf(AssetResource);
   });
+  it('should get original file', () => {
+    resource.getOriginalFile().should.have.property('url', 'https://cdn2.entrecode.de/files/01bd8e08/J2DJfjfEVby3KcxGNrJyFdEz.png');
+  });
   it('should get file url', () => {
     resource.getFileUrl().should.be.equal('https://cdn2.entrecode.de/files/01bd8e08/J2DJfjfEVby3KcxGNrJyFdEz.png');
   });

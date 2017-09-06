@@ -92,4 +92,35 @@ export default class AssetResource extends Resource {
   getImageUrl(size: number, locale: string): string {
     return fileNegotiate(this, true, false, size, locale);
   }
+
+  /**
+   * Returns the original file from files array. This is useful if you want to show the original
+   * image for an asset.
+   *
+   * @returns {any} The original file object
+   */
+  getOriginalFile(): any {
+    if (this.type !== 'image') {
+      return this.files[0];
+    }
+
+    const files = this.files.filter(f => !!f.resolution);
+    if (files.length === 0) {
+      return this.files[0];
+    }
+
+    files.sort((l, r) => { // sort by size descending
+      const leftMax = Math.max(l.resolution.height, l.resolution.width);
+      const rightMax = Math.max(r.resolution.height, r.resolution.width);
+      if (leftMax < rightMax) {
+        return 1;
+      } else if (leftMax > rightMax) {
+        return -1;
+      } else {
+        return 0;
+      }
+    });
+
+    return files[0];
+  }
 }
