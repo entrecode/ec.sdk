@@ -1,3 +1,11 @@
+<a name="0.8.5"></a>
+## 0.8.5 (2017-09-06)
+
+* release version 0.8.5 ([3b232f6](https://github.com/entrecode/ec.sdk/commit/3b232f6))
+* fix: unexported aliases ([0b91795](https://github.com/entrecode/ec.sdk/commit/0b91795))
+
+
+
 <a name="0.8.4"></a>
 ## 0.8.4 (2017-09-06)
 
