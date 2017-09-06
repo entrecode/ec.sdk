@@ -23,39 +23,39 @@ export default class DeploymentResource extends Resource {
     this.countProperties();
   }
 
-  get deploymentID() {
-    return <string>this.getProperty('deploymentID');
-  }
-
   get buildID() {
     return this.getProperty('buildID');
   }
 
-  get platformID() {
-    return <string>this.getProperty('platformID');
-  }
-
-  get targetIDs() {
-    return <Array<string>>this.getProperty('targetIDs');
-  }
-
-  get started() {
-    return new Date(this.getProperty('started'));
-  }
-
-  get finished() {
-    return new Date(this.getProperty('finished'));
-  }
-
-  get successful() {
-    return <boolean>this.getProperty('successful');
+  get deploymentID() {
+    return <string>this.getProperty('deploymentID');
   }
 
   get events() {
     return <Array<string>>this.getProperty('events');
   }
 
+  get finished() {
+    return new Date(this.getProperty('finished'));
+  }
+
+  get platformID() {
+    return <string>this.getProperty('platformID');
+  }
+
   get results() {
     return <Array<any>>this.getProperty('results');
+  }
+
+  get started() {
+    return new Date(this.getProperty('started'));
+  }
+
+  get successful() {
+    return <boolean>this.getProperty('successful');
+  }
+
+  get targetIDs() {
+    return <Array<string>>this.getProperty('targetIDs');
   }
 }

@@ -114,6 +114,9 @@ describe('Asset Resource', () => {
   it('should be instance of PublicAssetResource', () => {
     resource.should.be.instanceOf(PublicAssetResource);
   });
+  it('should get original file', () => {
+    resource.getOriginalFile().should.have.property('url', 'https://cdn2.entrecode.de/files/01bd8e08/wFG3Al80jXjH06NIw3UWM2x0.png');
+  });
   it('should get file url', () => {
     resource.getFileUrl().should.be.equal('https://cdn2.entrecode.de/files/01bd8e08/wFG3Al80jXjH06NIw3UWM2x0.png');
   });

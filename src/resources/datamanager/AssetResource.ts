@@ -33,12 +33,12 @@ export default class AssetResource extends Resource {
     return <string>this.getProperty('assetID');
   }
 
-  get title() {
-    return <string>this.getProperty('title');
+  get created() {
+    return new Date(this.getProperty('created'));
   }
 
-  set title(value: string) {
-    this.setProperty('title', value);
+  get files() {
+    return <Array<any>>this.getProperty('files');
   }
 
   get tags() {
@@ -49,16 +49,16 @@ export default class AssetResource extends Resource {
     this.setProperty('tags', value);
   }
 
-  get created() {
-    return new Date(this.getProperty('created'));
+  get title() {
+    return <string>this.getProperty('title');
+  }
+
+  set title(value: string) {
+    this.setProperty('title', value);
   }
 
   get type() {
     return <string>this.getProperty('type');
-  }
-
-  get files() {
-    return <Array<any>>this.getProperty('files');
   }
 
   /**
@@ -69,6 +69,17 @@ export default class AssetResource extends Resource {
    */
   getFileUrl(locale: string): string {
     return fileNegotiate(this, false, false, null, locale);
+  }
+
+  /**
+   * Best file helper for image thumbnails.
+   *
+   * @param {number?} size - the minimum size of the image
+   * @param {string?} locale - the locale
+   * @returns {string} URL to the file
+   */
+  getImageThumbUrl(size: number, locale: string): string {
+    return fileNegotiate(this, true, true, size, locale);
   }
 
   /**
@@ -83,13 +94,33 @@ export default class AssetResource extends Resource {
   }
 
   /**
-   * Best file helper for image thumbnails.
+   * Returns the original file from files array. This is useful if you want to show the original
+   * image for an asset.
    *
-   * @param {number?} size - the minimum size of the image
-   * @param {string?} locale - the locale
-   * @returns {string} URL to the file
+   * @returns {any} The original file object
    */
-  getImageThumbUrl(size: number, locale: string): string {
-    return fileNegotiate(this, true, true, size, locale);
+  getOriginalFile(): any {
+    if (this.type !== 'image') {
+      return this.files[0];
+    }
+
+    const files = this.files.filter(f => !!f.resolution);
+    if (files.length === 0) {
+      return this.files[0];
+    }
+
+    files.sort((l, r) => { // sort by size descending
+      const leftMax = Math.max(l.resolution.height, l.resolution.width);
+      const rightMax = Math.max(r.resolution.height, r.resolution.width);
+      if (leftMax < rightMax) {
+        return 1;
+      } else if (leftMax > rightMax) {
+        return -1;
+      } else {
+        return 0;
+      }
+    });
+
+    return files[0];
   }
 }

@@ -86,6 +86,8 @@ function map(list: ListResource, iterator: (resource: Resource) => Promise<any> 
  * @prop {number} size - the number of total items in this list
  */
 export default class ListResource extends Resource {
+  private index: number = 0;
+
   /**
    * Creates a new {@link ListResource}.
    *
@@ -117,20 +119,35 @@ export default class ListResource extends Resource {
     return this.getProperty('total');
   }
 
-  private index: number = 0;
+  /**
+   * Loads the first {@link https://tools.ietf.org/html/draft-kelly-json-hal-08#section-5 link} and
+   * returns a {@link ListResource} with the loaded result.
+   *
+   * @returns {Promise<ListResource|ResourceClass>} the resource identified by the link.
+   */
+  followFirstLink(): Promise<ListResource> {
+    return <Promise<ListResource>>this.followLink('first', this[listClassSymbol], this[nameSymbol], this[itemSchemaSymbol]);
+  }
 
-  [Symbol.iterator]() {
-    return {
-      next: () => {
-        if (this.index < this.count) {
-          return { value: this.getItem(this.index++), done: false };
-        } else {
-          this.index = 0;
-          return { done: true };
-        }
-      }
-    }
-  };
+  /**
+   * Loads the next {@link https://tools.ietf.org/html/draft-kelly-json-hal-08#section-5 link} and
+   * returns a {@link ListResource} with the loaded result.
+   *
+   * @returns {Promise<ListResource|ResourceClass>} the resource identified by the link.
+   */
+  followNextLink(): Promise<ListResource> {
+    return <Promise<ListResource>>this.followLink('next', this[listClassSymbol], this[nameSymbol], this[itemSchemaSymbol]);
+  }
+
+  /**
+   * Loads the prev {@link https://tools.ietf.org/html/draft-kelly-json-hal-08#section-5 link} and
+   * returns a {@link ListResource} with the loaded result.
+   *
+   * @returns {Promise<ListResource|ResourceClass>} the resource identified by the link.
+   */
+  followPrevLink(): Promise<ListResource> {
+    return <Promise<ListResource>>this.followLink('prev', this[listClassSymbol], this[nameSymbol], this[itemSchemaSymbol]);
+  }
 
   /**
    * Get all list items {@link https://tools.ietf.org/html/draft-kelly-json-hal-08#section-4.1.2
@@ -146,6 +163,16 @@ export default class ListResource extends Resource {
       }
       return new this[itemClassSymbol](resource, this[environmentSymbol]);
     });
+  }
+
+  /**
+   * Get the first {@link https://tools.ietf.org/html/draft-kelly-json-hal-08#section-4.1.2
+   * embedded} item from the list
+   *
+   * @returns {Resource|ResourceClass} the first item.
+   */
+  getFirstItem(): Resource {
+    return this.getItem(0);
   }
 
   /**
@@ -174,16 +201,6 @@ export default class ListResource extends Resource {
   }
 
   /**
-   * Get the first {@link https://tools.ietf.org/html/draft-kelly-json-hal-08#section-4.1.2
-   * embedded} item from the list
-   *
-   * @returns {Resource|ResourceClass} the first item.
-   */
-  getFirstItem(): Resource {
-    return this.getItem(0);
-  }
-
-  /**
    * Checks if this {@link Resource} has at least one {@link
     * https://tools.ietf.org/html/draft-kelly-json-hal-08#section-5
      * link}  with the name 'first'.
@@ -192,16 +209,6 @@ export default class ListResource extends Resource {
    */
   hasFirstLink(): boolean {
     return this.hasLink('first');
-  }
-
-  /**
-   * Loads the first {@link https://tools.ietf.org/html/draft-kelly-json-hal-08#section-5 link} and
-   * returns a {@link ListResource} with the loaded result.
-   *
-   * @returns {Promise<ListResource|ResourceClass>} the resource identified by the link.
-   */
-  followFirstLink(): Promise<ListResource> {
-    return <Promise<ListResource>>this.followLink('first', this[listClassSymbol], this[nameSymbol], this[itemSchemaSymbol]);
   }
 
   /**
@@ -216,16 +223,6 @@ export default class ListResource extends Resource {
   }
 
   /**
-   * Loads the next {@link https://tools.ietf.org/html/draft-kelly-json-hal-08#section-5 link} and
-   * returns a {@link ListResource} with the loaded result.
-   *
-   * @returns {Promise<ListResource|ResourceClass>} the resource identified by the link.
-   */
-  followNextLink(): Promise<ListResource> {
-    return <Promise<ListResource>>this.followLink('next', this[listClassSymbol], this[nameSymbol], this[itemSchemaSymbol]);
-  }
-
-  /**
    * Checks if this {@link Resource} has at least one {@link
     * https://tools.ietf.org/html/draft-kelly-json-hal-08#section-5
      * link}  with the name 'prev'.
@@ -234,16 +231,6 @@ export default class ListResource extends Resource {
    */
   hasPrevLink(): boolean {
     return this.hasLink('prev');
-  }
-
-  /**
-   * Loads the prev {@link https://tools.ietf.org/html/draft-kelly-json-hal-08#section-5 link} and
-   * returns a {@link ListResource} with the loaded result.
-   *
-   * @returns {Promise<ListResource|ResourceClass>} the resource identified by the link.
-   */
-  followPrevLink(): Promise<ListResource> {
-    return <Promise<ListResource>>this.followLink('prev', this[listClassSymbol], this[nameSymbol], this[itemSchemaSymbol]);
   }
 
   /**
@@ -256,6 +243,19 @@ export default class ListResource extends Resource {
   map(iterator: (resource: Resource) => Promise<any> | any): Promise<Array<Resource>> {
     return map(this, iterator);
   }
+
+  [Symbol.iterator]() {
+    return {
+      next: () => {
+        if (this.index < this.count) {
+          return { value: this.getItem(this.index++), done: false };
+        } else {
+          this.index = 0;
+          return { done: true };
+        }
+      }
+    }
+  };
 }
 
 /**

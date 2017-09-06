@@ -19,11 +19,11 @@ validator.setLoggingFunction(() => {
  *
  * @class
  *
- * @prop {string} roleID - The id of the template
+ * @prop {string} templateID - The id of the template
  * @prop {string} name - The name of the template
  * @prop {object} collection - Postman collection
  * @prop {object} dataSchema - JSON schema for collection data
- * @prop {string} version - version of the tempalte
+ * @prop {string} version - version of the template
  */
 export default class TemplateResource extends Resource {
   /**
@@ -42,14 +42,6 @@ export default class TemplateResource extends Resource {
     this.countProperties();
   }
 
-  get templateID() {
-    return <string>this.getProperty('templateID');
-  }
-
-  get name() {
-    return <string>this.getProperty('name');
-  }
-
   get collection() {
     return <string>this.getProperty('collection');
   }
@@ -58,23 +50,16 @@ export default class TemplateResource extends Resource {
     return <any>this.getProperty('dataSchema');
   }
 
-  get version() {
-    return <string>this.getProperty('version');
+  get name() {
+    return <string>this.getProperty('name');
   }
 
-  resolve(): Promise<TemplateResource> {
-    return Promise.resolve()
-    .then(() => {
-      const request = this.newRequest()
-      .follow('self');
-      return get(this[environmentSymbol], request);
-    })
-    .then(([res, traversal]) => {
-      this[resolvedSymbol] = true;
-      this[traversalSymbol] = traversal;
-      this[resourceSymbol] = halfred.parse(res);
-      return this;
-    });
+  get templateID() {
+    return <string>this.getProperty('templateID');
+  }
+
+  get version() {
+    return <string>this.getProperty('version');
   }
 
   /**
@@ -99,6 +84,21 @@ export default class TemplateResource extends Resource {
       return post(this[environmentSymbol], request, body || {});
     })
     .then(([res, traversal]) => new DataManagerResource(res, this[environmentSymbol], traversal));
+  }
+
+  resolve(): Promise<TemplateResource> {
+    return Promise.resolve()
+    .then(() => {
+      const request = this.newRequest()
+      .follow('self');
+      return get(this[environmentSymbol], request);
+    })
+    .then(([res, traversal]) => {
+      this[resolvedSymbol] = true;
+      this[traversalSymbol] = traversal;
+      this[resourceSymbol] = halfred.parse(res);
+      return this;
+    });
   }
 
   /**

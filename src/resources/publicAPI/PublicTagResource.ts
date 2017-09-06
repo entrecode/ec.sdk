@@ -24,11 +24,11 @@ export default class PublicTagResource extends Resource {
     this.countProperties();
   }
 
-  get tag() {
-    return <string>this.getProperty('tag');
-  }
-
   get count() {
     return <number>this.getProperty('count');
+  }
+
+  get tag() {
+    return <string>this.getProperty('tag');
   }
 }

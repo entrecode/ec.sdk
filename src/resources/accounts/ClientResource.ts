@@ -39,16 +39,16 @@ export default class ClientResource extends Resource {
     this.countProperties();
   }
 
-  get clientID() {
-    return <string>this.getProperty('clientID');
-  }
-
   get callbackURL() {
     return <string>this.getProperty('callbackURL');
   }
 
   set callbackURL(value: string) {
     this.setProperty('callbackURL', value);
+  }
+
+  get clientID() {
+    return <string>this.getProperty('clientID');
   }
 
   get config() {

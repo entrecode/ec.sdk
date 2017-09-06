@@ -39,20 +39,20 @@ export default class PublicAssetResource extends Resource {
     this.countProperties();
   }
 
-  get isResolved() {
-    return <boolean>this[resolvedSymbol];
-  }
-
   get assetID() {
     return <string>this.getProperty('assetID');
   }
 
-  get title() {
-    return <string>this.getProperty('title')
+  get created() {
+    return new Date(this.getProperty('created'));
   }
 
-  set title(value) {
-    this.setProperty('title', value);
+  get files() {
+    return <Array<any>>this.getProperty('files');
+  }
+
+  get isResolved() {
+    return <boolean>this[resolvedSymbol];
   }
 
   get tags() {
@@ -63,16 +63,89 @@ export default class PublicAssetResource extends Resource {
     this.setProperty('tags', value);
   }
 
-  get created() {
-    return new Date(this.getProperty('created'));
+  get title() {
+    return <string>this.getProperty('title')
+  }
+
+  set title(value) {
+    this.setProperty('title', value);
   }
 
   get type() {
     return <string>this.getProperty('type');
   }
 
-  get files() {
-    return <Array<any>>this.getProperty('files');
+  /**
+   * Best file helper for files.
+   *
+   * @param {string?} locale - the locale
+   * @returns {string} URL to the file
+   */
+  getFileUrl(locale: string): string {
+    return fileNegotiate(this, false, false, null, locale);
+  }
+
+  /**
+   * Best file helper for image thumbnails.
+   *
+   * @param {number?} size - the minimum size of the image
+   * @param {string?} locale - the locale
+   * @returns {string} URL to the file
+   */
+  getImageThumbUrl(size: number, locale: string) {
+    return fileNegotiate(this, true, true, size, locale);
+  }
+
+  /**
+   * Best file helper for images.
+   *
+   * @param {number?} size - the minimum size of the image
+   * @param {string?} locale - the locale
+   * @returns {string} URL to the file
+   */
+  getImageUrl(size: number, locale: string): string {
+    return fileNegotiate(this, true, false, size, locale);
+  }
+
+  /**
+   * Returns the original file from files array. This is useful if you want to show the original
+   * image for an asset.
+   *
+   * @returns {any} The original file object
+   */
+  getOriginalFile(): any {
+    if (this.type !== 'image') {
+      return this.files[0];
+    }
+
+    const files = this.files.filter(f => !!f.resolution);
+    if (files.length === 0) {
+      return this.files[0];
+    }
+
+    files.sort((l, r) => { // sort by size descending
+      const leftMax = Math.max(l.resolution.height, l.resolution.width);
+      const rightMax = Math.max(r.resolution.height, r.resolution.width);
+      if (leftMax < rightMax) {
+        return 1;
+      } else if (leftMax > rightMax) {
+        return -1;
+      } else {
+        return 0;
+      }
+    });
+
+    return files[0];
+  }
+
+  /**
+   * In order to resolve this {@link PublicAssetResource} call this
+   * function. A promise is returned which resolves to the {@link PublicAssetResource}.
+   *
+   * @returns {Promise<PublicAssetResource>} Promise resolving to {@link PublicAssetResource}.
+   */
+  resolve(): Promise<PublicAssetResource> {
+    return <Promise<PublicAssetResource>>super.resolve()
   }
 
   /**
@@ -88,47 +161,5 @@ export default class PublicAssetResource extends Resource {
       throw new Error('Cannot save not resolved PublicAssetResource');
     }
     return <Promise<PublicAssetResource>>super.save(overwriteSchemaUrl);
-  }
-
-  /**
-   * In order to resolve this {@link PublicAssetResource} call this
-   * function. A promise is returned which resolves to the {@link PublicAssetResource}.
-   *
-   * @returns {Promise<PublicAssetResource>} Promise resolving to {@link PublicAssetResource}.
-   */
-  resolve(): Promise<PublicAssetResource> {
-    return <Promise<PublicAssetResource>>super.resolve()
-  }
-
-  /**
-   * Best file helper for files.
-   *
-   * @param {string?} locale - the locale
-   * @returns {string} URL to the file
-   */
-  getFileUrl(locale: string): string {
-    return fileNegotiate(this, false, false, null, locale);
-  }
-
-  /**
-   * Best file helper for images.
-   *
-   * @param {number?} size - the minimum size of the image
-   * @param {string?} locale - the locale
-   * @returns {string} URL to the file
-   */
-  getImageUrl(size: number, locale: string): string {
-    return fileNegotiate(this, true, false, size, locale);
-  }
-
-  /**
-   * Best file helper for image thumbnails.
-   *
-   * @param {number?} size - the minimum size of the image
-   * @param {string?} locale - the locale
-   * @returns {string} URL to the file
-   */
-  getImageThumbUrl(size: number, locale: string) {
-    return fileNegotiate(this, true, true, size, locale);
   }
 }

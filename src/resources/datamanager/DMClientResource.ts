@@ -28,10 +28,6 @@ export default class DMClientResource extends Resource {
     this.countProperties();
   }
 
-  get clientID() {
-    return <string>this.getProperty('clientID')
-  };
-
   get callbackURL() {
     return <string>this.getProperty('callbackURL')
   };
@@ -39,6 +35,10 @@ export default class DMClientResource extends Resource {
   set callbackURL(value: string) {
     this.setProperty('callbackURL', value);
   }
+
+  get clientID() {
+    return <string>this.getProperty('clientID')
+  };
 
   get disableStrategies() {
     return <Array<string>>this.getProperty('disableStrategies')

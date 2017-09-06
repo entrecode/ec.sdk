@@ -40,6 +40,16 @@ export default class DMStatsList extends Resource {
   }
 
   /**
+   * Get the first {@link https://tools.ietf.org/html/draft-kelly-json-hal-08#section-4.1.2
+   * embedded} item from the list
+   *
+   * @returns {Resource|ResourceClass} the first item.
+   */
+  getFirstItem(): DMStatsResource {
+    return this.getItem(0);
+  }
+
+  /**
    * Get the n'th {@link https://tools.ietf.org/html/draft-kelly-json-hal-08#section-4.1.2
    * embedded} item from the list
    *
@@ -55,15 +65,5 @@ export default class DMStatsList extends Resource {
       throw new Error('Cannot get n\'th item of empty list.');
     }
     return new this[itemClassSymbol](array[n], this[environmentSymbol]);
-  }
-
-  /**
-   * Get the first {@link https://tools.ietf.org/html/draft-kelly-json-hal-08#section-4.1.2
-   * embedded} item from the list
-   *
-   * @returns {Resource|ResourceClass} the first item.
-   */
-  getFirstItem(): DMStatsResource {
-    return this.getItem(0);
   }
 }

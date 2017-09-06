@@ -29,19 +29,19 @@ export default class CodeSourceResource extends Resource {
     return <string>this.getProperty('codeSourceID');
   }
 
-  get config() {
-    return this.getProperty('config');
-  }
-
-  set config(value: any) {
-    this.setProperty('config', value);
-  }
-
   get codeSourceType() {
     return this.getProperty('codeSourceType');
   }
 
   set codeSourceType(value: string) {
     this.setProperty('codeSourceType', value);
+  }
+
+  get config() {
+    return this.getProperty('config');
+  }
+
+  set config(value: any) {
+    this.setProperty('config', value);
   }
 }

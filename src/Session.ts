@@ -19,38 +19,50 @@ const urls = {
  * This API connector can be used for login or logout into ec.apis. Login state will be avaliable
  * to all other API connectors of the same {@link environment}.
  *
+ * @class
+ *
  * @example
+ * const session = new Session();
  * return session.login(email, password)
  * .then(() => {
  *   const accounts = new Accounts();
  *   return accounts.me();
  * });
  *
- * @class
+ *
+ * @param {environment?} environment the environment to connect to
  */
 export default class Session extends Core {
-  /**
-   * Creates a new instance of {@link Session} API connector.
-   *
-   * @param {environment?} environment the environment to connect to.
-   */
   constructor(environment?: environment) {
     super(urls, environment);
   }
 
   /**
-   * Set the clientID to use with the Accounts API. Currently only `rest` is supported.
+   * Checks if the currently logged in user has a given permission.
    *
-   * @param {string} clientID the clientID.
-   * @returns {Session} this object for chainability
+   * @param {string} permission the permission to check
+   * @returns {Promise<boolean>} true if user has permission, false otherwise
    */
-  setClientID(clientID: string): Session {
-    if (!clientID) {
-      throw new Error('ClientID must be defined');
-    }
+  checkPermission(permission: string): Promise<boolean> {
+    return Promise.resolve()
+    .then(() => {
+      if (!permission) {
+        throw new Error('permission must be defined');
+      }
 
-    this[tokenStoreSymbol].setClientID(clientID);
-    return this;
+      if (this[meSymbol] && new Date().getTime() - this[meLoadedTimeSymbol] <= 300000) { // 5 Minutes
+        return undefined;
+      }
+
+      return this.follow('ec:account')
+      .then(request => get(this[environmentSymbol], request))
+      .then(([res, traversal]) => {
+        this[meSymbol] = new AccountResource(res, this[environmentSymbol], traversal)
+        this[meLoadedTimeSymbol] = new Date();
+        return undefined;
+      });
+    })
+    .then(() => this[meSymbol].checkPermission(permission));
   }
 
   /**
@@ -92,7 +104,7 @@ export default class Session extends Core {
    * Logout with existing token. Will invalidate the token with the Account API and remove any
    * cookie stored.
    *
-   * @returns {Promise<void>} Promise resolving undefined on success.
+   * @returns {Promise<undefined>} Promise resolving undefined on success.
    */
   logout(): Promise<void> {
     return Promise.resolve()
@@ -122,30 +134,17 @@ export default class Session extends Core {
   }
 
   /**
-   * Checks a permission for the currently logged in user
+   * Set the clientID to use with the Accounts API. Currently only `rest` is supported.
    *
-   * @param {string} permission the permission to check.
-   * @returns {Promise<boolean>} true if user has permission, false otherwise.
+   * @param {string} clientID the clientID.
+   * @returns {Session} this object for chainability
    */
-  checkPermission(permission: string): Promise<boolean> {
-    return Promise.resolve()
-    .then(() => {
-      if (!permission) {
-        throw new Error('permission must be defined');
-      }
+  setClientID(clientID: string): Session {
+    if (!clientID) {
+      throw new Error('ClientID must be defined');
+    }
 
-      if (this[meSymbol] && new Date().getTime() - this[meLoadedTimeSymbol] <= 300000) { // 5 Minutes
-        return undefined;
-      }
-
-      return this.follow('ec:account')
-      .then(request => get(this[environmentSymbol], request))
-      .then(([res, traversal]) => {
-        this[meSymbol] = new AccountResource(res, this[environmentSymbol], traversal)
-        this[meLoadedTimeSymbol] = new Date();
-        return undefined;
-      });
-    })
-    .then(() => this[meSymbol].checkPermission(permission));
+    this[tokenStoreSymbol].setClientID(clientID);
+    return this;
   }
 }

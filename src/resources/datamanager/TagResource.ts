@@ -24,15 +24,15 @@ export default class TagResource extends Resource {
     this.countProperties();
   }
 
+  get count() {
+    return <number>this.getProperty('count');
+  }
+
   get tag() {
     return <string>this.getProperty('tag');
   }
 
   set tag(val: string) {
     this.setProperty('tag', val);
-  }
-
-  get count() {
-    return <number>this.getProperty('count');
   }
 }

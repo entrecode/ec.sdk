@@ -37,28 +37,28 @@ export default class AppStatsResource extends Resource {
     return <string>this.getProperty('appID')
   }
 
-  get title() {
-    return <string>this.getProperty('title')
+  get monthlyBuilds() {
+    return this.getProperty('monthlyBuilds')
   }
 
-  get totalBuilds() {
-    return <number>this.getProperty('totalBuilds')
+  get monthlyDeployments() {
+    return this.getProperty('monthlyDeployments')
+  }
+
+  get title() {
+    return <string>this.getProperty('title')
   }
 
   get totalBuildSize() {
     return <number>this.getProperty('totalBuildSize')
   }
 
-  get monthlyBuilds() {
-    return this.getProperty('monthlyBuilds')
+  get totalBuilds() {
+    return <number>this.getProperty('totalBuilds')
   }
 
   get totalDeployments() {
     return <number>this.getProperty('totalDeployments')
-  }
-
-  get monthlyDeployments() {
-    return this.getProperty('monthlyDeployments')
   }
 
   get usedCodeSources() {
@@ -69,11 +69,11 @@ export default class AppStatsResource extends Resource {
     return <Array<string>>this.getProperty('usedDataSources')
   }
 
-  get usedTargets() {
-    return <Array<string>>this.getProperty('usedTargets')
-  }
-
   get usedPlatforms() {
     return <Array<string>>this.getProperty('usedPlatforms')
+  }
+
+  get usedTargets() {
+    return <Array<string>>this.getProperty('usedTargets')
   }
 }
