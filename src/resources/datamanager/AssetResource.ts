@@ -15,13 +15,6 @@ import { environment } from '../../Core';
  * @prop {array<object>} files   - all files associated with this asset
  */
 export default class AssetResource extends Resource {
-  assetID: string;
-  title: string;
-  tags: Array<string>;
-  created: Date;
-  type: string;
-  files: Array<any>;
-
   /**
    * Creates a new {@link AssetResource}.
    *
@@ -33,43 +26,39 @@ export default class AssetResource extends Resource {
    */
   constructor(resource: any, environment: environment, traversal?: any) {
     super(resource, environment, traversal);
-
-    Object.defineProperties(this, {
-      assetID: {
-        enumerable: true,
-        get: () => this.getProperty('assetID'),
-      },
-
-      title: {
-        enumerable: true,
-        get: () => this.getProperty('title'),
-        set: (value) => {
-          this.setProperty('title', value);
-          return value;
-        },
-      },
-      tags: {
-        enumerable: true,
-        get: () => this.getProperty('tags'),
-        set: (value) => {
-          this.setProperty('tags', value);
-          return value;
-        },
-      },
-      created: {
-        enumerable: true,
-        get: () => new Date(this.getProperty('created')),
-      },
-      type: {
-        enumerable: true,
-        get: () => this.getProperty('type'),
-      },
-      files: {
-        enumerable: true,
-        get: () => this.getProperty('files'),
-      },
-    });
     this.countProperties();
+  }
+
+  get assetID() {
+    return <string>this.getProperty('assetID');
+  }
+
+  get created() {
+    return new Date(this.getProperty('created'));
+  }
+
+  get files() {
+    return <Array<any>>this.getProperty('files');
+  }
+
+  get tags() {
+    return <Array<string>>this.getProperty('tags');
+  }
+
+  set tags(value: Array<string>) {
+    this.setProperty('tags', value);
+  }
+
+  get title() {
+    return <string>this.getProperty('title');
+  }
+
+  set title(value: string) {
+    this.setProperty('title', value);
+  }
+
+  get type() {
+    return <string>this.getProperty('type');
   }
 
   /**
@@ -80,6 +69,17 @@ export default class AssetResource extends Resource {
    */
   getFileUrl(locale: string): string {
     return fileNegotiate(this, false, false, null, locale);
+  }
+
+  /**
+   * Best file helper for image thumbnails.
+   *
+   * @param {number?} size - the minimum size of the image
+   * @param {string?} locale - the locale
+   * @returns {string} URL to the file
+   */
+  getImageThumbUrl(size: number, locale: string): string {
+    return fileNegotiate(this, true, true, size, locale);
   }
 
   /**
@@ -94,13 +94,33 @@ export default class AssetResource extends Resource {
   }
 
   /**
-   * Best file helper for image thumbnails.
+   * Returns the original file from files array. This is useful if you want to show the original
+   * image for an asset.
    *
-   * @param {number?} size - the minimum size of the image
-   * @param {string?} locale - the locale
-   * @returns {string} URL to the file
+   * @returns {any} The original file object
    */
-  getImageThumbUrl(size: number, locale: string): string {
-    return fileNegotiate(this, true, true, size, locale);
+  getOriginalFile(): any {
+    if (this.type !== 'image') {
+      return this.files[0];
+    }
+
+    const files = this.files.filter(f => !!f.resolution);
+    if (files.length === 0) {
+      return this.files[0];
+    }
+
+    files.sort((l, r) => { // sort by size descending
+      const leftMax = Math.max(l.resolution.height, l.resolution.width);
+      const rightMax = Math.max(r.resolution.height, r.resolution.width);
+      if (leftMax < rightMax) {
+        return 1;
+      } else if (leftMax > rightMax) {
+        return -1;
+      } else {
+        return 0;
+      }
+    });
+
+    return files[0];
   }
 }

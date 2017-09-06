@@ -1,3 +1,39 @@
+<a name="0.8.4"></a>
+## 0.8.4 (2017-09-06)
+
+* release version 0.8.4 ([09aecc4](https://github.com/entrecode/ec.sdk/commit/09aecc4))
+* doc: fixed wrong example in doc CMS-2921 ([cba26f4](https://github.com/entrecode/ec.sdk/commit/cba26f4))
+* doc: rearranged methods for proper sorting in doc ([5f8234c](https://github.com/entrecode/ec.sdk/commit/5f8234c))
+* doc: reworked doc introduction and API connectors CMS-2923 ([9493512](https://github.com/entrecode/ec.sdk/commit/9493512))
+* feat: getOriginal() for [Public]AssetResources ([3aeb51b](https://github.com/entrecode/ec.sdk/commit/3aeb51b))
+
+
+
+<a name="0.8.3"></a>
+## 0.8.3 (2017-09-04)
+
+* release version 0.8.3 ([4258ea0](https://github.com/entrecode/ec.sdk/commit/4258ea0))
+* chore: release script back to working version ([675d1a8](https://github.com/entrecode/ec.sdk/commit/675d1a8))
+* feat: DataManagerResource#getPublicAPI() for creating a PublicAPI from Data Manager CMS-2933 ([62df352](https://github.com/entrecode/ec.sdk/commit/62df352))
+
+
+
+<a name="0.8.2"></a>
+## 0.8.2 (2017-09-04)
+
+* chore: dot reporter for tests ([66b552c](https://github.com/entrecode/ec.sdk/commit/66b552c))
+* chore: package patches, new package-lock ([b9b58b1](https://github.com/entrecode/ec.sdk/commit/b9b58b1))
+* chore(package): update documentation to version 5.3.0 ([ce7d408](https://github.com/entrecode/ec.sdk/commit/ce7d408))
+* fix: changelog mix up ([1894f89](https://github.com/entrecode/ec.sdk/commit/1894f89))
+* fix: main file fix, browser build fix ([c31adf6](https://github.com/entrecode/ec.sdk/commit/c31adf6))
+* fix: manually create index.js to match index.js in root dir ([1a49999](https://github.com/entrecode/ec.sdk/commit/1a49999))
+* fix: typings fix for event listeners ([d1e6744](https://github.com/entrecode/ec.sdk/commit/d1e6744))
+* refactor: getter setter instead of Object.defineProperty for API Connectors an PublicAPI CMS-2932 ([74b6df2](https://github.com/entrecode/ec.sdk/commit/74b6df2))
+* refactor: moved index into root directory ([5df4f1e](https://github.com/entrecode/ec.sdk/commit/5df4f1e))
+* refactor: switch to proper getter/setter CMS-2932 ([ca04bc0](https://github.com/entrecode/ec.sdk/commit/ca04bc0))
+
+
+
 <a name="0.8.1"></a>
 ## 0.8.1 (2017-09-01)
 

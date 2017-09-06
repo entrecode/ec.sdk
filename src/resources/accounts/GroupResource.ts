@@ -11,10 +11,6 @@ import { environment } from '../../Core';
  * @prop {Array<string>}  permissions - Array of permissions
  */
 export default class GroupResource extends Resource {
-  groupID: string;
-  name: string;
-  permissions: Array<any>;
-
   /**
    * Creates a new {@link GroupResource}.
    *
@@ -26,30 +22,27 @@ export default class GroupResource extends Resource {
    */
   constructor(resource: any, environment: environment, traversal?: any) {
     super(resource, environment, traversal);
-
-    Object.defineProperties(this, {
-      groupID: {
-        enumerable: true,
-        get: () => this.getProperty('groupID'),
-      },
-      name: {
-        enumerable: true,
-        get: () => this.getProperty('name'),
-        set: (value) => {
-          this.setProperty('name', value);
-          return value;
-        },
-      },
-      permissions: {
-        enumerable: true,
-        get: () => this.getProperty('permissions'),
-        set: (value) => {
-          this.setProperty('permissions', value);
-          return value;
-        },
-      },
-    });
     this.countProperties();
+  }
+
+  get groupID() {
+    return <string>this.getProperty('groupID');
+  }
+
+  get name() {
+    return this.getProperty('name');
+  }
+
+  set name(value: string) {
+    this.setProperty('name', value);
+  }
+
+  get permissions() {
+    return <Array<string>>this.getProperty('permissions');
+  }
+
+  set permissions(value: Array<string>) {
+    this.setProperty('permissions', value);
   }
 
   /**

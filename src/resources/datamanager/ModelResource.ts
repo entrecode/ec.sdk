@@ -20,20 +20,6 @@ import { environment } from '../../Core';
  * @prop {string}         titleField    - the field to used as a title for Entries
  */
 export default class ModelResource extends Resource {
-  // TODO advanced type declarations
-  modelID: string;
-  created: Date;
-  description: string;
-  fields: Array<any>;
-  hasEntries: boolean;
-  hexColor: string;
-  hooks: Array<any>;
-  locales: Array<string>;
-  modified: Date;
-  policies: Array<any>;
-  title: string;
-  titleField: string;
-
   /**
    * Creates a new {@link ModelResource}.
    *
@@ -45,91 +31,87 @@ export default class ModelResource extends Resource {
    */
   constructor(resource: any, environment: environment, traversal?: any) {
     super(resource, environment, traversal);
-
-    Object.defineProperties(this, {
-      modelID: {
-        enumerable: true,
-        get: () => this.getProperty('modelID'),
-      },
-
-      created: {
-        enumerable: true,
-        get: () => new Date(this.getProperty('created')),
-      },
-      description: {
-        enumerable: true,
-        get: () => this.getProperty('description'),
-        set: (value) => {
-          this.setProperty('description', value);
-          return value;
-        },
-      },
-      fields: {
-        enumerable: true,
-        get: () => this.getProperty('fields'),
-        set: (value) => {
-          this.setProperty('fields', value);
-          return value;
-        },
-      },
-      hasEntries: {
-        enumerable: true,
-        get: () => this.getProperty('hasEntries'),
-      },
-      hexColor: {
-        enumerable: true,
-        get: () => this.getProperty('hexColor'),
-        set: (value) => {
-          this.setProperty('hexColor', value);
-          return value;
-        },
-      },
-      hooks: {
-        enumerable: true,
-        get: () => this.getProperty('hooks'),
-        set: (value) => {
-          this.setProperty('hooks', value);
-          return value;
-        },
-      },
-      locales: {
-        enumerable: true,
-        get: () => this.getProperty('locales'),
-        set: (value) => {
-          this.setProperty('locales', value);
-          return value;
-        },
-      },
-      modified: {
-        enumerable: true,
-        get: () => new Date(this.getProperty('modified')),
-      },
-      policies: {
-        enumerable: true,
-        get: () => this.getProperty('policies'),
-        set: (value) => {
-          this.setProperty('policies', value);
-          return value;
-        },
-      },
-      title: {
-        enumerable: true,
-        get: () => this.getProperty('title'),
-        set: (value) => {
-          this.setProperty('title', value);
-          return value;
-        },
-      },
-      titleField: {
-        enumerable: true,
-        get: () => this.getProperty('titleField'),
-        set: (value) => {
-          this.setProperty('titleField', value);
-          return value;
-        },
-      },
-    });
     this.countProperties();
+  }
+
+  get created() {
+    return new Date(this.getProperty('created'))
+  }
+
+  get description() {
+    return <string>this.getProperty('description')
+  }
+
+  set description(value: string) {
+    this.setProperty('description', value);
+  }
+
+  get fields() {
+    return <Array<any>>this.getProperty('fields');
+  }
+
+  set fields(value: Array<string>) {
+    this.setProperty('fields', value);
+  }
+
+  get hasEntries() {
+    return <boolean>this.getProperty('hasEntries');
+  }
+
+  get hexColor() {
+    return <string>this.getProperty('hexColor');
+  }
+
+  set hexColor(value: string) {
+    this.setProperty('hexColor', value);
+  }
+
+  get hooks() {
+    return <Array<any>>this.getProperty('hooks');
+  }
+
+  set hooks(value: Array<any>) {
+    this.setProperty('hooks', value);
+  }
+
+  get locales() {
+    return <Array<string>>this.getProperty('locales');
+  }
+
+  set locales(value: Array<string>) {
+    this.setProperty('locales', value);
+  }
+
+  get modelID() {
+    return <string>this.getProperty('modelID');
+  }
+
+  get modified() {
+    return new Date(this.getProperty('modified'));
+  }
+
+  get policies() {
+    return this.getProperty('policies');
+  }
+
+  set policies(value) {
+    this.setProperty('policies', value);
+  }
+
+  get title() {
+    return <string>this.getProperty('title');
+  }
+
+  set title(value: string) {
+    this.setProperty('title', value);
+  }
+
+  get titleField() {
+    return <string>this.getProperty('titleField');
+  }
+
+  set titleField(value: string) {
+    this.setProperty('titleField', value);
   }
 }
 

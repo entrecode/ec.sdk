@@ -17,13 +17,6 @@ const environmentSymbol = Symbol.for('environment');
  * @prop {array<object>} files   - all files associated with this asset
  */
 export default class DeletedAssetResource extends Resource {
-  assetID: string;
-  title: string;
-  tags: Array<string>;
-  created: Date;
-  type: string;
-  files: Array<any>;
-
   /**
    * Creates a new {@link DeletedAssetResource}.
    *
@@ -35,35 +28,63 @@ export default class DeletedAssetResource extends Resource {
    */
   constructor(resource: any, environment: environment, traversal?: any) {
     super(resource, environment, traversal);
-
-    Object.defineProperties(this, {
-      assetID: {
-        enumerable: true,
-        get: () => this.getProperty('assetID'),
-      },
-
-      title: {
-        enumerable: true,
-        get: () => this.getProperty('title'),
-      },
-      tags: {
-        enumerable: true,
-        get: () => this.getProperty('tags'),
-      },
-      created: {
-        enumerable: true,
-        get: () => new Date(this.getProperty('created')),
-      },
-      type: {
-        enumerable: true,
-        get: () => this.getProperty('type'),
-      },
-      files: {
-        enumerable: true,
-        get: () => this.getProperty('files'),
-      },
-    });
     this.countProperties();
+  }
+
+  get assetID() {
+    return <string>this.getProperty('assetID');
+  }
+
+  get created() {
+    return new Date(this.getProperty('created'));
+  }
+
+  get files() {
+    return <Array<any>>this.getProperty('files');
+  }
+
+  get tags() {
+    return <Array<string>>this.getProperty('tags');
+  }
+
+  get title() {
+    return <string>this.getProperty('title');
+  }
+
+  get type() {
+    return <string>this.getProperty('type');
+  }
+
+  /**
+   * Best file helper for files.
+   *
+   * @param {string?} locale - the locale
+   * @returns {string} URL to the file
+   */
+  getFileUrl(locale: string): string {
+    return fileNegotiate(this, false, false, null, locale);
+  }
+
+  /**
+   * Best file helper for image thumbnails.
+   *
+   * @param {number?} size - the minimum size of the image
+   * @param {string?} locale - the locale
+   * @returns {string} URL to the file
+   */
+  getImageThumbUrl(size: number, locale: string): string {
+    return fileNegotiate(this, true, true, size, locale);
+  }
+
+  /**
+   * Best file helper for images.
+   *
+   * @param {number?} size - the minimum size of the image
+   * @param {string?} locale - the locale
+   * @returns {string} URL to the file
+   */
+  getImageUrl(size: number, locale: string): string {
+    return fileNegotiate(this, true, false, size, locale);
   }
 
   /**
@@ -85,37 +106,5 @@ export default class DeletedAssetResource extends Resource {
    */
   restore(): Promise<void> {
     return this.del();
-  }
-
-  /**
-   * Best file helper for files.
-   *
-   * @param {string?} locale - the locale
-   * @returns {string} URL to the file
-   */
-  getFileUrl(locale: string): string {
-    return fileNegotiate(this, false, false, null, locale);
-  }
-
-  /**
-   * Best file helper for images.
-   *
-   * @param {number?} size - the minimum size of the image
-   * @param {string?} locale - the locale
-   * @returns {string} URL to the file
-   */
-  getImageUrl(size: number, locale: string): string {
-    return fileNegotiate(this, true, false, size, locale);
-  }
-
-  /**
-   * Best file helper for image thumbnails.
-   *
-   * @param {number?} size - the minimum size of the image
-   * @param {string?} locale - the locale
-   * @returns {string} URL to the file
-   */
-  getImageThumbUrl(size: number, locale: string): string {
-    return fileNegotiate(this, true, true, size, locale);
   }
 }

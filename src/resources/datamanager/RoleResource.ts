@@ -14,13 +14,6 @@ import { environment } from '../../Core';
  * @prop {array<string>} accounts - array of accountIDs associated to this role
  */
 export default class RoleResource extends Resource {
-  roleID: string;
-  name: string;
-  label: string;
-  addUnregistered: boolean;
-  addRegistered: boolean;
-  accounts: Array<string>;
-
   /**
    * Creates a new {@link RoleResource}.
    *
@@ -32,54 +25,50 @@ export default class RoleResource extends Resource {
    */
   constructor(resource: any, environment: environment, traversal?: any) {
     super(resource, environment, traversal);
-
-    Object.defineProperties(this, {
-      roleID: {
-        enumerable: true,
-        get: () => this.getProperty('roleID'),
-      },
-
-      name: {
-        enumerable: true,
-        get: () => this.getProperty('name'),
-        set: (value) => {
-          this.setProperty('name', value);
-          return value;
-        },
-      },
-      label: {
-        enumerable: true,
-        get: () => this.getProperty('label'),
-        set: (value) => {
-          this.setProperty('label', value);
-          return value;
-        },
-      },
-      addUnregistered: {
-        enumerable: true,
-        get: () => this.getProperty('addUnregistered'),
-        set: (value) => {
-          this.setProperty('addUnregistered', value);
-          return value;
-        },
-      },
-      addRegistered: {
-        enumerable: true,
-        get: () => this.getProperty('addRegistered'),
-        set: (value) => {
-          this.setProperty('addRegistered', value);
-          return value;
-        },
-      },
-      accounts: {
-        enumerable: true,
-        get: () => this.getProperty('accounts'),
-        set: (value) => {
-          this.setProperty('accounts', value);
-          return value;
-        },
-      },
-    });
     this.countProperties();
+  }
+
+  get accounts() {
+    return <Array<string>>this.getProperty('accounts')
+  }
+
+  set accounts(value: Array<string>) {
+    this.setProperty('accounts', value);
+  }
+
+  get addRegistered() {
+    return <boolean>this.getProperty('addRegistered');
+  }
+
+  set addRegistered(value: boolean) {
+    this.setProperty('addRegistered', value);
+  }
+
+  get addUnregistered() {
+    return <boolean>this.getProperty('addUnregistered')
+  }
+
+  set addUnregistered(value: boolean) {
+    this.setProperty('addUnregistered', value);
+  }
+
+  get label() {
+    return <string>this.getProperty('label');
+  }
+
+  set label(value: string) {
+    this.setProperty('label', value);
+  }
+
+  get name() {
+    return <string>this.getProperty('name');
+  }
+
+  set name(value: string) {
+    this.setProperty('name', value);
+  }
+
+  get roleID() {
+    return <string>this.getProperty('roleID');
   }
 }

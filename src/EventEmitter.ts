@@ -56,6 +56,27 @@ export class EventEmitter {
   }
 
   /**
+   * Emits a new event. Calls all registered listeners.
+   *
+   * @access private
+   *
+   * @param {string} label event type
+   * @param {...*} args any number of arguments for this event
+   * @returns {boolean} whether or not a listener was called
+   */
+  emit(label: string, ...args: Array<any>): boolean {
+    const listeners = this.listeners.get(label);
+
+    if (listeners) {
+      listeners.forEach((listener) => {
+        listener(...args);
+      });
+      return true;
+    }
+    return false;
+  }
+
+  /**
    * Adds a listener for an event type.
    *
    * @access private
@@ -66,6 +87,18 @@ export class EventEmitter {
    */
   on(label: string, callback: () => void): void {
     this.addListener(label, callback);
+  }
+
+  /**
+   * Removes all listeners for a given label.
+   *
+   * @access private
+   *
+   * @param {string} label event type.
+   * @returns {boolean} whether or not all listeners got removed.
+   */
+  removeAllListeners(label: string): boolean {
+    return this.listeners.delete(label);
   }
 
   /**
@@ -92,39 +125,6 @@ export class EventEmitter {
     }
     this.listeners.set(label, listeners);
     return ret;
-  }
-
-  /**
-   * Removes all listeners for a given label.
-   *
-   * @access private
-   *
-   * @param {string} label event type.
-   * @returns {boolean} whether or not all listeners got removed.
-   */
-  removeAllListeners(label: string): boolean {
-    return this.listeners.delete(label);
-  }
-
-  /**
-   * Emits a new event. Calls all registered listeners.
-   *
-   * @access private
-   *
-   * @param {string} label event type
-   * @param {...*} args any number of arguments for this event
-   * @returns {boolean} whether or not a listener was called
-   */
-  emit(label: string, ...args: Array<any>): boolean {
-    const listeners = this.listeners.get(label);
-
-    if (listeners) {
-      listeners.forEach((listener) => {
-        listener(...args);
-      });
-      return true;
-    }
-    return false;
   }
 }
 

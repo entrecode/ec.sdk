@@ -1,17 +1,21 @@
 # ec.sdk
 
-> SDK for most APIs of AppCMS by entrecode. By entrecode.
-> 
-> This is under active development and not yet ready for use!
+> This is the SDK for all [ec.APIs](https://doc.entrecode.de) by entrecode. By entrecode.
 
-[![npm version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Coverage Status][cover-image]][cover-url] [![Inline docs][doc-image]][doc-url] [![Greenkeeper badge](https://badges.greenkeeper.io/entrecode/ec.sdk.svg)](https://greenkeeper.io/) [![Code Climate][cc-image]][cc-url] [![NSP Status][nsp-image]][nsp-url]
+[![npm version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Coverage Status][cover-image]][cover-url] [![Inline docs][doc-image]][doc-url] [![Greenkeeper badge](https://badges.greenkeeper.io/entrecode/ec.sdk.svg)](https://greenkeeper.io/) [![NSP Status][nsp-image]][nsp-url]
 
 
-## Documentation
+Documentation can be found [here](https://entrecode.github.io/ec.sdk/). If you like to see some code look [here](https://github.com/entrecode/ec.sdk).
 
-Documentation can be found [here](https://entrecode.github.io/ec.sdk/).
+## Getting Started
 
-## Basic Usage
+In order to use this SDK you should be familiar with ec.APIs and the concepts behind those. Please refer to the [official documentation](https://doc.entrecode.de) to get a basic understanding. The documentation you are reading now will first introduce the basic concept when using the SDK. Secondly it is the complete API documentation for ec.sdk.
+
+For every ec.API you will find an API connector. Use one of those to connect to a certain ec.API. Login and logout for ec.users are special cases and are done in [Session](#Session) API connector. All API connectors of a certain [environment](#environment) share some information. The most important one is any access token either received with [Session#login](#Session#login) or by calling [Core#setToken](#Core#setToken). This means you can specifiy the token on any API connector and it will be automatically used by all other API connectors. Also it will be saved in a cookie with the name `<environment>Token`. If any API connector receives a token related Error ([Problem](#Problem)) it will be automatically removed from all API connectors and a [logout event](#eventeventlogout) is triggered. A special case is [PublicAPI](#PublicAPI) since this will store the token in a cookie containing the [environment](#environment) and Data Manager shortID of the PublicAPI (for example: `stagebeefbeefToken`).
+
+Every action you take in the ec.sdk will be validated before it will be sent as a request to ec.APIs. This means that the provided json schemas are used.
+
+##### Installation
 
 ```sh
 npm i --save ec.sdk
@@ -19,8 +23,10 @@ npm i --save ec.sdk
 
 ##### ES6 / Webpack
 
+Add the following in your webpack.config.js.
+
 ```js
-// in webpack.config.js
+
 const config = {
   // …
   node: {
@@ -30,24 +36,68 @@ const config = {
     tls: 'empty',
   },
 };
+```
 
-// in your code
-import { DataManager, Accounts } from 'ec.sdk';
+Then you can start coding:
 
-const dataManager = new DataManager('live');
-dataManager.setToken(accessToken);
+```js
+import { Session, Accounts, DataManager } from 'ec.sdk';
+import AccountResource from 'ec.sdk/src/resources/accounts/AccountResource';
+import DataManagerResource from 'ec.sdk/src/resources/datamanager/DataManagerResource';
 
-dataManager.dataManagerList()
-.then(list => doSomthingWith(list))
-.catch(console.error);
-
-const accounts = new Accounts(); // This uses 'live' environment
-accounts.me() // This has token from 'dataManager'
-.then(me => show(me))
-.catch(console.error)
+class MyExample {
+  session: Session;
+  accounts: Accounts;
+  dataManager: DataManager;
+  
+  me: AccountResource;
+  dm: DataManagerResource;
+  
+  constructor() {
+    session = new Session();
+    accounts = new Accounts();
+    
+    session.setClient('rest');
+    // this will also receive events from Accounts and DataManager
+    session.on('error', console.error);
+  }
+  
+  login(email, password) {
+    session.login(email, password)
+    .then(console.log);
+  }
+  
+  setAccountLanguage(lang) {
+    Promise.resolve()
+    .then(() => {
+      if (this.me){
+        return this.me;
+      }
+      return this.accounts.me();
+    })
+    .then((me) => {
+      me.language = lang;
+      return me.save();
+    })
+    .then((meSaved: AccountResource) => this.me = meSaved);
+  }
+  
+  loadDataManager(id) {
+    if (!this.dataManager){
+      this.dataManager = new DataManager();
+    }
+    
+    this.dataManager.dataManager(id)
+    .then((dm) =>{
+      this.dm = dm;
+    });
+  }
+}
 ```
 
 ##### Node
+
+Require statements are different on node. Otherwise proceed as expected.
 
 ```js
 const ec = require('ec.sdk');
@@ -65,7 +115,7 @@ dataManager.dataManagerList()
 ```html
 <script src="https://unpkg.com/ec.sdk/dist/ec.sdk.min.js"></script>
 <script>
-    console.log('My development stack is bad and I should feel bad');
+    console.log('My development stack is old and I should feel old');
     
     var dataManager = new ec.DataManager('live');
     dataManager.setToken(accessToken);
@@ -83,8 +133,5 @@ dataManager.dataManagerList()
 [npm-url]: https://www.npmjs.com/package/ec.sdk
 [nsp-image]: https://nodesecurity.io/orgs/entrecode/projects/1cb6afc6-44bf-4cbc-8ea9-b2dcaf599609/badge
 [nsp-url]: https://nodesecurity.io/orgs/entrecode/projects/1cb6afc6-44bf-4cbc-8ea9-b2dcaf599609
-[cc-image]: https://codeclimate.com/github/entrecode/ec.sdk/badges/gpa.svg
-[cc-url]: https://codeclimate.com/github/entrecode/ec.sdk
 [doc-image]: http://inch-ci.org/github/entrecode/ec.sdk.svg?branch=master
 [doc-url]: http://inch-ci.org/github/entrecode/ec.sdk
-

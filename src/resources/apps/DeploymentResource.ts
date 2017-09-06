@@ -9,16 +9,6 @@ import { environment } from '../../Core';
  * @prop {string} deploymentID - the id
  */
 export default class DeploymentResource extends Resource {
-  deploymentID: string;
-  buildID: string;
-  platformID: string;
-  targetIDs: Array<string>;
-  started: Date;
-  finished: Date;
-  successful: string;
-  events: Array<any>;
-  results: Array<any>;
-
   /**
    * Creates a new {@link DeploymentResource}.
    *
@@ -30,45 +20,42 @@ export default class DeploymentResource extends Resource {
    */
   constructor(resource: any, environment: environment, traversal?: any) {
     super(resource, environment, traversal);
-
-    Object.defineProperties(this, {
-      deploymentID: {
-        enumerable: true,
-        get: () => this.getProperty('deploymentID'),
-      },
-      buildID: {
-        enumerable: true,
-        get: () => this.getProperty('buildID'),
-      },
-      platformID: {
-        enumerable: true,
-        get: () => this.getProperty('platformID'),
-      },
-      targetIDs: {
-        enumerable: true,
-        get: () => this.getProperty('targetIDs'),
-      },
-      started: {
-        enumerable: true,
-        get: () => new Date(this.getProperty('started')),
-      },
-      finished: {
-        enumerable: true,
-        get: () => new Date(this.getProperty('finished')),
-      },
-      successful: {
-        enumerable: true,
-        get: () => this.getProperty('successful'),
-      },
-      events: {
-        enumerable: true,
-        get: () => this.getProperty('events'),
-      },
-      results: {
-        enumerable: true,
-        get: () => this.getProperty('results'),
-      },
-    });
     this.countProperties();
+  }
+
+  get buildID() {
+    return this.getProperty('buildID');
+  }
+
+  get deploymentID() {
+    return <string>this.getProperty('deploymentID');
+  }
+
+  get events() {
+    return <Array<string>>this.getProperty('events');
+  }
+
+  get finished() {
+    return new Date(this.getProperty('finished'));
+  }
+
+  get platformID() {
+    return <string>this.getProperty('platformID');
+  }
+
+  get results() {
+    return <Array<any>>this.getProperty('results');
+  }
+
+  get started() {
+    return new Date(this.getProperty('started'));
+  }
+
+  get successful() {
+    return <boolean>this.getProperty('successful');
+  }
+
+  get targetIDs() {
+    return <Array<string>>this.getProperty('targetIDs');
   }
 }

@@ -9,23 +9,6 @@ import { environment } from '../../Core';
  * @prop {array<object>} dataManagerID - the dataManagerID
  */
 export default class DMStatsResource extends Resource {
-  dataManagerID: string;
-  title: string;
-  config: any;
-  templateID: string;
-  templateName: string;
-  templateVersion: string;
-  modelCount: number;
-  entryCount: number;
-  assetCount: number;
-  fileCount: number;
-  fileSize: number;
-  numberAccounts: number;
-  numberRequests: number;
-  numberHookRequests: number;
-  monthlyRequests: Array<any>;
-  monthlyHooks: Array<any>;
-
   /**
    * Creates a new {@link DMStatsResource}.
    *
@@ -37,73 +20,70 @@ export default class DMStatsResource extends Resource {
    */
   constructor(resource: any, environment: environment, traversal?: any) {
     super(resource, environment, traversal);
-
-    Object.defineProperties(this, {
-      dataManagerID: {
-        enumerable: true,
-        get: () => this.getProperty('dataManagerID'),
-      },
-      title: {
-        enumerable: true,
-        get: () => this.getProperty('title'),
-      },
-      config: {
-        enumerable: true,
-        get: () => this.getProperty('config'),
-      },
-      templateID: {
-        enumerable: true,
-        get: () => this.getProperty('templateID'),
-      },
-      templateName: {
-        enumerable: true,
-        get: () => this.getProperty('templateName'),
-      },
-      templateVersion: {
-        enumerable: true,
-        get: () => this.getProperty('templateVersion'),
-      },
-      modelCount: {
-        enumerable: true,
-        get: () => this.getProperty('modelCount'),
-      },
-      entryCount: {
-        enumerable: true,
-        get: () => this.getProperty('entryCount'),
-      },
-      assetCount: {
-        enumerable: true,
-        get: () => this.getProperty('assetCount'),
-      },
-      fileCount: {
-        enumerable: true,
-        get: () => this.getProperty('fileCount'),
-      },
-      fileSize: {
-        enumerable: true,
-        get: () => this.getProperty('fileSize'),
-      },
-      numberAccounts: {
-        enumerable: true,
-        get: () => this.getProperty('numberAccounts'),
-      },
-      numberRequests: {
-        enumerable: true,
-        get: () => this.getProperty('numberRequests'),
-      },
-      numberHookRequests: {
-        enumerable: true,
-        get: () => this.getProperty('numberHookRequests'),
-      },
-      monthlyRequests: {
-        enumerable: true,
-        get: () => this.getProperty('monthlyRequests'),
-      },
-      monthlyHooks: {
-        enumerable: true,
-        get: () => this.getProperty('monthlyHooks'),
-      },
-    });
     this.countProperties();
+  }
+
+  get assetCount() {
+    return <number>this.getProperty('assetCount');
+  }
+
+  get config() {
+    return <any>this.getProperty('config');
+  }
+
+  get dataManagerID() {
+    return <string>this.getProperty('dataManagerID');
+  }
+
+  get entryCount() {
+    return <number>this.getProperty('entryCount');
+  }
+
+  get fileCount() {
+    return <number>this.getProperty('fileCount');
+  }
+
+  get fileSize() {
+    return <number>this.getProperty('fileSize');
+  }
+
+  get modelCount() {
+    return <number>this.getProperty('modelCount');
+  }
+
+  get monthlyHooks() {
+    return <Array<any>>this.getProperty('monthlyHooks');
+  }
+
+  get monthlyRequests() {
+    return <Array<any>>this.getProperty('monthlyRequests');
+  }
+
+  get numberAccounts() {
+    return <number>this.getProperty('numberAccounts');
+  }
+
+  get numberHookRequests() {
+    return <number>this.getProperty('numberHookRequests');
+  }
+
+  get numberRequests() {
+    return <number>this.getProperty('numberRequests');
+  }
+
+  get templateID() {
+    return <string>this.getProperty('templateID');
+  }
+
+  get templateName() {
+    return <string>this.getProperty('templateName');
+  }
+
+  get templateVersion() {
+    return <string>this.getProperty('templateVersion');
+  }
+
+  get title() {
+    return <string>this.getProperty('title');
   }
 }

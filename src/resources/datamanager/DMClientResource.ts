@@ -14,12 +14,6 @@ import { environment } from '../../Core';
  * @prop {array<String>} disableStrategies - Strategies disabled in this client.
  */
 export default class DMClientResource extends Resource {
-  clientID: string;
-  callbackURL: string;
-  config: config;
-  hexColor: string;
-  disableStrategies: Array<string>;
-
   /**
    * Creates a new {@link DMClientResource}.
    *
@@ -31,42 +25,34 @@ export default class DMClientResource extends Resource {
    */
   constructor(resource: any, environment: environment, traversal?: any) {
     super(resource, environment, traversal);
-
-    Object.defineProperties(this, {
-      clientID: {
-        enumerable: true,
-        get: () => this.getProperty('clientID'),
-      },
-      callbackURL: {
-        enumerable: true,
-        get: () => this.getProperty('callbackURL'),
-        set: (value) => {
-          this.setProperty('callbackURL', value);
-          return value;
-        },
-      },
-      disableStrategies: {
-        enumerable: true,
-        get: () => this.getProperty('disableStrategies'),
-        set: (value) => {
-          this.setProperty('disableStrategies', value);
-          return value;
-        },
-      },
-      hexColor: {
-        enumerable: true,
-        get: () => this.getProperty('hexColor'),
-        set: (value) => {
-          this.setProperty('hexColor', value);
-          return value;
-        },
-      },
-    });
     this.countProperties();
   }
-}
 
-type config = {
-  tokenMethod: 'query' | 'cookie' | 'body',
-  disableStrategies: Array<'facebook' | 'google' | 'password'>,
+  get callbackURL() {
+    return <string>this.getProperty('callbackURL')
+  };
+
+  set callbackURL(value: string) {
+    this.setProperty('callbackURL', value);
+  }
+
+  get clientID() {
+    return <string>this.getProperty('clientID')
+  };
+
+  get disableStrategies() {
+    return <Array<string>>this.getProperty('disableStrategies')
+  };
+
+  set disableStrategies(value: Array<string>) {
+    this.setProperty('disableStrategies', value);
+  }
+
+  get hexColor() {
+    return <string>this.getProperty('hexColor')
+  };
+
+  set hexColor(value: string) {
+    this.setProperty('hexColor', value);
+  }
 }

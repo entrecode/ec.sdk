@@ -19,10 +19,10 @@ export const stores: Map<string, TokenStore> = new Map();
  * @class
  */
 export class TokenStore {
+  protected agent: string;
+  protected clientID: string;
   protected environment: string;
   protected token: string;
-  protected clientID: string;
-  protected agent: string;
 
   /**
    * Creates a new {@link TokenStore} for the specified environment.
@@ -35,6 +35,98 @@ export class TokenStore {
     this.token = undefined;
     this.clientID = undefined;
     this.agent = undefined;
+  }
+
+  /**
+   * Delete the saved token.
+   *
+   * @returns {undefined}
+   */
+  deleteToken(): void {
+    if (typeof document !== 'undefined') {
+      cookie['erase'](`${this.environment}Token`); // TODO cookie.erase
+    }
+
+    this.token = undefined;
+  }
+
+  /**
+   * Get the clientID for this {@link TokenStore}.
+   *
+   * @returns {string} the clientID
+   */
+  getClientID(): string {
+    return this.clientID;
+  }
+
+  /**
+   * Get a previously saved token. Undefined on missing token.
+   *
+   * @returns {string} The token or undefined.
+   */
+  getToken(): string {
+    if (!this.token && typeof document !== 'undefined') {
+      this.token = cookie.get(`${this.environment}Token`);
+    }
+
+    return this.token;
+  }
+
+  /**
+   * Get the user agent for this {@link TokenStore}.
+   *
+   * @returns {string} the user agent
+   */
+  getUserAgent(): string {
+    return this.agent;
+  }
+
+  /**
+   * Whether or not this {@link TokenStore} has a clientID set.
+   *
+   * @returns {boolean} Whether or not a clientID is set.
+   */
+  hasClientID(): boolean {
+    return this.clientID !== undefined;
+  }
+
+  /**
+   * Check if a token is saved.
+   *
+   * @returns {boolean} Whether or not a token is saved.
+   */
+  hasToken(): boolean {
+    if (!this.token && typeof document !== 'undefined') {
+      this.token = cookie.get(`${this.environment}Token`);
+    }
+
+    return !!this.token;
+  }
+
+  /**
+   * Whether or not this {@link TokenStore} has a user agent set.
+   *
+   * @returns {boolean} Whether or not a user agent is set.
+   */
+  hasUserAgent(): boolean {
+    return this.agent !== undefined;
+  }
+
+  /**
+   * Set clientID for this {@link TokenStore}.
+   *
+   * @param {string} clientID the clientID
+   */
+  setClientID(clientID: string): void {
+    if (!clientID) {
+      throw new Error('clientID cannot be undefined');
+    }
+
+    if (clientID !== 'rest') {
+      throw new Error('clientID other than rest currently not supported');
+    }
+
+    this.clientID = clientID;
   }
 
   /**
@@ -66,80 +158,6 @@ export class TokenStore {
   }
 
   /**
-   * Get a previously saved token. Undefined on missing token.
-   *
-   * @returns {string} The token or undefined.
-   */
-  getToken(): string {
-    if (!this.token && typeof document !== 'undefined') {
-      this.token = cookie.get(`${this.environment}Token`);
-    }
-
-    return this.token;
-  }
-
-  /**
-   * Check if a token is saved.
-   *
-   * @returns {boolean} Whether or not a token is saved.
-   */
-  hasToken(): boolean {
-    if (!this.token && typeof document !== 'undefined') {
-      this.token = cookie.get(`${this.environment}Token`);
-    }
-
-    return !!this.token;
-  }
-
-  /**
-   * Delete the saved token.
-   *
-   * @returns {undefined}
-   */
-  deleteToken(): void {
-    if (typeof document !== 'undefined') {
-      cookie['erase'](`${this.environment}Token`); // TODO cookie.erase
-    }
-
-    this.token = undefined;
-  }
-
-  /**
-   * Set clientID for this {@link TokenStore}.
-   *
-   * @param {string} clientID the clientID
-   */
-  setClientID(clientID: string): void {
-    if (!clientID) {
-      throw new Error('clientID cannot be undefined');
-    }
-
-    if (clientID !== 'rest') {
-      throw new Error('clientID other than rest currently not supported');
-    }
-
-    this.clientID = clientID;
-  }
-
-  /**
-   * Get the clientID for this {@link TokenStore}.
-   *
-   * @returns {string} the clientID
-   */
-  getClientID(): string {
-    return this.clientID;
-  }
-
-  /**
-   * Whether or not this {@link TokenStore} has a clientID set.
-   *
-   * @returns {boolean} Whether or not a clientID is set.
-   */
-  hasClientID(): boolean {
-    return this.clientID !== undefined;
-  }
-
-  /**
    * Set user agent for this {@link TokenStore}. The value must match the following regex:
    * ^(?:\w+/[\w.+-]+(?: \([\w]+\))? ?)+$
    *
@@ -156,24 +174,6 @@ export class TokenStore {
     }
 
     this.agent = agent;
-  }
-
-  /**
-   * Get the user agent for this {@link TokenStore}.
-   *
-   * @returns {string} the user agent
-   */
-  getUserAgent(): string {
-    return this.agent;
-  }
-
-  /**
-   * Whether or not this {@link TokenStore} has a user agent set.
-   *
-   * @returns {boolean} Whether or not a user agent is set.
-   */
-  hasUserAgent(): boolean {
-    return this.agent !== undefined;
   }
 }
 

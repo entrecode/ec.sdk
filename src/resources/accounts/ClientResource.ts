@@ -10,7 +10,7 @@ import { environment } from '../../Core';
  * }} config
  */
 
-type config = {
+export type config = {
   tokenMethod: 'query' | 'cookie' | 'body',
   disableStrategies: Array<'facebook' | 'google' | 'password'>,
 }
@@ -25,10 +25,6 @@ type config = {
  * @prop {config} config        - The config
  */
 export default class ClientResource extends Resource {
-  clientID: string;
-  callbackURL: string;
-  config: config;
-
   /**
    * Creates a new {@link ClientResource}.
    *
@@ -40,29 +36,26 @@ export default class ClientResource extends Resource {
    */
   constructor(resource: any, environment: environment, traversal?: any) {
     super(resource, environment, traversal);
-
-    Object.defineProperties(this, {
-      clientID: {
-        enumerable: true,
-        get: () => this.getProperty('clientID'),
-      },
-      callbackURL: {
-        enumerable: true,
-        get: () => this.getProperty('callbackURL'),
-        set: (value) => {
-          this.setProperty('callbackURL', value);
-          return value;
-        },
-      },
-      config: {
-        enumerable: true,
-        get: () => this.getProperty('config'),
-        set: (value) => {
-          this.setProperty('config', value);
-          return value;
-        },
-      },
-    });
     this.countProperties();
+  }
+
+  get callbackURL() {
+    return <string>this.getProperty('callbackURL');
+  }
+
+  set callbackURL(value: string) {
+    this.setProperty('callbackURL', value);
+  }
+
+  get clientID() {
+    return <string>this.getProperty('clientID');
+  }
+
+  get config() {
+    return <config>this.getProperty('config');
+  }
+
+  set config(value: config) {
+    this.setProperty('config', value);
   }
 }

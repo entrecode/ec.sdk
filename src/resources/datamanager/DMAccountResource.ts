@@ -12,11 +12,6 @@ import { environment } from '../../Core';
  * @prop {Array<string>}  oauth             - Array of connected oauth accounts
  */
 export default class DMAccountResource extends Resource {
-  accountID: string;
-  hasPassword: boolean;
-  email: string;
-  oauth: Array<any>;
-
   /**
    * Creates a new {@link DMAccountResource}.
    *
@@ -26,26 +21,22 @@ export default class DMAccountResource extends Resource {
    */
   constructor(resource: any, environment: environment, traversal?: any) {
     super(resource, environment, traversal);
-
-    Object.defineProperties(this, {
-      accountID: {
-        enumerable: true,
-        get: () => this.getProperty('accountID'),
-      },
-
-      email: {
-        enumerable: true,
-        get: () => this.getProperty('email'),
-      },
-      hasPassword: {
-        enumerable: true,
-        get: () => this.getProperty('hasPassword'),
-      },
-      oauth: {
-        enumerable: true,
-        get: () => this.getProperty('oauth'),
-      },
-    });
     this.countProperties();
+  }
+
+  get accountID() {
+    return <string>this.getProperty('accountID');
+  }
+
+  get email() {
+    return <string>this.getProperty('email');
+  }
+
+  get hasPassword() {
+    return <boolean>this.getProperty('hasPassword');
+  }
+
+  get oauth() {
+    return <Array<any>>this.getProperty('oauth');
   }
 }
