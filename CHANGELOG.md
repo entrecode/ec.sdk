@@ -1,3 +1,14 @@
+<a name="0.8.4"></a>
+## 0.8.4 (2017-09-06)
+
+* release version 0.8.4 ([09aecc4](https://github.com/entrecode/ec.sdk/commit/09aecc4))
+* doc: fixed wrong example in doc CMS-2921 ([cba26f4](https://github.com/entrecode/ec.sdk/commit/cba26f4))
+* doc: rearranged methods for proper sorting in doc ([5f8234c](https://github.com/entrecode/ec.sdk/commit/5f8234c))
+* doc: reworked doc introduction and API connectors CMS-2923 ([9493512](https://github.com/entrecode/ec.sdk/commit/9493512))
+* feat: getOriginal() for [Public]AssetResources ([3aeb51b](https://github.com/entrecode/ec.sdk/commit/3aeb51b))
+
+
+
 <a name="0.8.3"></a>
 ## 0.8.3 (2017-09-04)
 
