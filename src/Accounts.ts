@@ -39,13 +39,24 @@ const urls = {
  * signup…), permissions, clients, and groups.
  *
  * @class
+ *
+ * @example
+ * const accounts = new Accounts();
+ * return accounts.me()
+ * .then((me) => {
+ *   return me.checkPemission('dm-create');
+ * })
+ * .then((allowed) => {
+ *   if(!allowed){
+ *     return showError();
+ *   }
+ *
+ *   return createDM(…);
+ * };
+ *
+ * @param {environment?} environment the {@link environment} to connect to
  */
 export default class Accounts extends Core {
-  /**
-   * Creates a new instance of {@link Accounts} API connector.
-   *
-   * @param {environment?} environment the {@link environment} to connect to.
-   */
   constructor(environment?: environment) {
     super(urls, environment);
   }
@@ -54,13 +65,11 @@ export default class Accounts extends Core {
    * Get a single {@link AccountResource} identified by accountID.
    *
    * @example
-   * return accounts.account(this.accountList.getItem(index).accountID)
-   * .then((account) => {
-   *   return show(account.email);
-   * });
+   * return accounts.account(accountList.getFirstItem().accountID)
+   * .then(account => show(account.email));
    *
-   * @param {string} accountID id of the Account.
-   * @returns {Promise<AccountResource>} resolves to the Account which should be loaded.
+   * @param {string} accountID id of the Account
+   * @returns {Promise<AccountResource>} resolves to the Account which should be loaded
    */
   account(accountID: string): Promise<AccountResource> {
     return Promise.resolve()
@@ -78,7 +87,7 @@ export default class Accounts extends Core {
   }
 
   /**
-   * Load a {@link AccountList} of {@link AccountResource} filtered by the values specified
+   * Load a {@link AccountList} of {@link AccountResource}s filtered by the values specified
    * by the options parameter.
    *
    * @example
@@ -89,14 +98,12 @@ export default class Accounts extends Core {
    *     },
    *   },
    * })
-   * .then((list) => {
-   *   return show(list);
-   * })
+   * .then(list => show(list))
    *
-   * @param {filterOptions?} options the filter options.
-   * @returns {Promise<AccountList>} resolves to account list with applied filters.
+   * @param {filterOptions?} options the filter options
+   * @returns {Promise<AccountList>} resolves to account list with applied filters
    */
-  accountList(options?: filterOptions | any): Promise<AccountList> { // TODO remove any
+  accountList(options?: filterOptions | any): Promise<AccountList> {
     return Promise.resolve()
     .then(() => {
       if (
@@ -119,11 +126,11 @@ export default class Accounts extends Core {
    * Change the logged in account to the given new email address.
    *
    * @example
-   * return accounts.resetPassword(email)
-   * .then(() => show(`Email change startet. Please verify with your new address`))
+   * return accounts.changeEmail(newEmail)
+   * .then(() => show(`Email change started. Please verify with your new address.`))
    *
    * @param {string} email the new email
-   * @returns {Promise<void>} Promise resolving on success.
+   * @returns {Promise<undefined>} Promise resolving on success.
    */
   changeEmail(email: string): Promise<void> {
     return Promise.resolve()
@@ -146,9 +153,7 @@ export default class Accounts extends Core {
    *
    * @example
    * return accounts.client('thisOne')
-   * .then(client => {
-   *   return show(client);
-   * });
+   * .then(client => show(client));
    *
    * @param {string} clientID the clientID
    * @returns {Promise<ClientResource>} Promise resolving to ClientResource
@@ -170,31 +175,20 @@ export default class Accounts extends Core {
   }
 
   /**
-   * Load the {@link ClientList}.
+   * Load the {@link ClientList} filtered by the values specified by the options parameter.
    *
    * @example
-   * return accounts.clientList()
-   * .then(clients => {
-   *   return clients.getAllItems().filter(client => client.clientID === 'thisOne');
-   * })
-   * .then(clientArray => {
-   *   return show(clientArray[0]);
-   * });
-   *
-   * // This would actually be better:
    * return accounts.clientList({
    *   filter: {
-   *     clientID: 'thisOne',
+   *     callbackURL: 'thisOne', // the same as 'callbackURL: { exact: 'thisOne' }'
    *   },
    * })
-   * .then(clients => {
-   *   return show(clients.getFirstItem());
-   * });
+   * .then(clients => show(clients.getFirstItem()));
    *
    * @param {filterOptions?} options filter options
    * @returns {Promise<ClientList>} Promise resolving to ClientList
    */
-  clientList(options?: filterOptions | any): Promise<ClientList> { // TODO remove any
+  clientList(options?: filterOptions | any): Promise<ClientList> {
     return Promise.resolve()
     .then(() => {
       if (
@@ -218,9 +212,7 @@ export default class Accounts extends Core {
    *
    * @example
    * return accounts.createAPIToken()
-   * .then((token) => {
-   *   return apiTokenCreated(token);
-   * });
+   * .then(token => show(token));
    *
    * @returns {Promise<{jwt: string, accountID: string, iat: number, exp: number}>} the created api
    *   token response.
@@ -234,7 +226,7 @@ export default class Accounts extends Core {
   /**
    * Create a new Client.
    *
-   * @param {object} client object representing the client.
+   * @param {object} client object representing the client
    * @returns {Promise<ClientResource>} the newly created ClientResource
    */
   createClient(client: any): Promise<ClientResource> {
@@ -254,7 +246,7 @@ export default class Accounts extends Core {
   /**
    * Create a new Group.
    *
-   * @param {object} group object representing the group.
+   * @param {object} group object representing the group
    * @returns {Promise<GroupResource>} the newly created GroupResource
    */
   createGroup(group: any): Promise<GroupResource> {
@@ -277,8 +269,8 @@ export default class Accounts extends Core {
    * @example
    * return accounts.createInvites(5)
    * .then((invites) => {
-   *   return Promise.all(invites.invites.forEach((invite, index) => sendInvite(invite,
-   *   emails[index]);
+   *   return Promise.all(invites.invites
+   *   .forEach((invite, index) => sendInvite(invite, emails[index]);
    * })
    * .then(() => console.log('Invites send.');
    *
@@ -304,11 +296,11 @@ export default class Accounts extends Core {
    * @example
    * return accounts.emailAvailable(email)
    * .then((available) => {
-   *    if (available){
-   *      return accounts.signup(email, password);
-   *    } else {
-   *      return showError(new Error(`Email ${email} already registered.`));
+   *    if (!available){
+   *      return showError(new Error(`Email ${email} not available.`));
    *    }
+   *
+   *    return accounts.signup(email, password);
    * });
    *
    * @param {string} email the email to check.
@@ -331,7 +323,7 @@ export default class Accounts extends Core {
   }
 
   /**
-   * Load a single group
+   * Load a single group.
    *
    * @example
    * return accounts.group(groupID)
@@ -359,7 +351,7 @@ export default class Accounts extends Core {
   }
 
   /**
-   * Load the {@link GroupList}
+   * Load the {@link GroupList} filtered by the values specified by the options parameter.
    *
    * @example
    * return accounts.groupList({
@@ -371,11 +363,11 @@ export default class Accounts extends Core {
    * })
    * .then(groups => {
    *   // all groups with 'dev' in the title
-   *   return Promise.all(groups.getAllItems.forEach(group => show(group)));
+   *   return show(groups.getAllItems());
    * });
    *
    * @param {filterOptions?} options filter options
-   * @returns {Promise<GroupList>} Promise resolving goup list
+   * @returns {Promise<GroupList>} Promise resolving group list
    */
   groupList(options?: filterOptions | any): Promise<GroupList> { // TODO remove any
     return Promise.resolve()
@@ -401,10 +393,10 @@ export default class Accounts extends Core {
    *
    * @example
    * return accounts.invalidPermissions()
-   * .then((invalidPermissions) => {
-   *   show(invalidPermissions.invalidAccountPermissions);
-   *   show(invalidPermissions.invalidGroupPermissions);
-   * });
+   * .then((invalidPermissions) => Promise.all([
+   *   show(invalidPermissions.invalidAccountPermissions),
+   *   show(invalidPermissions.invalidGroupPermissions),
+   * ]));
    *
    * @returns {Promise<InvalidPermissionsResource>} Promise resolving to invalid permissions
    */
@@ -426,10 +418,8 @@ export default class Accounts extends Core {
    *   }
    *   return accounts.createInvites(5 - invites.invites.length);
    * })
-   * .then((invites) => {
-   *   return Promise.all(invites.invites.forEach((invite, index) => sendInvite(invite,
-   *   emails[index]);
-   * })
+   * .then((invites) => Promise.all(
+   *   invites.invites.forEach((invite, index) => sendInvite(invite, emails[index]))
    * .then(() => console.log('Invites send.');
    *
    * @returns {Promise<InvitesResource>} Promise resolving to the invites resource
@@ -466,7 +456,7 @@ export default class Accounts extends Core {
    * .then(() => show(`Password reset link send to ${email}`))
    *
    * @param {string} email email of the account
-   * @returns {Promise<void>} Promise resolving on success.
+   * @returns {Promise<undefined>} Promise resolving on success
    */
   resetPassword(email: string): Promise<void> {
     return Promise.resolve()
@@ -515,7 +505,7 @@ export default class Accounts extends Core {
    *
    * @param {string} email email for the new account
    * @param {string} password password for the new account
-   * @param {string?} invite optional invite. signup can be declined without invite.
+   * @param {string?} invite optional invite. Signup can be declined without invite
    * @returns {Promise<string>} Promise resolving the token
    */
   signup(email: string, password: string, invite?: string): Promise<string> {

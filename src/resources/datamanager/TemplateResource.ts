@@ -19,11 +19,11 @@ validator.setLoggingFunction(() => {
  *
  * @class
  *
- * @prop {string} roleID - The id of the template
+ * @prop {string} templateID - The id of the template
  * @prop {string} name - The name of the template
  * @prop {object} collection - Postman collection
  * @prop {object} dataSchema - JSON schema for collection data
- * @prop {string} version - version of the tempalte
+ * @prop {string} version - version of the template
  */
 export default class TemplateResource extends Resource {
   /**

@@ -22,16 +22,14 @@ const urls = {
 };
 
 /**
- * This API connector can be used for Appserver APIs.
+ * This API connector can be used for Appserver APIs. It contains APIs for Apps, Platforms,
+ * Plugins, Builds and Deployments.
  *
  * @class
+ *
+ * @param {environment?} environment the environment to connect to
  */
 export default class Apps extends Core {
-  /**
-   * Creates a new instance of {@link Apps} API connector.
-   *
-   * @param {?environment} environment the environment to connect to.
-   */
   constructor(environment?: environment) {
     if (environment && !{}.hasOwnProperty.call(urls, environment)) {
       throw new Error('invalid environment specified');
@@ -43,8 +41,12 @@ export default class Apps extends Core {
   /**
    * Get a single {@link AppResource} identified by appID.
    *
-   * @param {string} appID id of the app.
-   * @returns {Promise<AppResource>} resolves to the app which should be loaded.
+   * @example
+   * return apps.app(deleteThisID)
+   * .then(app => app.del());
+   *
+   * @param {string} appID id of the app
+   * @returns {Promise<AppResource>} resolves to the app which should be loaded
    */
   app(appID: string): Promise<AppResource> {
     return Promise.resolve()
@@ -65,8 +67,15 @@ export default class Apps extends Core {
    * Load a {@link AppList} of {@link AppResource} filtered by the values specified
    * by the options parameter.
    *
-   * @param {filterOptions?} options the filter options.
-   * @returns {Promise<AppList>} resolves to app list with applied filters.
+   * @example
+   * return apps.appList()
+   * .then(list => list.map((app) => {
+   *   app.name = 'haha all your apps are named the same';
+   *   return app.save();
+   * }));
+   *
+   * @param {filterOptions?} options the filter options
+   * @returns {Promise<AppList>} resolves to app list with applied filters
    */
   appList(options?: filterOptions | any): Promise<AppList> {
     return Promise.resolve()
@@ -88,9 +97,16 @@ export default class Apps extends Core {
   }
 
   /**
-   * Create a new App.
+   * Create a new App
    *
-   * @param {object} app object representing the app.
+   * @example
+   * return apps.create({
+   *   title: 'my new app',
+   *   hexColor: '#ffffff',
+   * })
+   * .then(app => show(app));
+   *
+   * @param {object} app object representing the app
    * @returns {Promise<AppResource>} the newly created AppResource
    */
   create(app: any): Promise<AppResource> {
@@ -110,10 +126,8 @@ export default class Apps extends Core {
    * Load a single {@link AppStatsResource}.
    *
    * @example
-   * return dm.stats('id')
-   * .then(stats => {
-   *   return show(stats);
-   * });
+   * return dm.stats(app.appID)
+   * .then(stats => show(stats));
    *
    * @param {string} appID the appID
    * @returns {Promise<AppStatsResource>} Promise resolving to AppStatsResource
@@ -135,10 +149,7 @@ export default class Apps extends Core {
    *
    * @example
    * return apps.statsList()
-   * .then(stats => {
-   *   return show(stats.getAllItems());
-   * });
-   *
+   * .then(stats => show(stats.getAllItems()));
    *
    * @returns {Promise<AppStatsList>} Promise resolving to AppStatsList
    */
@@ -153,7 +164,7 @@ export default class Apps extends Core {
    * Load the {@link TypesResource}. This resource contains information about all available plugin
    * types.
    *
-   * @returns {Promise<TypesResource>} Promise resolving to types resource.
+   * @returns {Promise<TypesResource>} Promise resolving to TypesResource
    */
   types(): Promise<TypesResource> {
     return Promise.resolve()

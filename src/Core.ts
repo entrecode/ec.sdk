@@ -15,31 +15,16 @@ const environmentSymbol = Symbol.for('environment');
 traverson['registerMediaType'](HalAdapter.mediaType, HalAdapter);
 
 /**
- * You can define which API should be used with the environment parameter. Internally this is also
- * used as key to store tokens into cookies (for browsers).
- *
- * Valid value is one of `live`, `stage`, `nightly`, or `develop`.
- *
- * @example
- * // will connect to production https://editor.entrecode.de
- * const session = new Session('live');
- * // will connect to cachena https://editor.cachena.entrecode.de
- * const accounts = new Accounts('stage');
- * // will connect to buffalo https://editor.buffalo.entrecode.de
- * const dataManager = new DataManager('nightly');
- * // will connect to your local instances, well maybe
- * const accounts = new Accounts('develop');
- *
- * @typedef { 'live' | 'stage' | 'nightly' | 'develop'} environment
- */
-
-/**
  * Each API connector Class inherits directly from Core class. You cannot instantiate Core
  * directly. Use one of the other API connectors instead.
  *
- * @access protected
- *
+ * @protected
  * @class
+ *
+ * @param {object} urls Object with URLs for each environment (key: environment, value: url)
+ * @param {environment} environment The environment to connect to
+ * @param {string?} cookieModifier An optional modifier for the cookie name (used by
+ *   {@link PublicAPI}
  */
 export default class Core {
   constructor(urls: any, environment: environment = 'live', cookieModifier?: string) {
@@ -57,6 +42,14 @@ export default class Core {
     this[traversalSymbol] = traverson.from(urls[environment]).jsonHal();
   }
 
+  /**
+   * Returns a traverson request builder following the provided link. If the link is not present in
+   * the root resource it will try to reload the root resource. This is done since links can
+   * appear/disappear when login state changes.
+   *
+   * @param {string} link The link to follow
+   * @returns {Promise<any>} Promise resolving to traverson request builder
+   */
   follow(link: string): Promise<any> {
     return Promise.resolve()
     .then(() => {
@@ -154,14 +147,13 @@ export default class Core {
    *
    * session.on('login', myAlertFunc);
    * session.login(email, password);
-   * // A new token was received: <aJwtToken> will be logged
+   * // "A new token was received: <aJwtToken>" will be logged
    *
    * @param {string} label the event type
    * @param {function} listener the listener
-   * @returns {undefined}
    */
   on(label: string, listener: any) {
-    return this[eventsSymbol].on(label, listener);
+    this[eventsSymbol].on(label, listener);
   }
 
   /**
@@ -184,7 +176,7 @@ export default class Core {
   }
 
   /**
-   * You can remov a previously attached listener from the underlying {@link EventEmitter} with
+   * You can remove a previously attached listener from the underlying {@link EventEmitter} with
    * this function.
    *
    * @example
@@ -227,12 +219,12 @@ export default class Core {
   }
 
   /**
-   * If you want to add additional information to the user agent used bed ec.sdk you can use this
+   * If you want to add additional information to the user agent used by ec.sdk you can use this
    * function to add any string.
    *
    * @example
    * accounts.setUserAgent('editor/0.15.3 (a comment)');
-   * // all subsequent requests will have user agent: editor/0.15.3 (a comment) ec.sdk/<version>
+   * // all subsequent requests will use x-user-agent: editor/0.15.3 (a comment) ec.sdk/<version>
    *
    * @param {string} agent the user agent to add
    * @return {Core} this for chainability
@@ -248,3 +240,23 @@ export default class Core {
 }
 
 export type environment = 'live' | 'stage' | 'nightly' | 'develop';
+
+/**
+ * You can define which API should be used with the environment parameter. Internally this is also
+ * used as key to store tokens into cookies (for browsers).
+ *
+ * Valid value is one of `live`, `stage`, `nightly`, or `develop`.
+ *
+ * @example
+ * // will connect to production https://editor.entrecode.de
+ * const session = new Session('live');
+ * // will connect to cachena https://editor.cachena.entrecode.de
+ * const accounts = new Accounts('stage');
+ * // will connect to buffalo https://editor.buffalo.entrecode.de
+ * const dataManager = new DataManager('nightly');
+ * // will connect to your local instances, well maybe
+ * const accounts = new Accounts('develop');
+ *
+ * @typedef { 'live' | 'stage' | 'nightly' | 'develop'} environment
+ */
+

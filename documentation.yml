@@ -1,6 +1,6 @@
 toc:
-  - name: Introduction
-    file: ./src/doc/1-introduction.md
+  - name: Getting Started
+    file: ./README.md
   - name: API connectors
     file: ./src/doc/2-api-connector.md
   - Core
@@ -92,3 +92,5 @@ toc:
   - PublicAssetResource
   - PublicTagList
   - PublicTagResource
+  - name: Changelog
+    file: ./CHANGELOG.md

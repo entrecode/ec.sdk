@@ -19,30 +19,29 @@ const urls = {
  * This API connector can be used for login or logout into ec.apis. Login state will be avaliable
  * to all other API connectors of the same {@link environment}.
  *
+ * @class
+ *
  * @example
+ * const session = new Session();
  * return session.login(email, password)
  * .then(() => {
  *   const accounts = new Accounts();
  *   return accounts.me();
  * });
  *
- * @class
+ *
+ * @param {environment?} environment the environment to connect to
  */
 export default class Session extends Core {
-  /**
-   * Creates a new instance of {@link Session} API connector.
-   *
-   * @param {environment?} environment the environment to connect to.
-   */
   constructor(environment?: environment) {
     super(urls, environment);
   }
 
   /**
-   * Checks a permission for the currently logged in user
+   * Checks if the currently logged in user has a given permission.
    *
-   * @param {string} permission the permission to check.
-   * @returns {Promise<boolean>} true if user has permission, false otherwise.
+   * @param {string} permission the permission to check
+   * @returns {Promise<boolean>} true if user has permission, false otherwise
    */
   checkPermission(permission: string): Promise<boolean> {
     return Promise.resolve()
@@ -105,7 +104,7 @@ export default class Session extends Core {
    * Logout with existing token. Will invalidate the token with the Account API and remove any
    * cookie stored.
    *
-   * @returns {Promise<void>} Promise resolving undefined on success.
+   * @returns {Promise<undefined>} Promise resolving undefined on success.
    */
   logout(): Promise<void> {
     return Promise.resolve()

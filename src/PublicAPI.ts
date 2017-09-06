@@ -45,20 +45,49 @@ const urls = {
 };
 
 /**
- * API connector for public APIs. This is the successor of ec.datamanager.js.
+ * API connector for public APIs. This is the successor of
+ * [ec.datamanager.js](https://github.com/entrecode/ec.datamanager.js).
  *
  * When instantiating this as an ecUser please set the ecUser flag to true. This will use the
  * tokenStore for ecUsers and not the ones for each Data Manager. If you don't do this you must set
  * the token with `publicAPI.setToken(session.getToken());`.
+ *
+ * @class
+ *
+ * @example
+ * const session new Session();
+ * let api = new PublicAPI('beefbeef', 'live', true);;
+ * session.setClient('rest');
+ * return session.login('me@entrecode.de', 'letmein')
+ * .then(() =>
+ *   api.entryList('muffins', { filter: { awesome: true } })
+ *   .then(list => list.map((entry) => {
+ *     if(isNoLongerAwesome(entry)){
+ *       entry.awesome = false;
+ *     }
+ *
+ *     if(!entry.isDirty){
+ *       return entry;
+ *     }
+ *
+ *     return entry.save();
+ *   }));
+ *
+ * @prop {object} account The current logged in account if it is a public user
+ * @prop {object} config The public config of the connected Data Manager
+ * @prop {string} dataManagerID unshortened dataManagerID
+ * @prop {string} defaultLocale default locale
+ * @prop {string} description description of the connected Data Manager
+ * @prop {Array<string>} locales all available locales
+ * @prop {Array<any>} models array of all models in the connected Data Manager
+ * @prop {string} shortID shortened dataManagerID
+ * @prop {string} title title of the connected Data Manager
+ *
+ * @param {string} id shortID of the desired DataManager.
+ * @param {environment?} environment the environment to connect to.
+ * @param {boolean?} ecUser if you are an ecUser it is best to set this to true
  */
 export default class PublicAPI extends Core {
-  /**
-   * Creates a new instance of {@link PublicAPI} API connector.
-   *
-   * @param {string} id shortID of the desired DataManager.
-   * @param {environment?} environment the environment to connect to.
-   * @param {boolean?} ecUser if you are an ecUser it is best to set this to true
-   */
   constructor(id: string, environment: environment = 'live', ecUser: boolean = false) {
     if (!id || !/[a-f0-9]{8}/i.test(id)) {
       throw new Error('must provide valid shortID');
@@ -71,20 +100,6 @@ export default class PublicAPI extends Core {
     super({ [environment]: `${urls[environment]}api/${id}` }, environment, !ecUser ? id : '');
     this[shortIDSymbol] = id;
     this[assetBaseURLSymbol] = urls[environment];
-
-    Object.defineProperty(this, 'shortID', {
-      enumerable: false,
-      get: () => this[shortIDSymbol],
-    });
-
-    ['dataManagerID', 'title', 'description', 'locales',
-      'defaultLocale', 'models', 'account', 'config']
-    .forEach((property) => {
-      Object.defineProperty(this, property, {
-        enumerable: true,
-        get: () => this[resourceSymbol][property],
-      });
-    });
   }
 
   get account() {
@@ -116,7 +131,7 @@ export default class PublicAPI extends Core {
   }
 
   get shortID() {
-    return <string>this[resourceSymbol].shortID;
+    return <string>this[shortIDSymbol];
   }
 
   get title() {
@@ -127,10 +142,8 @@ export default class PublicAPI extends Core {
    * Load a single {@link PublicAssetResource}.
    *
    * @example
-   * return api.asset('thisOne')
-   * .then(asset => {
-   *   return show(asset);
-   * });
+   * return api.asset(thisOne)
+   * .then(asset => show(asset));
    *
    * @param {string} assetID the assetID
    * @returns {Promise<PublicAssetResource>} Promise resolving to PublicAssetResource
@@ -153,13 +166,9 @@ export default class PublicAPI extends Core {
    * Load the {@link PublicAssetList}.
    *
    * @example
-   * return api.assetList()
-   * .then(assets => {
-   *   return assets.getAllItems().find(asset => asset.assetID === 'thisOne');
-   * })
-   * .then(asset => {
-   *   return show(asset);
-   * });
+   * return api.assetList({ filter: { type: 'image'} })
+   * .then(assets => assets.getAllItems().find(asset => asset.title.toLowerCase() === 'favicon' ))
+   * .then(asset => show(asset));
    *
    * @param {filterOptions?} options filter options
    * @returns {Promise<PublicAssetList>} Promise resolving to PublicAssetList
@@ -185,11 +194,12 @@ export default class PublicAPI extends Core {
   }
 
   /**
-   * Checks a permission for the currently logged in public user
+   * Checks a permission for the currently logged in public user. ec.users check their permission
+   * with {@link Sessin#checkPermission}.
    *
-   * @param {string} permission the permission to check.
+   * @param {string} permission the permission to check
    * @param {boolean} refresh whether or not it should use a cached response
-   * @returns {Promise<boolean>} true if user has permission, false otherwise.
+   * @returns {Promise<boolean>} true if user has permission, false otherwise
    */
   checkPermission(permission: string, refresh: boolean = false): Promise<boolean> {
     return Promise.resolve()
@@ -219,13 +229,11 @@ export default class PublicAPI extends Core {
    *
    * @example
    * return api.createAnonymous()
-   * .then((token) => {
-   *   return save(token)
-   * });
+   * .then(token => save(token));
    *
    * @param {Date} validUntil valid until date
    * @returns {Promise<{jwt: string, accountID: string, iat: number, exp: number}>} the created api
-   *   token response.
+   *   token
    */
   createAnonymous(validUntil: Date): Promise<jwtResponse> {
     return this.follow(`${this[shortIDSymbol]}:_auth/anonymous`)
@@ -239,13 +247,21 @@ export default class PublicAPI extends Core {
   }
 
   /**
-   * Create a new asset.
+   * Create a new asset. This should handle various input types.
    *
-   * @param {object|string} input representing the asset, either a path, a FormData object,
-   *  a readStream, or an object containing a buffer.
+   * The most basic type is a string representing a file path, this can be used on node projects.
+   * Another option for node is providing a Buffer object (eg. fs.readFile, …). When providing a
+   * Buffer you must specify 'fileName' in options object.
+   *
+   * For frontend usage you musst provide a
+   * {@link https://developer.mozilla.org/de/docs/Web/API/FormData|FormData} object containing the
+   * file in a field with the name 'file'.
+   *
+   * @param {object|string} input representing the asset, either a path, a FormData object, or an
+   *   object containing a buffer.
    * @param {object} options options for creating an asset.
-   * @returns {Promise<function<Promise<PublicAssetResource>>>} the newly created
-   *   PublicAssetResource
+   * @returns {Promise<function<Promise<PublicAssetResource>>>} Promise resolving to a Promise
+   *   factory which then resolves to the newly created PublicAssetResource
    */
   createAsset(input: string | any, options: assetOptions = {}): Promise<() => Promise<PublicAssetResource>> {
     if (!input) {
@@ -300,12 +316,21 @@ export default class PublicAPI extends Core {
   }
 
   /**
-   * Create multiple new asset.
+   * Create multiple new asset. This should handle various input types.
+   *
+   * The most basic type is an array of strings representing a file paths, this can be used on node projects.
+   * Another option for node is providing an array of Buffer objects (eg. fs.readFile, …). When providing a
+   * Buffer you must specify 'fileName' in options object.
+   *
+   * For frontend usage you musst provide a
+   * {@link https://developer.mozilla.org/de/docs/Web/API/FormData|FormData} object containing the
+   * multiple files in a field with the name 'file'.
    *
    * @param {object|array<object|string>} input representing the asset, either an array of paths, a
    *   FormData object, a array of readStreams, or an array containing buffers.
    * @param {object} options options for creating an asset.
-   * @returns {Promise<function<Promise<AssetList>>>} the newly created assets as AssetList
+   * @returns {Promise<function<Promise<AssetList>>>}  Promise resolving to a Promise
+   *   factory which then resolves to the newly created assets as AssetList
    */
   createAssets(input: string | any, options: assetOptions = {}): Promise<() => Promise<PublicAssetList>> {
     if (!input) {
