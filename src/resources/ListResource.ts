@@ -278,7 +278,7 @@ export type filterOptions = {
   [key: string]: filterType
 }
 
-type filter = {
+export type filter = {
   exact?: string,
   search?: string,
   from?: any,
@@ -287,4 +287,4 @@ type filter = {
   all?: Array<string>
 }
 
-type filterType = Array<string> | number | string | filter;
+export type filterType = Array<string> | number | string | filter;
