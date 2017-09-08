@@ -27,7 +27,7 @@ traverson['registerMediaType'](HalAdapter.mediaType, HalAdapter);
  *   {@link PublicAPI}
  */
 export default class Core {
-  constructor(urls: any, environment: environment = 'live', cookieModifier?: string) {
+  constructor(urls: any, environment: environment = 'live', cookieModifier: string = '') {
     if (!urls) {
       throw new Error('urls must be defined');
     }

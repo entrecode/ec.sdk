@@ -1,3 +1,11 @@
+<a name="0.8.6"></a>
+## 0.8.6 (2017-09-08)
+
+* release version 0.8.6 ([4557528](https://github.com/entrecode/ec.sdk/commit/4557528))
+* fix: cookieModifier handling of undefined values ([13c513d](https://github.com/entrecode/ec.sdk/commit/13c513d))
+
+
+
 <a name="0.8.5"></a>
 ## 0.8.5 (2017-09-06)
 
