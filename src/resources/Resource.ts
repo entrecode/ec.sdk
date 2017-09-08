@@ -243,15 +243,18 @@ export default class Resource {
    *   be the same object but with refreshed data.
    */
   save(overwriteSchemaUrl?: string): Promise<Resource> {
-    const out = this.toOriginal();
-    // TODO dot notation
-    return validator.validate(out, overwriteSchemaUrl || this[resourceSymbol].link('self').profile)
-    .then(() => put(this[environmentSymbol], this.newRequest().follow('self'), out))
-    .then(([res, traversal]) => {
-      this[resourceSymbol] = halfred.parse(res);
-      this[traversalSymbol] = traversal;
-      this[dirtySymbol] = false;
-      return this;
+    return Promise.resolve()
+    .then(() => {
+      const out = this.toOriginal();
+      // TODO dot notation
+      return validator.validate(out, overwriteSchemaUrl || this.getLink('self').profile)
+      .then(() => put(this[environmentSymbol], this.newRequest().follow('self'), out))
+      .then(([res, traversal]) => {
+        this[resourceSymbol] = halfred.parse(res);
+        this[traversalSymbol] = traversal;
+        this[dirtySymbol] = false;
+        return this;
+      });
     });
   }
 
