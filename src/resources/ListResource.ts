@@ -72,6 +72,11 @@ function map(list: ListResource, iterator: (resource: Resource) => Promise<any> 
  *   array<string>, all: array<string>})}} filter
  */
 
+interface ListResource {
+  count: number;
+  total: number;
+}
+
 /**
  * Generic list resource class. Represents {@link
   * https://tools.ietf.org/html/draft-kelly-json-hal-08 HAL resources} with added support for
@@ -85,7 +90,7 @@ function map(list: ListResource, iterator: (resource: Resource) => Promise<any> 
  * @prop {number} count - the number of embedded items in this list
  * @prop {number} size - the number of total items in this list
  */
-export default class ListResource extends Resource {
+class ListResource extends Resource {
   private index: number = 0;
 
   /**
@@ -108,15 +113,13 @@ export default class ListResource extends Resource {
     this[itemClassSymbol] = ItemClass;
     this[itemSchemaSymbol] = itemSchema;
     this[nameSymbol] = name || Object.keys(this[resourceSymbol].allEmbeddedResources())[0];
+    ['count', 'total'].forEach((key) => {
+      Object.defineProperty(this, key, {
+        enumerable: true,
+        get: () => <number>this.getProperty(key),
+      });
+    });
     this.countProperties();
-  }
-
-  get count() {
-    return this.getProperty('count');
-  }
-
-  get total() {
-    return this.getProperty('total');
   }
 
   /**
@@ -286,5 +289,7 @@ export type filter = {
   any?: Array<string>,
   all?: Array<string>
 }
+
+export default ListResource;
 
 export type filterType = Array<string> | number | string | filter;
