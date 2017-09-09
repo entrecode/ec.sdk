@@ -60,7 +60,7 @@ const urls = {
  * session.setClient('rest');
  * return session.login('me@entrecode.de', 'letmein')
  * .then(() =>
- *   api.entryList('muffins', { filter: { awesome: true } })
+ *   api.entryList('muffins', { awesome: true })
  *   .then(list => list.map((entry) => {
  *     if(isNoLongerAwesome(entry)){
  *       entry.awesome = false;
@@ -318,9 +318,9 @@ export default class PublicAPI extends Core {
   /**
    * Create multiple new asset. This should handle various input types.
    *
-   * The most basic type is an array of strings representing a file paths, this can be used on node projects.
-   * Another option for node is providing an array of Buffer objects (eg. fs.readFile, …). When providing a
-   * Buffer you must specify 'fileName' in options object.
+   * The most basic type is an array of strings representing a file paths, this can be used on node
+   * projects. Another option for node is providing an array of Buffer objects (eg. fs.readFile,
+   * …). When providing a Buffer you must specify 'fileName' in options object.
    *
    * For frontend usage you musst provide a
    * {@link https://developer.mozilla.org/de/docs/Web/API/FormData|FormData} object containing the

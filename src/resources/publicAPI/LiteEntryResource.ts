@@ -7,6 +7,12 @@ import { environment } from '../../Core';
 
 const environmentSymbol = Symbol.for('environment');
 
+interface LiteEntryResource {
+  _entryTitle: string;
+  _id: string;
+  id: string;
+}
+
 /**
  * LiteEntryResources are what the name suggests. They are lite entries. They only provide some
  * basic functionality useful for showing unresolved (read: not loaded nested) entries.
@@ -15,7 +21,7 @@ const environmentSymbol = Symbol.for('environment');
  * @prop {String} environment - The entries environment
  * @prop {object} traversal - traversal from which to continue
  */
-export default class LiteEntryResource extends Resource {
+class LiteEntryResource extends Resource {
   constructor(liteResource: any, environment: environment, traversal?: any) {
     if (!('_links' in liteResource)) {
       const qs = querystring.parse(liteResource.href.substr(liteResource.href.indexOf('?') + 1));
@@ -33,18 +39,12 @@ export default class LiteEntryResource extends Resource {
       };
     }
     super(liteResource, environment, traversal);
-  }
-
-  get _entryTitle() {
-    return <string>this.getProperty('_entryTitle');
-  }
-
-  get _id() {
-    return <string>this.getProperty('id');
-  }
-
-  get id() {
-    return <string>this.getProperty('_id');
+    ['_entryTitle', 'id', '_id'].forEach((key) => {
+      Object.defineProperty(this, key, {
+        enumerable: true,
+        get: () => <string>this.getProperty(key),
+      });
+    });
   }
 
   /**
@@ -97,3 +97,5 @@ export default class LiteEntryResource extends Resource {
     return <Promise<EntryResource>>super.save(overwriteSchemaUrl);
   };
 }
+
+export default LiteEntryResource;

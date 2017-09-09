@@ -1,6 +1,11 @@
 import Resource from '../Resource';
 import { environment } from '../../Core';
 
+interface PublicTagResource {
+  count: number;
+  tag: string;
+}
+
 /**
  * PublicTag resource class
  *
@@ -9,7 +14,7 @@ import { environment } from '../../Core';
  * @prop {string} tag - tag name
  * @prop {number} count - number of assets with this tag
  */
-export default class PublicTagResource extends Resource {
+class PublicTagResource extends Resource {
   /**
    * Creates a new {@link PublicTagResource}.
    *
@@ -21,14 +26,18 @@ export default class PublicTagResource extends Resource {
    */
   constructor(resource: any, environment: environment, traversal?: any) {
     super(resource, environment, traversal);
+    Object.defineProperties(this, {
+      count: {
+        enumerable: true,
+        get: () => <number>this.getProperty('count'),
+      },
+      tag: {
+        enumerable: true,
+        get: () => <string>this.getProperty('tag'),
+      },
+    });
     this.countProperties();
   }
-
-  get count() {
-    return <number>this.getProperty('count');
-  }
-
-  get tag() {
-    return <string>this.getProperty('tag');
-  }
 }
+
+export default PublicTagResource;

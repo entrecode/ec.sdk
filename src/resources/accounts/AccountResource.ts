@@ -7,6 +7,20 @@ import { environment } from '../../Core';
 
 const environmentSymbol = Symbol.for('environment');
 
+interface AccountResource {
+  accountID: string;
+  created: Date;
+  email: string;
+  groups: Array<any>;
+  hasPassword: boolean;
+  hasPendingEmail: boolean;
+  language: string;
+  name: string;
+  openID: Array<any>;
+  permissions: Array<string>;
+  state: string;
+}
+
 /**
  * Account resource class
  *
@@ -25,7 +39,7 @@ const environmentSymbol = Symbol.for('environment');
  * @prop {Array<string>}  permissions       - Array of permissions
  * @prop {string}         state             - State of the account.
  */
-export default class AccountResource extends Resource {
+class AccountResource extends Resource {
   /**
    * Creates a new {@link AccountResource}.
    *
@@ -37,71 +51,74 @@ export default class AccountResource extends Resource {
    */
   constructor(resource: any, environment: environment, traversal?: any) {
     super(resource, environment, traversal);
+    Object.defineProperties(this, {
+      accountID: {
+        enumerable: true,
+        get: () => <string>this.getProperty('accountID'),
+      },
+
+      created: {
+        enumerable: true,
+        get: () => new Date(this.getProperty('created')),
+      },
+      email: {
+        enumerable: true,
+        get: () => this.getProperty('email'),
+      },
+      groups: {
+        enumerable: true,
+        get: () => this.getProperty('groups'),
+      },
+      hasPassword: {
+        enumerable: true,
+        get: () => this.getProperty('hasPassword'),
+      },
+      hasPendingEmail: {
+        enumerable: true,
+        get: () => this.getProperty('hasPendingEmail'),
+      },
+      language: {
+        enumerable: true,
+        get: () => this.getProperty('language'),
+        set: (value) => {
+          this.setProperty('language', value);
+          return value;
+        },
+      },
+      name: {
+        enumerable: true,
+        get: () => this.getProperty('name'),
+        set: (value) => {
+          this.setProperty('name', value);
+          return value;
+        },
+      },
+      openID: {
+        enumerable: true,
+        get: () => this.getProperty('openID'),
+        set: (value) => {
+          this.setProperty('openID', value);
+          return value;
+        },
+      },
+      permissions: {
+        enumerable: true,
+        get: () => <Array<string>>this.getProperty('permissions'),
+        set: (value) => {
+          this.setProperty('permissions', value);
+          return value;
+        },
+      },
+      state: {
+        enumerable: true,
+        get: () => this.getProperty('state'),
+        set: (value) => {
+          this.setProperty('state', value);
+          return value;
+        },
+      },
+    });
     this.countProperties();
-  }
-
-  get accountID() {
-    return <string>this.getProperty('accountID');
-  }
-
-  get created() {
-    return new Date(this.getProperty('created'));
-  }
-
-  get email() {
-    return <string>this.getProperty('email');
-  }
-
-  get groups() {
-    return <Array<any>>this.getProperty('groups');
-  }
-
-  get hasPassword() {
-    return <boolean>this.getProperty('hasPassword');
-  }
-
-  get hasPendingEmail() {
-    return <boolean>this.getProperty('hasPendingEmail');
-  }
-
-  get language() {
-    return <string>this.getProperty('language');
-  }
-
-  set language(value: string) {
-    this.setProperty('language', value);
-  }
-
-  get name() {
-    return <string>this.getProperty('name');
-  }
-
-  set name(value: string) {
-    this.setProperty('name', value);
-  }
-
-  get openID() {
-    return <Array<string>>this.getProperty('openID');
-  }
-
-  set openID(value: Array<string>) {
-    this.setProperty('openID', value);
-  }
-
-  get permissions() {
-    return <Array<string>>this.getProperty('permissions');
-  }
-
-  set permissions(value) {
-    this.setProperty('permissions', value);
-  }
-
-  get state() {
-    return <string>this.getProperty('state');
-  }
-
-  set state(value: string) {
-    this.setProperty('state', value);
   }
 
   /**
@@ -182,3 +199,5 @@ export default class AccountResource extends Resource {
     });
   }
 }
+
+export default AccountResource;

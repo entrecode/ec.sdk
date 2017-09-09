@@ -160,9 +160,6 @@ describe('Entry Resource', () => {
   it('should get _modified', () => {
     resource._modified.toISOString().should.be.equal('2017-05-15T12:56:30.906Z');
   });
-  it('should get creator', () => {
-    should.equal(resource.creator, null)
-  });
   it('should get _creator', () => {
     should.equal(resource._creator, null)
   });
@@ -200,7 +197,7 @@ describe('Entry Resource', () => {
 
   it('should get field with default getter', () => {
     resource.id.should.be.equal('B17u3r5lx-');
-    getSpy.should.have.been.calledWith('_id');
+    getSpy.should.have.been.calledWith('id');
   });
   it('should set field with default setter', () => {
     resource.number = 1234567;
