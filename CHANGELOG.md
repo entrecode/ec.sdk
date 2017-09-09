@@ -1,3 +1,19 @@
+<a name="0.8.7"></a>
+## 0.8.7 (2017-09-09)
+
+* add caret to dependecy, update some, tested doc build ([a59ee77](https://github.com/entrecode/ec.sdk/commit/a59ee77))
+* release version 0.8.7 ([f4731af](https://github.com/entrecode/ec.sdk/commit/f4731af))
+* fix: fixed JSON.stringify of resource ([6d24b5e](https://github.com/entrecode/ec.sdk/commit/6d24b5e))
+* fix: ListResource with enumerable properties and ts interface ([82b449c](https://github.com/entrecode/ec.sdk/commit/82b449c))
+* fix: Public Resources with enumerable properties and ts interface ([cb3b1c9](https://github.com/entrecode/ec.sdk/commit/cb3b1c9))
+* fix: reworked promise chain in Resource#save ([8348185](https://github.com/entrecode/ec.sdk/commit/8348185))
+* refactor: AccountResource enumerable properties with ts interface ([9da0608](https://github.com/entrecode/ec.sdk/commit/9da0608))
+* chore: updated idea config ([14851bb](https://github.com/entrecode/ec.sdk/commit/14851bb))
+* chore(package): update documentation to version 5.3.1 ([8cf49eb](https://github.com/entrecode/ec.sdk/commit/8cf49eb))
+* doc: fix filter object in PublicAPI example ([1788a73](https://github.com/entrecode/ec.sdk/commit/1788a73))
+
+
+
 <a name="0.8.6"></a>
 ## 0.8.6 (2017-09-08)
 
