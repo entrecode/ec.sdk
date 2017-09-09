@@ -5,6 +5,16 @@ import { environment } from '../../Core';
 const resourceSymbol = Symbol.for('resource');
 const resolvedSymbol = Symbol('resolved');
 
+interface PublicAssetResource {
+  assetID: string;
+  created: Date;
+  files: Array<any>;
+  isResolved: boolean;
+  tags: Array<string>;
+  title: string;
+  type: string;
+}
+
 /**
  * PublicAssetResource class. PublicAssetResources can be obtained via two methods. Either by
  * loading a Asset resource directly or by accessing it via an Entry which was not loaded with
@@ -22,7 +32,7 @@ const resolvedSymbol = Symbol('resolved');
  *
  * @prop {boolean} isResolved - whether or not this asset is resolved
  */
-export default class PublicAssetResource extends Resource {
+class PublicAssetResource extends Resource {
   /**
    * Creates a new {@link PublicAssetResource}.
    *
@@ -36,43 +46,43 @@ export default class PublicAssetResource extends Resource {
     super(resource, environment, traversal);
 
     this[resolvedSymbol] = 'tags' in this[resourceSymbol];
+    Object.defineProperties(this, {
+      assetID: {
+        enumerable: true,
+        get: () => <string>this.getProperty('assetID'),
+      },
+      created: {
+        enumerable: true,
+        get: () => new Date(this.getProperty('created')),
+      },
+      files: {
+        enumerable: true,
+        get: () => <Array<any>>this.getProperty('files'),
+      },
+      isResolved: {
+        enumerable: false,
+        get: () => <boolean>this[resolvedSymbol],
+      },
+      tags: {
+        enumerable: true,
+        get: () => <Array<string>>this.getProperty('tags'),
+        set: (value: Array<string>) => {
+          this.setProperty('tags', value);
+        },
+      },
+      title: {
+        enumerable: true,
+        get: () => <string>this.getProperty('title'),
+        set: (value: string) => {
+          this.setProperty('title', value);
+        },
+      },
+      type: {
+        enumerable: true,
+        get: () => <string>this.getProperty('type'),
+      },
+    });
     this.countProperties();
-  }
-
-  get assetID() {
-    return <string>this.getProperty('assetID');
-  }
-
-  get created() {
-    return new Date(this.getProperty('created'));
-  }
-
-  get files() {
-    return <Array<any>>this.getProperty('files');
-  }
-
-  get isResolved() {
-    return <boolean>this[resolvedSymbol];
-  }
-
-  get tags() {
-    return <Array<string>>this.getProperty('tags');
-  }
-
-  set tags(value: Array<string>) {
-    this.setProperty('tags', value);
-  }
-
-  get title() {
-    return <string>this.getProperty('title')
-  }
-
-  set title(value) {
-    this.setProperty('title', value);
-  }
-
-  get type() {
-    return <string>this.getProperty('type');
   }
 
   /**
@@ -163,3 +173,5 @@ export default class PublicAssetResource extends Resource {
     return <Promise<PublicAssetResource>>super.save(overwriteSchemaUrl);
   }
 }
+
+export default PublicAssetResource;

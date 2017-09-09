@@ -17,6 +17,12 @@ const shortIDSymbol = Symbol('_shortID');
 
 const datetimeRegex = /^(?:[1-9]\d{3}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1\d|2[0-8])|(?:0[13-9]|1[0-2])-(?:29|30)|(?:0[13578]|1[02])-31)|(?:[1-9]\d(?:0[48]|[2468][048]|[13579][26])|(?:[2468][048]|[13579][26])00)-02-29)T(?:[01]\d|2[0-3]):[0-5]\d:[0-5]\d(?:\.\d{3})?(?:Z|[+-][01]\d:[0-5]\d)$/;
 
+const skip = [
+  'id',
+  '_id',
+  '_entryTitle',
+];
+
 function getFieldType(schema, property) {
   if (!property) {
     return undefined;
@@ -39,6 +45,44 @@ function getShortID(resource) {
   const link = resource.link('collection').href;
   const result = new RegExp(`/api/([0-9a-f]{8})/${resource._modelTitle}`).exec(link);
   return result[1];
+}
+
+function loadSchemaForResource(resource: any): any {
+  const res = halfred.parse(resource);
+  return getSchema(res.link('self').profile)
+  .then(schema =>
+    Object.keys(schema.allOf[1].properties).map((property) => {
+      if (['entry', 'entries'].indexOf(getFieldType(schema, property)) !== -1
+      ) {
+        const field = res[property];
+        if (Array.isArray(field)) {
+          return field[0] && typeof field[0] === 'object' ? field : undefined;
+        } else if (typeof field === 'object') {
+          return field;
+        }
+      }
+    })
+    .reduce((r, p) => r.concat(p), [])
+    .filter(x => !!x) // filter undefined
+    .filter((x, i, a) => a.findIndex(t => t.id === x.id) === i) // filter duplicates
+    .map(r => () => loadSchemaForResource(r)) // eslint-disable-line comma-dangle
+    .reduce((r, p) => r.then(p), Promise.resolve())
+    .then(() => schema)
+  );
+}
+
+interface EntryResource {
+  _created: Date;
+  _creator: string;
+  _embedded: any;
+  _links: any;
+  _modelTitle: string;
+  _modelTitleField: string;
+  _modified: Date;
+  created: Date;
+  modified: Date;
+
+  [key: string]: any;
 }
 
 /**
@@ -75,9 +119,7 @@ function getShortID(resource) {
  * @prop {RoleResource|object|string} role fields with type role
  * @prop {string|object|array|number} other field with all other types
  */
-export default class EntryResource extends LiteEntryResource {
-  [key: string]: any; // TODO ?
-
+class EntryResource extends LiteEntryResource {
   /**
    * Creates a new EntryResource
    *
@@ -96,7 +138,7 @@ export default class EntryResource extends LiteEntryResource {
     this[schemaSymbol] = schema;
     this[shortIDSymbol] = getShortID(this[resourceSymbol]);
     Object.keys(this[schemaSymbol].allOf[1].properties).forEach((key) => {
-      if (key in resource) {
+      if (skip.indexOf(key) === -1 && key in resource) {
         const type = this.getFieldType(key);
         const property: any = {
           enumerable: true,
@@ -502,29 +544,7 @@ export default class EntryResource extends LiteEntryResource {
   }
 }
 
-function loadSchemaForResource(resource: any): any {
-  const res = halfred.parse(resource);
-  return getSchema(res.link('self').profile)
-  .then(schema =>
-    Object.keys(schema.allOf[1].properties).map((property) => {
-      if (['entry', 'entries'].indexOf(getFieldType(schema, property)) !== -1
-      ) {
-        const field = res[property];
-        if (Array.isArray(field)) {
-          return field[0] && typeof field[0] === 'object' ? field : undefined;
-        } else if (typeof field === 'object') {
-          return field;
-        }
-      }
-    })
-    .reduce((r, p) => r.concat(p), [])
-    .filter(x => !!x) // filter undefined
-    .filter((x, i, a) => a.findIndex(t => t.id === x.id) === i) // filter duplicates
-    .map(r => () => loadSchemaForResource(r)) // eslint-disable-line comma-dangle
-    .reduce((r, p) => r.then(p), Promise.resolve())
-    .then(() => schema)
-  );
-}
+export default EntryResource;
 
 /**
  * Asynchronously create a new {@link EntryResource}. This can be used when the schema is not known
