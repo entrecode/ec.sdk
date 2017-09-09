@@ -17,23 +17,6 @@ const shortIDSymbol = Symbol('_shortID');
 
 const datetimeRegex = /^(?:[1-9]\d{3}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1\d|2[0-8])|(?:0[13-9]|1[0-2])-(?:29|30)|(?:0[13578]|1[02])-31)|(?:[1-9]\d(?:0[48]|[2468][048]|[13579][26])|(?:[2468][048]|[13579][26])00)-02-29)T(?:[01]\d|2[0-3]):[0-5]\d:[0-5]\d(?:\.\d{3})?(?:Z|[+-][01]\d:[0-5]\d)$/;
 
-const skip: Array<string> = [
-  'id',
-  '_id',
-  'created',
-  '_created',
-  'modified',
-  '_modified',
-  'creator',
-  '_creator',
-  'private',
-  '_links',
-  '_embedded',
-  '_entryTitle',
-  '_modelTitle',
-  '_modelTitleField',
-];
-
 function getFieldType(schema, property) {
   if (!property) {
     return undefined;
@@ -112,9 +95,8 @@ export default class EntryResource extends LiteEntryResource {
 
     this[schemaSymbol] = schema;
     this[shortIDSymbol] = getShortID(this[resourceSymbol]);
-
     Object.keys(this[schemaSymbol].allOf[1].properties).forEach((key) => {
-      if (skip.indexOf(key) === -1 && key in resource) {
+      if (key in resource) {
         const type = this.getFieldType(key);
         const property: any = {
           enumerable: true,
@@ -360,30 +342,6 @@ export default class EntryResource extends LiteEntryResource {
     this.countProperties();
   }
 
-  get _created() {
-    return new Date(this.getProperty('_created'));
-  }
-
-  get _creator() {
-    return <string>this.getProperty('_creator');
-  }
-
-  get _modified() {
-    return new Date(this.getProperty('_modified'));
-  }
-
-  get created() {
-    return new Date(this.getProperty('_created'));
-  }
-
-  get creator() {
-    return <string>this.getProperty('_creator');
-  }
-
-  get modified() {
-    return new Date(this.getProperty('_modified'));
-  }
-
   /**
    * Get the field type for a given property in this {@link EntryResource}
    *
@@ -549,8 +507,7 @@ function loadSchemaForResource(resource: any): any {
   return getSchema(res.link('self').profile)
   .then(schema =>
     Object.keys(schema.allOf[1].properties).map((property) => {
-      if (skip.indexOf(property) === -1
-        && ['entry', 'entries'].indexOf(getFieldType(schema, property)) !== -1
+      if (['entry', 'entries'].indexOf(getFieldType(schema, property)) !== -1
       ) {
         const field = res[property];
         if (Array.isArray(field)) {
