@@ -1,3 +1,12 @@
+<a name="0.8.9"></a>
+## 0.8.9 (2017-09-11)
+
+*  docs: hide private createEntry and createList in docs ([88597d3](https://github.com/entrecode/ec.sdk/commit/88597d3))
+* release version 0.8.9 ([8a0be83](https://github.com/entrecode/ec.sdk/commit/8a0be83))
+* fix: adds typing for packageJson in helper.ts ([b6a4f39](https://github.com/entrecode/ec.sdk/commit/b6a4f39))
+
+
+
 <a name="0.8.8"></a>
 ## 0.8.8 (2017-09-11)
 
