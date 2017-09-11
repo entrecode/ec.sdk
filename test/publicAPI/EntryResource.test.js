@@ -105,23 +105,6 @@ describe('Entry Resource', () => {
   it('should be instance of EntryResource', () => {
     resource.should.be.instanceOf(EntryResource.default);
   });
-  it('should not have properties missing in source', () => {
-    return new Promise((resolve, reject) => {
-      fs.readFile(`${__dirname}/../mocks/public-entry-partial.json`, 'utf-8', (err, res) => {
-        if (err) {
-          return reject(err);
-        }
-
-        return resolve(JSON.parse(res));
-      });
-    })
-    .then(res => EntryResource.createEntry(res))
-    .then((res) => {
-      res.should.have.property('_id');
-      res.should.have.property('text');
-      res.should.not.have.property('formattedText');
-    });
-  });
   it('should throw on undefined schema', () => {
     const throws = () => new EntryResource.default(resourceJson); // eslint-disable-line new-cap
     throws.should.throw('schema must be defined');
