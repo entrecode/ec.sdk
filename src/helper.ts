@@ -12,7 +12,7 @@ import DeletedAssetResource from './resources/datamanager/DeletedAssetResource';
 import PublicAssetResource from './resources/publicAPI/PublicAssetResource';
 import { environment } from './Core';
 
-const packageJson = require('../package.json');
+const packageJson: any = require('../package.json');
 
 validator.setLoggingFunction(() => {
 });
