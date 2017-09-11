@@ -1,3 +1,11 @@
+<a name="0.8.8"></a>
+## 0.8.8 (2017-09-11)
+
+* release version 0.8.8 ([5067bef](https://github.com/entrecode/ec.sdk/commit/5067bef))
+* fix: define properties even if they are "missing" in EntryResource ([8947b00](https://github.com/entrecode/ec.sdk/commit/8947b00))
+
+
+
 <a name="0.8.7"></a>
 ## 0.8.7 (2017-09-09)
 

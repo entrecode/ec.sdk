@@ -138,7 +138,7 @@ class EntryResource extends LiteEntryResource {
     this[schemaSymbol] = schema;
     this[shortIDSymbol] = getShortID(this[resourceSymbol]);
     Object.keys(this[schemaSymbol].allOf[1].properties).forEach((key) => {
-      if (skip.indexOf(key) === -1 && key in resource) {
+      if (skip.indexOf(key) === -1) {
         const type = this.getFieldType(key);
         const property: any = {
           enumerable: true,
