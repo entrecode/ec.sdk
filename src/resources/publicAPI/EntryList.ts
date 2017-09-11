@@ -29,6 +29,8 @@ export default class EntryList extends ListResource {
  * Asynchronously create a new {@link EntryList}. This can be used when the schema is not known
  * before creating the EntryList.
  *
+ * @private
+ *
  * @param {object} resource loaded resource
  * @param {environment} environment the environment of this resource
  * @param {object?} traversal traversal for continuing

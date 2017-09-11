@@ -85,9 +85,7 @@ toc:
     file: ./src/doc/8-public-api-resources.md
   - LiteEntryResource
   - EntryResource
-  - createEntry
   - EntryList
-  - createList
   - PublicAssetList
   - PublicAssetResource
   - PublicTagList

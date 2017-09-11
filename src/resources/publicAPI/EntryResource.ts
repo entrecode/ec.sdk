@@ -550,6 +550,8 @@ export default EntryResource;
  * Asynchronously create a new {@link EntryResource}. This can be used when the schema is not known
  * before creating the EntryResource.
  *
+ * @private
+ *
  * @param {object} resource loaded resource
  * @param {environment} environment the environment of this resource
  * @param {object?} traversal traversal for continuing
