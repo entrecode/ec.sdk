@@ -119,7 +119,7 @@ export default class AssetList extends ListResource {
    * @returns {Promise<void|string>} Promise resolving undefined if writeable stream is
    * provided. Url otherwise.
    */
-  download(writeStream?: stream): Promise<void> {
+  download(writeStream?: stream): Promise<void | string> {
     if (writeStream && !(writeStream instanceof stream.Writable)) {
       return Promise.reject(new Error('writeStream must be instance of stream.Writable.'));
     }
