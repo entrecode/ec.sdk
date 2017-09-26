@@ -48,10 +48,10 @@ describe('Entry List', () => {
   it('should be instance of ModelList', () => {
     list.should.be.instanceOf(EntryList.default);
   });
-  it('should have ModelResource items', () => {
+  it('should have EntryResource items', () => {
     list.getAllItems().forEach(item => item.should.be.instanceOf(EntryResource.default));
   });
-  it('should have ModelResource items', () => {
+  it('should have EntryResource items', () => {
     list.getItem(0).should.be.instanceOf(EntryResource.default);
   });
 });
