@@ -33,6 +33,7 @@ const modelCacheSymbol = Symbol('_modelCache');
 const permissionsSymbol = Symbol('_permissionsSymbol');
 const permissionsLoadedTimeSymbol = Symbol('_permissionsLoadedTimeSymbol');
 const assetBaseURLSymbol = Symbol('assetBaseURL');
+const requestCacheSymbol = Symbol('requestCache');
 
 validator.setLoggingFunction(() => {
 });
@@ -100,6 +101,7 @@ export default class PublicAPI extends Core {
     super({ [environment]: `${urls[environment]}api/${id}` }, environment, !ecUser ? id : '');
     this[shortIDSymbol] = id;
     this[assetBaseURLSymbol] = urls[environment];
+    this[requestCacheSymbol] = undefined;
   }
 
   get account() {
@@ -212,14 +214,19 @@ export default class PublicAPI extends Core {
         return undefined;
       }
 
-      return this.follow('_permissions')
-      .then(request => get(this[environmentSymbol], request))
-      .then(([response]) => {
-        this[permissionsSymbol] = ShiroTrie.newTrie();
-        this[permissionsSymbol].add(response.permissions);
-        this[permissionsLoadedTimeSymbol] = new Date();
-        return undefined;
-      });
+      if (!this[requestCacheSymbol]) {
+        this[requestCacheSymbol] = this.follow('_permissions')
+        .then(request => get(this[environmentSymbol], request))
+        .then(([response]) => {
+          this[requestCacheSymbol] = undefined;
+          this[permissionsSymbol] = ShiroTrie.newTrie();
+          this[permissionsSymbol].add(response.permissions);
+          this[permissionsLoadedTimeSymbol] = new Date();
+          return undefined;
+        });
+      }
+
+      return this[requestCacheSymbol];
     })
     .then(() => this[permissionsSymbol].check(permission));
   }
