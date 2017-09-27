@@ -42,6 +42,7 @@ function map(list: ListResource, iterator: (resource: Resource) => Promise<any> 
  * @typedef {{size: number, page: number, sort: array<string>, _levels: number, _fields:
  *   Array<string>, property: filter}} filterOptions
  */
+{}
 
 /**
  *
@@ -66,11 +67,12 @@ function map(list: ListResource, iterator: (resource: Resource) => Promise<any> 
  *       'app-user',
  *     ],
  *   },
-  * });
+ * });
  *
  * @typedef {{propertyName: (string|{exact: string, search: string, from: string, to: string, any:
  *   array<string>, all: array<string>})}} filter
  */
+{}
 
 interface ListResource {
   count: number;
