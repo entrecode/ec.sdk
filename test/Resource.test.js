@@ -68,6 +68,10 @@ describe('Resource', () => {
     resource.setProperty('description', 'hello');
     resource.isDirty.should.be.true;
   });
+  it('should be clean on setProperty call with same value', () => {
+    resource.setProperty('description', resource.getProperty('description'));
+    resource.isDirty.should.be.false;
+  });
   it('should restore state on reset call', () => {
     resource.setProperty('description', 'hello');
     resource.reset();

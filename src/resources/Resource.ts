@@ -2,6 +2,7 @@ import * as HalAdapter from 'traverson-hal';
 import * as halfred from 'halfred';
 import * as traverson from 'traverson';
 import * as validator from 'json-schema-remote';
+import * as isEqual from 'lodash.isequal';
 
 import ListResource from './ListResource';
 import { del, get, put } from '../helper';
@@ -282,6 +283,10 @@ export default class Resource {
    * @returns {Resource} this Resource for chainability
    */
   setProperty(property: string, value: any): any {
+    if (isEqual(value, this.getProperty(property))) {
+      return this;
+    }
+
     this[dirtySymbol] = true;
     this[resourceSymbol][property] = value;
     return this;
