@@ -71,7 +71,7 @@ describe('DataManager class', () => {
   });
   it('should be rejected on list only with dataManagerID', () => {
     return new DataManager('live').dataManagerList({ dataManagerID: 'id' })
-    .should.be.rejectedWith('Providing only an dataManagerID in DataManagerList filter will result in single resource response. Please use DataManager#get');
+    .should.be.rejectedWith('Providing only an id in ResourceList filter will result in single resource response.');
   });
   it('should return resource on get', () => {
     const dm = new DataManager('live');
@@ -90,7 +90,7 @@ describe('DataManager class', () => {
   });
   it('should be rejected on get with undefined id', () => {
     return new DataManager('live').dataManager()
-    .should.be.rejectedWith('dataManagerID must be defined');
+    .should.be.rejectedWith('resourceID must be defined');
   });
   it('should call post on create', () => {
     const stub = sinon.stub(helper, 'post');
@@ -112,7 +112,7 @@ describe('DataManager class', () => {
         hexColor: resource.hexColor,
         locales: resource.locales,
       });
-      return dm.create(create);
+      return dm.createDataManager(create);
     })
     .then(() => {
       stub.should.be.calledOnce;
@@ -124,7 +124,7 @@ describe('DataManager class', () => {
     });
   });
   it('should be rejected on create with undefined', () => {
-    return new DataManager('live').create()
+    return new DataManager('live').createDataManager()
     .should.be.rejectedWith('Cannot create resource with undefined object');
   });
 
@@ -146,7 +146,7 @@ describe('DataManager class', () => {
   it('should throw on template list filtered with templateID', () => {
     const dm = new DataManager('live');
     return dm.templateList({ templateID: 'id' })
-    .should.be.rejectedWith('Cannot filter templateList only by templateID. Use DataManagerResource#template() instead');
+    .should.be.rejectedWith('Providing only an id in ResourceList filter will result in single resource response.');
   });
   it('should load template resource', () => {
     const dm = new DataManager('live');
@@ -166,7 +166,7 @@ describe('DataManager class', () => {
   });
   it('should be rejected on undefined templateID', () => {
     const dm = new DataManager('live');
-    return dm.template().should.be.rejectedWith('templateID must be defined');
+    return dm.template().should.be.rejectedWith('resourceID must be defined');
   });
   it('should create template', () => {
     const dm = new DataManager('live');

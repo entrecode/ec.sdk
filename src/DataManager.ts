@@ -8,12 +8,13 @@ import DMStatsResource from './resources/datamanager/DMStatsResource';
 import TemplateList from './resources/datamanager/TemplateList';
 import TemplateResource from './resources/datamanager/TemplateResource';
 import { filterOptions } from './resources/ListResource';
-import { get, optionsToQuery, post, superagentGet } from './helper';
+import { get, post, superagentGet } from './helper';
 
 validator.setLoggingFunction(() => {
 });
 
 const environmentSymbol = Symbol.for('environment');
+const relationsSymbol = Symbol.for('relations');
 
 const urls = {
   live: 'https://datamanager.entrecode.de/',
@@ -33,6 +34,25 @@ const urls = {
 export default class DataManager extends Core {
   constructor(environment?: environment) {
     super(urls, environment);
+
+    this[relationsSymbol] = {
+      dataManager: {
+        relation: 'ec:datamanagers/options',
+        createRelation: 'ec:datamanager/by-id',
+        createTemplateModifier: '-template',
+        id: 'dataManagerID',
+        ResourceClass: DataManagerResource,
+        ListClass: DataManagerList,
+      },
+      template: {
+        relation: 'ec:dm-templates/options',
+        createRelation: 'ec:dm-template/by-id',
+        createTemplateModifier: '-template',
+        id: 'templateID',
+        ResourceClass: TemplateResource,
+        ListClass: TemplateList,
+      },
+    };
   }
 
   /**
@@ -45,17 +65,8 @@ export default class DataManager extends Core {
    * @param {object} datamanager object representing the datamanager
    * @returns {Promise<DataManagerResource>} the newly created DataManagerResource
    */
-  create(datamanager: any): Promise<DataManagerResource> {
-    return Promise.resolve()
-    .then(() => {
-      if (!datamanager) {
-        throw new Error('Cannot create resource with undefined object.');
-      }
-      return this.link('ec:datamanager/by-id');
-    })
-    .then(link => validator.validate(datamanager, `${link.profile}-template`))
-    .then(() => post(this[environmentSymbol], this.newRequest(), datamanager))
-    .then(([dm, traversal]) => new DataManagerResource(dm, this[environmentSymbol], traversal));
+  createDataManager(datamanager: any): Promise<DataManagerResource> {
+    return <Promise<DataManagerResource>>this.create('dataManager', datamanager);
   }
 
   /**
@@ -97,18 +108,7 @@ export default class DataManager extends Core {
    * @returns {Promise<DataManagerResource>} resolves to the DataManager which should be loaded
    */
   dataManager(dataManagerID: string): Promise<DataManagerResource> {
-    return Promise.resolve()
-    .then(() => {
-      if (!dataManagerID) {
-        throw new Error('dataManagerID must be defined');
-      }
-      return this.follow('ec:datamanager/by-id');
-    })
-    .then((request) => {
-      request.withTemplateParameters({ dataManagerID });
-      return get(this[environmentSymbol], request);
-    })
-    .then(([res, traversal]) => new DataManagerResource(res, this[environmentSymbol], traversal));
+    return <Promise<DataManagerResource>>this.resource('dataManager', dataManagerID);
   }
 
   /**
@@ -119,22 +119,7 @@ export default class DataManager extends Core {
    * @returns {Promise<DataManagerList>} resolves to datamanager list with applied filters
    */
   dataManagerList(options?: filterOptions | any): Promise<DataManagerList> {
-    return Promise.resolve()
-    .then(() => {
-      if (
-        options && Object.keys(options).length === 1 && 'dataManagerID' in options
-        && (typeof options.dataManagerID === 'string' || (!('any' in options.dataManagerID) && !('all' in options.dataManagerID)))
-      ) {
-        throw new Error('Providing only an dataManagerID in DataManagerList filter will result in single resource response. Please use DataManager#get');
-      }
-
-      return this.follow('ec:datamanagers/options');
-    })
-    .then((request) => {
-      request.withTemplateParameters(optionsToQuery(options, this.getLink('ec:datamanagers/options').href));
-      return get(this[environmentSymbol], request);
-    })
-    .then(([res, traversal]) => new DataManagerList(res, this[environmentSymbol], traversal));
+    return <Promise<DataManagerList>>this.resourceList('dataManager', options);
   }
 
   /**
@@ -242,15 +227,7 @@ export default class DataManager extends Core {
    * @returns {Promise<TemplateResource>} Promise resolving to TemplateResource
    */
   template(templateID: string): Promise<TemplateResource> {
-    return Promise.resolve()
-    .then(() => {
-      if (!templateID) {
-        throw new Error('templateID must be defined');
-      }
-      return this.follow('ec:dm-templates/options');
-    })
-    .then(request => get(this[environmentSymbol], request.withTemplateParameters({ templateID })))
-    .then(([res, traversal]) => new TemplateResource(res, this[environmentSymbol], traversal));
+    return <Promise<TemplateResource>>this.resource('template', templateID);
   }
 
   /**
@@ -272,21 +249,6 @@ export default class DataManager extends Core {
    * @returns {Promise<TemplateList>} Promise resolving to TemplateList
    */
   templateList(options?: filterOptions | any): Promise<TemplateList> {
-    return Promise.resolve()
-    .then(() => {
-      if (
-        options && Object.keys(options).length === 1 && 'templateID' in options
-        && (typeof options.templateID === 'string' || (!('any' in options.tempalteID) && !('all' in options.templateID)))
-      ) {
-        throw new Error('Cannot filter templateList only by templateID. Use DataManagerResource#template() instead');
-      }
-
-      return this.follow('ec:dm-templates/options');
-    })
-    .then((request) => {
-      request.withTemplateParameters(optionsToQuery(options, this.getLink('ec:dm-templates/options').href));
-      return get(this[environmentSymbol], request);
-    })
-    .then(([res, traversal]) => new TemplateList(res, this[environmentSymbol], traversal));
+    return <Promise<TemplateList>>this.resourceList('template', options);
   }
 }

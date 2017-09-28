@@ -66,7 +66,7 @@ describe('Apps class', () => {
   });
   it('should be rejected on list only with appID', () => {
     return new Apps('live').appList({ appID: 'id' })
-    .should.be.rejectedWith('Providing only an appID in AppList filter will result in single resource response. Please use Apps#app');
+    .should.be.rejectedWith('Providing only an id in ResourceList filter will result in single resource response.');
   });
   it('should return resource on get', () => {
     const apps = new Apps('live');
@@ -85,7 +85,7 @@ describe('Apps class', () => {
   });
   it('should be rejected on app with undefined id', () => {
     return new Apps('live').app()
-    .should.be.rejectedWith('appID must be defined');
+    .should.be.rejectedWith('resourceID must be defined');
   });
   it('should call post on create', () => {
     const stub = sinon.stub(helper, 'post');
@@ -104,7 +104,7 @@ describe('Apps class', () => {
         title: resource.title,
         hexColor: resource.hexColor,
       });
-      return apps.create(create);
+      return apps.createApp(create);
     })
     .then(() => {
       stub.should.be.calledOnce;
@@ -116,7 +116,7 @@ describe('Apps class', () => {
     });
   });
   it('should be rejected on create with undefined', () => {
-    return new Apps('live').create()
+    return new Apps('live').createApp()
     .should.be.rejectedWith('Cannot create resource with undefined object');
   });
 
@@ -172,7 +172,7 @@ describe('Apps class', () => {
   });
   it('should be rejected on undefined appID', () => {
     const apps = new Apps('live');
-    return apps.stats().should.be.rejectedWith('appID must be defined');
+    return apps.stats().should.be.rejectedWith('resourceID must be defined');
   });
 });
 
