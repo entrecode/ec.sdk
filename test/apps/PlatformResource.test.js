@@ -137,8 +137,8 @@ describe('Platform Resource', () => {
     });
   });
   it('should be rejected on buildList filtered with buildID and platformID', () => {
-    return resource.buildList({ buildID: 'id', platformID: 'id' })
-    .should.be.rejectedWith('Cannot filter buildList only by buildID and platformID. Use PlatformResource#build() instead');
+    return resource.buildList({ buildID: 'id' })
+    .should.be.rejectedWith('Providing only an id in ResourceList filter will result in single resource response.');
   });
   it('should load latest build resource', () => {
     const stub = sinon.stub(helper, 'get');
@@ -169,7 +169,7 @@ describe('Platform Resource', () => {
     });
   });
   it('should be rejected on undefined buildID', () => {
-    return resource.build().should.be.rejectedWith('buildID must be defined');
+    return resource.build().should.be.rejectedWith('resourceID must be defined');
   });
 
   it('should create new Build', () => {
@@ -202,8 +202,8 @@ describe('Platform Resource', () => {
     });
   });
   it('should be rejected on deploymentList filtered with deploymentID and platformID', () => {
-    return resource.deploymentList({ deploymentID: 'id', platformID: 'id' })
-    .should.be.rejectedWith('Cannot filter deploymentList only by deploymentID and platformID. Use PlatformResource#deployment() instead');
+    return resource.deploymentList({ deploymentID: 'id' })
+    .should.be.rejectedWith('Providing only an id in ResourceList filter will result in single resource response.');
   });
   it('should load latest deployment resource', () => {
     const stub = sinon.stub(helper, 'get');
@@ -234,7 +234,7 @@ describe('Platform Resource', () => {
     });
   });
   it('should be rejected on undefined deploymentID', () => {
-    return resource.deployment().should.be.rejectedWith('deploymentID must be defined');
+    return resource.deployment().should.be.rejectedWith('resourceID must be defined');
   });
 
   it('should create Deployment, string - string', () => {
@@ -298,6 +298,8 @@ describe('Platform Resource', () => {
     stub.returns(resolver('deployment-single.json'));
 
     const target = new TargetList({
+      count: 1,
+      total: 2,
       _embedded: {
         'ec:app/target': {
           targetID: 'id',
