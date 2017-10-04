@@ -5,10 +5,9 @@ import * as validator from 'json-schema-remote';
 
 import events from './EventEmitter';
 import TokenStoreFactory from './TokenStore';
-import { get, getSchema, post } from './helper';
+import { get, getSchema, optionsToQuery, post } from './helper';
 import Resource from './resources/Resource';
 import ListResource, { filterOptions } from './resources/ListResource';
-import { optionsToQuery } from '../lib/helper';
 
 const resourceSymbol = Symbol.for('resource');
 const tokenStoreSymbol = Symbol.for('tokenStore');

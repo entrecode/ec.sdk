@@ -4,14 +4,15 @@ import * as traverson from 'traverson';
 import * as validator from 'json-schema-remote';
 import * as isEqual from 'lodash.isequal';
 
-import ListResource from './ListResource';
-import { del, get, put } from '../helper';
+import ListResource, { filterOptions } from './ListResource';
+import { del, get, optionsToQuery, post, put } from '../helper';
 
 const environmentSymbol = Symbol.for('environment');
 const resourceSymbol = Symbol.for('resource');
 const traversalSymbol = Symbol.for('traversal');
 const dirtySymbol = Symbol('dirty');
 const resourcePropertiesSymbol = Symbol('resourceProperties');
+const relationsSymbol = Symbol.for('relation');
 
 traverson.registerMediaType(HalAdapter.mediaType, HalAdapter);
 validator.setLoggingFunction(() => {
@@ -61,15 +62,6 @@ export default class Resource {
       isDirty: {
         enumerable: false,
         get: () => this[dirtySymbol],
-      },
-      dirty: {
-        enumerable: false,
-      },
-      resource: {
-        enumerable: false,
-      },
-      traversal: {
-        enumerable: false,
       },
     });
     this.countProperties();
@@ -304,5 +296,129 @@ export default class Resource {
       out[key] = this[resourceSymbol][key];
     });
     return out;
+  }
+
+  /**
+   * Get a single {@link Resource} identified by resourceID.
+   *
+   * @example
+   * return accounts.resource('account', me.accountID)
+   * .then(account => show(account.email));
+   *
+   * @param {string} relation The shortened relation name
+   * @param {string} resourceID id of the Resource
+   * @returns {Promise<Resource>} resolves to the Resource which should be loaded
+   */
+  resource(relation: string, resourceID): Promise<Resource> {
+    return Promise.resolve()
+    .then(() => {
+      if (!relation) {
+        throw new Error('relation must be defined');
+      }
+      if (!this[relationsSymbol][relation]) {
+        throw new Error(`unknown relation, use one of ${Object.keys(this[relationsSymbol]).join(', ')}`)
+      }
+      if (!resourceID) {
+        throw new Error('resourceID must be defined');
+      }
+
+      return this.newRequest().follow(this[relationsSymbol][relation].relation)
+    })
+    .then((request) => {
+      request.withTemplateParameters({ [this[relationsSymbol][relation].id]: resourceID });
+      return get(this[environmentSymbol], request);
+    })
+    .then(([res, traversal]) =>
+      new this[relationsSymbol][relation].ResourceClass(res, this[environmentSymbol], traversal));
+  }
+
+  /**
+   * Load a {@link ListResource} of {@link Resource}s filtered by the values specified by the
+   * options parameter.
+   *
+   * @example
+   * return accounts.resourceList('account', {
+   *   filter: {
+   *     created: {
+   *       from: new Date(new Date.getTime() - 600000).toISOString()),
+   *     },
+   *   },
+   * })
+   * .then(list => show(list))
+   *
+   * @param {string} relation The shortened relation name
+   * @param {filterOptions?} options the filter options
+   * @returns {Promise<ListResource>} resolves to resource list with applied filters
+   */
+  resourceList(relation: string, options?: filterOptions | any): Promise<ListResource> {
+    return Promise.resolve()
+    .then(() => {
+      if (!relation) {
+        throw new Error('relation must be defined');
+      }
+      if (!this[relationsSymbol][relation]) {
+        throw new Error(`unknown relation, use one of ${Object.keys(this[relationsSymbol]).join(', ')}`)
+      }
+
+      const id = this[relationsSymbol][relation].id;
+      if (
+        options && Object.keys(options).length === 1 && id in options
+        && (typeof options[id] === 'string' || (!('any' in options[id] && !('all' in options[id]))))
+      ) {
+        throw new Error('Providing only an id in ResourceList filter will result in single resource response.');
+      }
+
+      return this.newRequest().follow(this[relationsSymbol][relation].relation);
+    })
+    .then((request) => {
+      if (options) {
+        request.withTemplateParameters(
+          optionsToQuery(options, this.getLink(this[relationsSymbol][relation].relation).href));
+      }
+      return get(this[environmentSymbol], request);
+    })
+    .then(([res, traversal]) =>
+      new this[relationsSymbol][relation].ListClass(res, this[environmentSymbol], traversal));
+  }
+
+  /**
+   * Create a new Resource. Note: Not all relations will support this.
+   *
+   * @example
+   * return accounts.create('client', {
+   *   clientID: 'myClient',
+   *   callbackURL: 'https://example.com/login',
+   *   config: {
+   *     tokenMethod: 'query',
+   *   },
+   * })
+   * .then(client => show(client));
+   *
+   * @param {string} relation The shortened relation name
+   * @param {object} resource object representing the resource
+   * @returns {Promise<Resource>} the newly created Resource
+   */
+  create(relation: string, resource: any): Promise<Resource> {
+    return Promise.resolve()
+    .then(() => {
+      if (!relation) {
+        throw new Error('relation must be defined');
+      }
+      if (!this[relationsSymbol][relation].createRelation) {
+        throw new Error('Resource has no createRelation');
+      }
+      if (!resource) {
+        throw new Error('Cannot create resource with undefined object.');
+      }
+      return this.getLink(this[relationsSymbol][relation].createRelation);
+    })
+    .then(link => validator.validate(resource, `${link.profile}${this[relationsSymbol][relation].createTemplateModifier}`))
+    .then(() => this.newRequest().follow(this[relationsSymbol][relation].relation))
+    .then(request => {
+      request.withTemplateParameters({});
+      return post(this[environmentSymbol], request, resource)
+    })
+    .then(([c, traversal]) =>
+      new this[relationsSymbol][relation].ResourceClass(c, this[environmentSymbol], traversal));
   }
 }

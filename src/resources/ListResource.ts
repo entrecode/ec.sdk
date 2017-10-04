@@ -63,6 +63,10 @@ class ListResource extends Resource {
   constructor(resource: any, environment: string, traversal: any, name: string, itemSchema: any, ListClass = ListResource, ItemClass = Resource) {
     super(resource, environment, traversal);
 
+    if (!('count' in resource) && !('total' in resource)) {
+      throw new Error('Resource does not look like a ListResource. Maybe single result on filtered list?');
+    }
+
     this[listClassSymbol] = ListClass;
     this[itemClassSymbol] = ItemClass;
     this[itemSchemaSymbol] = itemSchema;

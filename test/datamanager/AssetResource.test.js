@@ -67,11 +67,7 @@ describe('Asset ListResource', () => {
   });
   it('should throw on asset list filtered with assetID', () => {
     return list.deletedAssetList({ assetID: 'id' })
-    .should.be.rejectedWith('Cannot filter deletedAssetList only by dataManagerID and assetID. Use AssetList#deletedAsset() instead');
-  });
-  it('should be rejected on asset list filtered with assetID and dataManagerID', () => {
-    return list.deletedAssetList({ assetID: 'id', dataManagerID: 'id' })
-    .should.be.rejectedWith('Cannot filter deletedAssetList only by dataManagerID and assetID. Use AssetList#deletedAsset() instead');
+    .should.be.rejectedWith('Providing only an id in ResourceList filter will result in single resource response.');
   });
   it('should load asset resource', () => {
     const stub = sinon.stub(helper, 'get');
@@ -88,7 +84,7 @@ describe('Asset ListResource', () => {
     });
   });
   it('should be rejected on undefined assetID', () => {
-    return list.deletedAsset().should.be.rejectedWith('assetID must be defined');
+    return list.deletedAsset().should.be.rejectedWith('resourceID must be defined');
   });
 
   it('should load tag list', () => {
@@ -107,11 +103,7 @@ describe('Asset ListResource', () => {
   });
   it('should throw on tag list filtered with tag', () => {
     return list.tagList({ tag: 'id' })
-    .should.be.rejectedWith('Cannot filter tagList only by dataManagerID and tag. Use AssetList#tag() instead');
-  });
-  it('should be rejected on tag list filtered with tag and dataManagerID', () => {
-    return list.tagList({ tag: 'id', dataManagerID: 'id' })
-    .should.be.rejectedWith('Cannot filter tagList only by dataManagerID and tag. Use AssetList#tag() instead');
+    .should.be.rejectedWith('Providing only an id in ResourceList filter will result in single resource response.');
   });
   it('should load tag resource', () => {
     const stub = sinon.stub(helper, 'get');
@@ -128,7 +120,7 @@ describe('Asset ListResource', () => {
     });
   });
   it('should be rejected on undefined tag', () => {
-    return list.tag().should.be.rejectedWith('tag must be defined');
+    return list.tag().should.be.rejectedWith('resourceID must be defined');
   });
 
   it('should resolve on download without writable stream', () => {
