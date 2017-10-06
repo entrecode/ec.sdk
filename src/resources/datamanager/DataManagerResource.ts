@@ -418,6 +418,16 @@ export default class DataManagerResource extends Resource {
   }
 
   /**
+   * Create a new model.
+   *
+   * @param {object} model object representing the model.
+   * @returns {Promise<ModelResource>} the newly created ModelResource
+   */
+  createModel(model: any): Promise<ModelResource> {
+    return <Promise<ModelResource>>this.create('model', model);
+  }
+
+  /**
    * Create a new role.
    *
    * @param {object} role object representing the role.
