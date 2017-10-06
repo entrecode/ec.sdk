@@ -312,6 +312,10 @@ export default class Core {
         throw new Error('Providing only an id in ResourceList filter will result in single resource response.');
       }
 
+      if (options && '_levels' in options) {
+        throw new Error('_levels on list resources not supported');
+      }
+
       return this.follow(this[relationsSymbol][relation].relation);
     })
     .then((request) => {
