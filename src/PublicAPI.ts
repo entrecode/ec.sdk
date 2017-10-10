@@ -17,6 +17,7 @@ import {
   getUrl,
   optionsToQuery,
   post,
+  postEmpty,
   superagentFormPost,
   superagentGet,
   superagentPost
@@ -739,6 +740,29 @@ export default class PublicAPI extends Core {
       this[eventsSymbol].emit('logout');
       this[tokenStoreSymbol].deleteToken();
       return Promise.resolve();
+    });
+  }
+
+  /**
+   * Change the logged in account to the given new email address.
+   *
+   * @example
+   * return api.changeEmail(newEmail)
+   * .then(() => show(`Email change started. Please verify with your new address.`))
+   *
+   * @param {string} email the new email
+   * @returns {Promise<undefined>} Promise resolving on success.
+   */
+  changeEmail(email: string): Promise<void> {
+    return Promise.resolve()
+    .then(() => {
+      if (!email) {
+        throw  new Error('email must be defined');
+      }
+      return this.follow(`${this[shortIDSymbol]}:_auth/change-email`)
+      .then((request) => {
+        return postEmpty(this[environmentSymbol], request, { email });
+      });
     });
   }
 

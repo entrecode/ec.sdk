@@ -201,6 +201,10 @@
     "beefbeef:_auth/public-key.pem": {
       "name": "Public key for JWT validation",
       "href": "https://datamanager.entrecode.de/api/beefbeef/_auth/public-key.pem"
+    },
+    "beefbeef:_auth/change-email": {
+      "name": "Change email address",
+      "href": "https://datamanager.entrecode.de/api/beefbeef/_auth/change-email"
     }
   }
 }
