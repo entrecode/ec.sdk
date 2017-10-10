@@ -12,7 +12,7 @@ const resourceSymbol = Symbol.for('resource');
 const traversalSymbol = Symbol.for('traversal');
 const dirtySymbol = Symbol('dirty');
 const resourcePropertiesSymbol = Symbol('resourceProperties');
-const relationsSymbol = Symbol.for('relation');
+const relationsSymbol = Symbol.for('relations');
 
 traverson.registerMediaType(HalAdapter.mediaType, HalAdapter);
 validator.setLoggingFunction(() => {
@@ -64,6 +64,8 @@ export default class Resource {
         get: () => this[dirtySymbol],
       },
     });
+
+    this[relationsSymbol] = { dummy: {} };
     this.countProperties();
   }
 
@@ -368,6 +370,10 @@ export default class Resource {
         throw new Error('Providing only an id in ResourceList filter will result in single resource response.');
       }
 
+      if (options && '_levels' in options) {
+        throw new Error('_levels on list resources not supported');
+      }
+
       return this.newRequest().follow(this[relationsSymbol][relation].relation);
     })
     .then((request) => {
@@ -403,6 +409,9 @@ export default class Resource {
     .then(() => {
       if (!relation) {
         throw new Error('relation must be defined');
+      }
+      if (!this[relationsSymbol][relation]) {
+        throw new Error(`unknown relation, use one of ${Object.keys(this[relationsSymbol]).join(', ')}`)
       }
       if (!this[relationsSymbol][relation].createRelation) {
         throw new Error('Resource has no createRelation');

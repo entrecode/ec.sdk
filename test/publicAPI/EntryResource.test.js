@@ -131,6 +131,9 @@ describe('Entry Resource', () => {
   it('should get _id', () => {
     resource._id.should.be.equal('B17u3r5lx-');
   });
+  it('should get text', () => {
+    resource.text.should.be.equal('asdf');
+  });
   it('should get created', () => {
     resource.created.toISOString().should.be.equal('2017-05-10T13:29:19.893Z');
   });

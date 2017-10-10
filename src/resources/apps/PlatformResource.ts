@@ -17,7 +17,7 @@ import { filterOptions } from '../ListResource';
 
 const resourceSymbol = Symbol.for('resource');
 const environmentSymbol = Symbol.for('environment');
-const relationsSymbol = Symbol.for('relation');
+const relationsSymbol = Symbol.for('relations');
 
 traverson.registerMediaType(traversonHal.mediaType, traversonHal);
 

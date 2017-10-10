@@ -163,6 +163,31 @@ describe('Core', () => {
       'https://entrecode.de/schema/error',
     ]).should.be.fulfilled;
   });
+  it('resource called without relation', () => {
+    return core.resource().should.be.rejectedWith('relation must be defined');
+  });
+  it('resource called with non existing relation', () => {
+    return core.resource('asdf').should.be.rejectedWith('unknown relation, use one of');
+  });
+  it('resourceList called without relation', () => {
+    return core.resourceList().should.be.rejectedWith('relation must be defined');
+  });
+  it('resourceList called with non existing relation', () => {
+    return core.resourceList('asdf').should.be.rejectedWith('unknown relation, use one of');
+  });
+  it('resourceList called with levels param', () => {
+    return core.resourceList('dummy', { _levels: 2 })
+    .should.be.rejectedWith('_levels on list resources not supported');
+  });
+  it('create called without relation', () => {
+    return core.create().should.be.rejectedWith('relation must be defined');
+  });
+  it('create called with non existing relation', () => {
+    return core.create('asdf').should.be.rejectedWith('unknown relation, use one of');
+  });
+  it('create called with relation without create options', () => {
+    return core.create('dummy').should.be.rejectedWith('Resource has no createRelation');
+  });
 });
 
 describe('Network Helper', () => {

@@ -246,6 +246,29 @@ describe('Resource', () => {
     resource.missing = 'yes its missing';
     return resource.save().should.be.rejectedWith(`Additional properties found: missing`);
   });
-  it('should throw on get unknown property', () => {
+  it('resource called without relation', () => {
+    return resource.resource().should.be.rejectedWith('relation must be defined');
+  });
+  it('resource called with non existing relation', () => {
+    return resource.resource('asdf').should.be.rejectedWith('unknown relation, use one of');
+  });
+  it('resourceList called without relation', () => {
+    return resource.resourceList().should.be.rejectedWith('relation must be defined');
+  });
+  it('resourceList called with non existing relation', () => {
+    return resource.resourceList('asdf').should.be.rejectedWith('unknown relation, use one of');
+  });
+  it('resourceList called with levels param', () => {
+    return resource.resourceList('dummy', { _levels: 2 })
+    .should.be.rejectedWith('_levels on list resources not supported');
+  });
+  it('create called without relation', () => {
+    return resource.create().should.be.rejectedWith('relation must be defined');
+  });
+  it('create called with non existing relation', () => {
+    return resource.create('asdf').should.be.rejectedWith('unknown relation, use one of');
+  });
+  it('create called with relation without create options', () => {
+    return resource.create('dummy').should.be.rejectedWith('Resource has no createRelation');
   });
 });

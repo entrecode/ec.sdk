@@ -22,7 +22,7 @@ import PublicAPI from '../../PublicAPI';
 
 const environmentSymbol = Symbol.for('environment');
 const apiSymbol = Symbol('api');
-const relationsSymbol = Symbol.for('relation');
+const relationsSymbol = Symbol.for('relations');
 
 validator.setLoggingFunction(() => {
 });

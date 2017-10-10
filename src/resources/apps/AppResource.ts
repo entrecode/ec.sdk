@@ -11,7 +11,7 @@ import TargetResource from './TargetResource';
 import { filterOptions } from '../ListResource';
 import { environment } from '../../Core';
 
-const relationsSymbol = Symbol.for('relation');
+const relationsSymbol = Symbol.for('relations');
 
 validator.setLoggingFunction(() => {
 });

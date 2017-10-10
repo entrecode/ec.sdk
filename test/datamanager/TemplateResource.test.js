@@ -118,7 +118,7 @@ describe('Template Resource', () => {
     const post = sinon.stub(helper, 'post');
     post.returns(resolver('dm-single.json'));
 
-    resource[TemplateResource.resolvedSymbol] = false;
+    resource[resolvedSymbol] = false;
 
     return resource.createDM()
     .then((dm) => {

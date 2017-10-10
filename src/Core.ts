@@ -44,6 +44,7 @@ export default class Core {
     this[environmentSymbol] = environment + cookieModifier;
     this[tokenStoreSymbol] = TokenStoreFactory(environment + cookieModifier);
     this[traversalSymbol] = traverson.from(urls[environment]).jsonHal();
+    this[relationsSymbol] = { dummy: {} };
   }
 
   /**
@@ -351,6 +352,9 @@ export default class Core {
     .then(() => {
       if (!relation) {
         throw new Error('relation must be defined');
+      }
+      if (!this[relationsSymbol][relation]) {
+        throw new Error(`unknown relation, use one of ${Object.keys(this[relationsSymbol]).join(', ')}`)
       }
       if (!this[relationsSymbol][relation].createRelation) {
         throw new Error('Resource has no createRelation');

@@ -62,7 +62,7 @@ describe('Accounts class', () => {
     const stub = sinon.stub(helper, 'get');
     stub.returns(resolver('account-list.json'));
 
-    return accounts.accountList()
+    return accounts.accountList({})
     .then((list) => {
       list.should.be.instanceof(AccountList);
       stub.restore();

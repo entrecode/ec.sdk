@@ -11,7 +11,7 @@ import { environment } from '../../Core';
 
 const environmentSymbol = Symbol.for('environment');
 const dataManagerIDSymbol = Symbol('dataManagerID');
-const relationsSymbol = Symbol.for('relation');
+const relationsSymbol = Symbol.for('relations');
 
 /**
  * Asset list class
