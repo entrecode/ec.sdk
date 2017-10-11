@@ -48,6 +48,11 @@
       "profile": "https://entrecode.de/schema/models",
       "href": "https://datamanager.entrecode.de/model?dataManagerID=48e18a34-cf64-4f4a-bc47-45323a7f0e44"
     },
+    "ec:model/by-id": {
+      "profile": "https://entrecode.de/schema/model",
+      "href": "https://datamanager.entrecode.de/model{?modelID}",
+      "templated": true
+    },
     "ec:models/options": {
       "href": "https://datamanager.entrecode.de/model{?dataManagerID,modelID,page,size,sort,title,titleFrom,titleTo,title~}",
       "templated": true

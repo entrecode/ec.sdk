@@ -1,0 +1,41 @@
+{
+  "assetID": "740e08ab-4957-4142-8393-7ef33942fa88",
+  "created": "2017-03-02T10:02:43.180Z",
+  "files": [
+    {
+      "url": "https://cdn2.entrecode.de/files/01bd8e08/J2DJfjfEVby3KcxGNrJyFdEz_1024.png",
+      "mimetype": "image/png",
+      "size": 388058,
+      "resolution": {
+        "width": 1024,
+        "height": 1006
+      },
+      "locale": null,
+      "created": "2017-03-02T10:02:44.909+00:00",
+      "modified": "2017-03-02T10:02:44.909+00:00",
+      "assetID": "740e08ab-4957-4142-8393-7ef33942fa88"
+    }
+  ],
+  "tags": [],
+  "title": "Bildschirmfoto 2017-03-02 um 10.57.43",
+  "type": "text",
+  "_links": {
+    "collection": {
+      "profile": "https://entrecode.de/schema/assets",
+      "href": "https://datamanager.entrecode.de/asset?dataManagerID=48e18a34-cf64-4f4a-bc47-45323a7f0e44"
+    },
+    "ec:asset/best-file": {
+      "href": "https://datamanager.entrecode.de/files/740e08ab-4957-4142-8393-7ef33942fa88{?size,thumb}",
+      "templated": true
+    },
+    "ec:datamanager": {
+      "profile": "https://entrecode.de/schema/datamanager",
+      "href": "https://datamanager.entrecode.de/?dataManagerID=48e18a34-cf64-4f4a-bc47-45323a7f0e44"
+    },
+    "self": {
+      "profile": "https://entrecode.de/schema/asset",
+      "href": "https://datamanager.entrecode.de/asset?assetID=740e08ab-4957-4142-8393-7ef33942fa88",
+      "title": "Bildschirmfoto 2017-03-02 um 10.57.43"
+    }
+  }
+}

@@ -126,14 +126,47 @@ describe('Asset Resource', () => {
   it('should get image thumb url', () => {
     resource.getImageThumbUrl(500).should.be.equal('https://cdn2.entrecode.de/files/01bd8e08/wFG3Al80jXjH06NIw3UWM2x0_400_thumb.png');
   });
+  it('should get original file', () => {
+    resource.getOriginalFile().should.have.property('url', 'https://cdn2.entrecode.de/files/01bd8e08/wFG3Al80jXjH06NIw3UWM2x0.png');
+  });
+  it('should get original file on text', () => {
+    return new Promise((resolve, reject) => {
+      fs.readFile(`${__dirname}/../mocks/public-asset-text.json`, 'utf-8', (err, res) => {
+        if (err) {
+          return reject(err);
+        }
+
+        return resolve(JSON.parse(res));
+      });
+    })
+    .then(data => new PublicAssetResource(data))
+    .then((asset) => {
+      asset.getOriginalFile().should.have.property('url', 'https://cdn2.entrecode.de/files/01bd8e08/wFG3Al80jXjH06NIw3UWM2x0.png');
+    });
+  });
+  it('should get original file no resolution', () => {
+    return new Promise((resolve, reject) => {
+      fs.readFile(`${__dirname}/../mocks/public-asset-no-resolution.json`, 'utf-8', (err, res) => {
+        if (err) {
+          return reject(err);
+        }
+
+        return resolve(JSON.parse(res));
+      });
+    })
+    .then(data => new PublicAssetResource(data))
+    .then((asset) => {
+      asset.getOriginalFile().should.have.property('url', 'https://cdn2.entrecode.de/files/01bd8e08/wFG3Al80jXjH06NIw3UWM2x0.png');
+    });
+  });
   it('should get file url', () => {
-    resource.getFileUrl('de-DE').should.be.equal('https://cdn2.entrecode.de/files/01bd8e08/wFG3Al80jXjH06NIw3UWM2x0.png');
+    resource.getFileUrl().should.be.equal('https://cdn2.entrecode.de/files/01bd8e08/wFG3Al80jXjH06NIw3UWM2x0.png');
   });
   it('should get image url', () => {
-    resource.getImageUrl(1000, 'de-DE').should.be.equal('https://cdn2.entrecode.de/files/01bd8e08/wFG3Al80jXjH06NIw3UWM2x0_1024.png');
+    resource.getImageUrl(1000).should.be.equal('https://cdn2.entrecode.de/files/01bd8e08/wFG3Al80jXjH06NIw3UWM2x0_1024.png');
   });
   it('should get image thumb url', () => {
-    resource.getImageThumbUrl(100, 'de-DE').should.be.equal('https://cdn2.entrecode.de/files/01bd8e08/wFG3Al80jXjH06NIw3UWM2x0_100_thumb.png');
+    resource.getImageThumbUrl(100).should.be.equal('https://cdn2.entrecode.de/files/01bd8e08/wFG3Al80jXjH06NIw3UWM2x0_100_thumb.png');
   });
   it('should get on svg image with resolution', () => {
     return new Promise((resolve, reject) => {
@@ -192,7 +225,19 @@ describe('Asset Resource', () => {
     })
     .then(data => new PublicAssetResource(data))
     .then((asset) => {
-      asset.getFileUrl('de-DE').should.be.equal('https://cdn2.entrecode.de/files/01bd8e08/1-mt7_kX_DnyNbTQaSP4meVk.txt');
+      asset.getFileUrl().should.be.equal('https://cdn2.entrecode.de/files/01bd8e08/1-mt7_kX_DnyNbTQaSP4meVk.txt');
+    });
+  });
+  it('should be resolved', () => {
+    resource.isResolved.should.be.equal(true);
+  });
+  it('should save', () => {
+    const stub = sinon.stub(PublicAssetResource.prototype.__proto__, 'save');
+    stub.returns(Promise.resolve());
+    return resource.save()
+    .then(() => {
+      stub.should.have.been.calledOnce;
+      stub.restore();
     });
   });
 
@@ -297,6 +342,13 @@ describe('Lite Asset Resource', () => {
       stub.restore();
       throw err;
     });
+  });
+  it('should be unresolved', () => {
+    resource.isResolved.should.be.equal(false);
+  });
+  it('should be rejected on save', () => {
+    return resource.save()
+    .should.be.rejectedWith('Cannot save not resolved PublicAssetResource');
   });
 
   const dateGetter = ['created'];

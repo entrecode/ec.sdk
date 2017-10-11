@@ -1,0 +1,164 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "https://entrecode.de/schema/model-template",
+  "type": "object",
+  "required": [
+    "title",
+    "locales",
+    "fields"
+  ],
+  "properties": {
+    "title": {
+      "type": "string",
+      "pattern": "^[a-zA-Z0-9\\-][a-zA-Z0-9_\\-]{0,255}$"
+    },
+    "description": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "titleField": {
+      "type": "string",
+      "pattern": "^[a-zA-Z0-9_\\-]{1,256}$"
+    },
+    "hexColor": {
+      "type": "string",
+      "pattern": "^#[A-Fa-f0-9]{6}$"
+    },
+    "rights": {
+      "type": "object",
+      "required": [
+        "get",
+        "put",
+        "postPublic",
+        "postPrivate",
+        "delete"
+      ],
+      "properties": {
+        "get": {
+          "type": "boolean"
+        },
+        "put": {
+          "type": "boolean"
+        },
+        "postPublic": {
+          "type": "boolean"
+        },
+        "postPrivate": {
+          "type": "boolean"
+        },
+        "delete": {
+          "type": "boolean"
+        }
+      }
+    },
+    "locales": {
+      "type": "array",
+      "items": {
+        "$ref": "https://entrecode.de/schema/locale"
+      }
+    },
+    "hooks": {
+      "type": "array",
+      "items": {
+        "$ref": "https://entrecode.de/schema/model#/definitions/hook"
+      }
+    },
+    "sync": {
+      "$ref": "https://entrecode.de/schema/model#/definitions/sync"
+    },
+    "policies": {
+      "type": "array",
+      "items": {
+        "$ref": "https://entrecode.de/schema/dm-policy"
+      }
+    },
+    "created": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "modified": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "fields": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "title",
+          "description",
+          "type",
+          "readOnly",
+          "required",
+          "unique",
+          "localizable",
+          "mutable",
+          "validation"
+        ],
+        "properties": {
+          "title": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9_\\-]{1,256}$"
+          },
+          "description": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "type": {
+            "enum": [
+              "text",
+              "formattedText",
+              "number",
+              "decimal",
+              "boolean",
+              "id",
+              "datetime",
+              "location",
+              "email",
+              "url",
+              "phone",
+              "json",
+              "entry",
+              "entries",
+              "asset",
+              "assets",
+              "account",
+              "role"
+            ]
+          },
+          "readOnly": {
+            "type": "boolean"
+          },
+          "required": {
+            "type": "boolean"
+          },
+          "unique": {
+            "type": "boolean"
+          },
+          "localizable": {
+            "type": "boolean"
+          },
+          "mutable": {
+            "type": "boolean"
+          },
+          "validation": {
+            "type": [
+              "string",
+              "object",
+              "null"
+            ]
+          },
+          "default": {
+          }
+        }
+      }
+    },
+    "config": {
+      "type": "object"
+    }
+  }
+}

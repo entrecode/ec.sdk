@@ -182,11 +182,39 @@ describe('Asset Resource', () => {
   it('should be instance of Resource', () => {
     resource.should.be.instanceOf(Resource);
   });
-  it('should be instance of TokenResource', () => {
+  it('should be instance of AssetResource', () => {
     resource.should.be.instanceOf(AssetResource);
   });
   it('should get original file', () => {
     resource.getOriginalFile().should.have.property('url', 'https://cdn2.entrecode.de/files/01bd8e08/J2DJfjfEVby3KcxGNrJyFdEz.png');
+  });
+  it('should get original from non image', () => {
+    return new Promise((resolve, reject) => {
+      fs.readFile(`${__dirname}/../mocks/asset-single-text.json`, 'utf-8', (err, res) => {
+        if (err) {
+          return reject(err);
+        }
+        return resolve(JSON.parse(res));
+      });
+    })
+    .then((file) => {
+      const res = new AssetResource(file);
+      res.getOriginalFile().should.have.property('url', 'https://cdn2.entrecode.de/files/01bd8e08/J2DJfjfEVby3KcxGNrJyFdEz_1024.png');
+    });
+  });
+  it('should get file from non resolution images', () => {
+    return new Promise((resolve, reject) => {
+      fs.readFile(`${__dirname}/../mocks/asset-single-without-resolution.json`, 'utf-8', (err, res) => {
+        if (err) {
+          return reject(err);
+        }
+        return resolve(JSON.parse(res));
+      });
+    })
+    .then((file) => {
+      const res = new AssetResource(file);
+      res.getOriginalFile().should.have.property('url', 'https://cdn2.entrecode.de/files/01bd8e08/J2DJfjfEVby3KcxGNrJyFdEz_1024.png');
+    });
   });
   it('should get file url', () => {
     resource.getFileUrl().should.be.equal('https://cdn2.entrecode.de/files/01bd8e08/J2DJfjfEVby3KcxGNrJyFdEz.png');
@@ -266,7 +294,6 @@ describe('Asset Resource', () => {
       asset.getFileUrl('de-DE').should.be.equal('https://cdn2.entrecode.de/files/01bd8e08/1-mt7_kX_DnyNbTQaSP4meVk.txt');
     });
   });
-
 
   const dateGetter = ['created'];
   dateGetter.forEach((name) => {

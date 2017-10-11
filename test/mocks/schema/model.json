@@ -1,0 +1,526 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "https://entrecode.de/schema/model",
+  "type": "object",
+  "required": [
+    "modelID",
+    "title",
+    "titleField",
+    "hexColor",
+    "fields",
+    "locales",
+    "hasEntries",
+    "created",
+    "modified",
+    "hooks",
+    "policies",
+    "config"
+  ],
+  "properties": {
+    "modelID": {
+      "$ref": "https://entrecode.de/schema/uuidV4"
+    },
+    "title": {
+      "type": "string",
+      "pattern": "^[a-zA-Z0-9_\\-]{1,256}$"
+    },
+    "description": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "titleField": {
+      "type": "string",
+      "pattern": "^[a-zA-Z0-9_\\-]{1,256}$"
+    },
+    "hexColor": {
+      "type": "string",
+      "pattern": "^#[A-Fa-f0-9]{6}$"
+    },
+    "hasEntries": {
+      "type": "boolean"
+    },
+    "rights": {
+      "type": "object",
+      "required": [
+        "get",
+        "put",
+        "postPublic",
+        "postPrivate",
+        "delete"
+      ],
+      "properties": {
+        "get": {
+          "type": "boolean"
+        },
+        "put": {
+          "type": "boolean"
+        },
+        "postPublic": {
+          "type": "boolean"
+        },
+        "postPrivate": {
+          "type": "boolean"
+        },
+        "delete": {
+          "type": "boolean"
+        }
+      }
+    },
+    "fields": {
+      "$ref": "#/definitions/fields"
+    },
+    "created": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "modified": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "locales": {
+      "type": "array",
+      "items": {
+        "$ref": "https://entrecode.de/schema/locale"
+      }
+    },
+    "hooks": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/hook"
+      }
+    },
+    "sync": {
+      "$ref": "#/definitions/sync"
+    },
+    "policies": {
+      "type": "array",
+      "items": {
+        "$ref": "https://entrecode.de/schema/dm-policy"
+      }
+    },
+    "lastSyncs": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "config": {
+      "type": "object"
+    },
+    "_links": {
+      "$ref": "https://entrecode.de/schema/hal#_links"
+    }
+  },
+  "definitions": {
+    "request": {
+      "type": "object",
+      "properties": {
+        "uri": {
+          "type": "string"
+        },
+        "body": {
+          "type": "object"
+        },
+        "method": {
+          "enum": [
+            "get",
+            "GET",
+            "put",
+            "PUT",
+            "post",
+            "POST",
+            "delete",
+            "DELETE"
+          ]
+        },
+        "headers": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "responseMapping": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/jsonTransformation"
+          }
+        },
+        "validate": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "type": "integer"
+            }
+          }
+        }
+      },
+      "required": [
+        "uri"
+      ]
+    },
+    "createJWT": {
+      "type": "object",
+      "properties": {
+        "variableToSet": {
+          "type": "string"
+        },
+        "algorithm": {
+          "enum": [
+            "HS256",
+            "HS384",
+            "HS512",
+            "RS256",
+            "RS384",
+            "RS512"
+          ]
+        },
+        "expiresIn": {
+          "type": "string",
+          "pattern": "^((?:\\d+)?\\.?\\d+) *(milliseconds?|msecs?|ms|seconds?|secs?|s|minutes?|mins?|m|hours?|hrs?|h|days?|d|years?|yrs?|y)?$"
+        },
+        "subject": {
+          "type": "string"
+        },
+        "issuer": {
+          "type": "string"
+        },
+        "secret": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "variableToSet",
+        "algorithm"
+      ]
+    },
+    "hook": {
+      "type": "object",
+      "properties": {
+        "hook": {
+          "type": "string",
+          "pattern": "^before|after|event$"
+        },
+        "type": {
+          "$ref": "#/definitions/hookTypes"
+        },
+        "methods": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^get|put|post|delete$"
+          }
+        },
+        "description": {
+          "type": "string"
+        },
+        "config": {
+          "$ref": "#/definitions/hookConfig"
+        },
+        "hookID": {
+          "$ref": "https://entrecode.de/schema/uuidV4"
+        }
+      },
+      "required": [
+        "hook",
+        "type",
+        "methods",
+        "config"
+      ]
+    },
+    "hookTypes": {
+      "enum": [
+        "web",
+        "sync",
+        "mail",
+        "mailgun"
+      ]
+    },
+    "hookConfig": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/webHook"
+        },
+        {
+          "$ref": "#/definitions/syncHook"
+        },
+        {
+          "$ref": "#/definitions/mailgunHook"
+        }
+      ]
+    },
+    "webHook": {
+      "type": "object",
+      "properties": {
+        "requests": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/request"
+          }
+        },
+        "createJWT": {
+          "$ref": "#/definitions/createJWT"
+        },
+        "responseMapping": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/jsonTransformation"
+          }
+        }
+      },
+      "required": [
+        "requests"
+      ]
+    },
+    "syncHook": {
+      "type": "object",
+      "properties": {
+        "restrictToID": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/definitions/jsonTransformation"
+            }
+          ]
+        },
+        "models": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "models"
+      ]
+    },
+    "mailgunHook": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/definitions/jsonTransformation"
+      }
+    },
+    "sync": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "locale": {
+          "type": "string"
+        },
+        "createJWT": {
+          "$ref": "#/definitions/createJWT"
+        },
+        "requests": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/request"
+          }
+        },
+        "itemMapping": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/jsonTransformation"
+          }
+        },
+        "entryRelationTargetModelIDs": {
+          "type": "object",
+          "additionalProperties": {
+            "oneOf": [
+              {
+                "$ref": "#/properties/modelID"
+              },
+              {
+                "$ref": "#/properties/title"
+              }
+            ]
+          }
+        },
+        "pathToArray": {
+          "type": "string"
+        },
+        "subResource": {
+          "type": "object",
+          "properties": {
+            "parentModelID": {
+              "type": "string"
+            },
+            "parentIDForRequests": {
+              "oneOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": {
+                    "$ref": "#/definitions/jsonTransformation"
+                  }
+                }
+              ]
+            },
+            "entryFieldForParentRelation": {
+              "type": "string"
+            }
+          }
+        },
+        "singleResource": {
+          "type": "object",
+          "properties": {
+            "itemMapping": {
+              "type": "object",
+              "additionalProperties": {
+                "$ref": "#/definitions/jsonTransformation"
+              }
+            }
+          }
+        },
+        "remoteID": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/jsonTransformation"
+          }
+        }
+      },
+      "required": [
+        "locale",
+        "requests",
+        "itemMapping",
+        "pathToArray",
+        "remoteID"
+      ]
+    },
+    "jsonTransformation": {
+      "anyOf": [
+        {
+          "properties": {
+            "__jsonmask": {
+              "type": "string"
+            },
+            "__jsonpath": {
+              "type": "string"
+            },
+            "__array": {
+              "type": "boolean"
+            },
+            "__modifier": {
+              "enum": [
+                "parseInt",
+                "parseFloat",
+                "uppercase",
+                "lowercase",
+                "stringify",
+                "replace",
+                "stringConcat",
+                "date",
+                "date_add",
+                "date_subtract",
+                "phone",
+                "emptyStringToNull"
+              ]
+            },
+            "__arguments": {
+              "type": "array",
+              "minItems": 2,
+              "maxItems": 4
+            },
+            "__value": {
+              "$ref": "#/definitions/jsonTransformation"
+            },
+            "__composite": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/jsonTransformation"
+              }
+            }
+          }
+        },
+        {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/jsonTransformation"
+          }
+        }
+      ]
+    },
+    "fields": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "title",
+          "type",
+          "description",
+          "readOnly",
+          "required",
+          "unique",
+          "localizable",
+          "mutable",
+          "validation",
+          "default"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "title": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9_\\-]{1,256}$"
+          },
+          "description": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "type": {
+            "enum": [
+              "text",
+              "formattedText",
+              "number",
+              "decimal",
+              "boolean",
+              "id",
+              "datetime",
+              "location",
+              "email",
+              "url",
+              "phone",
+              "json",
+              "entry",
+              "entries",
+              "asset",
+              "assets",
+              "account",
+              "role"
+            ]
+          },
+          "readOnly": {
+            "type": "boolean"
+          },
+          "required": {
+            "type": "boolean"
+          },
+          "unique": {
+            "type": "boolean"
+          },
+          "localizable": {
+            "type": "boolean"
+          },
+          "mutable": {
+            "type": "boolean"
+          },
+          "validation": {
+            "type": [
+              "string",
+              "object",
+              "null"
+            ]
+          },
+          "default": {}
+        }
+      }
+    }
+  }
+}

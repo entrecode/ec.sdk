@@ -445,6 +445,34 @@ describe('DataManager Resource', () => {
       throw err;
     });
   });
+  it('should create model', () => {
+    nock.reset();
+    const stub = sinon.stub(helper, 'post');
+    return new Promise((resolve, reject) => {
+      fs.readFile(`${__dirname}/../mocks/model-single.json`, 'utf-8', (err, res) => {
+        if (err) {
+          return reject(err);
+        }
+        return resolve(JSON.parse(res));
+      });
+    })
+    .then((res) => {
+      stub.returns(Promise.resolve([res, {}]));
+      delete res._links;
+      delete res.modelID;
+      delete res.created;
+      delete res.modified;
+      return resource.createModel(res);
+    })
+    .then(() => {
+      stub.should.be.calledOnce;
+      stub.restore();
+    })
+    .catch((err) => {
+      stub.restore();
+      throw err;
+    });
+  });
   it('should be rejected on undefined modelID', () => {
     return resource.model().should.be.rejectedWith('resourceID must be defined');
   });
