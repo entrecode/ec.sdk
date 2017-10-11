@@ -125,6 +125,7 @@ export default class DataManager extends Core {
   /**
    * Best file helper for files.
    *
+   * @deprecated
    * @param {string} assetID - the assetID
    * @param {string?} locale - the locale
    * @returns {Promise<string>} Promise resolving the URL to the file
@@ -142,6 +143,7 @@ export default class DataManager extends Core {
   /**
    * Best file helper for image thumbnails.
    *
+   * @deprecated
    * @param {string} assetID - the assetID
    * @param {number?} size - the minimum size of the image
    * @param {string?} locale - the locale
@@ -160,6 +162,7 @@ export default class DataManager extends Core {
   /**
    * Best file helper for images.
    *
+   * @deprecated
    * @param {string} assetID - the assetID
    * @param {number?} size - the minimum size of the image
    * @param {string?} locale - the locale

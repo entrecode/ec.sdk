@@ -19,7 +19,6 @@ import {
   post,
   postEmpty,
   superagentFormPost,
-  superagentGet,
   superagentPost
 } from './helper';
 
@@ -581,17 +580,19 @@ export default class PublicAPI extends Core {
    * Best file helper for files.
    *
    * @param {string} assetID - the assetID
-   * @param {string?} locale - the locale
    * @returns {Promise<string>} URL to the file
    */
-  getFileUrl(assetID: string, locale: string): Promise<string> {
+  getFileUrl(assetID: string): Promise<string> {
     if (!assetID) {
       return Promise.reject(new Error('assetID must be defined'));
     }
 
-    const url = `${this[assetBaseURLSymbol]}files/${assetID}/url`;
-    return superagentGet(url, locale ? { 'Accept-Language': locale } : {})
-    .then((res) => res.url);
+    return this.follow('ec:api/assets/bestFile')
+    .then(request => {
+      request.withTemplateParameters({ assetID });
+      return get(this[environmentSymbol], request);
+    })
+    .then(([res]) => res.url);
   }
 
   /**
@@ -599,17 +600,19 @@ export default class PublicAPI extends Core {
    *
    * @param {string} assetID - the assetID
    * @param {number?} size - the minimum size of the image
-   * @param {string?} locale - the locale
    * @returns {Promise<string>} URL to the file
    */
-  getImageThumbUrl(assetID: string, size: number, locale: string): Promise<string> {
+  getImageThumbUrl(assetID: string, size: number): Promise<string> {
     if (!assetID) {
       return Promise.reject(new Error('assetID must be defined'));
     }
 
-    const url = `${this[assetBaseURLSymbol]}files/${assetID}/url?thumb${size ? `&size=${size}` : ''}`;
-    return superagentGet(url, locale ? { 'Accept-Language': locale } : {})
-    .then((res) => res.url);
+    return this.follow('ec:api/assets/bestFile')
+    .then(request => {
+      request.withTemplateParameters({ assetID, size, thumb: true });
+      return get(this[environmentSymbol], request);
+    })
+    .then(([res]) => res.url);
   }
 
   /**
@@ -617,17 +620,19 @@ export default class PublicAPI extends Core {
    *
    * @param {string} assetID - the assetID
    * @param {number?} size - the minimum size of the image
-   * @param {string?} locale - the locale
    * @returns {Promise<string>} URL to the file
    */
-  getImageUrl(assetID: string, size: number, locale: string): Promise<string> {
+  getImageUrl(assetID: string, size: number): Promise<string> {
     if (!assetID) {
       return Promise.reject(new Error('assetID must be defined'));
     }
 
-    const url = `${this[assetBaseURLSymbol]}files/${assetID}/url${size ? `?size=${size}` : ''}`;
-    return superagentGet(url, locale ? { 'Accept-Language': locale } : {})
-    .then((res) => res.url);
+    return this.follow('ec:api/assets/bestFile')
+    .then(request => {
+      request.withTemplateParameters({ assetID, size });
+      return get(this[environmentSymbol], request);
+    })
+    .then(([res]) => res.url);
   }
 
   /**
