@@ -84,6 +84,50 @@ export default class Resource {
   }
 
   /**
+   * Create a new Resource. Note: Not all relations will support this.
+   *
+   * @example
+   * return accounts.create('client', {
+   *   clientID: 'myClient',
+   *   callbackURL: 'https://example.com/login',
+   *   config: {
+   *     tokenMethod: 'query',
+   *   },
+   * })
+   * .then(client => show(client));
+   *
+   * @param {string} relation The shortened relation name
+   * @param {object} resource object representing the resource
+   * @returns {Promise<Resource>} the newly created Resource
+   */
+  create(relation: string, resource: any): Promise<Resource> {
+    return Promise.resolve()
+    .then(() => {
+      if (!relation) {
+        throw new Error('relation must be defined');
+      }
+      if (!this[relationsSymbol][relation]) {
+        throw new Error(`unknown relation, use one of ${Object.keys(this[relationsSymbol]).join(', ')}`)
+      }
+      if (!this[relationsSymbol][relation].createRelation) {
+        throw new Error('Resource has no createRelation');
+      }
+      if (!resource) {
+        throw new Error('Cannot create resource with undefined object.');
+      }
+      return this.getLink(this[relationsSymbol][relation].createRelation);
+    })
+    .then(link => validator.validate(resource, `${link.profile}${this[relationsSymbol][relation].createTemplateModifier}`))
+    .then(() => this.newRequest().follow(this[relationsSymbol][relation].relation))
+    .then(request => {
+      request.withTemplateParameters({});
+      return post(this[environmentSymbol], request, resource)
+    })
+    .then(([c, traversal]) =>
+      new this[relationsSymbol][relation].ResourceClass(c, this[environmentSymbol], traversal));
+  }
+
+  /**
    * Deletes this {@link Resource}.
    *
    * @returns {Promise<undefined>} Promise will resolve on success and reject otherwise.
@@ -388,46 +432,13 @@ export default class Resource {
   }
 
   /**
-   * Create a new Resource. Note: Not all relations will support this.
+   * Validates this {@link Resource} against its schema (found in _links.self.profile)
    *
-   * @example
-   * return accounts.create('client', {
-   *   clientID: 'myClient',
-   *   callbackURL: 'https://example.com/login',
-   *   config: {
-   *     tokenMethod: 'query',
-   *   },
-   * })
-   * .then(client => show(client));
-   *
-   * @param {string} relation The shortened relation name
-   * @param {object} resource object representing the resource
-   * @returns {Promise<Resource>} the newly created Resource
+   * @returns {Promise<boolean>} Promise will resolve true when Resource is valid, rejects
+   *   otherwise.
    */
-  create(relation: string, resource: any): Promise<Resource> {
-    return Promise.resolve()
-    .then(() => {
-      if (!relation) {
-        throw new Error('relation must be defined');
-      }
-      if (!this[relationsSymbol][relation]) {
-        throw new Error(`unknown relation, use one of ${Object.keys(this[relationsSymbol]).join(', ')}`)
-      }
-      if (!this[relationsSymbol][relation].createRelation) {
-        throw new Error('Resource has no createRelation');
-      }
-      if (!resource) {
-        throw new Error('Cannot create resource with undefined object.');
-      }
-      return this.getLink(this[relationsSymbol][relation].createRelation);
-    })
-    .then(link => validator.validate(resource, `${link.profile}${this[relationsSymbol][relation].createTemplateModifier}`))
-    .then(() => this.newRequest().follow(this[relationsSymbol][relation].relation))
-    .then(request => {
-      request.withTemplateParameters({});
-      return post(this[environmentSymbol], request, resource)
-    })
-    .then(([c, traversal]) =>
-      new this[relationsSymbol][relation].ResourceClass(c, this[environmentSymbol], traversal));
+  validate(): Promise<boolean> {
+    return validator.validate(this.toOriginal(), this.getLink('self').profile)
+    .then(() => true);
   }
 }

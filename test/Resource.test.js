@@ -10,6 +10,7 @@ const helper = require('../lib/helper');
 const traverson = require('traverson');
 const resolver = require('./mocks/resolver');
 const Resource = require('../lib/resources/Resource');
+const DataManagerResource = require('../lib/resources/datamanager/DataManagerResource').default;
 
 const environmentSymbol = Symbol.for('environment');
 const traversalSymbol = Symbol.for('traversal');
@@ -270,5 +271,14 @@ describe('Resource', () => {
   });
   it('create called with relation without create options', () => {
     return resource.create('dummy').should.be.rejectedWith('Resource has no createRelation');
+  });
+  it('should validate', () => {
+    return resource.validate().should.eventually.equal(true);
+  });
+  it('should not validate', () => {
+    schemaNock.reset();
+    const dm = new DataManagerResource(resourceJson);
+    dm.hexColor = 1;
+    return dm.validate().should.be.rejectedWith('JSON Schema Validation error');
   });
 });

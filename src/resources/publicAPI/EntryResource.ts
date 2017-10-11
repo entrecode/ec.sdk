@@ -542,6 +542,20 @@ class EntryResource extends LiteEntryResource {
   save(): Promise<EntryResource> {
     return <Promise<EntryResource>>super.save(`${this.getLink('self').profile}?template=put`);
   }
+
+  /**
+   * Validates a field of this {@link EntryResource} against its schema.
+   *
+   * @returns {Promise<boolean>} Promise will resolve true when Resource is valid, rejects
+   *   otherwise.
+   */
+  validateField(field: string): Promise<boolean> {
+    return Promise.resolve()
+    .then(() => {
+      const schema = this[schemaSymbol].allOf[1].properties[field];
+      return validator.validate(this[field], schema);
+    });
+  }
 }
 
 export default EntryResource;

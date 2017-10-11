@@ -448,6 +448,14 @@ describe('Entry Resource', () => {
   it('should be empty array, assets', () => {
     resource.getImageThumbUrl('emptyAssets').should.have.property('length', 0);
   });
+
+  it('should validate', () => {
+    return resource.validateField('text').should.eventually.equal(true);
+  });
+  it('should not validate', () => {
+    resource.text = 1;
+    return resource.validateField('text').should.be.rejectedWith('JSON Schema Validation error');
+  });
 });
 
 describe('Entry Resource with nested', () => {
