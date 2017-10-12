@@ -7,9 +7,10 @@ import AppStatsResource from './resources/apps/AppStatsResource';
 import Core, { environment } from './Core';
 import TypesResource from './resources/apps/TypesResource';
 import { filterOptions } from './resources/ListResource';
-import { get, optionsToQuery, post } from './helper';
+import { get } from './helper';
 
 const environmentSymbol = Symbol.for('environment');
+const relationsSymbol = Symbol.for('relations');
 
 validator.setLoggingFunction(() => {
 });
@@ -36,6 +37,25 @@ export default class Apps extends Core {
     }
 
     super(urls, environment);
+
+    this[relationsSymbol] = {
+      app: {
+        relation: 'ec:apps/options',
+        createRelation: 'ec:app/by-id',
+        createTemplateModifier: '-template',
+        id: 'appID',
+        ResourceClass: AppResource,
+        ListClass: AppList,
+      },
+      stats: {
+        relation: 'ec:app-stats',
+        createRelation: false,
+        createTemplateModifier: '',
+        id: 'appID',
+        ResourceClass: AppStatsResource,
+        ListClass: AppStatsList,
+      },
+    };
   }
 
   /**
@@ -49,18 +69,7 @@ export default class Apps extends Core {
    * @returns {Promise<AppResource>} resolves to the app which should be loaded
    */
   app(appID: string): Promise<AppResource> {
-    return Promise.resolve()
-    .then(() => {
-      if (!appID) {
-        throw new Error('appID must be defined');
-      }
-      return this.follow('ec:app/by-id');
-    })
-    .then((request) => {
-      request.withTemplateParameters({ appID });
-      return get(this[environmentSymbol], request);
-    })
-    .then(([res, traversal]) => new AppResource(res, this[environmentSymbol], traversal));
+    return <Promise<AppResource>>this.resource('app', appID);
   }
 
   /**
@@ -78,22 +87,7 @@ export default class Apps extends Core {
    * @returns {Promise<AppList>} resolves to app list with applied filters
    */
   appList(options?: filterOptions | any): Promise<AppList> {
-    return Promise.resolve()
-    .then(() => {
-      if (
-        options && Object.keys(options).length === 1 && 'appID' in options
-        && (typeof options.appID === 'string' || (!('any' in options.appID) && !('all' in options.appID)))
-      ) {
-        throw new Error('Providing only an appID in AppList filter will result in single resource response. Please use Apps#app');
-      }
-
-      return this.follow('ec:apps/options');
-    })
-    .then((request) => {
-      request.withTemplateParameters(optionsToQuery(options, this.getLink('ec:apps/options').href));
-      return get(this[environmentSymbol], request);
-    })
-    .then(([res, traversal]) => new AppList(res, this[environmentSymbol], traversal));
+    return <Promise<AppList>>this.resourceList('app', options);
   }
 
   /**
@@ -109,17 +103,8 @@ export default class Apps extends Core {
    * @param {object} app object representing the app
    * @returns {Promise<AppResource>} the newly created AppResource
    */
-  create(app: any): Promise<AppResource> {
-    return Promise.resolve()
-    .then(() => {
-      if (!app) {
-        throw new Error('Cannot create resource with undefined object.');
-      }
-      return this.link('ec:app/by-id');
-    })
-    .then(link => validator.validate(app, `${link.profile}-template`))
-    .then(() => post(this[environmentSymbol], this.newRequest(), app))
-    .then(([dm, traversal]) => new AppResource(dm, this[environmentSymbol], traversal));
+  createApp(app: any): Promise<AppResource> {
+    return <Promise<AppResource>>this.create('app', app);
   }
 
   /**
@@ -133,15 +118,7 @@ export default class Apps extends Core {
    * @returns {Promise<AppStatsResource>} Promise resolving to AppStatsResource
    */
   stats(appID: string): Promise<AppStatsResource> {
-    return Promise.resolve()
-    .then(() => {
-      if (!appID) {
-        throw new Error('appID must be defined');
-      }
-      return this.follow('ec:app-stats');
-    })
-    .then(request => get(this[environmentSymbol], request.withTemplateParameters({ appID })))
-    .then(([res]) => new AppStatsResource(res, this[environmentSymbol]));
+    return <Promise<AppStatsResource>>this.resource('stats', appID);
   }
 
   /**
@@ -154,10 +131,7 @@ export default class Apps extends Core {
    * @returns {Promise<AppStatsList>} Promise resolving to AppStatsList
    */
   statsList(): Promise<AppStatsList> {
-    return Promise.resolve()
-    .then(() => this.follow('ec:app-stats'))
-    .then(request => get(this[environmentSymbol], request))
-    .then(([res, traversal]) => new AppStatsList(res, this[environmentSymbol], traversal));
+    return <Promise<AppStatsList>>this.resourceList('stats');
   }
 
   /**

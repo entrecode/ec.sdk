@@ -38,6 +38,13 @@ describe('ListResource', () => {
   it('should be instance of ListResource', () => {
     list.should.be.instanceOf(ListResource);
   });
+  it('should not instatiate on resource not a list', () => {
+    const json = JSON.parse(JSON.stringify(listJson));
+    delete json.total;
+    delete json.count;
+    const throws = () => new ListResource(json);
+    throws.should.throw('Resource does not look like a ListResource. Maybe single result on filtered list?');
+  });
   it('should return list of Resources on getAllItems', () => {
     const items = list.getAllItems();
     items.should.be.an('array');

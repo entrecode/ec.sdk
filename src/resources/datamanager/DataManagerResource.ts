@@ -16,12 +16,13 @@ import Resource from '../Resource';
 import RoleList from './RoleList';
 import RoleResource from './RoleResource';
 import { filterOptions } from '../ListResource';
-import { get, getUrl, optionsToQuery, post, superagentPost } from '../../helper';
+import { get, getUrl, superagentPost } from '../../helper';
 import { environment } from '../../Core';
 import PublicAPI from '../../PublicAPI';
 
 const environmentSymbol = Symbol.for('environment');
 const apiSymbol = Symbol('api');
+const relationsSymbol = Symbol.for('relations');
 
 validator.setLoggingFunction(() => {
 });
@@ -52,6 +53,50 @@ export default class DataManagerResource extends Resource {
    */
   constructor(resource: any, environment: environment, traversal?: any) {
     super(resource, environment, traversal);
+
+    this[relationsSymbol] = {
+      account: {
+        relation: 'ec:dm-accounts/options',
+        createRelation: false,
+        createTemplateModifier: '',
+        id: 'accountID',
+        ResourceClass: DMAccountResource,
+        ListClass: DMAccountList,
+      },
+      asset: {
+        relation: 'ec:assets/options',
+        createRelation: false,
+        createTemplateModifier: '',
+        id: 'assetID',
+        ResourceClass: AssetResource,
+        ListClass: AssetList,
+      },
+      client: {
+        relation: 'ec:dm-clients/options',
+        createRelation: 'ec:dm-client/by-id',
+        createTemplateModifier: '',
+        id: 'clientID',
+        ResourceClass: DMClientResource,
+        ListClass: DMClientList,
+      },
+      model: {
+        relation: 'ec:models/options',
+        createRelation: 'ec:model/by-id',
+        createTemplateModifier: '-template',
+        id: 'modelID',
+        ResourceClass: ModelResource,
+        ListClass: ModelList,
+      },
+      role: {
+        relation: 'ec:dm-roles/options',
+        createRelation: 'ec:dm-role/by-id',
+        createTemplateModifier: '-template',
+        id: 'roleID',
+        ResourceClass: RoleResource,
+        ListClass: RoleList,
+      },
+    };
+
     this.countProperties();
   }
 
@@ -120,17 +165,7 @@ export default class DataManagerResource extends Resource {
    * @returns {Promise<DMAccountResource>} resolves to the Account which should be loaded.
    */
   account(accountID: string): Promise<DMAccountResource> {
-    return Promise.resolve()
-    .then(() => {
-      if (!accountID) {
-        throw new Error('accountID must be defined');
-      }
-      const request = this.newRequest()
-      .follow('ec:dm-accounts/options')
-      .withTemplateParameters({ accountid: accountID, datamanagerid: this.dataManagerID });
-      return get(this[environmentSymbol], request);
-    })
-    .then(([res, traversal]) => new DMAccountResource(res, this[environmentSymbol], traversal));
+    return <Promise<DMAccountResource>>this.resource('account', accountID);
   }
 
   /**
@@ -153,29 +188,7 @@ export default class DataManagerResource extends Resource {
    * @returns {Promise<DMAccountList>} resolves to account list with applied filters.
    */
   accountList(options?: filterOptions): Promise<DMAccountList> {
-    return Promise.resolve()
-    .then(() => {
-      const o: filterOptions | any = {};
-      if (options) {
-        Object.assign(o, options);
-      }
-
-      o.dataManagerID = this.dataManagerID;
-
-      if (
-        Object.keys(o).length === 2 && 'accountID' in o && 'dataManagerID' in o
-        && (typeof o.accountID === 'string' || (!('any' in o.accountID) && !('all' in o.accountID)))
-        && (typeof o.dataManagerID === 'string' || (!('any' in o.dataManagerID) && !('all' in o.dataManagerID)))
-      ) {
-        throw new Error('Cannot filter accountList only by dataManagerID and accountID. Use DataManagerResource#account() instead');
-      }
-
-      const request = this.newRequest()
-      .follow('ec:dm-accounts/options')
-      .withTemplateParameters(optionsToQuery(o, this.getLink('ec:dm-accounts/options').href));
-      return get(this[environmentSymbol], request);
-    })
-    .then(([res, traversal]) => new DMAccountList(res, this[environmentSymbol], traversal));
+    return <Promise<DMAccountList>>this.resourceList('account', options);
   }
 
   /**
@@ -191,17 +204,7 @@ export default class DataManagerResource extends Resource {
    * @returns {Promise<AssetResource>} Promise resolving to AssetResource
    */
   asset(assetID: string): Promise<AssetResource> {
-    return Promise.resolve()
-    .then(() => {
-      if (!assetID) {
-        throw new Error('assetID must be defined');
-      }
-      const request = this.newRequest()
-      .follow('ec:assets/options')
-      .withTemplateParameters({ dataManagerID: this.dataManagerID, assetID });
-      return get(this[environmentSymbol], request);
-    })
-    .then(([res, traversal]) => new AssetResource(res, this[environmentSymbol], traversal));
+    return <Promise<AssetResource>>this.resource('asset', assetID);
   }
 
   /**
@@ -230,29 +233,7 @@ export default class DataManagerResource extends Resource {
    * @returns {Promise<AssetList>} Promise resolving to AssetList
    */
   assetList(options?: filterOptions): Promise<AssetList> {
-    return Promise.resolve()
-    .then(() => {
-      const o: filterOptions | any = {}; // TODO remove any
-      if (options) {
-        Object.assign(o, options);
-      }
-
-      o.dataManagerID = this.dataManagerID;
-
-      if (
-        Object.keys(o).length === 2 && 'assetID' in o && 'dataManagerID' in o
-        && (typeof o.assetID === 'string' || (!('any' in o.assetID) && !('all' in o.assetID)))
-        && (typeof o.dataManagerID === 'string' || (!('any' in o.dataManagerID) && !('all' in o.dataManagerID)))
-      ) {
-        throw new Error('Cannot filter assetList only by dataManagerID and assetID. Use DataManagerResource#asset() instead');
-      }
-
-      const request = this.newRequest()
-      .follow('ec:assets/options')
-      .withTemplateParameters(optionsToQuery(o, this.getLink('ec:assets/options').href));
-      return get(this[environmentSymbol], request);
-    })
-    .then(([res, traversal]) => new AssetList(res, this[environmentSymbol], traversal));
+    return <Promise<AssetList>>this.resourceList('asset', options);
   }
 
   /**
@@ -268,17 +249,7 @@ export default class DataManagerResource extends Resource {
    * @returns {Promise<DMClientResource>} Promise resolving to DMClientResource
    */
   client(clientID: string): Promise<DMClientResource> {
-    return Promise.resolve()
-    .then(() => {
-      if (!clientID) {
-        throw new Error('clientID must be defined');
-      }
-      const request = this.newRequest()
-      .follow('ec:dm-clients/options')
-      .withTemplateParameters({ datamanagerid: this.dataManagerID, clientid: clientID });
-      return get(this[environmentSymbol], request);
-    })
-    .then(([res, traversal]) => new DMClientResource(res, this[environmentSymbol], traversal));
+    return <Promise<DMClientResource>>this.resource('client', clientID);
   }
 
   /**
@@ -307,29 +278,7 @@ export default class DataManagerResource extends Resource {
    * @returns {Promise<DMClientList>} Promise resolving to DMClientList
    */
   clientList(options?: filterOptions): Promise<DMClientList> {
-    return Promise.resolve()
-    .then(() => {
-      const o: filterOptions | any = {}; // TODO remove any
-      if (options) {
-        Object.assign(o, options);
-      }
-
-      o.dataManagerID = this.dataManagerID;
-
-      if (
-        Object.keys(o).length === 2 && 'clientID' in o && 'dataManagerID' in o
-        && (typeof o.dataManagerID === 'string' || (!('any' in o.dataManagerID) && !('all' in o.dataManagerID)))
-        && (typeof o.clientID === 'string' || (!('any' in o.clientID) && !('all' in o.clientID)))
-      ) {
-        throw new Error('Cannot filter clientList only by dataManagerID and clientID. Use DataManagerResource#client() instead');
-      }
-
-      const request = this.newRequest()
-      .follow('ec:dm-clients/options')
-      .withTemplateParameters(optionsToQuery(o, this.getLink('ec:dm-clients/options').href));
-      return get(this[environmentSymbol], request);
-    })
-    .then(([res, traversal]) => new DMClientList(res, this[environmentSymbol], traversal));
+    return <Promise<DMClientList>>this.resourceList('client', options);
   }
 
   /**
@@ -464,17 +413,18 @@ export default class DataManagerResource extends Resource {
    * @param {object} client object representing the client.
    * @returns {Promise<DMClientResource>} the newly created DMClientResource
    */
-  createClient(client: any): Promise<DMClientResource> { // TODO advanced client type
-    return Promise.resolve()
-    .then(() => {
-      if (!client) {
-        throw new Error('Cannot create resource with undefined object.');
-      }
-      return this.getLink('ec:dm-client/by-id');
-    })
-    .then((link: any) => validator.validate(client, `${link.profile}`))
-    .then(() => post(this[environmentSymbol], this.newRequest().follow('ec:dm-clients'), client))
-    .then(([dm, traversal]) => new DMClientResource(dm, this[environmentSymbol], traversal));
+  createClient(client: any): Promise<DMClientResource> {
+    return <Promise<DMClientResource>>this.create('client', client);
+  }
+
+  /**
+   * Create a new model.
+   *
+   * @param {object} model object representing the model.
+   * @returns {Promise<ModelResource>} the newly created ModelResource
+   */
+  createModel(model: any): Promise<ModelResource> {
+    return <Promise<ModelResource>>this.create('model', model);
   }
 
   /**
@@ -483,17 +433,8 @@ export default class DataManagerResource extends Resource {
    * @param {object} role object representing the role.
    * @returns {Promise<RoleResource>} the newly created RoleResouce
    */
-  createRole(role: any): Promise<RoleResource> { // TODO advanced role
-    return Promise.resolve()
-    .then(() => {
-      if (!role) {
-        throw new Error('Cannot create resource with undefined object.');
-      }
-      return this.getLink('ec:dm-role/by-id');
-    })
-    .then((link: any) => validator.validate(role, `${link.profile}-template`))
-    .then(() => post(this[environmentSymbol], this.newRequest().follow('ec:dm-roles'), role))
-    .then(([dm, traversal]) => new RoleResource(dm, this[environmentSymbol], traversal));
+  createRole(role: any): Promise<RoleResource> {
+    return <Promise<RoleResource>>this.create('role', role);
   }
 
   /**
@@ -530,18 +471,7 @@ export default class DataManagerResource extends Resource {
    * @returns {Promise<ModelResource>} resolves to the Model which should be loaded.
    */
   model(modelID: string): Promise<ModelResource> {
-    return Promise.resolve()
-    .then(() => {
-      if (!modelID) {
-        throw new Error('modelID must be defined');
-      }
-
-      return get(
-        this[environmentSymbol],
-        this.newRequest().follow('ec:models/options').withTemplateParameters({ modelID })
-      );
-    })
-    .then(([resource, traversal]) => new ModelResource(resource, this[environmentSymbol], traversal));
+    return <Promise<ModelResource>>this.resource('model', modelID);
   }
 
   /**
@@ -553,30 +483,7 @@ export default class DataManagerResource extends Resource {
    * @returns {Promise<ModelList>} resolves to model list with applied filters.
    */
   modelList(options?: filterOptions): Promise<ModelList> {
-    return Promise.resolve()
-    .then(() => {
-      const o: filterOptions | any = {}; // TODO remove any
-      if (options) {
-        Object.assign(o, options);
-      }
-
-      o.dataManagerID = this.dataManagerID;
-
-      if (
-        Object.keys(o).length === 2 && 'dataManagerID' in o && 'modelID' in o
-        && (typeof o.dataManagerID === 'string' || (!('any' in o.dataManagerID) && !('all' in o.dataManagerID)))
-        && (typeof o.modelID === 'string' || (!('any' in o.modelID) && !('all' in o.modelID)))
-      ) {
-        throw new Error('Cannot filter modelList only by dataManagerID and modelID. Use DataManagerResource#model() instead.');
-      }
-
-      return get(
-        this[environmentSymbol],
-        this.newRequest().follow('ec:models/options')
-        .withTemplateParameters(optionsToQuery(o, this.getLink('ec:models/options').href))
-      );
-    })
-    .then(([resource, traversal]) => new ModelList(resource, this[environmentSymbol], traversal));
+    return <Promise<ModelList>>this.resourceList('model', options);
   }
 
   /**
@@ -592,17 +499,7 @@ export default class DataManagerResource extends Resource {
    * @returns {Promise<RoleResource>} Promise resolving to RoleResource
    */
   role(roleID: string): Promise<RoleResource> {
-    return Promise.resolve()
-    .then(() => {
-      if (!roleID) {
-        throw new Error('roleID must be defined');
-      }
-      const request = this.newRequest()
-      .follow('ec:dm-roles/options')
-      .withTemplateParameters({ dataManagerID: this.dataManagerID, roleID });
-      return get(this[environmentSymbol], request);
-    })
-    .then(([res, traversal]) => new RoleResource(res, this[environmentSymbol], traversal));
+    return <Promise<RoleResource>>this.resource('role', roleID);
   }
 
   /**
@@ -631,29 +528,7 @@ export default class DataManagerResource extends Resource {
    * @returns {Promise<RoleList>} Promise resolving to RoleList
    */
   roleList(options: filterOptions): Promise<RoleList> {
-    return Promise.resolve()
-    .then(() => {
-      const o: filterOptions | any = {}; // TODO remove any
-      if (options) {
-        Object.assign(o, options);
-      }
-
-      o.dataManagerID = this.dataManagerID;
-
-      if (
-        Object.keys(o).length === 2 && 'roleID' in o && 'dataManagerID' in o
-        && (typeof o.roleID === 'string' || (!('any' in o.roleID) && !('all' in o.roleID)))
-        && (typeof o.dataManagerID === 'string' || (!('any' in o.dataManagerID) && !('all' in o.dataManagerID)))
-      ) {
-        throw new Error('Cannot filter roleList only by dataManagerID and roleID. Use DataManagerResource#role() instead');
-      }
-
-      const request = this.newRequest()
-      .follow('ec:dm-roles/options')
-      .withTemplateParameters(optionsToQuery(o, this.getLink('ec:dm-roles/options').href));
-      return get(this[environmentSymbol], request);
-    })
-    .then(([res, traversal]) => new RoleList(res, this[environmentSymbol], traversal));
+    return <Promise<RoleList>>this.resourceList('role', options);
   }
 
   /**

@@ -1,3 +1,33 @@
+<a name="0.9.0"></a>
+# 0.9.0 (2017-10-12)
+
+* release version 0.9.0 ([1f55373](https://github.com/entrecode/ec.sdk/commit/1f55373))
+* tests: add various tests ([5789c22](https://github.com/entrecode/ec.sdk/commit/5789c22))
+* tests: missing tests for generic resource functions ([f8b0b0b](https://github.com/entrecode/ec.sdk/commit/f8b0b0b))
+* feat: add warning when token could not be saven into cookie ([911c474](https://github.com/entrecode/ec.sdk/commit/911c474))
+* feat: change email in PublicAPI ([335b4e7](https://github.com/entrecode/ec.sdk/commit/335b4e7))
+* feat: create model in DataManagerResource CMS-2969 ([c832547](https://github.com/entrecode/ec.sdk/commit/c832547))
+* feat: generic resource/list resource for Resources COM-77 ([3db40c0](https://github.com/entrecode/ec.sdk/commit/3db40c0))
+* feat: generic resourceList() and resource() methods for API Connectors ([7d9a173](https://github.com/entrecode/ec.sdk/commit/7d9a173))
+* feat: removed hardcoded urls in asset best file CMS-2942 ([2d9e5bb](https://github.com/entrecode/ec.sdk/commit/2d9e5bb))
+* feat: request cache for permission checks ([87a76e7](https://github.com/entrecode/ec.sdk/commit/87a76e7))
+* feat: start sync in model resource CMS-2967 ([7e4a309](https://github.com/entrecode/ec.sdk/commit/7e4a309))
+* feat: throw on list requests with _levels parameter CMS-2963 ([2e23d21](https://github.com/entrecode/ec.sdk/commit/2e23d21))
+* feat: validate functions for Resource and EntryResource(fields) CMS-2908 ([d481b4a](https://github.com/entrecode/ec.sdk/commit/d481b4a))
+* chore: removed unused files ([d7e14d1](https://github.com/entrecode/ec.sdk/commit/d7e14d1))
+* chore: updated package.json with json-schema-remote 1.3.1 ([fa474d9](https://github.com/entrecode/ec.sdk/commit/fa474d9))
+* chore(package): update coveralls to version 3.0.0 ([a069fa2](https://github.com/entrecode/ec.sdk/commit/a069fa2))
+* chore(package): update mocha to version 4.0.0 ([0d13d76](https://github.com/entrecode/ec.sdk/commit/0d13d76))
+* chore(package): update sinon to version 4.0.0 ([28c2035](https://github.com/entrecode/ec.sdk/commit/28c2035))
+* fix: adds string to typings for AssetList#download return type ([5229bf6](https://github.com/entrecode/ec.sdk/commit/5229bf6))
+* fix: removed the hack for filter/filterOptions doc, found better solution ([44b6433](https://github.com/entrecode/ec.sdk/commit/44b6433))
+* fix: resource not marked as dirty when set CMS-2938 ([c5ef0d7](https://github.com/entrecode/ec.sdk/commit/c5ef0d7))
+* fix: wrong path for helper import ([d81a5ff](https://github.com/entrecode/ec.sdk/commit/d81a5ff))
+* doc: use a hack to add filter/filterOptions to docs ([db0eb1a](https://github.com/entrecode/ec.sdk/commit/db0eb1a))
+* test: fix typo in tests ([8131fb4](https://github.com/entrecode/ec.sdk/commit/8131fb4))
+
+
+
 <a name="0.8.9"></a>
 ## 0.8.9 (2017-09-11)
 

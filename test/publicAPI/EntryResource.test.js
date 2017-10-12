@@ -48,10 +48,10 @@ describe('Entry List', () => {
   it('should be instance of ModelList', () => {
     list.should.be.instanceOf(EntryList.default);
   });
-  it('should have ModelResource items', () => {
+  it('should have EntryResource items', () => {
     list.getAllItems().forEach(item => item.should.be.instanceOf(EntryResource.default));
   });
-  it('should have ModelResource items', () => {
+  it('should have EntryResource items', () => {
     list.getItem(0).should.be.instanceOf(EntryResource.default);
   });
 });
@@ -130,6 +130,9 @@ describe('Entry Resource', () => {
   });
   it('should get _id', () => {
     resource._id.should.be.equal('B17u3r5lx-');
+  });
+  it('should get text', () => {
+    resource.text.should.be.equal('asdf');
   });
   it('should get created', () => {
     resource.created.toISOString().should.be.equal('2017-05-10T13:29:19.893Z');
@@ -444,6 +447,14 @@ describe('Entry Resource', () => {
   });
   it('should be empty array, assets', () => {
     resource.getImageThumbUrl('emptyAssets').should.have.property('length', 0);
+  });
+
+  it('should validate', () => {
+    return resource.validateField('text').should.eventually.equal(true);
+  });
+  it('should not validate', () => {
+    resource.text = 1;
+    return resource.validateField('text').should.be.rejectedWith('JSON Schema Validation error');
   });
 });
 

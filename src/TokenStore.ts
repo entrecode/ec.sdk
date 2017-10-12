@@ -152,6 +152,9 @@ export class TokenStore {
         secure: true,
         expires: new Date(decoded.exp * 1000),
       });
+      if(!cookie.get(`${this.environment}Token`)){
+        console.warn('ec.sdk: cookie not set. are you on a http site?');
+      }
     }
 
     this.token = token;

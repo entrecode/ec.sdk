@@ -17,8 +17,8 @@ import {
   getUrl,
   optionsToQuery,
   post,
+  postEmpty,
   superagentFormPost,
-  superagentGet,
   superagentPost
 } from './helper';
 
@@ -33,6 +33,7 @@ const modelCacheSymbol = Symbol('_modelCache');
 const permissionsSymbol = Symbol('_permissionsSymbol');
 const permissionsLoadedTimeSymbol = Symbol('_permissionsLoadedTimeSymbol');
 const assetBaseURLSymbol = Symbol('assetBaseURL');
+const requestCacheSymbol = Symbol('requestCache');
 
 validator.setLoggingFunction(() => {
 });
@@ -100,6 +101,7 @@ export default class PublicAPI extends Core {
     super({ [environment]: `${urls[environment]}api/${id}` }, environment, !ecUser ? id : '');
     this[shortIDSymbol] = id;
     this[assetBaseURLSymbol] = urls[environment];
+    this[requestCacheSymbol] = undefined;
   }
 
   get account() {
@@ -212,14 +214,19 @@ export default class PublicAPI extends Core {
         return undefined;
       }
 
-      return this.follow('_permissions')
-      .then(request => get(this[environmentSymbol], request))
-      .then(([response]) => {
-        this[permissionsSymbol] = ShiroTrie.newTrie();
-        this[permissionsSymbol].add(response.permissions);
-        this[permissionsLoadedTimeSymbol] = new Date();
-        return undefined;
-      });
+      if (!this[requestCacheSymbol]) {
+        this[requestCacheSymbol] = this.follow('_permissions')
+        .then(request => get(this[environmentSymbol], request))
+        .then(([response]) => {
+          this[requestCacheSymbol] = undefined;
+          this[permissionsSymbol] = ShiroTrie.newTrie();
+          this[permissionsSymbol].add(response.permissions);
+          this[permissionsLoadedTimeSymbol] = new Date();
+          return undefined;
+        });
+      }
+
+      return this[requestCacheSymbol];
     })
     .then(() => this[permissionsSymbol].check(permission));
   }
@@ -573,17 +580,19 @@ export default class PublicAPI extends Core {
    * Best file helper for files.
    *
    * @param {string} assetID - the assetID
-   * @param {string?} locale - the locale
    * @returns {Promise<string>} URL to the file
    */
-  getFileUrl(assetID: string, locale: string): Promise<string> {
+  getFileUrl(assetID: string): Promise<string> {
     if (!assetID) {
       return Promise.reject(new Error('assetID must be defined'));
     }
 
-    const url = `${this[assetBaseURLSymbol]}files/${assetID}/url`;
-    return superagentGet(url, locale ? { 'Accept-Language': locale } : {})
-    .then((res) => res.url);
+    return this.follow('ec:api/assets/bestFile')
+    .then(request => {
+      request.withTemplateParameters({ assetID });
+      return get(this[environmentSymbol], request);
+    })
+    .then(([res]) => res.url);
   }
 
   /**
@@ -591,17 +600,19 @@ export default class PublicAPI extends Core {
    *
    * @param {string} assetID - the assetID
    * @param {number?} size - the minimum size of the image
-   * @param {string?} locale - the locale
    * @returns {Promise<string>} URL to the file
    */
-  getImageThumbUrl(assetID: string, size: number, locale: string): Promise<string> {
+  getImageThumbUrl(assetID: string, size: number): Promise<string> {
     if (!assetID) {
       return Promise.reject(new Error('assetID must be defined'));
     }
 
-    const url = `${this[assetBaseURLSymbol]}files/${assetID}/url?thumb${size ? `&size=${size}` : ''}`;
-    return superagentGet(url, locale ? { 'Accept-Language': locale } : {})
-    .then((res) => res.url);
+    return this.follow('ec:api/assets/bestFile')
+    .then(request => {
+      request.withTemplateParameters({ assetID, size, thumb: true });
+      return get(this[environmentSymbol], request);
+    })
+    .then(([res]) => res.url);
   }
 
   /**
@@ -609,17 +620,19 @@ export default class PublicAPI extends Core {
    *
    * @param {string} assetID - the assetID
    * @param {number?} size - the minimum size of the image
-   * @param {string?} locale - the locale
    * @returns {Promise<string>} URL to the file
    */
-  getImageUrl(assetID: string, size: number, locale: string): Promise<string> {
+  getImageUrl(assetID: string, size: number): Promise<string> {
     if (!assetID) {
       return Promise.reject(new Error('assetID must be defined'));
     }
 
-    const url = `${this[assetBaseURLSymbol]}files/${assetID}/url${size ? `?size=${size}` : ''}`;
-    return superagentGet(url, locale ? { 'Accept-Language': locale } : {})
-    .then((res) => res.url);
+    return this.follow('ec:api/assets/bestFile')
+    .then(request => {
+      request.withTemplateParameters({ assetID, size });
+      return get(this[environmentSymbol], request);
+    })
+    .then(([res]) => res.url);
   }
 
   /**
@@ -732,6 +745,29 @@ export default class PublicAPI extends Core {
       this[eventsSymbol].emit('logout');
       this[tokenStoreSymbol].deleteToken();
       return Promise.resolve();
+    });
+  }
+
+  /**
+   * Change the logged in account to the given new email address.
+   *
+   * @example
+   * return api.changeEmail(newEmail)
+   * .then(() => show(`Email change started. Please verify with your new address.`))
+   *
+   * @param {string} email the new email
+   * @returns {Promise<undefined>} Promise resolving on success.
+   */
+  changeEmail(email: string): Promise<void> {
+    return Promise.resolve()
+    .then(() => {
+      if (!email) {
+        throw  new Error('email must be defined');
+      }
+      return this.follow(`${this[shortIDSymbol]}:_auth/change-email`)
+      .then((request) => {
+        return postEmpty(this[environmentSymbol], request, { email });
+      });
     });
   }
 

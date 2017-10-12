@@ -66,7 +66,7 @@ describe('Apps class', () => {
   });
   it('should be rejected on list only with appID', () => {
     return new Apps('live').appList({ appID: 'id' })
-    .should.be.rejectedWith('Providing only an appID in AppList filter will result in single resource response. Please use Apps#app');
+    .should.be.rejectedWith('Providing only an id in ResourceList filter will result in single resource response.');
   });
   it('should return resource on get', () => {
     const apps = new Apps('live');
@@ -85,7 +85,7 @@ describe('Apps class', () => {
   });
   it('should be rejected on app with undefined id', () => {
     return new Apps('live').app()
-    .should.be.rejectedWith('appID must be defined');
+    .should.be.rejectedWith('resourceID must be defined');
   });
   it('should call post on create', () => {
     const stub = sinon.stub(helper, 'post');
@@ -104,7 +104,7 @@ describe('Apps class', () => {
         title: resource.title,
         hexColor: resource.hexColor,
       });
-      return apps.create(create);
+      return apps.createApp(create);
     })
     .then(() => {
       stub.should.be.calledOnce;
@@ -116,7 +116,7 @@ describe('Apps class', () => {
     });
   });
   it('should be rejected on create with undefined', () => {
-    return new Apps('live').create()
+    return new Apps('live').createApp()
     .should.be.rejectedWith('Cannot create resource with undefined object');
   });
 
@@ -172,7 +172,7 @@ describe('Apps class', () => {
   });
   it('should be rejected on undefined appID', () => {
     const apps = new Apps('live');
-    return apps.stats().should.be.rejectedWith('appID must be defined');
+    return apps.stats().should.be.rejectedWith('resourceID must be defined');
   });
 });
 
@@ -305,7 +305,7 @@ describe('Apps Resource', () => {
   });
   it('should throw on platform list filtered with platformID', () => {
     return resource.platformList({ platformID: 'id' })
-    .should.be.rejectedWith('Cannot filter platformList only by platformID. Use AppResource#platform instead');
+    .should.be.rejectedWith('Providing only an id in ResourceList filter will result in single resource response.');
   });
   it('should load platform resource', () => {
     const stub = sinon.stub(helper, 'get');
@@ -322,7 +322,7 @@ describe('Apps Resource', () => {
     });
   });
   it('should be rejected on undefined platformID', () => {
-    return resource.platform().should.be.rejectedWith('platformID must be defined');
+    return resource.platform().should.be.rejectedWith('resourceID must be defined');
   });
   it('should create platform, 1', () => {
     const stub = sinon.stub(helper, 'post');
@@ -487,7 +487,7 @@ describe('Apps Resource', () => {
   });
   it('should throw on codeSource list filtered with codeSourceID', () => {
     return resource.codeSourceList({ codeSourceID: 'id' })
-    .should.be.rejectedWith('Cannot filter codeSourceList only by codeSourceID. Use AppResource#codeSource instead');
+    .should.be.rejectedWith('Providing only an id in ResourceList filter will result in single resource response.');
   });
   it('should load codeSource resource', () => {
     const stub = sinon.stub(helper, 'get');
@@ -504,7 +504,7 @@ describe('Apps Resource', () => {
     });
   });
   it('should be rejected on undefined codeSourceID', () => {
-    return resource.codeSource().should.be.rejectedWith('codeSourceID must be defined');
+    return resource.codeSource().should.be.rejectedWith('resourceID must be defined');
   });
   it('should create codeSource', () => {
     const stub = sinon.stub(helper, 'post');
@@ -553,7 +553,7 @@ describe('Apps Resource', () => {
   });
   it('should throw on dataSource list filtered with dataSourceID', () => {
     return resource.dataSourceList({ dataSourceID: 'id' })
-    .should.be.rejectedWith('Cannot filter dataSourceList only by dataSourceID. Use AppResource#dataSource instead');
+    .should.be.rejectedWith('Providing only an id in ResourceList filter will result in single resource response.');
   });
   it('should load dataSource resource', () => {
     const stub = sinon.stub(helper, 'get');
@@ -570,7 +570,7 @@ describe('Apps Resource', () => {
     });
   });
   it('should be rejected on undefined dataSourceID', () => {
-    return resource.dataSource().should.be.rejectedWith('dataSourceID must be defined');
+    return resource.dataSource().should.be.rejectedWith('resourceID must be defined');
   });
   it('should create dataSource', () => {
     const stub = sinon.stub(helper, 'post');
@@ -620,7 +620,7 @@ describe('Apps Resource', () => {
   });
   it('should throw on target list filtered with targetID', () => {
     return resource.targetList({ targetID: 'id' })
-    .should.be.rejectedWith('Cannot filter targetList only by targetID. Use AppResource#target instead');
+    .should.be.rejectedWith('Providing only an id in ResourceList filter will result in single resource response.');
   });
   it('should load target resource', () => {
     const stub = sinon.stub(helper, 'get');
@@ -637,7 +637,7 @@ describe('Apps Resource', () => {
     });
   });
   it('should be rejected on undefined targetID', () => {
-    return resource.target().should.be.rejectedWith('targetID must be defined');
+    return resource.target().should.be.rejectedWith('resourceID must be defined');
   });
   it('should create target', () => {
     const stub = sinon.stub(helper, 'post');

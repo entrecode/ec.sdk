@@ -2,7 +2,7 @@ import * as querystring from 'querystring';
 import * as traverson from 'traverson';
 import * as traversonHal from 'traverson-hal';
 
-import { get, optionsToQuery, post } from '../../helper';
+import { get, post } from '../../helper';
 import Resource from '../Resource';
 import BuildList from './BuildList';
 import BuildResource from './BuildResource';
@@ -17,6 +17,7 @@ import { filterOptions } from '../ListResource';
 
 const resourceSymbol = Symbol.for('resource');
 const environmentSymbol = Symbol.for('environment');
+const relationsSymbol = Symbol.for('relations');
 
 traverson.registerMediaType(traversonHal.mediaType, traversonHal);
 
@@ -42,6 +43,26 @@ export default class PlatformResource extends Resource {
    */
   constructor(resource: any, environment: environment, traversal?: any) {
     super(resource, environment, traversal);
+
+    this[relationsSymbol] = {
+      build: {
+        relation: 'ec:app/builds/options',
+        createRelation: false,
+        createTemplateModifier: '',
+        id: 'buildID',
+        ResourceClass: BuildResource,
+        ListClass: BuildList,
+      },
+      deployment: {
+        relation: 'ec:app/deployments/options',
+        createRelation: false,
+        createTemplateModifier: '',
+        id: 'deploymentID',
+        ResourceClass: DeploymentResource,
+        ListClass: DeploymentList,
+      },
+    };
+
     this.countProperties();
   }
 
@@ -91,17 +112,7 @@ export default class PlatformResource extends Resource {
    * @returns {Promise<BuildResource>} resolves to the build which should be loaded.
    */
   build(buildID: string): Promise<BuildResource> {
-    return Promise.resolve()
-    .then(() => {
-      if (!buildID) {
-        throw new Error('buildID must be defined');
-      }
-      const request = this.newRequest()
-      .follow('ec:app/builds/options')
-      .withTemplateParameters({ buildID });
-      return get(this[environmentSymbol], request);
-    })
-    .then(([res, traversal]) => new BuildResource(res, this[environmentSymbol], traversal));
+    return <Promise<BuildResource>>this.resource('build', buildID);
   }
 
   /**
@@ -112,30 +123,7 @@ export default class PlatformResource extends Resource {
    * @returns {Promise<BuildList>} resolves to app list with applied filters.
    */
   buildList(options?: filterOptions): Promise<BuildList> {
-    return Promise.resolve()
-    .then(() => {
-      const o: filterOptions | any = {};
-
-      if (options) {
-        Object.assign(o, options);
-      }
-
-      o.platformID = this.platformID;
-
-      if (
-        Object.keys(o).length === 2 && 'platformID' in o && 'buildID' in o
-        && (typeof o.platformID === 'string' || (!('any' in o.platformID) && !('all' in o.platformID)))
-        && (typeof o.buildID === 'string' || (!('any' in o.buildID) && !('all' in o.buildID)))
-      ) {
-        throw new Error('Cannot filter buildList only by buildID and platformID. Use PlatformResource#build() instead');
-      }
-
-      const request = this.newRequest()
-      .follow('ec:app/builds/options')
-      .withTemplateParameters(optionsToQuery(o, this.getLink('ec:app/builds/options').href));
-      return get(this[environmentSymbol], request);
-    })
-    .then(([res, traversal]) => new BuildList(res, this[environmentSymbol], traversal));
+    return <Promise<BuildList>>this.resourceList('build', options);
   }
 
   /**
@@ -218,17 +206,7 @@ export default class PlatformResource extends Resource {
    * @returns {Promise<DeploymentResource>} resolves to the deployment which should be loaded.
    */
   deployment(deploymentID: string): Promise<DeploymentResource> {
-    return Promise.resolve()
-    .then(() => {
-      if (!deploymentID) {
-        throw new Error('deploymentID must be defined');
-      }
-      const request = this.newRequest()
-      .follow('ec:app/deployments/options')
-      .withTemplateParameters({ deploymentID });
-      return get(this[environmentSymbol], request);
-    })
-    .then(([res, traversal]) => new DeploymentResource(res, this[environmentSymbol], traversal));
+    return <Promise<DeploymentResource>>this.resource('deployment', deploymentID);
   }
 
   /**
@@ -239,30 +217,7 @@ export default class PlatformResource extends Resource {
    * @returns {Promise<DeploymentList>} resolves to app list with applied filters.
    */
   deploymentList(options?: filterOptions): Promise<DeploymentList> {
-    return Promise.resolve()
-    .then(() => {
-      const o: filterOptions | any = {};
-
-      if (options) {
-        Object.assign(o, options);
-      }
-
-      o.platformID = this.platformID;
-
-      if (
-        Object.keys(o).length === 2 && 'platformID' in o && 'deploymentID' in o
-        && (typeof o.platformID === 'string' || (!('any' in o.platformID) && !('all' in o.platformID)))
-        && (typeof o.deploymentID === 'string' || (!('any' in o.deploymentID) && !('all' in o.deploymentID)))
-      ) {
-        throw new Error('Cannot filter deploymentList only by deploymentID and platformID. Use PlatformResource#deployment() instead');
-      }
-
-      const request = this.newRequest()
-      .follow('ec:app/deployments/options')
-      .withTemplateParameters(optionsToQuery(o, this.getLink('ec:app/deployments/options').href));
-      return get(this[environmentSymbol], request);
-    })
-    .then(([res, traversal]) => new DeploymentList(res, this[environmentSymbol], traversal));
+    return <Promise<DeploymentList>>this.resourceList('deployment', options);
   }
 
   getCodeSource(): string {

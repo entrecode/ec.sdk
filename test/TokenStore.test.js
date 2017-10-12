@@ -3,6 +3,7 @@
 const chai = require('chai');
 const CookieMock = require('ec.cookie-mock');
 const cookie = require('browser-cookies');
+const sinon = require('sinon');
 const sinonChai = require('sinon-chai');
 
 const TokenStore = require('../lib/TokenStore');
@@ -142,6 +143,14 @@ describe('Token handling with cookie store', () => {
     store.setToken(token);
     cookie.get('testToken').should.be.equal(token);
     store.token.should.be.equal(token);
+  });
+  it('should warn on outdated token', () => {
+    const stub = sinon.stub(console, 'warn');
+    store.setToken('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJlbnRyZWNvZGVUZXN0IiwiaWF0Ijo0ODU3ODM1ODgsImV4cCI6NjQxNDU3MTg4LCJhdWQiOiJUZXN0Iiwic3ViIjoidGVzdEBlbnRyZWNvZGUuZGUifQ.3oazgwQUfdwP4cCgke7eVWLcMo_xkqHhlUBdyL60Vp0');
+    should.equal(cookie.get('testToken'), null);
+    store.token.should.be.equal('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJlbnRyZWNvZGVUZXN0IiwiaWF0Ijo0ODU3ODM1ODgsImV4cCI6NjQxNDU3MTg4LCJhdWQiOiJUZXN0Iiwic3ViIjoidGVzdEBlbnRyZWNvZGUuZGUifQ.3oazgwQUfdwP4cCgke7eVWLcMo_xkqHhlUBdyL60Vp0');
+    stub.should.have.callCount(1);
+    stub.restore();
   });
   it('should throw on undefined token', () => {
     const throws = () => store.setToken();

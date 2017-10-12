@@ -10,6 +10,7 @@ const helper = require('../lib/helper');
 const traverson = require('traverson');
 const resolver = require('./mocks/resolver');
 const Resource = require('../lib/resources/Resource');
+const DataManagerResource = require('../lib/resources/datamanager/DataManagerResource').default;
 
 const environmentSymbol = Symbol.for('environment');
 const traversalSymbol = Symbol.for('traversal');
@@ -67,6 +68,10 @@ describe('Resource', () => {
   it('should be dirty on setProperty call', () => {
     resource.setProperty('description', 'hello');
     resource.isDirty.should.be.true;
+  });
+  it('should be clean on setProperty call with same value', () => {
+    resource.setProperty('description', resource.getProperty('description'));
+    resource.isDirty.should.be.false;
   });
   it('should restore state on reset call', () => {
     resource.setProperty('description', 'hello');
@@ -139,7 +144,7 @@ describe('Resource', () => {
     }]);
   });
   it('should get object with all links', () => {
-    Object.keys(resource.allLinks()).should.have.property('length', 19)
+    Object.keys(resource.allLinks()).should.have.property('length', 20)
   });
   it('should call get on followLink', () => {
     const stub = sinon.stub(helper, 'get');
@@ -242,6 +247,38 @@ describe('Resource', () => {
     resource.missing = 'yes its missing';
     return resource.save().should.be.rejectedWith(`Additional properties found: missing`);
   });
-  it('should throw on get unknown property', () => {
+  it('resource called without relation', () => {
+    return resource.resource().should.be.rejectedWith('relation must be defined');
+  });
+  it('resource called with non existing relation', () => {
+    return resource.resource('asdf').should.be.rejectedWith('unknown relation, use one of');
+  });
+  it('resourceList called without relation', () => {
+    return resource.resourceList().should.be.rejectedWith('relation must be defined');
+  });
+  it('resourceList called with non existing relation', () => {
+    return resource.resourceList('asdf').should.be.rejectedWith('unknown relation, use one of');
+  });
+  it('resourceList called with levels param', () => {
+    return resource.resourceList('dummy', { _levels: 2 })
+    .should.be.rejectedWith('_levels on list resources not supported');
+  });
+  it('create called without relation', () => {
+    return resource.create().should.be.rejectedWith('relation must be defined');
+  });
+  it('create called with non existing relation', () => {
+    return resource.create('asdf').should.be.rejectedWith('unknown relation, use one of');
+  });
+  it('create called with relation without create options', () => {
+    return resource.create('dummy').should.be.rejectedWith('Resource has no createRelation');
+  });
+  it('should validate', () => {
+    return resource.validate().should.eventually.equal(true);
+  });
+  it('should not validate', () => {
+    schemaNock.reset();
+    const dm = new DataManagerResource(resourceJson);
+    dm.hexColor = 1;
+    return dm.validate().should.be.rejectedWith('JSON Schema Validation error');
   });
 });

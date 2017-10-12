@@ -9,6 +9,7 @@ const ModelResource = require('../../lib/resources/datamanager/ModelResource').d
 const ModelList = require('../../lib/resources/datamanager/ModelList').default;
 const Resource = require('../../lib/resources/Resource').default;
 const ListResource = require('../../lib/resources/ListResource').default;
+const helper = require('../../lib/helper');
 
 chai.should();
 chai.use(sinonChai);
@@ -76,6 +77,15 @@ describe('Model Resource', () => {
   });
   it('should return boolean on hasEntries', () => {
     resource.hasEntries.should.be.true;
+  });
+  it('should call sync', () => {
+    const stub = sinon.stub(helper, 'post');
+    const returns = {};
+    stub.returns(Promise.resolve([returns, {}]));
+    return resource.sync().should.eventually.equal(returns)
+    .notify(() => {
+      stub.restore();
+    });
   });
 
   const dateGetter = [

@@ -168,6 +168,10 @@
       "href": "https://datamanager.entrecode.de/asset/beefbeef{?assetID,created,createdFrom,createdTo,created~,creator,dataManagerID,deleted,deletedFrom,deletedTo,deleted~,page,size,sort,tag,title,title~,type,type~}",
       "templated": true
     },
+    "ec:api/assets/bestFile": {
+      "href": "https://datamanager.entrecode.de/files/{assetID}/url{?thumb,size}",
+      "templated": true
+    },
     "beefbeef:_auth/anonymous": {
       "name": "Register new anonymous account (POST)",
       "href": "https://datamanager.entrecode.de/api/beefbeef/_auth/account{?validUntil}",
@@ -201,6 +205,10 @@
     "beefbeef:_auth/public-key.pem": {
       "name": "Public key for JWT validation",
       "href": "https://datamanager.entrecode.de/api/beefbeef/_auth/public-key.pem"
+    },
+    "beefbeef:_auth/change-email": {
+      "name": "Change email address",
+      "href": "https://datamanager.entrecode.de/api/beefbeef/_auth/change-email"
     }
   }
 }

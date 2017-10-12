@@ -919,8 +919,9 @@ describe('PublicAPI', () => {
   });
 
   it('should get best file', () => {
-    const stub = sinon.stub(helper, 'superagentGet');
-    stub.returns(resolver('best-file.json', undefined, true));
+    const stub = sinon.stub(helper, 'get');
+    stub.onFirstCall().returns(resolver('public-dm-root.json'));
+    stub.onSecondCall().returns(resolver('best-file.json'));
 
     return api.getFileUrl('id')
     .should.eventually.be.equal('https://cdn2.entrecode.de/files/01bd8e08/J2DJfjfEVby3KcxGNrJyFdEz_512.png')
@@ -931,16 +932,18 @@ describe('PublicAPI', () => {
     .should.be.rejectedWith('assetID must be defined');
   });
   it('should get best image', () => {
-    const stub = sinon.stub(helper, 'superagentGet');
-    stub.returns(resolver('best-file.json', undefined, true));
+    const stub = sinon.stub(helper, 'get');
+    stub.onFirstCall().returns(resolver('public-dm-root.json'));
+    stub.onSecondCall().returns(resolver('best-file.json'));
 
     return api.getImageUrl('id')
     .should.eventually.be.equal('https://cdn2.entrecode.de/files/01bd8e08/J2DJfjfEVby3KcxGNrJyFdEz_512.png')
     .notify(() => stub.restore());
   });
   it('should get best image with size', () => {
-    const stub = sinon.stub(helper, 'superagentGet');
-    stub.returns(resolver('best-file.json', undefined, true));
+    const stub = sinon.stub(helper, 'get');
+    stub.onFirstCall().returns(resolver('public-dm-root.json'));
+    stub.onSecondCall().returns(resolver('best-file.json'));
 
     return api.getImageUrl('id', 2)
     .should.eventually.be.equal('https://cdn2.entrecode.de/files/01bd8e08/J2DJfjfEVby3KcxGNrJyFdEz_512.png')
@@ -951,16 +954,18 @@ describe('PublicAPI', () => {
     .should.be.rejectedWith('assetID must be defined');
   });
   it('should get best thumb', () => {
-    const stub = sinon.stub(helper, 'superagentGet');
-    stub.returns(resolver('best-file.json', undefined, true));
+    const stub = sinon.stub(helper, 'get');
+    stub.onFirstCall().returns(resolver('public-dm-root.json'));
+    stub.onSecondCall().returns(resolver('best-file.json'));
 
     return api.getImageThumbUrl('id')
     .should.eventually.be.equal('https://cdn2.entrecode.de/files/01bd8e08/J2DJfjfEVby3KcxGNrJyFdEz_512.png')
     .notify(() => stub.restore());
   });
   it('should get best thumb with size', () => {
-    const stub = sinon.stub(helper, 'superagentGet');
-    stub.returns(resolver('best-file.json', undefined, true));
+    const stub = sinon.stub(helper, 'get');
+    stub.onFirstCall().returns(resolver('public-dm-root.json'));
+    stub.onSecondCall().returns(resolver('best-file.json'));
 
     return api.getImageThumbUrl('id', 2)
     .should.eventually.be.equal('https://cdn2.entrecode.de/files/01bd8e08/J2DJfjfEVby3KcxGNrJyFdEz_512.png')
@@ -969,5 +974,23 @@ describe('PublicAPI', () => {
   it('should be rejected on undefined assetID', () => {
     return api.getImageThumbUrl()
     .should.be.rejectedWith('assetID must be defined');
+  });
+
+  it('should change email', () => {
+    api.setToken('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJlbnRyZWNvZGVUZXN0IiwiaWF0IjoxNDg1NzgzNTg4LCJleHAiOjQ2NDE0NTcxODgsImF1ZCI6IlRlc3QiLCJzdWIiOiJ0ZXN0QGVudHJlY29kZS5kZSJ9.Vhrq5GR2hNz-RoAhdlnIIWHelPciBPCemEa74s7cXn8');
+    const stub = sinon.stub(helper, 'postEmpty');
+    stub.returns(Promise.resolve());
+
+    return api.changeEmail('someone@entrecode.de')
+    .then(() => {
+      stub.restore();
+    })
+    .catch((err) => {
+      stub.restore();
+      throw err;
+    });
+  });
+  it('should be rejected on undefined email', () => {
+    return api.changeEmail().should.be.rejectedWith('email must be defined');
   });
 });

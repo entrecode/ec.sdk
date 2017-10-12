@@ -67,11 +67,7 @@ describe('Asset ListResource', () => {
   });
   it('should throw on asset list filtered with assetID', () => {
     return list.deletedAssetList({ assetID: 'id' })
-    .should.be.rejectedWith('Cannot filter deletedAssetList only by dataManagerID and assetID. Use AssetList#deletedAsset() instead');
-  });
-  it('should be rejected on asset list filtered with assetID and dataManagerID', () => {
-    return list.deletedAssetList({ assetID: 'id', dataManagerID: 'id' })
-    .should.be.rejectedWith('Cannot filter deletedAssetList only by dataManagerID and assetID. Use AssetList#deletedAsset() instead');
+    .should.be.rejectedWith('Providing only an id in ResourceList filter will result in single resource response.');
   });
   it('should load asset resource', () => {
     const stub = sinon.stub(helper, 'get');
@@ -88,7 +84,7 @@ describe('Asset ListResource', () => {
     });
   });
   it('should be rejected on undefined assetID', () => {
-    return list.deletedAsset().should.be.rejectedWith('assetID must be defined');
+    return list.deletedAsset().should.be.rejectedWith('resourceID must be defined');
   });
 
   it('should load tag list', () => {
@@ -107,11 +103,7 @@ describe('Asset ListResource', () => {
   });
   it('should throw on tag list filtered with tag', () => {
     return list.tagList({ tag: 'id' })
-    .should.be.rejectedWith('Cannot filter tagList only by dataManagerID and tag. Use AssetList#tag() instead');
-  });
-  it('should be rejected on tag list filtered with tag and dataManagerID', () => {
-    return list.tagList({ tag: 'id', dataManagerID: 'id' })
-    .should.be.rejectedWith('Cannot filter tagList only by dataManagerID and tag. Use AssetList#tag() instead');
+    .should.be.rejectedWith('Providing only an id in ResourceList filter will result in single resource response.');
   });
   it('should load tag resource', () => {
     const stub = sinon.stub(helper, 'get');
@@ -128,7 +120,7 @@ describe('Asset ListResource', () => {
     });
   });
   it('should be rejected on undefined tag', () => {
-    return list.tag().should.be.rejectedWith('tag must be defined');
+    return list.tag().should.be.rejectedWith('resourceID must be defined');
   });
 
   it('should resolve on download without writable stream', () => {
@@ -190,11 +182,39 @@ describe('Asset Resource', () => {
   it('should be instance of Resource', () => {
     resource.should.be.instanceOf(Resource);
   });
-  it('should be instance of TokenResource', () => {
+  it('should be instance of AssetResource', () => {
     resource.should.be.instanceOf(AssetResource);
   });
   it('should get original file', () => {
     resource.getOriginalFile().should.have.property('url', 'https://cdn2.entrecode.de/files/01bd8e08/J2DJfjfEVby3KcxGNrJyFdEz.png');
+  });
+  it('should get original from non image', () => {
+    return new Promise((resolve, reject) => {
+      fs.readFile(`${__dirname}/../mocks/asset-single-text.json`, 'utf-8', (err, res) => {
+        if (err) {
+          return reject(err);
+        }
+        return resolve(JSON.parse(res));
+      });
+    })
+    .then((file) => {
+      const res = new AssetResource(file);
+      res.getOriginalFile().should.have.property('url', 'https://cdn2.entrecode.de/files/01bd8e08/J2DJfjfEVby3KcxGNrJyFdEz_1024.png');
+    });
+  });
+  it('should get file from non resolution images', () => {
+    return new Promise((resolve, reject) => {
+      fs.readFile(`${__dirname}/../mocks/asset-single-without-resolution.json`, 'utf-8', (err, res) => {
+        if (err) {
+          return reject(err);
+        }
+        return resolve(JSON.parse(res));
+      });
+    })
+    .then((file) => {
+      const res = new AssetResource(file);
+      res.getOriginalFile().should.have.property('url', 'https://cdn2.entrecode.de/files/01bd8e08/J2DJfjfEVby3KcxGNrJyFdEz_1024.png');
+    });
   });
   it('should get file url', () => {
     resource.getFileUrl().should.be.equal('https://cdn2.entrecode.de/files/01bd8e08/J2DJfjfEVby3KcxGNrJyFdEz.png');
@@ -274,7 +294,6 @@ describe('Asset Resource', () => {
       asset.getFileUrl('de-DE').should.be.equal('https://cdn2.entrecode.de/files/01bd8e08/1-mt7_kX_DnyNbTQaSP4meVk.txt');
     });
   });
-
 
   const dateGetter = ['created'];
   dateGetter.forEach((name) => {

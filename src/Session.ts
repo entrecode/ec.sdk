@@ -7,6 +7,7 @@ const eventsSymbol = Symbol.for('events');
 const environmentSymbol = Symbol.for('environment');
 const meLoadedTimeSymbol = Symbol.for('meLoadedTime');
 const meSymbol = Symbol('_me');
+const requestCacheSymbol = Symbol('requestCache');
 
 const urls = {
   live: 'https://accounts.entrecode.de/',
@@ -35,6 +36,7 @@ const urls = {
 export default class Session extends Core {
   constructor(environment?: environment) {
     super(urls, environment);
+    this[requestCacheSymbol] = undefined;
   }
 
   /**
@@ -54,13 +56,18 @@ export default class Session extends Core {
         return undefined;
       }
 
-      return this.follow('ec:account')
-      .then(request => get(this[environmentSymbol], request))
-      .then(([res, traversal]) => {
-        this[meSymbol] = new AccountResource(res, this[environmentSymbol], traversal)
-        this[meLoadedTimeSymbol] = new Date();
-        return undefined;
-      });
+      if (!this[requestCacheSymbol]) {
+        this[requestCacheSymbol] = this.follow('ec:account')
+        .then(request => get(this[environmentSymbol], request))
+        .then(([res, traversal]) => {
+          this[requestCacheSymbol] = undefined;
+          this[meSymbol] = new AccountResource(res, this[environmentSymbol], traversal);
+          this[meLoadedTimeSymbol] = new Date();
+          return undefined;
+        });
+      }
+
+      return this[requestCacheSymbol];
     })
     .then(() => this[meSymbol].checkPermission(permission));
   }

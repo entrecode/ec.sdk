@@ -26,52 +26,6 @@ function map(list: ListResource, iterator: (resource: Resource) => Promise<any> 
   });
 }
 
-/**
- * List filter options with pagination, sorting, and {@link filter}. This can be used to apply all
- * sorts of filter to a list request.
- *
- * @example
- * accounts.accountList({ size: 25 }); // will result in a list with 25 entries
- * accounts.accountList({
- *   sort: ['email', '-created'], // sorted by email asc and created desc
- *   page: 3, // page 3 of a list with 10 entries
- *   property: 'exactlyThis', // filter exactly exactlyThis for property property
- * });
- * // for filter see below
- *
- * @typedef {{size: number, page: number, sort: array<string>, _levels: number, _fields:
- *   Array<string>, property: filter}} filterOptions
- */
-
-/**
- *
- * {@link filterOptions} can contain key value pairs with filter options for entry fields. These
- * object will be applied when loading a {@link ListResource}.
- *
- * @example
- * accounts.accountList({
- *   email: {
- *     search: 'andre', // email contains 'andre'
- *   },
- *   language: 'de', // language is exactly 'de'
- *   active: {
- *     exact: 'active', // is (exactly) in active state
- *   },
- *   created: {
- *     from: new Date(new Date().getTime() - 60000), // created 10minutes or less ago
- *   },
- *   permissions: { // has at least one of these permissions
- *     any: [
- *       'dm-user',
- *       'app-user',
- *     ],
- *   },
-  * });
- *
- * @typedef {{propertyName: (string|{exact: string, search: string, from: string, to: string, any:
- *   array<string>, all: array<string>})}} filter
- */
-
 interface ListResource {
   count: number;
   total: number;
@@ -108,6 +62,10 @@ class ListResource extends Resource {
    */
   constructor(resource: any, environment: string, traversal: any, name: string, itemSchema: any, ListClass = ListResource, ItemClass = Resource) {
     super(resource, environment, traversal);
+
+    if (!('count' in resource) && !('total' in resource)) {
+      throw new Error('Resource does not look like a ListResource. Maybe single result on filtered list?');
+    }
 
     this[listClassSymbol] = ListClass;
     this[itemClassSymbol] = ItemClass;
@@ -293,3 +251,49 @@ export type filter = {
 export default ListResource;
 
 export type filterType = Array<string> | number | string | filter;
+
+/**
+ * List filter options with pagination, sorting, and {@link filter}. This can be used to apply all
+ * sorts of filter to a list request.
+ *
+ * @example
+ * accounts.accountList({ size: 25 }); // will result in a list with 25 entries
+ * accounts.accountList({
+ *   sort: ['email', '-created'], // sorted by email asc and created desc
+ *   page: 3, // page 3 of a list with 10 entries
+ *   property: 'exactlyThis', // filter exactly exactlyThis for property property
+ * });
+ * // for filter see below
+ *
+ * @typedef {{size: number, page: number, sort: array<string>, _levels: number, _fields:
+ *   Array<string>, property: filter}} filterOptions
+ */
+
+/**
+ *
+ * {@link filterOptions} can contain key value pairs with filter options for entry fields. These
+ * object will be applied when loading a {@link ListResource}.
+ *
+ * @example
+ * accounts.accountList({
+ *   email: {
+ *     search: 'andre', // email contains 'andre'
+ *   },
+ *   language: 'de', // language is exactly 'de'
+ *   active: {
+ *     exact: 'active', // is (exactly) in active state
+ *   },
+ *   created: {
+ *     from: new Date(new Date().getTime() - 60000), // created 10minutes or less ago
+ *   },
+ *   permissions: { // has at least one of these permissions
+ *     any: [
+ *       'dm-user',
+ *       'app-user',
+ *     ],
+ *   },
+ * });
+ *
+ * @typedef {{propertyName: (string|{exact: string, search: string, from: string, to: string, any:
+ *   array<string>, all: array<string>})}} filter
+ */

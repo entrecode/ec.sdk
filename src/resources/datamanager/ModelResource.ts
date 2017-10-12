@@ -1,5 +1,8 @@
 import Resource from '../Resource';
 import { environment } from '../../Core';
+import { post } from '../../helper';
+
+const environmentSymbol = Symbol.for('environment');
 
 /**
  * Model resource class
@@ -112,6 +115,18 @@ export default class ModelResource extends Resource {
 
   set titleField(value: string) {
     this.setProperty('titleField', value);
+  }
+
+  /**
+   * Start a sync for models with sync settings.
+   *
+   * @returns {Promise<any>} Returns a Promise resolving to sync result.
+   */
+  sync() {
+    return Promise.resolve()
+    .then(() => this.newRequest().follow('ec:model/sync'))
+    .then(request => post(this[environmentSymbol], request))
+    .then(([res]) => res);
   }
 }
 

@@ -1,6 +1,4 @@
 import * as validator from 'json-schema-remote';
-
-import { get, optionsToQuery, post } from '../../helper';
 import Resource from '../Resource';
 import PlatformList from './PlatformList';
 import PlatformResource from './PlatformResource';
@@ -13,7 +11,7 @@ import TargetResource from './TargetResource';
 import { filterOptions } from '../ListResource';
 import { environment } from '../../Core';
 
-const environmentSymbol = Symbol.for('environment');
+const relationsSymbol = Symbol.for('relations');
 
 validator.setLoggingFunction(() => {
 });
@@ -41,6 +39,42 @@ export default class AppResource extends Resource {
    */
   constructor(resource: any, environment: environment, traversal?: any) {
     super(resource, environment, traversal);
+
+    this[relationsSymbol] = {
+      codeSource: {
+        relation: 'ec:app/codesources/options',
+        createRelation: 'ec:app/codesource/by-id',
+        createTemplateModifier: '-template',
+        id: 'codeSourceID',
+        ResourceClass: CodeSourceResource,
+        ListClass: CodeSourceList,
+      },
+      dataSource: {
+        relation: 'ec:app/datasources/options',
+        createRelation: 'ec:app/datasource/by-id',
+        createTemplateModifier: '-template',
+        id: 'dataSourceID',
+        ResourceClass: DataSourceResource,
+        ListClass: DataSourceList,
+      },
+      platform: {
+        relation: 'ec:app/platforms/options',
+        createRelation: 'ec:app/platform/by-id',
+        createTemplateModifier: '-template',
+        id: 'platformID',
+        ResourceClass: PlatformResource,
+        ListClass: PlatformList,
+      },
+      target: {
+        relation: 'ec:app/targets/options',
+        createRelation: 'ec:app/target/by-id',
+        createTemplateModifier: '-template',
+        id: 'targetID',
+        ResourceClass: TargetResource,
+        ListClass: TargetList,
+      },
+    };
+
     this.countProperties();
   }
 
@@ -79,18 +113,7 @@ export default class AppResource extends Resource {
    * @returns {Promise<CodeSourceResource>} resolves to the codeSource which should be loaded.
    */
   codeSource(codeSourceID: string): Promise<CodeSourceResource> {
-    return Promise.resolve()
-    .then(() => {
-      if (!codeSourceID) {
-        throw new Error('codeSourceID must be defined');
-      }
-      return this.newRequest().follow('ec:app/codesource/by-id');
-    })
-    .then((request: any) => {
-      request.withTemplateParameters({ codeSourceID });
-      return get(this[environmentSymbol], request);
-    })
-    .then(([res, traversal]) => new CodeSourceResource(res, this[environmentSymbol], traversal));
+    return <Promise<CodeSourceResource>>this.resource('codeSource', codeSourceID);
   }
 
   /**
@@ -101,22 +124,7 @@ export default class AppResource extends Resource {
    * @returns {Promise<CodeSourceList>} resolves to app list with applied filters.
    */
   codeSourceList(options?: filterOptions | any): Promise<CodeSourceList> {
-    return Promise.resolve()
-    .then(() => {
-      if (
-        options && Object.keys(options).length === 1 && 'codeSourceID' in options
-        && (typeof options.codeSourceID === 'string' || (!('any' in options.codeSourceID) && !('all' in options.codeSourceID)))
-      ) {
-        throw new Error('Cannot filter codeSourceList only by codeSourceID. Use AppResource#codeSource instead');
-      }
-
-      return this.newRequest().follow('ec:app/codesources/options');
-    })
-    .then((request: any) => {
-      request.withTemplateParameters(optionsToQuery(options, this.getLink('ec:app/codesources/options').href));
-      return get(this[environmentSymbol], request);
-    })
-    .then(([res, traversal]) => new CodeSourceList(res, this[environmentSymbol], traversal));
+    return <Promise<CodeSourceList>>this.resourceList('codeSource', options);
   }
 
   /**
@@ -126,16 +134,7 @@ export default class AppResource extends Resource {
    * @returns {Promise<CodeSourceResource>} the newly created CodeSourceResource
    */
   createCodeSource(codeSource: any): Promise<CodeSourceResource> {
-    return Promise.resolve()
-    .then(() => {
-      if (!codeSource) {
-        throw new Error('Cannot create resource with undefined object.');
-      }
-      return this.getLink('ec:app/codesource/by-id');
-    })
-    .then((link: any) => validator.validate(codeSource, `${link.profile}-template`))
-    .then(() => post(this[environmentSymbol], this.newRequest().follow('ec:app/codesources'), codeSource))
-    .then(([res, traversal]) => new CodeSourceResource(res, this[environmentSymbol], traversal));
+    return <Promise<CodeSourceResource>>this.create('codeSource', codeSource);
   }
 
   /**
@@ -145,16 +144,7 @@ export default class AppResource extends Resource {
    * @returns {Promise<DataSourceResource>} the newly created DataSourceResource
    */
   createDataSource(dataSource: Promise<DataSourceResource>) {
-    return Promise.resolve()
-    .then(() => {
-      if (!dataSource) {
-        throw new Error('Cannot create resource with undefined object.');
-      }
-      return this.getLink('ec:app/datasource/by-id');
-    })
-    .then((link: any) => validator.validate(dataSource, `${link.profile}-template`))
-    .then(() => post(this[environmentSymbol], this.newRequest().follow('ec:app/datasources'), dataSource))
-    .then(([dm, traversal]) => new DataSourceResource(dm, this[environmentSymbol], traversal));
+    return <Promise<CodeSourceResource>>this.create('dataSource', dataSource);
   }
 
   /**
@@ -234,11 +224,8 @@ export default class AppResource extends Resource {
         delete out.target;
       }
 
-      return validator.validate(out, `${this.getLink('ec:app/platform/by-id').profile}-template`)
-      .then(() => out);
-    })
-    .then(out => post(this[environmentSymbol], this.newRequest().follow('ec:app/platforms'), out))
-    .then(([res, traversal]) => new PlatformResource(res, this[environmentSymbol], traversal));
+      return <Promise<PlatformResource>>this.create('platform', out);
+    });
   }
 
   /**
@@ -248,16 +235,7 @@ export default class AppResource extends Resource {
    * @returns {Promise<TargetResource>} the newly created TargetResource
    */
   createTarget(target: string): Promise<TargetResource> {
-    return Promise.resolve()
-    .then(() => {
-      if (!target) {
-        throw new Error('Cannot create resource with undefined object.');
-      }
-      return this.getLink('ec:app/target/by-id');
-    })
-    .then((link: any) => validator.validate(target, `${link.profile}-template`))
-    .then(() => post(this[environmentSymbol], this.newRequest().follow('ec:app/targets'), target))
-    .then(([dm, traversal]) => new TargetResource(dm, this[environmentSymbol], traversal));
+    return <Promise<TargetResource>>this.create('target', target);
   }
 
   /**
@@ -267,18 +245,7 @@ export default class AppResource extends Resource {
    * @returns {Promise<CodeSourceResource>} resolves to the dataSource which should be loaded.
    */
   dataSource(dataSourceID: string): Promise<DataSourceResource> {
-    return Promise.resolve()
-    .then(() => {
-      if (!dataSourceID) {
-        throw new Error('dataSourceID must be defined');
-      }
-      return this.newRequest().follow('ec:app/datasource/by-id');
-    })
-    .then((request: any) => {
-      request.withTemplateParameters({ dataSourceID });
-      return get(this[environmentSymbol], request);
-    })
-    .then(([res, traversal]) => new DataSourceResource(res, this[environmentSymbol], traversal));
+    return <Promise<DataSourceResource>>this.resource('dataSource', dataSourceID);
   }
 
   /**
@@ -289,22 +256,7 @@ export default class AppResource extends Resource {
    * @returns {Promise<CodeSourceList>} resolves to app list with applied filters.
    */
   dataSourceList(options?: filterOptions | any): Promise<CodeSourceList> {
-    return Promise.resolve()
-    .then(() => {
-      if (
-        options && Object.keys(options).length === 1 && 'dataSourceID' in options
-        && (typeof options.dataSourceID === 'string' || (!('any' in options.dataSourceID) && !('all' in options.dataSourceID)))
-      ) {
-        throw new Error('Cannot filter dataSourceList only by dataSourceID. Use AppResource#dataSource instead');
-      }
-
-      return this.newRequest().follow('ec:app/datasources/options');
-    })
-    .then((request: any) => {
-      request.withTemplateParameters(optionsToQuery(options, this.getLink('ec:app/datasources/options').href));
-      return get(this[environmentSymbol], request);
-    })
-    .then(([res, traversal]) => new DataSourceList(res, this[environmentSymbol], traversal));
+    return <Promise<DataSourceList>>this.resourceList('dataSource', options);
   }
 
   /**
@@ -314,18 +266,7 @@ export default class AppResource extends Resource {
    * @returns {Promise<PlatformResource>} resolves to the platform which should be loaded.
    */
   platform(platformID: string): Promise<PlatformResource> {
-    return Promise.resolve()
-    .then(() => {
-      if (!platformID) {
-        throw new Error('platformID must be defined');
-      }
-      return this.newRequest().follow('ec:app/platform/by-id');
-    })
-    .then((request: any) => {
-      request.withTemplateParameters({ platformID });
-      return get(this[environmentSymbol], request);
-    })
-    .then(([res, traversal]) => new PlatformResource(res, this[environmentSymbol], traversal));
+    return <Promise<PlatformResource>>this.resource('platform', platformID);
   }
 
   /**
@@ -336,22 +277,7 @@ export default class AppResource extends Resource {
    * @returns {Promise<PlatformList>} resolves to app list with applied filters.
    */
   platformList(options?: filterOptions | any): Promise<PlatformList> {
-    return Promise.resolve()
-    .then(() => {
-      if (
-        options && Object.keys(options).length === 1 && 'platformID' in options
-        && (typeof options.platformID === 'string' || (!('any' in options.platformID) && !('all' in options.platformID)))
-      ) {
-        throw new Error('Cannot filter platformList only by platformID. Use AppResource#platform instead');
-      }
-
-      return this.newRequest().follow('ec:app/platforms/options');
-    })
-    .then((request: any) => {
-      request.withTemplateParameters(optionsToQuery(options, this.getLink('ec:app/platforms/options').href));
-      return get(this[environmentSymbol], request);
-    })
-    .then(([res, traversal]) => new PlatformList(res, this[environmentSymbol], traversal));
+    return <Promise<PlatformList>>this.resourceList('platform', options);
   }
 
   /**
@@ -361,18 +287,7 @@ export default class AppResource extends Resource {
    * @returns {Promise<TargetResource>} resolves to the target which should be loaded.
    */
   target(targetID: string): Promise<TargetResource> {
-    return Promise.resolve()
-    .then(() => {
-      if (!targetID) {
-        throw new Error('targetID must be defined');
-      }
-      return this.newRequest().follow('ec:app/target/by-id');
-    })
-    .then((request: any) => {
-      request.withTemplateParameters({ targetID });
-      return get(this[environmentSymbol], request);
-    })
-    .then(([res, traversal]) => new TargetResource(res, this[environmentSymbol], traversal));
+    return <Promise<TargetResource>>this.resource('target', targetID);
   }
 
   /**
@@ -383,21 +298,6 @@ export default class AppResource extends Resource {
    * @returns {Promise<TargetList>} resolves to app list with applied filters.
    */
   targetList(options?: filterOptions | any): Promise<TargetList> {
-    return Promise.resolve()
-    .then(() => {
-      if (
-        options && Object.keys(options).length === 1 && 'targetID' in options
-        && (typeof options.targetID === 'string' || (!('any' in options.targetID) && !('all' in options.targetID)))
-      ) {
-        throw new Error('Cannot filter targetList only by targetID. Use AppResource#target instead');
-      }
-
-      return this.newRequest().follow('ec:app/targets/options');
-    })
-    .then((request: any) => {
-      request.withTemplateParameters(optionsToQuery(options, this.getLink('ec:app/targets/options').href));
-      return get(this[environmentSymbol], request);
-    })
-    .then(([res, traversal]) => new TargetList(res, this[environmentSymbol], traversal));
+    return <Promise<TargetList>>this.resourceList('target', options);
   }
 }

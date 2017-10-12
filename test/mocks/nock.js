@@ -9,6 +9,8 @@ module.exports = {
     .get('/client').replyWithFile(200, `${__dirname}/schema/client.json`, { 'Content-Type': 'application/json' })
     .get('/datamanager').replyWithFile(200, `${__dirname}/schema/dm.json`, { 'Content-Type': 'application/json' })
     .get('/datamanager-template').replyWithFile(200, `${__dirname}/schema/dm-template.json`, { 'Content-Type': 'application/json' })
+    .get('/model').replyWithFile(200, `${__dirname}/schema/model.json`, { 'Content-Type': 'application/json' })
+    .get('/model-template').replyWithFile(200, `${__dirname}/schema/model-template.json`, { 'Content-Type': 'application/json' })
     .get('/dm-template-template').replyWithFile(200, `${__dirname}/schema/dm-template-template.json`, { 'Content-Type': 'application/json' })
     .get('/dm-role-template').replyWithFile(200, `${__dirname}/schema/dm-role-template.json`, { 'Content-Type': 'application/json' })
     .get('/dm-client').replyWithFile(200, `${__dirname}/schema/dm-client.json`, { 'Content-Type': 'application/json' })

@@ -71,7 +71,7 @@ describe('DataManager class', () => {
   });
   it('should be rejected on list only with dataManagerID', () => {
     return new DataManager('live').dataManagerList({ dataManagerID: 'id' })
-    .should.be.rejectedWith('Providing only an dataManagerID in DataManagerList filter will result in single resource response. Please use DataManager#get');
+    .should.be.rejectedWith('Providing only an id in ResourceList filter will result in single resource response.');
   });
   it('should return resource on get', () => {
     const dm = new DataManager('live');
@@ -90,7 +90,7 @@ describe('DataManager class', () => {
   });
   it('should be rejected on get with undefined id', () => {
     return new DataManager('live').dataManager()
-    .should.be.rejectedWith('dataManagerID must be defined');
+    .should.be.rejectedWith('resourceID must be defined');
   });
   it('should call post on create', () => {
     const stub = sinon.stub(helper, 'post');
@@ -112,7 +112,7 @@ describe('DataManager class', () => {
         hexColor: resource.hexColor,
         locales: resource.locales,
       });
-      return dm.create(create);
+      return dm.createDataManager(create);
     })
     .then(() => {
       stub.should.be.calledOnce;
@@ -124,7 +124,7 @@ describe('DataManager class', () => {
     });
   });
   it('should be rejected on create with undefined', () => {
-    return new DataManager('live').create()
+    return new DataManager('live').createDataManager()
     .should.be.rejectedWith('Cannot create resource with undefined object');
   });
 
@@ -146,7 +146,7 @@ describe('DataManager class', () => {
   it('should throw on template list filtered with templateID', () => {
     const dm = new DataManager('live');
     return dm.templateList({ templateID: 'id' })
-    .should.be.rejectedWith('Cannot filter templateList only by templateID. Use DataManagerResource#template() instead');
+    .should.be.rejectedWith('Providing only an id in ResourceList filter will result in single resource response.');
   });
   it('should load template resource', () => {
     const dm = new DataManager('live');
@@ -166,7 +166,7 @@ describe('DataManager class', () => {
   });
   it('should be rejected on undefined templateID', () => {
     const dm = new DataManager('live');
-    return dm.template().should.be.rejectedWith('templateID must be defined');
+    return dm.template().should.be.rejectedWith('resourceID must be defined');
   });
   it('should create template', () => {
     const dm = new DataManager('live');
@@ -429,11 +429,7 @@ describe('DataManager Resource', () => {
   });
   it('should throw on model list filtered with modelID', () => {
     return resource.modelList({ modelID: 'id' })
-    .should.be.rejectedWith('Cannot filter modelList only by dataManagerID and modelID. Use DataManagerResource#model() instead');
-  });
-  it('should be rejected on model list filtered with modelID and dataManagerID', () => {
-    return resource.modelList({ modelID: 'id', dataManagerID: 'id' })
-    .should.be.rejectedWith('Cannot filter modelList only by dataManagerID and modelID. Use DataManagerResource#model() instead');
+    .should.be.rejectedWith('Providing only an id in ResourceList filter will result in single resource response.');
   });
   it('should load model resource', () => {
     const stub = sinon.stub(helper, 'get');
@@ -449,8 +445,36 @@ describe('DataManager Resource', () => {
       throw err;
     });
   });
+  it('should create model', () => {
+    nock.reset();
+    const stub = sinon.stub(helper, 'post');
+    return new Promise((resolve, reject) => {
+      fs.readFile(`${__dirname}/../mocks/model-single.json`, 'utf-8', (err, res) => {
+        if (err) {
+          return reject(err);
+        }
+        return resolve(JSON.parse(res));
+      });
+    })
+    .then((res) => {
+      stub.returns(Promise.resolve([res, {}]));
+      delete res._links;
+      delete res.modelID;
+      delete res.created;
+      delete res.modified;
+      return resource.createModel(res);
+    })
+    .then(() => {
+      stub.should.be.calledOnce;
+      stub.restore();
+    })
+    .catch((err) => {
+      stub.restore();
+      throw err;
+    });
+  });
   it('should be rejected on undefined modelID', () => {
-    return resource.model().should.be.rejectedWith('modelID must be defined');
+    return resource.model().should.be.rejectedWith('resourceID must be defined');
   });
 
   it('should load client list', () => {
@@ -469,11 +493,7 @@ describe('DataManager Resource', () => {
   });
   it('should throw on client list filtered with clientID', () => {
     return resource.clientList({ clientID: 'id' })
-    .should.be.rejectedWith('Cannot filter clientList only by dataManagerID and clientID. Use DataManagerResource#client() instead');
-  });
-  it('should be rejected on client list filtered with clientID and dataManagerID', () => {
-    return resource.clientList({ clientID: 'id', dataManagerID: 'id' })
-    .should.be.rejectedWith('Cannot filter clientList only by dataManagerID and clientID. Use DataManagerResource#client() instead');
+    .should.be.rejectedWith('Providing only an id in ResourceList filter will result in single resource response.');
   });
   it('should load client resource', () => {
     const stub = sinon.stub(helper, 'get');
@@ -490,7 +510,7 @@ describe('DataManager Resource', () => {
     });
   });
   it('should be rejected on undefined clientID', () => {
-    return resource.client().should.be.rejectedWith('clientID must be defined');
+    return resource.client().should.be.rejectedWith('resourceID must be defined');
   });
   it('should create client', () => {
     const stub = sinon.stub(helper, 'post');
@@ -542,11 +562,11 @@ describe('DataManager Resource', () => {
   });
   it('should throw on account list filtered with accountID', () => {
     return resource.accountList({ accountID: 'id' })
-    .should.be.rejectedWith('Cannot filter accountList only by dataManagerID and accountID. Use DataManagerResource#account() instead');
+    .should.be.rejectedWith('Providing only an id in ResourceList filter will result in single resource response.');
   });
   it('should be rejected on account list filtered with accountID and dataManagerID', () => {
-    return resource.accountList({ accountID: 'id', dataManagerID: 'id' })
-    .should.be.rejectedWith('Cannot filter accountList only by dataManagerID and accountID. Use DataManagerResource#account() instead');
+    return resource.accountList({ accountID: 'id' })
+    .should.be.rejectedWith('Providing only an id in ResourceList filter will result in single resource response.');
   });
   it('should load account resource', () => {
     const stub = sinon.stub(helper, 'get');
@@ -563,7 +583,7 @@ describe('DataManager Resource', () => {
     });
   });
   it('should be rejected on undefined accountID', () => {
-    return resource.account().should.be.rejectedWith('accountID must be defined');
+    return resource.account().should.be.rejectedWith('resourceID must be defined');
   });
 
   it('should load role list', () => {
@@ -582,11 +602,7 @@ describe('DataManager Resource', () => {
   });
   it('should throw on role list filtered with roleID', () => {
     return resource.roleList({ roleID: 'id' })
-    .should.be.rejectedWith('Cannot filter roleList only by dataManagerID and roleID. Use DataManagerResource#role() instead');
-  });
-  it('should be rejected on role list filtered with roleID and dataManagerID', () => {
-    return resource.roleList({ roleID: 'id', dataManagerID: 'id' })
-    .should.be.rejectedWith('Cannot filter roleList only by dataManagerID and roleID. Use DataManagerResource#role() instead');
+    .should.be.rejectedWith('Providing only an id in ResourceList filter will result in single resource response.');
   });
   it('should load role resource', () => {
     const stub = sinon.stub(helper, 'get');
@@ -603,7 +619,7 @@ describe('DataManager Resource', () => {
     });
   });
   it('should be rejected on undefined roleID', () => {
-    return resource.role().should.be.rejectedWith('roleID must be defined');
+    return resource.role().should.be.rejectedWith('resourceID must be defined');
   });
   it('should create role', () => {
     const stub = sinon.stub(helper, 'post');
@@ -670,11 +686,7 @@ describe('DataManager Resource', () => {
   });
   it('should throw on asset list filtered with assetID', () => {
     return resource.assetList({ assetID: 'id' })
-    .should.be.rejectedWith('Cannot filter assetList only by dataManagerID and assetID. Use DataManagerResource#asset() instead');
-  });
-  it('should be rejected on asset list filtered with assetID and dataManagerID', () => {
-    return resource.assetList({ assetID: 'id', dataManagerID: 'id' })
-    .should.be.rejectedWith('Cannot filter assetList only by dataManagerID and assetID. Use DataManagerResource#asset() instead');
+    .should.be.rejectedWith('Providing only an id in ResourceList filter will result in single resource response.');
   });
   it('should load asset resource', () => {
     const stub = sinon.stub(helper, 'get');
@@ -691,7 +703,7 @@ describe('DataManager Resource', () => {
     });
   });
   it('should be rejected on undefined assetID', () => {
-    return resource.asset().should.be.rejectedWith('assetID must be defined');
+    return resource.asset().should.be.rejectedWith('resourceID must be defined');
   });
 
   it('should create asset, path', () => {

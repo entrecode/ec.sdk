@@ -6,12 +6,13 @@ import DeletedAssetResource from './DeletedAssetResource';
 import ListResource, { filterOptions } from '../ListResource';
 import TagList from './TagList';
 import TagResource from './TagResource';
-import { get, getUrl, optionsToQuery, superagentGetPiped } from '../../helper';
+import { getUrl, superagentGetPiped } from '../../helper';
 import { environment } from '../../Core';
 
 const environmentSymbol = Symbol.for('environment');
-const resourceSymbol = Symbol.for('resource');
 const dataManagerIDSymbol = Symbol('dataManagerID');
+const relationsSymbol = Symbol.for('relations');
+
 /**
  * Asset list class
  *
@@ -27,6 +28,25 @@ export default class AssetList extends ListResource {
    */
   constructor(resource: any, environment: environment, traversal?: any) {
     super(resource, environment, traversal, 'ec:asset', undefined, AssetList, AssetResource);
+
+    this[relationsSymbol] = {
+      deletedAsset: {
+        relation: 'ec:assets/deleted/options',
+        createRelation: false,
+        createTemplateModifier: '',
+        id: 'assetID',
+        ResourceClass: DeletedAssetResource,
+        ListClass: DeletedAssetList,
+      },
+      tag: {
+        relation: 'ec:tags/options',
+        createRelation: false,
+        createTemplateModifier: '',
+        id: 'tag',
+        ResourceClass: TagResource,
+        ListClass: TagList,
+      },
+    };
 
     /* eslint no-underscore-dangle:0 */
     this[dataManagerIDSymbol] = resource._links.self.href.substr(resource._links.self.href.indexOf('dataManagerID') + 14);
@@ -46,17 +66,7 @@ export default class AssetList extends ListResource {
    * @returns {Promise<DeletedAssetResource>} Promise resolving to AssetResource
    */
   deletedAsset(assetID: string): Promise<DeletedAssetResource> {
-    return Promise.resolve()
-    .then(() => {
-      if (!assetID) {
-        throw new Error('assetID must be defined');
-      }
-      const request = this.newRequest()
-      .follow('ec:assets/deleted/options')
-      .withTemplateParameters({ dataManagerID: this[dataManagerIDSymbol], assetID });
-      return get(this[environmentSymbol], request);
-    })
-    .then(([res, traversal]) => new DeletedAssetResource(res, this[environmentSymbol], traversal));
+    return <Promise<DeletedAssetResource>>this.resource('deletedAsset', assetID);
   }
 
   /**
@@ -85,29 +95,7 @@ export default class AssetList extends ListResource {
    * @returns {Promise<DeletedAssetList>} Promise resolving to AssetList
    */
   deletedAssetList(options: filterOptions): Promise<DeletedAssetList> {
-    return Promise.resolve()
-    .then(() => {
-      const o: filterOptions | any = {}; // TODO remove any
-      if (options) {
-        Object.assign(o, options);
-      }
-
-      o.dataManagerID = this[dataManagerIDSymbol];
-
-      if (
-        Object.keys(o).length === 2 && 'assetID' in o && 'dataManagerID' in o
-        && (typeof o.assetID === 'string' || (!('any' in o.assetID) && !('all' in o.assetID)))
-        && (typeof o.dataManagerID === 'string' || (!('any' in o.dataManagerID) && !('all' in o.dataManagerID)))
-      ) {
-        throw new Error('Cannot filter deletedAssetList only by dataManagerID and assetID. Use AssetList#deletedAsset() instead');
-      }
-
-      const request = this.newRequest()
-      .follow('ec:assets/deleted/options')
-      .withTemplateParameters(optionsToQuery(o, this.getLink('ec:assets/deleted/options').href));
-      return get(this[environmentSymbol], request);
-    })
-    .then(([res, traversal]) => new DeletedAssetList(res, this[environmentSymbol], traversal));
+    return <Promise<DeletedAssetList>>this.resourceList('deletedAsset', options);
   }
 
   /**
@@ -119,7 +107,7 @@ export default class AssetList extends ListResource {
    * @returns {Promise<void|string>} Promise resolving undefined if writeable stream is
    * provided. Url otherwise.
    */
-  download(writeStream?: stream): Promise<void> {
+  download(writeStream?: stream): Promise<void | string> {
     if (writeStream && !(writeStream instanceof stream.Writable)) {
       return Promise.reject(new Error('writeStream must be instance of stream.Writable.'));
     }
@@ -147,17 +135,7 @@ export default class AssetList extends ListResource {
    * @returns {Promise<TagResource>} Promise resolving to TagResource
    */
   tag(tag: string): Promise<TagResource> {
-    return Promise.resolve()
-    .then(() => {
-      if (!tag) {
-        throw new Error('tag must be defined');
-      }
-      const request = this.newRequest()
-      .follow('ec:tags/options')
-      .withTemplateParameters({ dataManagerID: this[dataManagerIDSymbol], tag });
-      return get(this[environmentSymbol], request);
-    })
-    .then(([res, traversal]) => new TagResource(res, this[environmentSymbol], traversal));
+    return <Promise<TagResource>>this.resource('tag', tag);
   }
 
   /**
@@ -186,28 +164,6 @@ export default class AssetList extends ListResource {
    * @returns {Promise<TagList>} Promise resolving to TagList
    */
   tagList(options: filterOptions): Promise<TagList> {
-    return Promise.resolve()
-    .then(() => {
-      const o: filterOptions | any = {}; // TODO remove any
-      if (options) {
-        Object.assign(o, options);
-      }
-
-      o.dataManagerID = this[dataManagerIDSymbol];
-
-      if (
-        Object.keys(o).length === 2 && 'tag' in o && 'dataManagerID' in o
-        && (typeof o.tag === 'string' || (!('any' in o.tag) && !('all' in o.tag)))
-        && (typeof o.dataManagerID === 'string' || (!('any' in o.dataManagerID) && !('all' in o.dataManagerID)))
-      ) {
-        throw new Error('Cannot filter tagList only by dataManagerID and tag. Use AssetList#tag() instead');
-      }
-
-      const request = this.newRequest()
-      .follow('ec:tags/options')
-      .withTemplateParameters(optionsToQuery(o, this.getLink('ec:tags/options').href));
-      return get(this[environmentSymbol], request);
-    })
-    .then(([res, traversal]) => new TagList(res, this[environmentSymbol], traversal));
+    return <Promise<TagList>>this.resourceList('tag', options);
   }
 }

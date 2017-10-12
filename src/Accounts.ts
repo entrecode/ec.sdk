@@ -10,18 +10,11 @@ import InvitesResource from './resources/accounts/InvitesResource';
 import GroupList from './resources/accounts/GroupList';
 import GroupResource from './resources/accounts/GroupResource';
 import { filterOptions } from './resources/ListResource';
-import {
-  get,
-  getEmpty,
-  getUrl,
-  optionsToQuery,
-  post,
-  postEmpty,
-  superagentFormPost
-} from './helper';
+import { get, getEmpty, getUrl, post, postEmpty, superagentFormPost } from './helper';
 
 const tokenStoreSymbol = Symbol.for('tokenStore');
 const environmentSymbol = Symbol.for('environment');
+const relationsSymbol = Symbol.for('relations');
 
 validator.setLoggingFunction(() => {
 });
@@ -59,6 +52,33 @@ const urls = {
 export default class Accounts extends Core {
   constructor(environment?: environment) {
     super(urls, environment);
+
+    this[relationsSymbol] = {
+      account: {
+        relation: 'ec:accounts/options',
+        createRelation: false,
+        createTemplateModifier: '',
+        id: 'accountid',
+        ResourceClass: AccountResource,
+        ListClass: AccountList,
+      },
+      client: {
+        relation: 'ec:acc/clients/options',
+        createRelation: 'ec:acc/client/by-id',
+        createTemplateModifier: '',
+        id: 'clientid',
+        ResourceClass: ClientResource,
+        ListClass: ClientList,
+      },
+      group: {
+        relation: 'ec:acc/groups/options',
+        createRelation: 'ec:acc/group/by-id',
+        createTemplateModifier: '-template',
+        id: 'groupid',
+        ResourceClass: GroupResource,
+        ListClass: GroupList,
+      }
+    };
   }
 
   /**
@@ -72,18 +92,7 @@ export default class Accounts extends Core {
    * @returns {Promise<AccountResource>} resolves to the Account which should be loaded
    */
   account(accountID: string): Promise<AccountResource> {
-    return Promise.resolve()
-    .then(() => {
-      if (!accountID) {
-        throw new Error('accountID must be defined');
-      }
-      return this.follow('ec:accounts/options');
-    })
-    .then((request) => {
-      request.withTemplateParameters({ accountid: accountID });
-      return get(this[environmentSymbol], request);
-    })
-    .then(([res, traversal]) => new AccountResource(res, this[environmentSymbol], traversal));
+    return <Promise<AccountResource>>this.resource('account', accountID);
   }
 
   /**
@@ -104,22 +113,7 @@ export default class Accounts extends Core {
    * @returns {Promise<AccountList>} resolves to account list with applied filters
    */
   accountList(options?: filterOptions | any): Promise<AccountList> {
-    return Promise.resolve()
-    .then(() => {
-      if (
-        options && Object.keys(options).length === 1 && 'accountID' in options
-        && (typeof options.accountID === 'string' || (!('any' in options.accountID) && !('all' in options.accountID)))
-      ) {
-        throw new Error('Providing only an accountID in AccountList filter will result in single resource response. Please use Accounts#account');
-      }
-
-      return this.follow('ec:accounts/options');
-    })
-    .then((request) => {
-      request.withTemplateParameters(optionsToQuery(options, this.getLink('ec:accounts/options').href));
-      return get(this[environmentSymbol], request);
-    })
-    .then(([res, traversal]) => new AccountList(res, this[environmentSymbol], traversal));
+    return <Promise<AccountList>>this.resourceList('account', options);
   }
 
   /**
@@ -159,19 +153,7 @@ export default class Accounts extends Core {
    * @returns {Promise<ClientResource>} Promise resolving to ClientResource
    */
   client(clientID: string): Promise<ClientResource> {
-    return Promise.resolve()
-    .then(() => {
-      if (!clientID) {
-        throw new Error('clientID must be defined');
-      }
-
-      return this.follow('ec:acc/client/options');
-    })
-    .then((request) => {
-      request.withTemplateParameters({ clientid: clientID });
-      return get(this[environmentSymbol], request);
-    })
-    .then(([res, traversal]) => new ClientResource(res, this[environmentSymbol], traversal));
+    return <Promise<ClientResource>>this.resource('client', clientID);
   }
 
   /**
@@ -189,22 +171,7 @@ export default class Accounts extends Core {
    * @returns {Promise<ClientList>} Promise resolving to ClientList
    */
   clientList(options?: filterOptions | any): Promise<ClientList> {
-    return Promise.resolve()
-    .then(() => {
-      if (
-        options && Object.keys(options).length === 1 && 'clientID' in options
-        && (typeof options.clientID === 'string' || (!('any' in options.clientID) && !('all' in options.clientID)))
-      ) {
-        throw new Error('Providing only an clientID in ClientList filter will result in single resource response. Please use Accounts#client');
-      }
-
-      return this.follow('ec:acc/clients/options');
-    })
-    .then((request) => {
-      request.withTemplateParameters(optionsToQuery(options, this.getLink('ec:acc/clients/options').href));
-      return get(this[environmentSymbol], request);
-    })
-    .then(([res, traversal]) => new ClientList(res, this[environmentSymbol], traversal));
+    return <Promise<ClientList>>this.resourceList('client', options);
   }
 
   /**
@@ -230,17 +197,7 @@ export default class Accounts extends Core {
    * @returns {Promise<ClientResource>} the newly created ClientResource
    */
   createClient(client: any): Promise<ClientResource> {
-    return Promise.resolve()
-    .then(() => {
-      if (!client) {
-        throw new Error('Cannot create resource with undefined object.');
-      }
-      return this.link('ec:acc/client/by-id');
-    })
-    .then(link => validator.validate(client, link.profile))
-    .then(() => this.follow('ec:acc/clients'))
-    .then(request => post(this[environmentSymbol], request, client))
-    .then(([c, traversal]) => new ClientResource(c, this[environmentSymbol], traversal));
+    return <Promise<ClientResource>>this.create('client', client);
   }
 
   /**
@@ -250,17 +207,7 @@ export default class Accounts extends Core {
    * @returns {Promise<GroupResource>} the newly created GroupResource
    */
   createGroup(group: any): Promise<GroupResource> {
-    return Promise.resolve()
-    .then(() => {
-      if (!group) {
-        throw new Error('Cannot create resource with undefined object.');
-      }
-      return this.link('ec:acc/group/by-id');
-    })
-    .then(link => validator.validate(group, `${link.profile}-template`))
-    .then(() => this.follow('ec:acc/groups'))
-    .then(request => post(this[environmentSymbol], request, group))
-    .then(([c, traversal]) => new GroupResource(c, this[environmentSymbol], traversal));
+    return <Promise<GroupResource>>this.create('group', group);
   }
 
   /**
@@ -336,18 +283,7 @@ export default class Accounts extends Core {
    * @returns {Promise<GroupResource>} Promise resolving to the group
    */
   group(groupID: string): Promise<GroupResource> {
-    return Promise.resolve()
-    .then(() => {
-      if (!groupID) {
-        throw new Error('groupID must be defined');
-      }
-      return this.follow('ec:acc/clients/options');
-    })
-    .then((request) => {
-      request.withTemplateParameters({ groupid: groupID });
-      return get(this[environmentSymbol], request);
-    })
-    .then(([res, traversal]) => new GroupResource(res, this[environmentSymbol], traversal));
+    return <Promise<GroupResource>>this.resource('group', groupID);
   }
 
   /**
@@ -370,22 +306,7 @@ export default class Accounts extends Core {
    * @returns {Promise<GroupList>} Promise resolving group list
    */
   groupList(options?: filterOptions | any): Promise<GroupList> { // TODO remove any
-    return Promise.resolve()
-    .then(() => {
-      if (
-        options && Object.keys(options).length === 1 && 'groupID' in options
-        && (typeof options.groupID === 'string' || (!('any' in options.groupID) && !('all' in options.groupID)))
-      ) {
-        throw new Error('Providing only an groupID in GroupList filter will result in single resource response. Please use Accounts#groupList');
-      }
-
-      return this.follow('ec:acc/groups/options');
-    })
-    .then((request) => {
-      request.withTemplateParameters(optionsToQuery(options, this.getLink('ec:acc/groups/options').href));
-      return get(this[environmentSymbol], request);
-    })
-    .then(([res, traversal]) => new GroupList(res, this[environmentSymbol], traversal));
+    return <Promise<GroupList>>this.resourceList('group', options);
   }
 
   /**

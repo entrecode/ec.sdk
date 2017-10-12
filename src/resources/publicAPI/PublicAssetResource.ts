@@ -167,10 +167,13 @@ class PublicAssetResource extends Resource {
    *   be the same object but with refreshed data.
    */
   save(overwriteSchemaUrl?: string): Promise<PublicAssetResource> {
-    if (!this['isResolved']) {
-      throw new Error('Cannot save not resolved PublicAssetResource');
-    }
-    return <Promise<PublicAssetResource>>super.save(overwriteSchemaUrl);
+    return Promise.resolve()
+    .then(() => {
+      if (!this['isResolved']) {
+        throw new Error('Cannot save not resolved PublicAssetResource');
+      }
+      return <Promise<PublicAssetResource>>super.save(overwriteSchemaUrl);
+    });
   }
 }
 

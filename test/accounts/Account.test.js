@@ -62,7 +62,7 @@ describe('Accounts class', () => {
     const stub = sinon.stub(helper, 'get');
     stub.returns(resolver('account-list.json'));
 
-    return accounts.accountList()
+    return accounts.accountList({})
     .then((list) => {
       list.should.be.instanceof(AccountList);
       stub.restore();
@@ -73,8 +73,8 @@ describe('Accounts class', () => {
     });
   });
   it('should be rejected on list only with accountID', () => {
-    return new Accounts().accountList({ accountID: 'id' })
-    .should.be.rejectedWith('Providing only an accountID in AccountList filter will result in single resource response. Please use Accounts#account');
+    return new Accounts().accountList({ accountid: 'id' })
+    .should.be.rejectedWith('Providing only an id in ResourceList filter will result in single resource response.');
   });
   it('should return resource on get', () => {
     const accounts = new Accounts('live');
@@ -92,7 +92,7 @@ describe('Accounts class', () => {
     });
   });
   it('should be rejected on get in undefiend id', () => {
-    return new Accounts().account().should.be.rejectedWith('accountID must be defined');
+    return new Accounts().account().should.be.rejectedWith('resourceID must be defined');
   });
   it('should return resource on me', () => {
     const accounts = new Accounts('live');
@@ -287,8 +287,8 @@ describe('Accounts class', () => {
     });
   });
   it('should be rejected on clientList only with clientID', () => {
-    return new Accounts().clientList({ clientID: 'id' })
-    .should.be.rejectedWith('Providing only an clientID in ClientList filter will result in single resource response. Please use Accounts#client');
+    return new Accounts().clientList({ clientid: 'id' })
+    .should.be.rejectedWith('Providing only an id in ResourceList filter will result in single resource response.');
   });
   it('should return resource on client', () => {
     const accounts = new Accounts('live');
@@ -308,7 +308,7 @@ describe('Accounts class', () => {
     });
   });
   it('should be rejected on client with undefiend id', () => {
-    return new Accounts().client().should.be.rejectedWith('clientID must be defined');
+    return new Accounts().client().should.be.rejectedWith('resourceID must be defined');
   });
   it('should call post on create client', () => {
     const stub = sinon.stub(helper, 'post');
@@ -360,7 +360,7 @@ describe('Accounts class', () => {
       throw err;
     });
   });
-  it('should return list on clientList', () => {
+  it('should return list on groupList', () => {
     const accounts = new Accounts('live');
     const stub = sinon.stub(helper, 'get');
     stub.returns(resolver('group-list.json'));
@@ -375,9 +375,9 @@ describe('Accounts class', () => {
       throw err;
     });
   });
-  it('should be rejected on clientList only with clientID', () => {
-    return new Accounts().groupList({ groupID: 'id' })
-    .should.be.rejectedWith('Providing only an groupID in GroupList filter will result in single resource response. Please use Accounts#groupList');
+  it('should be rejected on groupList only with groupID', () => {
+    return new Accounts().groupList({ groupid: 'id' })
+    .should.be.rejectedWith('Providing only an id in ResourceList filter will result in single resource response.');
   });
   it('should return resource on group', () => {
     const accounts = new Accounts('live');
@@ -397,7 +397,7 @@ describe('Accounts class', () => {
     });
   });
   it('should be rejected on group with undefiend id', () => {
-    return new Accounts().group().should.be.rejectedWith('groupID must be defined');
+    return new Accounts().group().should.be.rejectedWith('resourceID must be defined');
   });
   it('should call post on create group', () => {
     const stub = sinon.stub(helper, 'post');
