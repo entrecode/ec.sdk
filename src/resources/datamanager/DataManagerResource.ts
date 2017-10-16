@@ -19,6 +19,8 @@ import { filterOptions } from '../ListResource';
 import { get, getUrl, superagentPost } from '../../helper';
 import { environment } from '../../Core';
 import PublicAPI from '../../PublicAPI';
+import AssetGroupResource from './AssetGroupResource';
+import AssetGroupList from './AssetGroupList';
 
 const environmentSymbol = Symbol.for('environment');
 const apiSymbol = Symbol('api');
@@ -94,6 +96,14 @@ export default class DataManagerResource extends Resource {
         id: 'roleID',
         ResourceClass: RoleResource,
         ListClass: RoleList,
+      },
+      assetGroup: {
+        relation: 'ec:dm-assetgroups',
+        createRelation: 'ec.dm-assetgroup/by-id',
+        createTemplateModifier: '-template-post',
+        id: 'assetGroupID',
+        ResourceClass: AssetGroupResource,
+        ListClass: AssetGroupList,
       },
     };
 
@@ -234,6 +244,24 @@ export default class DataManagerResource extends Resource {
    */
   assetList(options?: filterOptions): Promise<AssetList> {
     return <Promise<AssetList>>this.resourceList('asset', options);
+  }
+
+  assetGroup(assetGroupID: string): Promise<AssetGroupResource> {
+    return <Promise<AssetGroupResource>>this.resource(
+      'assetGroup',
+      assetGroupID,
+      { dataManagerID: this.dataManagerID });
+  }
+
+  assetGroupList(options: filterOptions | any = {}): Promise<AssetGroupList> {
+    return Promise.resolve()
+    .then(() => {
+      if (!('dataManagerID' in options)) {
+        options.dataManagerID = this.dataManagerID;
+      }
+
+      return <Promise<AssetGroupList>>this.resourceList('assetGroup', options);
+    });
   }
 
   /**
