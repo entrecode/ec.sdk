@@ -1,9 +1,6 @@
 import ListResource from '../ListResource';
 import { environment } from '../../Core';
-import DMAssetResource from './DMAssetResource';
-import DMAssetList from './DMAssetList';
-
-const relationsSymbol = Symbol.for('relations');
+import AssetGroupResource from './AssetGroupResource';
 
 /**
  * AssetGroup list class
@@ -19,17 +16,6 @@ export default class AssetGroupList extends ListResource {
    * @param {?object} traversal traversal from which traverson can continue.
    */
   constructor(resource: any, environment: environment, traversal?: any) {
-    super(resource, environment, traversal, 'ec:dm-assetgroup', undefined, DMAssetList, DMAssetResource);
-
-    this[relationsSymbol] = {
-      assets: {
-        relation: 'ec:dm-assets',
-        createRelation: false,
-        createTemplateModifier: '',
-        id: 'assetID',
-        ResourceClass: DMAssetResource,
-        ListClass: DMAssetList,
-      },
-    };
+    super(resource, environment, traversal, 'ec:dm-assetgroup', undefined, AssetGroupList, AssetGroupResource);
   }
 }

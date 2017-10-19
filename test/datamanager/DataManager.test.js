@@ -28,6 +28,8 @@ const DMStatsList = require('../../lib/resources/datamanager/DMStatsList').defau
 const DMStatsResource = require('../../lib/resources/datamanager/DMStatsResource').default;
 const AssetList = require('../../lib/resources/datamanager/AssetList').default;
 const AssetResource = require('../../lib/resources/datamanager/AssetResource').default;
+const AssetGroupList = require('../../lib/resources/datamanager/AssetGroupList').default;
+const AssetGroupResource = require('../../lib/resources/datamanager/AssetGroupResource').default;
 const Resource = require('../../lib/resources/Resource').default;
 const PublicAPI = require('../../lib/PublicAPI').default;
 
@@ -1014,5 +1016,83 @@ describe('DataManager Resource', () => {
   it('should get public API', () => {
     resource.getPublicAPI().should.be.instanceOf(PublicAPI);
     resource.getPublicAPI().should.have.property('shortID', 'beefbeef');
+  });
+
+  it('should load asset group list #1', () => {
+    const stub = sinon.stub(helper, 'get');
+    stub.returns(resolver('dm-asset-group-list.json'));
+
+    return resource.assetGroupList()
+    .then((list) => {
+      list.should.be.instanceof(AssetGroupList);
+      stub.restore();
+    })
+    .catch((err) => {
+      stub.restore();
+      throw err;
+    });
+  });
+  it('should load asset group list #2', () => {
+    const stub = sinon.stub(helper, 'get');
+    stub.returns(resolver('dm-asset-group-list.json'));
+
+    return resource.assetGroupList({ dataManagerID: 'id' })
+    .then((list) => {
+      list.should.be.instanceof(AssetGroupList);
+      stub.restore();
+    })
+    .catch((err) => {
+      stub.restore();
+      throw err;
+    });
+  });
+  it('should load assetGroup resource', () => {
+    const stub = sinon.stub(helper, 'get');
+    stub.returns(resolver('dm-asset-group-single.json'));
+
+    return resource.assetGroup('id')
+    .then((model) => {
+      model.should.be.instanceof(AssetGroupResource);
+      stub.restore();
+    })
+    .catch((err) => {
+      stub.restore();
+      throw err;
+    });
+  });
+  it('should be rejected on undefined assetGroupID', () => {
+    return resource.assetGroup().should.be.rejectedWith('resourceID must be defined');
+  });
+  it('should create assetGroup', () => {
+    const stub = sinon.stub(helper, 'post');
+    return new Promise((resolve, reject) => {
+      fs.readFile(`${__dirname}/../mocks/dm-asset-group-single.json`, 'utf-8', (err, res) => {
+        if (err) {
+          return reject(err);
+        }
+        return resolve(JSON.parse(res));
+      });
+    })
+    .then((json) => {
+      stub.returns(Promise.resolve([json, resource.traversal]));
+      const create = Object.assign({}, {
+        assetGroupID: json.assetGroupID,
+        public: json.public,
+        settings: json.settings,
+        policies: json.policies,
+      });
+      return resource.createAssetGroup(create);
+    })
+    .then(() => {
+      stub.should.be.calledOnce;
+      stub.restore();
+    })
+    .catch((err) => {
+      stub.restore();
+      throw err;
+    });
+  });
+  it('should be rejected on undefined group', () => {
+    return resource.createAssetGroup().should.be.rejectedWith('Cannot create resource with undefined object.');
   });
 });

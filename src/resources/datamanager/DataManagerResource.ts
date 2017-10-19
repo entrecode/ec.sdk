@@ -246,6 +246,18 @@ export default class DataManagerResource extends Resource {
     return <Promise<AssetList>>this.resourceList('asset', options);
   }
 
+  /**
+   * Load a single {@link AssetGroupResource}.
+   *
+   * @example
+   * return dm.asset('thisOne')
+   * .then(asset => {
+   *   return show(asset);
+   * });
+   *
+   * @param {string} assetGroupID the id
+   * @returns {Promise<AssetGroupResource>} Promise resolving to AssetGroupResource
+   */
   assetGroup(assetGroupID: string): Promise<AssetGroupResource> {
     return <Promise<AssetGroupResource>>this.resource(
       'assetGroup',
@@ -253,6 +265,21 @@ export default class DataManagerResource extends Resource {
       { dataManagerID: this.dataManagerID });
   }
 
+  /**
+   * Load the {@link AssetGroupList}.
+   *
+   * @example
+   * return dm.assetGroupList()
+   * .then(groups => {
+   *   return groups.getAllItems().filter(group => group.public);
+   * })
+   * .then(groups => {
+   *   return show(groups);
+   * });
+   *
+   * @param {filterOptions?} options filter options
+   * @returns {Promise<AssetGroupList>} Promise resolving to AssetGroupList
+   */
   assetGroupList(options: filterOptions | any = {}): Promise<AssetGroupList> {
     return Promise.resolve()
     .then(() => {
@@ -262,6 +289,16 @@ export default class DataManagerResource extends Resource {
 
       return <Promise<AssetGroupList>>this.resourceList('assetGroup', options);
     });
+  }
+
+  /**
+   * Create a new asset group.
+   *
+   * @param {object} group object representing the group.
+   * @returns {Promise<AssetGroupResource>} the newly created AssetGroupResource
+   */
+  createAssetGroup(group: any): Promise<AssetGroupResource> {
+    return <Promise<AssetGroupResource>>this.create('assetGroup', group);
   }
 
   /**

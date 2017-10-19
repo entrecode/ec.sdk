@@ -1,6 +1,14 @@
 import Resource from '../Resource';
 import { environment } from '../../Core';
 
+function dateGetter(property) {
+  const date = this.getProperty(property);
+  if (!date) {
+    return date;
+  }
+  return new Date(date);
+}
+
 /**
  * DMAssetResource class
  *
@@ -33,11 +41,11 @@ export default class DMAssetResource extends Resource {
   }
 
   get created() {
-    return new Date(this.getProperty('created'));
+    return dateGetter.call(this, 'created');
   }
 
   get modified() {
-    return new Date(this.getProperty('modified'));
+    return dateGetter.call(this, 'modified');
   }
 
   get file() {
@@ -117,10 +125,10 @@ export default class DMAssetResource extends Resource {
    * @param {string?} locale - the locale
    * @returns {string} URL to the file
    */
-  getImageThumbUrl(size: number, locale: string): Promise<string> {
+  getImageThumbUrl(size?: number): Promise<string> {
     return Promise.resolve()
     .then(() => {
-      return 'hehe';
+      throw new Error('not implemented yet');
       // TODO follow ec:dm-asset/thumbnail
     });
   }
@@ -129,13 +137,12 @@ export default class DMAssetResource extends Resource {
    * Best file helper for images.
    *
    * @param {number?} size - the minimum size of the image
-   * @param {string?} locale - the locale
    * @returns {string} URL to the file
    */
-  getImageUrl(size: number, locale: string): Promise<string> {
+  getImageUrl(size?: number): Promise<string> {
     return Promise.resolve()
     .then(() => {
-      return 'hehe';
+      throw new Error('not implemented yet');
       // TODO follow ec:dm-asset/file-variant
     });
   }

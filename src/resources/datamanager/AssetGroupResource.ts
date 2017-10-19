@@ -1,5 +1,10 @@
 import Resource from '../Resource';
 import { environment } from '../../Core';
+import DMAssetList from '../publicAPI/DMAssetList';
+import { filterOptions } from '../ListResource';
+import DMAssetResource from '../publicAPI/DMAssetResource';
+
+const relationsSymbol = Symbol.for('relations');
 
 /**
  * AssetGroupResource class
@@ -26,6 +31,17 @@ export default class AssetGroupResource extends Resource {
   constructor(resource: any, environment: environment, traversal?: any) {
     super(resource, environment, traversal);
     this.countProperties();
+
+    this[relationsSymbol] = {
+      asset: {
+        relation: 'ec:dm-assets',
+        createRelation: false,
+        createTemplateModifier: '',
+        id: 'assetID',
+        ResourceClass: DMAssetResource,
+        ListClass: DMAssetList,
+      },
+    };
   }
 
   get assetGroupID() {
@@ -50,5 +66,26 @@ export default class AssetGroupResource extends Resource {
 
   set policies(value: any) {
     this.setProperty('policies', value);
+  }
+
+  /**
+   * Load a single {@link DMAssetResource}.
+   *
+   *
+   * @param {string} assetID the id
+   * @returns {Promise<DMAssetResource>} Promise resolving to DMAssetResource
+   */
+  asset(assetID: string): Promise<DMAssetResource> {
+    return <Promise<DMAssetResource>>this.resource('asset', assetID);
+  }
+
+  /**
+   * Load the {@link DMAssetList}.
+   *
+   * @param {filterOptions?} options filter options
+   * @returns {Promise<DMAssetList>} Promise resolving to DMAssetList
+   */
+  assetList(options: filterOptions | any = {}): Promise<DMAssetList> {
+    return <Promise<DMAssetList>>this.resourceList('asset', options);
   }
 }

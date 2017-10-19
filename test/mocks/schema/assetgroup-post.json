@@ -1,0 +1,26 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "https://entrecode.de/schema/dm-assetgroup-template-post",
+  "type": "object",
+  "properties": {
+    "assetGroupID": {
+      "$ref": "https://entrecode.de/schema/dm-assetgroup#/allOf/1/properties/assetGroupID"
+    },
+    "public": {
+      "$ref": "https://entrecode.de/schema/dm-assetgroup#/allOf/1/properties/public"
+    },
+    "settings": {
+      "$ref": "https://entrecode.de/schema/dm-assetgroup#/allOf/1/properties/settings"
+    },
+    "policies": {
+      "$ref": "https://entrecode.de/schema/dm-assetgroup#/allOf/1/properties/policies"
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "assetGroupID",
+    "public",
+    "settings",
+    "policies"
+  ]
+}
