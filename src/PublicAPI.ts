@@ -3,6 +3,7 @@ import * as qs from 'querystring';
 import * as ShiroTrie from 'shiro-trie';
 import * as superagent from 'superagent';
 import * as validator from 'json-schema-remote';
+import * as validate from 'validator';
 
 import Core, { environment } from './Core';
 import EntryList, { createList } from './resources/publicAPI/EntryList';
@@ -577,22 +578,55 @@ export default class PublicAPI extends Core {
   }
 
   /**
+   * Generic file helper for images and thumbnails.
+   *
+   * @param {string} assetID - assetID of the file requested. Can be legacy Asset (uuid v4) or
+   *   AssetNeue.
+   * @param {boolean} thumb - true when image should be a thumbnail
+   * @param {number} size - the minimum size of the image
+   * @returns {Promise<string>} the url string of the requested image
+   */
+  getFileVariant(assetID: string, thumb: boolean = false, size?: number) {
+    return Promise.resolve()
+    .then(() => {
+      if (!assetID) {
+        throw new Error('assetID must be defined');
+      }
+
+      let relation;
+      const params: any = {};
+
+      params.assetID = assetID;
+      if (size) {
+        params.size = size;
+      }
+
+      if (validate.isUUID(assetID, 4)) {
+        relation = 'ec:api/assets/bestFile';
+        params.thumb = thumb;
+      } else if (thumb) {
+        relation = 'ec:dm-asset/thumbnail';
+      } else {
+        relation = 'ec:dm-asset/file';
+      }
+
+      return this.follow(relation)
+      .then((request) => {
+        request.withTemplateParameters(params);
+        return get(this[environmentSymbol], request);
+      });
+    })
+    .then(([res]) => res.url);
+  }
+
+  /**
    * Best file helper for files.
    *
    * @param {string} assetID - the assetID
    * @returns {Promise<string>} URL to the file
    */
   getFileUrl(assetID: string): Promise<string> {
-    if (!assetID) {
-      return Promise.reject(new Error('assetID must be defined'));
-    }
-
-    return this.follow('ec:api/assets/bestFile')
-    .then(request => {
-      request.withTemplateParameters({ assetID });
-      return get(this[environmentSymbol], request);
-    })
-    .then(([res]) => res.url);
+    return this.getFileVariant(assetID);
   }
 
   /**
@@ -603,16 +637,7 @@ export default class PublicAPI extends Core {
    * @returns {Promise<string>} URL to the file
    */
   getImageThumbUrl(assetID: string, size: number): Promise<string> {
-    if (!assetID) {
-      return Promise.reject(new Error('assetID must be defined'));
-    }
-
-    return this.follow('ec:api/assets/bestFile')
-    .then(request => {
-      request.withTemplateParameters({ assetID, size, thumb: true });
-      return get(this[environmentSymbol], request);
-    })
-    .then(([res]) => res.url);
+    return this.getFileVariant(assetID, true, size);
   }
 
   /**
@@ -623,16 +648,7 @@ export default class PublicAPI extends Core {
    * @returns {Promise<string>} URL to the file
    */
   getImageUrl(assetID: string, size: number): Promise<string> {
-    if (!assetID) {
-      return Promise.reject(new Error('assetID must be defined'));
-    }
-
-    return this.follow('ec:api/assets/bestFile')
-    .then(request => {
-      request.withTemplateParameters({ assetID, size });
-      return get(this[environmentSymbol], request);
-    })
-    .then(([res]) => res.url);
+    return this.getFileVariant(assetID, false, size);
   }
 
   /**

@@ -923,7 +923,16 @@ describe('PublicAPI', () => {
     stub.onFirstCall().returns(resolver('public-dm-root.json'));
     stub.onSecondCall().returns(resolver('best-file.json'));
 
-    return api.getFileUrl('id')
+    return api.getFileUrl('e766d956-6f43-49fa-8f30-023e4cd29779')
+    .should.eventually.be.equal('https://cdn2.entrecode.de/files/01bd8e08/J2DJfjfEVby3KcxGNrJyFdEz_512.png')
+    .notify(() => stub.restore());
+  });
+  it('should get best file assetNeue', () => {
+    const stub = sinon.stub(helper, 'get');
+    stub.onFirstCall().returns(resolver('public-dm-root.json'));
+    stub.onSecondCall().returns(resolver('best-file.json'));
+
+    return api.getFileUrl('notUUID')
     .should.eventually.be.equal('https://cdn2.entrecode.de/files/01bd8e08/J2DJfjfEVby3KcxGNrJyFdEz_512.png')
     .notify(() => stub.restore());
   });
@@ -936,7 +945,7 @@ describe('PublicAPI', () => {
     stub.onFirstCall().returns(resolver('public-dm-root.json'));
     stub.onSecondCall().returns(resolver('best-file.json'));
 
-    return api.getImageUrl('id')
+    return api.getImageUrl('e766d956-6f43-49fa-8f30-023e4cd29779')
     .should.eventually.be.equal('https://cdn2.entrecode.de/files/01bd8e08/J2DJfjfEVby3KcxGNrJyFdEz_512.png')
     .notify(() => stub.restore());
   });
@@ -945,7 +954,7 @@ describe('PublicAPI', () => {
     stub.onFirstCall().returns(resolver('public-dm-root.json'));
     stub.onSecondCall().returns(resolver('best-file.json'));
 
-    return api.getImageUrl('id', 2)
+    return api.getImageUrl('e766d956-6f43-49fa-8f30-023e4cd29779', 2)
     .should.eventually.be.equal('https://cdn2.entrecode.de/files/01bd8e08/J2DJfjfEVby3KcxGNrJyFdEz_512.png')
     .notify(() => stub.restore());
   });
@@ -958,7 +967,16 @@ describe('PublicAPI', () => {
     stub.onFirstCall().returns(resolver('public-dm-root.json'));
     stub.onSecondCall().returns(resolver('best-file.json'));
 
-    return api.getImageThumbUrl('id')
+    return api.getImageThumbUrl('e766d956-6f43-49fa-8f30-023e4cd29779')
+    .should.eventually.be.equal('https://cdn2.entrecode.de/files/01bd8e08/J2DJfjfEVby3KcxGNrJyFdEz_512.png')
+    .notify(() => stub.restore());
+  });
+  it('should get best thumb assetNeue', () => {
+    const stub = sinon.stub(helper, 'get');
+    stub.onFirstCall().returns(resolver('public-dm-root.json'));
+    stub.onSecondCall().returns(resolver('best-file.json'));
+
+    return api.getImageThumbUrl('notUUID')
     .should.eventually.be.equal('https://cdn2.entrecode.de/files/01bd8e08/J2DJfjfEVby3KcxGNrJyFdEz_512.png')
     .notify(() => stub.restore());
   });
@@ -967,7 +985,7 @@ describe('PublicAPI', () => {
     stub.onFirstCall().returns(resolver('public-dm-root.json'));
     stub.onSecondCall().returns(resolver('best-file.json'));
 
-    return api.getImageThumbUrl('id', 2)
+    return api.getImageThumbUrl('e766d956-6f43-49fa-8f30-023e4cd29779', 2)
     .should.eventually.be.equal('https://cdn2.entrecode.de/files/01bd8e08/J2DJfjfEVby3KcxGNrJyFdEz_512.png')
     .notify(() => stub.restore());
   });

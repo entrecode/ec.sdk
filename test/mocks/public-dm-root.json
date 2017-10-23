@@ -168,6 +168,14 @@
       "href": "https://datamanager.entrecode.de/asset/beefbeef{?assetID,created,createdFrom,createdTo,created~,creator,dataManagerID,deleted,deletedFrom,deletedTo,deleted~,page,size,sort,tag,title,title~,type,type~}",
       "templated": true
     },
+    "ec:dm-asset/file": {
+      "href": "https://datamanager.entrecode.de/f/beefbeef/{assetID}/{size?}",
+      "templated": true
+    },
+    "ec:dm-asset/thumbnail": {
+      "href": "https://datamanager.entrecode.de/t/beefbeef/{assetID}/{size?}",
+      "templated": true
+    },
     "ec:api/assets/bestFile": {
       "href": "https://datamanager.entrecode.de/files/{assetID}/url{?thumb,size}",
       "templated": true

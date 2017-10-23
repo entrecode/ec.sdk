@@ -36,7 +36,8 @@
     "stream": "^0.0.2",
     "superagent": "^3.6.3",
     "traverson": "^6.0.3",
-    "traverson-hal": "^6.0.0"
+    "traverson-hal": "^6.0.0",
+    "validator": "^9.0.0"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
