@@ -1,5 +1,8 @@
 import Resource from '../Resource';
 import { environment } from '../../Core';
+import { get } from '../../helper';
+
+const environmentSymbol = Symbol.for('environment');
 
 function dateGetter(property) {
   const date = this.getProperty(property);
@@ -111,7 +114,6 @@ export default class DMAssetResource extends Resource {
   /**
    * Best file helper for files.
    *
-   * @param {string?} locale - the locale
    * @returns {string} URL to the file
    */
   getFileUrl(): string {
@@ -119,32 +121,51 @@ export default class DMAssetResource extends Resource {
   }
 
   /**
+   * Generic file helper for images and thumbnails.
+   *
+   * @param {number} size - the minimum size of the image
+   * @param {boolean} thumb - true when image should be a thumbnail
+   * @returns {Promise<string>} the url string of the requested image
+   */
+  getFileVariant(size?: number, thumb: boolean = false): Promise<string> {
+    return Promise.resolve()
+    .then(() => {
+      const request = this.newRequest();
+      if (thumb) {
+        request.follow('ec:dm-asset/thumbnail');
+      } else {
+        request.follow('ec:dm-asset/file-variant');
+      }
+      const templateParams: any = {};
+      if (size) {
+        templateParams.size = size;
+      }
+      request.withTemplateParameters(templateParams);
+      return get(this[environmentSymbol], request);
+    })
+    .then(([res]) => {
+      return res.url;
+    });
+  }
+
+  /**
    * Best file helper for image thumbnails.
    *
    * @param {number?} size - the minimum size of the image
-   * @param {string?} locale - the locale
-   * @returns {string} URL to the file
+   * @returns {Promise<string>} URL to the file
    */
   getImageThumbUrl(size?: number): Promise<string> {
-    return Promise.resolve()
-    .then(() => {
-      throw new Error('not implemented yet');
-      // TODO follow ec:dm-asset/thumbnail
-    });
+    return this.getFileVariant(size, true);
   }
 
   /**
    * Best file helper for images.
    *
    * @param {number?} size - the minimum size of the image
-   * @returns {string} URL to the file
+   * @returns {Promise<string>} URL to the file
    */
   getImageUrl(size?: number): Promise<string> {
-    return Promise.resolve()
-    .then(() => {
-      throw new Error('not implemented yet');
-      // TODO follow ec:dm-asset/file-variant
-    });
+    return this.getFileVariant(size);
   }
 
   /**

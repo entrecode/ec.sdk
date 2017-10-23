@@ -9,6 +9,8 @@ const DMAssetResource = require('../../lib/resources/publicAPI/DMAssetResource')
 const DMAssetList = require('../../lib/resources/publicAPI/DMAssetList').default;
 const Resource = require('../../lib/resources/Resource').default;
 const ListResource = require('../../lib/resources/ListResource').default;
+const helper = require('../../lib/helper');
+const resolver = require('../mocks/resolver');
 
 const should = chai.should();
 chai.use(sinonChai);
@@ -85,6 +87,26 @@ describe('DMAsset Resource', () => {
         "width": 2736,
         "height": 4864
       },
+    });
+  });
+  it('should get image variant', () => {
+    const stub = sinon.stub(helper, 'get');
+    stub.returns(resolver('dm-asset-bestfile.json'));
+
+    return resource.getImageUrl(500)
+    .should.eventually.equal('https://cdn1.buffalo.entrecode.de/ab5047fc/test1/7mGEhlUXvdxuoCf0vQWtLNQW.jpg')
+    .notify(() => {
+      stub.restore();
+    });
+  });
+  it('should get thumbnail', () => {
+    const stub = sinon.stub(helper, 'get');
+    stub.returns(resolver('dm-asset-bestfile.json'));
+
+    return resource.getImageThumbUrl(50)
+    .should.eventually.equal('https://cdn1.buffalo.entrecode.de/ab5047fc/test1/7mGEhlUXvdxuoCf0vQWtLNQW.jpg')
+    .notify(() => {
+      stub.restore();
     });
   });
 
