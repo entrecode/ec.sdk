@@ -29,7 +29,7 @@
     },
     "ec:dm-assets": {
       "profile": "https://entrecode.de/schema/dm-assets",
-      "href": "https://datamanager.entrecode.de/a/ab5047fc/test1{?assetID}",
+      "href": "https://datamanager.entrecode.de/a/beefbeef/test1{?assetID}",
       "templated": true
     }
   }

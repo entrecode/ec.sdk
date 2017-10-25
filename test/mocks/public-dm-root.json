@@ -163,6 +163,11 @@
       "href": "https://datamanager.entrecode.de/api/beefbeef/_permissions/withaAsset",
       "name": "withaAsset permissions"
     },
+    "ec:dm-assets/test1": {
+      "profile": "https://entrecode.de/schema/dm-assets",
+      "href": "https://datamanager.entrecode.de/a/beefbeef/test1{?assetID}",
+      "templated": true
+    },
     "ec:api/assets": {
       "profile": "https://entrecode.de/schema/assets",
       "href": "https://datamanager.entrecode.de/asset/beefbeef{?assetID,created,createdFrom,createdTo,created~,creator,dataManagerID,deleted,deletedFrom,deletedTo,deleted~,page,size,sort,tag,title,title~,type,type~}",

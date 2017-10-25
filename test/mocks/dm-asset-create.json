@@ -1,0 +1,11 @@
+{
+  "count": 1,
+  "total": 1,
+  "_links": {
+    "ec:dm-asset": {
+      "profile": "https://entrecode.de/schema/dm-asset",
+      "href": "https://datamanager.entrecode.de/a/beefbeef/test1/xK_cAhjoRTenmVEpY6LD-A",
+      "title": "Bildschirmfoto 2017-10-25 um 15.09.52"
+    }
+  }
+}

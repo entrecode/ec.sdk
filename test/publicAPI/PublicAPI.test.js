@@ -20,6 +20,8 @@ const EntryList = require('../../lib/resources/publicAPI/EntryList').default;
 const EntryResource = require('../../lib/resources/publicAPI/EntryResource').default;
 const PublicAssetList = require('../../lib/resources/publicAPI/PublicAssetList').default;
 const PublicAssetResource = require('../../lib/resources/publicAPI/PublicAssetResource').default;
+const DMAssetList = require('../../lib/resources/publicAPI/DMAssetList').default;
+const DMAssetResource = require('../../lib/resources/publicAPI/DMAssetResource').default;
 
 const environmentSymbol = Symbol.for('environment');
 const resourceSymbol = Symbol.for('resource');
@@ -1010,5 +1012,55 @@ describe('PublicAPI', () => {
   });
   it('should be rejected on undefined email', () => {
     return api.changeEmail().should.be.rejectedWith('email must be defined');
+  });
+
+  it('should load asset list neue', () => {
+    const stub = sinon.stub(helper, 'get');
+    stub.onFirstCall().returns(resolver('public-dm-root.json'));
+    stub.onSecondCall().returns(resolver('dm-asset-list.json'));
+
+    return api.dmAssetList('test1')
+    .then((list) => {
+      list.should.be.instanceof(DMAssetList);
+      stub.restore();
+    })
+    .catch((err) => {
+      stub.restore();
+      throw err;
+    });
+  });
+  it('should be rejected on undefined assetGroupID', () => {
+    return api.dmAssetList().should.be.rejectedWith('assetGroupID must be defined');
+  });
+  it('should be rejected on unknown assetGroupID', () => {
+    return api.dmAssetList('unknown').should.be.rejectedWith('assetGroup not found');
+  });
+  it('should throw on asset list neue filtered with assetID', () => {
+    return api.dmAssetList('test1', { assetID: 'id' })
+    .should.be.rejectedWith('Cannot filter assetList only by assetID. Use PublicAPI#dmAsset() instead');
+  });
+  it('should load asset resource neue', () => {
+    const stub = sinon.stub(helper, 'get');
+    stub.onFirstCall().returns(resolver('public-dm-root.json'));
+    stub.onSecondCall().returns(resolver('dm-asset-single.json'));
+
+    return api.dmAsset('test1', 'id')
+    .then((model) => {
+      model.should.be.instanceof(DMAssetResource);
+      stub.restore();
+    })
+    .catch((err) => {
+      stub.restore();
+      throw err;
+    });
+  });
+  it('should be rejected on undefined assetID', () => {
+    return api.dmAsset('test1',).should.be.rejectedWith('assetID must be defined');
+  });
+  it('should be rejected on undefined assetGroupID', () => {
+    return api.dmAsset().should.be.rejectedWith('assetGroupID must be defined');
+  });
+  it('should be rejected on unknown assetGroupID', () => {
+    return api.dmAsset('unknown', 'id').should.be.rejectedWith('assetGroup not found');
   });
 });
