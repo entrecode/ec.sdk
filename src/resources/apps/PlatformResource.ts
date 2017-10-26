@@ -222,17 +222,17 @@ export default class PlatformResource extends Resource {
 
   getCodeSource(): string {
     const link = this.getLink('ec:app/codesource');
-    return querystring.parse(link.href.split('?')[1]).codeSourceID;
+    return <string>querystring.parse(link.href.split('?')[1]).codeSourceID;
   }
 
   getDataSource(): string {
     const link = this.getLink('ec:app/datasource');
-    return querystring.parse(link.href.split('?')[1]).dataSourceID;
+    return <string>querystring.parse(link.href.split('?')[1]).dataSourceID;
   }
 
   getTargets(): Array<string> {
     const links = this.getLinks('ec:app/target');
-    return links.map((link: any) => querystring.parse(link.href.split('?')[1]).targetID);
+    return <Array<string>>links.map((link: any) => querystring.parse(link.href.split('?')[1]).targetID);
   }
 
   hasTarget(target: string | TargetResource): boolean {
