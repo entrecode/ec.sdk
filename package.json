@@ -23,7 +23,7 @@
   "dependencies": {
     "@types/halfred": "^1.0.2",
     "@types/jwt-decode": "^2.2.1",
-    "@types/node": "^8.0.34",
+    "@types/node": "^8.0.47",
     "@types/superagent": "^3.5.6",
     "@types/traverson": "^2.0.28",
     "browser-cookies": "^1.1.0",
@@ -34,7 +34,7 @@
     "lodash.isequal": "^4.5.0",
     "shiro-trie": "^0.4.0",
     "stream": "^0.0.2",
-    "superagent": "^3.6.3",
+    "superagent": "^3.8.0",
     "traverson": "^6.0.3",
     "traverson-hal": "^6.0.0",
     "validator": "^9.0.0"
@@ -43,22 +43,22 @@
     "babel-cli": "^6.26.0",
     "babel-plugin-transform-es2015-modules-commonjs": "^6.26.0",
     "babel-preset-es2015": "^6.24.1",
-    "babelify": "^7.3.0",
-    "browserify": "^14.4.0",
+    "babelify": "^8.0.0",
+    "browserify": "^14.5.0",
     "chai": "^4.1.2",
     "chai-as-promised": "^7.1.1",
     "conventional-changelog-cli": "^1.3.4",
     "coveralls": "^3.0.0",
-    "documentation": "^5.3.2",
+    "documentation": "^5.3.3",
     "ec.cookie-mock": "^1.0.1",
     "istanbul": "^0.4.5",
-    "mocha": "^4.0.0",
+    "mocha": "^4.0.1",
     "mocha-bamboo-reporter": "^1.1.1",
-    "nock": "^9.0.22",
-    "sinon": "^4.0.1",
+    "nock": "^9.0.25",
+    "sinon": "^4.0.2",
     "sinon-chai": "^2.14.0",
     "typescript": "^2.5.3",
-    "uglify-js": "^3.1.3",
-    "webpack": "^3.6.0"
+    "uglify-js": "^3.1.5",
+    "webpack": "^3.8.1"
   }
 }

@@ -344,7 +344,7 @@ export default class PublicAPI extends Core {
     .then((response) => {
       const url = response._links['ec:asset'].href;
       const queryStrings = qs.parse(url.substr(url.indexOf('?') + 1));
-      return () => this.asset(queryStrings.assetID);
+      return () => this.asset(<string>queryStrings.assetID);
     });
   }
 
