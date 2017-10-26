@@ -443,7 +443,7 @@ export default class PublicAPI extends Core {
    * @returns {Promise<function<Promise<DMAssetList>>>}  Promise resolving to a Promise
    *   factory which then resolves to the newly created assets as DMAssetList
    */
-  createDMAssets(assetGroupID: string, input, options): Promise<() => Promise<DMAssetList>> {
+  createDMAssets(assetGroupID: string, input, options): Promise<DMAssetList> {
     return Promise.resolve()
     .then(() => {
       if (!assetGroupID) {
@@ -492,22 +492,7 @@ export default class PublicAPI extends Core {
       return superagentPost(this[environmentSymbol], request);
     })
     .then((response) => {
-      let urls = response._links['ec:dm-assets'];
-      if (!Array.isArray(urls)) {
-        urls = [urls];
-      }
-      const ids = urls.map((url) => {
-        const regex = new RegExp(`^.*${this[shortIDSymbol]}/${assetGroupID}/(.*)$`);
-        const result = regex.exec(url);
-        if (!result) {
-          return undefined;
-        }
-
-        return result[1];
-      })
-      .filter(x => !!x);
-
-      return () => this.dmAssetList(assetGroupID, { assetID: { any: ids } });
+      return new DMAssetList(response, this[environmentSymbol]);
     });
   }
 
