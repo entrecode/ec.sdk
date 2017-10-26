@@ -1055,7 +1055,7 @@ describe('PublicAPI', () => {
     });
   });
   it('should be rejected on undefined assetID', () => {
-    return api.dmAsset('test1',).should.be.rejectedWith('assetID must be defined');
+    return api.dmAsset('test1').should.be.rejectedWith('assetID must be defined');
   });
   it('should be rejected on undefined assetGroupID', () => {
     return api.dmAsset().should.be.rejectedWith('assetGroupID must be defined');
