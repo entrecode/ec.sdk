@@ -443,12 +443,17 @@ export default class PublicAPI extends Core {
    * @returns {Promise<function<Promise<DMAssetList>>>}  Promise resolving to a Promise
    *   factory which then resolves to the newly created assets as DMAssetList
    */
-  createDMAssets(assetGroupID: string, input, options): Promise<DMAssetList> {
+  createDMAssets(assetGroupID: string, input: any, options: any = {}): Promise<DMAssetList> {
     return Promise.resolve()
     .then(() => {
       if (!assetGroupID) {
         throw new Error('assetGroupID must be defined');
       }
+
+      if (!input) {
+        throw new Error('Cannot create resource with undefined object.');
+      }
+
       return this.follow(`ec:dm-assets/${assetGroupID}`);
     })
     .catch((error) => {
@@ -479,10 +484,13 @@ export default class PublicAPI extends Core {
             request.attach('file', file);
           } else if (Buffer.isBuffer(file)) {
             if (!('fileName' in options)
+              || !Array.isArray(options.fileName)
               || !options.fileName[index]) {
               throw new Error('When using buffer file input you must provide options.fileName.');
             }
             request.attach('file', file, options.fileName[index]);
+          } else {
+            throw new Error('Cannot handle input.')
           }
         });
       }
@@ -491,8 +499,8 @@ export default class PublicAPI extends Core {
 
       return superagentPost(this[environmentSymbol], request);
     })
-    .then((response) => {
-      return new DMAssetList(response, this[environmentSymbol]);
+    .then(([response, traversal]) => {
+      return new DMAssetList(response, this[environmentSymbol], traversal);
     });
   }
 
