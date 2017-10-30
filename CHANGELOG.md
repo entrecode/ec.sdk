@@ -1,3 +1,12 @@
+<a name="0.9.1"></a>
+## 0.9.1 (2017-10-30)
+
+* release version 0.9.1 ([8e9d81d](https://github.com/entrecode/ec.sdk/commit/8e9d81d))
+* fix: fixed querystring typings ([2b46291](https://github.com/entrecode/ec.sdk/commit/2b46291))
+* chore: patchday ([ecb6186](https://github.com/entrecode/ec.sdk/commit/ecb6186))
+
+
+
 <a name="0.9.0"></a>
 # 0.9.0 (2017-10-12)
 
