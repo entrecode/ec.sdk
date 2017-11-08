@@ -1018,25 +1018,11 @@ describe('DataManager Resource', () => {
     resource.getPublicAPI().should.have.property('shortID', 'beefbeef');
   });
 
-  it('should load asset group list #1', () => {
+  it('should load asset group list', () => {
     const stub = sinon.stub(helper, 'get');
     stub.returns(resolver('dm-asset-group-list.json'));
 
     return resource.assetGroupList()
-    .then((list) => {
-      list.should.be.instanceof(AssetGroupList);
-      stub.restore();
-    })
-    .catch((err) => {
-      stub.restore();
-      throw err;
-    });
-  });
-  it('should load asset group list #2', () => {
-    const stub = sinon.stub(helper, 'get');
-    stub.returns(resolver('dm-asset-group-list.json'));
-
-    return resource.assetGroupList({ dataManagerID: 'id' })
     .then((list) => {
       list.should.be.instanceof(AssetGroupList);
       stub.restore();
