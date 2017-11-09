@@ -23,6 +23,8 @@ module.exports = {
     .get('/datasource-template').replyWithFile(200, `${__dirname}/schema/datasource-template.json`, { 'Content-Type': 'application/json' })
     .get('/target-template').replyWithFile(200, `${__dirname}/schema/target-template.json`, { 'Content-Type': 'application/json' })
     .get('/platform-template').replyWithFile(200, `${__dirname}/schema/platform-template.json`, { 'Content-Type': 'application/json' })
+    .get('/dm-assetgroup-template-post').replyWithFile(200, `${__dirname}/schema/assetgroup-post.json`, { 'Content-Type': 'application/json' })
+    .get('/dm-assetgroup').replyWithFile(200, `${__dirname}/schema/assetgroup.json`, { 'Content-Type': 'application/json' })
     .get('/hal').replyWithFile(200, `${__dirname}/schema/hal.json`, { 'Content-Type': 'application/json' });
 
     nock('http://json-schema.org')

@@ -1,0 +1,82 @@
+{
+  "count": 1,
+  "total": 1,
+  "_links": {
+    "self": {
+      "profile": "https://entrecode.de/schema/dm-assets",
+      "href": "https://datamanager.entrecode.de/a/beefbeef/test1?assetID=yPvIl5MoSIOxzYJye6l0bQ"
+    },
+    "curies": {
+      "href": "https://doc.entrecode.de/develop/data_manager/#relation-{rel}",
+      "templated": true
+    },
+    "ec:dm-asset/by-id": {
+      "profile": "https://entrecode.de/schema/dm-asset",
+      "href": "https://datamanager.entrecode.de/a/beefbeef/test1/{assetID}",
+      "templated": true
+    },
+    "ec:dm-assets/options": {
+      "href": "https://datamanager.entrecode.de/a/beefbeef/test1{?assetID,caption,caption~,created,createdFrom,createdTo,created~,creator,duplicates,duplicatesFrom,duplicatesOf,duplicatesTo,isUsed,page,size,sort,tag,title,title~,type,type~}",
+      "templated": true
+    },
+    "ec:dm-assetgroup": {
+      "profile": "https://entrecode.de/schema/dm-assetgroup",
+      "href": "https://datamanager.entrecode.de/assetgroup?dataManagerID=14b7eb12-f099-40ae-8a8a-faf6c5f416b6&assetGroupID=test1"
+    },
+    "ec:api": {
+      "href": "https://datamanager.entrecode.de"
+    }
+  },
+  "_embedded": {
+    "ec:dm-asset": {
+      "assetID": "yPvIl5MoSIOxzYJye6l0bQ",
+      "title": "Bildschirmfoto 2017-10-26 um 15.44.52",
+      "caption": "",
+      "type": "image",
+      "mimetype": "image/png",
+      "created": "2017-10-26T13:45:00.241Z",
+      "modified": null,
+      "creator": "ddd29fd1-7417-4894-a546-5c12b11c0186",
+      "creatorType": "ecUser",
+      "tags": [],
+      "file": {
+        "url": "https://cdn1.entrecode.de/beefbeef/test1/mtNLiMRawfqLDR0Yte8tQYKQ.png",
+        "size": 84056,
+        "resolution": {
+          "width": 1134,
+          "height": 1160
+        }
+      },
+      "fileVariants": [],
+      "thumbnails": [
+        {
+          "url": "https://cdn1.entrecode.de/beefbeef/test1/mtNLiMRawfqLDR0Yte8tQYKQ_160_thumb.png",
+          "dimension": 160
+        }
+      ],
+      "isUsed": false,
+      "duplicates": null,
+      "_links": {
+        "self": {
+          "profile": "https://entrecode.de/schema/dm-asset",
+          "href": "https://datamanager.entrecode.de/a/beefbeef/test1/yPvIl5MoSIOxzYJye6l0bQ"
+        },
+        "collection": {
+          "profile": "https://entrecode.de/schema/dm-assets",
+          "href": "https://datamanager.entrecode.de/a/beefbeef/test1"
+        },
+        "ec:dm-asset/file": {
+          "href": "https://cdn1.entrecode.de/beefbeef/test1/mtNLiMRawfqLDR0Yte8tQYKQ.png"
+        },
+        "ec:dm-asset/file-variant": {
+          "href": "https://datamanager.entrecode.de/f/beefbeef/yPvIl5MoSIOxzYJye6l0bQ/{size}",
+          "templated": true
+        },
+        "ec:dm-asset/thumbnail": {
+          "href": "https://datamanager.entrecode.de/t/beefbeef/yPvIl5MoSIOxzYJye6l0bQ/{size}",
+          "templated": true
+        }
+      }
+    }
+  }
+}

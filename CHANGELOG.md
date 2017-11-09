@@ -1,3 +1,23 @@
+<a name="0.10.0"></a>
+# 0.10.0 (2017-11-09)
+
+* release version 0.10.0 ([cd724b9](https://github.com/entrecode/ec.sdk/commit/cd724b9))
+* fix: handle prefilled dataManagerID on assetGroup relations CMS-2986 ([cc343ac](https://github.com/entrecode/ec.sdk/commit/cc343ac))
+* chore: package-lock update ([1249ca0](https://github.com/entrecode/ec.sdk/commit/1249ca0))
+* chore: untrack .idea ([f7be172](https://github.com/entrecode/ec.sdk/commit/f7be172))
+* chore: update gitignore ([ee95b09](https://github.com/entrecode/ec.sdk/commit/ee95b09))
+* chore: updated idea config ([dd7051e](https://github.com/entrecode/ec.sdk/commit/dd7051e))
+* test: dmAssetCreate tests ([b55c88a](https://github.com/entrecode/ec.sdk/commit/b55c88a))
+* test: removed dangling comma node 6 doesn’t like ([e47fdd8](https://github.com/entrecode/ec.sdk/commit/e47fdd8))
+* feat: adds AssetGroup resources and DMAsset resources (aka asset-neue) ([6606d43](https://github.com/entrecode/ec.sdk/commit/6606d43))
+* feat: best file helper in PublicAPI support for assetsNeue ([2be785c](https://github.com/entrecode/ec.sdk/commit/2be785c))
+* feat: createDMAsset returns DMAssetList directly ([2385356](https://github.com/entrecode/ec.sdk/commit/2385356))
+* feat: createDMAssets, dmAsset and dmAssetList in PublicAPI ([543c8da](https://github.com/entrecode/ec.sdk/commit/543c8da))
+* feat: DMAssetResource and AssetGroupResource CMS-2971 CMS-2972 ([292f74c](https://github.com/entrecode/ec.sdk/commit/292f74c))
+* feat: file helper for DMAssetResource ([1e804ce](https://github.com/entrecode/ec.sdk/commit/1e804ce))
+
+
+
 <a name="0.9.1"></a>
 ## 0.9.1 (2017-10-30)
 

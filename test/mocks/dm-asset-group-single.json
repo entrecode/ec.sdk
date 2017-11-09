@@ -1,0 +1,36 @@
+{
+  "assetGroupID": "test1",
+  "public": true,
+  "settings": {
+    "imageSizes": [
+      350,
+      700,
+      1020
+    ],
+    "thumbSizes": [
+      50,
+      70,
+      90
+    ]
+  },
+  "policies": [],
+  "_links": {
+    "self": {
+      "profile": "https://entrecode.de/schema/dm-assetgroup",
+      "href": "https://datamanager.entrecode.de/assetgroup?dataManagerID=14b7eb12-f099-40ae-8a8a-faf6c5f416b6&assetGroupID=test1"
+    },
+    "collection": {
+      "profile": "https://entrecode.de/schema/dm-assetgroups",
+      "href": "https://datamanager.entrecode.de/assetgroup?dataManagerID=14b7eb12-f099-40ae-8a8a-faf6c5f416b6"
+    },
+    "ec:datamanager": {
+      "profile": "https://entrecode.de/schema/datamanager",
+      "href": "https://datamanager.entrecode.de/?dataManagerID=14b7eb12-f099-40ae-8a8a-faf6c5f416b6"
+    },
+    "ec:dm-assets": {
+      "profile": "https://entrecode.de/schema/dm-assets",
+      "href": "https://datamanager.entrecode.de/a/beefbeef/test1{?assetID}",
+      "templated": true
+    }
+  }
+}

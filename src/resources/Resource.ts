@@ -355,7 +355,7 @@ export default class Resource {
    * @param {string} resourceID id of the Resource
    * @returns {Promise<Resource>} resolves to the Resource which should be loaded
    */
-  resource(relation: string, resourceID): Promise<Resource> {
+  resource(relation: string, resourceID, additionalTemplateParams: any = {}): Promise<Resource> {
     return Promise.resolve()
     .then(() => {
       if (!relation) {
@@ -371,7 +371,8 @@ export default class Resource {
       return this.newRequest().follow(this[relationsSymbol][relation].relation)
     })
     .then((request) => {
-      request.withTemplateParameters({ [this[relationsSymbol][relation].id]: resourceID });
+      const params = Object.assign({}, additionalTemplateParams, { [this[relationsSymbol][relation].id]: resourceID });
+      request.withTemplateParameters(params);
       return get(this[environmentSymbol], request);
     })
     .then(([res, traversal]) =>

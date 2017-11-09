@@ -1,6 +1,6 @@
 {
   "name": "ec.sdk",
-  "version": "0.9.1",
+  "version": "0.10.0",
   "description": "SDK for ec.api",
   "repository": "entrecode/ec.sdk",
   "author": "Simon Scherzinger <scherzinger@entrecode.de>",
@@ -36,7 +36,8 @@
     "stream": "^0.0.2",
     "superagent": "^3.8.0",
     "traverson": "^6.0.3",
-    "traverson-hal": "^6.0.0"
+    "traverson-hal": "^6.0.0",
+    "validator": "^9.1.1"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
