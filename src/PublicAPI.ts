@@ -3,6 +3,7 @@ import * as qs from 'querystring';
 import * as ShiroTrie from 'shiro-trie';
 import * as superagent from 'superagent';
 import * as validator from 'json-schema-remote';
+import * as validate from 'validator';
 
 import Core, { environment } from './Core';
 import EntryList, { createList } from './resources/publicAPI/EntryList';
@@ -21,6 +22,8 @@ import {
   superagentFormPost,
   superagentPost
 } from './helper';
+import DMAssetResource from './resources/publicAPI/DMAssetResource';
+import DMAssetList from './resources/publicAPI/DMAssetList';
 
 const resourceSymbol = Symbol.for('resource');
 const tokenStoreSymbol = Symbol.for('tokenStore');
@@ -193,6 +196,29 @@ export default class PublicAPI extends Core {
       return get(this[environmentSymbol], request);
     })
     .then(([res, traversal]) => new PublicAssetList(res, this[environmentSymbol], traversal));
+  }
+
+  /**
+   * Change the logged in account to the given new email address.
+   *
+   * @example
+   * return api.changeEmail(newEmail)
+   * .then(() => show(`Email change started. Please verify with your new address.`))
+   *
+   * @param {string} email the new email
+   * @returns {Promise<undefined>} Promise resolving on success.
+   */
+  changeEmail(email: string): Promise<void> {
+    return Promise.resolve()
+    .then(() => {
+      if (!email) {
+        throw  new Error('email must be defined');
+      }
+      return this.follow(`${this[shortIDSymbol]}:_auth/change-email`)
+      .then((request) => {
+        return postEmpty(this[environmentSymbol], request, { email });
+      });
+    });
   }
 
   /**
@@ -400,6 +426,85 @@ export default class PublicAPI extends Core {
   }
 
   /**
+   * Create multiple new asset. This should handle various input types.
+   *
+   * The most basic type is a string representing a file path, this can be used on node
+   * projects. Another option for node is providing a Buffer object (eg. fs.readFile,
+   * …). When providing a Buffer you must specify 'fileName' in options object.
+   *
+   * For frontend usage you must provide a
+   * {@link https://developer.mozilla.org/de/docs/Web/API/FormData|FormData} object containing the
+   * multiple files in a field with the name 'file'.
+   *
+   * @param {string} assetGroupID the asset group in which the asset should be created.
+   * @param {object|array<object|string>|string} input representing the asset, either an array of
+   *   paths, a FormData object, a array of readStreams, an array containing buffers, or a string.
+   * @param {object} options options for creating an asset.
+   * @returns {Promise<function<Promise<DMAssetList>>>}  Promise resolving to a Promise
+   *   factory which then resolves to the newly created assets as DMAssetList
+   */
+  createDMAssets(assetGroupID: string, input: any, options: any = {}): Promise<DMAssetList> {
+    return Promise.resolve()
+    .then(() => {
+      if (!assetGroupID) {
+        throw new Error('assetGroupID must be defined');
+      }
+
+      if (!input) {
+        throw new Error('Cannot create resource with undefined object.');
+      }
+
+      return this.follow(`ec:dm-assets/${assetGroupID}`);
+    })
+    .catch((error) => {
+      if (error.message.indexOf('Link not present in root response.') !== -1) {
+        throw new Error('assetGroup not found')
+      }
+      throw error;
+    })
+    .then((request) => getUrl(this[environmentSymbol], request))
+    .then((url) => {
+      const request = superagent.post(url);
+      const isFormData = typeof FormData === 'function' && input instanceof FormData; // eslint-disable-line
+                                                                                      // no-undef
+      if (isFormData) {
+        request.send(input);
+      } else {
+        let assets;
+        if (!Array.isArray(input)) {
+          assets = [input];
+          if ('fileName' in options && !Array.isArray(options.fileName)) {
+            options.fileName = [options.fileName];
+          }
+        } else {
+          assets = input;
+        }
+        assets.forEach((file, index) => {
+          if (typeof file === 'string') {
+            request.attach('file', file);
+          } else if (Buffer.isBuffer(file)) {
+            if (!('fileName' in options)
+              || !Array.isArray(options.fileName)
+              || !options.fileName[index]) {
+              throw new Error('When using buffer file input you must provide options.fileName.');
+            }
+            request.attach('file', file, options.fileName[index]);
+          } else {
+            throw new Error('Cannot handle input.')
+          }
+        });
+      }
+
+      // TODO options and tags?
+
+      return superagentPost(this[environmentSymbol], request);
+    })
+    .then(([response, traversal]) => {
+      return new DMAssetList(response, this[environmentSymbol], traversal);
+    });
+  }
+
+  /**
    * Create a new entry.
    *
    * @param {string} model name of the model for which the list should be loaded
@@ -433,6 +538,86 @@ export default class PublicAPI extends Core {
       return post(this[environmentSymbol], request, entry)
     })
     .then(([res, traversal]) => createEntry(res, this[environmentSymbol], traversal));
+  }
+
+  /**
+   * Load a single {@link DMAssetResource}.
+   *
+   * @example
+   * return api.asset(thisOne)
+   * .then(asset => show(asset));
+   *
+   * @param {string} assetGroupID the assetGroupID
+   * @param {string} assetID the assetID
+   * @returns {Promise<DMAssetResource>} Promise resolving to DMAssetResource
+   */
+  dmAsset(assetGroupID: string, assetID: string): Promise<DMAssetResource> {
+    return Promise.resolve()
+    .then(() => {
+      if (!assetGroupID) {
+        throw new Error('assetGroupID must be defined');
+      }
+
+      if (!assetID) {
+        throw new Error('assetID must be defined');
+      }
+
+      return this.follow(`ec:dm-assets/${assetGroupID}`);
+    })
+    .catch((error) => {
+      if (error.message.indexOf('Link not present in root response.') !== -1) {
+        throw new Error('assetGroup not found')
+      }
+
+      throw error;
+    })
+    .then((request) => {
+      request.withTemplateParameters({ assetID });
+      return get(this[environmentSymbol], request);
+    })
+    .then(([res, traversal]) => new DMAssetResource(res, this[environmentSymbol], traversal));
+  }
+
+  /**
+   * Load the {@link DMAssetList}.
+   *
+   * @example
+   * return api.dmAssetList('public', { filter: { type: 'image'} })
+   * .then(assets => assets.getAllItems().find(asset => asset.title.toLowerCase() === 'favicon' ))
+   * .then(asset => show(asset));
+   *
+   * @param {filterOptions?} options filter options
+   * @returns {Promise<DMAssetList>} Promise resolving to DMAssetList
+   */
+  dmAssetList(assetGroupID: string, options?: filterOptions | any): Promise<DMAssetList> {
+    return Promise.resolve()
+    .then(() => {
+      if (!assetGroupID) {
+        throw new Error('assetGroupID must be defined');
+      }
+
+      if (
+        options
+        && Object.keys(options).length === 1 && 'assetID' in options
+        && (typeof options.assetID === 'string' || (!('any' in options.assetID) && !('all' in options.assetID)))
+      ) {
+        throw new Error('Cannot filter assetList only by assetID. Use PublicAPI#dmAsset() instead');
+      }
+
+      return this.follow(`ec:dm-assets/${assetGroupID}`);
+    })
+    .catch((error) => {
+      if (error.message.indexOf('Link not present in root response.') !== -1) {
+        throw new Error('assetGroup not found')
+      }
+
+      throw error;
+    })
+    .then((request) => {
+      request.withTemplateParameters(optionsToQuery(options, this.getLink(`ec:dm-assets/${assetGroupID}`).href));
+      return get(this[environmentSymbol], request);
+    })
+    .then(([res, traversal]) => new DMAssetList(res, this[environmentSymbol], traversal));
   }
 
   /**
@@ -583,14 +768,47 @@ export default class PublicAPI extends Core {
    * @returns {Promise<string>} URL to the file
    */
   getFileUrl(assetID: string): Promise<string> {
-    if (!assetID) {
-      return Promise.reject(new Error('assetID must be defined'));
-    }
+    return this.getFileVariant(assetID);
+  }
 
-    return this.follow('ec:api/assets/bestFile')
-    .then(request => {
-      request.withTemplateParameters({ assetID });
-      return get(this[environmentSymbol], request);
+  /**
+   * Generic file helper for images and thumbnails.
+   *
+   * @param {string} assetID - assetID of the file requested. Can be legacy Asset (uuid v4) or
+   *   AssetNeue.
+   * @param {boolean} thumb - true when image should be a thumbnail
+   * @param {number} size - the minimum size of the image
+   * @returns {Promise<string>} the url string of the requested image
+   */
+  getFileVariant(assetID: string, thumb: boolean = false, size?: number) {
+    return Promise.resolve()
+    .then(() => {
+      if (!assetID) {
+        throw new Error('assetID must be defined');
+      }
+
+      let relation;
+      const params: any = {};
+
+      params.assetID = assetID;
+      if (size) {
+        params.size = size;
+      }
+
+      if (validate.isUUID(assetID, 4)) {
+        relation = 'ec:api/assets/bestFile';
+        params.thumb = thumb;
+      } else if (thumb) {
+        relation = 'ec:dm-asset/thumbnail';
+      } else {
+        relation = 'ec:dm-asset/file';
+      }
+
+      return this.follow(relation)
+      .then((request) => {
+        request.withTemplateParameters(params);
+        return get(this[environmentSymbol], request);
+      });
     })
     .then(([res]) => res.url);
   }
@@ -603,16 +821,7 @@ export default class PublicAPI extends Core {
    * @returns {Promise<string>} URL to the file
    */
   getImageThumbUrl(assetID: string, size: number): Promise<string> {
-    if (!assetID) {
-      return Promise.reject(new Error('assetID must be defined'));
-    }
-
-    return this.follow('ec:api/assets/bestFile')
-    .then(request => {
-      request.withTemplateParameters({ assetID, size, thumb: true });
-      return get(this[environmentSymbol], request);
-    })
-    .then(([res]) => res.url);
+    return this.getFileVariant(assetID, true, size);
   }
 
   /**
@@ -623,16 +832,7 @@ export default class PublicAPI extends Core {
    * @returns {Promise<string>} URL to the file
    */
   getImageUrl(assetID: string, size: number): Promise<string> {
-    if (!assetID) {
-      return Promise.reject(new Error('assetID must be defined'));
-    }
-
-    return this.follow('ec:api/assets/bestFile')
-    .then(request => {
-      request.withTemplateParameters({ assetID, size });
-      return get(this[environmentSymbol], request);
-    })
-    .then(([res]) => res.url);
+    return this.getFileVariant(assetID, false, size);
   }
 
   /**
@@ -745,29 +945,6 @@ export default class PublicAPI extends Core {
       this[eventsSymbol].emit('logout');
       this[tokenStoreSymbol].deleteToken();
       return Promise.resolve();
-    });
-  }
-
-  /**
-   * Change the logged in account to the given new email address.
-   *
-   * @example
-   * return api.changeEmail(newEmail)
-   * .then(() => show(`Email change started. Please verify with your new address.`))
-   *
-   * @param {string} email the new email
-   * @returns {Promise<undefined>} Promise resolving on success.
-   */
-  changeEmail(email: string): Promise<void> {
-    return Promise.resolve()
-    .then(() => {
-      if (!email) {
-        throw  new Error('email must be defined');
-      }
-      return this.follow(`${this[shortIDSymbol]}:_auth/change-email`)
-      .then((request) => {
-        return postEmpty(this[environmentSymbol], request, { email });
-      });
     });
   }
 

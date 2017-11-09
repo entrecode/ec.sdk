@@ -19,6 +19,8 @@ import { filterOptions } from '../ListResource';
 import { get, getUrl, superagentPost } from '../../helper';
 import { environment } from '../../Core';
 import PublicAPI from '../../PublicAPI';
+import AssetGroupResource from './AssetGroupResource';
+import AssetGroupList from './AssetGroupList';
 
 const environmentSymbol = Symbol.for('environment');
 const apiSymbol = Symbol('api');
@@ -94,6 +96,14 @@ export default class DataManagerResource extends Resource {
         id: 'roleID',
         ResourceClass: RoleResource,
         ListClass: RoleList,
+      },
+      assetGroup: {
+        relation: 'ec:dm-assetgroups',
+        createRelation: 'ec.dm-assetgroup/by-id',
+        createTemplateModifier: '-template-post',
+        id: 'assetGroupID',
+        ResourceClass: AssetGroupResource,
+        ListClass: AssetGroupList,
       },
     };
 
@@ -205,6 +215,44 @@ export default class DataManagerResource extends Resource {
    */
   asset(assetID: string): Promise<AssetResource> {
     return <Promise<AssetResource>>this.resource('asset', assetID);
+  }
+
+  /**
+   * Load a single {@link AssetGroupResource}.
+   *
+   * @example
+   * return dm.asset('thisOne')
+   * .then(asset => {
+   *   return show(asset);
+   * });
+   *
+   * @param {string} assetGroupID the id
+   * @returns {Promise<AssetGroupResource>} Promise resolving to AssetGroupResource
+   */
+  assetGroup(assetGroupID: string): Promise<AssetGroupResource> {
+    return <Promise<AssetGroupResource>>this.resource('assetGroup', assetGroupID);
+  }
+
+  /**
+   * Load the {@link AssetGroupList}.
+   *
+   * @example
+   * return dm.assetGroupList()
+   * .then(groups => {
+   *   return groups.getAllItems().filter(group => group.public);
+   * })
+   * .then(groups => {
+   *   return show(groups);
+   * });
+   *
+   * @param {filterOptions?} options filter options
+   * @returns {Promise<AssetGroupList>} Promise resolving to AssetGroupList
+   */
+  assetGroupList(options: filterOptions | any = {}): Promise<AssetGroupList> {
+    return Promise.resolve()
+    .then(() => {
+      return <Promise<AssetGroupList>>this.resourceList('assetGroup', options);
+    });
   }
 
   /**
@@ -338,6 +386,16 @@ export default class DataManagerResource extends Resource {
       const queryStrings = qs.parse(url.substr(url.indexOf('?') + 1));
       return () => this.asset(<string>queryStrings.assetID);
     });
+  }
+
+  /**
+   * Create a new asset group.
+   *
+   * @param {object} group object representing the group.
+   * @returns {Promise<AssetGroupResource>} the newly created AssetGroupResource
+   */
+  createAssetGroup(group: any): Promise<AssetGroupResource> {
+    return <Promise<AssetGroupResource>>this.create('assetGroup', group);
   }
 
   /**

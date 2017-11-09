@@ -1,0 +1,209 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "https://entrecode.de/schema/dm-assetgroup",
+  "allOf": [
+    {
+      "$ref": "https://entrecode.de/schema/hal#/definitions/halResource"
+    },
+    {
+      "type": "object",
+      "properties": {
+        "assetGroupID": {
+          "readonly": true,
+          "description": "The unique ID of the asset group (and also the name)",
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 32,
+          "pattern": "^[a-z0-9_-]{1,32}$"
+        },
+        "public": {
+          "description": "Read-only field indicating if assets in this group are generally public",
+          "type": "boolean"
+        },
+        "settings": {
+          "description": "Individual settings for this Asset Group",
+          "type": "object",
+          "properties": {
+            "urlExpiration": {
+              "description": "ISO 8601 duration determining how long URLs will be valid, if this assetgroup is non-public. Overwrites global setting from Data Manager.",
+              "type": [
+                "string",
+                "null"
+              ],
+              "pattern": "^P(?!$)(\\d+Y)?(\\d+M)?(\\d+W)?(\\d+D)?(T(?=\\d)(\\d+H)?(\\d+M)?(\\d+S)?)?$"
+            },
+            "disabledTypes": {
+              "description": "List of asset types and / or mime types that may not be used in this assetgroup",
+              "type": "array",
+              "items": {
+                "oneOf": [
+                  {
+                    "type": "string",
+                    "enum": [
+                      "image",
+                      "video",
+                      "audio",
+                      "plain",
+                      "document",
+                      "spreadsheet",
+                      "other"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "pattern": "^(image|video|audio|text|application)\/[a-z0-9\\.+-]+$"
+                  }
+                ]
+              }
+            },
+            "imageSizes": {
+              "description": "List of image sizes to generate for image type assets. Overwrites global setting from Data Manager.",
+              "type": "array",
+              "items": {
+                "type": "number",
+                "multipleOf": 1.0,
+                "minimum": 1
+              }
+            },
+            "thumbSizes": {
+              "description": "List of thumbnail sizes to generate for assets. Overwrites global setting from Data Manager.",
+              "type": "array",
+              "items": {
+                "type": "number",
+                "multipleOf": 1.0,
+                "minimum": 1
+              }
+            }
+          },
+          "additionalProperties": false
+        },
+        "policies": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "method": {
+                "type": "string",
+                "pattern": "^get|put|post|delete$"
+              },
+              "user": {
+                "description": "Either not authenticated (public) or a dm user (publicUser)",
+                "type": "string",
+                "enum": [
+                  "public",
+                  "publicUser"
+                ]
+              },
+              "conditions": {
+                "$ref": "#/definitions/condition"
+              }
+            },
+            "additionalProperties": false,
+            "required": [
+              "method",
+              "user"
+            ]
+          }
+        },
+        "_links": {
+          "required": [
+            "self",
+            "collection",
+            "ec:datamanager",
+            "ec:dm-assets"
+          ]
+        }
+      },
+      "required": [
+        "assetGroupID",
+        "public",
+        "settings",
+        "policies"
+      ]
+    }
+  ],
+  "definitions": {
+    "condition": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "field": {
+              "enum": [
+                "assetID",
+                "title",
+                "type",
+                "mimetype",
+                "created",
+                "modified",
+                "creator",
+                "creatorType",
+                "tags",
+                "file.size"
+              ]
+            },
+            "operator": {
+              "enum": [
+                "=",
+                "!=",
+                "<",
+                "<=",
+                ">",
+                ">=",
+                "contains",
+                "containsNot",
+                "hasRole",
+                "hasNotRole"
+              ]
+            },
+            "variable": {
+              "enum": [
+                "accountID",
+                "roles",
+                "now"
+              ]
+            },
+            "constant": {
+            }
+          },
+          "oneOf": [
+            {
+              "required": [
+                "field",
+                "operator",
+                "variable"
+              ]
+            },
+            {
+              "required": [
+                "field",
+                "operator",
+                "constant"
+              ]
+            }
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "array",
+          "items": [
+            {
+              "$ref": "#/definitions/condition"
+            },
+            {
+              "type": "string",
+              "pattern": "^and|or$"
+            },
+            {
+              "$ref": "#/definitions/condition"
+            }
+          ],
+          "additionalItems": false
+        }
+      ]
+    }
+  }
+}

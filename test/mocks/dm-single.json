@@ -100,6 +100,16 @@
     },
     "ec:dm-stats": {
       "href": "https://datamanager.entrecode.de/stats?dataManagerID=48e18a34-cf64-4f4a-bc47-45323a7f0e44"
+    },
+    "ec:dm-assetgroups": {
+      "href": "https://datamanager.entrecode.de/assetgroup?dataManagerID=48e18a34-cf64-4f4a-bc47-45323a7f0e44{&assetGroupID,assetGroupID~,page,public,size,sort}",
+      "templated": true,
+      "profile": "https://entrecode.de/schema/dm-assetgroups"
+    },
+    "ec.dm-assetgroup/by-id": {
+      "href": "https://datamanager.entrecode.de/assetgroup?dataManagerID=48e18a34-cf64-4f4a-bc47-45323a7f0e44{&assetGroupID}",
+      "profile": "https://entrecode.de/schema/dm-assetgroup",
+      "templated": true
     }
   }
 }
