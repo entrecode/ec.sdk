@@ -1,3 +1,11 @@
+<a name="0.10.1"></a>
+## 0.10.1 (2017-11-10)
+
+* release version 0.10.1 ([61fd0f4](https://github.com/entrecode/ec.sdk/commit/61fd0f4))
+* feat: handle weird responses which are not a json ([33567eb](https://github.com/entrecode/ec.sdk/commit/33567eb))
+
+
+
 <a name="0.10.0"></a>
 # 0.10.0 (2017-11-09)
 
