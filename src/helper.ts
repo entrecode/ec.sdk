@@ -38,7 +38,11 @@ function jsonHandler(callback) {
       return callback(null, [res.body ? JSON.parse(res.body) : {}, traversal]);
     }
 
-    return callback(new Problem(JSON.parse(res.body)));
+    try {
+      return callback(new Problem(JSON.parse(res.body)));
+    } catch (e) {
+      return callback(new Error(`ec.sdk: unable to parse body: ${res.body}`))
+    }
   };
 }
 
