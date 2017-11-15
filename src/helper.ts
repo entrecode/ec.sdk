@@ -444,6 +444,10 @@ export function optionsToQuery(options: filterOptions, templateURL: string): any
   const out: any = {};
 
   if (options) {
+    if (typeof options !== 'object') {
+      throw new Error(`filterOptions must be an object, is: ${typeof options}`);
+    }
+
     Object.keys(options).forEach((key) => {
       if (['size', 'page'].indexOf(key) !== -1) { // TODO was array.includes
         if (!Number.isInteger(<number>options[key])) {
