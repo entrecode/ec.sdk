@@ -3,6 +3,7 @@
     "module": "commonjs",
     "target": "es2015",
     "sourceMap": true,
+    "declaration": true,
     "outDir": "lib",
     "moduleResolution": "node",
     "removeComments": false

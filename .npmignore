@@ -1,3 +1,10 @@
-test/
-coverage/
 docs/
+coverage/
+src/
+test/
+.gitignore
+.travis.yml
+documentation.yml
+release.sh
+tsconfig.json
+webpack.config.js

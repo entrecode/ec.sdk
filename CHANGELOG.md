@@ -1,3 +1,28 @@
+<a name="0.11.0"></a>
+# 0.11.0 (2017-11-15)
+
+* release version 0.11.0 ([4bd537b](https://github.com/entrecode/ec.sdk/commit/4bd537b))
+* refactor: only add built sources for npm package, should allow angular production builds ([fd1e4f2](https://github.com/entrecode/ec.sdk/commit/fd1e4f2))
+* fix: typings for bestFile methods in DataManager API Connector ([92a9667](https://github.com/entrecode/ec.sdk/commit/92a9667))
+
+
+### BREAKING CHANGE
+
+* import for typescript projects changed from `src` to `lib`.
+
+before:
+
+```js
+import { EntryResource } from 'ec.sdk/src/resources/publicAPI/EntryResource';
+```
+
+after:
+
+```js
+import { EntryResource } from 'ec.sdk/lib/resources/publicAPI/EntryResource';
+```
+
+
 <a name="0.10.2"></a>
 ## 0.10.2 (2017-11-15)
 
