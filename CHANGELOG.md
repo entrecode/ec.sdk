@@ -1,3 +1,10 @@
+<a name="0.11.1"></a>
+## 0.11.1 (2017-11-15)
+
+* release version 0.11.1 ([8a0ac32](https://github.com/entrecode/ec.sdk/commit/8a0ac32))
+
+
+
 <a name="0.11.0"></a>
 # 0.11.0 (2017-11-15)
 
