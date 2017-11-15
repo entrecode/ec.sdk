@@ -130,7 +130,7 @@ export default class DataManager extends Core {
    * @param {string?} locale - the locale
    * @returns {Promise<string>} Promise resolving the URL to the file
    */
-  getFileUrl(assetID: string, locale: string): Promise<string> {
+  getFileUrl(assetID: string, locale?: string): Promise<string> {
     if (!assetID) {
       return Promise.reject(new Error('assetID must be defined'));
     }
@@ -149,7 +149,7 @@ export default class DataManager extends Core {
    * @param {string?} locale - the locale
    * @returns {Promise<string>} Promise resolving the URL to the file
    */
-  getImageThumbUrl(assetID: string, size: number, locale: string): Promise<string> {
+  getImageThumbUrl(assetID: string, size?: number, locale?: string): Promise<string> {
     if (!assetID) {
       return Promise.reject(new Error('assetID must be defined'));
     }
@@ -168,7 +168,7 @@ export default class DataManager extends Core {
    * @param {string?} locale - the locale
    * @returns {Promise<string>} Promise resolving the URL to the file
    */
-  getImageUrl(assetID: string, size: number, locale: string): Promise<string> {
+  getImageUrl(assetID: string, size?: number, locale?: string): Promise<string> {
     if (!assetID) {
       return Promise.reject(new Error('assetID must be defined'));
     }
