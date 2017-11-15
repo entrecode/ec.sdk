@@ -3,6 +3,7 @@ import * as halfred from 'halfred';
 import * as traverson from 'traverson';
 import * as validator from 'json-schema-remote';
 import * as isEqual from 'lodash.isequal';
+import * as assert from 'power-assert';
 
 import ListResource, { filterOptions } from './ListResource';
 import { del, get, optionsToQuery, post, put } from '../helper';
@@ -10,7 +11,6 @@ import { del, get, optionsToQuery, post, put } from '../helper';
 const environmentSymbol = Symbol.for('environment');
 const resourceSymbol = Symbol.for('resource');
 const traversalSymbol = Symbol.for('traversal');
-const dirtySymbol = Symbol('dirty');
 const resourcePropertiesSymbol = Symbol('resourceProperties');
 const relationsSymbol = Symbol.for('relations');
 
@@ -39,7 +39,6 @@ export default class Resource {
    */
   constructor(resource, environment = 'live', traversal, name?: string, schema?: any) {
     this[environmentSymbol] = environment;
-    this[dirtySymbol] = false;
     let r;
     if (resource instanceof halfred['Resource']) {
       r = resource.original();
@@ -61,7 +60,23 @@ export default class Resource {
     Object.defineProperties(this, {
       isDirty: {
         enumerable: false,
-        get: () => this[dirtySymbol],
+        get: () => {
+          try {
+            const original = this[resourceSymbol].original();
+            const current = this.toOriginal();
+            delete original._links;
+            delete current._links;
+            delete original._embedded;
+            delete current._embedded;
+            assert.deepEqual(current, original);
+            return false;
+          } catch (err) {
+            if (err.name && err.name.indexOf('AssertionError') !== -1) {
+              return true;
+            }
+            throw err;
+          }
+        },
       },
     });
 
@@ -251,7 +266,6 @@ export default class Resource {
    */
   reset(): void {
     this[resourceSymbol] = halfred.parse(this[resourceSymbol].original());
-    this[dirtySymbol] = false;
   }
 
   /**
@@ -268,80 +282,8 @@ export default class Resource {
     .then(([res, traversal]) => {
       this[resourceSymbol] = halfred.parse(res);
       this[traversalSymbol] = traversal;
-      this[dirtySymbol] = false;
       return this;
     });
-  }
-
-  /**
-   * Saves this {@link Resource}.
-   *
-   * @param {string?} overwriteSchemaUrl Other schema url to overwrite the one in
-   *   `_link.self.profile`. Mainly for internal use.
-   * @returns {Promise<Resource>} Promise will resolve to the saved Resource. Will
-   *   be the same object but with refreshed data.
-   */
-  save(overwriteSchemaUrl?: string): Promise<Resource> {
-    return Promise.resolve()
-    .then(() => {
-      const out = this.toOriginal();
-      // TODO dot notation
-      return validator.validate(out, overwriteSchemaUrl || this.getLink('self').profile)
-      .then(() => put(this[environmentSymbol], this.newRequest().follow('self'), out))
-      .then(([res, traversal]) => {
-        this[resourceSymbol] = halfred.parse(res);
-        this[traversalSymbol] = traversal;
-        this[dirtySymbol] = false;
-        return this;
-      });
-    });
-  }
-
-  /**
-   * Will assign all properties in resource to this {@link Resource}.
-   *
-   * @param {object} resource object with properties to assign.
-   * @returns {Resource} this Resource for chainability
-   */
-  setAll(resource: any): any {
-    if (!resource) {
-      throw new Error('Resource cannot be undefined.');
-    }
-
-    Object.assign(this[resourceSymbol], resource);
-    this[dirtySymbol] = true;
-    return this;
-  }
-
-  /**
-   * Set a new value to the property identified by property.
-   *
-   * @param {string} property the property to change.
-   * @param {any} value the value to assign.
-   * @returns {Resource} this Resource for chainability
-   */
-  setProperty(property: string, value: any): any {
-    if (isEqual(value, this.getProperty(property))) {
-      return this;
-    }
-
-    this[dirtySymbol] = true;
-    this[resourceSymbol][property] = value;
-    return this;
-  }
-
-  toOriginal(): any {
-    const out = {};
-
-    const keys = Object.keys(this);
-    if (this[resourcePropertiesSymbol].length !== keys.length) {
-      throw new Error(`Additional properties found: ${keys.filter(k => !this[resourcePropertiesSymbol].includes(k)).join(', ')}`);
-    }
-
-    Object.keys(this[resourceSymbol].original()).forEach((key) => {
-      out[key] = this[resourceSymbol][key];
-    });
-    return out;
   }
 
   /**
@@ -430,6 +372,74 @@ export default class Resource {
     })
     .then(([res, traversal]) =>
       new this[relationsSymbol][relation].ListClass(res, this[environmentSymbol], traversal));
+  }
+
+  /**
+   * Saves this {@link Resource}.
+   *
+   * @param {string?} overwriteSchemaUrl Other schema url to overwrite the one in
+   *   `_link.self.profile`. Mainly for internal use.
+   * @returns {Promise<Resource>} Promise will resolve to the saved Resource. Will
+   *   be the same object but with refreshed data.
+   */
+  save(overwriteSchemaUrl?: string): Promise<Resource> {
+    return Promise.resolve()
+    .then(() => {
+      const out = this.toOriginal();
+      // TODO dot notation
+      return validator.validate(out, overwriteSchemaUrl || this.getLink('self').profile)
+      .then(() => put(this[environmentSymbol], this.newRequest().follow('self'), out))
+      .then(([res, traversal]) => {
+        this[resourceSymbol] = halfred.parse(res);
+        this[traversalSymbol] = traversal;
+        return this;
+      });
+    });
+  }
+
+  /**
+   * Will assign all properties in resource to this {@link Resource}.
+   *
+   * @param {object} resource object with properties to assign.
+   * @returns {Resource} this Resource for chainability
+   */
+  setAll(resource: any): any {
+    if (!resource) {
+      throw new Error('Resource cannot be undefined.');
+    }
+
+    Object.assign(this[resourceSymbol], resource);
+    return this;
+  }
+
+  /**
+   * Set a new value to the property identified by property.
+   *
+   * @param {string} property the property to change.
+   * @param {any} value the value to assign.
+   * @returns {Resource} this Resource for chainability
+   */
+  setProperty(property: string, value: any): any {
+    if (isEqual(value, this.getProperty(property))) {
+      return this;
+    }
+
+    this[resourceSymbol][property] = value;
+    return this;
+  }
+
+  toOriginal(): any {
+    const out = {};
+
+    const keys = Object.keys(this);
+    if (this[resourcePropertiesSymbol].length !== keys.length) {
+      throw new Error(`Additional properties found: ${keys.filter(k => !this[resourcePropertiesSymbol].includes(k)).join(', ')}`);
+    }
+
+    Object.keys(this[resourceSymbol].original()).forEach((key) => {
+      out[key] = this[resourceSymbol][key];
+    });
+    return out;
   }
 
   /**

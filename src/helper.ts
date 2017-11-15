@@ -106,7 +106,7 @@ function traversonWrapper(func: string, environment: environment, t: any, body?:
     t.withRequestOptions({ headers: { Accept: 'application/hal+json' } });
 
     const store = TokenStoreFactory(environment);
-    let secondStore;
+    let secondStore: TokenStore;
     if (!store.hasToken()) {
       // when no token is present see if we have a public environment (with shortID)
       // if so look in second store
@@ -322,32 +322,7 @@ export function superagentGet(url: string, headers?: any, environment?: environm
     request.set(headers);
   }
 
-  if (environment) {
-    const store = TokenStoreFactory(environment);
-    let secondStore: TokenStore;
-    if (!store.hasToken()) {
-      // when no token is present see if we have a public environment (with shortID)
-      // if so look in second store
-      const result = /^(live|stage|nightly|develop|test)[A-Fa-f0-9]{8}$/.exec(environment);
-      if (result) {
-        secondStore = TokenStoreFactory(<environment>result[1]);
-      }
-    }
-
-    if (store.hasToken()) {
-      request.set('Authorization', `Bearer ${store.hasToken()}`);
-    } else if (secondStore && secondStore.hasToken()) {
-      request.set('Authorization', `Bearer ${secondStore.getToken()}`);
-    }
-
-    if (store.hasUserAgent()) {
-      request.set('X-User-Agent', `${store.getUserAgent()} ec.sdk/${packageJson.version}`);
-    } else if (secondStore && secondStore.hasUserAgent()) {
-      request.set('X-User-Agent', `${secondStore.getUserAgent()} ec.sdk/${packageJson.version}`);
-    } else {
-      request.set('X-User-Agent', `ec.sdk/${packageJson.version}`);
-    }
-  }
+  addHeaderToSuperagent(request, environment);
 
   return request
   .then(res => res.body ? res.body : {})
@@ -391,31 +366,7 @@ export function superagentGetPiped(url: string, pipe: any): Promise<any> {
 export function superagentPost(environment: environment, request: any): Promise<any> {
   request.set('Accept', 'application/hal+json');
 
-  const store = TokenStoreFactory(environment);
-  let secondStore: TokenStore;
-  if (!store.hasToken()) {
-    // when no token is present see if we have a public environment (with shortID)
-    // if so look in second store
-    const result = /^(live|stage|nightly|develop|test)[A-Fa-f0-9]{8}$/.exec(environment);
-    if (result) {
-      secondStore = TokenStoreFactory(<environment>result[1]);
-    }
-  }
-
-  if (store.hasToken()) {
-    request.set('Authorization', `Bearer ${store.getToken()}`);
-  } else if (secondStore && secondStore.hasToken()) {
-    request.set('Authorization', `Bearer ${secondStore.getToken()}`);
-  }
-
-  if (store.hasUserAgent()) {
-    request.set('X-User-Agent', `${store.getUserAgent()} ec.sdk/${packageJson.version}`);
-  } else if (secondStore && secondStore.hasUserAgent()) {
-    request.set('X-User-Agent', `${secondStore.getUserAgent()} ec.sdk/${packageJson.version}`);
-  } else {
-    request.set('X-User-Agent', `ec.sdk/${packageJson.version}`);
-  }
-
+  addHeaderToSuperagent(request, environment);
   return request.then(res => Promise.resolve(res.body ? res.body : {}))
   .catch((err) => {
     let problem;
@@ -425,6 +376,42 @@ export function superagentPost(environment: environment, request: any): Promise<
     events.emit('error', problem || err);
     throw problem || err;
   });
+}
+
+/**
+ * Adds Authorization and X-User-Agent header to requests
+ *
+ * @private
+ * @param {any} request The superagent request
+ * @param {environment} environment environment from which to load the headers
+ */
+function addHeaderToSuperagent(request: any, environment: environment) {
+  if (environment) {
+    const store = TokenStoreFactory(environment);
+    let secondStore: TokenStore;
+    if (!store.hasToken()) {
+      // when no token is present see if we have a public environment (with shortID)
+      // if so look in second store
+      const result = /^(live|stage|nightly|develop|test)[A-Fa-f0-9]{8}$/.exec(environment);
+      if (result) {
+        secondStore = TokenStoreFactory(<environment>result[1]);
+      }
+    }
+
+    if (store.hasToken()) {
+      request.set('Authorization', `Bearer ${store.getToken()}`);
+    } else if (secondStore && secondStore.hasToken()) {
+      request.set('Authorization', `Bearer ${secondStore.getToken()}`);
+    }
+
+    if (store.hasUserAgent()) {
+      request.set('X-User-Agent', `${store.getUserAgent()} ec.sdk/${packageJson.version}`);
+    } else if (secondStore && secondStore.hasUserAgent()) {
+      request.set('X-User-Agent', `${secondStore.getUserAgent()} ec.sdk/${packageJson.version}`);
+    } else {
+      request.set('X-User-Agent', `ec.sdk/${packageJson.version}`);
+    }
+  }
 }
 
 /**
@@ -457,6 +444,10 @@ export function optionsToQuery(options: filterOptions, templateURL: string): any
   const out: any = {};
 
   if (options) {
+    if (typeof options !== 'object') {
+      throw new Error(`filterOptions must be an object, is: ${typeof options}`);
+    }
+
     Object.keys(options).forEach((key) => {
       if (['size', 'page'].indexOf(key) !== -1) { // TODO was array.includes
         if (!Number.isInteger(<number>options[key])) {
