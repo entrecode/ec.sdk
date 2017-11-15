@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset='utf-8' />
-  <title>ec.sdk 0.11.0 | Documentation</title>
+  <title>ec.sdk 0.11.1 | Documentation</title>
   <meta name='viewport' content='width=device-width,initial-scale=1'>
   <link href='assets/bass.css' type='text/css' rel='stylesheet' />
   <link href='assets/style.css' type='text/css' rel='stylesheet' />
@@ -14,7 +14,7 @@
       <div id='split-left' class='overflow-auto fs0 height-viewport-100'>
         <div class='py1 px2'>
           <h3 class='mb0 no-anchor'>ec.sdk</h3>
-          <div class='mb1'><code>0.11.0</code></div>
+          <div class='mb1'><code>0.11.1</code></div>
           <input
             placeholder='Filter'
             id='filter-input'
@@ -25651,7 +25651,22 @@ be the same object but with refreshed data.
   </h2>
 
   
-    <p><a name="0.10.2"></a></p>
+    <p><a name="0.11.0"></a></p>
+<h1>0.11.0 (2017-11-15)</h1>
+<ul>
+<li>release version 0.11.0 (<a href="https://github.com/entrecode/ec.sdk/commit/4bd537b">4bd537b</a>)</li>
+<li>refactor: only add built sources for npm package, should allow angular production builds (<a href="https://github.com/entrecode/ec.sdk/commit/fd1e4f2">fd1e4f2</a>)</li>
+<li>fix: typings for bestFile methods in DataManager API Connector (<a href="https://github.com/entrecode/ec.sdk/commit/92a9667">92a9667</a>)</li>
+</ul>
+<h3>BREAKING CHANGE</h3>
+<ul>
+<li>import for typescript projects changed from <code>src</code> to <code>lib</code>.</li>
+</ul>
+<p>before:</p>
+<pre class='hljs'><span class="hljs-keyword">import</span> { EntryResource } <span class="hljs-keyword">from</span> <span class="hljs-string">'ec.sdk/src/resources/publicAPI/EntryResource'</span>;</pre>
+<p>after:</p>
+<pre class='hljs'><span class="hljs-keyword">import</span> { EntryResource } <span class="hljs-keyword">from</span> <span class="hljs-string">'ec.sdk/lib/resources/publicAPI/EntryResource'</span>;</pre>
+<p><a name="0.10.2"></a></p>
 <h2>0.10.2 (2017-11-15)</h2>
 <ul>
 <li>release version 0.10.2 (<a href="https://github.com/entrecode/ec.sdk/commit/3633aea">3633aea</a>)</li>
