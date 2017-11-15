@@ -251,6 +251,12 @@ describe('Network Helper', () => {
 
       return helper.get('live', traversal).should.be.rejectedWith(Problem);
     });
+    it('should be rejected, response no json', () => {
+      nock('https://entrecode.de')
+      .get('/').reply(500, 'gateway timeout ladida');
+
+      return helper.get('live', traversal).should.be.rejectedWith(Error);
+    });
     it('should be rejected network error', () => {
       nock('https://entrecode.de')
       .get('/').replyWithError('mocked error');
@@ -683,6 +689,12 @@ describe('Network Helper', () => {
 });
 
 describe('optionsToQuery', () => {
+  it('should throw on string', () => {
+    const throws = () => {
+      helper.optionsToQuery('asdf');
+    };
+    throws.should.throw(Error);
+  });
   it('should have size', () => {
     const obj = {
       size: 1,
