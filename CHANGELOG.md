@@ -1,3 +1,14 @@
+<a name="0.10.2"></a>
+## 0.10.2 (2017-11-15)
+
+* release version 0.10.2 ([3633aea](https://github.com/entrecode/ec.sdk/commit/3633aea))
+* fix: dirty detection did not handle complex types ([edf3155](https://github.com/entrecode/ec.sdk/commit/edf3155))
+* fix: throw error when filterOptions are not an object ([f452c3e](https://github.com/entrecode/ec.sdk/commit/f452c3e))
+* tests: tests for filterOptions not an object, response not a json ([957abe4](https://github.com/entrecode/ec.sdk/commit/957abe4))
+* refactor: reduce duplicate code in helper ([cf5d4f2](https://github.com/entrecode/ec.sdk/commit/cf5d4f2))
+
+
+
 <a name="0.10.1"></a>
 ## 0.10.1 (2017-11-10)
 
