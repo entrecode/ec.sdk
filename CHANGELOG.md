@@ -1,3 +1,11 @@
+<a name="0.11.2"></a>
+## 0.11.2 (2017-11-21)
+
+* release version 0.11.2 ([c218c62](https://github.com/entrecode/ec.sdk/commit/c218c62))
+* feat: make list resources stringifyable, adds items property ([ad40192](https://github.com/entrecode/ec.sdk/commit/ad40192))
+
+
+
 <a name="0.11.1"></a>
 ## 0.11.1 (2017-11-15)
 
