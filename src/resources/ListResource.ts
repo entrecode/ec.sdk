@@ -28,6 +28,7 @@ function map(list: ListResource, iterator: (resource: Resource) => Promise<any> 
 
 interface ListResource {
   count: number;
+  items: Array<Resource | any>;
   total: number;
 }
 
@@ -76,6 +77,13 @@ class ListResource extends Resource {
         enumerable: true,
         get: () => <number>this.getProperty(key),
       });
+    });
+    Object.defineProperty(this, 'items', {
+      enumerable: true,
+      get: () => this.getAllItems(),
+    });
+    Object.defineProperty(this, 'index', {
+      enumerable: false,
     });
     this.countProperties();
   }

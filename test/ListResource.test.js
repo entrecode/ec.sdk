@@ -50,6 +50,14 @@ describe('ListResource', () => {
     items.should.be.an('array');
     items.map(item => item.should.be.instanceOf(Resource));
   });
+  it('should be stringifyable', () => {
+    const parsed = JSON.parse(JSON.stringify(list));
+    parsed.should.not.have.property('index');
+    parsed.should.have.property('total', list.total);
+    parsed.should.have.property('count', list.count);
+    parsed.should.have.property('items');
+    parsed.items.should.have.property('length', 2);
+  });
   it('should return empty array on getAllItems', () => {
     return new Promise((resolve, reject) => {
       fs.readFile(`${__dirname}/mocks/dm-list-empty.json`, 'utf-8', (err, res) => {
