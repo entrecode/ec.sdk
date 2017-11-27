@@ -1,3 +1,11 @@
+<a name="0.11.3"></a>
+## 0.11.3 (2017-11-27)
+
+* release version 0.11.3 ([98d8950](https://github.com/entrecode/ec.sdk/commit/98d8950))
+* fix: remove power-assert warnings from webpack builds ([c825822](https://github.com/entrecode/ec.sdk/commit/c825822))
+
+
+
 <a name="0.11.2"></a>
 ## 0.11.2 (2017-11-21)
 

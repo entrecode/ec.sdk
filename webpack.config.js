@@ -9,6 +9,7 @@ const webpackConfig = {
   output: {
     publicPath: '',
     path: path.resolve(__dirname, 'dist'),
+    filename: 'webpack.js',
   },
 
   module: {

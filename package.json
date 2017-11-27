@@ -1,6 +1,6 @@
 {
   "name": "ec.sdk",
-  "version": "0.11.2",
+  "version": "0.11.3",
   "description": "SDK for ec.api",
   "repository": "entrecode/ec.sdk",
   "author": "Simon Scherzinger <scherzinger@entrecode.de>",
@@ -17,7 +17,8 @@
     "coverage": "npm run buildNode && istanbul cover ./node_modules/mocha/bin/_mocha -- -R dot --recursive && open ./coverage/lcov-report/index.html",
     "docs": "documentation build lib/** -c documentation.yml -f html -o docs",
     "test": "npm run buildNode && mocha -R dot --recursive",
-    "testTravis": "npm run build && mocha -R dot --recursive"
+    "testTravis": "npm run build && mocha -R dot --recursive",
+    "webpack": "webpack --config webpack.config.js"
   },
   "dependencies": {
     "@types/halfred": "^1.0.2",
@@ -31,7 +32,6 @@
     "jwt-decode": "^2.2.0",
     "locale": "^0.1.0",
     "lodash.isequal": "^4.5.0",
-    "power-assert": "^1.4.4",
     "shiro-trie": "^0.4.0",
     "stream": "^0.0.2",
     "superagent": "^3.8.1",
@@ -57,6 +57,7 @@
     "nock": "^9.1.0",
     "sinon": "^4.1.2",
     "sinon-chai": "^2.14.0",
+    "ts-loader": "^3.1.1",
     "typescript": "^2.6.1",
     "uglify-js": "^3.1.9",
     "webpack": "^3.8.1"
