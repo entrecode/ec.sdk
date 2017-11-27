@@ -3,7 +3,7 @@ import * as halfred from 'halfred';
 import * as traverson from 'traverson';
 import * as validator from 'json-schema-remote';
 import * as isEqual from 'lodash.isequal';
-import * as assert from 'power-assert';
+import * as assert from 'assert';
 
 import ListResource, { filterOptions } from './ListResource';
 import { del, get, optionsToQuery, post, put } from '../helper';
