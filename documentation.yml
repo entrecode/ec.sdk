@@ -75,6 +75,8 @@ toc:
   - TemplateList
   - DMStatsResource
   - DMStatsList
+  - AssetGroupResource
+  - AssetGroupList
   - AssetResource
   - AssetList
   - DeletedAssetResource
@@ -86,6 +88,8 @@ toc:
   - LiteEntryResource
   - EntryResource
   - EntryList
+  - DMAssetResource
+  - DMAssetList
   - PublicAssetList
   - PublicAssetResource
   - PublicTagList
