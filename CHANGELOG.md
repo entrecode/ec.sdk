@@ -1,3 +1,11 @@
+<a name="0.11.4"></a>
+## 0.11.4 (2017-11-28)
+
+* release version 0.11.4 ([573cd6e](https://github.com/entrecode/ec.sdk/commit/573cd6e))
+* refactor: reworked all resources to use interface/class with defineProperties, should make all nice  ([0b4187a](https://github.com/entrecode/ec.sdk/commit/0b4187a))
+
+
+
 <a name="0.11.3"></a>
 ## 0.11.3 (2017-11-27)
 
