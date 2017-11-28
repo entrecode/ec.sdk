@@ -1,6 +1,20 @@
 import Resource from '../Resource';
 import { environment } from '../../Core';
 
+interface AppStatsResource {
+  appID: string,
+  monthlyBuilds: Array<any>,
+  monthlyDeployments: Array<any>,
+  title: string,
+  totalBuildSize: number,
+  totalBuilds: number,
+  totalDeployments: number,
+  usedCodeSources: Array<string>,
+  usedDataSources: Array<string>,
+  usedPlatforms: Array<string>,
+  usedTargets: Array<string>,
+}
+
 /**
  * AppStatsResource class
  *
@@ -18,7 +32,7 @@ import { environment } from '../../Core';
  * @prop {Array<string>} usedTargets - targets used by this app
  * @prop {Array<string>} usedPlatforms - platforms used by this app
  */
-export default class AppStatsResource extends Resource {
+class AppStatsResource extends Resource {
   /**
    * Creates a new {@link AppStatsResource}.
    *
@@ -30,50 +44,43 @@ export default class AppStatsResource extends Resource {
    */
   constructor(resource: any, environment: environment, traversal?: any) {
     super(resource, environment, traversal);
+    Object.defineProperties(this, {
+      appID: {
+        get: () => <string>this.getProperty('appID'),
+      },
+      monthlyBuilds: {
+        get: () => this.getProperty('monthlyBuilds'),
+      },
+      monthlyDeployments: {
+        get: () => this.getProperty('monthlyDeployments'),
+      },
+      title: {
+        get: () => <string>this.getProperty('title'),
+      },
+      totalBuildSize: {
+        get: () => <number>this.getProperty('totalBuildSize'),
+      },
+      totalBuilds: {
+        get: () => <number>this.getProperty('totalBuilds'),
+      },
+      totalDeployments: {
+        get: () => <number>this.getProperty('totalDeployments'),
+      },
+      usedCodeSources: {
+        get: () => <Array<string>>this.getProperty('usedCodeSources'),
+      },
+      usedDataSources: {
+        get: () => <Array<string>>this.getProperty('usedDataSources'),
+      },
+      usedPlatforms: {
+        get: () => <Array<string>>this.getProperty('usedPlatforms'),
+      },
+      usedTargets: {
+        get: () => <Array<string>>this.getProperty('usedTargets'),
+      },
+    });
     this.countProperties();
   }
-
-  get appID() {
-    return <string>this.getProperty('appID')
-  }
-
-  get monthlyBuilds() {
-    return this.getProperty('monthlyBuilds')
-  }
-
-  get monthlyDeployments() {
-    return this.getProperty('monthlyDeployments')
-  }
-
-  get title() {
-    return <string>this.getProperty('title')
-  }
-
-  get totalBuildSize() {
-    return <number>this.getProperty('totalBuildSize')
-  }
-
-  get totalBuilds() {
-    return <number>this.getProperty('totalBuilds')
-  }
-
-  get totalDeployments() {
-    return <number>this.getProperty('totalDeployments')
-  }
-
-  get usedCodeSources() {
-    return <Array<string>>this.getProperty('usedCodeSources')
-  }
-
-  get usedDataSources() {
-    return <Array<string>>this.getProperty('usedDataSources')
-  }
-
-  get usedPlatforms() {
-    return <Array<string>>this.getProperty('usedPlatforms')
-  }
-
-  get usedTargets() {
-    return <Array<string>>this.getProperty('usedTargets')
-  }
 }
+
+export default AppStatsResource;

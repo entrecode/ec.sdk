@@ -198,6 +198,8 @@ class AccountResource extends Resource {
       .then(([tokenList, traversal]) => new TokenList(tokenList, this[environmentSymbol], traversal));
     });
   }
+
+  // TODO remove permission
 }
 
 export default AccountResource;

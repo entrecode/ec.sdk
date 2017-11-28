@@ -6,6 +6,13 @@ import DMAssetResource from '../publicAPI/DMAssetResource';
 
 const relationsSymbol = Symbol.for('relations');
 
+interface AssetGroupResource {
+  assetGroupID: string,
+  policies: any,
+  public: boolean,
+  settings: any,
+}
+
 /**
  * AssetGroupResource class
  *
@@ -18,7 +25,7 @@ const relationsSymbol = Symbol.for('relations');
  * @prop {string}        type    - type of this asset, like image
  * @prop {array<object>} files   - all files associated with this asset
  */
-export default class AssetGroupResource extends Resource {
+class AssetGroupResource extends Resource {
   /**
    * Creates a new {@link AssetGroupResource}.
    *
@@ -30,6 +37,22 @@ export default class AssetGroupResource extends Resource {
    */
   constructor(resource: any, environment: environment, traversal?: any) {
     super(resource, environment, traversal);
+    Object.defineProperties(this, {
+      assetGroupID: {
+        get: () => <string>this.getProperty('assetGroupID'),
+      },
+      policies: {
+        get: () => <any>this.getProperty('policies'),
+        set: (value: any) => this.setProperty('policies', value),
+      },
+      public: {
+        get: () => <boolean>this.getProperty('public'),
+      },
+      settings: {
+        get: () => <any>this.getProperty('settings'),
+        set: (value: any) => this.setProperty('settings', value),
+      },
+    });
     this.countProperties();
 
     this[relationsSymbol] = {
@@ -42,30 +65,6 @@ export default class AssetGroupResource extends Resource {
         ListClass: DMAssetList,
       },
     };
-  }
-
-  get assetGroupID() {
-    return <string>this.getProperty('assetGroupID');
-  }
-
-  get public() {
-    return <boolean>this.getProperty('public');
-  }
-
-  get settings() {
-    return <any>this.getProperty('settings');
-  }
-
-  set settings(value: any) {
-    this.setProperty('settings', value);
-  }
-
-  get policies() {
-    return <any>this.getProperty('policies');
-  }
-
-  set policies(value: any) {
-    this.setProperty('policies', value);
   }
 
   /**
@@ -89,3 +88,5 @@ export default class AssetGroupResource extends Resource {
     return <Promise<DMAssetList>>this.resourceList('asset', options);
   }
 }
+
+export default AssetGroupResource;

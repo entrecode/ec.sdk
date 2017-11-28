@@ -1,6 +1,13 @@
 import Resource from '../Resource';
 import { environment } from '../../Core';
 
+interface DMAccountResource {
+  accountID: string,
+  email: string,
+  hasPassword: boolean,
+  oauth: Array<any>,
+}
+
 /**
  * DM Account resource class
  *
@@ -11,7 +18,7 @@ import { environment } from '../../Core';
  * @prop {boolean}        hasPassword       - Whether or not this account has a password
  * @prop {Array<string>}  oauth             - Array of connected oauth accounts
  */
-export default class DMAccountResource extends Resource {
+class DMAccountResource extends Resource {
   /**
    * Creates a new {@link DMAccountResource}.
    *
@@ -21,22 +28,22 @@ export default class DMAccountResource extends Resource {
    */
   constructor(resource: any, environment: environment, traversal?: any) {
     super(resource, environment, traversal);
+    Object.defineProperties(this, {
+      accountID: {
+        get: () => <string>this.getProperty('accountID'),
+      },
+      email: {
+        get: () => <string>this.getProperty('email'),
+      },
+      hasPassword: {
+        get: () => <boolean>this.getProperty('hasPassword'),
+      },
+      oauth: {
+        get: () => <Array<any>>this.getProperty('oauth'),
+      },
+    });
     this.countProperties();
   }
-
-  get accountID() {
-    return <string>this.getProperty('accountID');
-  }
-
-  get email() {
-    return <string>this.getProperty('email');
-  }
-
-  get hasPassword() {
-    return <boolean>this.getProperty('hasPassword');
-  }
-
-  get oauth() {
-    return <Array<any>>this.getProperty('oauth');
-  }
 }
+
+export default DMAccountResource;

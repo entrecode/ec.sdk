@@ -1,6 +1,13 @@
 import Resource from '../Resource';
 import { environment } from '../../Core';
 
+interface DMClientResource {
+  callbackURL: string,
+  clientID: string,
+  disableStrategies: Array<string>,
+  hexColor: string,
+}
+
 /**
  * DMClientResource class
  *
@@ -13,7 +20,7 @@ import { environment } from '../../Core';
  * @prop {string}        hexColor          - Strategies disabled in this client.
  * @prop {array<String>} disableStrategies - Strategies disabled in this client.
  */
-export default class DMClientResource extends Resource {
+class DMClientResource extends Resource {
   /**
    * Creates a new {@link DMClientResource}.
    *
@@ -25,34 +32,25 @@ export default class DMClientResource extends Resource {
    */
   constructor(resource: any, environment: environment, traversal?: any) {
     super(resource, environment, traversal);
+    Object.defineProperties(this, {
+      callbackURL: {
+        get: () => <string>this.getProperty('callbackURL'),
+        set: (value: string) => this.setProperty('callbackURL', value),
+      },
+      clientID: {
+        get: () => <string>this.getProperty('clientID'),
+      },
+      disableStrategies: {
+        get: () => <Array<string>> this.getProperty('disableStrategies'),
+        set: (value: Array<string>) => this.setProperty('disableStrategies', value)
+      },
+      hexColor: {
+        get: () => <string>this.getProperty('hexColor'),
+        set: (value: string) => this.setProperty('hexColor', value),
+      },
+    });
     this.countProperties();
   }
-
-  get callbackURL() {
-    return <string>this.getProperty('callbackURL')
-  };
-
-  set callbackURL(value: string) {
-    this.setProperty('callbackURL', value);
-  }
-
-  get clientID() {
-    return <string>this.getProperty('clientID')
-  };
-
-  get disableStrategies() {
-    return <Array<string>>this.getProperty('disableStrategies')
-  };
-
-  set disableStrategies(value: Array<string>) {
-    this.setProperty('disableStrategies', value);
-  }
-
-  get hexColor() {
-    return <string>this.getProperty('hexColor')
-  };
-
-  set hexColor(value: string) {
-    this.setProperty('hexColor', value);
-  }
 }
+
+export default DMClientResource;

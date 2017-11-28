@@ -1,6 +1,15 @@
 import Resource from '../Resource';
 import { environment } from '../../Core';
 
+interface BuildResource {
+  buildID: string,
+  buildLocation: any,
+  events: Array<any>,
+  finished: Date,
+  started: Date,
+  successful: boolean,
+}
+
 /**
  * BuildResource class
  *
@@ -8,7 +17,7 @@ import { environment } from '../../Core';
  *
  * @prop {string} buildID - the id
  */
-export default class BuildResource extends Resource {
+class BuildResource extends Resource {
   /**
    * Creates a new {@link BuildResource}.
    *
@@ -20,30 +29,30 @@ export default class BuildResource extends Resource {
    */
   constructor(resource: any, environment: environment, traversal?: any) {
     super(resource, environment, traversal);
+    Object.defineProperties(this, {
+      buildID: {
+        get: () => <string>this.getProperty('buildID'),
+      },
+      buildLocation: {
+        get: () => this.getProperty('buildLocation'),
+      },
+      events: {
+        get: () => <Array<any>>this.getProperty('events'),
+      },
+      finished: {
+        get: () => new Date(this.getProperty('finished')),
+      },
+      started: {
+        get: () => new Date(this.getProperty('started')),
+      },
+      successful: {
+        get: () => <boolean>this.getProperty('successful'),
+      },
+    });
     this.countProperties();
   }
 
-  get buildID() {
-    return <string>this.getProperty('buildID');
-  }
-
-  get buildLocation() {
-    return this.getProperty('buildLocation');
-  }
-
-  get events() {
-    return <Array<any>>this.getProperty('events');
-  }
-
-  get finished() {
-    return new Date(this.getProperty('finished'));
-  }
-
-  get started() {
-    return new Date(this.getProperty('started'));
-  }
-
-  get successful() {
-    return <boolean>this.getProperty('successful');
-  }
+  // TODO get events helper, no temp, sorted…
 }
+
+export default BuildResource;

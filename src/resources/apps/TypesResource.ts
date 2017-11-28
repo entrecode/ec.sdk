@@ -1,13 +1,20 @@
 import Resource from '../Resource';
 import { environment } from '../../Core';
 
+interface TypesResource {
+  codeSourceTypes: Array<string>,
+  dataSourceTypes: Array<string>,
+  platformTypes: Array<string>,
+  targetTypes: Array<string>,
+}
+
 /**
  * TypesResource class
  *
  * @class
  *
  */
-export default class TypesResource extends Resource {
+class TypesResource extends Resource {
   /**
    * Creates a new {@link AppResource}.
    *
@@ -19,23 +26,21 @@ export default class TypesResource extends Resource {
    */
   constructor(resource: any, environment: environment, traversal?: any) {
     super(resource, environment, traversal);
+    Object.defineProperties(this, {
+      codeSourceTypes: {
+        get: () => <Array<string>>this.getProperty('codeSourceTypes'),
+      },
+      dataSourceTypes: {
+        get: () => <Array<string>>this.getProperty('dataSourceTypes'),
+      },
+      platformTypes: {
+        get: () => <Array<string>>this.getProperty('platformTypes'),
+      },
+      targetTypes: {
+        get: () => <Array<string>>this.getProperty('targetTypes'),
+      },
+    });
     this.countProperties();
-  }
-
-  get codeSourceTypes() {
-    return <Array<string>>this.getProperty('codeSourceTypes');
-  }
-
-  get dataSourceTypes() {
-    return <Array<string>>this.getProperty('dataSourceTypes');
-  }
-
-  get platformTypes() {
-    return <Array<string>>this.getProperty('platformTypes');
-  }
-
-  get targetTypes() {
-    return <Array<string>>this.getProperty('targetTypes');
   }
 
   /**
@@ -196,3 +201,5 @@ export default class TypesResource extends Resource {
     return this.getPluginSchema('target', type);
   }
 }
+
+export default TypesResource;

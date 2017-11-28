@@ -1,6 +1,11 @@
 import Resource from '../Resource';
 import { environment } from '../../Core';
 
+interface InvalidPermissionsResource {
+  invalidAccountPermissions: any,
+  invalidGroupPermissions: any,
+}
+
 /**
  * InvalidPermissionsResource class
  *
@@ -11,10 +16,7 @@ import { environment } from '../../Core';
  * @prop {Array<Permission>} invalidGroupPermission   - Array of invalid permissions linked to a
  *   {@link GroupResource}
  */
-export default class InvalidPermissionsResource extends Resource {
-  invalidAccountPermissions: Array<any>;
-  invalidGroupPermissions: Array<any>;
-
+class InvalidPermissionsResource extends Resource {
   /**
    * Creates a new {@link InvalidPermissionsResource}.
    *
@@ -29,14 +31,14 @@ export default class InvalidPermissionsResource extends Resource {
 
     Object.defineProperties(this, {
       invalidAccountPermissions: {
-        enumerable: true,
         get: () => this.getProperty('invalidAccountPermissions'),
       },
       invalidGroupPermissions: {
-        enumerable: true,
         get: () => this.getProperty('invalidGroupPermissions'),
       },
     });
     this.countProperties();
   }
 }
+
+export default InvalidPermissionsResource;

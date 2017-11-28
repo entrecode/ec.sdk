@@ -1,6 +1,12 @@
 import Resource from '../Resource';
 import { environment } from '../../Core';
 
+interface GroupResource {
+  groupID: string,
+  name: string,
+  permissions: Array<string>,
+}
+
 /**
  * GroupResource class
  *
@@ -10,7 +16,7 @@ import { environment } from '../../Core';
  * @prop {string}         name        - The group name
  * @prop {Array<string>}  permissions - Array of permissions
  */
-export default class GroupResource extends Resource {
+class GroupResource extends Resource {
   /**
    * Creates a new {@link GroupResource}.
    *
@@ -22,27 +28,20 @@ export default class GroupResource extends Resource {
    */
   constructor(resource: any, environment: environment, traversal?: any) {
     super(resource, environment, traversal);
+    Object.defineProperties(this, {
+      groupID: {
+        get: () => <string>this.getProperty('groupID'),
+      },
+      name: {
+        get: () => <string>this.getProperty('name'),
+        set: (value: string) => this.setProperty('name', value),
+      },
+      permissions: {
+        get: () => <Array<string>> this.getProperty('permissions'),
+        set: (value: Array<string>) => this.setProperty('permissions', value),
+      },
+    });
     this.countProperties();
-  }
-
-  get groupID() {
-    return <string>this.getProperty('groupID');
-  }
-
-  get name() {
-    return this.getProperty('name');
-  }
-
-  set name(value: string) {
-    this.setProperty('name', value);
-  }
-
-  get permissions() {
-    return <Array<string>>this.getProperty('permissions');
-  }
-
-  set permissions(value: Array<string>) {
-    this.setProperty('permissions', value);
   }
 
   /**
@@ -78,4 +77,8 @@ export default class GroupResource extends Resource {
     this.permissions = current;
     return this;
   }
+
+  // TODO remove permission
 }
+
+export default GroupResource;

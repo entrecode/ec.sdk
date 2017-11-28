@@ -14,6 +14,14 @@ const resolvedSymbol = Symbol.for('resolved');
 validator.setLoggingFunction(() => {
 });
 
+interface TemplateResource {
+  collection: any,
+  dataSchema: any,
+  name: string,
+  templateID: string,
+  version: string,
+}
+
 /**
  * Template resource class
  *
@@ -25,7 +33,7 @@ validator.setLoggingFunction(() => {
  * @prop {object} dataSchema - JSON schema for collection data
  * @prop {string} version - version of the template
  */
-export default class TemplateResource extends Resource {
+class TemplateResource extends Resource {
   /**
    * Creates a new {@link TemplateResource}.
    *
@@ -37,29 +45,25 @@ export default class TemplateResource extends Resource {
    */
   constructor(resource: any, environment: environment, traversal?: any) {
     super(resource, environment, traversal);
-
     this[resolvedSymbol] = 'collection' in resource;
+    Object.defineProperties(this, {
+      collection: {
+        get: () => <any>this.getProperty('collection'),
+      },
+      dataSchema: {
+        get: () => <any>this.getProperty('dataSchema'),
+      },
+      name: {
+        get: () => <string>this.getProperty('name'),
+      },
+      templateID: {
+        get: () => <string>this.getProperty('templateID'),
+      },
+      version: {
+        get: () => <string>this.getProperty('version'),
+      },
+    });
     this.countProperties();
-  }
-
-  get collection() {
-    return <string>this.getProperty('collection');
-  }
-
-  get dataSchema() {
-    return <any>this.getProperty('dataSchema');
-  }
-
-  get name() {
-    return <string>this.getProperty('name');
-  }
-
-  get templateID() {
-    return <string>this.getProperty('templateID');
-  }
-
-  get version() {
-    return <string>this.getProperty('version');
   }
 
   /**
@@ -119,3 +123,5 @@ export default class TemplateResource extends Resource {
     .then(([res, traversal]) => new DataManagerResource(res, this[environmentSymbol], traversal));
   }
 }
+
+export default TemplateResource;
