@@ -62,6 +62,26 @@ describe('PublicAPI', () => {
     const throws = () => new Api.default('notvalid'); // eslint-disable-line new-cap
     throws.should.throw(Error);
   });
+  it('should create instance live', function () {
+    const a = new Api.default('https://datamanager.entrecode.de/api/beefbeef', null, true);
+    a.shortID.should.be.equal('beefbeef');
+    a[environmentSymbol].should.be.equal('live');
+  });
+  it('should create instance stage', function () {
+    const a = new Api.default('https://datamanager.cachena.entrecode.de/api/beefbeef/', null, true);
+    a.shortID.should.be.equal('beefbeef');
+    a[environmentSymbol].should.be.equal('stage');
+  });
+  it('should create instance nightly', function () {
+    const a = new Api.default('https://datamanager.buffalo.entrecode.de/api/beefbeef', null, true);
+    a.shortID.should.be.equal('beefbeef');
+    a[environmentSymbol].should.be.equal('nightly');
+  });
+  it('should create instance develop', function () {
+    const a = new Api.default('http://localhost:7471/api/beefbeef', null, true);
+    a.shortID.should.be.equal('beefbeef');
+    a[environmentSymbol].should.be.equal('develop');
+  });
   it('should throw on invalid environment', () => {
     const throws = () => new Api.default('beefbeef', 'notvalid'); // eslint-disable-line new-cap
     throws.should.throw(Error);

@@ -60,7 +60,9 @@ const urls = {
  *
  * @example
  * const session new Session();
- * let api = new PublicAPI('beefbeef', 'live', true);;
+ * let api = new PublicAPI('beefbeef', 'live', true);
+ * // same as
+ * api = new PublicAPI('https://datamanager.entrecode.de/api/beefbeef', 'willBeIgnored', true);
  * session.setClient('rest');
  * return session.login('me@entrecode.de', 'letmein')
  * .then(() =>
@@ -87,23 +89,55 @@ const urls = {
  * @prop {string} shortID shortened dataManagerID
  * @prop {string} title title of the connected Data Manager
  *
- * @param {string} id shortID of the desired DataManager.
- * @param {environment?} environment the environment to connect to.
+ * @param {string} idOrURL shortID of the desired DataManager or url in old sdk like syntax.
+ * @param {environment?} environment the environment to connect to, ignored when url is passed to
+ *   idOrUrl.
  * @param {boolean?} ecUser if you are an ecUser it is best to set this to true
  */
 export default class PublicAPI extends Core {
-  constructor(id: string, environment: environment = 'live', ecUser: boolean = false) {
-    if (!id || !/[a-f0-9]{8}/i.test(id)) {
-      throw new Error('must provide valid shortID');
+  constructor(idOrURL: string, environment: environment = 'live', ecUser: boolean = false) {
+    if (!idOrURL) {
+      throw new Error('idOrURL must be defined');
     }
 
-    if (!(environment in urls)) {
+    let id;
+    let env;
+
+    if (/^[a-f0-9]{8}$/i.test(idOrURL)) {
+      id = idOrURL;
+      env = environment;
+    } else {
+      const result = /^https?:\/\/(datamanager\.(?:(?:cachena|buffalo)\.)?entrecode\.de|localhost:7471)\/api\/([a-f0-9]{8})\/?$/.exec(idOrURL);
+      if (!result) {
+        throw new Error('could not parse idOrURL');
+      }
+
+      switch (result[1]) {
+      case 'datamanager.entrecode.de':
+        env = 'live';
+        break;
+      case 'datamanager.cachena.entrecode.de':
+        env = 'stage';
+        break;
+      case 'datamanager.buffalo.entrecode.de':
+        env = 'nightly';
+        break;
+      case 'localhost:7471':
+      default:
+        env = 'develop';
+        break;
+      }
+
+      id = result[2];
+    }
+
+    if (!(env in urls)) {
       throw new Error('invalid environment specified');
     }
 
-    super({ [environment]: `${urls[environment]}api/${id}` }, environment, !ecUser ? id : '');
+    super({ [env]: `${urls[env]}api/${id}` }, env, !ecUser ? id : '');
     this[shortIDSymbol] = id;
-    this[assetBaseURLSymbol] = urls[environment];
+    this[assetBaseURLSymbol] = urls[env];
     this[requestCacheSymbol] = undefined;
   }
 
