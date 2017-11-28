@@ -1,6 +1,25 @@
 import Resource from '../Resource';
 import { environment } from '../../Core';
 
+interface DMStatsResource {
+  assetCount: number,
+  config: any,
+  dataManagerID: string,
+  entryCount: number,
+  fileCount: number,
+  fileSize: number,
+  modelCount: number,
+  monthlyHooks: Array<any>,
+  monthlyRequests: Array<any>,
+  numberAccounts: number,
+  numberHookRequests: Array<any>,
+  numberRequests: number,
+  templateVersion: string,
+  templateID: string,
+  templateName: string,
+  title: string,
+}
+
 /**
  * DMStatsResource class
  *
@@ -8,7 +27,7 @@ import { environment } from '../../Core';
  *
  * @prop {array<object>} dataManagerID - the dataManagerID
  */
-export default class DMStatsResource extends Resource {
+class DMStatsResource extends Resource {
   /**
    * Creates a new {@link DMStatsResource}.
    *
@@ -20,70 +39,58 @@ export default class DMStatsResource extends Resource {
    */
   constructor(resource: any, environment: environment, traversal?: any) {
     super(resource, environment, traversal);
+    Object.defineProperties(this, {
+      assetCount: {
+        get: () => <number>this.getProperty('assetCount'),
+      },
+      config: {
+        get: () => <any>this.getProperty('config'),
+      },
+      dataManagerID: {
+        get: () => <string>this.getProperty('dataManagerID'),
+      },
+      entryCount: {
+        get: () => <number>this.getProperty('entryCount'),
+      },
+      fileCount: {
+        get: () => <number>this.getProperty('fileCount'),
+      },
+      fileSize: {
+        get: () => <number>this.getProperty('fileSize'),
+      },
+      modelCount: {
+        get: () => <number>this.getProperty('modelCount'),
+      },
+      monthlyHooks: {
+        get: () => <Array<any>>this.getProperty('monthlyHooks'),
+      },
+      monthlyRequests: {
+        get: () => <Array<any>>this.getProperty('monthlyRequests'),
+      },
+      numberAccounts: {
+        get: () => <number>this.getProperty('numberAccounts'),
+      },
+      numberHookRequests: {
+        get: () => <number>this.getProperty('numberHookRequests'),
+      },
+      numberRequests: {
+        get: () => <number>this.getProperty('numberRequests'),
+      },
+      templateID: {
+        get: () => <string>this.getProperty('templateID'),
+      },
+      templateName: {
+        get: () => <string>this.getProperty('templateName'),
+      },
+      templateVersion: {
+        get: () => <string>this.getProperty('templateVersion'),
+      },
+      title: {
+        get: () => <string>this.getProperty('title'),
+      },
+    });
     this.countProperties();
   }
-
-  get assetCount() {
-    return <number>this.getProperty('assetCount');
-  }
-
-  get config() {
-    return <any>this.getProperty('config');
-  }
-
-  get dataManagerID() {
-    return <string>this.getProperty('dataManagerID');
-  }
-
-  get entryCount() {
-    return <number>this.getProperty('entryCount');
-  }
-
-  get fileCount() {
-    return <number>this.getProperty('fileCount');
-  }
-
-  get fileSize() {
-    return <number>this.getProperty('fileSize');
-  }
-
-  get modelCount() {
-    return <number>this.getProperty('modelCount');
-  }
-
-  get monthlyHooks() {
-    return <Array<any>>this.getProperty('monthlyHooks');
-  }
-
-  get monthlyRequests() {
-    return <Array<any>>this.getProperty('monthlyRequests');
-  }
-
-  get numberAccounts() {
-    return <number>this.getProperty('numberAccounts');
-  }
-
-  get numberHookRequests() {
-    return <number>this.getProperty('numberHookRequests');
-  }
-
-  get numberRequests() {
-    return <number>this.getProperty('numberRequests');
-  }
-
-  get templateID() {
-    return <string>this.getProperty('templateID');
-  }
-
-  get templateName() {
-    return <string>this.getProperty('templateName');
-  }
-
-  get templateVersion() {
-    return <string>this.getProperty('templateVersion');
-  }
-
-  get title() {
-    return <string>this.getProperty('title');
-  }
 }
+
+export default DMStatsResource;

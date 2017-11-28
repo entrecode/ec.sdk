@@ -12,6 +12,24 @@ function dateGetter(property) {
   return new Date(date);
 }
 
+interface DMAssetResource {
+  assetID: string,
+  caption: string,
+  created: Date,
+  creator: string,
+  creatorType: string,
+  duplicates: number,
+  file: any,
+  fileVariants: Array<any>,
+  isUsed: boolean,
+  mimetype: string,
+  modified: Date,
+  tags: Array<string>,
+  thumbnails: Array<any>,
+  title: string,
+  type: string,
+}
+
 /**
  * DMAssetResource class
  *
@@ -24,7 +42,7 @@ function dateGetter(property) {
  * @prop {string}        type    - type of this asset, like image
  * @prop {array<object>} files   - all files associated with this asset
  */
-export default class DMAssetResource extends Resource {
+class DMAssetResource extends Resource {
   /**
    * Creates a new {@link DMAssetResource}.
    *
@@ -36,79 +54,59 @@ export default class DMAssetResource extends Resource {
    */
   constructor(resource: any, environment: environment, traversal?: any) {
     super(resource, environment, traversal);
+    Object.defineProperties(this, {
+      assetID: {
+        get: () => <string>this.getProperty('assetID'),
+      },
+      caption: {
+        get: () => <string>this.getProperty('caption'),
+        set: (value: string) => {
+          this.setProperty('caption', value);
+        },
+      },
+      created: {
+        get: () => dateGetter.call(this, 'created'),
+      },
+      creator: {
+        get: () => <string>this.getProperty('creator'),
+      },
+      creatorType: {
+        get: () => <string>this.getProperty('creatorType'),
+      },
+      duplicates: {
+        get: () => <number>this.getProperty('duplicates'),
+      },
+      file: {
+        get: () => <any>this.getProperty('file'),
+      },
+      fileVariants: {
+        get: () => <Array<any>>this.getProperty('fileVariants'),
+      },
+      isUsed: {
+        get: () => <Boolean>this.getProperty('isUsed'),
+      },
+      mimetype: {
+        get: () => <string>this.getProperty('mimetype'),
+      },
+      modified: {
+        get: () => dateGetter.call(this, 'modified'),
+      },
+      tags: {
+        get: () => <Array<string>>this.getProperty('tags'),
+        set: (value: Array<string>) => this.setProperty('tags', value),
+      },
+      thumbnails: {
+        get: () => <Array<any>>this.getProperty('thumbnails'),
+      },
+      title: {
+        get: () => <string>this.getProperty('title'),
+        set: (value: string) => this.setProperty('title', value),
+      },
+      type: {
+        get: () => <string>this.getProperty('type'),
+      }
+    });
     this.countProperties();
-  }
-
-  get assetID() {
-    return <string>this.getProperty('assetID');
-  }
-
-  get created() {
-    return dateGetter.call(this, 'created');
-  }
-
-  get modified() {
-    return dateGetter.call(this, 'modified');
-  }
-
-  get file() {
-    return <any>this.getProperty('file');
-  }
-
-  get fileVariants() {
-    return <Array<any>>this.getProperty('fileVariants');
-  }
-
-  get thumbnails() {
-    return <Array<any>>this.getProperty('thumbnails');
-  }
-
-  get tags() {
-    return <Array<string>>this.getProperty('tags');
-  }
-
-  set tags(value: Array<string>) {
-    this.setProperty('tags', value);
-  }
-
-  get title() {
-    return <string>this.getProperty('title');
-  }
-
-  set title(value: string) {
-    this.setProperty('title', value);
-  }
-
-  get caption() {
-    return <string>this.getProperty('caption');
-  }
-
-  set caption(value: string) {
-    this.setProperty('caption', value);
-  }
-
-  get type() {
-    return <string>this.getProperty('type');
-  }
-
-  get mimetype() {
-    return <string>this.getProperty('mimetype');
-  }
-
-  get creator() {
-    return <string>this.getProperty('creator');
-  }
-
-  get creatorType() {
-    return <string>this.getProperty('creatorType');
-  }
-
-  get isUsed() {
-    return <Boolean>this.getProperty('isUsed');
-  }
-
-  get duplicates() {
-    return <number>this.getProperty('duplicates');
   }
 
   /**
@@ -178,3 +176,5 @@ export default class DMAssetResource extends Resource {
     return this.file;
   }
 }
+
+export default DMAssetResource;

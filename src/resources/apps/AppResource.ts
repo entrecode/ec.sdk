@@ -16,6 +16,14 @@ const relationsSymbol = Symbol.for('relations');
 validator.setLoggingFunction(() => {
 });
 
+interface AppResource {
+  appID: string,
+  created: Date,
+  hexColor: string,
+  shortID: string,
+  title: string,
+}
+
 /**
  * AppResource class
  *
@@ -27,7 +35,7 @@ validator.setLoggingFunction(() => {
  * @prop {string} title - title
  * @prop {string} hexColor - color for frontend usage
  */
-export default class AppResource extends Resource {
+class AppResource extends Resource {
   /**
    * Creates a new {@link AppResource}.
    *
@@ -75,35 +83,26 @@ export default class AppResource extends Resource {
       },
     };
 
+    Object.defineProperties(this, {
+      appID: {
+        get: () => <string>this.getProperty('appID'),
+      },
+      created: {
+        get: () => new Date(this.getProperty('created')),
+      },
+      hexColor: {
+        get: () => <string>this.getProperty('hexColor'),
+        set: (value: string) => this.setProperty('hexColor', value),
+      },
+      shortID: {
+        get: () => <string>this.getProperty('shortID'),
+      },
+      title: {
+        get: () => <string>this.getProperty('title'),
+        set: (value: string) => this.setProperty('title', value),
+      },
+    });
     this.countProperties();
-  }
-
-  get appID() {
-    return <string>this.getProperty('appID')
-  }
-
-  get created() {
-    return new Date(this.getProperty('created'))
-  }
-
-  get hexColor() {
-    return <string>this.getProperty('hexColor')
-  }
-
-  set hexColor(value: string) {
-    this.setProperty('hexColor', value);
-  }
-
-  get shortID() {
-    return <string>this.getProperty('shortID')
-  }
-
-  get title() {
-    return <string>this.getProperty('title')
-  }
-
-  set title(value: string) {
-    this.setProperty('title', value);
   }
 
   /**
@@ -301,3 +300,5 @@ export default class AppResource extends Resource {
     return <Promise<TargetList>>this.resourceList('target', options);
   }
 }
+
+export default AppResource;

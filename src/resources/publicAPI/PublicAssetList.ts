@@ -6,8 +6,8 @@ import { get, optionsToQuery } from '../../helper';
 import { environment } from '../../Core';
 
 const environmentSymbol = Symbol.for('environment');
-const resourceSymbol = Symbol.for('resource');
 const dataManagerIDSymbol = Symbol('_dataManagerID');
+
 /**
  * PublicAsset list class
  *

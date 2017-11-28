@@ -18,6 +18,9 @@ traverson.registerMediaType(HalAdapter.mediaType, HalAdapter);
 validator.setLoggingFunction(() => {
 });
 
+interface Resource {
+}
+
 /**
  * Generic resource class. Represents {@link https://tools.ietf.org/html/draft-kelly-json-hal-08
  * HAL resources}.
@@ -27,7 +30,7 @@ validator.setLoggingFunction(() => {
  *
  * @prop {boolean}  isDirty   - Whether or not this Resource was modified
  */
-export default class Resource {
+class Resource {
   /**
    * Creates a new {@link Resource}.
    *
@@ -453,3 +456,5 @@ export default class Resource {
     .then(() => true);
   }
 }
+
+export default Resource;

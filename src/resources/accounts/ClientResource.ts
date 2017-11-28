@@ -15,6 +15,12 @@ export type config = {
   disableStrategies: Array<'facebook' | 'google' | 'password'>,
 }
 
+interface ClientResource {
+  callbackURL: string,
+  clientID: string,
+  config: config,
+}
+
 /**
  * ClientResource class
  *
@@ -24,7 +30,7 @@ export type config = {
  * @prop {string} callbackURL   - callback URL
  * @prop {config} config        - The config
  */
-export default class ClientResource extends Resource {
+class ClientResource extends Resource {
   /**
    * Creates a new {@link ClientResource}.
    *
@@ -36,26 +42,21 @@ export default class ClientResource extends Resource {
    */
   constructor(resource: any, environment: environment, traversal?: any) {
     super(resource, environment, traversal);
+    Object.defineProperties(this, {
+      callbackURL: {
+        get: () => <string>this.getProperty('callbackURL'),
+        set: (value: string) => this.setProperty('callbackURL', value),
+      },
+      clientID: {
+        get: () => <string>this.getProperty('clientID'),
+      },
+      config: {
+        get: () => <config>this.getProperty('config'),
+        set: (value: config) => this.setProperty('config', value),
+      },
+    });
     this.countProperties();
   }
-
-  get callbackURL() {
-    return <string>this.getProperty('callbackURL');
-  }
-
-  set callbackURL(value: string) {
-    this.setProperty('callbackURL', value);
-  }
-
-  get clientID() {
-    return <string>this.getProperty('clientID');
-  }
-
-  get config() {
-    return <config>this.getProperty('config');
-  }
-
-  set config(value: config) {
-    this.setProperty('config', value);
-  }
 }
+
+export default ClientResource;

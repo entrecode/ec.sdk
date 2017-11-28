@@ -1,6 +1,15 @@
 import Resource from '../Resource';
 import { environment } from '../../Core';
 
+interface RoleResource {
+  accounts: Array<string>,
+  addRegistered: boolean,
+  addUnregistered: boolean,
+  label: string,
+  name: string,
+  roleID: string,
+}
+
 /**
  * Role resource class
  *
@@ -13,7 +22,7 @@ import { environment } from '../../Core';
  * @prop {boolean} addRegistered - Whether or not to add registered users to this role
  * @prop {array<string>} accounts - array of accountIDs associated to this role
  */
-export default class RoleResource extends Resource {
+class RoleResource extends Resource {
   /**
    * Creates a new {@link RoleResource}.
    *
@@ -25,50 +34,33 @@ export default class RoleResource extends Resource {
    */
   constructor(resource: any, environment: environment, traversal?: any) {
     super(resource, environment, traversal);
+    Object.defineProperties(this, {
+      accounts: {
+        get: () => <Array<string>>this.getProperty('accounts'),
+        set: (value: Array<string>) => this.setProperty('accounts', value),
+      },
+      addRegistered: {
+        get: () => <boolean>this.getProperty('addRegistered'),
+        set: (value: boolean) => this.setProperty('addRegistered', value),
+      },
+      addUnregistered: {
+        get: () => <boolean>this.getProperty('addUnregistered'),
+        set: (value: boolean) => this.setProperty('addUnregistered', value),
+      },
+      label: {
+        get: () => <string>this.getProperty('label'),
+        set: (value: string) => this.setProperty('label', value),
+      },
+      name: {
+        get: () => <string>this.getProperty('name'),
+        set: (value: string) => this.setProperty('name', value),
+      },
+      roleID: {
+        get: () => <string>this.getProperty('roleID'),
+      }
+    });
     this.countProperties();
   }
-
-  get accounts() {
-    return <Array<string>>this.getProperty('accounts')
-  }
-
-  set accounts(value: Array<string>) {
-    this.setProperty('accounts', value);
-  }
-
-  get addRegistered() {
-    return <boolean>this.getProperty('addRegistered');
-  }
-
-  set addRegistered(value: boolean) {
-    this.setProperty('addRegistered', value);
-  }
-
-  get addUnregistered() {
-    return <boolean>this.getProperty('addUnregistered')
-  }
-
-  set addUnregistered(value: boolean) {
-    this.setProperty('addUnregistered', value);
-  }
-
-  get label() {
-    return <string>this.getProperty('label');
-  }
-
-  set label(value: string) {
-    this.setProperty('label', value);
-  }
-
-  get name() {
-    return <string>this.getProperty('name');
-  }
-
-  set name(value: string) {
-    this.setProperty('name', value);
-  }
-
-  get roleID() {
-    return <string>this.getProperty('roleID');
-  }
 }
+
+export default RoleResource;

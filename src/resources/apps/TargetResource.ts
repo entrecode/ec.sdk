@@ -1,6 +1,12 @@
 import Resource from '../Resource';
 import { environment } from '../../Core';
 
+interface TargetResource {
+  config: any,
+  targetID: string,
+  targetType: string,
+}
+
 /**
  * TargetResource class
  *
@@ -10,7 +16,7 @@ import { environment } from '../../Core';
  * @prop {any} config - additional config, see schema for format
  * @prop {string} targetType - target type
  */
-export default class TargetResource extends Resource {
+class TargetResource extends Resource {
   /**
    * Creates a new {@link TargetResource}.
    *
@@ -22,26 +28,21 @@ export default class TargetResource extends Resource {
    */
   constructor(resource: any, environment: environment, traversal?: any) {
     super(resource, environment, traversal);
+    Object.defineProperties(this, {
+      config: {
+        get: () => this.getProperty('config'),
+        set: (value: any) => this.setProperty('config', value),
+      },
+      targetID: {
+        get: () => <string>this.getProperty('targetID'),
+      },
+      targetType: {
+        get: () => <string>this.getProperty('targetType'),
+        set: (value: string) => this.setProperty('targetType', value),
+      },
+    });
     this.countProperties();
   }
-
-  get config() {
-    return this.getProperty('config');
-  }
-
-  set config(value) {
-    this.setProperty('config', value);
-  }
-
-  get targetID() {
-    return <string>this.getProperty('targetID');
-  }
-
-  get targetType() {
-    return <string>this.getProperty('targetType');
-  }
-
-  set targetType(value: string) {
-    this.setProperty('targetType', value);
-  }
 }
+
+export default TargetResource;

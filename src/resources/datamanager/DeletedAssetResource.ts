@@ -4,6 +4,15 @@ import { environment } from '../../Core';
 
 const environmentSymbol = Symbol.for('environment');
 
+interface DeletedAssetResource {
+  assetID: string,
+  created: Date,
+  files: Array<any>,
+  tags: Array<string>,
+  title: string,
+  type: string,
+}
+
 /**
  * DeletedAssetResource class
  *
@@ -16,7 +25,7 @@ const environmentSymbol = Symbol.for('environment');
  * @prop {string}        type    - type of this asset, like image
  * @prop {array<object>} files   - all files associated with this asset
  */
-export default class DeletedAssetResource extends Resource {
+class DeletedAssetResource extends Resource {
   /**
    * Creates a new {@link DeletedAssetResource}.
    *
@@ -28,31 +37,27 @@ export default class DeletedAssetResource extends Resource {
    */
   constructor(resource: any, environment: environment, traversal?: any) {
     super(resource, environment, traversal);
+    Object.defineProperties(this, {
+      assetID: {
+        get: () => <string>this.getProperty('assetID'),
+      },
+      created: {
+        get: () => new Date(this.getProperty('created')),
+      },
+      files: {
+        get: () => <Array<any>>this.getProperty('files'),
+      },
+      tags: {
+        get: () => <Array<string>> this.getProperty('tags'),
+      },
+      title: {
+        get: () => <string>this.getProperty('title'),
+      },
+      type: {
+        get: () => <string>this.getProperty('type'),
+      },
+    });
     this.countProperties();
-  }
-
-  get assetID() {
-    return <string>this.getProperty('assetID');
-  }
-
-  get created() {
-    return new Date(this.getProperty('created'));
-  }
-
-  get files() {
-    return <Array<any>>this.getProperty('files');
-  }
-
-  get tags() {
-    return <Array<string>>this.getProperty('tags');
-  }
-
-  get title() {
-    return <string>this.getProperty('title');
-  }
-
-  get type() {
-    return <string>this.getProperty('type');
   }
 
   /**
@@ -108,3 +113,5 @@ export default class DeletedAssetResource extends Resource {
     return this.del();
   }
 }
+
+export default DeletedAssetResource;

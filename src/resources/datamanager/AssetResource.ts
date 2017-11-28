@@ -2,6 +2,15 @@ import Resource from '../Resource';
 import { fileNegotiate } from '../../helper';
 import { environment } from '../../Core';
 
+interface AssetResource {
+  assetID: string,
+  created: Date,
+  files: Array<any>,
+  tags: Array<string>,
+  title: string,
+  type: string,
+}
+
 /**
  * AssetResource class
  *
@@ -14,7 +23,7 @@ import { environment } from '../../Core';
  * @prop {string}        type    - type of this asset, like image
  * @prop {array<object>} files   - all files associated with this asset
  */
-export default class AssetResource extends Resource {
+class AssetResource extends Resource {
   /**
    * Creates a new {@link AssetResource}.
    *
@@ -26,39 +35,29 @@ export default class AssetResource extends Resource {
    */
   constructor(resource: any, environment: environment, traversal?: any) {
     super(resource, environment, traversal);
+    Object.defineProperties(this, {
+      assetID: {
+        get: () => <string>this.getProperty('assetID'),
+      },
+      created: {
+        get: () => new Date(this.getProperty('created')),
+      },
+      files: {
+        get: () => <Array<any>>this.getProperty('files'),
+      },
+      tags: {
+        get: () => <Array<string>>this.getProperty('tags'),
+        set: (value: Array<string>) => this.setProperty('tags', value),
+      },
+      title: {
+        get: () => <string>this.getProperty('title'),
+        set: (value: string) => this.setProperty('title', value),
+      },
+      type: {
+        get: () => <string>this.getProperty('type'),
+      },
+    });
     this.countProperties();
-  }
-
-  get assetID() {
-    return <string>this.getProperty('assetID');
-  }
-
-  get created() {
-    return new Date(this.getProperty('created'));
-  }
-
-  get files() {
-    return <Array<any>>this.getProperty('files');
-  }
-
-  get tags() {
-    return <Array<string>>this.getProperty('tags');
-  }
-
-  set tags(value: Array<string>) {
-    this.setProperty('tags', value);
-  }
-
-  get title() {
-    return <string>this.getProperty('title');
-  }
-
-  set title(value: string) {
-    this.setProperty('title', value);
-  }
-
-  get type() {
-    return <string>this.getProperty('type');
   }
 
   /**
@@ -124,3 +123,5 @@ export default class AssetResource extends Resource {
     return files[0];
   }
 }
+
+export default AssetResource;

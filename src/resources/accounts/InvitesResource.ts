@@ -1,6 +1,10 @@
 import Resource from '../Resource';
 import { environment } from '../../Core';
 
+interface InvitesResource {
+  invites: Array<string>;
+}
+
 /**
  * Invites Resource. Will contain an {@link Array} containing all unused invites.
  *
@@ -8,7 +12,7 @@ import { environment } from '../../Core';
  *
  * @prop {Array<string>} invites - Array of unused invites
  */
-export default class InvitesResource extends Resource {
+class InvitesResource extends Resource {
   /**
    * Creates a new {@link InvitesResource}.
    *
@@ -20,10 +24,13 @@ export default class InvitesResource extends Resource {
    */
   constructor(resource: any, environment: environment, traversal?: any) {
     super(resource, environment, traversal);
+    Object.defineProperties(this, {
+      invites: {
+        get: () => <Array<string>>this.getProperty('invites'),
+      },
+    });
     this.countProperties();
   }
-
-  get invites() {
-    return <Array<string>>this.getProperty('invites');
-  }
 }
+
+export default InvitesResource;

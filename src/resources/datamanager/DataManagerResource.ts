@@ -29,6 +29,17 @@ const relationsSymbol = Symbol.for('relations');
 validator.setLoggingFunction(() => {
 });
 
+interface DataManagerResource {
+  config: any,
+  created: any,
+  dataManagerID: string,
+  description: string,
+  hexColor: string,
+  locales: Array<string>,
+  shortID: string,
+  title: string,
+}
+
 /**
  * DataManager resource class.
  *
@@ -43,7 +54,7 @@ validator.setLoggingFunction(() => {
  * @prop {string}         shortID         - Shortened {@link DataManager#dataManagerID}
  * @prop {string}         title           - Title of the dataManager
  */
-export default class DataManagerResource extends Resource {
+class DataManagerResource extends Resource {
   /**
    * Creates a new {@link DataManagerResource}.
    *
@@ -107,59 +118,38 @@ export default class DataManagerResource extends Resource {
       },
     };
 
+    Object.defineProperties(this, {
+      config: {
+        get: () => this.getProperty('config'),
+        set: (value: any) => this.setProperty('config', value),
+      },
+      created: {
+        get: () => new Date(this.getProperty('created')),
+      },
+      dataManagerID: {
+        get: () => <string>this.getProperty('dataManagerID'),
+      },
+      description: {
+        get: () => this.getProperty('description'),
+        set: (value: string) => this.setProperty('description', value),
+      },
+      hexColor: {
+        get: () => <string>this.getProperty('hexColor'),
+        set: (value: string) => this.setProperty('hexColor', value),
+      },
+      locales: {
+        get: () => <Array<string>> this.getProperty('locales'),
+        set: (value: string) => this.setProperty('locales', value),
+      },
+      shortID: {
+        get: () => <string>this.getProperty('shortID'),
+      },
+      title: {
+        get: () => <string>this.getProperty('title'),
+        set: (value: string) => this.setProperty('title', value),
+      }
+    });
     this.countProperties();
-  }
-
-  get config() {
-    return this.getProperty('config');
-  }
-
-  set config(value: any) {
-    this.setProperty('config', value);
-  }
-
-  get created() {
-    return new Date(this.getProperty('created'));
-  }
-
-  get dataManagerID() {
-    return <string>this.getProperty('dataManagerID');
-  }
-
-  get description() {
-    return this.getProperty('description')
-  }
-
-  set description(value: string) {
-    this.setProperty('description', value);
-  }
-
-  get hexColor() {
-    return <string>this.getProperty('hexColor');
-  }
-
-  set hexColor(value: string) {
-    this.setProperty('hexColor', value);
-  }
-
-  get locales() {
-    return <Array<string>>this.getProperty('locales');
-  }
-
-  set locales(value: Array<string>) {
-    this.setProperty('locales', value);
-  }
-
-  get shortID() {
-    return <string>this.getProperty('shortID');
-  }
-
-  get title() {
-    return <string>this.getProperty('title');
-  }
-
-  set title(value: string) {
-    this.setProperty('title', value);
   }
 
   /**
@@ -610,6 +600,8 @@ export default class DataManagerResource extends Resource {
     .then(([res]) => new DMStatsList(res, this[environmentSymbol]).getFirstItem());
   }
 }
+
+export default DataManagerResource;
 
 export type assetOptions = {
   fileName?: string | Array<string>,

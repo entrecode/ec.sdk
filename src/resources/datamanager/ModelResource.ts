@@ -4,6 +4,21 @@ import { post } from '../../helper';
 
 const environmentSymbol = Symbol.for('environment');
 
+interface ModelResource {
+  created: Date,
+  description: string,
+  fields: Array<any>,
+  hasEntries: boolean,
+  hexColor: string,
+  hooks: Array<any>,
+  locales: Array<string>,
+  modelID: string,
+  modified: Date,
+  policies: Array<any>,
+  title: string,
+  titleField: string,
+}
+
 /**
  * Model resource class
  *
@@ -22,7 +37,7 @@ const environmentSymbol = Symbol.for('environment');
  * @prop {string}         title         - Model title
  * @prop {string}         titleField    - the field to used as a title for Entries
  */
-export default class ModelResource extends Resource {
+class ModelResource extends Resource {
   /**
    * Creates a new {@link ModelResource}.
    *
@@ -34,87 +49,53 @@ export default class ModelResource extends Resource {
    */
   constructor(resource: any, environment: environment, traversal?: any) {
     super(resource, environment, traversal);
+    Object.defineProperties(this, {
+      created: {
+        get: () => new Date(this.getProperty('created')),
+      },
+      description: {
+        get: () => <string>this.getProperty('description'),
+        set: (value: string) => this.setProperty('description', value),
+      },
+      fields: {
+        get: () => <Array<any>> this.getProperty('fields'),
+        set: (value: Array<any>) => this.setProperty('fields', value)
+      },
+      hasEntries: {
+        get: () => <boolean>this.getProperty('hasEntries'),
+      },
+      hexColor: {
+        get: () => <string>this.getProperty('hexColor'),
+        set: (value: string) => this.setProperty('hexColor', value),
+      },
+      hooks: {
+        get: () => <Array<any>>this.getProperty('hooks'),
+        set: (value: Array<any>) => this.setProperty('hooks', value),
+      },
+      locales: {
+        get: () => <Array<string>>this.getProperty('locales'),
+        set: (value: Array<string>) => this.setProperty('locales', value),
+      },
+      modelID: {
+        get: () => <string>this.getProperty('modelID'),
+      },
+      modified: {
+        get: () => new Date(this.getProperty('modified')),
+      },
+      policies: {
+        get: () => this.getProperty('policies'),
+        set: (value: any) => this.setProperty('policies', value),
+      },
+      title: {
+        get: () => <string>this.getProperty('title'),
+        set: (value: string) => this.setProperty('title', value),
+      },
+      titleField: {
+        get: () => <string>this.getProperty('titleField'),
+        set: (value: string) => this.setProperty('titleField', value),
+      },
+    });
     this.countProperties();
-  }
-
-  get created() {
-    return new Date(this.getProperty('created'))
-  }
-
-  get description() {
-    return <string>this.getProperty('description')
-  }
-
-  set description(value: string) {
-    this.setProperty('description', value);
-  }
-
-  get fields() {
-    return <Array<any>>this.getProperty('fields');
-  }
-
-  set fields(value: Array<string>) {
-    this.setProperty('fields', value);
-  }
-
-  get hasEntries() {
-    return <boolean>this.getProperty('hasEntries');
-  }
-
-  get hexColor() {
-    return <string>this.getProperty('hexColor');
-  }
-
-  set hexColor(value: string) {
-    this.setProperty('hexColor', value);
-  }
-
-  get hooks() {
-    return <Array<any>>this.getProperty('hooks');
-  }
-
-  set hooks(value: Array<any>) {
-    this.setProperty('hooks', value);
-  }
-
-  get locales() {
-    return <Array<string>>this.getProperty('locales');
-  }
-
-  set locales(value: Array<string>) {
-    this.setProperty('locales', value);
-  }
-
-  get modelID() {
-    return <string>this.getProperty('modelID');
-  }
-
-  get modified() {
-    return new Date(this.getProperty('modified'));
-  }
-
-  get policies() {
-    return this.getProperty('policies');
-  }
-
-  set policies(value) {
-    this.setProperty('policies', value);
-  }
-
-  get title() {
-    return <string>this.getProperty('title');
-  }
-
-  set title(value: string) {
-    this.setProperty('title', value);
-  }
-
-  get titleField() {
-    return <string>this.getProperty('titleField');
-  }
-
-  set titleField(value: string) {
-    this.setProperty('titleField', value);
   }
 
   /**
@@ -129,6 +110,8 @@ export default class ModelResource extends Resource {
     .then(([res]) => res);
   }
 }
+
+export default ModelResource;
 
 /**
  * Single hook object.

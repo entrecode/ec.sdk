@@ -21,6 +21,13 @@ const relationsSymbol = Symbol.for('relations');
 
 traverson.registerMediaType(traversonHal.mediaType, traversonHal);
 
+interface PlatformResource {
+  config: any,
+  platformID: string,
+  platformType: string,
+  title: string,
+}
+
 /**
  * PlatformResource class
  *
@@ -31,7 +38,7 @@ traverson.registerMediaType(traversonHal.mediaType, traversonHal);
  * @prop {any} config - additional config, see schema for format
  * @prop {string} platformType - platform type
  */
-export default class PlatformResource extends Resource {
+class PlatformResource extends Resource {
   /**
    * Creates a new {@link PlatformResource}.
    *
@@ -63,35 +70,24 @@ export default class PlatformResource extends Resource {
       },
     };
 
+    Object.defineProperties(this, {
+      config: {
+        get: () => this.getProperty('config'),
+        set: (value: any) => this.setProperty('config', value),
+      },
+      platformID: {
+        get: () => <string>this.getProperty('platformID'),
+      },
+      platformType: {
+        get: () => <string>this.getProperty('platformType'),
+        set: (value: string) => this.setProperty('platformType', value),
+      },
+      title: {
+        get: () => <string>this.getProperty('title'),
+        set: (value: string) => this.setProperty('title', value)
+      }
+    });
     this.countProperties();
-  }
-
-  get config() {
-    return this.getProperty('config');
-  }
-
-  set config(value: any) {
-    this.setProperty('config', value);
-  }
-
-  get platformID() {
-    return <string>this.getProperty('platformID');
-  }
-
-  get platformType() {
-    return <string>this.getProperty('platformType');
-  }
-
-  set platformType(value: string) {
-    this.setProperty('platformType', value);
-  }
-
-  get title() {
-    return <string>this.getProperty('title');
-  }
-
-  set title(value: string) {
-    this.setProperty('title', value);
   }
 
   addTarget(target: string | TargetResource): void {
@@ -363,3 +359,5 @@ export default class PlatformResource extends Resource {
     return targets;
   }
 }
+
+export default PlatformResource;

@@ -1,6 +1,16 @@
 import Resource from '../Resource';
 import { environment } from '../../Core';
 
+interface TokenResource {
+  accessTokenID: string,
+  device: any,
+  ipAddress: string,
+  ipAddressLocation: string,
+  isCurrent: boolean,
+  issued: Date,
+  validUntil: Date,
+}
+
 /**
  * TokenResource class
  *
@@ -15,7 +25,7 @@ import { environment } from '../../Core';
  * @prop {Date}     issued              - The {@link Date} on which this token was issued
  * @prop {Date}     validUntil          - The {@link Date} this token is valid until
  */
-export default class TokenResource extends Resource {
+class TokenResource extends Resource {
   /**
    * Creates a new {@link TokenResource}.
    *
@@ -27,34 +37,31 @@ export default class TokenResource extends Resource {
    */
   constructor(resource: any, environment: environment, traversal?: any) {
     super(resource, environment, traversal);
+    Object.defineProperties(this, {
+      accessTokenID: {
+        get: () => <string>this.getProperty('accessTokenID'),
+      },
+      device: {
+        get: () => this.getProperty('device'),
+      },
+      ipAddress: {
+        get: () => <string>this.getProperty('ipAddress'),
+      },
+      ipAddressLocation: {
+        get: () => <string>this.getProperty('ipAddressLocation'),
+      },
+      isCurrent: {
+        get: () => <boolean>this.getProperty('isCurrent'),
+      },
+      issued: {
+        get: () => new Date(this.getProperty('issued')),
+      },
+      validUntil: {
+        get: () => new Date(this.getProperty('validUntil')),
+      },
+    });
     this.countProperties();
   }
-
-  get accessTokenID() {
-    return <string>this.getProperty('accessTokenID')
-  }
-
-  get device() {
-    return this.getProperty('device')
-  }
-
-  get ipAddress() {
-    return <string>this.getProperty('ipAddress')
-  }
-
-  get ipAddressLocation() {
-    return <string>this.getProperty('ipAddressLocation')
-  }
-
-  get isCurrent() {
-    return <boolean>this.getProperty('isCurrent')
-  }
-
-  get issued() {
-    return new Date(this.getProperty('issued'))
-  }
-
-  get validUntil() {
-    return new Date(this.getProperty('validUntil'))
-  }
 }
+
+export default TokenResource;

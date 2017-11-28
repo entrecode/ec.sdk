@@ -1,6 +1,18 @@
 import Resource from '../Resource';
 import { environment } from '../../Core';
 
+interface DeploymentResource {
+  buildID: string,
+  deploymentID: string,
+  events: Array<any>,
+  finished: Date,
+  platformID: string,
+  results: Array<any>,
+  started: Date,
+  successful: boolean,
+  targetIDs: Array<string>,
+}
+
 /**
  * DeploymentResource class
  *
@@ -8,7 +20,7 @@ import { environment } from '../../Core';
  *
  * @prop {string} deploymentID - the id
  */
-export default class DeploymentResource extends Resource {
+class DeploymentResource extends Resource {
   /**
    * Creates a new {@link DeploymentResource}.
    *
@@ -20,42 +32,39 @@ export default class DeploymentResource extends Resource {
    */
   constructor(resource: any, environment: environment, traversal?: any) {
     super(resource, environment, traversal);
+    Object.defineProperties(this, {
+      buildID: {
+        get: () => this.getProperty('buildID'),
+      },
+      deploymentID: {
+        get: () => <string>this.getProperty('deploymentID'),
+      },
+      events: {
+        get: () => <Array<string>>this.getProperty('events'),
+      },
+      finished: {
+        get: () => new Date(this.getProperty('finished')),
+      },
+      platformID: {
+        get: () => <string>this.getProperty('platformID'),
+      },
+      results: {
+        get: () => <Array<any>>this.getProperty('results'),
+      },
+      started: {
+        get: () => new Date(this.getProperty('started')),
+      },
+      successful: {
+        get: () => <boolean>this.getProperty('successful'),
+      },
+      targetIDs: {
+        get: () => <Array<string>>this.getProperty('targetIDs'),
+      },
+    });
     this.countProperties();
   }
 
-  get buildID() {
-    return this.getProperty('buildID');
-  }
-
-  get deploymentID() {
-    return <string>this.getProperty('deploymentID');
-  }
-
-  get events() {
-    return <Array<string>>this.getProperty('events');
-  }
-
-  get finished() {
-    return new Date(this.getProperty('finished'));
-  }
-
-  get platformID() {
-    return <string>this.getProperty('platformID');
-  }
-
-  get results() {
-    return <Array<any>>this.getProperty('results');
-  }
-
-  get started() {
-    return new Date(this.getProperty('started'));
-  }
-
-  get successful() {
-    return <boolean>this.getProperty('successful');
-  }
-
-  get targetIDs() {
-    return <Array<string>>this.getProperty('targetIDs');
-  }
+  // TODO get events helper, no temp, sorted…
 }
+
+export default DeploymentResource;
