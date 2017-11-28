@@ -1,3 +1,13 @@
+<a name="0.11.5"></a>
+## 0.11.5 (2017-11-28)
+
+* release version 0.11.5 ([55e8509](https://github.com/entrecode/ec.sdk/commit/55e8509))
+* chore: updated release script so include newest changelog in docs ([36636ff](https://github.com/entrecode/ec.sdk/commit/36636ff))
+* feat: initialize PublicAPI with url similar to old sdk CMS-3009 ([0100a72](https://github.com/entrecode/ec.sdk/commit/0100a72))
+* docs: sort parameter for asset neue relations ([5a8d152](https://github.com/entrecode/ec.sdk/commit/5a8d152))
+
+
+
 <a name="0.11.4"></a>
 ## 0.11.4 (2017-11-28)
 
