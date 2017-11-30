@@ -26,6 +26,7 @@ class InvitesResource extends Resource {
     super(resource, environment, traversal);
     Object.defineProperties(this, {
       invites: {
+        enumerable: true,
         get: () => <Array<string>>this.getProperty('invites'),
       },
     });

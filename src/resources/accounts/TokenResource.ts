@@ -39,24 +39,31 @@ class TokenResource extends Resource {
     super(resource, environment, traversal);
     Object.defineProperties(this, {
       accessTokenID: {
+        enumerable: true,
         get: () => <string>this.getProperty('accessTokenID'),
       },
       device: {
+        enumerable: true,
         get: () => this.getProperty('device'),
       },
       ipAddress: {
+        enumerable: true,
         get: () => <string>this.getProperty('ipAddress'),
       },
       ipAddressLocation: {
+        enumerable: true,
         get: () => <string>this.getProperty('ipAddressLocation'),
       },
       isCurrent: {
+        enumerable: true,
         get: () => <boolean>this.getProperty('isCurrent'),
       },
       issued: {
+        enumerable: true,
         get: () => new Date(this.getProperty('issued')),
       },
       validUntil: {
+        enumerable: true,
         get: () => new Date(this.getProperty('validUntil')),
       },
     });

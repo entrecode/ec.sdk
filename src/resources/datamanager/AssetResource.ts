@@ -37,23 +37,29 @@ class AssetResource extends Resource {
     super(resource, environment, traversal);
     Object.defineProperties(this, {
       assetID: {
+        enumerable: true,
         get: () => <string>this.getProperty('assetID'),
       },
       created: {
+        enumerable: true,
         get: () => new Date(this.getProperty('created')),
       },
       files: {
+        enumerable: true,
         get: () => <Array<any>>this.getProperty('files'),
       },
       tags: {
+        enumerable: true,
         get: () => <Array<string>>this.getProperty('tags'),
         set: (value: Array<string>) => this.setProperty('tags', value),
       },
       title: {
+        enumerable: true,
         get: () => <string>this.getProperty('title'),
         set: (value: string) => this.setProperty('title', value),
       },
       type: {
+        enumerable: true,
         get: () => <string>this.getProperty('type'),
       },
     });

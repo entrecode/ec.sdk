@@ -30,13 +30,16 @@ class TargetResource extends Resource {
     super(resource, environment, traversal);
     Object.defineProperties(this, {
       config: {
+        enumerable: true,
         get: () => this.getProperty('config'),
         set: (value: any) => this.setProperty('config', value),
       },
       targetID: {
+        enumerable: true,
         get: () => <string>this.getProperty('targetID'),
       },
       targetType: {
+        enumerable: true,
         get: () => <string>this.getProperty('targetType'),
         set: (value: string) => this.setProperty('targetType', value),
       },

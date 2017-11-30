@@ -28,15 +28,19 @@ class TypesResource extends Resource {
     super(resource, environment, traversal);
     Object.defineProperties(this, {
       codeSourceTypes: {
+        enumerable: true,
         get: () => <Array<string>>this.getProperty('codeSourceTypes'),
       },
       dataSourceTypes: {
+        enumerable: true,
         get: () => <Array<string>>this.getProperty('dataSourceTypes'),
       },
       platformTypes: {
+        enumerable: true,
         get: () => <Array<string>>this.getProperty('platformTypes'),
       },
       targetTypes: {
+        enumerable: true,
         get: () => <Array<string>>this.getProperty('targetTypes'),
       },
     });

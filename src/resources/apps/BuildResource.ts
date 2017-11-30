@@ -31,21 +31,27 @@ class BuildResource extends Resource {
     super(resource, environment, traversal);
     Object.defineProperties(this, {
       buildID: {
+        enumerable: true,
         get: () => <string>this.getProperty('buildID'),
       },
       buildLocation: {
+        enumerable: true,
         get: () => this.getProperty('buildLocation'),
       },
       events: {
+        enumerable: true,
         get: () => <Array<any>>this.getProperty('events'),
       },
       finished: {
+        enumerable: true,
         get: () => new Date(this.getProperty('finished')),
       },
       started: {
+        enumerable: true,
         get: () => new Date(this.getProperty('started')),
       },
       successful: {
+        enumerable: true,
         get: () => <boolean>this.getProperty('successful'),
       },
     });

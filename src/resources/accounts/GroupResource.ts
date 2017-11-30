@@ -30,13 +30,16 @@ class GroupResource extends Resource {
     super(resource, environment, traversal);
     Object.defineProperties(this, {
       groupID: {
+        enumerable: true,
         get: () => <string>this.getProperty('groupID'),
       },
       name: {
+        enumerable: true,
         get: () => <string>this.getProperty('name'),
         set: (value: string) => this.setProperty('name', value),
       },
       permissions: {
+        enumerable: true,
         get: () => <Array<string>> this.getProperty('permissions'),
         set: (value: Array<string>) => this.setProperty('permissions', value),
       },

@@ -46,36 +46,47 @@ class AppStatsResource extends Resource {
     super(resource, environment, traversal);
     Object.defineProperties(this, {
       appID: {
+        enumerable: true,
         get: () => <string>this.getProperty('appID'),
       },
       monthlyBuilds: {
+        enumerable: true,
         get: () => this.getProperty('monthlyBuilds'),
       },
       monthlyDeployments: {
+        enumerable: true,
         get: () => this.getProperty('monthlyDeployments'),
       },
       title: {
+        enumerable: true,
         get: () => <string>this.getProperty('title'),
       },
       totalBuildSize: {
+        enumerable: true,
         get: () => <number>this.getProperty('totalBuildSize'),
       },
       totalBuilds: {
+        enumerable: true,
         get: () => <number>this.getProperty('totalBuilds'),
       },
       totalDeployments: {
+        enumerable: true,
         get: () => <number>this.getProperty('totalDeployments'),
       },
       usedCodeSources: {
+        enumerable: true,
         get: () => <Array<string>>this.getProperty('usedCodeSources'),
       },
       usedDataSources: {
+        enumerable: true,
         get: () => <Array<string>>this.getProperty('usedDataSources'),
       },
       usedPlatforms: {
+        enumerable: true,
         get: () => <Array<string>>this.getProperty('usedPlatforms'),
       },
       usedTargets: {
+        enumerable: true,
         get: () => <Array<string>>this.getProperty('usedTargets'),
       },
     });

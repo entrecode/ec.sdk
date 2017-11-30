@@ -30,13 +30,16 @@ class DataSourceResource extends Resource {
     super(resource, environment, traversal);
     Object.defineProperties(this, {
       config: {
+        enumerable: true,
         get: () => this.getProperty('config'),
         set: (value: any) => this.setProperty('config', value),
       },
       dataSourceID: {
+        enumerable: true,
         get: () => <string>this.getProperty('dataSourceID'),
       },
       dataSourceType: {
+        enumerable: true,
         get: () => <string>this.getProperty('dataSourceType'),
         set: (value: string) => this.setProperty('dataSourceType', value),
       },

@@ -30,15 +30,19 @@ class DMAccountResource extends Resource {
     super(resource, environment, traversal);
     Object.defineProperties(this, {
       accountID: {
+        enumerable: true,
         get: () => <string>this.getProperty('accountID'),
       },
       email: {
+        enumerable: true,
         get: () => <string>this.getProperty('email'),
       },
       hasPassword: {
+        enumerable: true,
         get: () => <boolean>this.getProperty('hasPassword'),
       },
       oauth: {
+        enumerable: true,
         get: () => <Array<any>>this.getProperty('oauth'),
       },
     });

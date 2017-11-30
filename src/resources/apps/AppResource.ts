@@ -85,19 +85,24 @@ class AppResource extends Resource {
 
     Object.defineProperties(this, {
       appID: {
+        enumerable: true,
         get: () => <string>this.getProperty('appID'),
       },
       created: {
+        enumerable: true,
         get: () => new Date(this.getProperty('created')),
       },
       hexColor: {
+        enumerable: true,
         get: () => <string>this.getProperty('hexColor'),
         set: (value: string) => this.setProperty('hexColor', value),
       },
       shortID: {
+        enumerable: true,
         get: () => <string>this.getProperty('shortID'),
       },
       title: {
+        enumerable: true,
         get: () => <string>this.getProperty('title'),
         set: (value: string) => this.setProperty('title', value),
       },

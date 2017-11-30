@@ -36,26 +36,32 @@ class RoleResource extends Resource {
     super(resource, environment, traversal);
     Object.defineProperties(this, {
       accounts: {
+        enumerable: true,
         get: () => <Array<string>>this.getProperty('accounts'),
         set: (value: Array<string>) => this.setProperty('accounts', value),
       },
       addRegistered: {
+        enumerable: true,
         get: () => <boolean>this.getProperty('addRegistered'),
         set: (value: boolean) => this.setProperty('addRegistered', value),
       },
       addUnregistered: {
+        enumerable: true,
         get: () => <boolean>this.getProperty('addUnregistered'),
         set: (value: boolean) => this.setProperty('addUnregistered', value),
       },
       label: {
+        enumerable: true,
         get: () => <string>this.getProperty('label'),
         set: (value: string) => this.setProperty('label', value),
       },
       name: {
+        enumerable: true,
         get: () => <string>this.getProperty('name'),
         set: (value: string) => this.setProperty('name', value),
       },
       roleID: {
+        enumerable: true,
         get: () => <string>this.getProperty('roleID'),
       }
     });

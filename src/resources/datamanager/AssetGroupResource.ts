@@ -39,16 +39,20 @@ class AssetGroupResource extends Resource {
     super(resource, environment, traversal);
     Object.defineProperties(this, {
       assetGroupID: {
+        enumerable: true,
         get: () => <string>this.getProperty('assetGroupID'),
       },
       policies: {
+        enumerable: true,
         get: () => <any>this.getProperty('policies'),
         set: (value: any) => this.setProperty('policies', value),
       },
       public: {
+        enumerable: true,
         get: () => <boolean>this.getProperty('public'),
       },
       settings: {
+        enumerable: true,
         get: () => <any>this.getProperty('settings'),
         set: (value: any) => this.setProperty('settings', value),
       },

@@ -56,53 +56,68 @@ class DMAssetResource extends Resource {
     super(resource, environment, traversal);
     Object.defineProperties(this, {
       assetID: {
+        enumerable: true,
         get: () => <string>this.getProperty('assetID'),
       },
       caption: {
+        enumerable: true,
         get: () => <string>this.getProperty('caption'),
         set: (value: string) => {
           this.setProperty('caption', value);
         },
       },
       created: {
+        enumerable: true,
         get: () => dateGetter.call(this, 'created'),
       },
       creator: {
+        enumerable: true,
         get: () => <string>this.getProperty('creator'),
       },
       creatorType: {
+        enumerable: true,
         get: () => <string>this.getProperty('creatorType'),
       },
       duplicates: {
+        enumerable: true,
         get: () => <number>this.getProperty('duplicates'),
       },
       file: {
+        enumerable: true,
         get: () => <any>this.getProperty('file'),
       },
       fileVariants: {
+        enumerable: true,
         get: () => <Array<any>>this.getProperty('fileVariants'),
       },
       isUsed: {
+        enumerable: true,
         get: () => <Boolean>this.getProperty('isUsed'),
       },
       mimetype: {
+        enumerable: true,
         get: () => <string>this.getProperty('mimetype'),
       },
       modified: {
+        enumerable: true,
         get: () => dateGetter.call(this, 'modified'),
       },
       tags: {
+        enumerable: true,
         get: () => <Array<string>>this.getProperty('tags'),
         set: (value: Array<string>) => this.setProperty('tags', value),
       },
       thumbnails: {
+        enumerable: true,
         get: () => <Array<any>>this.getProperty('thumbnails'),
       },
       title: {
+        enumerable: true,
         get: () => <string>this.getProperty('title'),
         set: (value: string) => this.setProperty('title', value),
       },
       type: {
+        enumerable: true,
         get: () => <string>this.getProperty('type'),
       }
     });

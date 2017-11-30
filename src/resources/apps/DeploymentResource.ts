@@ -34,30 +34,39 @@ class DeploymentResource extends Resource {
     super(resource, environment, traversal);
     Object.defineProperties(this, {
       buildID: {
+        enumerable: true,
         get: () => this.getProperty('buildID'),
       },
       deploymentID: {
+        enumerable: true,
         get: () => <string>this.getProperty('deploymentID'),
       },
       events: {
+        enumerable: true,
         get: () => <Array<string>>this.getProperty('events'),
       },
       finished: {
+        enumerable: true,
         get: () => new Date(this.getProperty('finished')),
       },
       platformID: {
+        enumerable: true,
         get: () => <string>this.getProperty('platformID'),
       },
       results: {
+        enumerable: true,
         get: () => <Array<any>>this.getProperty('results'),
       },
       started: {
+        enumerable: true,
         get: () => new Date(this.getProperty('started')),
       },
       successful: {
+        enumerable: true,
         get: () => <boolean>this.getProperty('successful'),
       },
       targetIDs: {
+        enumerable: true,
         get: () => <Array<string>>this.getProperty('targetIDs'),
       },
     });

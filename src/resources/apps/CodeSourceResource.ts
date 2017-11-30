@@ -30,13 +30,16 @@ class CodeSourceResource extends Resource {
     super(resource, environment, traversal);
     Object.defineProperties(this, {
       config: {
+        enumerable: true,
         get: () => this.getProperty('config'),
         set: (value: any) => this.setProperty('config', value),
       },
       codeSourceID: {
+        enumerable: true,
         get: () => <string>this.getProperty('codeSourceID'),
       },
       codeSourceType: {
+        enumerable: true,
         get: () => <string>this.getProperty('codeSourceType'),
         set: (value: string) => this.setProperty('codeSourceType', value),
       },
