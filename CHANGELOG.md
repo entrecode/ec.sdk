@@ -1,3 +1,11 @@
+<a name="0.12.0"></a>
+# 0.12.0 (2017-11-30)
+
+* release version 0.12.0 ([e2d1fa3](https://github.com/entrecode/ec.sdk/commit/e2d1fa3))
+* feat: ListResource#find and ListResource#filter. CMS-3002 ([3286415](https://github.com/entrecode/ec.sdk/commit/3286415))
+
+
+
 <a name="0.11.5"></a>
 ## 0.11.5 (2017-11-28)
 
