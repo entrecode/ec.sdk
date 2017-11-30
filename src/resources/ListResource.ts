@@ -26,6 +26,58 @@ function map(list: ListResource, iterator: (resource: Resource) => Promise<any> 
   });
 }
 
+function filter(list: ListResource, iterator: (resource: Resource) => Promise<boolean> | boolean, results: Array<Resource> = []) {
+  return list.getAllItems().map(entry =>
+    res =>
+      Promise.resolve()
+      .then(() => iterator(entry))
+      .then((add) => {
+        if (add) {
+          res.push(entry);
+        }
+        return res;
+      }))
+  .reduce((current, next) => current.then(next), Promise.resolve(results))
+  .then((res: Array<Resource>) => {
+    if (!list.hasNextLink()) {
+      return res;
+    }
+    return list.followNextLink()
+    .then(next => filter(next, iterator, res));
+  });
+}
+
+function find(list: ListResource, iterator: (resource: Resource) => Promise<boolean> | boolean) {
+  return list.getAllItems().map(entry =>
+    () =>
+      Promise.resolve()
+      .then(() => iterator(entry))
+      .then((found) => {
+        if (!found) {
+          return false;
+        }
+        return entry;
+      }))
+  .reduce((current, next) => current.then((found) => {
+    if (!found) {
+      return next();
+    }
+    return found;
+  }), Promise.resolve(false))
+  .then((res: Resource | boolean) => {
+    if (res) {
+      return res;
+    }
+
+    if (list.hasNextLink()) {
+      return list.followNextLink()
+      .then(next => find(next, iterator));
+    }
+
+    return undefined;
+  });
+}
+
 interface ListResource {
   count: number;
   items: Array<Resource | any>;
@@ -86,6 +138,47 @@ class ListResource extends Resource {
       enumerable: false,
     });
     this.countProperties();
+  }
+
+  [Symbol.iterator]() {
+    return {
+      next: () => {
+        if (this.index < this.count) {
+          return { value: this.getItem(this.index++), done: false };
+        } else {
+          this.index = 0;
+          return { done: true };
+        }
+      }
+    }
+  };
+
+  /**
+   * The filter() method creates a new array with all elements that pass the test implemented by
+   * the provided function. It will use {@link ListResource#followNextLink}. Keep in mind that
+   * altering the list within the map method is possible but can change the order of the list. E.g.
+   * do not use on lists sorted by modified and update the entries during the process.
+   *
+   * @param {function} iterator function to test each element of the array. Return true to keep the
+   *   element, false otherwise.
+   * @returns {Promise} returns Promise resolving to the new array.
+   */
+  filter(iterator: (resource: Resource) => Promise<boolean> | boolean): Promise<Array<Resource>> {
+    return filter(this, iterator);
+  }
+
+  /**
+   * The find() method returns the first element that passes the test implemented by the provided
+   * function. It will use {@link ListResource#followNextLink}. Keep in mind that altering the list
+   * within the map method is possible but can change the order of the list. E.g. do not use on
+   * lists sorted by modified and update the entries during the process.
+   *
+   * @param {function} iterator function to test each element of the array. Return true to keep the
+   *   element, false otherwise.
+   * @returns {Promise} returns Promise resolving to the new array.
+   */
+  find(iterator: (resource: Resource) => Promise<boolean> | boolean): Promise<Resource | void> {
+    return find(this, iterator);
   }
 
   /**
@@ -204,7 +297,9 @@ class ListResource extends Resource {
 
   /**
    * The map() method creates a new array with the results of calling a provided function on every
-   * item in this list. It will use {@link ListResource#followNextLink}.
+   * item in this list. It will use {@link ListResource#followNextLink}. Keep in mind that altering
+   * the list within the map method is possible but can change the order of the list. E.g. do not
+   * use on lists sorted by modified and update the entries during the process.
    *
    * @param {function} iterator function that produces an element of the new array.
    * @returns {Promise} returns Promise resolving to the new array.
@@ -212,19 +307,6 @@ class ListResource extends Resource {
   map(iterator: (resource: Resource) => Promise<any> | any): Promise<Array<Resource>> {
     return map(this, iterator);
   }
-
-  [Symbol.iterator]() {
-    return {
-      next: () => {
-        if (this.index < this.count) {
-          return { value: this.getItem(this.index++), done: false };
-        } else {
-          this.index = 0;
-          return { done: true };
-        }
-      }
-    }
-  };
 }
 
 /**

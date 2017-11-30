@@ -12,7 +12,7 @@ const resolver = require('./mocks/resolver');
 const Resource = require('../lib/resources/Resource').default;
 const ListResource = require('../lib/resources/ListResource').default;
 
-chai.should();
+const should = chai.should();
 chai.use(sinonChai);
 chai.use(chaiAsPromised);
 nock.disableNetConnect();
@@ -188,6 +188,80 @@ describe('ListResource', () => {
     .then((result) => {
       result.should.be.an('array');
       result.length.should.be.equal(4);
+    });
+  });
+  it('should filter entries, sync iterator', function () {
+    nock('https://datamanager.entrecode.de')
+    .get('/?title~=test&size=2')
+    .replyWithFile(200, `${__dirname}/mocks/dm-list.json`, { 'Content-Type': 'application/json' })
+    .get('/?title~=test&size=2&page=2')
+    .replyWithFile(200, `${__dirname}/mocks/dm-list-page.json`, { 'Content-Type': 'application/json' });
+
+    return list.filter(dm => [
+      '7e2fd960-b8ab-419f-8c8f-90da12b2a9d0',
+      '768823d9-e015-4452-b8f3-6061133c5775']
+    .includes(dm.getProperty('dataManagerID')))
+    .then((result) => {
+      result.should.be.an('array');
+      result.length.should.be.equal(2);
+      result[0].should.be.instanceOf(Resource);
+      result[1].should.be.instanceOf(Resource);
+    });
+  });
+  it('should filter entries, promise iterator', function () {
+    nock('https://datamanager.entrecode.de')
+    .get('/?title~=test&size=2')
+    .replyWithFile(200, `${__dirname}/mocks/dm-list.json`, { 'Content-Type': 'application/json' })
+    .get('/?title~=test&size=2&page=2')
+    .replyWithFile(200, `${__dirname}/mocks/dm-list-page.json`, { 'Content-Type': 'application/json' });
+
+    return list.filter(dm => Promise.resolve([
+      '7e2fd960-b8ab-419f-8c8f-90da12b2a9d0',
+      '768823d9-e015-4452-b8f3-6061133c5775']
+    .includes(dm.getProperty('dataManagerID'))))
+    .then((result) => {
+      result.should.be.an('array');
+      result.length.should.be.equal(2);
+      result[0].should.be.instanceOf(Resource);
+      result[1].should.be.instanceOf(Resource);
+    });
+  });
+  it('should find entry, sync iterator', function () {
+    nock('https://datamanager.entrecode.de')
+    .get('/?title~=test&size=2')
+    .replyWithFile(200, `${__dirname}/mocks/dm-list.json`, { 'Content-Type': 'application/json' })
+    .get('/?title~=test&size=2&page=2')
+    .replyWithFile(200, `${__dirname}/mocks/dm-list-page.json`, { 'Content-Type': 'application/json' });
+
+    return list.find(dm => '58b9a1f5' === dm.getProperty('shortID'))
+    .then((result) => {
+      result.should.be.instanceOf(Resource);
+      result.getProperty('shortID').should.be.equal('58b9a1f5');
+    });
+  });
+  it('should find entry, promise iterator', function () {
+    nock('https://datamanager.entrecode.de')
+    .get('/?title~=test&size=2')
+    .replyWithFile(200, `${__dirname}/mocks/dm-list.json`, { 'Content-Type': 'application/json' })
+    .get('/?title~=test&size=2&page=2')
+    .replyWithFile(200, `${__dirname}/mocks/dm-list-page.json`, { 'Content-Type': 'application/json' });
+
+    return list.find(dm => Promise.resolve('aa3b242e' === dm.getProperty('shortID')))
+    .then((result) => {
+      result.should.be.instanceOf(Resource);
+      result.getProperty('shortID').should.be.equal('aa3b242e');
+    });
+  });
+  it('should not find entry, promise iterator', function () {
+    nock('https://datamanager.entrecode.de')
+    .get('/?title~=test&size=2')
+    .replyWithFile(200, `${__dirname}/mocks/dm-list.json`, { 'Content-Type': 'application/json' })
+    .get('/?title~=test&size=2&page=2')
+    .replyWithFile(200, `${__dirname}/mocks/dm-list-page.json`, { 'Content-Type': 'application/json' });
+
+    return list.find(dm => Promise.resolve('NOOOOOOOO' === dm.getProperty('shortID')))
+    .then((result) => {
+      should.equal(result, undefined);
     });
   });
   it('should implement iterator, spread operator', () => {
