@@ -72,17 +72,21 @@ class PlatformResource extends Resource {
 
     Object.defineProperties(this, {
       config: {
+        enumerable: true,
         get: () => this.getProperty('config'),
         set: (value: any) => this.setProperty('config', value),
       },
       platformID: {
+        enumerable: true,
         get: () => <string>this.getProperty('platformID'),
       },
       platformType: {
+        enumerable: true,
         get: () => <string>this.getProperty('platformType'),
         set: (value: string) => this.setProperty('platformType', value),
       },
       title: {
+        enumerable: true,
         get: () => <string>this.getProperty('title'),
         set: (value: string) => this.setProperty('title', value)
       }

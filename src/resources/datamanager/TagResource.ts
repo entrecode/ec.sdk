@@ -28,9 +28,11 @@ class TagResource extends Resource {
     super(resource, environment, traversal);
     Object.defineProperties(this, {
       count: {
+        enumerable: true,
         get: () => <number>this.getProperty('count'),
       },
       tag: {
+        enumerable: true,
         get: () => <string>this.getProperty('tag'),
         set: (val: string) => this.setProperty('tag', val),
       },

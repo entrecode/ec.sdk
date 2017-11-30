@@ -31,9 +31,11 @@ class InvalidPermissionsResource extends Resource {
 
     Object.defineProperties(this, {
       invalidAccountPermissions: {
+        enumerable: true,
         get: () => this.getProperty('invalidAccountPermissions'),
       },
       invalidGroupPermissions: {
+        enumerable: true,
         get: () => this.getProperty('invalidGroupPermissions'),
       },
     });

@@ -120,31 +120,39 @@ class DataManagerResource extends Resource {
 
     Object.defineProperties(this, {
       config: {
+        enumerable: true,
         get: () => this.getProperty('config'),
         set: (value: any) => this.setProperty('config', value),
       },
       created: {
+        enumerable: true,
         get: () => new Date(this.getProperty('created')),
       },
       dataManagerID: {
+        enumerable: true,
         get: () => <string>this.getProperty('dataManagerID'),
       },
       description: {
+        enumerable: true,
         get: () => this.getProperty('description'),
         set: (value: string) => this.setProperty('description', value),
       },
       hexColor: {
+        enumerable: true,
         get: () => <string>this.getProperty('hexColor'),
         set: (value: string) => this.setProperty('hexColor', value),
       },
       locales: {
+        enumerable: true,
         get: () => <Array<string>> this.getProperty('locales'),
         set: (value: string) => this.setProperty('locales', value),
       },
       shortID: {
+        enumerable: true,
         get: () => <string>this.getProperty('shortID'),
       },
       title: {
+        enumerable: true,
         get: () => <string>this.getProperty('title'),
         set: (value: string) => this.setProperty('title', value),
       }

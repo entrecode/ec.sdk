@@ -51,46 +51,58 @@ class ModelResource extends Resource {
     super(resource, environment, traversal);
     Object.defineProperties(this, {
       created: {
+        enumerable: true,
         get: () => new Date(this.getProperty('created')),
       },
       description: {
+        enumerable: true,
         get: () => <string>this.getProperty('description'),
         set: (value: string) => this.setProperty('description', value),
       },
       fields: {
+        enumerable: true,
         get: () => <Array<any>> this.getProperty('fields'),
         set: (value: Array<any>) => this.setProperty('fields', value)
       },
       hasEntries: {
+        enumerable: true,
         get: () => <boolean>this.getProperty('hasEntries'),
       },
       hexColor: {
+        enumerable: true,
         get: () => <string>this.getProperty('hexColor'),
         set: (value: string) => this.setProperty('hexColor', value),
       },
       hooks: {
+        enumerable: true,
         get: () => <Array<any>>this.getProperty('hooks'),
         set: (value: Array<any>) => this.setProperty('hooks', value),
       },
       locales: {
+        enumerable: true,
         get: () => <Array<string>>this.getProperty('locales'),
         set: (value: Array<string>) => this.setProperty('locales', value),
       },
       modelID: {
+        enumerable: true,
         get: () => <string>this.getProperty('modelID'),
       },
       modified: {
+        enumerable: true,
         get: () => new Date(this.getProperty('modified')),
       },
       policies: {
+        enumerable: true,
         get: () => this.getProperty('policies'),
         set: (value: any) => this.setProperty('policies', value),
       },
       title: {
+        enumerable: true,
         get: () => <string>this.getProperty('title'),
         set: (value: string) => this.setProperty('title', value),
       },
       titleField: {
+        enumerable: true,
         get: () => <string>this.getProperty('titleField'),
         set: (value: string) => this.setProperty('titleField', value),
       },

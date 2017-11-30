@@ -1,3 +1,11 @@
+<a name="0.12.1"></a>
+## 0.12.1 (2017-11-30)
+
+* release version 0.12.1 ([debe2d5](https://github.com/entrecode/ec.sdk/commit/debe2d5))
+* fix: enumerable all the things ([0edd58b](https://github.com/entrecode/ec.sdk/commit/0edd58b))
+
+
+
 <a name="0.12.0"></a>
 # 0.12.0 (2017-11-30)
 

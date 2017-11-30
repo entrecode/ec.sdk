@@ -44,13 +44,16 @@ class ClientResource extends Resource {
     super(resource, environment, traversal);
     Object.defineProperties(this, {
       callbackURL: {
+        enumerable: true,
         get: () => <string>this.getProperty('callbackURL'),
         set: (value: string) => this.setProperty('callbackURL', value),
       },
       clientID: {
+        enumerable: true,
         get: () => <string>this.getProperty('clientID'),
       },
       config: {
+        enumerable: true,
         get: () => <config>this.getProperty('config'),
         set: (value: config) => this.setProperty('config', value),
       },

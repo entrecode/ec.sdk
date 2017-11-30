@@ -39,21 +39,27 @@ class DeletedAssetResource extends Resource {
     super(resource, environment, traversal);
     Object.defineProperties(this, {
       assetID: {
+        enumerable: true,
         get: () => <string>this.getProperty('assetID'),
       },
       created: {
+        enumerable: true,
         get: () => new Date(this.getProperty('created')),
       },
       files: {
+        enumerable: true,
         get: () => <Array<any>>this.getProperty('files'),
       },
       tags: {
+        enumerable: true,
         get: () => <Array<string>> this.getProperty('tags'),
       },
       title: {
+        enumerable: true,
         get: () => <string>this.getProperty('title'),
       },
       type: {
+        enumerable: true,
         get: () => <string>this.getProperty('type'),
       },
     });

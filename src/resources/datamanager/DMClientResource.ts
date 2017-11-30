@@ -34,17 +34,21 @@ class DMClientResource extends Resource {
     super(resource, environment, traversal);
     Object.defineProperties(this, {
       callbackURL: {
+        enumerable: true,
         get: () => <string>this.getProperty('callbackURL'),
         set: (value: string) => this.setProperty('callbackURL', value),
       },
       clientID: {
+        enumerable: true,
         get: () => <string>this.getProperty('clientID'),
       },
       disableStrategies: {
+        enumerable: true,
         get: () => <Array<string>> this.getProperty('disableStrategies'),
         set: (value: Array<string>) => this.setProperty('disableStrategies', value)
       },
       hexColor: {
+        enumerable: true,
         get: () => <string>this.getProperty('hexColor'),
         set: (value: string) => this.setProperty('hexColor', value),
       },
