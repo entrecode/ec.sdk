@@ -302,13 +302,16 @@ class PlatformResource extends Resource {
   loadTargets(): Promise<TargetList> {
     return Promise.resolve()
     .then(() => {
+      const qs: any = {};
+      const targetIDs = this.getLinks('ec:app/target')
+      .map((l: any) => querystring.parse(l.href.split('?')[1]).targetID);
+      if (targetIDs.length === 1) {
+        targetIDs.push(targetIDs[0]);
+      }
+      qs.targetID = targetIDs.join(',');
+
       const link = this.getLink('ec:app/target');
       const split = link.href.split('?');
-      const qs = querystring.parse(split[1]);
-      qs.targetID = this.getLinks('ec:app/target')
-      .map((l: any) => querystring.parse(l.href.split('?')[1]).targetID)
-      .join(',');
-
       return get(this[environmentSymbol], traverson.from(`${split[0]}?${querystring.stringify(qs)}`).jsonHal());
     })
     .then(([res, traversal]) => new TargetList(res, this[environmentSymbol], traversal));
