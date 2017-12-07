@@ -72,7 +72,7 @@ describe('DataManager class', () => {
     });
   });
   it('should be rejected on list only with dataManagerID', () => {
-    return new DataManager('live').dataManagerList({ dataManagerID: 'id' })
+    return new DataManager('live').dataManagerList({ datamanagerid: 'id' })
     .should.be.rejectedWith('Providing only an id in ResourceList filter will result in single resource response.');
   });
   it('should return resource on get', () => {

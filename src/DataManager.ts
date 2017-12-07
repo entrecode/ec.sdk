@@ -40,7 +40,7 @@ export default class DataManager extends Core {
         relation: 'ec:datamanagers/options',
         createRelation: 'ec:datamanager/by-id',
         createTemplateModifier: '-template',
-        id: 'dataManagerID',
+        id: 'datamanagerid',
         ResourceClass: DataManagerResource,
         ListClass: DataManagerList,
       },
