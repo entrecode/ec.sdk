@@ -149,6 +149,24 @@ describe('Entry Resource', () => {
   it('should get _creator', () => {
     should.equal(resource._creator, null)
   });
+  it('should not include missing fields in original, CMS-2994', function () {
+    const strippedResourceJson = JSON.parse(JSON.stringify(resourceJson));
+    delete strippedResourceJson.decimal;
+    delete strippedResourceJson.email;
+    delete strippedResourceJson.json;
+    return EntryResource.createEntry(strippedResourceJson)
+    .then((res) => {
+      res.should.have.property('boolean', true);
+      res.should.have.property('decimal', undefined);
+      res.should.have.property('email', undefined);
+      res.should.have.property('json', undefined);
+      const original = res.toOriginal();
+      original.should.have.property('boolean', true);
+      original.should.not.have.property('decimal');
+      original.should.not.have.property('email');
+      original.should.not.have.property('json');
+    });
+  });
 
   it('should get _entryTitle', () => {
     resource._entryTitle.should.be.equal('B17u3r5lx-');
