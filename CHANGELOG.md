@@ -1,3 +1,14 @@
+<a name="0.12.2"></a>
+## 0.12.2 (2017-12-08)
+
+* release version 0.12.2 ([f4d5ae3](https://github.com/entrecode/ec.sdk/commit/f4d5ae3))
+* fix: create Entry with EntryResources (call .toOriginal()) CMS-3006 ([db7cc75](https://github.com/entrecode/ec.sdk/commit/db7cc75))
+* fix: DataManager#dataManager fix camel case of id CMS-3013 ([8158661](https://github.com/entrecode/ec.sdk/commit/8158661))
+* fix: use list-buster to create a list in PlatformResource#loadTargets() CMS-3018 ([58159b7](https://github.com/entrecode/ec.sdk/commit/58159b7))
+* test: test for fields vs. unique vs. save bug, cannot reproduce :-( CMS-2994 ([292c07b](https://github.com/entrecode/ec.sdk/commit/292c07b))
+
+
+
 <a name="0.12.1"></a>
 ## 0.12.1 (2017-11-30)
 
