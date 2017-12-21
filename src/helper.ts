@@ -521,7 +521,7 @@ export function optionsToQuery(options: filterOptions, templateURL: string): any
 
   if (templateURL) {
     const results = templateURL.match(/{[^}]*}/g)
-    .map(result => /^[{?&]+([^}]+)}$/.exec(result)[1].split(','))
+    .map(result => /^{[?&]([^}]+)}$/.exec(result)[1].split(','))
     .reduce((a, b) => a.concat(b), []);
 
     const missings = Object.keys(out).filter(k => results.indexOf(k) === -1); // TODO was
