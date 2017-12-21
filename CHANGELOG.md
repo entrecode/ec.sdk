@@ -1,3 +1,12 @@
+<a name="0.12.3"></a>
+## 0.12.3 (2017-12-21)
+
+* release version 0.12.3 ([eab54b5](https://github.com/entrecode/ec.sdk/commit/eab54b5))
+* refactor: dataManagerID in DataManager API Connector ([f585af7](https://github.com/entrecode/ec.sdk/commit/f585af7))
+* refactor: improved regex for validating query params from template ([516ac57](https://github.com/entrecode/ec.sdk/commit/516ac57))
+
+
+
 <a name="0.12.2"></a>
 ## 0.12.2 (2017-12-08)
 
