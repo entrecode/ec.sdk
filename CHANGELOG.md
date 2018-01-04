@@ -1,3 +1,11 @@
+<a name="0.12.4"></a>
+## 0.12.4 (2018-01-04)
+
+* release version 0.12.4 ([a834a40](https://github.com/entrecode/ec.sdk/commit/a834a40))
+* fix: handle 204 creation on entries and assets neue CMS-3030 ([22f4c0c](https://github.com/entrecode/ec.sdk/commit/22f4c0c))
+
+
+
 <a name="0.12.3"></a>
 ## 0.12.3 (2017-12-21)
 
