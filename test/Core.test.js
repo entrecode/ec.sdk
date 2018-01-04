@@ -465,6 +465,12 @@ describe('Network Helper', () => {
 
       return helper.post('live', traversal).should.be.eventually.be.fulfilled;
     });
+    it('should be resolved, 204', () => {
+      nock('https://entrecode.de')
+      .post('/').reply(204);
+
+      return helper.post('live', traversal).should.be.eventually.be.fulfilled;
+    });
     it('should be rejected', () => {
       nock('https://entrecode.de')
       .post('/').reply(404, {

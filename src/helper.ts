@@ -35,6 +35,10 @@ function jsonHandler(callback) {
     }
 
     if (res.statusCode >= 200 && res.statusCode < 300) {
+      if (res.statusCode === 204) {
+        return callback(null, []);
+      }
+
       return callback(null, [res.body ? JSON.parse(res.body) : {}, traversal]);
     }
 

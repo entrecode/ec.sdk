@@ -12,14 +12,7 @@ import PublicAssetList from './resources/publicAPI/PublicAssetList';
 import PublicAssetResource from './resources/publicAPI/PublicAssetResource';
 import { filterOptions } from './resources/ListResource';
 import {
-  get,
-  getEmpty,
-  getSchema,
-  getUrl,
-  optionsToQuery,
-  post,
-  postEmpty,
-  superagentFormPost,
+  get, getEmpty, getSchema, getUrl, optionsToQuery, post, postEmpty, superagentFormPost,
   superagentPost
 } from './helper';
 import DMAssetResource from './resources/publicAPI/DMAssetResource';
@@ -477,7 +470,7 @@ export default class PublicAPI extends Core {
    * @returns {Promise<function<Promise<DMAssetList>>>}  Promise resolving to a Promise
    *   factory which then resolves to the newly created assets as DMAssetList
    */
-  createDMAssets(assetGroupID: string, input: any, options: any = {}): Promise<DMAssetList> {
+  createDMAssets(assetGroupID: string, input: any, options: any = {}): Promise<DMAssetList | void> {
     return Promise.resolve()
     .then(() => {
       if (!assetGroupID) {
@@ -534,6 +527,9 @@ export default class PublicAPI extends Core {
       return superagentPost(this[environmentSymbol], request);
     })
     .then(([response, traversal]) => {
+      if (!response || Object.keys(response).length === 0) {
+        return undefined;
+      }
       return new DMAssetList(response, this[environmentSymbol], traversal);
     });
   }
@@ -546,7 +542,7 @@ export default class PublicAPI extends Core {
    * @param {number} levels levels parameter to have them returned
    * @returns {Promise<EntryResource>} the newly created EntryResource
    */
-  createEntry(model: string, entry: any, levels?: number): Promise<EntryResource> {
+  createEntry(model: string, entry: any, levels?: number): Promise<EntryResource | void> {
     let e;
     return Promise.resolve()
     .then(() => {
@@ -578,7 +574,12 @@ export default class PublicAPI extends Core {
       }
       return post(this[environmentSymbol], request, e)
     })
-    .then(([res, traversal]) => createEntry(res, this[environmentSymbol], traversal));
+    .then(([res, traversal]) => {
+      if (!res || Object.keys(res).length === 0) {
+        return undefined;
+      }
+      return createEntry(res, this[environmentSymbol], traversal)
+    });
   }
 
   /**

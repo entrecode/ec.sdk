@@ -27,7 +27,7 @@ const environmentSymbol = Symbol.for('environment');
 const resourceSymbol = Symbol.for('resource');
 const tokenStoreSymbol = Symbol.for('tokenStore');
 
-chai.should();
+const should = chai.should();
 chai.use(chaiAsPromised);
 chai.use(sinonChai);
 nock.disableNetConnect();
@@ -545,6 +545,43 @@ describe('PublicAPI', () => {
     })
     .then((entry) => {
       entry.should.be.instanceOf(EntryResource);
+      getStub.restore();
+      postStub.restore();
+    })
+    .catch((err) => {
+      getStub.restore();
+      postStub.restore();
+      throw err;
+    });
+  });
+  it('should create entry', () => {
+    const getStub = sinon.stub(helper, 'get');
+    getStub.returns(resolver('public-dm-root.json'));
+    const postStub = sinon.stub(helper, 'post');
+    postStub.returns([]);
+
+    return api.createEntry('allFields', {
+      text: 'hehe',
+      formattedText: 'hehe',
+      number: 1,
+      decimal: 1.1,
+      boolean: true,
+      datetime: new Date().toISOString(),
+      location: {
+        latitude: 0,
+        longitude: 0,
+      },
+      email: 'someone@anything.com',
+      url: 'https://anything.com',
+      phone: '+49 11 8 33',
+      json: {},
+      entry: '1234567',
+      entries: [
+        '1234567',
+      ],
+    })
+    .then((entry) => {
+      should.equal(entry, undefined);
       getStub.restore();
       postStub.restore();
     })
@@ -1095,6 +1132,25 @@ describe('PublicAPI', () => {
       return api.createDMAssets('test1', `${__dirname}/../mocks/test.png`)
       .then((response) => {
         response.should.be.instanceof(DMAssetList);
+        stubGetUrl.restore();
+        stubSuperagentPost.restore();
+      })
+      .catch((err) => {
+        stubGetUrl.restore();
+        stubSuperagentPost.restore();
+        throw err;
+      });
+    });
+    it('should create dmAssets, 204', () => {
+      mock.reset();
+      const stubGetUrl = sinon.stub(helper, 'getUrl');
+      stubGetUrl.returns(Promise.resolve('https://datamanager.entrecode.de/a/beefbeef/test1'));
+      const stubSuperagentPost = sinon.stub(helper, 'superagentPost');
+      stubSuperagentPost.returns([]);
+
+      return api.createDMAssets('test1', `${__dirname}/../mocks/test.png`)
+      .then((response) => {
+        should.equal(response, undefined);
         stubGetUrl.restore();
         stubSuperagentPost.restore();
       })
