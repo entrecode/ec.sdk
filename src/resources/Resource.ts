@@ -342,7 +342,7 @@ class Resource {
    * @param {filterOptions?} options the filter options
    * @returns {Promise<ListResource>} resolves to resource list with applied filters
    */
-  resourceList(relation: string, options?: filterOptions | any): Promise<ListResource> {
+  resourceList(relation: string, options?: filterOptions | any, additionalTemplateParams: any = {}): Promise<ListResource> {
     return Promise.resolve()
     .then(() => {
       if (!relation) {
@@ -368,8 +368,9 @@ class Resource {
     })
     .then((request) => {
       if (options) {
+        const params = Object.assign({}, additionalTemplateParams, options);
         request.withTemplateParameters(
-          optionsToQuery(options, this.getLink(this[relationsSymbol][relation].relation).href));
+          optionsToQuery(params, this.getLink(this[relationsSymbol][relation].relation).href));
       }
       return get(this[environmentSymbol], request);
     })
