@@ -1,3 +1,12 @@
+<a name="0.12.6"></a>
+## 0.12.6 (2018-01-12)
+
+* release version 0.12.6 ([b606b03](https://github.com/entrecode/ec.sdk/commit/b606b03))
+* fix: additional template properties for DataManagerResource#accountList ([3bb2d0f](https://github.com/entrecode/ec.sdk/commit/3bb2d0f))
+* chore(package): update browserify to version 15.0.0 ([bd956c3](https://github.com/entrecode/ec.sdk/commit/bd956c3))
+
+
+
 <a name="0.12.5"></a>
 ## 0.12.5 (2018-01-12)
 
