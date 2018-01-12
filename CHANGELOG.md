@@ -1,3 +1,11 @@
+<a name="0.12.7"></a>
+## 0.12.7 (2018-01-12)
+
+* release version 0.12.7 ([8da7310](https://github.com/entrecode/ec.sdk/commit/8da7310))
+* fix: additionalTemplateParam for DataManagerResource#resourceList('accounts'); ([7cc4410](https://github.com/entrecode/ec.sdk/commit/7cc4410))
+
+
+
 <a name="0.12.6"></a>
 ## 0.12.6 (2018-01-12)
 
