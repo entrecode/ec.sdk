@@ -196,7 +196,7 @@ class DataManagerResource extends Resource {
    * @returns {Promise<DMAccountList>} resolves to account list with applied filters.
    */
   accountList(options?: filterOptions): Promise<DMAccountList> {
-    return <Promise<DMAccountList>>this.resourceList('account', options);
+    return <Promise<DMAccountList>>this.resourceList('account', options, { dataManagerID: this.dataManagerID });
   }
 
   /**
