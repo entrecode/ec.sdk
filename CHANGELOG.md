@@ -1,3 +1,11 @@
+<a name="0.12.5"></a>
+## 0.12.5 (2018-01-12)
+
+* release version 0.12.5 ([807288a](https://github.com/entrecode/ec.sdk/commit/807288a))
+* feat: model purge ([67c77ea](https://github.com/entrecode/ec.sdk/commit/67c77ea))
+
+
+
 <a name="0.12.4"></a>
 ## 0.12.4 (2018-01-04)
 
