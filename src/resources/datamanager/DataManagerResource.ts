@@ -73,6 +73,7 @@ class DataManagerResource extends Resource {
         createRelation: false,
         createTemplateModifier: '',
         id: 'accountID',
+        additionalTemplateParam: 'dataManagerID',
         ResourceClass: DMAccountResource,
         ListClass: DMAccountList,
       },

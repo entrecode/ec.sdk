@@ -368,6 +368,9 @@ class Resource {
     })
     .then((request) => {
       if (options) {
+        if (this[relationsSymbol][relation].additionalTemplateParam && !(this[relationsSymbol][relation].additionalTemplateParam in additionalTemplateParams)) {
+          additionalTemplateParams[this[relationsSymbol][relation].additionalTemplateParam] = this[this[relationsSymbol][relation].additionalTemplateParam]
+        }
         const params = Object.assign({}, additionalTemplateParams, options);
         request.withTemplateParameters(
           optionsToQuery(params, this.getLink(this[relationsSymbol][relation].relation).href));
