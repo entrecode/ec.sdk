@@ -1,6 +1,6 @@
 import Resource from '../Resource';
 import { environment } from '../../Core';
-import { post } from '../../helper';
+import { del, post } from '../../helper';
 
 const environmentSymbol = Symbol.for('environment');
 
@@ -108,6 +108,18 @@ class ModelResource extends Resource {
       },
     });
     this.countProperties();
+  }
+
+  /**
+   * Start a purge for this model.
+   *
+   * @returns {Promise<void>} Returns a Promise resolving on accepted purge request.
+   */
+  purge() {
+    return Promise.resolve()
+    .then(() => this.newRequest().follow('ec:model/purge'))
+    .then(request => del(this[environmentSymbol], request))
+    .then(() => undefined);
   }
 
   /**

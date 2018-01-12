@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset='utf-8' />
-  <title>ec.sdk 0.12.4 | Documentation</title>
+  <title>ec.sdk 0.12.5 | Documentation</title>
   <meta name='viewport' content='width=device-width,initial-scale=1'>
   <link href='assets/bass.css' type='text/css' rel='stylesheet' />
   <link href='assets/style.css' type='text/css' rel='stylesheet' />
@@ -14,7 +14,7 @@
       <div id='split-left' class='overflow-auto fs0 height-viewport-100'>
         <div class='py1 px2'>
           <h3 class='mb0 no-anchor'>ec.sdk</h3>
-          <div class='mb1'><code>0.12.4</code></div>
+          <div class='mb1'><code>0.12.5</code></div>
           <input
             placeholder='Filter'
             id='filter-input'
@@ -1800,6 +1800,12 @@
                   
                     <ul class='list-reset py1-ul pl1'>
                       <li class='h5'><span>Instance members</span></li>
+                      
+                      <li><a
+                        href='#modelresourcepurge'
+                        class='regular pre-open'>
+                        #purge
+                      </a></li>
                       
                       <li><a
                         href='#modelresourcesync'
@@ -20024,6 +20030,60 @@ filter options.
     <div class='py1 quiet mt1 prose-big'>Instance Members</div>
     <div class="clearfix">
   
+    <div class='border-bottom' id='modelresourcepurge'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>purge()</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Start a purge for this model.</p>
+
+
+  <div class='pre p1 fill-light mt0'>purge(): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;void></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;void></code>:
+        Returns a Promise resolving on accepted purge request.
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
     <div class='border-bottom' id='modelresourcesync'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
@@ -26710,7 +26770,13 @@ be the same object but with refreshed data.
   </h2>
 
   
-    <p><a name="0.12.4"></a></p>
+    <p><a name="0.12.5"></a></p>
+<h2>0.12.5 (2018-01-12)</h2>
+<ul>
+<li>release version 0.12.5 (<a href="https://github.com/entrecode/ec.sdk/commit/807288a">807288a</a>)</li>
+<li>feat: model purge (<a href="https://github.com/entrecode/ec.sdk/commit/67c77ea">67c77ea</a>)</li>
+</ul>
+<p><a name="0.12.4"></a></p>
 <h2>0.12.4 (2018-01-04)</h2>
 <ul>
 <li>release version 0.12.4 (<a href="https://github.com/entrecode/ec.sdk/commit/a834a40">a834a40</a>)</li>
