@@ -35,7 +35,7 @@ function jsonHandler(callback) {
     }
 
     if (res.statusCode >= 200 && res.statusCode < 300) {
-      if (res.statusCode === 204) {
+      if (res.statusCode === 204 || res.statusCode === 202) { // no content or accepted
         return callback(null, []);
       }
 
