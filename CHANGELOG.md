@@ -1,3 +1,11 @@
+<a name="0.12.8"></a>
+## 0.12.8 (2018-01-15)
+
+* release version 0.12.8 ([ecd92a5](https://github.com/entrecode/ec.sdk/commit/ecd92a5))
+* feat: also handle accepted answerf (ModelResource#purge) ([d4bfca5](https://github.com/entrecode/ec.sdk/commit/d4bfca5))
+
+
+
 <a name="0.12.7"></a>
 ## 0.12.7 (2018-01-12)
 
