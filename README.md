@@ -57,7 +57,7 @@ class MyExample {
     session = new Session();
     accounts = new Accounts();
     
-    session.setClient('rest');
+    session.setClientID('rest');
     // this will also receive events from Accounts and DataManager
     session.on('error', console.error);
   }
