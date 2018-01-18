@@ -56,7 +56,7 @@ const urls = {
  * let api = new PublicAPI('beefbeef', 'live', true);
  * // same as
  * api = new PublicAPI('https://datamanager.entrecode.de/api/beefbeef', 'willBeIgnored', true);
- * session.setClient('rest');
+ * session.setClientID('rest');
  * return session.login('me@entrecode.de', 'letmein')
  * .then(() =>
  *   api.entryList('muffins', { awesome: true })
