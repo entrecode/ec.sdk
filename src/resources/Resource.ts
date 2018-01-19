@@ -367,14 +367,12 @@ class Resource {
       return this.newRequest().follow(this[relationsSymbol][relation].relation);
     })
     .then((request) => {
-      if (options) {
-        if (this[relationsSymbol][relation].additionalTemplateParam && !(this[relationsSymbol][relation].additionalTemplateParam in additionalTemplateParams)) {
-          additionalTemplateParams[this[relationsSymbol][relation].additionalTemplateParam] = this[this[relationsSymbol][relation].additionalTemplateParam]
-        }
-        const params = Object.assign({}, additionalTemplateParams, options);
-        request.withTemplateParameters(
-          optionsToQuery(params, this.getLink(this[relationsSymbol][relation].relation).href));
+      if (this[relationsSymbol][relation].additionalTemplateParam && !(this[relationsSymbol][relation].additionalTemplateParam in additionalTemplateParams)) {
+        additionalTemplateParams[this[relationsSymbol][relation].additionalTemplateParam] = this[this[relationsSymbol][relation].additionalTemplateParam]
       }
+      const params = Object.assign({}, additionalTemplateParams, options);
+      request.withTemplateParameters(
+        optionsToQuery(params, this.getLink(this[relationsSymbol][relation].relation).href));
       return get(this[environmentSymbol], request);
     })
     .then(([res, traversal]) =>
