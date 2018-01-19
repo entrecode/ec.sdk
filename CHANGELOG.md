@@ -1,3 +1,11 @@
+<a name="0.12.10"></a>
+## 0.12.10 (2018-01-19)
+
+* release version 0.12.10 ([d057d9a](https://github.com/entrecode/ec.sdk/commit/d057d9a))
+* fix: additional template param handling on undefined options ([726ad97](https://github.com/entrecode/ec.sdk/commit/726ad97))
+
+
+
 <a name="0.12.9"></a>
 ## 0.12.9 (2018-01-19)
 
