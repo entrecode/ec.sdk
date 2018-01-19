@@ -1,3 +1,16 @@
+<a name="0.12.9"></a>
+## 0.12.9 (2018-01-19)
+
+* release version 0.12.9 ([c7f3d2c](https://github.com/entrecode/ec.sdk/commit/c7f3d2c))
+* chore: package lock update ([30c26dc](https://github.com/entrecode/ec.sdk/commit/30c26dc))
+* chore: package.json updates ([139ee21](https://github.com/entrecode/ec.sdk/commit/139ee21))
+* chore(package): update mocha to version 5.0.0 ([50c64cb](https://github.com/entrecode/ec.sdk/commit/50c64cb))
+* doc: another fix in the doc ([6634886](https://github.com/entrecode/ec.sdk/commit/6634886))
+* doc: fixed typo in doc ([d87c3b7](https://github.com/entrecode/ec.sdk/commit/d87c3b7))
+* fix: prefilled dataManagerID for DataManagerResource#assetList ([cff5c8a](https://github.com/entrecode/ec.sdk/commit/cff5c8a))
+
+
+
 <a name="0.12.8"></a>
 ## 0.12.8 (2018-01-15)
 
