@@ -1,6 +1,6 @@
 {
   "name": "ec.sdk",
-  "version": "0.12.8",
+  "version": "0.12.9",
   "description": "SDK for ec.api",
   "repository": "entrecode/ec.sdk",
   "author": "Simon Scherzinger <scherzinger@entrecode.de>",
@@ -52,7 +52,7 @@
     "documentation": "^5.3.3",
     "ec.cookie-mock": "^1.0.1",
     "istanbul": "^0.4.5",
-    "mocha": "^4.0.1",
+    "mocha": "^5.0.0",
     "mocha-bamboo-reporter": "^1.1.1",
     "nock": "^9.1.0",
     "sinon": "^4.1.2",
