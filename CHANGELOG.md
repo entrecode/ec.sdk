@@ -1,3 +1,11 @@
+<a name="0.12.11"></a>
+## 0.12.11 (2018-01-22)
+
+* release version 0.12.11 ([455e535](https://github.com/entrecode/ec.sdk/commit/455e535))
+* fix: destructuring of response in upload of AssetsNeue ([eb1ae0f](https://github.com/entrecode/ec.sdk/commit/eb1ae0f))
+
+
+
 <a name="0.12.10"></a>
 ## 0.12.10 (2018-01-19)
 
