@@ -1127,7 +1127,7 @@ describe('PublicAPI', () => {
       const stubGetUrl = sinon.stub(helper, 'getUrl');
       stubGetUrl.returns(Promise.resolve('https://datamanager.entrecode.de/a/beefbeef/test1'));
       const stubSuperagentPost = sinon.stub(helper, 'superagentPost');
-      stubSuperagentPost.returns(resolver('dm-asset-create.json'));
+      stubSuperagentPost.returns(resolver('dm-asset-create.json', null, true));
 
       return api.createDMAssets('test1', `${__dirname}/../mocks/test.png`)
       .then((response) => {
@@ -1165,7 +1165,7 @@ describe('PublicAPI', () => {
       const stubGetUrl = sinon.stub(helper, 'getUrl');
       stubGetUrl.returns(Promise.resolve('https://datamanager.entrecode.de/a/beefbeef/test1'));
       const stubSuperagentPost = sinon.stub(helper, 'superagentPost');
-      stubSuperagentPost.returns(resolver('dm-asset-create.json'));
+      stubSuperagentPost.returns(resolver('dm-asset-create.json', null, true));
 
       return api.createDMAssets('test1', `${__dirname}/../mocks/test.png`, { fileName: 'name' })
       .then((response) => {
@@ -1184,7 +1184,7 @@ describe('PublicAPI', () => {
       const stubGetUrl = sinon.stub(helper, 'getUrl');
       stubGetUrl.returns(Promise.resolve('https://datamanager.entrecode.de/a/beefbeef/test1'));
       const stubSuperagentPost = sinon.stub(helper, 'superagentPost');
-      stubSuperagentPost.returns(resolver('dm-asset-create.json'));
+      stubSuperagentPost.returns(resolver('dm-asset-create.json', null, true));
 
       return api.createDMAssets('test1', [`${__dirname}/../mocks/test.png`, `${__dirname}/../mocks/test.png`])
       .then((response) => {
@@ -1203,7 +1203,7 @@ describe('PublicAPI', () => {
       const stubGetUrl = sinon.stub(helper, 'getUrl');
       stubGetUrl.returns(Promise.resolve('https://datamanager.entrecode.de/a/beefbeef/test1'));
       const stubSuperagentPost = sinon.stub(helper, 'superagentPost');
-      stubSuperagentPost.returns(resolver('dm-asset-create.json'));
+      stubSuperagentPost.returns(resolver('dm-asset-create.json', null, true));
 
       return new Promise((resolve, reject) => {
         fs.readFile(`${__dirname}/../mocks/test.png`, (err, file) => {
@@ -1286,7 +1286,7 @@ describe('PublicAPI', () => {
       const stubGetUrl = sinon.stub(helper, 'getUrl');
       stubGetUrl.returns(Promise.resolve('https://datamanager.entrecode.de/a/beefbeef/test1'));
       const stubSuperagentPost = sinon.stub(helper, 'superagentPost');
-      stubSuperagentPost.returns(resolver('dm-asset-create.json'));
+      stubSuperagentPost.returns(resolver('dm-asset-create.json', null, true));
 
       return api.createDMAssets('test1', new FormData(), { // eslint-disable-line no-undef
         title: 'hello',

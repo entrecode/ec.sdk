@@ -12,7 +12,14 @@ import PublicAssetList from './resources/publicAPI/PublicAssetList';
 import PublicAssetResource from './resources/publicAPI/PublicAssetResource';
 import { filterOptions } from './resources/ListResource';
 import {
-  get, getEmpty, getSchema, getUrl, optionsToQuery, post, postEmpty, superagentFormPost,
+  get,
+  getEmpty,
+  getSchema,
+  getUrl,
+  optionsToQuery,
+  post,
+  postEmpty,
+  superagentFormPost,
   superagentPost
 } from './helper';
 import DMAssetResource from './resources/publicAPI/DMAssetResource';
@@ -526,11 +533,11 @@ export default class PublicAPI extends Core {
 
       return superagentPost(this[environmentSymbol], request);
     })
-    .then(([response, traversal]) => {
+    .then((response) => {
       if (!response || Object.keys(response).length === 0) {
         return undefined;
       }
-      return new DMAssetList(response, this[environmentSymbol], traversal);
+      return new DMAssetList(response, this[environmentSymbol]);
     });
   }
 
