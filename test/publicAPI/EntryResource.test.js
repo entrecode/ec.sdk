@@ -96,8 +96,8 @@ describe('Entry Resource', () => {
   });
   afterEach(() => {
     resource = null;
-    getSpy.reset();
-    setSpy.reset();
+    getSpy.resetHistory();
+    setSpy.resetHistory();
   });
   it('should be instance of Resource', () => {
     resource.should.be.instanceOf(Resource);
@@ -645,7 +645,7 @@ describe('LiteEntry Resource', () => {
   });
   afterEach(() => {
     resource = null;
-    getSpy.reset();
+    getSpy.resetHistory();
   });
   it('should be instance of Resource', () => {
     resource.should.be.instanceOf(Resource);

@@ -203,8 +203,8 @@ describe('Network Helper', () => {
     emitter.on('logout', loggedOutSpy);
   });
   beforeEach(() => {
-    errorSpy.reset();
-    loggedOutSpy.reset();
+    errorSpy.resetHistory();
+    loggedOutSpy.resetHistory();
     store = TokenStore.default('test');
     traversal = traverson.from('https://entrecode.de').jsonHal();
   });
