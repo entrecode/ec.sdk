@@ -10,6 +10,7 @@ const helper = require('../lib/helper');
 const traverson = require('traverson');
 const resolver = require('./mocks/resolver');
 const Resource = require('../lib/resources/Resource');
+const EntryResource = require('../lib/resources/publicAPI/EntryResource');
 const DataManagerResource = require('../lib/resources/datamanager/DataManagerResource').default;
 
 const environmentSymbol = Symbol.for('environment');
@@ -91,6 +92,35 @@ describe('Resource', () => {
 
     return resource.save()
     .then(() => {
+      stub.should.be.calledOnce;
+      stub.restore();
+    })
+    .catch((err) => {
+      stub.restore();
+      throw err;
+    });
+  });
+  it('should throw on safePut without modified date', () => {
+    schemaNock.reset();
+    return resource.save(true).should.be.eventually.rejectedWith('safe put without _modified date');
+  });
+  it('should have header on safePut', () => {
+    schemaNock.reset();
+    const stub = sinon.stub(helper, 'put');
+    stub.returns(resolver('dm-single.json', resource._traversal));
+
+    return new Promise((resolve, reject) => {
+      fs.readFile(`${__dirname}/mocks/public-entry.json`, 'utf-8', (err, res) => {
+        if (err) {
+          return reject(err);
+        }
+        return resolve(JSON.parse(res));
+      })
+    })
+    .then(json => EntryResource.createEntry(json, 'live'))
+    .then(res => res.save(true))
+    .then((res) => {
+      res[traversalSymbol];
       stub.should.be.calledOnce;
       stub.restore();
     })

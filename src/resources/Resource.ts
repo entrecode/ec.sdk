@@ -19,6 +19,7 @@ validator.setLoggingFunction(() => {
 });
 
 interface Resource {
+  [key: string]: any;
 }
 
 /**
@@ -382,18 +383,35 @@ class Resource {
   /**
    * Saves this {@link Resource}.
    *
+   * @param {boolean} safePut true when safe put functionality is required.
    * @param {string?} overwriteSchemaUrl Other schema url to overwrite the one in
    *   `_link.self.profile`. Mainly for internal use.
    * @returns {Promise<Resource>} Promise will resolve to the saved Resource. Will
    *   be the same object but with refreshed data.
    */
-  save(overwriteSchemaUrl?: string): Promise<Resource> {
+  save(safePut: boolean = false, overwriteSchemaUrl?: string): Promise<Resource> {
     return Promise.resolve()
     .then(() => {
       const out = this.toOriginal();
-      // TODO dot notation
       return validator.validate(out, overwriteSchemaUrl || this.getLink('self').profile)
-      .then(() => put(this[environmentSymbol], this.newRequest().follow('self'), out))
+      .then(() => {
+        const request = this.newRequest().follow('self');
+
+        if (safePut) {
+          if (!('_modified' in out)) {
+            throw new Error('safe put without _modified date');
+          }
+
+          const date = new Date(out._modified);
+          request.addRequestOptions({
+            headers: {
+              'If-Modified-Since': date.toUTCString(),
+            }
+          });
+        }
+
+        return put(this[environmentSymbol], request, out)
+      })
       .then(([res, traversal]) => {
         this[resourceSymbol] = halfred.parse(res);
         this[traversalSymbol] = traversal;

@@ -90,11 +90,11 @@ class LiteEntryResource extends Resource {
    * @returns {Promise<EntryResource>} Promise will resolve to the saved Resource. Will
    *   be the same object but with refreshed data.
    */
-  save(overwriteSchemaUrl: string): Promise<EntryResource> {
+  save(safePut: boolean = false, overwriteSchemaUrl: string): Promise<EntryResource> {
     if (!(this instanceof EntryResource)) {
       throw new Error('LiteEntryResource cannot be saved');
     }
-    return <Promise<EntryResource>>super.save(overwriteSchemaUrl);
+    return <Promise<EntryResource>>super.save(safePut, overwriteSchemaUrl);
   };
 }
 
