@@ -5,7 +5,7 @@ import { environment } from '../../Core';
 const resourceSymbol = Symbol.for('resource');
 const resolvedSymbol = Symbol('resolved');
 
-interface PublicAssetResource {
+interface PublicAssetResource extends Resource {
   assetID: string;
   created: Date;
   files: Array<any>;
@@ -166,13 +166,13 @@ class PublicAssetResource extends Resource {
    * @returns {Promise<PublicAssetResource>} Promise will resolve to the saved Resource. Will
    *   be the same object but with refreshed data.
    */
-  save(overwriteSchemaUrl?: string): Promise<PublicAssetResource> {
+  save(safePut: boolean = false, overwriteSchemaUrl?: string): Promise<PublicAssetResource> {
     return Promise.resolve()
     .then(() => {
       if (!this['isResolved']) {
         throw new Error('Cannot save not resolved PublicAssetResource');
       }
-      return <Promise<PublicAssetResource>>super.save(overwriteSchemaUrl);
+      return <Promise<PublicAssetResource>>super.save(false, overwriteSchemaUrl);
     });
   }
 }

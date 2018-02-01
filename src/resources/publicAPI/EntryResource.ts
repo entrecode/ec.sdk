@@ -539,8 +539,8 @@ class EntryResource extends LiteEntryResource {
    * @returns {Promise<EntryResource>} Promise will resolve to the saved EntryResource. Will
    *   be the same object but with refreshed data.
    */
-  save(): Promise<EntryResource> {
-    return <Promise<EntryResource>>super.save(`${this.getLink('self').profile}?template=put`);
+  save(safePut: boolean = false): Promise<EntryResource> {
+    return <Promise<EntryResource>>super.save(safePut, `${this.getLink('self').profile}?template=put`);
   }
 
   /**
