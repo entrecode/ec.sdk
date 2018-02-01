@@ -1,3 +1,12 @@
+<a name="0.12.12"></a>
+## <small>0.12.12 (2018-02-01)</small>
+
+* release version 0.12.12 ([455503d](https://github.com/entrecode/ec.sdk/commit/455503d))
+* feat: safePut for EntryResources ([c05d060](https://github.com/entrecode/ec.sdk/commit/c05d060))
+* fix: reset deprecation warning in sinon ([bc9577b](https://github.com/entrecode/ec.sdk/commit/bc9577b))
+
+
+
 <a name="0.12.11"></a>
 ## 0.12.11 (2018-01-22)
 
