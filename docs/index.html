@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset='utf-8' />
-  <title>ec.sdk 0.12.11 | Documentation</title>
+  <title>ec.sdk 0.12.12 | Documentation</title>
   <meta name='viewport' content='width=device-width,initial-scale=1'>
   <link href='assets/bass.css' type='text/css' rel='stylesheet' />
   <link href='assets/style.css' type='text/css' rel='stylesheet' />
@@ -14,7 +14,7 @@
       <div id='split-left' class='overflow-auto fs0 height-viewport-100'>
         <div class='py1 px2'>
           <h3 class='mb0 no-anchor'>ec.sdk</h3>
-          <div class='mb1'><code>0.12.11</code></div>
+          <div class='mb1'><code>0.12.12</code></div>
           <input
             placeholder='Filter'
             id='filter-input'
@@ -10947,7 +10947,7 @@ options parameter.</p>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>save(overwriteSchemaUrl)</span>
+            <span class='code strong strong truncate'>save(safePut, overwriteSchemaUrl)</span>
         </div>
       </div>
       <div class="clearfix display-none toggle-target">
@@ -10958,7 +10958,7 @@ options parameter.</p>
   <p>Saves this <a href="#resource">Resource</a>.</p>
 
 
-  <div class='pre p1 fill-light mt0'>save(overwriteSchemaUrl: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#resource">Resource</a>></div>
+  <div class='pre p1 fill-light mt0'>save(safePut: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>, overwriteSchemaUrl: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#resource">Resource</a>></div>
   
   
 
@@ -10972,6 +10972,16 @@ options parameter.</p>
   
     <div class='py1 quiet mt1 prose-big'>Parameters</div>
     <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>safePut</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>
+            = <code>false</code>)</code>
+	    true when safe put functionality is required.
+
+          </div>
+          
+        </div>
       
         <div class='space-bottom0'>
           <div>
@@ -24166,7 +24176,7 @@ function. A promise is returned which resolves to the <a href="#entryresource">E
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>save(overwriteSchemaUrl)</span>
+            <span class='code strong strong truncate'>save(safePut, overwriteSchemaUrl)</span>
         </div>
       </div>
       <div class="clearfix display-none toggle-target">
@@ -24178,7 +24188,7 @@ function. A promise is returned which resolves to the <a href="#entryresource">E
 resolved first.</p>
 
 
-  <div class='pre p1 fill-light mt0'>save(overwriteSchemaUrl: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#entryresource">EntryResource</a>></div>
+  <div class='pre p1 fill-light mt0'>save(safePut: any, overwriteSchemaUrl: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#entryresource">EntryResource</a>></div>
   
   
 
@@ -24192,6 +24202,15 @@ resolved first.</p>
   
     <div class='py1 quiet mt1 prose-big'>Parameters</div>
     <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>safePut</span> <code class='quiet'>(any
+            = <code>false</code>)</code>
+	    
+          </div>
+          
+        </div>
       
         <div class='space-bottom0'>
           <div>
@@ -25009,7 +25028,7 @@ the entry title.
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>save()</span>
+            <span class='code strong strong truncate'>save(safePut)</span>
         </div>
       </div>
       <div class="clearfix display-none toggle-target">
@@ -25020,7 +25039,7 @@ the entry title.
   <p>Saves this <a href="#entryresource">EntryResource</a>.</p>
 
 
-  <div class='pre p1 fill-light mt0'>save(): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#entryresource">EntryResource</a>></div>
+  <div class='pre p1 fill-light mt0'>save(safePut: any): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#entryresource">EntryResource</a>></div>
   
   
 
@@ -25031,6 +25050,20 @@ the entry title.
   
   
 
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>safePut</span> <code class='quiet'>(any
+            = <code>false</code>)</code>
+	    
+          </div>
+          
+        </div>
+      
+    </div>
   
 
   
@@ -26509,7 +26542,7 @@ function. A promise is returned which resolves to the <a href="#publicassetresou
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>save(overwriteSchemaUrl)</span>
+            <span class='code strong strong truncate'>save(safePut, overwriteSchemaUrl)</span>
         </div>
       </div>
       <div class="clearfix display-none toggle-target">
@@ -26520,7 +26553,7 @@ function. A promise is returned which resolves to the <a href="#publicassetresou
   <p>Saves this <a href="#publicassetresource">PublicAssetResource</a>. Only works on resolved PublicAssetResource.</p>
 
 
-  <div class='pre p1 fill-light mt0'>save(overwriteSchemaUrl: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#publicassetresource">PublicAssetResource</a>></div>
+  <div class='pre p1 fill-light mt0'>save(safePut: any, overwriteSchemaUrl: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#publicassetresource">PublicAssetResource</a>></div>
   
   
 
@@ -26534,6 +26567,15 @@ function. A promise is returned which resolves to the <a href="#publicassetresou
   
     <div class='py1 quiet mt1 prose-big'>Parameters</div>
     <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>safePut</span> <code class='quiet'>(any
+            = <code>false</code>)</code>
+	    
+          </div>
+          
+        </div>
       
         <div class='space-bottom0'>
           <div>
