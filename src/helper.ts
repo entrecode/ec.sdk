@@ -444,7 +444,7 @@ const modifier = {
  * @param {string?} templateURL optional templateURL for validating inputs
  * @returns {object} translated querystring object
  */
-export function optionsToQuery(options: filterOptions, templateURL: string): any {
+export function optionsToQuery(options: filterOptions, templateURL?: string): any {
   const out: any = {};
 
   if (options) {

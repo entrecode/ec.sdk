@@ -114,7 +114,7 @@ class DataManagerResource extends Resource {
       },
       assetGroup: {
         relation: 'ec:dm-assetgroups',
-        createRelation: 'ec.dm-assetgroup/by-id',
+        createRelation: 'ec:dm-assetgroup/by-id',
         createTemplateModifier: '-template-post',
         id: 'assetGroupID',
         ResourceClass: AssetGroupResource,
