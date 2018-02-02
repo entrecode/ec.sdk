@@ -139,7 +139,11 @@ class Resource {
     .then(link => validator.validate(resource, `${link.profile}${this[relationsSymbol][relation].createTemplateModifier}`))
     .then(() => this.newRequest().follow(this[relationsSymbol][relation].relation))
     .then(request => {
-      request.withTemplateParameters({});
+      if (this[relationsSymbol][relation].additionalTemplateParam) {
+        request.withTemplateParameters(optionsToQuery({
+          [this[relationsSymbol][relation].additionalTemplateParam]: this[this[relationsSymbol][relation].additionalTemplateParam],
+        }));
+      }
       return post(this[environmentSymbol], request, resource)
     })
     .then(([c, traversal]) =>
