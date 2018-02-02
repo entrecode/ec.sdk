@@ -1,3 +1,12 @@
+<a name="0.12.15"></a>
+## <small>0.12.15 (2018-02-02)</small>
+
+* release version 0.12.15 ([c3d21a6](https://github.com/entrecode/ec.sdk/commit/c3d21a6))
+* fix: create relation with additional template param ([f888b2e](https://github.com/entrecode/ec.sdk/commit/f888b2e))
+* fix: typo in createRelation of asset groups ([b1ac01f](https://github.com/entrecode/ec.sdk/commit/b1ac01f))
+
+
+
 <a name="0.12.14"></a>
 ## <small>0.12.14 (2018-02-02)</small>
 
