@@ -1,3 +1,12 @@
+<a name="0.12.13"></a>
+## <small>0.12.13 (2018-02-02)</small>
+
+* release version 0.12.13 ([9d5381e](https://github.com/entrecode/ec.sdk/commit/9d5381e))
+* chore: package update ([22d9a43](https://github.com/entrecode/ec.sdk/commit/22d9a43))
+* fix: added additionalTemplateParam to client and role ([c4363a8](https://github.com/entrecode/ec.sdk/commit/c4363a8))
+
+
+
 <a name="0.12.12"></a>
 ## <small>0.12.12 (2018-02-01)</small>
 
