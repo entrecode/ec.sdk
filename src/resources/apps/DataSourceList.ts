@@ -16,6 +16,6 @@ export default class DataSourceList extends ListResource {
    * @param {object?} traversal traversal from which traverson can continue.
    */
   constructor(resource: any, environment: environment, traversal?: any) {
-    super(resource, environment, traversal, 'ec:app/dataSource', undefined, DataSourceList, DataSourceResource);
+    super(resource, environment, traversal, 'ec:app/datasource', undefined, DataSourceList, DataSourceResource);
   }
 }

@@ -17,6 +17,6 @@ export default class DMClientList extends ListResource {
    * @param {?object} traversal traversal from which traverson can continue.
    */
   constructor(resource: any, environment: environment, traversal?: any) {
-    super(resource, environment, traversal, 'ec:dm-clients', undefined, DMClientList, DMClientResource);
+    super(resource, environment, traversal, 'ec:dm-client', undefined, DMClientList, DMClientResource);
   }
 }
