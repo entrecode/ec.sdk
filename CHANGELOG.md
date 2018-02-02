@@ -1,3 +1,13 @@
+<a name="0.12.14"></a>
+## <small>0.12.14 (2018-02-02)</small>
+
+* fixed client resource name ([b630c6e](https://github.com/entrecode/ec.sdk/commit/b630c6e))
+* fixed datasource and group links ([a8b9cc7](https://github.com/entrecode/ec.sdk/commit/a8b9cc7))
+* release version 0.12.14 ([b978a99](https://github.com/entrecode/ec.sdk/commit/b978a99))
+* fix: getAllPermissions when user has no groups ([fa69f80](https://github.com/entrecode/ec.sdk/commit/fa69f80))
+
+
+
 <a name="0.12.13"></a>
 ## <small>0.12.13 (2018-02-02)</small>
 
