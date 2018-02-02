@@ -179,7 +179,7 @@ class AccountResource extends Resource {
    * @returns {array<string>} All permissions.
    */
   getAllPermissions(): Array<string> {
-    return this.groups
+    return (this.groups ? this.groups : [{ permissions: [] }])
     .map(g => g.permissions)
     .reduce((all, current) => all.concat(current), this.permissions);
   }
