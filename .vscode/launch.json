@@ -23,7 +23,7 @@
       "env": {
         "NODE_ENV": "testing"
       },
-      "sourceMaps": false,
+      "sourceMaps": true,
     }
   ]
 }
