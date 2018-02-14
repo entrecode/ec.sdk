@@ -10,6 +10,7 @@ const environmentSymbol = Symbol.for('environment');
 interface LiteEntryResource {
   _entryTitle: string;
   _id: string;
+  _modelTitle: string;
   id: string;
 }
 
@@ -39,7 +40,12 @@ class LiteEntryResource extends Resource {
       };
     }
     super(liteResource, environment, traversal);
-    ['_entryTitle', 'id', '_id'].forEach((key) => {
+    [
+      '_entryTitle',
+      '_id',
+      '_modelTitle',
+      'id',
+    ].forEach((key) => {
       Object.defineProperty(this, key, {
         enumerable: true,
         get: () => <string>this.getProperty(key),

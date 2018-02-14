@@ -21,6 +21,7 @@ const skip = [
   'id',
   '_id',
   '_entryTitle',
+  '_modelTitle',
 ];
 
 function getFieldType(schema, property) {
