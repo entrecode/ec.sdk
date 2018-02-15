@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset='utf-8' />
-  <title>ec.sdk 0.12.15 | Documentation</title>
+  <title>ec.sdk 0.13.0 | Documentation</title>
   <meta name='viewport' content='width=device-width,initial-scale=1'>
   <link href='assets/bass.css' type='text/css' rel='stylesheet' />
   <link href='assets/style.css' type='text/css' rel='stylesheet' />
@@ -14,7 +14,7 @@
       <div id='split-left' class='overflow-auto fs0 height-viewport-100'>
         <div class='py1 px2'>
           <h3 class='mb0 no-anchor'>ec.sdk</h3>
-          <div class='mb1'><code>0.12.15</code></div>
+          <div class='mb1'><code>0.13.0</code></div>
           <input
             placeholder='Filter'
             id='filter-input'
@@ -2617,6 +2617,7 @@
 <h2>Getting Started</h2>
 <p>In order to use this SDK you should be familiar with ec.APIs and the concepts behind those. Please refer to the <a href="https://doc.entrecode.de">official documentation</a> to get a basic understanding. The documentation you are reading now will first introduce the basic concept when using the SDK. Secondly it is the complete API documentation for ec.sdk.</p>
 <p>For every ec.API you will find an API connector. Use one of those to connect to a certain ec.API. Login and logout for ec.users are special cases and are done in <a href="#Session">Session</a> API connector. All API connectors of a certain <a href="#environment">environment</a> share some information. The most important one is any access token either received with <a href="#Session#login">Session#login</a> or by calling <a href="#Core#setToken">Core#setToken</a>. This means you can specifiy the token on any API connector and it will be automatically used by all other API connectors. Also it will be saved in a cookie with the name <code>&#x3C;environment>Token</code>. If any API connector receives a token related Error (<a href="#Problem">Problem</a>) it will be automatically removed from all API connectors and a <a href="#eventeventlogout">logout event</a> is triggered. A special case is <a href="#PublicAPI">PublicAPI</a> since this will store the token in a cookie containing the <a href="#environment">environment</a> and Data Manager shortID of the PublicAPI (for example: <code>stagebeefbeefToken</code>).</p>
+<p>Since version 0.13.0 you can create a stand-alone API Connector. By calling the constructor with <code>new Session({ noCookie: true });</code> the API Connector won't share its token with other API Connectors.</p>
 <p>Every action you take in the ec.sdk will be validated before it will be sent as a request to ec.APIs. This means that the provided json schemas are used.</p>
 <h5>Installation</h5>
 <pre class='hljs'>npm i --save ec.sdk</pre>
@@ -2655,7 +2656,13 @@
   
   login(email, password) {
     session.login(email, password)
-    .then(<span class="hljs-built_in">console</span>.log);
+    .then(<span class="hljs-function">(<span class="hljs-params">token</span>) =&gt;</span> {
+      <span class="hljs-comment">// if you use stand-alone API Connectors (`noCookie` set to true)</span>
+      accounts.setToken(token);
+      
+      <span class="hljs-comment">// or anywhere in the code</span>
+      dataManager.setToken(session.getToken());
+    });
   }
   
   setAccountLanguage(lang) {
@@ -2747,7 +2754,7 @@ dataManager.dataManagerList()
 directly. Use one of the other API connectors instead.</p>
 
 
-  <div class='pre p1 fill-light mt0'>new Core(urls: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, environment: <a href="#environment">environment</a>, cookieModifier: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?)</div>
+  <div class='pre p1 fill-light mt0'>new Core(urls: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, envOrOptions: any, environment: <a href="#environment">environment</a>, cookieModifier: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?)</div>
   
   
 
@@ -2773,8 +2780,16 @@ directly. Use one of the other API connectors instead.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>environment</span> <code class='quiet'>(<a href="#environment">environment</a>
+            <span class='code bold'>envOrOptions</span> <code class='quiet'>(any
             = <code>&#39;live&#39;</code>)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>environment</span> <code class='quiet'>(<a href="#environment">environment</a>)</code>
 	    The environment to connect to
 
           </div>
@@ -2783,8 +2798,7 @@ directly. Use one of the other API connectors instead.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>cookieModifier</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?
-            = <code>&#39;&#39;</code>)</code>
+            <span class='code bold'>cookieModifier</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?)</code>
 	    An optional modifier for the cookie name (used by
 
 <a href="#publicapi">PublicAPI</a>
@@ -2802,6 +2816,21 @@ directly. Use one of the other API connectors instead.</p>
 
   
 
+  
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-comment">// will share token for 'userA'</span>
+<span class="hljs-keyword">const</span> dmUserA = <span class="hljs-keyword">new</span> DataManager({ <span class="hljs-attr">environment</span>: <span class="hljs-string">'live'</span>, <span class="hljs-attr">cookieModifier</span>: <span class="hljs-string">'userA'</span> });
+<span class="hljs-keyword">const</span> apiUserA = <span class="hljs-keyword">new</span> PublicAPI(shortID, { <span class="hljs-attr">environment</span>: <span class="hljs-string">'live'</span>, <span class="hljs-attr">cookieModifier</span>: <span class="hljs-string">'userA'</span> }, <span class="hljs-literal">true</span>);
+
+<span class="hljs-comment">// will share token for 'userB'</span>
+<span class="hljs-keyword">const</span> dmUserB = <span class="hljs-keyword">new</span> DataManager({ <span class="hljs-attr">environment</span>: <span class="hljs-string">'live'</span>, <span class="hljs-attr">cookieModifier</span>: <span class="hljs-string">'userB'</span> });
+<span class="hljs-keyword">const</span> apiUserB = <span class="hljs-keyword">new</span> PublicAPI(shortID, { <span class="hljs-attr">environment</span>: <span class="hljs-string">'live'</span>, <span class="hljs-attr">cookieModifier</span>: <span class="hljs-string">'userB'</span> }, <span class="hljs-literal">true</span>);
+
+<span class="hljs-comment">// will not share token and not save it in cookie as well</span>
+<span class="hljs-keyword">const</span> dmStandAlone = <span class="hljs-keyword">new</span> DataManager({ <span class="hljs-attr">environment</span>: <span class="hljs-string">'live'</span>, <span class="hljs-attr">noCookie</span>: <span class="hljs-literal">true</span> });</pre>
+    
   
 
   
@@ -3703,7 +3732,7 @@ options parameter.</p>
 to all other API connectors of the same <a href="#environment">environment</a>.</p>
 
 
-  <div class='pre p1 fill-light mt0'>new Session(environment: <a href="#environment">environment</a>?)</div>
+  <div class='pre p1 fill-light mt0'>new Session(envOrOptions: any, environment: <a href="#environment">environment</a>?)</div>
   
   
     <p>
@@ -3724,6 +3753,14 @@ to all other API connectors of the same <a href="#environment">environment</a>.<
   
     <div class='py1 quiet mt1 prose-big'>Parameters</div>
     <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>envOrOptions</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
       
         <div class='space-bottom0'>
           <div>
@@ -4059,7 +4096,7 @@ this for ec.accounts only. It contains APIs for profile editing (change email, r
 signup…), permissions, clients, and groups.</p>
 
 
-  <div class='pre p1 fill-light mt0'>new Accounts(environment: <a href="#environment">environment</a>?)</div>
+  <div class='pre p1 fill-light mt0'>new Accounts(envOrOptions: any, environment: <a href="#environment">environment</a>?)</div>
   
   
     <p>
@@ -4080,6 +4117,14 @@ signup…), permissions, clients, and groups.</p>
   
     <div class='py1 quiet mt1 prose-big'>Parameters</div>
     <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>envOrOptions</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
       
         <div class='space-bottom0'>
           <div>
@@ -5494,7 +5539,7 @@ token response.
 Plugins, Builds and Deployments.</p>
 
 
-  <div class='pre p1 fill-light mt0'>new Apps(environment: <a href="#environment">environment</a>?)</div>
+  <div class='pre p1 fill-light mt0'>new Apps(envOrOptions: any, environment: <a href="#environment">environment</a>?)</div>
   
   
     <p>
@@ -5515,6 +5560,14 @@ Plugins, Builds and Deployments.</p>
   
     <div class='py1 quiet mt1 prose-big'>Parameters</div>
     <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>envOrOptions</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
       
         <div class='space-bottom0'>
           <div>
@@ -5992,7 +6045,7 @@ types.</p>
 contains APIs for DataManagers, Models, Fields, Hooks, and Policies.</p>
 
 
-  <div class='pre p1 fill-light mt0'>new DataManager(environment: <a href="#environment">environment</a>?)</div>
+  <div class='pre p1 fill-light mt0'>new DataManager(envOrOptions: any, environment: <a href="#environment">environment</a>?)</div>
   
   
     <p>
@@ -6013,6 +6066,14 @@ contains APIs for DataManagers, Models, Fields, Hooks, and Policies.</p>
   
     <div class='py1 quiet mt1 prose-big'>Parameters</div>
     <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>envOrOptions</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
       
         <div class='space-bottom0'>
           <div>
@@ -6917,7 +6978,7 @@ tokenStore for ecUsers and not the ones for each Data Manager. If you don't do t
 the token with <code>publicAPI.setToken(session.getToken());</code>.</p>
 
 
-  <div class='pre p1 fill-light mt0'>new PublicAPI(idOrURL: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, environment: <a href="#environment">environment</a>?, ecUser: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>?)</div>
+  <div class='pre p1 fill-light mt0'>new PublicAPI(idOrURL: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, envOrOptions: any, ecUser: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>?, environment: <a href="#environment">environment</a>?)</div>
   
   
     <p>
@@ -6950,11 +7011,9 @@ the token with <code>publicAPI.setToken(session.getToken());</code>.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>environment</span> <code class='quiet'>(<a href="#environment">environment</a>?
+            <span class='code bold'>envOrOptions</span> <code class='quiet'>(any
             = <code>&#39;live&#39;</code>)</code>
-	    the environment to connect to, ignored when url is passed to
-idOrUrl.
-
+	    
           </div>
           
         </div>
@@ -6964,6 +7023,16 @@ idOrUrl.
             <span class='code bold'>ecUser</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>?
             = <code>false</code>)</code>
 	    if you are an ecUser it is best to set this to true
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>environment</span> <code class='quiet'>(<a href="#environment">environment</a>?)</code>
+	    the environment to connect to, ignored when url is passed to
+idOrUrl.
 
           </div>
           
@@ -9406,7 +9475,7 @@ Problems also comply to <a href="https://tools.ietf.org/html/draft-kelly-json-ha
 getLinks).</p>
 
 
-  <div class='pre p1 fill-light mt0'>new Problem(error: any)</div>
+  <div class='pre p1 fill-light mt0'>new Problem(error: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</div>
   
   
     <p>
@@ -9430,8 +9499,9 @@ getLinks).</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>error</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>error</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    the error received from any entrecode API.
+
           </div>
           
         </div>
@@ -9913,7 +9983,7 @@ parameter.</p>
   <p>Generic resource class. Represents <a href="https://tools.ietf.org/html/draft-kelly-json-hal-08">HAL resources</a>.</p>
 
 
-  <div class='pre p1 fill-light mt0'>new Resource(resource: any, environment: any, traversal: any, name: any, schema: any)</div>
+  <div class='pre p1 fill-light mt0'>new Resource(resource: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, environment: <a href="#environment">environment</a>, traversal: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?, name: any, schema: any)</div>
   
   
 
@@ -9930,25 +10000,28 @@ parameter.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>resource</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>resource</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    resource loaded from the API.
+
           </div>
           
         </div>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>environment</span> <code class='quiet'>(any
+            <span class='code bold'>environment</span> <code class='quiet'>(<a href="#environment">environment</a>
             = <code>&#39;live&#39;</code>)</code>
-	    
+	    the environment this resource is associated to.
+
           </div>
           
         </div>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>traversal</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>traversal</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</code>
+	    traversal from which traverson can continue.
+
           </div>
           
         </div>
@@ -11254,7 +11327,7 @@ lists.</p>
 with them.</p>
 
 
-  <div class='pre p1 fill-light mt0'>new ListResource(resource: any, environment: any, traversal: any, name: any, itemSchema: any, ListClass: any, ItemClass: any)</div>
+  <div class='pre p1 fill-light mt0'>new ListResource(resource: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, environment: <a href="#environment">environment</a>, traversal: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, name: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, itemSchema: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, ListClass: <a href="#listresource">ListResource</a>, ItemClass: <a href="#resource">Resource</a>)</div>
   
   
     <p>
@@ -11278,58 +11351,65 @@ with them.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>resource</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>resource</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    resource loaded from the API.
+
           </div>
           
         </div>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>environment</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>environment</span> <code class='quiet'>(<a href="#environment">environment</a>)</code>
+	    the environment this resource is associated to.
+
           </div>
           
         </div>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>traversal</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>traversal</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    traversal from which traverson can continue.
+
           </div>
           
         </div>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>name</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>name</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    name of the embedded resources.
+
           </div>
           
         </div>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>itemSchema</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>itemSchema</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    optional schema for list items
+
           </div>
           
         </div>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>ListClass</span> <code class='quiet'>(any
+            <span class='code bold'>ListClass</span> <code class='quiet'>(<a href="#listresource">ListResource</a>
             = <code>ListResource</code>)</code>
-	    
+	    Class constructor for list types
+
           </div>
           
         </div>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>ItemClass</span> <code class='quiet'>(any
+            <span class='code bold'>ItemClass</span> <code class='quiet'>(<a href="#resource">Resource</a>
             = <code>Resource_1.default</code>)</code>
-	    
+	    Class constructor for item types
+
           </div>
           
         </div>
@@ -12270,7 +12350,7 @@ object will be applied when loading a <a href="#listresource">ListResource</a>.<
   <p>Account resource class</p>
 
 
-  <div class='pre p1 fill-light mt0'>new AccountResource(resource: any, environment: any, traversal: any)</div>
+  <div class='pre p1 fill-light mt0'>new AccountResource(resource: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, environment: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, traversal: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</div>
   
   
     <p>
@@ -12294,24 +12374,27 @@ object will be applied when loading a <a href="#listresource">ListResource</a>.<
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>resource</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>resource</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    resource loaded from the API.
+
           </div>
           
         </div>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>environment</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>environment</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    the environment this resource is associated to.
+
           </div>
           
         </div>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>traversal</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>traversal</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</code>
+	    traversal from which traverson can continue.
+
           </div>
           
         </div>
@@ -12750,7 +12833,7 @@ permissions and all group permissions.</p>
   <p>Account list resource class.</p>
 
 
-  <div class='pre p1 fill-light mt0'>new AccountList(resource: any, environment: any, traversal: any)</div>
+  <div class='pre p1 fill-light mt0'>new AccountList(resource: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, environment: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, traversal: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</div>
   
   
     <p>
@@ -12774,24 +12857,27 @@ permissions and all group permissions.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>resource</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>resource</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    resource loaded from the API.
+
           </div>
           
         </div>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>environment</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>environment</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    the environment this resource is associated to.
+
           </div>
           
         </div>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>traversal</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>traversal</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</code>
+	    traversal from which traverson can continue.
+
           </div>
           
         </div>
@@ -12833,7 +12919,7 @@ permissions and all group permissions.</p>
   <p>TokenResource class</p>
 
 
-  <div class='pre p1 fill-light mt0'>new TokenResource(resource: any, environment: any, traversal: any)</div>
+  <div class='pre p1 fill-light mt0'>new TokenResource(resource: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, environment: <a href="#environment">environment</a>, traversal: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</div>
   
   
     <p>
@@ -12857,24 +12943,27 @@ permissions and all group permissions.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>resource</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>resource</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    resource loaded from the API.
+
           </div>
           
         </div>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>environment</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>environment</span> <code class='quiet'>(<a href="#environment">environment</a>)</code>
+	    the environment this resource is associated to.
+
           </div>
           
         </div>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>traversal</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>traversal</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</code>
+	    traversal from which traverson can continue.
+
           </div>
           
         </div>
@@ -12974,7 +13063,7 @@ permissions and all group permissions.</p>
   <p>Token list class</p>
 
 
-  <div class='pre p1 fill-light mt0'>new TokenList(resource: any, environment: any, traversal: any)</div>
+  <div class='pre p1 fill-light mt0'>new TokenList(resource: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, environment: <a href="#environment">environment</a>, traversal: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</div>
   
   
     <p>
@@ -12998,24 +13087,27 @@ permissions and all group permissions.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>resource</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>resource</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    resource loaded from the API.
+
           </div>
           
         </div>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>environment</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>environment</span> <code class='quiet'>(<a href="#environment">environment</a>)</code>
+	    the environment this resource is associated to.
+
           </div>
           
         </div>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>traversal</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>traversal</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</code>
+	    traversal from which traverson can continue.
+
           </div>
           
         </div>
@@ -13057,7 +13149,7 @@ permissions and all group permissions.</p>
   <p>ClientResource class</p>
 
 
-  <div class='pre p1 fill-light mt0'>new ClientResource(resource: any, environment: any, traversal: any)</div>
+  <div class='pre p1 fill-light mt0'>new ClientResource(resource: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, environment: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, traversal: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</div>
   
   
     <p>
@@ -13081,24 +13173,27 @@ permissions and all group permissions.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>resource</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>resource</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    resource loaded from the API.
+
           </div>
           
         </div>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>environment</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>environment</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    the environment this resource is associated to.
+
           </div>
           
         </div>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>traversal</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>traversal</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</code>
+	    traversal from which traverson can continue.
+
           </div>
           
         </div>
@@ -13166,7 +13261,7 @@ permissions and all group permissions.</p>
   <p>Client list class</p>
 
 
-  <div class='pre p1 fill-light mt0'>new ClientList(resource: any, environment: any, traversal: any)</div>
+  <div class='pre p1 fill-light mt0'>new ClientList(resource: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, environment: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, traversal: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</div>
   
   
     <p>
@@ -13190,24 +13285,27 @@ permissions and all group permissions.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>resource</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>resource</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    resource loaded from the API.
+
           </div>
           
         </div>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>environment</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>environment</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    the environment this resource is associated to.
+
           </div>
           
         </div>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>traversal</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>traversal</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</code>
+	    traversal from which traverson can continue.
+
           </div>
           
         </div>
@@ -13249,7 +13347,7 @@ permissions and all group permissions.</p>
   <p>GroupResource class</p>
 
 
-  <div class='pre p1 fill-light mt0'>new GroupResource(resource: any, environment: any, traversal: any)</div>
+  <div class='pre p1 fill-light mt0'>new GroupResource(resource: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, environment: <a href="#environment">environment</a>, traversal: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</div>
   
   
     <p>
@@ -13273,24 +13371,27 @@ permissions and all group permissions.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>resource</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>resource</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    resource loaded from the API.
+
           </div>
           
         </div>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>environment</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>environment</span> <code class='quiet'>(<a href="#environment">environment</a>)</code>
+	    the environment this resource is associated to.
+
           </div>
           
         </div>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>traversal</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>traversal</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</code>
+	    traversal from which traverson can continue.
+
           </div>
           
         </div>
@@ -13500,7 +13601,7 @@ permissions and all group permissions.</p>
   <p>GroupList list class</p>
 
 
-  <div class='pre p1 fill-light mt0'>new GroupList(resource: any, environment: any, traversal: any)</div>
+  <div class='pre p1 fill-light mt0'>new GroupList(resource: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, environment: <a href="#environment">environment</a>, traversal: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</div>
   
   
     <p>
@@ -13524,24 +13625,27 @@ permissions and all group permissions.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>resource</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>resource</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    resource loaded from the API.
+
           </div>
           
         </div>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>environment</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>environment</span> <code class='quiet'>(<a href="#environment">environment</a>)</code>
+	    the environment this resource is associated to.
+
           </div>
           
         </div>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>traversal</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>traversal</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</code>
+	    traversal from which traverson can continue.
+
           </div>
           
         </div>
@@ -13583,7 +13687,7 @@ permissions and all group permissions.</p>
   <p>Invites Resource. Will contain an <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a> containing all unused invites.</p>
 
 
-  <div class='pre p1 fill-light mt0'>new InvitesResource(resource: any, environment: any, traversal: any)</div>
+  <div class='pre p1 fill-light mt0'>new InvitesResource(resource: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, environment: <a href="#environment">environment</a>, traversal: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</div>
   
   
     <p>
@@ -13607,24 +13711,27 @@ permissions and all group permissions.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>resource</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>resource</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    resource loaded from the API.
+
           </div>
           
         </div>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>environment</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>environment</span> <code class='quiet'>(<a href="#environment">environment</a>)</code>
+	    the environment this resource is associated to.
+
           </div>
           
         </div>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>traversal</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>traversal</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</code>
+	    traversal from which traverson can continue.
+
           </div>
           
         </div>
@@ -13678,7 +13785,7 @@ permissions and all group permissions.</p>
   <p>InvalidPermissionsResource class</p>
 
 
-  <div class='pre p1 fill-light mt0'>new InvalidPermissionsResource(resource: any, environment: any, traversal: any)</div>
+  <div class='pre p1 fill-light mt0'>new InvalidPermissionsResource(resource: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, environment: <a href="#environment">environment</a>, traversal: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</div>
   
   
     <p>
@@ -13702,24 +13809,27 @@ permissions and all group permissions.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>resource</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>resource</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    resource loaded from the API.
+
           </div>
           
         </div>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>environment</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>environment</span> <code class='quiet'>(<a href="#environment">environment</a>)</code>
+	    the environment this resource is associated to.
+
           </div>
           
         </div>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>traversal</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>traversal</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</code>
+	    traversal from which traverson can continue.
+
           </div>
           
         </div>
@@ -13799,7 +13909,7 @@ permissions and all group permissions.</p>
   <p>AppResource class</p>
 
 
-  <div class='pre p1 fill-light mt0'>new AppResource(resource: any, environment: any, traversal: any)</div>
+  <div class='pre p1 fill-light mt0'>new AppResource(resource: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, environment: <a href="#environment">environment</a>, traversal: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</div>
   
   
     <p>
@@ -13823,24 +13933,27 @@ permissions and all group permissions.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>resource</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>resource</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    resource loaded from the API.
+
           </div>
           
         </div>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>environment</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>environment</span> <code class='quiet'>(<a href="#environment">environment</a>)</code>
+	    the environment this resource is associated to.
+
           </div>
           
         </div>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>traversal</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>traversal</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</code>
+	    traversal from which traverson can continue.
+
           </div>
           
         </div>
@@ -14790,7 +14903,7 @@ by the options parameter.</p>
   <p>App list class</p>
 
 
-  <div class='pre p1 fill-light mt0'>new AppList(resource: any, environment: any, traversal: any)</div>
+  <div class='pre p1 fill-light mt0'>new AppList(resource: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, environment: <a href="#environment">environment</a>, traversal: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</div>
   
   
     <p>
@@ -14814,24 +14927,27 @@ by the options parameter.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>resource</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>resource</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    resource loaded from the API.
+
           </div>
           
         </div>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>environment</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>environment</span> <code class='quiet'>(<a href="#environment">environment</a>)</code>
+	    the environment this resource is associated to.
+
           </div>
           
         </div>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>traversal</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>traversal</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</code>
+	    traversal from which traverson can continue.
+
           </div>
           
         </div>
@@ -14873,7 +14989,7 @@ by the options parameter.</p>
   <p>TypesResource class</p>
 
 
-  <div class='pre p1 fill-light mt0'>new TypesResource(resource: any, environment: any, traversal: any)</div>
+  <div class='pre p1 fill-light mt0'>new TypesResource(resource: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, environment: <a href="#environment">environment</a>, traversal: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</div>
   
   
     <p>
@@ -14897,24 +15013,27 @@ by the options parameter.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>resource</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>resource</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    resource loaded from the API.
+
           </div>
           
         </div>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>environment</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>environment</span> <code class='quiet'>(<a href="#environment">environment</a>)</code>
+	    the environment this resource is associated to.
+
           </div>
           
         </div>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>traversal</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>traversal</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</code>
+	    traversal from which traverson can continue.
+
           </div>
           
         </div>
@@ -15944,7 +16063,7 @@ by the options parameter.</p>
   <p>AppStatsResource class</p>
 
 
-  <div class='pre p1 fill-light mt0'>new AppStatsResource(resource: any, environment: any, traversal: any)</div>
+  <div class='pre p1 fill-light mt0'>new AppStatsResource(resource: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, environment: <a href="#environment">environment</a>, traversal: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</div>
   
   
     <p>
@@ -15968,24 +16087,27 @@ by the options parameter.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>resource</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>resource</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    resource loaded from the API.
+
           </div>
           
         </div>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>environment</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>environment</span> <code class='quiet'>(<a href="#environment">environment</a>)</code>
+	    the environment this resource is associated to.
+
           </div>
           
         </div>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>traversal</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>traversal</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</code>
+	    traversal from which traverson can continue.
+
           </div>
           
         </div>
@@ -16109,7 +16231,7 @@ by the options parameter.</p>
   <p>AppStats list class</p>
 
 
-  <div class='pre p1 fill-light mt0'>new AppStatsList(resource: any, environment: any, traversal: any)</div>
+  <div class='pre p1 fill-light mt0'>new AppStatsList(resource: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, environment: <a href="#environment">environment</a>, traversal: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</div>
   
   
     <p>
@@ -16133,24 +16255,27 @@ by the options parameter.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>resource</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>resource</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    resource loaded from the API.
+
           </div>
           
         </div>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>environment</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>environment</span> <code class='quiet'>(<a href="#environment">environment</a>)</code>
+	    the environment this resource is associated to.
+
           </div>
           
         </div>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>traversal</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>traversal</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</code>
+	    traversal from which traverson can continue.
+
           </div>
           
         </div>
@@ -16192,7 +16317,7 @@ by the options parameter.</p>
   <p>PlatformResource class</p>
 
 
-  <div class='pre p1 fill-light mt0'>new PlatformResource(resource: any, environment: any, traversal: any)</div>
+  <div class='pre p1 fill-light mt0'>new PlatformResource(resource: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, environment: <a href="#environment">environment</a>, traversal: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</div>
   
   
     <p>
@@ -16216,24 +16341,27 @@ by the options parameter.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>resource</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>resource</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    resource loaded from the API.
+
           </div>
           
         </div>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>environment</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>environment</span> <code class='quiet'>(<a href="#environment">environment</a>)</code>
+	    the environment this resource is associated to.
+
           </div>
           
         </div>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>traversal</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>traversal</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</code>
+	    traversal from which traverson can continue.
+
           </div>
           
         </div>
@@ -17074,7 +17202,7 @@ by the options parameter.</p>
   <p>Platform list class</p>
 
 
-  <div class='pre p1 fill-light mt0'>new PlatformList(resource: any, environment: any, traversal: any)</div>
+  <div class='pre p1 fill-light mt0'>new PlatformList(resource: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, environment: <a href="#environment">environment</a>, traversal: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</div>
   
   
     <p>
@@ -17098,24 +17226,27 @@ by the options parameter.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>resource</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>resource</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    resource loaded from the API.
+
           </div>
           
         </div>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>environment</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>environment</span> <code class='quiet'>(<a href="#environment">environment</a>)</code>
+	    the environment this resource is associated to.
+
           </div>
           
         </div>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>traversal</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>traversal</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</code>
+	    traversal from which traverson can continue.
+
           </div>
           
         </div>
@@ -17157,7 +17288,7 @@ by the options parameter.</p>
   <p>CodeSourceResource class</p>
 
 
-  <div class='pre p1 fill-light mt0'>new CodeSourceResource(resource: any, environment: any, traversal: any)</div>
+  <div class='pre p1 fill-light mt0'>new CodeSourceResource(resource: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, environment: <a href="#environment">environment</a>, traversal: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</div>
   
   
     <p>
@@ -17181,24 +17312,27 @@ by the options parameter.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>resource</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>resource</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    resource loaded from the API.
+
           </div>
           
         </div>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>environment</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>environment</span> <code class='quiet'>(<a href="#environment">environment</a>)</code>
+	    the environment this resource is associated to.
+
           </div>
           
         </div>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>traversal</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>traversal</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</code>
+	    traversal from which traverson can continue.
+
           </div>
           
         </div>
@@ -17266,7 +17400,7 @@ by the options parameter.</p>
   <p>CodeSource list class</p>
 
 
-  <div class='pre p1 fill-light mt0'>new CodeSourceList(resource: any, environment: any, traversal: any)</div>
+  <div class='pre p1 fill-light mt0'>new CodeSourceList(resource: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, environment: <a href="#environment">environment</a>, traversal: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</div>
   
   
     <p>
@@ -17290,24 +17424,27 @@ by the options parameter.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>resource</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>resource</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    resource loaded from the API.
+
           </div>
           
         </div>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>environment</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>environment</span> <code class='quiet'>(<a href="#environment">environment</a>)</code>
+	    the environment this resource is associated to.
+
           </div>
           
         </div>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>traversal</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>traversal</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</code>
+	    traversal from which traverson can continue.
+
           </div>
           
         </div>
@@ -17349,7 +17486,7 @@ by the options parameter.</p>
   <p>DataSourceResource class</p>
 
 
-  <div class='pre p1 fill-light mt0'>new DataSourceResource(resource: any, environment: any, traversal: any)</div>
+  <div class='pre p1 fill-light mt0'>new DataSourceResource(resource: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, environment: <a href="#environment">environment</a>, traversal: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</div>
   
   
     <p>
@@ -17373,24 +17510,27 @@ by the options parameter.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>resource</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>resource</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    resource loaded from the API.
+
           </div>
           
         </div>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>environment</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>environment</span> <code class='quiet'>(<a href="#environment">environment</a>)</code>
+	    the environment this resource is associated to.
+
           </div>
           
         </div>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>traversal</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>traversal</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</code>
+	    traversal from which traverson can continue.
+
           </div>
           
         </div>
@@ -17458,7 +17598,7 @@ by the options parameter.</p>
   <p>DataSource list class</p>
 
 
-  <div class='pre p1 fill-light mt0'>new DataSourceList(resource: any, environment: any, traversal: any)</div>
+  <div class='pre p1 fill-light mt0'>new DataSourceList(resource: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, environment: <a href="#environment">environment</a>, traversal: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</div>
   
   
     <p>
@@ -17482,24 +17622,27 @@ by the options parameter.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>resource</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>resource</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    resource loaded from the API.
+
           </div>
           
         </div>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>environment</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>environment</span> <code class='quiet'>(<a href="#environment">environment</a>)</code>
+	    the environment this resource is associated to.
+
           </div>
           
         </div>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>traversal</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>traversal</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</code>
+	    traversal from which traverson can continue.
+
           </div>
           
         </div>
@@ -17541,7 +17684,7 @@ by the options parameter.</p>
   <p>TargetResource class</p>
 
 
-  <div class='pre p1 fill-light mt0'>new TargetResource(resource: any, environment: any, traversal: any)</div>
+  <div class='pre p1 fill-light mt0'>new TargetResource(resource: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, environment: <a href="#environment">environment</a>, traversal: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</div>
   
   
     <p>
@@ -17565,24 +17708,27 @@ by the options parameter.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>resource</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>resource</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    resource loaded from the API.
+
           </div>
           
         </div>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>environment</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>environment</span> <code class='quiet'>(<a href="#environment">environment</a>)</code>
+	    the environment this resource is associated to.
+
           </div>
           
         </div>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>traversal</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>traversal</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</code>
+	    traversal from which traverson can continue.
+
           </div>
           
         </div>
@@ -17650,7 +17796,7 @@ by the options parameter.</p>
   <p>Target list class</p>
 
 
-  <div class='pre p1 fill-light mt0'>new TargetList(resource: any, environment: any, traversal: any)</div>
+  <div class='pre p1 fill-light mt0'>new TargetList(resource: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, environment: <a href="#environment">environment</a>, traversal: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</div>
   
   
     <p>
@@ -17674,24 +17820,27 @@ by the options parameter.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>resource</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>resource</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    resource loaded from the API.
+
           </div>
           
         </div>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>environment</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>environment</span> <code class='quiet'>(<a href="#environment">environment</a>)</code>
+	    the environment this resource is associated to.
+
           </div>
           
         </div>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>traversal</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>traversal</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</code>
+	    traversal from which traverson can continue.
+
           </div>
           
         </div>
@@ -17733,7 +17882,7 @@ by the options parameter.</p>
   <p>BuildResource class</p>
 
 
-  <div class='pre p1 fill-light mt0'>new BuildResource(resource: any, environment: any, traversal: any)</div>
+  <div class='pre p1 fill-light mt0'>new BuildResource(resource: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, environment: <a href="#environment">environment</a>, traversal: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</div>
   
   
     <p>
@@ -17757,24 +17906,27 @@ by the options parameter.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>resource</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>resource</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    resource loaded from the API.
+
           </div>
           
         </div>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>environment</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>environment</span> <code class='quiet'>(<a href="#environment">environment</a>)</code>
+	    the environment this resource is associated to.
+
           </div>
           
         </div>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>traversal</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>traversal</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</code>
+	    traversal from which traverson can continue.
+
           </div>
           
         </div>
@@ -17828,7 +17980,7 @@ by the options parameter.</p>
   <p>CodeSource list class</p>
 
 
-  <div class='pre p1 fill-light mt0'>new BuildList(resource: any, environment: any, traversal: any)</div>
+  <div class='pre p1 fill-light mt0'>new BuildList(resource: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, environment: <a href="#environment">environment</a>, traversal: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</div>
   
   
     <p>
@@ -17852,24 +18004,27 @@ by the options parameter.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>resource</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>resource</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    resource loaded from the API.
+
           </div>
           
         </div>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>environment</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>environment</span> <code class='quiet'>(<a href="#environment">environment</a>)</code>
+	    the environment this resource is associated to.
+
           </div>
           
         </div>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>traversal</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>traversal</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</code>
+	    traversal from which traverson can continue.
+
           </div>
           
         </div>
@@ -17911,7 +18066,7 @@ by the options parameter.</p>
   <p>DeploymentResource class</p>
 
 
-  <div class='pre p1 fill-light mt0'>new DeploymentResource(resource: any, environment: any, traversal: any)</div>
+  <div class='pre p1 fill-light mt0'>new DeploymentResource(resource: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, environment: <a href="#environment">environment</a>, traversal: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</div>
   
   
     <p>
@@ -17935,24 +18090,27 @@ by the options parameter.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>resource</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>resource</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    resource loaded from the API.
+
           </div>
           
         </div>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>environment</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>environment</span> <code class='quiet'>(<a href="#environment">environment</a>)</code>
+	    the environment this resource is associated to.
+
           </div>
           
         </div>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>traversal</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>traversal</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</code>
+	    traversal from which traverson can continue.
+
           </div>
           
         </div>
@@ -18006,7 +18164,7 @@ by the options parameter.</p>
   <p>CodeSource list class</p>
 
 
-  <div class='pre p1 fill-light mt0'>new DeploymentList(resource: any, environment: any, traversal: any)</div>
+  <div class='pre p1 fill-light mt0'>new DeploymentList(resource: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, environment: <a href="#environment">environment</a>, traversal: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</div>
   
   
     <p>
@@ -18030,24 +18188,27 @@ by the options parameter.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>resource</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>resource</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    resource loaded from the API.
+
           </div>
           
         </div>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>environment</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>environment</span> <code class='quiet'>(<a href="#environment">environment</a>)</code>
+	    the environment this resource is associated to.
+
           </div>
           
         </div>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>traversal</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>traversal</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</code>
+	    traversal from which traverson can continue.
+
           </div>
           
         </div>
@@ -18104,7 +18265,7 @@ by the options parameter.</p>
   <p>DataManager resource class.</p>
 
 
-  <div class='pre p1 fill-light mt0'>new DataManagerResource(resource: any, environment: any, traversal: any)</div>
+  <div class='pre p1 fill-light mt0'>new DataManagerResource(resource: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, environment: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, traversal: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</div>
   
   
     <p>
@@ -18128,24 +18289,27 @@ by the options parameter.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>resource</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>resource</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    resource loaded from the API.
+
           </div>
           
         </div>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>environment</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>environment</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    the environment this resource is associated to.
+
           </div>
           
         </div>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>traversal</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>traversal</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</code>
+	    traversal from which traverson can continue.
+
           </div>
           
         </div>
@@ -19814,7 +19978,7 @@ filter options.
   <p>DataManager list resource class.</p>
 
 
-  <div class='pre p1 fill-light mt0'>new DataManagerList(resource: any, environment: any, traversal: any)</div>
+  <div class='pre p1 fill-light mt0'>new DataManagerList(resource: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, environment: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, traversal: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</div>
   
   
     <p>
@@ -19838,24 +20002,27 @@ filter options.
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>resource</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>resource</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    resource loaded from the API.
+
           </div>
           
         </div>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>environment</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>environment</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    the environment this resource is associated to.
+
           </div>
           
         </div>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>traversal</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>traversal</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</code>
+	    traversal from which traverson can continue.
+
           </div>
           
         </div>
@@ -19897,7 +20064,7 @@ filter options.
   <p>Model resource class</p>
 
 
-  <div class='pre p1 fill-light mt0'>new ModelResource(resource: any, environment: any, traversal: any)</div>
+  <div class='pre p1 fill-light mt0'>new ModelResource(resource: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, environment: <a href="#environment">environment</a>, traversal: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</div>
   
   
     <p>
@@ -19921,24 +20088,27 @@ filter options.
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>resource</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>resource</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    resource loaded from the API.
+
           </div>
           
         </div>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>environment</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>environment</span> <code class='quiet'>(<a href="#environment">environment</a>)</code>
+	    the environment this resource is associated to.
+
           </div>
           
         </div>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>traversal</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>traversal</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</code>
+	    traversal from which traverson can continue.
+
           </div>
           
         </div>
@@ -20183,7 +20353,7 @@ filter options.
   <p>Model list resource class.</p>
 
 
-  <div class='pre p1 fill-light mt0'>new ModelList(resource: any, environment: any, traversal: any)</div>
+  <div class='pre p1 fill-light mt0'>new ModelList(resource: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, environment: <a href="#environment">environment</a>, traversal: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</div>
   
   
     <p>
@@ -20207,24 +20377,27 @@ filter options.
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>resource</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>resource</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    resource loaded from the API.
+
           </div>
           
         </div>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>environment</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>environment</span> <code class='quiet'>(<a href="#environment">environment</a>)</code>
+	    the environment this resource is associated to.
+
           </div>
           
         </div>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>traversal</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>traversal</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</code>
+	    traversal from which traverson can continue.
+
           </div>
           
         </div>
@@ -20553,7 +20726,7 @@ filter options.
   <p>DM Account resource class</p>
 
 
-  <div class='pre p1 fill-light mt0'>new DMAccountResource(resource: any, environment: any, traversal: any)</div>
+  <div class='pre p1 fill-light mt0'>new DMAccountResource(resource: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, environment: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, traversal: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</div>
   
   
     <p>
@@ -20577,24 +20750,27 @@ filter options.
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>resource</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>resource</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    resource loaded from the API.
+
           </div>
           
         </div>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>environment</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>environment</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    the environment this resource is associated to.
+
           </div>
           
         </div>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>traversal</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>traversal</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</code>
+	    traversal from which traverson can continue.
+
           </div>
           
         </div>
@@ -20669,7 +20845,7 @@ filter options.
   <p>Account list resource class.</p>
 
 
-  <div class='pre p1 fill-light mt0'>new DMAccountList(resource: any, environment: any, traversal: any)</div>
+  <div class='pre p1 fill-light mt0'>new DMAccountList(resource: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, environment: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, traversal: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</div>
   
   
     <p>
@@ -20693,24 +20869,27 @@ filter options.
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>resource</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>resource</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    resource loaded from the API.
+
           </div>
           
         </div>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>environment</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>environment</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    the environment this resource is associated to.
+
           </div>
           
         </div>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>traversal</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>traversal</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</code>
+	    traversal from which traverson can continue.
+
           </div>
           
         </div>
@@ -20752,7 +20931,7 @@ filter options.
   <p>DMClientResource class</p>
 
 
-  <div class='pre p1 fill-light mt0'>new DMClientResource(resource: any, environment: any, traversal: any)</div>
+  <div class='pre p1 fill-light mt0'>new DMClientResource(resource: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, environment: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, traversal: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</div>
   
   
     <p>
@@ -20776,24 +20955,27 @@ filter options.
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>resource</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>resource</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    resource loaded from the API.
+
           </div>
           
         </div>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>environment</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>environment</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    the environment this resource is associated to.
+
           </div>
           
         </div>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>traversal</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>traversal</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</code>
+	    traversal from which traverson can continue.
+
           </div>
           
         </div>
@@ -20875,7 +21057,7 @@ filter options.
   <p>Client list class</p>
 
 
-  <div class='pre p1 fill-light mt0'>new DMClientList(resource: any, environment: any, traversal: any)</div>
+  <div class='pre p1 fill-light mt0'>new DMClientList(resource: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, environment: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, traversal: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</div>
   
   
     <p>
@@ -20899,24 +21081,27 @@ filter options.
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>resource</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>resource</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    resource loaded from the API.
+
           </div>
           
         </div>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>environment</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>environment</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    the environment this resource is associated to.
+
           </div>
           
         </div>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>traversal</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>traversal</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</code>
+	    traversal from which traverson can continue.
+
           </div>
           
         </div>
@@ -20958,7 +21143,7 @@ filter options.
   <p>Role resource class</p>
 
 
-  <div class='pre p1 fill-light mt0'>new RoleResource(resource: any, environment: any, traversal: any)</div>
+  <div class='pre p1 fill-light mt0'>new RoleResource(resource: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, environment: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, traversal: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</div>
   
   
     <p>
@@ -20982,24 +21167,27 @@ filter options.
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>resource</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>resource</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    resource loaded from the API.
+
           </div>
           
         </div>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>environment</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>environment</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    the environment this resource is associated to.
+
           </div>
           
         </div>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>traversal</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>traversal</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</code>
+	    traversal from which traverson can continue.
+
           </div>
           
         </div>
@@ -21019,7 +21207,7 @@ filter options.
         </div>
       
         <div class='space-bottom0'>
-          <span class='code bold'>name</span> <code class='quiet'>(string)</code>
+          <span class='code bold'>name</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
           : The name of the role
 
           
@@ -21088,7 +21276,7 @@ filter options.
   <p>Client list class</p>
 
 
-  <div class='pre p1 fill-light mt0'>new RoleList(resource: any, environment: any, traversal: any)</div>
+  <div class='pre p1 fill-light mt0'>new RoleList(resource: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, environment: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, traversal: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</div>
   
   
     <p>
@@ -21112,24 +21300,27 @@ filter options.
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>resource</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>resource</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    resource loaded from the API.
+
           </div>
           
         </div>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>environment</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>environment</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    the environment this resource is associated to.
+
           </div>
           
         </div>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>traversal</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>traversal</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</code>
+	    traversal from which traverson can continue.
+
           </div>
           
         </div>
@@ -21171,7 +21362,7 @@ filter options.
   <p>Template resource class</p>
 
 
-  <div class='pre p1 fill-light mt0'>new TemplateResource(resource: any, environment: any, traversal: any)</div>
+  <div class='pre p1 fill-light mt0'>new TemplateResource(resource: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, environment: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, traversal: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</div>
   
   
     <p>
@@ -21195,24 +21386,27 @@ filter options.
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>resource</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>resource</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    resource loaded from the API.
+
           </div>
           
         </div>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>environment</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>environment</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    the environment this resource is associated to.
+
           </div>
           
         </div>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>traversal</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>traversal</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</code>
+	    traversal from which traverson can continue.
+
           </div>
           
         </div>
@@ -21436,7 +21630,7 @@ filter options.
   <p>Template list class</p>
 
 
-  <div class='pre p1 fill-light mt0'>new TemplateList(resource: any, environment: any, traversal: any)</div>
+  <div class='pre p1 fill-light mt0'>new TemplateList(resource: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, environment: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, traversal: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</div>
   
   
     <p>
@@ -21460,24 +21654,27 @@ filter options.
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>resource</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>resource</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    resource loaded from the API.
+
           </div>
           
         </div>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>environment</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>environment</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    the environment this resource is associated to.
+
           </div>
           
         </div>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>traversal</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>traversal</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</code>
+	    traversal from which traverson can continue.
+
           </div>
           
         </div>
@@ -21519,7 +21716,7 @@ filter options.
   <p>DMStatsResource class</p>
 
 
-  <div class='pre p1 fill-light mt0'>new DMStatsResource(resource: any, environment: any, traversal: any)</div>
+  <div class='pre p1 fill-light mt0'>new DMStatsResource(resource: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, environment: <a href="#environment">environment</a>, traversal: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</div>
   
   
     <p>
@@ -21543,24 +21740,27 @@ filter options.
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>resource</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>resource</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    resource loaded from the API.
+
           </div>
           
         </div>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>environment</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>environment</span> <code class='quiet'>(<a href="#environment">environment</a>)</code>
+	    the environment this resource is associated to.
+
           </div>
           
         </div>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>traversal</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>traversal</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</code>
+	    traversal from which traverson can continue.
+
           </div>
           
         </div>
@@ -21614,7 +21814,7 @@ filter options.
   <p>DMStats list class</p>
 
 
-  <div class='pre p1 fill-light mt0'>new DMStatsList(resource: any, environment: any, traversal: any)</div>
+  <div class='pre p1 fill-light mt0'>new DMStatsList(resource: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, environment: <a href="#environment">environment</a>, traversal: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</div>
   
   
     <p>
@@ -21638,24 +21838,27 @@ filter options.
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>resource</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>resource</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    resource loaded from the API.
+
           </div>
           
         </div>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>environment</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>environment</span> <code class='quiet'>(<a href="#environment">environment</a>)</code>
+	    the environment this resource is associated to.
+
           </div>
           
         </div>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>traversal</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>traversal</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</code>
+	    traversal from which traverson can continue.
+
           </div>
           
         </div>
@@ -21879,7 +22082,7 @@ filter options.
   <p>AssetGroupResource class</p>
 
 
-  <div class='pre p1 fill-light mt0'>new AssetGroupResource(resource: any, environment: any, traversal: any)</div>
+  <div class='pre p1 fill-light mt0'>new AssetGroupResource(resource: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, environment: <a href="#environment">environment</a>, traversal: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</div>
   
   
     <p>
@@ -21903,24 +22106,27 @@ filter options.
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>resource</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>resource</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    resource loaded from the API.
+
           </div>
           
         </div>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>environment</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>environment</span> <code class='quiet'>(<a href="#environment">environment</a>)</code>
+	    the environment this resource is associated to.
+
           </div>
           
         </div>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>traversal</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>traversal</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</code>
+	    traversal from which traverson can continue.
+
           </div>
           
         </div>
@@ -22152,7 +22358,7 @@ filter options.
   <p>AssetGroup list class</p>
 
 
-  <div class='pre p1 fill-light mt0'>new AssetGroupList(resource: any, environment: any, traversal: any)</div>
+  <div class='pre p1 fill-light mt0'>new AssetGroupList(resource: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, environment: <a href="#environment">environment</a>, traversal: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</div>
   
   
     <p>
@@ -22176,24 +22382,27 @@ filter options.
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>resource</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>resource</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    resource loaded from the API.
+
           </div>
           
         </div>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>environment</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>environment</span> <code class='quiet'>(<a href="#environment">environment</a>)</code>
+	    the environment this resource is associated to.
+
           </div>
           
         </div>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>traversal</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>traversal</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</code>
+	    traversal from which traverson can continue.
+
           </div>
           
         </div>
@@ -22235,7 +22444,7 @@ filter options.
   <p>AssetResource class</p>
 
 
-  <div class='pre p1 fill-light mt0'>new AssetResource(resource: any, environment: any, traversal: any)</div>
+  <div class='pre p1 fill-light mt0'>new AssetResource(resource: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, environment: <a href="#environment">environment</a>, traversal: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</div>
   
   
     <p>
@@ -22259,24 +22468,27 @@ filter options.
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>resource</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>resource</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    resource loaded from the API.
+
           </div>
           
         </div>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>environment</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>environment</span> <code class='quiet'>(<a href="#environment">environment</a>)</code>
+	    the environment this resource is associated to.
+
           </div>
           
         </div>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>traversal</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>traversal</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</code>
+	    traversal from which traverson can continue.
+
           </div>
           
         </div>
@@ -22648,7 +22860,7 @@ image for an asset.</p>
   <p>Asset list class</p>
 
 
-  <div class='pre p1 fill-light mt0'>new AssetList(resource: any, environment: any, traversal: any)</div>
+  <div class='pre p1 fill-light mt0'>new AssetList(resource: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, environment: <a href="#environment">environment</a>, traversal: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</div>
   
   
     <p>
@@ -22672,24 +22884,27 @@ image for an asset.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>resource</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>resource</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    resource loaded from the API.
+
           </div>
           
         </div>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>environment</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>environment</span> <code class='quiet'>(<a href="#environment">environment</a>)</code>
+	    the environment this resource is associated to.
+
           </div>
           
         </div>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>traversal</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>traversal</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</code>
+	    traversal from which traverson can continue.
+
           </div>
           
         </div>
@@ -23142,7 +23357,7 @@ provided. Url otherwise.
   <p>DeletedAssetResource class</p>
 
 
-  <div class='pre p1 fill-light mt0'>new DeletedAssetResource(resource: any, environment: any, traversal: any)</div>
+  <div class='pre p1 fill-light mt0'>new DeletedAssetResource(resource: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, environment: <a href="#environment">environment</a>, traversal: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</div>
   
   
     <p>
@@ -23166,24 +23381,27 @@ provided. Url otherwise.
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>resource</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>resource</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    resource loaded from the API.
+
           </div>
           
         </div>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>environment</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>environment</span> <code class='quiet'>(<a href="#environment">environment</a>)</code>
+	    the environment this resource is associated to.
+
           </div>
           
         </div>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>traversal</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>traversal</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</code>
+	    traversal from which traverson can continue.
+
           </div>
           
         </div>
@@ -23608,7 +23826,7 @@ provided. Url otherwise.
   <p>Asset list class</p>
 
 
-  <div class='pre p1 fill-light mt0'>new DeletedAssetList(resource: any, environment: any, traversal: any)</div>
+  <div class='pre p1 fill-light mt0'>new DeletedAssetList(resource: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, environment: <a href="#environment">environment</a>, traversal: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</div>
   
   
     <p>
@@ -23632,24 +23850,27 @@ provided. Url otherwise.
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>resource</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>resource</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    resource loaded from the API.
+
           </div>
           
         </div>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>environment</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>environment</span> <code class='quiet'>(<a href="#environment">environment</a>)</code>
+	    the environment this resource is associated to.
+
           </div>
           
         </div>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>traversal</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>traversal</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</code>
+	    traversal from which traverson can continue.
+
           </div>
           
         </div>
@@ -23691,7 +23912,7 @@ provided. Url otherwise.
   <p>Tag resource class</p>
 
 
-  <div class='pre p1 fill-light mt0'>new TagResource(resource: any, environment: any, traversal: any)</div>
+  <div class='pre p1 fill-light mt0'>new TagResource(resource: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, environment: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, traversal: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</div>
   
   
     <p>
@@ -23715,24 +23936,27 @@ provided. Url otherwise.
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>resource</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>resource</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    resource loaded from the API.
+
           </div>
           
         </div>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>environment</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>environment</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    the environment this resource is associated to.
+
           </div>
           
         </div>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>traversal</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>traversal</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</code>
+	    traversal from which traverson can continue.
+
           </div>
           
         </div>
@@ -23793,7 +24017,7 @@ provided. Url otherwise.
   <p>Tag list resource class.</p>
 
 
-  <div class='pre p1 fill-light mt0'>new TagList(resource: any, environment: any, traversal: any)</div>
+  <div class='pre p1 fill-light mt0'>new TagList(resource: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, environment: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, traversal: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</div>
   
   
     <p>
@@ -23817,24 +24041,27 @@ provided. Url otherwise.
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>resource</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>resource</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    resource loaded from the API.
+
           </div>
           
         </div>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>environment</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>environment</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    the environment this resource is associated to.
+
           </div>
           
         </div>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>traversal</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>traversal</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</code>
+	    traversal from which traverson can continue.
+
           </div>
           
         </div>
@@ -24288,7 +24515,7 @@ EntryResource will need to be instantiated with EntryResource#createEntry, other
 required JSON Schemas won't be stored in the cache.</p>
 
 
-  <div class='pre p1 fill-light mt0'>new EntryResource(resource: any, environment: any, schema: any, traversal: any)</div>
+  <div class='pre p1 fill-light mt0'>new EntryResource(resource: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, environment: <a href="#environment">environment</a>, schema: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, traversal: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</div>
   
   
     <p>
@@ -24312,32 +24539,36 @@ required JSON Schemas won't be stored in the cache.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>resource</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>resource</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    loaded resource
+
           </div>
           
         </div>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>environment</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>environment</span> <code class='quiet'>(<a href="#environment">environment</a>)</code>
+	    the environment of this resource
+
           </div>
           
         </div>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>schema</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>schema</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    JSON Schema for this entry
+
           </div>
           
         </div>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>traversal</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>traversal</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</code>
+	    traversal for continuing
+
           </div>
           
         </div>
@@ -25187,7 +25418,7 @@ otherwise.
   <p>Entry list class</p>
 
 
-  <div class='pre p1 fill-light mt0'>new EntryList(resource: any, environment: any, traversal: any, name: any, schema: any)</div>
+  <div class='pre p1 fill-light mt0'>new EntryList(resource: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, environment: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, traversal: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?, name: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, schema: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</div>
   
   
     <p>
@@ -25211,40 +25442,45 @@ otherwise.
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>resource</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>resource</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    resource loaded from the API.
+
           </div>
           
         </div>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>environment</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>environment</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    the environment this resource is associated to.
+
           </div>
           
         </div>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>traversal</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>traversal</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</code>
+	    traversal from which traverson can continue.
+
           </div>
           
         </div>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>name</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>name</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    name of the embedded items.
+
           </div>
           
         </div>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>schema</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>schema</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    JSON Schema for list items.
+
           </div>
           
         </div>
@@ -25286,7 +25522,7 @@ otherwise.
   <p>DMAssetResource class</p>
 
 
-  <div class='pre p1 fill-light mt0'>new DMAssetResource(resource: any, environment: any, traversal: any)</div>
+  <div class='pre p1 fill-light mt0'>new DMAssetResource(resource: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, environment: <a href="#environment">environment</a>, traversal: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</div>
   
   
     <p>
@@ -25310,24 +25546,27 @@ otherwise.
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>resource</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>resource</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    resource loaded from the API.
+
           </div>
           
         </div>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>environment</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>environment</span> <code class='quiet'>(<a href="#environment">environment</a>)</code>
+	    the environment this resource is associated to.
+
           </div>
           
         </div>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>traversal</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>traversal</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</code>
+	    traversal from which traverson can continue.
+
           </div>
           
         </div>
@@ -25745,7 +25984,7 @@ image for an asset.</p>
   <p>Asset list class</p>
 
 
-  <div class='pre p1 fill-light mt0'>new DMAssetList(resource: any, environment: any, traversal: any)</div>
+  <div class='pre p1 fill-light mt0'>new DMAssetList(resource: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, environment: <a href="#environment">environment</a>, traversal: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</div>
   
   
     <p>
@@ -25769,24 +26008,27 @@ image for an asset.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>resource</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>resource</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    resource loaded from the API.
+
           </div>
           
         </div>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>environment</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>environment</span> <code class='quiet'>(<a href="#environment">environment</a>)</code>
+	    the environment this resource is associated to.
+
           </div>
           
         </div>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>traversal</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>traversal</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</code>
+	    traversal from which traverson can continue.
+
           </div>
           
         </div>
@@ -25828,7 +26070,7 @@ image for an asset.</p>
   <p>PublicAsset list class</p>
 
 
-  <div class='pre p1 fill-light mt0'>new PublicAssetList(resource: any, environment: any, traversal: any)</div>
+  <div class='pre p1 fill-light mt0'>new PublicAssetList(resource: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, environment: <a href="#environment">environment</a>, traversal: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</div>
   
   
     <p>
@@ -25852,24 +26094,27 @@ image for an asset.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>resource</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>resource</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    resource loaded from the API.
+
           </div>
           
         </div>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>environment</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>environment</span> <code class='quiet'>(<a href="#environment">environment</a>)</code>
+	    the environment this resource is associated to.
+
           </div>
           
         </div>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>traversal</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>traversal</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</code>
+	    traversal from which traverson can continue.
+
           </div>
           
         </div>
@@ -26087,7 +26332,7 @@ levels (nested). The latter one does not contain the tags property since it was 
 embedded version of this asset.</p>
 
 
-  <div class='pre p1 fill-light mt0'>new PublicAssetResource(resource: any, environment: any, traversal: any)</div>
+  <div class='pre p1 fill-light mt0'>new PublicAssetResource(resource: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, environment: <a href="#environment">environment</a>, traversal: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</div>
   
   
     <p>
@@ -26111,24 +26356,27 @@ embedded version of this asset.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>resource</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>resource</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    resource loaded from the API.
+
           </div>
           
         </div>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>environment</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>environment</span> <code class='quiet'>(<a href="#environment">environment</a>)</code>
+	    the environment this resource is associated to.
+
           </div>
           
         </div>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>traversal</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>traversal</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</code>
+	    traversal from which traverson can continue.
+
           </div>
           
         </div>
@@ -26645,7 +26893,7 @@ be the same object but with refreshed data.
   <p>Tag list resource class.</p>
 
 
-  <div class='pre p1 fill-light mt0'>new PublicTagList(resource: any, environment: any, traversal: any)</div>
+  <div class='pre p1 fill-light mt0'>new PublicTagList(resource: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, environment: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, traversal: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</div>
   
   
     <p>
@@ -26669,24 +26917,27 @@ be the same object but with refreshed data.
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>resource</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>resource</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    resource loaded from the API.
+
           </div>
           
         </div>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>environment</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>environment</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    the environment this resource is associated to.
+
           </div>
           
         </div>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>traversal</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>traversal</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</code>
+	    traversal from which traverson can continue.
+
           </div>
           
         </div>
@@ -26728,7 +26979,7 @@ be the same object but with refreshed data.
   <p>PublicTag resource class</p>
 
 
-  <div class='pre p1 fill-light mt0'>new PublicTagResource(resource: any, environment: any, traversal: any)</div>
+  <div class='pre p1 fill-light mt0'>new PublicTagResource(resource: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, environment: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, traversal: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</div>
   
   
     <p>
@@ -26752,24 +27003,27 @@ be the same object but with refreshed data.
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>resource</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>resource</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    resource loaded from the API.
+
           </div>
           
         </div>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>environment</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>environment</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    the environment this resource is associated to.
+
           </div>
           
         </div>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>traversal</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>traversal</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</code>
+	    traversal from which traverson can continue.
+
           </div>
           
         </div>
