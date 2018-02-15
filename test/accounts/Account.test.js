@@ -72,10 +72,8 @@ describe('Accounts class', () => {
       throw err;
     });
   });
-  it('should be rejected on list only with accountID', () => {
-    return new Accounts().accountList({ accountid: 'id' })
-    .should.be.rejectedWith('Providing only an id in ResourceList filter will result in single resource response.');
-  });
+  it('should be rejected on list only with accountID', () => new Accounts().accountList({ accountid: 'id' })
+  .should.be.rejectedWith('Providing only an id in ResourceList filter will result in single resource response.'));
   it('should return resource on get', () => {
     const accounts = new Accounts('live');
     const stub = sinon.stub(helper, 'get');
@@ -91,9 +89,7 @@ describe('Accounts class', () => {
       throw err;
     });
   });
-  it('should be rejected on get in undefiend id', () => {
-    return new Accounts().account().should.be.rejectedWith('resourceID must be defined');
-  });
+  it('should be rejected on get in undefiend id', () => new Accounts().account().should.be.rejectedWith('resourceID must be defined'));
   it('should return resource on me', () => {
     const accounts = new Accounts('live');
     const stub = sinon.stub(helper, 'get');
@@ -130,9 +126,7 @@ describe('Accounts class', () => {
     return accounts.emailAvailable('someone@example.com').should.be.eventually.equal(true)
     .and.notify(() => stub.restore());
   });
-  it('should be rejected on undefined email', () => {
-    return new Accounts().emailAvailable().should.be.rejectedWith('email must be defined');
-  });
+  it('should be rejected on undefined email', () => new Accounts().emailAvailable().should.be.rejectedWith('email must be defined'));
   it('should signup new account', () => {
     const accounts = new Accounts();
     accounts.setClientID('rest');
@@ -156,14 +150,10 @@ describe('Accounts class', () => {
       throw err;
     });
   });
-  it('should be rejected on undefined email', () => {
-    return new Accounts().signup(null, 'supersecure')
-    .should.be.rejectedWith('email must be defined');
-  });
-  it('should be rejected on undefined password', () => {
-    return new Accounts().signup('someone@example.com', null)
-    .should.be.rejectedWith('password must be defined');
-  });
+  it('should be rejected on undefined email', () => new Accounts().signup(null, 'supersecure')
+  .should.be.rejectedWith('email must be defined'));
+  it('should be rejected on undefined password', () => new Accounts().signup('someone@example.com', null)
+  .should.be.rejectedWith('password must be defined'));
   it('should be rejected on undefined clientID', () => {
     const accounts = new Accounts();
     accounts[tokenStoreSymbol].clientID = undefined;
@@ -185,9 +175,7 @@ describe('Accounts class', () => {
       throw err;
     });
   });
-  it('should be rejected on undefined email', () => {
-    return new Accounts().resetPassword().should.be.rejectedWith('email must be defined');
-  });
+  it('should be rejected on undefined email', () => new Accounts().resetPassword().should.be.rejectedWith('email must be defined'));
   it('should be rejected on undefiend clientID', () => {
     const accounts = new Accounts();
     accounts[tokenStoreSymbol].clientID = undefined;
@@ -209,9 +197,7 @@ describe('Accounts class', () => {
       throw err;
     });
   });
-  it('should be rejected on undefined email', () => {
-    return new Accounts().changeEmail().should.be.rejectedWith('email must be defined');
-  });
+  it('should be rejected on undefined email', () => new Accounts().changeEmail().should.be.rejectedWith('email must be defined'));
   it('should be rejected on undefiend token', () => {
     const reject = () => {
       const accounts = new Accounts();
@@ -250,10 +236,8 @@ describe('Accounts class', () => {
       throw err;
     });
   });
-  it('should be rejected in count not a number', () => {
-    return new Accounts().createInvites('notANumber')
-    .should.be.rejectedWith('count must be a number');
-  });
+  it('should be rejected in count not a number', () => new Accounts().createInvites('notANumber')
+  .should.be.rejectedWith('count must be a number'));
   it('should load invites', () => {
     const accounts = new Accounts();
     const stub = sinon.stub(helper, 'get');
@@ -286,10 +270,8 @@ describe('Accounts class', () => {
       throw err;
     });
   });
-  it('should be rejected on clientList only with clientID', () => {
-    return new Accounts().clientList({ clientid: 'id' })
-    .should.be.rejectedWith('Providing only an id in ResourceList filter will result in single resource response.');
-  });
+  it('should be rejected on clientList only with clientID', () => new Accounts().clientList({ clientid: 'id' })
+  .should.be.rejectedWith('Providing only an id in ResourceList filter will result in single resource response.'));
   it('should return resource on client', () => {
     const accounts = new Accounts('live');
     const stub = sinon.stub(helper, 'get');
@@ -307,9 +289,7 @@ describe('Accounts class', () => {
       throw err;
     });
   });
-  it('should be rejected on client with undefiend id', () => {
-    return new Accounts().client().should.be.rejectedWith('resourceID must be defined');
-  });
+  it('should be rejected on client with undefiend id', () => new Accounts().client().should.be.rejectedWith('resourceID must be defined'));
   it('should call post on create client', () => {
     const stub = sinon.stub(helper, 'post');
     return new Promise((resolve, reject) => {
@@ -339,10 +319,8 @@ describe('Accounts class', () => {
       throw err;
     });
   });
-  it('should be rejected on create with undefined', () => {
-    return new Accounts('live').createClient()
-    .should.be.rejectedWith('Cannot create resource with undefined object');
-  });
+  it('should be rejected on create with undefined', () => new Accounts('live').createClient()
+  .should.be.rejectedWith('Cannot create resource with undefined object'));
   it('should return invalidPermissionsResource', () => {
     const accounts = new Accounts('live');
     const stub = sinon.stub(helper, 'get');
@@ -375,10 +353,8 @@ describe('Accounts class', () => {
       throw err;
     });
   });
-  it('should be rejected on groupList only with groupID', () => {
-    return new Accounts().groupList({ groupid: 'id' })
-    .should.be.rejectedWith('Providing only an id in ResourceList filter will result in single resource response.');
-  });
+  it('should be rejected on groupList only with groupID', () => new Accounts().groupList({ groupid: 'id' })
+  .should.be.rejectedWith('Providing only an id in ResourceList filter will result in single resource response.'));
   it('should return resource on group', () => {
     const accounts = new Accounts('live');
     const stub = sinon.stub(helper, 'get');
@@ -396,9 +372,7 @@ describe('Accounts class', () => {
       throw err;
     });
   });
-  it('should be rejected on group with undefiend id', () => {
-    return new Accounts().group().should.be.rejectedWith('resourceID must be defined');
-  });
+  it('should be rejected on group with undefiend id', () => new Accounts().group().should.be.rejectedWith('resourceID must be defined'));
   it('should call post on create group', () => {
     const stub = sinon.stub(helper, 'post');
     return new Promise((resolve, reject) => {
@@ -427,28 +401,24 @@ describe('Accounts class', () => {
       throw err;
     });
   });
-  it('should be rejected on create with undefined', () => {
-    return new Accounts('live').createGroup()
-    .should.be.rejectedWith('Cannot create resource with undefined object');
-  });
+  it('should be rejected on create with undefined', () => new Accounts('live').createGroup()
+  .should.be.rejectedWith('Cannot create resource with undefined object'));
 });
 
 describe('Account ListResource', () => {
   let listJson;
   let list;
-  before(() => {
-    return new Promise((resolve, reject) => {
-      fs.readFile(`${__dirname}/../mocks/account-list.json`, 'utf-8', (err, res) => {
-        if (err) {
-          return reject(err);
-        }
-        return resolve(JSON.parse(res));
-      });
-    })
-    .then((json) => {
-      listJson = json;
+  before(() => new Promise((resolve, reject) => {
+    fs.readFile(`${__dirname}/../mocks/account-list.json`, 'utf-8', (err, res) => {
+      if (err) {
+        return reject(err);
+      }
+      return resolve(JSON.parse(res));
     });
-  });
+  })
+  .then((json) => {
+    listJson = json;
+  }));
   beforeEach(() => {
     list = new AccountList(listJson);
   });
@@ -469,19 +439,17 @@ describe('Account ListResource', () => {
 describe('Account Resource', () => {
   let resourceJson;
   let resource;
-  before(() => {
-    return new Promise((resolve, reject) => {
-      fs.readFile(`${__dirname}/../mocks/account-single.json`, 'utf-8', (err, res) => {
-        if (err) {
-          return reject(err);
-        }
-        return resolve(JSON.parse(res));
-      });
-    })
-    .then((json) => {
-      resourceJson = json;
+  before(() => new Promise((resolve, reject) => {
+    fs.readFile(`${__dirname}/../mocks/account-single.json`, 'utf-8', (err, res) => {
+      if (err) {
+        return reject(err);
+      }
+      return resolve(JSON.parse(res));
     });
-  });
+  })
+  .then((json) => {
+    resourceJson = json;
+  }));
   beforeEach(() => {
     resource = new AccountResource(resourceJson);
   });
@@ -525,12 +493,8 @@ describe('Account Resource', () => {
   it('should get all permissions', () => {
     resource.getAllPermissions().should.have.property('length', 8);
   });
-  it('should check permission ok', () => {
-    return resource.checkPermission('dm-stats').should.be.true;
-  });
-  it('should check permission not ok', () => {
-    return resource.checkPermission('nonono').should.be.false;
-  });
+  it('should check permission ok', () => resource.checkPermission('dm-stats').should.be.true);
+  it('should check permission not ok', () => resource.checkPermission('nonono').should.be.false);
   it('should throw on permission check with no permission', () => {
     const throws = () => resource.checkPermission();
     throws.should.throw('permission must be defined');

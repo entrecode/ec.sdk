@@ -2,6 +2,7 @@ import * as traverson from 'traverson';
 import * as HalAdapter from 'traverson-hal';
 import * as halfred from 'halfred';
 import * as validator from 'json-schema-remote';
+import * as shortID from 'shortid';
 
 import events from './EventEmitter';
 import TokenStoreFactory from './TokenStore';
@@ -22,6 +23,19 @@ traverson['registerMediaType'](HalAdapter.mediaType, HalAdapter);
  * Each API connector Class inherits directly from Core class. You cannot instantiate Core
  * directly. Use one of the other API connectors instead.
  *
+ * @example
+ * // will share token for 'userA'
+ * const dmUserA = new DataManager({ environment: 'live', cookieModifier: 'userA' });
+ * const apiUserA = new PublicAPI(shortID, { environment: 'live', cookieModifier: 'userA' }, true);
+ *
+ * // will share token for 'userB'
+ * const dmUserB = new DataManager({ environment: 'live', cookieModifier: 'userB' });
+ * const apiUserB = new PublicAPI(shortID, { environment: 'live', cookieModifier: 'userB' }, true);
+ *
+ * // will not share token and not save it in cookie as well
+ * const dmStandAlone = new DataManager({ environment: 'live', noCookie: true });
+ *
+ *
  * @protected
  * @class
  *
@@ -31,7 +45,23 @@ traverson['registerMediaType'](HalAdapter.mediaType, HalAdapter);
  *   {@link PublicAPI}
  */
 export default class Core {
-  constructor(urls: any, environment: environment = 'live', cookieModifier: string = '') {
+  // constructor(urls: any, environment: environment = 'live', cookieModifier: string = '') {
+  constructor(urls: any, envOrOptions: options | environment = 'live') {
+    let environment;
+    let cookieModifier = '';
+
+    if (typeof envOrOptions === 'string') {
+      environment = envOrOptions;
+    } else {
+      environment = envOrOptions.environment || 'live';
+      if (envOrOptions.cookieModifier) {
+        cookieModifier += envOrOptions.cookieModifier
+      }
+      if (envOrOptions.noCookie) {
+        cookieModifier += shortID.generate();
+      }
+    }
+
     if (!urls) {
       throw new Error('urls must be defined');
     }
@@ -381,6 +411,8 @@ export default class Core {
 }
 
 export type environment = 'live' | 'stage' | 'nightly' | 'develop';
+
+export type options = { environment: environment, noCookie: boolean, cookieModifier: string }
 
 /**
  * You can define which API should be used with the environment parameter. Internally this is also

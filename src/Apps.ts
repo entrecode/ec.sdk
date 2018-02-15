@@ -4,7 +4,7 @@ import AppList from './resources/apps/AppList';
 import AppResource from './resources/apps/AppResource';
 import AppStatsList from './resources/apps/AppStatsList';
 import AppStatsResource from './resources/apps/AppStatsResource';
-import Core, { environment } from './Core';
+import Core, { environment, options } from './Core';
 import TypesResource from './resources/apps/TypesResource';
 import { filterOptions } from './resources/ListResource';
 import { get } from './helper';
@@ -31,12 +31,8 @@ const urls = {
  * @param {environment?} environment the environment to connect to
  */
 export default class Apps extends Core {
-  constructor(environment?: environment) {
-    if (environment && !{}.hasOwnProperty.call(urls, environment)) {
-      throw new Error('invalid environment specified');
-    }
-
-    super(urls, environment);
+  constructor(envOrOptions?: environment | options) {
+    super(urls, envOrOptions);
 
     this[relationsSymbol] = {
       app: {

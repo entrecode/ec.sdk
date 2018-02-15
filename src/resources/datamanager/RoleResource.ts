@@ -16,7 +16,7 @@ interface RoleResource {
  * @class
  *
  * @prop {string} roleID - The id of the role
- * @prop {stirng} name - The name of the role
+ * @prop {string} name - The name of the role
  * @prop {string} label - A label for the role
  * @prop {boolean} addUnregistered - Whether or not to add unregistered users to this role
  * @prop {boolean} addRegistered - Whether or not to add registered users to this role

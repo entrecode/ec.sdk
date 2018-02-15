@@ -4,7 +4,7 @@ import AccountList from './resources/accounts/AccountList';
 import AccountResource from './resources/accounts/AccountResource';
 import ClientList from './resources/accounts/ClientList';
 import ClientResource from './resources/accounts/ClientResource';
-import Core, { environment } from './Core';
+import Core, { environment, options } from './Core';
 import InvalidPermissionsResource from './resources/accounts/InvalidPermissionsResource';
 import InvitesResource from './resources/accounts/InvitesResource';
 import GroupList from './resources/accounts/GroupList';
@@ -50,8 +50,8 @@ const urls = {
  * @param {environment?} environment the {@link environment} to connect to
  */
 export default class Accounts extends Core {
-  constructor(environment?: environment) {
-    super(urls, environment);
+  constructor(envOrOptions?: environment | options) {
+    super(urls, envOrOptions);
 
     this[relationsSymbol] = {
       account: {

@@ -5,7 +5,7 @@ import * as superagent from 'superagent';
 import * as validator from 'json-schema-remote';
 import * as validate from 'validator';
 
-import Core, { environment } from './Core';
+import Core, { environment, options } from './Core';
 import EntryList, { createList } from './resources/publicAPI/EntryList';
 import EntryResource, { createEntry } from './resources/publicAPI/EntryResource';
 import PublicAssetList from './resources/publicAPI/PublicAssetList';
@@ -42,10 +42,10 @@ validator.setLoggingFunction(() => {
 });
 
 const urls = {
-  live: 'https://datamanager.entrecode.de/',
-  stage: 'https://datamanager.cachena.entrecode.de/',
-  nightly: 'https://datamanager.buffalo.entrecode.de/',
-  develop: 'http://localhost:7471/',
+  live: 'https://datamanager.entrecode.de/api',
+  stage: 'https://datamanager.cachena.entrecode.de/api',
+  nightly: 'https://datamanager.buffalo.entrecode.de/api',
+  develop: 'http://localhost:7471/api',
 };
 
 /**
@@ -95,17 +95,30 @@ const urls = {
  * @param {boolean?} ecUser if you are an ecUser it is best to set this to true
  */
 export default class PublicAPI extends Core {
-  constructor(idOrURL: string, environment: environment = 'live', ecUser: boolean = false) {
+  // constructor(idOrURL: string, environment: environment = 'live', ecUser: boolean = false) {
+  constructor(idOrURL: string, envOrOptions: options | environment = 'live', ecUser: boolean = false) {
     if (!idOrURL) {
       throw new Error('idOrURL must be defined');
     }
 
-    let id;
     let env;
+
+    if (envOrOptions === null) {
+      envOrOptions = 'live';
+    }
+
+    if (typeof envOrOptions === 'string') {
+      env = {
+        environment: envOrOptions,
+      }
+    } else {
+      env = envOrOptions;
+    }
+
+    let id;
 
     if (/^[a-f0-9]{8}$/i.test(idOrURL)) {
       id = idOrURL;
-      env = environment;
     } else {
       const result = /^https?:\/\/(datamanager\.(?:(?:cachena|buffalo)\.)?entrecode\.de|localhost:7471)\/api\/([a-f0-9]{8})\/?$/.exec(idOrURL);
       if (!result) {
@@ -114,28 +127,36 @@ export default class PublicAPI extends Core {
 
       switch (result[1]) {
       case 'datamanager.entrecode.de':
-        env = 'live';
+        env.environment = 'live';
         break;
       case 'datamanager.cachena.entrecode.de':
-        env = 'stage';
+        env.environment = 'stage';
         break;
       case 'datamanager.buffalo.entrecode.de':
-        env = 'nightly';
+        env.environment = 'nightly';
         break;
       case 'localhost:7471':
       default:
-        env = 'develop';
+        env.environment = 'develop';
         break;
       }
 
       id = result[2];
     }
 
-    if (!(env in urls)) {
+    if (!ecUser) {
+      if (env.cookieModifier) {
+        env.cookieModifier += id;
+      } else {
+        env.cookieModifier = id;
+      }
+    }
+
+    if (!(env.environment in urls)) {
       throw new Error('invalid environment specified');
     }
 
-    super({ [env]: `${urls[env]}api/${id}` }, env, !ecUser ? id : '');
+    super({ [env.environment]: `${urls[env.environment]}/${id}` }, env);
     this[shortIDSymbol] = id;
     this[assetBaseURLSymbol] = urls[env];
     this[requestCacheSymbol] = undefined;

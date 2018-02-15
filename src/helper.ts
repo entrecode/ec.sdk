@@ -509,7 +509,7 @@ export function optionsToQuery(options: filterOptions, templateURL?: string): an
             }
             const invalid = options[key][searchKey].filter((val) => !(typeof val === 'string' || typeof val === 'number'));
             if (invalid.length > 0) {
-              throw new Error(`${key}.${searchKey} array must contain only stirngs or numbers`);
+              throw new Error(`${key}.${searchKey} array must contain only strings or numbers`);
             }
             out[key] = options[key][searchKey].join(modifier[searchKey]);
             break;
