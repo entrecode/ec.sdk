@@ -23,6 +23,19 @@ traverson['registerMediaType'](HalAdapter.mediaType, HalAdapter);
  * Each API connector Class inherits directly from Core class. You cannot instantiate Core
  * directly. Use one of the other API connectors instead.
  *
+ * @example
+ * // will share token for 'userA'
+ * const dmUserA = new DataManager({ environment: 'live', cookieModifier: 'userA' });
+ * const apiUserA = new PublicAPI(shortID, { environment: 'live', cookieModifier: 'userA' }, true);
+ *
+ * // will share token for 'userB'
+ * const dmUserB = new DataManager({ environment: 'live', cookieModifier: 'userB' });
+ * const apiUserB = new PublicAPI(shortID, { environment: 'live', cookieModifier: 'userB' }, true);
+ *
+ * // will not share token and not save it in cookie as well
+ * const dmStandAlone = new DataManager({ environment: 'live', noCookie: true });
+ *
+ *
  * @protected
  * @class
  *

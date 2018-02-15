@@ -13,6 +13,8 @@ In order to use this SDK you should be familiar with ec.APIs and the concepts be
 
 For every ec.API you will find an API connector. Use one of those to connect to a certain ec.API. Login and logout for ec.users are special cases and are done in [Session](#Session) API connector. All API connectors of a certain [environment](#environment) share some information. The most important one is any access token either received with [Session#login](#Session#login) or by calling [Core#setToken](#Core#setToken). This means you can specifiy the token on any API connector and it will be automatically used by all other API connectors. Also it will be saved in a cookie with the name `<environment>Token`. If any API connector receives a token related Error ([Problem](#Problem)) it will be automatically removed from all API connectors and a [logout event](#eventeventlogout) is triggered. A special case is [PublicAPI](#PublicAPI) since this will store the token in a cookie containing the [environment](#environment) and Data Manager shortID of the PublicAPI (for example: `stagebeefbeefToken`).
 
+Since version 0.13.0 you can create a stand-alone API Connector. By calling the constructor with `new Session({ noCookie: true });` the API Connector won't share its token with other API Connectors.
+
 Every action you take in the ec.sdk will be validated before it will be sent as a request to ec.APIs. This means that the provided json schemas are used.
 
 ##### Installation
@@ -64,7 +66,13 @@ class MyExample {
   
   login(email, password) {
     session.login(email, password)
-    .then(console.log);
+    .then((token) => {
+      // if you use stand-alone API Connectors (`noCookie` set to true)
+      accounts.setToken(token);
+      
+      // or anywhere in the code
+      dataManager.setToken(session.getToken());
+    });
   }
   
   setAccountLanguage(lang) {
