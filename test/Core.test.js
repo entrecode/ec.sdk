@@ -23,6 +23,7 @@ const TraversonMock = require('./mocks/TraversonMock');
 
 const tokenStoreSymbol = Symbol.for('tokenStore');
 const traversalSymbol = Symbol.for('traversal');
+const environmentSymbol = Symbol.for('environment');
 
 nock.disableNetConnect();
 chai.should();
@@ -187,6 +188,18 @@ describe('Core', () => {
   });
   it('create called with relation without create options', () => {
     return core.create('dummy').should.be.rejectedWith('Resource has no createRelation');
+  });
+  it('should instantiate with options, environment', () => {
+    const core = new Core.default({ live: 'https://datamanager.entrecode.de' }, { environment: 'live' });
+    core[environmentSymbol].should.be.equal('live');
+  });
+  it('should instantiate with options, noCookie', () => {
+    const core = new Core.default({ live: 'https://datamanager.entrecode.de' }, { noCookie: true });
+    core[environmentSymbol].should.match(/live[0-9A-Za-z-_]{7,14}/);
+  });
+  it('should instantiate with options, cookieModifier', () => {
+    const core = new Core.default({ live: 'https://datamanager.entrecode.de' }, { cookieModifier: 'Test'});
+    core[environmentSymbol].should.be.equal('liveTest');
   });
 });
 

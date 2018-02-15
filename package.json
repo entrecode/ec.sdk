@@ -35,6 +35,7 @@
     "locale": "^0.1.0",
     "lodash.isequal": "^4.5.0",
     "shiro-trie": "^0.4.5",
+    "shortid": "^2.2.8",
     "stream": "^0.0.2",
     "superagent": "^3.8.1",
     "traverson": "^6.0.3",

@@ -1,6 +1,6 @@
 import * as validator from 'json-schema-remote';
 
-import Core, { environment } from './Core';
+import Core, { environment, options } from './Core';
 import DataManagerResource from './resources/datamanager/DataManagerResource';
 import DataManagerList from './resources/datamanager/DataManagerList';
 import DMStatsList from './resources/datamanager/DMStatsList';
@@ -32,8 +32,8 @@ const urls = {
  * @param {environment?} environment the environment to connect to
  */
 export default class DataManager extends Core {
-  constructor(environment?: environment) {
-    super(urls, environment);
+  constructor(envOrOptions?: environment|options) {
+    super(urls, envOrOptions);
 
     this[relationsSymbol] = {
       dataManager: {

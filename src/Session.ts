@@ -1,4 +1,4 @@
-import Core, { environment } from './Core';
+import Core, { environment, options } from './Core';
 import { get, post } from './helper';
 import AccountResource from './resources/accounts/AccountResource';
 
@@ -34,8 +34,8 @@ const urls = {
  * @param {environment?} environment the environment to connect to
  */
 export default class Session extends Core {
-  constructor(environment?: environment) {
-    super(urls, environment);
+  constructor(envOrOptions?: environment | options) {
+    super(urls, envOrOptions);
     this[requestCacheSymbol] = undefined;
   }
 
