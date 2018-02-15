@@ -1,0 +1,5 @@
+{
+  "mocha.options": {},
+  "mocha.files.glob": "test/**/*.js",
+  "mocha.enabled": true
+}

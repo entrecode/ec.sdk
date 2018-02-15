@@ -4,7 +4,6 @@
   // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
   "version": "0.2.0",
   "configurations": [
-
     {
       "name": "Debug Mocha tests",
       "type": "node",
@@ -15,7 +14,7 @@
         "-t",
         "10000",
         "-R",
-        "min",
+        "dot",
         "test/**/*.js"
       ],
       "cwd": "${workspaceRoot}",
@@ -24,6 +23,7 @@
         "NODE_ENV": "testing"
       },
       "sourceMaps": true,
+      "internalConsoleOptions": "openOnSessionStart"
     }
   ]
 }
