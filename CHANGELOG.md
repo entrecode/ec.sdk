@@ -1,3 +1,42 @@
+<a name="0.13.0"></a>
+## 0.13.0 (2018-02-15)
+
+* release version 0.13.0 ([2f05f98](https://github.com/entrecode/ec.sdk/commit/2f05f98))
+* doc: documentation for stand-alone API Connectors :-) ([d99acbc](https://github.com/entrecode/ec.sdk/commit/d99acbc))
+* feat: adds _modelTitle to LiteEntryResource ([e7f3c77](https://github.com/entrecode/ec.sdk/commit/e7f3c77))
+* feat: optimized handling of token store. you can now create API Connectors not sharing their access  ([ce56ea6](https://github.com/entrecode/ec.sdk/commit/ce56ea6))
+* chore: adds vscode settings ([4184006](https://github.com/entrecode/ec.sdk/commit/4184006))
+* chore: more vscode stuff ([b67a630](https://github.com/entrecode/ec.sdk/commit/b67a630))
+* chore: source maps in mocha tests ([4e93565](https://github.com/entrecode/ec.sdk/commit/4e93565))
+* chore(package): update browserify to version 16.0.0 ([be00333](https://github.com/entrecode/ec.sdk/commit/be00333))
+* refactor: eslint fixes ([7f7fbc1](https://github.com/entrecode/ec.sdk/commit/7f7fbc1))
+* fix: string typos ([a14d962](https://github.com/entrecode/ec.sdk/commit/a14d962))
+
+
+### BREAKING CHANGE
+
+* Should not be a breaking change. But better save than sorry. ;-)
+
+Before:
+
+```js
+// this will share the token with same shortID API Connectors
+const api = new PublicAPI(shortID, 'live');
+// this will share the token with all API Connectors
+const api = new PublicAPI(shortID, 'live', true);
+```
+
+After:
+
+```js
+// new optional syntax, will not share token with anyone (and will not save as cookie)
+const api = new PublicAPI(shortID, {
+  environment: 'live',
+  noCookie: true,
+});
+```
+
+
 <a name="0.12.15"></a>
 ## <small>0.12.15 (2018-02-02)</small>
 
