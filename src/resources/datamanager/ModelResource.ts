@@ -17,6 +17,7 @@ interface ModelResource {
   policies: Array<any>,
   title: string,
   titleField: string,
+  config: any,
 }
 
 /**
@@ -36,6 +37,7 @@ interface ModelResource {
  * @prop {Array<policy>}  policies      - Array of Policies
  * @prop {string}         title         - Model title
  * @prop {string}         titleField    - the field to used as a title for Entries
+ * @prop {any}            config        - the config for this model
  */
 class ModelResource extends Resource {
   /**
@@ -106,6 +108,11 @@ class ModelResource extends Resource {
         get: () => <string>this.getProperty('titleField'),
         set: (value: string) => this.setProperty('titleField', value),
       },
+      config: {
+        enumerable: true,
+        get: () => this.getProperty('config'),
+        set: (value: any) => this.setProperty('config', value),
+      }
     });
     this.countProperties();
   }
