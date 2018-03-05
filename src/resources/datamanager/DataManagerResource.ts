@@ -186,10 +186,8 @@ class DataManagerResource extends Resource {
    *
    * @example
    * return dm.accountList({
-   *   filter: {
-   *     created: {
-   *       from: new Date(new Date.getTime() - 600000).toISOString()),
-   *     },
+   *   created: {
+   *     from: new Date(new Date.getTime() - 600000).toISOString()),
    *   },
    * })
    * .then((list) => {
