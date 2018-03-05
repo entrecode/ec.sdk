@@ -1,3 +1,12 @@
+<a name="0.13.1"></a>
+## <small>0.13.1 (2018-03-05)</small>
+
+* release version 0.13.1 ([f22ec8a](https://github.com/entrecode/ec.sdk/commit/f22ec8a))
+* fix: adds model config ([5faa70b](https://github.com/entrecode/ec.sdk/commit/5faa70b))
+* doc: fixed filter example in DataManagerResource#accountList ([5b894f7](https://github.com/entrecode/ec.sdk/commit/5b894f7))
+
+
+
 <a name="0.13.0"></a>
 ## 0.13.0 (2018-02-15)
 
