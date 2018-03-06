@@ -504,7 +504,7 @@ class DataManagerResource extends Resource {
     return Promise.resolve()
     .then(() => {
       const request = this.newRequest()
-      .follow('ec:datamananger/export');
+      .follow('ec:datamanager/export');
       return get(this[environmentSymbol], request);
     })
     .then(([res]) => res);
