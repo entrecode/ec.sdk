@@ -1,3 +1,11 @@
+<a name="0.13.2"></a>
+## <small>0.13.2 (2018-03-06)</small>
+
+* release version 0.13.2 ([2359424](https://github.com/entrecode/ec.sdk/commit/2359424))
+* fix: typo for datamanager export relation ([b4ae143](https://github.com/entrecode/ec.sdk/commit/b4ae143))
+
+
+
 <a name="0.13.1"></a>
 ## <small>0.13.1 (2018-03-05)</small>
 
