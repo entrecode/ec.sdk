@@ -16,6 +16,7 @@ const traversalSymbol = Symbol.for('traversal');
 const eventsSymbol = Symbol.for('events');
 const environmentSymbol = Symbol.for('environment');
 const relationsSymbol = Symbol.for('relations');
+const cookieModifierSymbol = Symbol.for('cookieModifier');
 
 traverson['registerMediaType'](HalAdapter.mediaType, HalAdapter);
 
@@ -71,6 +72,7 @@ export default class Core {
     }
 
     this[eventsSymbol] = events;
+    this[cookieModifierSymbol] = cookieModifier;
     this[environmentSymbol] = environment + cookieModifier;
     this[tokenStoreSymbol] = TokenStoreFactory(environment + cookieModifier);
     this[traversalSymbol] = traverson.from(urls[environment]).jsonHal();
