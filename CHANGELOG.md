@@ -1,3 +1,11 @@
+<a name="0.13.3"></a>
+## <small>0.13.3 (2018-03-07)</small>
+
+* release version 0.13.3 ([87561eb](https://github.com/entrecode/ec.sdk/commit/87561eb))
+* feat: PublicAPI#getDataManagerResource to obtain a DataManagerResource for this PublicAPI ([647caa4](https://github.com/entrecode/ec.sdk/commit/647caa4))
+
+
+
 <a name="0.13.2"></a>
 ## <small>0.13.2 (2018-03-06)</small>
 

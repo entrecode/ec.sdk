@@ -24,12 +24,15 @@ import {
 } from './helper';
 import DMAssetResource from './resources/publicAPI/DMAssetResource';
 import DMAssetList from './resources/publicAPI/DMAssetList';
+import DataManagerResource from './resources/datamanager/DataManagerResource';
+import DataManager from './DataManager';
 
 const resourceSymbol = Symbol.for('resource');
 const tokenStoreSymbol = Symbol.for('tokenStore');
 const traversalSymbol = Symbol.for('traversal');
 const eventsSymbol = Symbol.for('events');
 const environmentSymbol = Symbol.for('environment');
+const cookieModifierSymbol = Symbol.for('cookieModifier');
 
 const shortIDSymbol = Symbol('_shortID');
 const modelCacheSymbol = Symbol('_modelCache');
@@ -1098,6 +1101,26 @@ export default class PublicAPI extends Core {
 
       return this;
     });
+  }
+
+  /**
+   * Get the {@link DataManagerResource} for this PublicAPI Connector. Does only make sense for ec users (check not enforced).
+   *
+   * @returns {Promise<DataManagerResource>}
+   */
+  getDataManagerResource(): Promise<DataManagerResource> {
+    const options: any = {};
+
+    if(this[cookieModifierSymbol].length ===0){
+      options.environment = this[environmentSymbol]
+    } else {
+      options.environment = this[environmentSymbol];
+      options.cookieModifier = this[cookieModifierSymbol];
+    }
+
+    const dm = new DataManager(options);
+    dm.setToken(this.getToken());
+    return dm.dataManager(this.dataManagerID);
   }
 
   /**
