@@ -933,7 +933,13 @@ export default class PublicAPI extends Core {
       return undefined;
     })
     .then(() => {
-      let link = this.getLink(`${this[shortIDSymbol]}:${model}`).profile;
+      let link = this.getLink(`${this[shortIDSymbol]}:${model}`);
+
+      if(!link){
+        throw new Error(`Model ${model} not found.`);
+      }
+
+      link = link.profile;
       if (method !== 'get') {
         link = link.split('?');
         if (link.length === 1) {
@@ -1140,6 +1146,24 @@ export default class PublicAPI extends Core {
 
     this[tokenStoreSymbol].setClientID(clientID);
     return this;
+  }
+
+  /**
+   * Register a new anonymous user
+   *
+   * @returns {Promise<string>} the jwt of the created user
+   */
+  signupAnonymous(): Promise<string> {
+    return Promise.resolve()
+    .then(() => {
+      return this.follow(`${this[shortIDSymbol]}:_auth/anonymous`);
+    })
+    .then((request) => {
+      return post(this[environmentSymbol], request);
+    })
+    .then(([res]) => {
+      return res.jwt;
+    });
   }
 
   /**

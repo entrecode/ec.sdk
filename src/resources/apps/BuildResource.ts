@@ -59,6 +59,7 @@ class BuildResource extends Resource {
   }
 
   // TODO get events helper, no temp, sorted…
+  // TODO add deploy functions
 }
 
 export default BuildResource;
