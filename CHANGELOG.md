@@ -1,3 +1,20 @@
+<a name="0.13.4"></a>
+## <small>0.13.4 (2018-03-08)</small>
+
+* release version 0.13.4 ([4331b16](https://github.com/entrecode/ec.sdk/commit/4331b16))
+* feat: create API key in Accounts Connector ([624c1d3](https://github.com/entrecode/ec.sdk/commit/624c1d3))
+* feat: register anonymous in PublicAPI ([360eee4](https://github.com/entrecode/ec.sdk/commit/360eee4))
+* chore: fixed an issue with gitignore files ([bed0fdd](https://github.com/entrecode/ec.sdk/commit/bed0fdd))
+* chore: new package lock ([f3c0352](https://github.com/entrecode/ec.sdk/commit/f3c0352))
+* chore(package): update documentation to version 6.0.0 ([9167bc3](https://github.com/entrecode/ec.sdk/commit/9167bc3))
+* chore(package): update sinon-chai to version 3.0.0 ([7578c07](https://github.com/entrecode/ec.sdk/commit/7578c07))
+* chore(package): update webpack to version 4.0.0 ([643da38](https://github.com/entrecode/ec.sdk/commit/643da38))
+* fix: rename assetGroup > asset into dmAsset ([5643373](https://github.com/entrecode/ec.sdk/commit/5643373))
+* fix: renamed DataManagerResource accounts relation to dmAccounts SDK-8 ([3db5a6e](https://github.com/entrecode/ec.sdk/commit/3db5a6e))
+* fix: throw proper error when using invalid model name SDK-18 ([5e61fa9](https://github.com/entrecode/ec.sdk/commit/5e61fa9))
+
+
+
 <a name="0.13.3"></a>
 ## <small>0.13.3 (2018-03-07)</small>
 
