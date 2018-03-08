@@ -1149,6 +1149,24 @@ export default class PublicAPI extends Core {
   }
 
   /**
+   * Register a new anonymous user
+   *
+   * @returns {Promise<string>} the jwt of the created user
+   */
+  signupAnonymous(): Promise<string> {
+    return Promise.resolve()
+    .then(() => {
+      return this.follow(`${this[shortIDSymbol]}:_auth/anonymous`);
+    })
+    .then((request) => {
+      return post(this[environmentSymbol], request);
+    })
+    .then(([res]) => {
+      return res.jwt;
+    });
+  }
+
+  /**
    * Signup a new account. Invite may be required.
    *
    * @example
