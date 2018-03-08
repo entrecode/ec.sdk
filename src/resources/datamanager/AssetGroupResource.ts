@@ -60,7 +60,7 @@ class AssetGroupResource extends Resource {
     this.countProperties();
 
     this[relationsSymbol] = {
-      asset: {
+      dmAsset: {
         relation: 'ec:dm-assets',
         createRelation: false,
         createTemplateModifier: '',
@@ -79,7 +79,7 @@ class AssetGroupResource extends Resource {
    * @returns {Promise<DMAssetResource>} Promise resolving to DMAssetResource
    */
   asset(assetID: string): Promise<DMAssetResource> {
-    return <Promise<DMAssetResource>>this.resource('asset', assetID);
+    return <Promise<DMAssetResource>>this.resource('dmAsset', assetID);
   }
 
   /**
@@ -89,7 +89,7 @@ class AssetGroupResource extends Resource {
    * @returns {Promise<DMAssetList>} Promise resolving to DMAssetList
    */
   assetList(options: filterOptions | any = {}): Promise<DMAssetList> {
-    return <Promise<DMAssetList>>this.resourceList('asset', options);
+    return <Promise<DMAssetList>>this.resourceList('dmAsset', options);
   }
 }
 
