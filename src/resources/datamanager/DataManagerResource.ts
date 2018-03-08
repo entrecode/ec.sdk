@@ -68,7 +68,7 @@ class DataManagerResource extends Resource {
     super(resource, environment, traversal);
 
     this[relationsSymbol] = {
-      account: {
+      dmAccount: {
         relation: 'ec:dm-accounts/options',
         createRelation: false,
         createTemplateModifier: '',
@@ -177,7 +177,7 @@ class DataManagerResource extends Resource {
    * @returns {Promise<DMAccountResource>} resolves to the Account which should be loaded.
    */
   account(accountID: string): Promise<DMAccountResource> {
-    return <Promise<DMAccountResource>>this.resource('account', accountID);
+    return <Promise<DMAccountResource>>this.resource('dmAccount', accountID);
   }
 
   /**
@@ -198,7 +198,7 @@ class DataManagerResource extends Resource {
    * @returns {Promise<DMAccountList>} resolves to account list with applied filters.
    */
   accountList(options?: filterOptions): Promise<DMAccountList> {
-    return <Promise<DMAccountList>>this.resourceList('account', options, { dataManagerID: this.dataManagerID });
+    return <Promise<DMAccountList>>this.resourceList('dmAccount', options, { dataManagerID: this.dataManagerID });
   }
 
   /**
