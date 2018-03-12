@@ -1,3 +1,11 @@
+<a name="0.13.5"></a>
+## <small>0.13.5 (2018-03-12)</small>
+
+* release version 0.13.5 ([4070efe](https://github.com/entrecode/ec.sdk/commit/4070efe))
+* fix: renamed resource client to dmClients in DataManagerResource ([af9bfac](https://github.com/entrecode/ec.sdk/commit/af9bfac))
+
+
+
 <a name="0.13.4"></a>
 ## <small>0.13.4 (2018-03-08)</small>
 
