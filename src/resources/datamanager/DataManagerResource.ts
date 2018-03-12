@@ -86,7 +86,7 @@ class DataManagerResource extends Resource {
         ResourceClass: AssetResource,
         ListClass: AssetList,
       },
-      client: {
+      dmClient: {
         relation: 'ec:dm-clients/options',
         createRelation: 'ec:dm-client/by-id',
         createTemplateModifier: '',
@@ -297,7 +297,7 @@ class DataManagerResource extends Resource {
    * @returns {Promise<DMClientResource>} Promise resolving to DMClientResource
    */
   client(clientID: string): Promise<DMClientResource> {
-    return <Promise<DMClientResource>>this.resource('client', clientID);
+    return <Promise<DMClientResource>>this.resource('dmClient', clientID);
   }
 
   /**
@@ -326,7 +326,7 @@ class DataManagerResource extends Resource {
    * @returns {Promise<DMClientList>} Promise resolving to DMClientList
    */
   clientList(options?: filterOptions): Promise<DMClientList> {
-    return <Promise<DMClientList>>this.resourceList('client', options);
+    return <Promise<DMClientList>>this.resourceList('dmClient', options);
   }
 
   /**
@@ -472,7 +472,7 @@ class DataManagerResource extends Resource {
    * @returns {Promise<DMClientResource>} the newly created DMClientResource
    */
   createClient(client: any): Promise<DMClientResource> {
-    return <Promise<DMClientResource>>this.create('client', client);
+    return <Promise<DMClientResource>>this.create('dmClient', client);
   }
 
   /**
