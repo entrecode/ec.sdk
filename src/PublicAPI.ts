@@ -635,7 +635,7 @@ export default class PublicAPI extends Core {
         throw new Error('assetID must be defined');
       }
 
-      return this.follow(`ec:dm-assets/${assetGroupID}`);
+      return this.follow('ec:dm-asset/by-id');
     })
     .catch((error) => {
       if (error.message.indexOf('Link not present in root response.') !== -1) {
@@ -645,7 +645,7 @@ export default class PublicAPI extends Core {
       throw error;
     })
     .then((request) => {
-      request.withTemplateParameters({ assetID });
+      request.withTemplateParameters({ assetID, assetGroupID });
       return get(this[environmentSymbol], request);
     })
     .then(([res, traversal]) => new DMAssetResource(res, this[environmentSymbol], traversal));
