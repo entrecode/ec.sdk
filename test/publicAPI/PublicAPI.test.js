@@ -1117,9 +1117,6 @@ describe('PublicAPI', () => {
   it('should be rejected on undefined assetGroupID', () => {
     return api.dmAsset().should.be.rejectedWith('assetGroupID must be defined');
   });
-  it('should be rejected on unknown assetGroupID', () => {
-    return api.dmAsset('unknown', 'id').should.be.rejectedWith('assetGroup not found');
-  });
 
   describe('dmAssets', () => {
     it('should create dmAssets, path #1', () => {

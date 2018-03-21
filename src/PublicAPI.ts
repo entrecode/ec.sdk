@@ -637,13 +637,6 @@ export default class PublicAPI extends Core {
 
       return this.follow('ec:dm-asset/by-id');
     })
-    .catch((error) => {
-      if (error.message.indexOf('Link not present in root response.') !== -1) {
-        throw new Error('assetGroup not found')
-      }
-
-      throw error;
-    })
     .then((request) => {
       request.withTemplateParameters({ assetID, assetGroupID });
       return get(this[environmentSymbol], request);
