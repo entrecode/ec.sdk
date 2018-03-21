@@ -17,6 +17,14 @@ class TraversonMock {
   withTemplateParameters() {
     return this;
   }
+
+  withRequestOptions() {
+    return this;
+  }
+
+  addRequestOptions() {
+    return this;
+  }
 }
 
 module.exports = TraversonMock;

@@ -1,4 +1,5 @@
 import * as validator from 'json-schema-remote';
+import * as EventSource from 'eventsource/lib/eventsource-polyfill';
 
 import Core, { environment, options } from './Core';
 import DataManagerResource from './resources/datamanager/DataManagerResource';
@@ -8,13 +9,15 @@ import DMStatsResource from './resources/datamanager/DMStatsResource';
 import TemplateList from './resources/datamanager/TemplateList';
 import TemplateResource from './resources/datamanager/TemplateResource';
 import { filterOptions } from './resources/ListResource';
-import { get, post, superagentGet } from './helper';
+import { get, getUrl, optionsToQuery, post, superagentGet } from './helper';
+import TokenStoreFactory, { TokenStore } from './TokenStore';
 
 validator.setLoggingFunction(() => {
 });
 
 const environmentSymbol = Symbol.for('environment');
 const relationsSymbol = Symbol.for('relations');
+const tokenStoreSymbol = Symbol.for('tokenStore');
 
 const urls = {
   live: 'https://datamanager.entrecode.de/',
@@ -32,7 +35,7 @@ const urls = {
  * @param {environment?} environment the environment to connect to
  */
 export default class DataManager extends Core {
-  constructor(envOrOptions?: environment|options) {
+  constructor(envOrOptions?: environment | options) {
     super(urls, envOrOptions);
 
     this[relationsSymbol] = {
@@ -176,6 +179,50 @@ export default class DataManager extends Core {
     const url = `${urls[this[environmentSymbol]]}files/${assetID}/url${size ? `?size=${size}` : ''}`;
     return superagentGet(url, locale ? { 'Accept-Language': locale } : {})
     .then((res) => res.url);
+  }
+
+  /**
+   * Creates a new History EventSource with the given filter options.
+   *
+   * @param {filterOptions | any} options The filter options
+   * @return {Promise<EventSource>} The created EventSource.
+   */
+  newHistory(options?: filterOptions | any) {
+    return Promise.resolve()
+    .then(() => this.follow('ec:history'))
+    .then(request => {
+      request.follow('ec:entry-history');
+
+      if (options) {
+        request.withTemplateParameters(optionsToQuery(options));
+      }
+
+      return getUrl(this[environmentSymbol], request)
+    })
+    .then((url) => {
+      const eventSourceInitDict = {
+        headers: {},
+      };
+
+      const store = this[tokenStoreSymbol];
+      let secondStore: TokenStore;
+      if (!store.hasToken()) {
+        // when no token is present see if we have a public environment (with shortID)
+        // if so look in second store
+        const result = /^(live|stage|nightly|develop|test)[A-Fa-f0-9]{8}$/.exec(this[environmentSymbol]);
+        if (result) {
+          secondStore = TokenStoreFactory(<environment>result[1]);
+        }
+      }
+
+      if (store.hasToken()) {
+        eventSourceInitDict.headers['Authorization'] = `Bearer ${store.getToken()}`;
+      } else if (secondStore && secondStore.hasToken()) {
+        eventSourceInitDict.headers['Authorization'] = `Bearer ${secondStore.getToken()}`;
+      }
+
+      return new EventSource(url, eventSourceInitDict);
+    });
   }
 
   /**
