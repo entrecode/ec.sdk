@@ -304,7 +304,7 @@ describe('DataManager class', () => {
     getStub.onSecondCall().returns(resolver('dm-history-root.json'));
     getStub.onThirdCall().returns(resolver('dm-history-response.json'));
     const urlStub = sinon.stub(helper, 'getUrl');
-    urlStub.onFirstCall().returns(Promise.resolve(['https://dm-history.entrecode.de/entryhistory']));
+    urlStub.onFirstCall().returns(Promise.resolve('https://dm-history.entrecode.de/entryhistory'));
 
     return dm.newHistory()
     .then((history) => {

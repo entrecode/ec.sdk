@@ -199,7 +199,7 @@ export default class DataManager extends Core {
 
       return getUrl(this[environmentSymbol], request)
     })
-    .then(([url]) => {
+    .then((url) => {
       const eventSourceInitDict = {
         headers: {},
       };
