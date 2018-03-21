@@ -59,7 +59,7 @@
     "mocha": "^5.0.1",
     "mocha-bamboo-reporter": "^1.1.1",
     "nock": "^9.1.0",
-    "sinon": "^4.4.8",
+    "sinon": "^5.0.0",
     "sinon-chai": "^3.0.0",
     "ts-loader": "^3.5.0",
     "typescript": "^2.7.1",
