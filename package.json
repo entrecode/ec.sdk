@@ -17,9 +17,9 @@
     "coverage": "npm run buildNode && istanbul cover ./node_modules/mocha/bin/_mocha -- -R dot --recursive && open ./coverage/lcov-report/index.html",
     "docs": "documentation build lib/** -c documentation.yml -f html -o docs",
     "pretest": "npm run buildNode",
-    "test": "mocha -R dot --recursive",
+    "test": "mocha -R dot --recursive --exit",
     "pretestTravis": "npm run build",
-    "testTravis": "mocha -R dot --recursive",
+    "testTravis": "mocha -R dot --recursive --exit",
     "webpack": "webpack --config webpack.config.js"
   },
   "dependencies": {
