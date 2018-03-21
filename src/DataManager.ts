@@ -1,5 +1,5 @@
 import * as validator from 'json-schema-remote';
-import * as EventSource from 'eventsource';
+import * as EventSource from 'eventsource/lib/eventsource-polyfill';
 
 import Core, { environment, options } from './Core';
 import DataManagerResource from './resources/datamanager/DataManagerResource';
