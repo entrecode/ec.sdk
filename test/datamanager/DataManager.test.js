@@ -296,6 +296,23 @@ describe('DataManager class', () => {
     return new DataManager('live').getImageThumbUrl()
     .should.be.rejectedWith('assetID must be defined');
   });
+  it('should create history resource', () => {
+    nock.reset();
+    const dm = new DataManager('live');
+    const getStub = sinon.stub(helper, 'get');
+    getStub.onFirstCall().returns(resolver('dm-list.json'));
+    getStub.onSecondCall().returns(resolver('dm-history-root.json'));
+    getStub.onThirdCall().returns(resolver('dm-history-response.json'));
+    const urlStub = sinon.stub(helper, 'getUrl');
+    urlStub.onFirstCall().returns(Promise.resolve(['https://dm-history.entrecode.de/entryhistory']));
+
+    return dm.newHistory()
+    .then((history) => {
+      history.should.exist;
+      getStub.restore();
+      urlStub.restore();
+    });
+  });
 });
 
 describe('DataManager ListResource', () => {

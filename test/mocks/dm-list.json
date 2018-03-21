@@ -34,6 +34,9 @@
       "href": "https://datamanager.entrecode.de/template{?templateID}",
       "templated": true
     },
+    "ec:history": {
+      "href": "https://dm-history.entrecode.de"
+    },
     "ec:dm-templates/options": {
       "href": "https://datamanager.entrecode.de/template{?name,name~,page,parentName,parentName~,parentTemplate,parentVersion,parentVersionFrom,parentVersionTo,size,sort,templateID,version,versionFrom,versionTo}",
       "templated": true
