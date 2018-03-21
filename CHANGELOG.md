@@ -1,3 +1,16 @@
+<a name="0.13.6"></a>
+## <small>0.13.6 (2018-03-21)</small>
+
+* release version 0.13.6 ([32124fc](https://github.com/entrecode/ec.sdk/commit/32124fc))
+* fix: destructuring of getUrl response in newHistory ([d121bd4](https://github.com/entrecode/ec.sdk/commit/d121bd4))
+* fix: fix single dmAsset requests ([62473cc](https://github.com/entrecode/ec.sdk/commit/62473cc))
+* fix: use 'ec:dm-asset/by-id' for single dmAsset requests ([6dbc3a9](https://github.com/entrecode/ec.sdk/commit/6dbc3a9))
+* fix: use polyfill import of EventSource ([7ee763a](https://github.com/entrecode/ec.sdk/commit/7ee763a))
+* chore: add --exit flag to test scripts ([e4d22ca](https://github.com/entrecode/ec.sdk/commit/e4d22ca))
+* feat: create History from DataManager Source ([3f1793e](https://github.com/entrecode/ec.sdk/commit/3f1793e))
+
+
+
 <a name="0.13.5"></a>
 ## <small>0.13.5 (2018-03-12)</small>
 
