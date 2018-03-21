@@ -1,3 +1,11 @@
+<a name="0.13.7"></a>
+## <small>0.13.7 (2018-03-21)</small>
+
+* release version 0.13.7 ([ddc74f8](https://github.com/entrecode/ec.sdk/commit/ddc74f8))
+* fix: travis build, missing --exit mocha option for coverage ([40e7db0](https://github.com/entrecode/ec.sdk/commit/40e7db0))
+
+
+
 <a name="0.13.6"></a>
 ## <small>0.13.6 (2018-03-21)</small>
 
