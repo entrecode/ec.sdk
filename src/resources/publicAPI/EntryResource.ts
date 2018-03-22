@@ -5,6 +5,7 @@ import LiteEntryResource from './LiteEntryResource';
 import PublicAssetResource from './PublicAssetResource';
 import { fileNegotiate, getSchema } from '../../helper';
 import { environment } from '../../Core';
+import DMAssetResource from './DMAssetResource';
 
 const environmentSymbol = Symbol.for('environment');
 const resourceSymbol = Symbol.for('resource');
@@ -302,8 +303,12 @@ class EntryResource extends LiteEntryResource {
             const assets = this.getProperty(key) || [];
             this[resourceSymbol][key] = assets.map((asset) => {
               if (typeof asset === 'object') {
-                if (asset instanceof PublicAssetResource) {
+                if (asset instanceof PublicAssetResource || asset instanceof DMAssetResource) {
                   return asset;
+                }
+
+                if(/^[a-zA-Z0-9\\-_]{22}$/.test(asset.assetID)) {
+                  return new DMAssetResource(asset, environment);
                 }
 
                 return new PublicAssetResource(asset, environment);
@@ -312,6 +317,9 @@ class EntryResource extends LiteEntryResource {
                 if (embeds) {
                   const embed = embeds.find(embed => embed.assetID === asset);
                   if (embed) {
+                    if(/^[a-zA-Z0-9\\-_]{22}$/.test(embed.assetID)) {
+                      return new DMAssetResource(embed, environment);
+                    }
                     return new PublicAssetResource(embed, environment);
                   }
                 }

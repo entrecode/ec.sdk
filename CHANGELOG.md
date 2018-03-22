@@ -1,3 +1,12 @@
+<a name="0.13.10"></a>
+## <small>0.13.10 (2018-03-22)</small>
+
+* release version 0.13.10 ([7625c90](https://github.com/entrecode/ec.sdk/commit/7625c90))
+* fix: DMAssetResource import ([88decbf](https://github.com/entrecode/ec.sdk/commit/88decbf))
+* feat: dm-assets in assets getter for EntryResource ([614e492](https://github.com/entrecode/ec.sdk/commit/614e492))
+
+
+
 <a name="0.13.9"></a>
 ## <small>0.13.9 (2018-03-22)</small>
 
