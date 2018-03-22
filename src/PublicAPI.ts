@@ -551,9 +551,19 @@ export default class PublicAPI extends Core {
             throw new Error('Cannot handle input.')
           }
         });
+        
+        if (options.preserveFilenames) {
+          request.attach('preserveFilenames', options.preserveFilenames);
+        }
+  
+        if (options.ignoreDuplicates) {
+          request.attach('ignoreDuplicates', options.ignoreDuplicates);
+        }
+  
+        if (options.includeAssetIDInPath) {
+          request.attach('includeAssetIDInPath', options.includeAssetIDInPath);
+        }
       }
-
-      // TODO options and tags?
 
       return superagentPost(this[environmentSymbol], request);
     })
