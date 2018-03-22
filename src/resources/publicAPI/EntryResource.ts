@@ -5,7 +5,7 @@ import LiteEntryResource from './LiteEntryResource';
 import PublicAssetResource from './PublicAssetResource';
 import { fileNegotiate, getSchema } from '../../helper';
 import { environment } from '../../Core';
-import DMAssetResource from 'ec.sdk/src/resources/publicAPI/DMAssetResource';
+import DMAssetResource from './DMAssetResource';
 
 const environmentSymbol = Symbol.for('environment');
 const resourceSymbol = Symbol.for('resource');
