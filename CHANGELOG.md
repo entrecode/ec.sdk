@@ -1,3 +1,12 @@
+<a name="0.13.8"></a>
+## <small>0.13.8 (2018-03-22)</small>
+
+* release version 0.13.8 ([83587df](https://github.com/entrecode/ec.sdk/commit/83587df))
+* feat: options in createDmAssets ([34a85f6](https://github.com/entrecode/ec.sdk/commit/34a85f6))
+* chore: new package-lock ([e64031f](https://github.com/entrecode/ec.sdk/commit/e64031f))
+
+
+
 <a name="0.13.7"></a>
 ## <small>0.13.7 (2018-03-21)</small>
 
