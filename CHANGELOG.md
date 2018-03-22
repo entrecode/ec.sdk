@@ -1,3 +1,11 @@
+<a name="0.13.9"></a>
+## <small>0.13.9 (2018-03-22)</small>
+
+* release version 0.13.9 ([43be39d](https://github.com/entrecode/ec.sdk/commit/43be39d))
+* fix: options in createDmAsset must be string ([2390de8](https://github.com/entrecode/ec.sdk/commit/2390de8))
+
+
+
 <a name="0.13.8"></a>
 ## <small>0.13.8 (2018-03-22)</small>
 
