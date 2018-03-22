@@ -552,16 +552,16 @@ export default class PublicAPI extends Core {
           }
         });
         
-        if (options.preserveFilenames) {
-          request.attach('preserveFilenames', options.preserveFilenames);
+        if ('preserveFilenames' in options) {
+          request.field('preserveFilenames', `${options.preserveFilenames}`);
         }
   
-        if (options.ignoreDuplicates) {
-          request.attach('ignoreDuplicates', options.ignoreDuplicates);
+        if ('ignoreDuplicates' in options) {
+          request.field('ignoreDuplicates', `${options.ignoreDuplicates}`);
         }
   
-        if (options.includeAssetIDInPath) {
-          request.attach('includeAssetIDInPath', options.includeAssetIDInPath);
+        if ('includeAssetIDInPath' in options) {
+          request.field('includeAssetIDInPath', `${options.includeAssetIDInPath}`);
         }
       }
 
