@@ -1,3 +1,11 @@
+<a name="0.13.11"></a>
+## <small>0.13.11 (2018-03-23)</small>
+
+* fixed regex in recognizing new assets ([c6ad916](https://github.com/entrecode/ec.sdk/commit/c6ad916))
+* release version 0.13.11 ([e1da441](https://github.com/entrecode/ec.sdk/commit/e1da441))
+
+
+
 <a name="0.13.10"></a>
 ## <small>0.13.10 (2018-03-22)</small>
 
