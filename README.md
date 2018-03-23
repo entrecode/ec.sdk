@@ -4,7 +4,6 @@
 
 [![npm version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Coverage Status][cover-image]][cover-url] [![Inline docs][doc-image]][doc-url] [![Greenkeeper badge](https://badges.greenkeeper.io/entrecode/ec.sdk.svg)](https://greenkeeper.io/) [![NSP Status][nsp-image]][nsp-url]
 
-
 Documentation can be found [here](https://entrecode.github.io/ec.sdk/). If you like to see some code look [here](https://github.com/entrecode/ec.sdk).
 
 ## Getting Started
@@ -51,30 +50,30 @@ class MyExample {
   session: Session;
   accounts: Accounts;
   dataManager: DataManager;
-  
+
   me: AccountResource;
   dm: DataManagerResource;
-  
+
   constructor() {
     session = new Session();
     accounts = new Accounts();
-    
+
     session.setClientID('rest');
     // this will also receive events from Accounts and DataManager
     session.on('error', console.error);
   }
-  
+
   login(email, password) {
     session.login(email, password)
     .then((token) => {
       // if you use stand-alone API Connectors (`noCookie` set to true)
       accounts.setToken(token);
-      
+
       // or anywhere in the code
       dataManager.setToken(session.getToken());
     });
   }
-  
+
   setAccountLanguage(lang) {
     Promise.resolve()
     .then(() => {
@@ -89,12 +88,12 @@ class MyExample {
     })
     .then((meSaved: AccountResource) => this.me = meSaved);
   }
-  
+
   loadDataManager(id) {
     if (!this.dataManager){
       this.dataManager = new DataManager();
     }
-    
+
     this.dataManager.dataManager(id)
     .then((dm) =>{
       this.dm = dm;
@@ -118,13 +117,14 @@ dataManager.dataManagerList()
 ```
 
 ###### Browsers
+
 > This is not officially supported. Mainly exists for usage in jsfiddles or similar.
 
 ```html
 <script src="https://unpkg.com/ec.sdk/dist/ec.sdk.min.js"></script>
 <script>
     console.log('My development stack is old and I should feel old');
-    
+
     var dataManager = new ec.DataManager('live');
     dataManager.setToken(accessToken);
     dataManager.list()
