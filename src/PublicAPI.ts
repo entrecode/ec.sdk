@@ -1138,7 +1138,7 @@ export default class PublicAPI extends Core {
         }
       };
       assetGroups.forEach((relation) => {
-        const relationName = `asset.${relation.substr(13)}`;
+        const relationName = `dmAsset.${relation.substr(13)}`;
         relations[relationName] = {
           relation: relation,
           createRelation: false,
