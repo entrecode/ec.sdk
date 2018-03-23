@@ -1,3 +1,22 @@
+<a name="0.13.13"></a>
+## <small>0.13.13 (2018-03-23)</small>
+
+*  refactor: prepared history helper for usage in other resources than DataManager API Connector ([26051e5](https://github.com/entrecode/ec.sdk/commit/26051e5))
+* 0.13.13 beta ([de14f3f](https://github.com/entrecode/ec.sdk/commit/de14f3f))
+* release version 0.13.13 ([03b07b6](https://github.com/entrecode/ec.sdk/commit/03b07b6))
+* chore: fixed some eslint errors ([1ec3f7b](https://github.com/entrecode/ec.sdk/commit/1ec3f7b))
+* chore: removed trailing space in release.sh ([aeb20db](https://github.com/entrecode/ec.sdk/commit/aeb20db))
+* chore: version 0.13.13-beta.3 ([e2e2866](https://github.com/entrecode/ec.sdk/commit/e2e2866))
+* test: disabled history test, mocking invalid ([228b4f1](https://github.com/entrecode/ec.sdk/commit/228b4f1))
+* feat: entryList, entry, dmAssetList, and dmAssetResource as generics ([6e82550](https://github.com/entrecode/ec.sdk/commit/6e82550))
+* feat: make available relations accessible SDK-2 ([5fa4405](https://github.com/entrecode/ec.sdk/commit/5fa4405))
+* feat: support DMAssets in EntryResource SDK-28 ([e5a8362](https://github.com/entrecode/ec.sdk/commit/e5a8362))
+* refactor: even more tslint fixes ([0876cf9](https://github.com/entrecode/ec.sdk/commit/0876cf9))
+* refactor: renamed generic asset into dmAsset ([c69e70e](https://github.com/entrecode/ec.sdk/commit/c69e70e))
+* fix: relation for generic model list ([04266d2](https://github.com/entrecode/ec.sdk/commit/04266d2))
+
+
+
 <a name="0.13.12"></a>
 ## <small>0.13.12 (2018-03-23)</small>
 

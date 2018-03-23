@@ -33,6 +33,7 @@ const traversalSymbol = Symbol.for('traversal');
 const eventsSymbol = Symbol.for('events');
 const environmentSymbol = Symbol.for('environment');
 const cookieModifierSymbol = Symbol.for('cookieModifier');
+const relationsSymbol = Symbol.for('relations');
 
 const shortIDSymbol = Symbol('_shortID');
 const modelCacheSymbol = Symbol('_modelCache');
@@ -312,7 +313,7 @@ export default class PublicAPI extends Core {
 
       return this[requestCacheSymbol];
     })
-    .then(() => this[permissionsSymbol].check(permission));
+    .then(() => <boolean>this[permissionsSymbol].check(permission));
   }
 
   /**
@@ -551,15 +552,15 @@ export default class PublicAPI extends Core {
             throw new Error('Cannot handle input.')
           }
         });
-        
+
         if ('preserveFilenames' in options) {
           request.field('preserveFilenames', `${options.preserveFilenames}`);
         }
-  
+
         if ('ignoreDuplicates' in options) {
           request.field('ignoreDuplicates', `${options.ignoreDuplicates}`);
         }
-  
+
         if ('includeAssetIDInPath' in options) {
           request.field('includeAssetIDInPath', `${options.includeAssetIDInPath}`);
         }
@@ -725,7 +726,7 @@ export default class PublicAPI extends Core {
       request.withTemplateParameters({ email });
       return get(this[environmentSymbol], request);
     })
-    .then(([a]) => a.available);
+    .then(([a]) => <boolean>a.available);
   }
 
   /**
@@ -844,7 +845,7 @@ export default class PublicAPI extends Core {
    * @returns {Promise<string>} URL to the file
    */
   getFileUrl(assetID: string): Promise<string> {
-    return this.getFileVariant(assetID);
+    return <Promise<string>>this.getFileVariant(assetID);
   }
 
   /**
@@ -897,7 +898,7 @@ export default class PublicAPI extends Core {
    * @returns {Promise<string>} URL to the file
    */
   getImageThumbUrl(assetID: string, size: number): Promise<string> {
-    return this.getFileVariant(assetID, true, size);
+    return <Promise<string>>this.getFileVariant(assetID, true, size);
   }
 
   /**
@@ -908,7 +909,7 @@ export default class PublicAPI extends Core {
    * @returns {Promise<string>} URL to the file
    */
   getImageUrl(assetID: string, size: number): Promise<string> {
-    return this.getFileVariant(assetID, false, size);
+    return <Promise<string>>this.getFileVariant(assetID, false, size);
   }
 
   /**
@@ -969,7 +970,7 @@ export default class PublicAPI extends Core {
         link = link.join('?');
       }
 
-      return getSchema(link);
+      return getSchema(<string>link);
     });
   }
 
@@ -1008,7 +1009,7 @@ export default class PublicAPI extends Core {
       this[tokenStoreSymbol].setToken(token.token);
       this[eventsSymbol].emit('login', token.token);
 
-      return token.token;
+      return <string>token.token;
     });
   }
 
@@ -1123,19 +1124,57 @@ export default class PublicAPI extends Core {
       this[resourceSymbol] = halfred.parse(res);
       this[traversalSymbol] = traversal;
 
+      const assetGroups = Object.keys(this[resourceSymbol].allLinks())
+      .filter(x => x.indexOf(`ec:dm-assets/`) !== -1);
+
+      const relations = {
+        legacyAsset: {
+          relation: 'ec:api/assets',
+          createRelation: false,
+          createTemplateModifier: '',
+          id: 'assetID',
+          ResourceClass: PublicAssetResource,
+          ListClass: PublicAssetList,
+        }
+      };
+      assetGroups.forEach((relation) => {
+        const relationName = `dmAsset.${relation.substr(13)}`;
+        relations[relationName] = {
+          relation: relation,
+          createRelation: false,
+          createTemplateModifier: '',
+          id: 'assetID',
+          ResourceClass: DMAssetResource,
+          ListClass: DMAssetList,
+        }
+      });
+      this[resourceSymbol].models.forEach((model) => {
+        relations[`model.${model.title}`] = {
+          relation: `${this[shortIDSymbol]}:${model.title}`,
+          createRelation: false, // TODO
+          createTemplateModifier: '',
+          id: '_id',
+          resourceFunction: createEntry,
+          listFunction: createList,
+        }
+      });
+
+      this[relationsSymbol] = relations;
+
       return this;
     });
   }
 
   /**
-   * Get the {@link DataManagerResource} for this PublicAPI Connector. Does only make sense for ec users (check not enforced).
+   * Get the {@link DataManagerResource} for this PublicAPI Connector. Does only make sense for ec
+   * users (check not enforced).
    *
    * @returns {Promise<DataManagerResource>}
    */
   getDataManagerResource(): Promise<DataManagerResource> {
     const options: any = {};
 
-    if(this[cookieModifierSymbol].length ===0){
+    if (this[cookieModifierSymbol].length === 0) {
       options.environment = this[environmentSymbol]
     } else {
       options.environment = this[environmentSymbol];
@@ -1180,7 +1219,7 @@ export default class PublicAPI extends Core {
       return post(this[environmentSymbol], request);
     })
     .then(([res]) => {
-      return res.jwt;
+      return <string>res.jwt;
     });
   }
 

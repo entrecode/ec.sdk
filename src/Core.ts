@@ -76,7 +76,23 @@ export default class Core {
     this[environmentSymbol] = environment + cookieModifier;
     this[tokenStoreSymbol] = TokenStoreFactory(environment + cookieModifier);
     this[traversalSymbol] = traverson.from(urls[environment]).jsonHal();
-    this[relationsSymbol] = { };
+    this[relationsSymbol] = {};
+  }
+
+  /**
+   * Returns a collection of available relations in this API Connector.
+   *
+   * @return {object} Collection of available relations
+   */
+  getAvailableRelations(): any {
+    const out = {};
+    Object.keys(this[relationsSymbol]).forEach((rel) => {
+      out[rel] = {
+        id: this[relationsSymbol][rel].id,
+        createable: !!this[relationsSymbol][rel].createRelation,
+      }
+    });
+    return out;
   }
 
   /**
@@ -306,8 +322,13 @@ export default class Core {
       request.withTemplateParameters(params);
       return get(this[environmentSymbol], request);
     })
-    .then(([res, traversal]) =>
-      new this[relationsSymbol][relation].ResourceClass(res, this[environmentSymbol], traversal));
+    .then(([res, traversal]) => {
+      if (this[relationsSymbol][relation].resourceFunction) {
+        return this[relationsSymbol][relation].resourceFunction(res, this[environmentSymbol], traversal);
+      }
+
+      return new this[relationsSymbol][relation].ResourceClass(res, this[environmentSymbol], traversal)
+    });
   }
 
   /**
@@ -359,8 +380,13 @@ export default class Core {
       }
       return get(this[environmentSymbol], request);
     })
-    .then(([res, traversal]) =>
-      new this[relationsSymbol][relation].ListClass(res, this[environmentSymbol], traversal));
+    .then(([res, traversal]) => {
+      if (this[relationsSymbol][relation].listFunction) {
+        return this[relationsSymbol][relation].listFunction(res, this[environmentSymbol], traversal);
+      }
+
+      return new this[relationsSymbol][relation].ListClass(res, this[environmentSymbol], traversal)
+    });
   }
 
   /**
@@ -408,7 +434,7 @@ export default class Core {
       return post(this[environmentSymbol], request, resource)
     })
     .then(([c, traversal]) =>
-      new this[relationsSymbol][relation].ResourceClass(c, this[environmentSymbol], traversal));
+      <Resource>new this[relationsSymbol][relation].ResourceClass(c, this[environmentSymbol], traversal));
   }
 }
 

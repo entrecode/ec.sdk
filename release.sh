@@ -30,5 +30,5 @@ git apply patchfile
 rm patchfile
 git add CHANGELOG.md docs/index.html
 git commit --amend --no-verify  -m "merge release/$1 into develop"
-git push --no-verify 
+git push --no-verify
 git branch -D release/$1

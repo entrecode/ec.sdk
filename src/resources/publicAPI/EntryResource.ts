@@ -272,12 +272,21 @@ class EntryResource extends LiteEntryResource {
             if (!asset) {
               return asset;
             }
-            if (typeof asset === 'object' && !(asset instanceof PublicAssetResource)) {
+            if (typeof asset === 'object' && !(asset instanceof PublicAssetResource || asset instanceof DMAssetResource)) {
+              if (/^[a-zA-Z0-9\-_]{22}$/.test(asset.assetID)) {
+                this[resourceSymbol][key] = new DMAssetResource(asset, environment);
+              } else {
+                this[resourceSymbol][key] = new PublicAssetResource(asset, environment);
+              }
               this[resourceSymbol][key] = new PublicAssetResource(asset, environment);
             } else if (typeof asset !== 'object') {
               const embedded = this[resourceSymbol].embeddedResource(`${this[shortIDSymbol]}:${this.getModelTitle()}/${key}/asset`);
               if (embedded) {
-                this[resourceSymbol][key] = new PublicAssetResource(embedded, environment);
+                if (/^[a-zA-Z0-9\-_]{22}$/.test(embedded.assetID)) {
+                  this[resourceSymbol][key] = new DMAssetResource(embedded, environment);
+                } else {
+                  this[resourceSymbol][key] = new PublicAssetResource(embedded, environment);
+                }
               }
             }
 
@@ -287,12 +296,12 @@ class EntryResource extends LiteEntryResource {
             let value;
             if (val === null || typeof val === 'string') {
               value = val;
-            } else if (val instanceof PublicAssetResource) {
+            } else if (val instanceof PublicAssetResource || val instanceof DMAssetResource) {
               value = val.toOriginal();
             } else if (typeof val === 'object' && 'assetID' in val) {
               value = val;
             } else {
-              throw new Error('only string, object/AssetResource, and null supported as input type');
+              throw new Error('only string, object/AssetResource/DMAssetResource, and null supported as input type');
             }
 
             this.setProperty(key, value);
@@ -337,13 +346,13 @@ class EntryResource extends LiteEntryResource {
               if (typeof v === 'string') {
                 return v;
               }
-              if (v instanceof PublicAssetResource) {
+              if (v instanceof PublicAssetResource || v instanceof DMAssetResource) {
                 return v.toOriginal();
               }
               if (typeof v === 'object' && 'assetID' in v) {
                 return v;
               }
-              throw new Error('only string and object/AssetResource supported as input type');
+              throw new Error('only string and object/AssetResource/DMAssetResource supported as input type');
             });
 
             this.setProperty(key, value);
