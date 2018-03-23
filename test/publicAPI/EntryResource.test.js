@@ -329,7 +329,7 @@ describe('Entry Resource', () => {
   });
   it('should throw on set asset field, invalid object', () => {
     const throws = () => resource.asset = { invalid: 'object' };
-    throws.should.throw('only string, object/AssetResource, and null supported as input type');
+    throws.should.throw('only string, object/AssetResource/DMAssetResource, and null supported as input type');
   });
 
   it('should get assets field', () => {
@@ -358,7 +358,7 @@ describe('Entry Resource', () => {
   });
   it('should throw on set assets field, invalid object', () => {
     const throws = () => resource.assets = [{ invalid: 'object' }];
-    throws.should.throw('only string and object/AssetResource supported as input type');
+    throws.should.throw('only string and object/AssetResource/DMAssetResource supported as input type');
   });
 
   it('should get account field', () => {
