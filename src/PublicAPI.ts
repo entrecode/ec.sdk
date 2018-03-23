@@ -844,7 +844,7 @@ export default class PublicAPI extends Core {
    * @returns {Promise<string>} URL to the file
    */
   getFileUrl(assetID: string): Promise<string> {
-    return this.getFileVariant(assetID);
+    return <Promise<string>>this.getFileVariant(assetID);
   }
 
   /**
@@ -897,7 +897,7 @@ export default class PublicAPI extends Core {
    * @returns {Promise<string>} URL to the file
    */
   getImageThumbUrl(assetID: string, size: number): Promise<string> {
-    return this.getFileVariant(assetID, true, size);
+    return <Promise<string>>this.getFileVariant(assetID, true, size);
   }
 
   /**
