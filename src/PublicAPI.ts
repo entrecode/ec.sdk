@@ -33,6 +33,7 @@ const traversalSymbol = Symbol.for('traversal');
 const eventsSymbol = Symbol.for('events');
 const environmentSymbol = Symbol.for('environment');
 const cookieModifierSymbol = Symbol.for('cookieModifier');
+const relationsSymbol = Symbol.for('relations');
 
 const shortIDSymbol = Symbol('_shortID');
 const modelCacheSymbol = Symbol('_modelCache');
@@ -1122,6 +1123,43 @@ export default class PublicAPI extends Core {
     .then(([res, traversal]) => {
       this[resourceSymbol] = halfred.parse(res);
       this[traversalSymbol] = traversal;
+
+      const assetGroups = Object.keys(this[resourceSymbol].allLinks())
+      .filter(x => x.indexOf(`ec:dm-assets/`) !== -1);
+
+      const relations = {
+        legacyAsset: {
+          relation: 'ec:api/assets',
+          createRelation: false,
+          createTemplateModifier: '',
+          id: 'assetID',
+          ResourceClass: PublicAssetResource,
+          ListClass: PublicAssetList,
+        }
+      };
+      assetGroups.forEach((relation) => {
+        const relationName = `asset.${relation.substr(13)}`;
+        relations[relationName] = {
+          relation: relation,
+          createRelation: false,
+          createTemplateModifier: '',
+          id: 'assetID',
+          ResourceClass: DMAssetResource,
+          ListClass: DMAssetList,
+        }
+      });
+      this[resourceSymbol].models.forEach((model) => {
+        relations[`model.${model.title}`] = {
+          relation: `${this[shortIDSymbol]}:${model}`,
+          createRelation: false, // TODO
+          createTemplateModifier: '',
+          id: '_id',
+          resourceFunction: createEntry,
+          listFunction: createList,
+        }
+      });
+
+      this[relationsSymbol] = relations;
 
       return this;
     });
