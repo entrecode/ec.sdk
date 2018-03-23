@@ -1,3 +1,15 @@
+<a name="0.13.12"></a>
+## <small>0.13.12 (2018-03-23)</small>
+
+* release version 0.13.12 ([6898f1c](https://github.com/entrecode/ec.sdk/commit/6898f1c))
+* fix: getting schema in PublicAPI of newly created model ([f42be81](https://github.com/entrecode/ec.sdk/commit/f42be81))
+* chore: added shortid typings ([63378b9](https://github.com/entrecode/ec.sdk/commit/63378b9))
+* refactor: applied codestyle ([d8a6f88](https://github.com/entrecode/ec.sdk/commit/d8a6f88))
+* refactor: applied markdownlint ([ee2c38b](https://github.com/entrecode/ec.sdk/commit/ee2c38b))
+* refactor: removed dummy relation, only add in tests ([e31e668](https://github.com/entrecode/ec.sdk/commit/e31e668))
+
+
+
 <a name="0.13.11"></a>
 ## <small>0.13.11 (2018-03-23)</small>
 
