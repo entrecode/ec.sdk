@@ -1,4 +1,5 @@
 import * as locale from 'locale';
+import * as EventSource from 'eventsource/lib/eventsource-polyfill';
 import * as superagent from 'superagent';
 import * as validator from 'json-schema-remote';
 
@@ -224,6 +225,42 @@ export function postEmpty(environment: environment, t: any, body: any): Promise<
  */
 export function getUrl(environment: environment, t: any): Promise<string> {
   return traversonWrapper('getUrl', environment, t);
+}
+
+export function getHistory(environment: environment, t: any): Promise<EventSource> {
+  return getUrl(environment,t)
+  .then((url) => {
+    const eventSourceInitDict = {
+      headers: {},
+    };
+
+    const store = TokenStoreFactory(environment);
+    let secondStore: TokenStore;
+    if (!store.hasToken()) {
+      // when no token is present see if we have a public environment (with shortID)
+      // if so look in second store
+      const result = /^(live|stage|nightly|develop|test)[A-Fa-f0-9]{8}$/.exec(environment);
+      if (result) {
+        secondStore = TokenStoreFactory(<environment>result[1]);
+      }
+    }
+
+    if (store.hasToken()) {
+      eventSourceInitDict.headers['Authorization'] = `Bearer ${store.getToken()}`;
+    } else if (secondStore && secondStore.hasToken()) {
+      eventSourceInitDict.headers['Authorization'] = `Bearer ${secondStore.getToken()}`;
+    }
+
+    if (store.hasUserAgent()) {
+      eventSourceInitDict.headers['X-User-Agent'] = `${store.getUserAgent()} ec.sdk/${packageJson.version}`;
+    } else if (secondStore && secondStore.hasUserAgent()) {
+      eventSourceInitDict.headers['X-User-Agent'] = `${secondStore.getUserAgent()} ec.sdk/${packageJson.version}`;
+    } else {
+      eventSourceInitDict.headers['X-User-Agent'] =  `ec.sdk/${packageJson.version}`;
+    }
+
+    return new EventSource(url, eventSourceInitDict);
+  });
 }
 
 /**
