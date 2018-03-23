@@ -15,6 +15,7 @@ const DataManagerResource = require('../lib/resources/datamanager/DataManagerRes
 
 const environmentSymbol = Symbol.for('environment');
 const traversalSymbol = Symbol.for('traversal');
+const relationsSymbol = Symbol.for('relations');
 
 const schemaNock = require('./mocks/nock');
 
@@ -290,6 +291,7 @@ describe('Resource', () => {
     return resource.resourceList('asdf').should.be.rejectedWith('unknown relation, use one of');
   });
   it('resourceList called with levels param', () => {
+    resource[relationsSymbol] = { dummy: {} };
     return resource.resourceList('dummy', { _levels: 2 })
     .should.be.rejectedWith('_levels on list resources not supported');
   });
@@ -300,6 +302,7 @@ describe('Resource', () => {
     return resource.create('asdf').should.be.rejectedWith('unknown relation, use one of');
   });
   it('create called with relation without create options', () => {
+    resource[relationsSymbol] = { dummy: {} };
     return resource.create('dummy').should.be.rejectedWith('Resource has no createRelation');
   });
   it('should validate', () => {

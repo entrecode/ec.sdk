@@ -84,7 +84,7 @@ class Resource {
       },
     });
 
-    this[relationsSymbol] = { dummy: {} };
+    this[relationsSymbol] = { };
     this.countProperties();
   }
 
