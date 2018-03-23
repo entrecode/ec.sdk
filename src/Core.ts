@@ -76,7 +76,7 @@ export default class Core {
     this[environmentSymbol] = environment + cookieModifier;
     this[tokenStoreSymbol] = TokenStoreFactory(environment + cookieModifier);
     this[traversalSymbol] = traverson.from(urls[environment]).jsonHal();
-    this[relationsSymbol] = { dummy: {} };
+    this[relationsSymbol] = { };
   }
 
   /**
