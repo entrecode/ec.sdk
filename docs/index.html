@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset='utf-8' />
-  <title>ec.sdk 0.13.11 | Documentation</title>
+  <title>ec.sdk 0.13.12 | Documentation</title>
   <meta name='viewport' content='width=device-width,initial-scale=1'>
   <link href='assets/bass.css' type='text/css' rel='stylesheet' />
   <link href='assets/style.css' type='text/css' rel='stylesheet' />
@@ -14,7 +14,7 @@
       <div id='split-left' class='overflow-auto fs0 height-viewport-100'>
         <div class='py1 px2'>
           <h3 class='mb0 no-anchor'>ec.sdk</h3>
-          <div class='mb1'><code>0.13.11</code></div>
+          <div class='mb1'><code>0.13.12</code></div>
           <input
             placeholder='Filter'
             id='filter-input'
@@ -2665,30 +2665,30 @@
   session: Session;
   accounts: Accounts;
   dataManager: DataManager;
-  
+
   me: AccountResource;
   dm: DataManagerResource;
-  
+
   <span class="hljs-keyword">constructor</span>() {
     session = <span class="hljs-keyword">new</span> Session();
     accounts = <span class="hljs-keyword">new</span> Accounts();
-    
+
     session.setClientID(<span class="hljs-string">'rest'</span>);
     <span class="hljs-comment">// this will also receive events from Accounts and DataManager</span>
     session.on(<span class="hljs-string">'error'</span>, <span class="hljs-built_in">console</span>.error);
   }
-  
+
   login(email, password) {
     session.login(email, password)
     .then(<span class="hljs-function">(<span class="hljs-params">token</span>) =&gt;</span> {
       <span class="hljs-comment">// if you use stand-alone API Connectors (`noCookie` set to true)</span>
       accounts.setToken(token);
-      
+
       <span class="hljs-comment">// or anywhere in the code</span>
       dataManager.setToken(session.getToken());
     });
   }
-  
+
   setAccountLanguage(lang) {
     <span class="hljs-built_in">Promise</span>.resolve()
     .then(<span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> {
@@ -2703,12 +2703,12 @@
     })
     .then(<span class="hljs-function">(<span class="hljs-params">meSaved: AccountResource</span>) =&gt;</span> <span class="hljs-keyword">this</span>.me = meSaved);
   }
-  
+
   loadDataManager(id) {
     <span class="hljs-keyword">if</span> (!<span class="hljs-keyword">this</span>.dataManager){
       <span class="hljs-keyword">this</span>.dataManager = <span class="hljs-keyword">new</span> DataManager();
     }
-    
+
     <span class="hljs-keyword">this</span>.dataManager.dataManager(id)
     .then(<span class="hljs-function">(<span class="hljs-params">dm</span>) =&gt;</span>{
       <span class="hljs-keyword">this</span>.dm = dm;
@@ -2731,7 +2731,7 @@ dataManager.dataManagerList()
 <pre class='hljs'><span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"https://unpkg.com/ec.sdk/dist/ec.sdk.min.js"</span>&gt;</span><span class="undefined"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="javascript">
     <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'My development stack is old and I should feel old'</span>);
-    
+
     <span class="hljs-keyword">var</span> dataManager = <span class="hljs-keyword">new</span> ec.DataManager(<span class="hljs-string">'live'</span>);
     dataManager.setToken(accessToken);
     dataManager.list()
@@ -27344,7 +27344,17 @@ be the same object but with refreshed data.
   </h2>
 
   
-    <p><a name="0.13.11"></a></p>
+    <p><a name="0.13.12"></a></p>
+<h2><small>0.13.12 (2018-03-23)</small></h2>
+<ul>
+<li>release version 0.13.12 (<a href="https://github.com/entrecode/ec.sdk/commit/6898f1c">6898f1c</a>)</li>
+<li>fix: getting schema in PublicAPI of newly created model (<a href="https://github.com/entrecode/ec.sdk/commit/f42be81">f42be81</a>)</li>
+<li>chore: added shortid typings (<a href="https://github.com/entrecode/ec.sdk/commit/63378b9">63378b9</a>)</li>
+<li>refactor: applied codestyle (<a href="https://github.com/entrecode/ec.sdk/commit/d8a6f88">d8a6f88</a>)</li>
+<li>refactor: applied markdownlint (<a href="https://github.com/entrecode/ec.sdk/commit/ee2c38b">ee2c38b</a>)</li>
+<li>refactor: removed dummy relation, only add in tests (<a href="https://github.com/entrecode/ec.sdk/commit/e31e668">e31e668</a>)</li>
+</ul>
+<p><a name="0.13.11"></a></p>
 <h2><small>0.13.11 (2018-03-23)</small></h2>
 <ul>
 <li>fixed regex in recognizing new assets (<a href="https://github.com/entrecode/ec.sdk/commit/c6ad916">c6ad916</a>)</li>
