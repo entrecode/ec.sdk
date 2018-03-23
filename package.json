@@ -26,6 +26,7 @@
     "@types/halfred": "^1.0.2",
     "@types/jwt-decode": "^2.2.1",
     "@types/node": "^9.4.7",
+    "@types/shortid": "0.0.29",
     "@types/superagent": "^3.5.7",
     "@types/traverson": "^2.0.28",
     "browser-cookies": "^1.1.0",
