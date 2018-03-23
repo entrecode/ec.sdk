@@ -936,12 +936,27 @@ export default class PublicAPI extends Core {
       return undefined;
     })
     .then(() => {
-      let link = this.getLink(`${this[shortIDSymbol]}:${model}`);
+      const link = this.getLink(`${this[shortIDSymbol]}:${model}`);
 
-      if(!link){
-        throw new Error(`Model ${model} not found.`);
+      if (link) {
+        return link;
       }
 
+      return get(this[environmentSymbol], this.newRequest().follow('self'))
+      .then(([res, traversal]) => {
+        this[resourceSymbol] = halfred.parse(res);
+        this[traversalSymbol] = traversal;
+
+        const link = this.getLink(`${this[shortIDSymbol]}:${model}`);
+
+        if (!link) {
+          throw new Error(`Model ${model} not found.`);
+        }
+
+        return link;
+      });
+    })
+    .then((link) => {
       link = link.profile;
       if (method !== 'get') {
         link = link.split('?');
