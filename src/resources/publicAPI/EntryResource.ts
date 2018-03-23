@@ -307,7 +307,7 @@ class EntryResource extends LiteEntryResource {
                   return asset;
                 }
 
-                if(/^[a-zA-Z0-9\\-_]{22}$/.test(asset.assetID)) {
+                if(/^[a-zA-Z0-9\-_]{22}$/.test(asset.assetID)) {
                   return new DMAssetResource(asset, environment);
                 }
 
@@ -317,7 +317,7 @@ class EntryResource extends LiteEntryResource {
                 if (embeds) {
                   const embed = embeds.find(embed => embed.assetID === asset);
                   if (embed) {
-                    if(/^[a-zA-Z0-9\\-_]{22}$/.test(embed.assetID)) {
+                    if(/^[a-zA-Z0-9\-_]{22}$/.test(embed.assetID)) {
                       return new DMAssetResource(embed, environment);
                     }
                     return new PublicAssetResource(embed, environment);
