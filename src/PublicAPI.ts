@@ -1150,7 +1150,7 @@ export default class PublicAPI extends Core {
       });
       this[resourceSymbol].models.forEach((model) => {
         relations[`model.${model.title}`] = {
-          relation: `${this[shortIDSymbol]}:${model}`,
+          relation: `${this[shortIDSymbol]}:${model.title}`,
           createRelation: false, // TODO
           createTemplateModifier: '',
           id: '_id',
