@@ -266,7 +266,7 @@ export default class Accounts extends Core {
       request.withTemplateParameters({ email });
       return get(this[environmentSymbol], request);
     })
-    .then(([a]) => a.available);
+    .then(([a]) => <boolean>a.available);
   }
 
   /**
@@ -428,7 +428,7 @@ export default class Accounts extends Core {
      return post(request, {});
    })
    .then(([res]) => {
-     return res.jwt;
+     return <string>res.jwt;
    });
   }
 
