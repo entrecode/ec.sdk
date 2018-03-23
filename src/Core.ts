@@ -9,8 +9,6 @@ import TokenStoreFactory from './TokenStore';
 import { get, getSchema, optionsToQuery, post } from './helper';
 import Resource from './resources/Resource';
 import ListResource, { filterOptions } from './resources/ListResource';
-import EntryResource from './resources/publicAPI/EntryResource';
-import EntryList from './resources/publicAPI/EntryList';
 
 const resourceSymbol = Symbol.for('resource');
 const tokenStoreSymbol = Symbol.for('tokenStore');
@@ -79,6 +77,22 @@ export default class Core {
     this[tokenStoreSymbol] = TokenStoreFactory(environment + cookieModifier);
     this[traversalSymbol] = traverson.from(urls[environment]).jsonHal();
     this[relationsSymbol] = {};
+  }
+
+  /**
+   * Returns a collection of available relations in this API Connector.
+   *
+   * @return {object} Collection of available relations
+   */
+  getAvailableRelations(): any {
+    const out = {};
+    Object.keys(this[relationsSymbol]).forEach((rel) => {
+      out[rel] = {
+        id: this[relationsSymbol][rel].id,
+        createable: !!this[relationsSymbol][rel].createRelation,
+      }
+    });
+    return out;
   }
 
   /**

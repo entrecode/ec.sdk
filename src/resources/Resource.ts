@@ -89,6 +89,22 @@ class Resource {
   }
 
   /**
+   * Returns a collection of available relations in this Resource.
+   *
+   * @return {object} Collection of available relations
+   */
+  getAvailableRelations(): any {
+    const out = {};
+    Object.keys(this[relationsSymbol]).forEach((rel) => {
+      out[rel] = {
+        id: this[relationsSymbol][rel].id,
+        createable: !!this[relationsSymbol][rel].createRelation,
+      }
+    });
+    return out;
+  }
+
+  /**
    * Get all {@link https://tools.ietf.org/html/draft-kelly-json-hal-08#section-5 links} of this
    * resource.
    *
