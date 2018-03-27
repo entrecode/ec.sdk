@@ -142,23 +142,23 @@ class DMAssetResource extends Resource {
    */
   getFileVariant(size?: number, thumb: boolean = false): Promise<string> {
     return Promise.resolve()
-    .then(() => {
-      const request = this.newRequest();
-      if (thumb) {
-        request.follow('ec:dm-asset/thumbnail');
-      } else {
-        request.follow('ec:dm-asset/file-variant');
-      }
-      const templateParams: any = {};
-      if (size) {
-        templateParams.size = size;
-      }
-      request.withTemplateParameters(templateParams);
-      return get(this[environmentSymbol], request);
-    })
-    .then(([res]) => {
-      return res.url;
-    });
+      .then(() => {
+        const request = this.newRequest();
+        if (thumb) {
+          request.follow('ec:dm-asset/thumbnail');
+        } else {
+          request.follow('ec:dm-asset/file-variant');
+        }
+        const templateParams: any = {};
+        if (size) {
+          templateParams.size = size;
+        }
+        request.withTemplateParameters(templateParams);
+        return get(this[environmentSymbol], request);
+      })
+      .then(([res]) => {
+        return res.url;
+      });
   }
 
   /**

@@ -128,18 +128,18 @@ export default class Accounts extends Core {
    */
   changeEmail(email: string): Promise<void> {
     return Promise.resolve()
-    .then(() => {
-      if (!email) {
-        throw new Error('email must be defined');
-      }
+      .then(() => {
+        if (!email) {
+          throw new Error('email must be defined');
+        }
 
-      if (!this[tokenStoreSymbol].hasToken()) {
-        throw new Error('not logged in.');
-      }
+        if (!this[tokenStoreSymbol].hasToken()) {
+          throw new Error('not logged in.');
+        }
 
-      return this.follow('ec:auth/change-email');
-    })
-    .then(request => postEmpty(this[environmentSymbol], request, { email }));
+        return this.follow('ec:auth/change-email');
+      })
+      .then(request => postEmpty(this[environmentSymbol], request, { email }));
   }
 
   /**
@@ -186,8 +186,8 @@ export default class Accounts extends Core {
    */
   createApiToken(): Promise<tokenResponse> { // TODO advanced type
     return this.follow('ec:auth/create-anonymous')
-    .then(request => post(this[environmentSymbol], request, {}))
-    .then(([tokenResponse]) => tokenResponse);
+      .then(request => post(this[environmentSymbol], request, {}))
+      .then(([tokenResponse]) => tokenResponse);
   }
 
   /**
@@ -226,15 +226,15 @@ export default class Accounts extends Core {
    */
   createInvites(count?: number): Promise<InvitesResource> {
     return Promise.resolve()
-    .then(() => {
-      if (count && typeof count !== 'number') {
-        throw new Error('count must be a number');
-      }
+      .then(() => {
+        if (count && typeof count !== 'number') {
+          throw new Error('count must be a number');
+        }
 
-      return this.follow('ec:invites');
-    })
-    .then(request => post(this[environmentSymbol], request, { count: count || 1 }))
-    .then(([invites, traversal]) => new InvitesResource(invites, this[environmentSymbol], traversal));
+        return this.follow('ec:invites');
+      })
+      .then(request => post(this[environmentSymbol], request, { count: count || 1 }))
+      .then(([invites, traversal]) => new InvitesResource(invites, this[environmentSymbol], traversal));
   }
 
   /**
@@ -255,18 +255,18 @@ export default class Accounts extends Core {
    */
   emailAvailable(email: string): Promise<boolean> {
     return Promise.resolve()
-    .then(() => {
-      if (!email) {
-        throw new Error('email must be defined');
-      }
+      .then(() => {
+        if (!email) {
+          throw new Error('email must be defined');
+        }
 
-      return this.follow('ec:auth/email-available');
-    })
-    .then((request) => {
-      request.withTemplateParameters({ email });
-      return get(this[environmentSymbol], request);
-    })
-    .then(([a]) => <boolean>a.available);
+        return this.follow('ec:auth/email-available');
+      })
+      .then((request) => {
+        request.withTemplateParameters({ email });
+        return get(this[environmentSymbol], request);
+      })
+      .then(([a]) => <boolean>a.available);
   }
 
   /**
@@ -323,9 +323,9 @@ export default class Accounts extends Core {
    */
   invalidPermissions(): Promise<InvalidPermissionsResource> {
     return this.follow('ec:invalid-permissions')
-    .then(request => get(this[environmentSymbol], request))
-    .then(([resource, traversal]) =>
-      new InvalidPermissionsResource(resource, this[environmentSymbol], traversal));
+      .then(request => get(this[environmentSymbol], request))
+      .then(([resource, traversal]) =>
+        new InvalidPermissionsResource(resource, this[environmentSymbol], traversal));
   }
 
   /**
@@ -347,8 +347,8 @@ export default class Accounts extends Core {
    */
   invites(): Promise<InvitesResource> {
     return this.follow('ec:invites')
-    .then(request => get(this[environmentSymbol], request))
-    .then(([invites, traversal]) => new InvitesResource(invites, this[environmentSymbol], traversal));
+      .then(request => get(this[environmentSymbol], request))
+      .then(([invites, traversal]) => new InvitesResource(invites, this[environmentSymbol], traversal));
   }
 
   /**
@@ -364,9 +364,9 @@ export default class Accounts extends Core {
    */
   me(): Promise<AccountResource> {
     return Promise.resolve()
-    .then(() => this.follow('ec:account'))
-    .then(request => get(this[environmentSymbol], request))
-    .then(([res, traversal]) => new AccountResource(res, this[environmentSymbol], traversal));
+      .then(() => this.follow('ec:account'))
+      .then(request => get(this[environmentSymbol], request))
+      .then(([res, traversal]) => new AccountResource(res, this[environmentSymbol], traversal));
   }
 
   /**
@@ -381,22 +381,22 @@ export default class Accounts extends Core {
    */
   resetPassword(email: string): Promise<void> {
     return Promise.resolve()
-    .then(() => {
-      if (!email) {
-        throw new Error('email must be defined');
-      }
-      if (!this[tokenStoreSymbol].hasClientID()) {
-        throw new Error('clientID must be set with Account#setClientID(clientID: string)');
-      }
+      .then(() => {
+        if (!email) {
+          throw new Error('email must be defined');
+        }
+        if (!this[tokenStoreSymbol].hasClientID()) {
+          throw new Error('clientID must be set with Account#setClientID(clientID: string)');
+        }
 
-      return this.follow('ec:auth/password-reset');
-    }).then((request) => {
-      request.withTemplateParameters({
-        clientID: this[tokenStoreSymbol].getClientID(),
-        email,
+        return this.follow('ec:auth/password-reset');
+      }).then((request) => {
+        request.withTemplateParameters({
+          clientID: this[tokenStoreSymbol].getClientID(),
+          email,
+        });
+        return getEmpty(this[environmentSymbol], request);
       });
-      return getEmpty(this[environmentSymbol], request);
-    });
   }
 
   /**
@@ -420,16 +420,16 @@ export default class Accounts extends Core {
    * @return {Promise<string>} the jwt of the created API key
    */
   createAPIKey(): Promise<string> {
-   return Promise.resolve()
-   .then(() => {
-     return this.follow('ec:auth/create-anonymous');
-   })
-   .then((request) => {
-     return post(request, {});
-   })
-   .then(([res]) => {
-     return <string>res.jwt;
-   });
+    return Promise.resolve()
+      .then(() => {
+        return this.follow('ec:auth/create-anonymous');
+      })
+      .then((request) => {
+        return post(request, {});
+      })
+      .then(([res]) => {
+        return <string>res.jwt;
+      });
   }
 
   /**
@@ -449,31 +449,31 @@ export default class Accounts extends Core {
    */
   signup(email: string, password: string, invite?: string): Promise<string> {
     return Promise.resolve()
-    .then(() => {
-      if (!email) {
-        throw new Error('email must be defined');
-      }
-      if (!password) {
-        throw new Error('password must be defined');
-      }
-      if (!this[tokenStoreSymbol].hasClientID()) {
-        throw new Error('clientID must be set with Account#setClientID(clientID: string)');
-      }
+      .then(() => {
+        if (!email) {
+          throw new Error('email must be defined');
+        }
+        if (!password) {
+          throw new Error('password must be defined');
+        }
+        if (!this[tokenStoreSymbol].hasClientID()) {
+          throw new Error('clientID must be set with Account#setClientID(clientID: string)');
+        }
 
-      return this.follow('ec:auth/register');
-    })
-    .then((request) => {
-      request.withTemplateParameters({
-        clientID: this[tokenStoreSymbol].getClientID(),
-        invite,
+        return this.follow('ec:auth/register');
+      })
+      .then((request) => {
+        request.withTemplateParameters({
+          clientID: this[tokenStoreSymbol].getClientID(),
+          invite,
+        });
+        return getUrl(this[environmentSymbol], request);
+      })
+      .then(url => superagentFormPost(url, { email, password }))
+      .then((token) => {
+        this[tokenStoreSymbol].setToken(token.token);
+        return Promise.resolve(token.token);
       });
-      return getUrl(this[environmentSymbol], request);
-    })
-    .then(url => superagentFormPost(url, { email, password }))
-    .then((token) => {
-      this[tokenStoreSymbol].setToken(token.token);
-      return Promise.resolve(token.token);
-    });
   }
 }
 

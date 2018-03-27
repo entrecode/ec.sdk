@@ -168,12 +168,12 @@ class PublicAssetResource extends Resource {
    */
   save(safePut: boolean = false, overwriteSchemaUrl?: string): Promise<PublicAssetResource> {
     return Promise.resolve()
-    .then(() => {
-      if (!this['isResolved']) {
-        throw new Error('Cannot save not resolved PublicAssetResource');
-      }
-      return <Promise<PublicAssetResource>>super.save(false, overwriteSchemaUrl);
-    });
+      .then(() => {
+        if (!this['isResolved']) {
+          throw new Error('Cannot save not resolved PublicAssetResource');
+        }
+        return <Promise<PublicAssetResource>>super.save(false, overwriteSchemaUrl);
+      });
   }
 }
 

@@ -47,29 +47,29 @@ export default class Session extends Core {
    */
   checkPermission(permission: string): Promise<boolean> {
     return Promise.resolve()
-    .then(() => {
-      if (!permission) {
-        throw new Error('permission must be defined');
-      }
+      .then(() => {
+        if (!permission) {
+          throw new Error('permission must be defined');
+        }
 
-      if (this[meSymbol] && new Date().getTime() - this[meLoadedTimeSymbol] <= 300000) { // 5 Minutes
-        return undefined;
-      }
-
-      if (!this[requestCacheSymbol]) {
-        this[requestCacheSymbol] = this.follow('ec:account')
-        .then(request => get(this[environmentSymbol], request))
-        .then(([res, traversal]) => {
-          this[requestCacheSymbol] = undefined;
-          this[meSymbol] = new AccountResource(res, this[environmentSymbol], traversal);
-          this[meLoadedTimeSymbol] = new Date();
+        if (this[meSymbol] && new Date().getTime() - this[meLoadedTimeSymbol] <= 300000) { // 5 Minutes
           return undefined;
-        });
-      }
+        }
 
-      return this[requestCacheSymbol];
-    })
-    .then(() => this[meSymbol].checkPermission(permission));
+        if (!this[requestCacheSymbol]) {
+          this[requestCacheSymbol] = this.follow('ec:account')
+            .then(request => get(this[environmentSymbol], request))
+            .then(([res, traversal]) => {
+              this[requestCacheSymbol] = undefined;
+              this[meSymbol] = new AccountResource(res, this[environmentSymbol], traversal);
+              this[meLoadedTimeSymbol] = new Date();
+              return undefined;
+            });
+        }
+
+        return this[requestCacheSymbol];
+      })
+      .then(() => this[meSymbol].checkPermission(permission));
   }
 
   /**
@@ -82,29 +82,29 @@ export default class Session extends Core {
    */
   login(email: string, password: string): Promise<string> {
     return Promise.resolve()
-    .then(() => {
-      if (!this[tokenStoreSymbol].hasClientID()) {
-        throw new Error('clientID must be set with Session#setClientID(clientID: string)');
-      }
-      if (!email) {
-        throw new Error('email must be defined');
-      }
-      if (!password) {
-        throw new Error('password must be defined');
-      }
+      .then(() => {
+        if (!this[tokenStoreSymbol].hasClientID()) {
+          throw new Error('clientID must be set with Session#setClientID(clientID: string)');
+        }
+        if (!email) {
+          throw new Error('email must be defined');
+        }
+        if (!password) {
+          throw new Error('password must be defined');
+        }
 
-      return this.follow('ec:auth/login');
-    })
-    .then((request) => {
-      request.withTemplateParameters({ clientID: this[tokenStoreSymbol].getClientID() });
-      return post(this[environmentSymbol], request, { email, password });
-    })
-    .then(([token]) => {
-      this[tokenStoreSymbol].setToken(token.token);
-      this[eventsSymbol].emit('login', token.token);
+        return this.follow('ec:auth/login');
+      })
+      .then((request) => {
+        request.withTemplateParameters({ clientID: this[tokenStoreSymbol].getClientID() });
+        return post(this[environmentSymbol], request, { email, password });
+      })
+      .then(([token]) => {
+        this[tokenStoreSymbol].setToken(token.token);
+        this[eventsSymbol].emit('login', token.token);
 
-      return token.token;
-    });
+        return token.token;
+      });
   }
 
   /**
@@ -115,29 +115,29 @@ export default class Session extends Core {
    */
   logout(): Promise<void> {
     return Promise.resolve()
-    .then(() => {
-      if (!this[tokenStoreSymbol].hasToken()) {
+      .then(() => {
+        if (!this[tokenStoreSymbol].hasToken()) {
+          return Promise.resolve();
+        }
+
+        if (!this[tokenStoreSymbol].hasClientID()) {
+          throw new Error('clientID must be set with Session#setClientID(clientID: string)');
+        }
+
+        return this.follow('ec:auth/logout')
+          .then((request) => {
+            request.withTemplateParameters({
+              clientID: this[tokenStoreSymbol].getClientID(),
+              token: this[tokenStoreSymbol].getToken(),
+            });
+            return post(this[environmentSymbol], request);
+          });
+      })
+      .then(() => {
+        this[eventsSymbol].emit('logout');
+        this[tokenStoreSymbol].deleteToken();
         return Promise.resolve();
-      }
-
-      if (!this[tokenStoreSymbol].hasClientID()) {
-        throw new Error('clientID must be set with Session#setClientID(clientID: string)');
-      }
-
-      return this.follow('ec:auth/logout')
-      .then((request) => {
-        request.withTemplateParameters({
-          clientID: this[tokenStoreSymbol].getClientID(),
-          token: this[tokenStoreSymbol].getToken(),
-        });
-        return post(this[environmentSymbol], request);
       });
-    })
-    .then(() => {
-      this[eventsSymbol].emit('logout');
-      this[tokenStoreSymbol].deleteToken();
-      return Promise.resolve();
-    });
   }
 
   /**

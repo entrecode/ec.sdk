@@ -39,16 +39,16 @@ export default class PublicAssetList extends ListResource {
    */
   tag(tag: string): Promise<PublicTagResource> {
     return Promise.resolve()
-    .then(() => {
-      if (!tag) {
-        throw new Error('tag must be defined');
-      }
-      const request = this.newRequest()
-      .follow('ec:api/tags')
-      .withTemplateParameters({ dataManagerID: this[dataManagerIDSymbol], tag });
-      return get(this[environmentSymbol], request);
-    })
-    .then(([res, traversal]) => new PublicTagResource(res, this[environmentSymbol], traversal));
+      .then(() => {
+        if (!tag) {
+          throw new Error('tag must be defined');
+        }
+        const request = this.newRequest()
+          .follow('ec:api/tags')
+          .withTemplateParameters({ dataManagerID: this[dataManagerIDSymbol], tag });
+        return get(this[environmentSymbol], request);
+      })
+      .then(([res, traversal]) => new PublicTagResource(res, this[environmentSymbol], traversal));
   }
 
   /**
@@ -78,20 +78,20 @@ export default class PublicAssetList extends ListResource {
    */
   tagList(options?: filterOptions | any): Promise<PublicTagList> { // TODO remove any
     return Promise.resolve()
-    .then(() => {
-      if (
-        options &&
-        Object.keys(options).length === 1 && 'tag' in options
-        && (typeof options.tag === 'string' || (!('any' in options.tag) && !('all' in options.tag)))
-      ) {
-        throw new Error('Cannot filter tagList only by tag. Use PublicAssetList#tag() instead');
-      }
+      .then(() => {
+        if (
+          options &&
+          Object.keys(options).length === 1 && 'tag' in options
+          && (typeof options.tag === 'string' || (!('any' in options.tag) && !('all' in options.tag)))
+        ) {
+          throw new Error('Cannot filter tagList only by tag. Use PublicAssetList#tag() instead');
+        }
 
-      const request = this.newRequest()
-      .follow('ec:api/tags')
-      .withTemplateParameters(optionsToQuery(options, this.getLink('ec:api/tags').href));
-      return get(this[environmentSymbol], request);
-    })
-    .then(([res, traversal]) => new PublicTagList(res, this[environmentSymbol], traversal));
+        const request = this.newRequest()
+          .follow('ec:api/tags')
+          .withTemplateParameters(optionsToQuery(options, this.getLink('ec:api/tags').href));
+        return get(this[environmentSymbol], request);
+      })
+      .then(([res, traversal]) => new PublicTagList(res, this[environmentSymbol], traversal));
   }
 }

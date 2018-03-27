@@ -113,13 +113,13 @@ export default class AssetList extends ListResource {
     }
 
     return getUrl(this[environmentSymbol], this.newRequest().follow('ec:assets/download'))
-    .then((url) => {
-      if (writeStream) {
-        return superagentGetPiped(url, writeStream);
-      }
+      .then((url) => {
+        if (writeStream) {
+          return superagentGetPiped(url, writeStream);
+        }
 
-      return Promise.resolve(url);
-    });
+        return Promise.resolve(url);
+      });
   }
 
   /**

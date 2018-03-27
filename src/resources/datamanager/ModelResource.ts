@@ -124,9 +124,9 @@ class ModelResource extends Resource {
    */
   purge() {
     return Promise.resolve()
-    .then(() => this.newRequest().follow('ec:model/purge'))
-    .then(request => del(this[environmentSymbol], request))
-    .then(() => undefined);
+      .then(() => this.newRequest().follow('ec:model/purge'))
+      .then(request => del(this[environmentSymbol], request))
+      .then(() => undefined);
   }
 
   /**
@@ -136,9 +136,9 @@ class ModelResource extends Resource {
    */
   sync() {
     return Promise.resolve()
-    .then(() => this.newRequest().follow('ec:model/sync'))
-    .then(request => post(this[environmentSymbol], request))
-    .then(([res]) => res);
+      .then(() => this.newRequest().follow('ec:model/sync'))
+      .then(request => post(this[environmentSymbol], request))
+      .then(([res]) => res);
   }
 }
 

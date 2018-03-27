@@ -104,10 +104,7 @@ class DeletedAssetResource extends Resource {
    * @returns {Promise<void>} Promise resolving on successful purging.
    */
   purge(): Promise<void> {
-    return del(this[environmentSymbol],
-      this.newRequest().follow('self')
-      .withTemplateParameters({ destroy: 'destroy' })
-    );
+    return del(this[environmentSymbol], this.newRequest().follow('self').withTemplateParameters({ destroy: 'destroy' }));
   }
 
   /**

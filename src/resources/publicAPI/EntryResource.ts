@@ -52,25 +52,25 @@ function getShortID(resource) {
 function loadSchemaForResource(resource: any): any {
   const res = halfred.parse(resource);
   return getSchema(res.link('self').profile)
-  .then(schema =>
-    Object.keys(schema.allOf[1].properties).map((property) => {
-      if (['entry', 'entries'].indexOf(getFieldType(schema, property)) !== -1
-      ) {
-        const field = res[property];
-        if (Array.isArray(field)) {
-          return field[0] && typeof field[0] === 'object' ? field : undefined;
-        } else if (typeof field === 'object') {
-          return field;
+    .then(schema =>
+      Object.keys(schema.allOf[1].properties).map((property) => {
+        if (['entry', 'entries'].indexOf(getFieldType(schema, property)) !== -1
+        ) {
+          const field = res[property];
+          if (Array.isArray(field)) {
+            return field[0] && typeof field[0] === 'object' ? field : undefined;
+          } else if (typeof field === 'object') {
+            return field;
+          }
         }
-      }
-    })
-    .reduce((r, p) => r.concat(p), [])
-    .filter(x => !!x) // filter undefined
-    .filter((x, i, a) => a.findIndex(t => t.id === x.id) === i) // filter duplicates
-    .map(r => () => loadSchemaForResource(r)) // eslint-disable-line comma-dangle
-    .reduce((r, p) => r.then(p), Promise.resolve())
-    .then(() => schema)
-  );
+      })
+        .reduce((r, p) => r.concat(p), [])
+        .filter(x => !!x) // filter undefined
+        .filter((x, i, a) => a.findIndex(t => t.id === x.id) === i) // filter duplicates
+        .map(r => () => loadSchemaForResource(r)) // eslint-disable-line comma-dangle
+        .reduce((r, p) => r.then(p), Promise.resolve())
+        .then(() => schema)
+    );
 }
 
 interface EntryResource {
@@ -569,10 +569,10 @@ class EntryResource extends LiteEntryResource {
    */
   validateField(field: string): Promise<boolean> {
     return Promise.resolve()
-    .then(() => {
-      const schema = this[schemaSymbol].allOf[1].properties[field];
-      return validator.validate(this[field], schema);
-    });
+      .then(() => {
+        const schema = this[schemaSymbol].allOf[1].properties[field];
+        return validator.validate(this[field], schema);
+      });
   }
 }
 
@@ -592,6 +592,6 @@ export default EntryResource;
  */
 export function createEntry(resource: any, environment: environment, traversal?: any): Promise<EntryResource> {
   return Promise.resolve()
-  .then(() => loadSchemaForResource(resource))
-  .then(schema => new EntryResource(resource, environment, schema, traversal));
+    .then(() => loadSchemaForResource(resource))
+    .then(schema => new EntryResource(resource, environment, schema, traversal));
 }

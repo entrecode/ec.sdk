@@ -133,7 +133,7 @@ class PlatformResource extends Resource {
    */
   createBuild(): Promise<BuildResource> {
     return post(this[environmentSymbol], this.newRequest().follow('ec:app/builds'))
-    .then(([res, traversal]) => new BuildResource(res, this[environmentSymbol], traversal));
+      .then(([res, traversal]) => new BuildResource(res, this[environmentSymbol], traversal));
   }
 
   /**
@@ -147,36 +147,36 @@ class PlatformResource extends Resource {
    */
   createDeployment(targetIDs: string | TargetResource | TargetList | Array<string | TargetResource>, buildID: string | BuildResource | BuildList | Array<string | BuildResource>): Promise<DeploymentResource> {
     return Promise.resolve()
-    .then(() => {
-      if (!buildID) {
-        throw new Error('Must specify build to deploy');
-      }
-      if (buildID instanceof BuildResource) {
-        buildID = (<BuildResource>buildID).buildID;
-      }
-      if (!targetIDs) {
-        throw new Error('Must specify targets to deploy to');
-      }
-      if (targetIDs instanceof TargetList) {
-        targetIDs = (<TargetList>targetIDs).getAllItems();
-      } else if (!Array.isArray(targetIDs)) {
-        targetIDs = [<string>targetIDs];
-      }
+      .then(() => {
+        if (!buildID) {
+          throw new Error('Must specify build to deploy');
+        }
+        if (buildID instanceof BuildResource) {
+          buildID = (<BuildResource>buildID).buildID;
+        }
+        if (!targetIDs) {
+          throw new Error('Must specify targets to deploy to');
+        }
+        if (targetIDs instanceof TargetList) {
+          targetIDs = (<TargetList>targetIDs).getAllItems();
+        } else if (!Array.isArray(targetIDs)) {
+          targetIDs = [<string>targetIDs];
+        }
 
-      targetIDs = (<Array<string | TargetResource>>targetIDs)
-      .map(target => target instanceof TargetResource ? target.targetID : target);
+        targetIDs = (<Array<string | TargetResource>>targetIDs)
+          .map(target => target instanceof TargetResource ? target.targetID : target);
 
-      const request = this.newRequest()
-      .follow('ec:app/deployments/options')
-      .withTemplateParameters({
-        platformID: this.platformID,
-        buildID,
-        targetID: (<Array<string>>targetIDs).join(','),
-      });
+        const request = this.newRequest()
+          .follow('ec:app/deployments/options')
+          .withTemplateParameters({
+            platformID: this.platformID,
+            buildID,
+            targetID: (<Array<string>>targetIDs).join(','),
+          });
 
-      return post(this[environmentSymbol], request);
-    })
-    .then(([res, traversal]) => new DeploymentResource(res, this[environmentSymbol], traversal));
+        return post(this[environmentSymbol], request);
+      })
+      .then(([res, traversal]) => new DeploymentResource(res, this[environmentSymbol], traversal));
   }
 
   /**
@@ -188,15 +188,15 @@ class PlatformResource extends Resource {
    */
   deployLatestBuild(targetIDs: string | TargetResource | TargetList | Array<string | TargetResource>): Promise<DeploymentResource> {
     return Promise.resolve()
-    .then(() => {
-      const link = this.getLink('ec:app/build/latest');
-      if (!link) {
-        throw Error('No latest build found');
-      }
-      const buildID = querystring.parse(link.href.split('?')[1]).buildID;
+      .then(() => {
+        const link = this.getLink('ec:app/build/latest');
+        if (!link) {
+          throw Error('No latest build found');
+        }
+        const buildID = querystring.parse(link.href.split('?')[1]).buildID;
 
-      return this.createDeployment(targetIDs, buildID);
-    });
+        return this.createDeployment(targetIDs, buildID);
+      });
   }
 
   /**
@@ -239,8 +239,8 @@ class PlatformResource extends Resource {
     const targetID = target instanceof TargetResource ? target.targetID : target;
 
     return !!this[resourceSymbol]
-    .linkArray('ec:app/target')
-    .find(link => link.href.indexOf(targetID) !== -1);
+      .linkArray('ec:app/target')
+      .find(link => link.href.indexOf(targetID) !== -1);
   }
 
   /**
@@ -251,12 +251,12 @@ class PlatformResource extends Resource {
    */
   latestBuild(): Promise<BuildResource> {
     return Promise.resolve()
-    .then(() => {
-      const request = this.newRequest()
-      .follow('ec:app/build/latest');
-      return get(this[environmentSymbol], request);
-    })
-    .then(([res, traversal]) => new BuildResource(res, this[environmentSymbol], traversal));
+      .then(() => {
+        const request = this.newRequest()
+          .follow('ec:app/build/latest');
+        return get(this[environmentSymbol], request);
+      })
+      .then(([res, traversal]) => new BuildResource(res, this[environmentSymbol], traversal));
   }
 
   /**
@@ -266,12 +266,12 @@ class PlatformResource extends Resource {
    */
   latestDeployment(): Promise<DeploymentResource> {
     return Promise.resolve()
-    .then(() => {
-      const request = this.newRequest()
-      .follow('ec:app/deployment/latest');
-      return get(this[environmentSymbol], request);
-    })
-    .then(([res, traversal]) => new DeploymentResource(res, this[environmentSymbol], traversal));
+      .then(() => {
+        const request = this.newRequest()
+          .follow('ec:app/deployment/latest');
+        return get(this[environmentSymbol], request);
+      })
+      .then(([res, traversal]) => new DeploymentResource(res, this[environmentSymbol], traversal));
   }
 
   /**
@@ -281,7 +281,7 @@ class PlatformResource extends Resource {
    */
   loadCodeSource(): Promise<CodeSourceResource> {
     return get(this[environmentSymbol], this.newRequest().follow('ec:app/codesource'))
-    .then(([res, traversal]) => new CodeSourceResource(res, this[environmentSymbol], traversal));
+      .then(([res, traversal]) => new CodeSourceResource(res, this[environmentSymbol], traversal));
   }
 
   /**
@@ -291,7 +291,7 @@ class PlatformResource extends Resource {
    */
   loadDataSource(): Promise<DataSourceResource> {
     return get(this[environmentSymbol], this.newRequest().follow('ec:app/datasource'))
-    .then(([res, traversal]) => new DataSourceResource(res, this[environmentSymbol], traversal));
+      .then(([res, traversal]) => new DataSourceResource(res, this[environmentSymbol], traversal));
   }
 
   /**
@@ -301,27 +301,27 @@ class PlatformResource extends Resource {
    */
   loadTargets(): Promise<TargetList> {
     return Promise.resolve()
-    .then(() => {
-      const qs: any = {};
-      const targetIDs = this.getLinks('ec:app/target')
-      .map((l: any) => querystring.parse(l.href.split('?')[1]).targetID);
-      if (targetIDs.length === 1) {
-        targetIDs.push(targetIDs[0]);
-      }
-      qs.targetID = targetIDs.join(',');
+      .then(() => {
+        const qs: any = {};
+        const targetIDs = this.getLinks('ec:app/target').map((l: any) => querystring.parse(l.href.split('?')[1]).targetID);
+        if (targetIDs.length === 1) {
+          targetIDs.push(targetIDs[0]);
+        }
+        qs.targetID = targetIDs.join(',');
 
-      const link = this.getLink('ec:app/target');
-      const split = link.href.split('?');
-      return get(this[environmentSymbol], traverson.from(`${split[0]}?${querystring.stringify(qs)}`).jsonHal());
-    })
-    .then(([res, traversal]) => new TargetList(res, this[environmentSymbol], traversal));
+        const link = this.getLink('ec:app/target');
+        const split = link.href.split('?');
+        return get(this[environmentSymbol], traverson.from(`${split[0]}?${querystring.stringify(qs)}`).jsonHal());
+      })
+      .then(([res, traversal]) => new TargetList(res, this[environmentSymbol], traversal));
   }
 
   removeTarget(target: string | TargetResource): void {
     const targetID = target instanceof TargetResource ? target.targetID : target;
 
-    this[resourceSymbol]._links['ec:app/target'] = this[resourceSymbol].linkArray('ec:app/target')
-    .filter(link => link.href.indexOf(targetID) === -1);
+    this[resourceSymbol]._links['ec:app/target'] = this[resourceSymbol]
+      .linkArray('ec:app/target')
+      .filter(link => link.href.indexOf(targetID) === -1);
   }
 
   setCodeSource(codeSource: string | CodeSourceResource) {
