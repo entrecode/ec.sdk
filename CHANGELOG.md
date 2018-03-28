@@ -1,3 +1,13 @@
+<a name="0.13.14"></a>
+## <small>0.13.14 (2018-03-28)</small>
+
+* release version 0.13.14 ([6f1fb02](https://github.com/entrecode/ec.sdk/commit/6f1fb02))
+* feat: newHistory for DataManagerResource, ModelResource, EntryResource, and PublicAPI ([6dfb8dd](https://github.com/entrecode/ec.sdk/commit/6dfb8dd))
+* chore: applied new codestyle <3 ([fdd14bc](https://github.com/entrecode/ec.sdk/commit/fdd14bc))
+* fix: removes dummy resource in Resources ([0352921](https://github.com/entrecode/ec.sdk/commit/0352921))
+
+
+
 <a name="0.13.13"></a>
 ## <small>0.13.13 (2018-03-23)</small>
 
