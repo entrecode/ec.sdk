@@ -16,7 +16,7 @@ import Resource from '../Resource';
 import RoleList from './RoleList';
 import RoleResource from './RoleResource';
 import { filterOptions } from '../ListResource';
-import { get, getUrl, superagentPost } from '../../helper';
+import { get, getUrl, superagentPost, optionsToQuery, getHistory } from '../../helper';
 import { environment } from '../../Core';
 import PublicAPI from '../../PublicAPI';
 import AssetGroupResource from './AssetGroupResource';
@@ -541,6 +541,24 @@ class DataManagerResource extends Resource {
    */
   modelList(options?: filterOptions): Promise<ModelList> {
     return <Promise<ModelList>>this.resourceList('model', options);
+  }
+
+  /**
+   * Creates a new History EventSource with the given filter options.
+   *
+   * @param {filterOptions | any} options The filter options
+   * @return {Promise<EventSource>} The created EventSource.
+   */
+  newHistory(options?: filterOptions): Promise<any> {
+    return Promise.resolve()
+      .then(() => this.follow('ec:datamanager/dm-entryHistory'))
+      .then(request => {
+        if (options) {
+          request.withTemplateParameters(optionsToQuery(options));
+        }
+
+        return getHistory(this[environmentSymbol], request)
+      });
   }
 
   /**

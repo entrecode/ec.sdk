@@ -1,6 +1,7 @@
 import Resource from '../Resource';
 import { environment } from '../../Core';
-import { del, post } from '../../helper';
+import { del, post, optionsToQuery, getHistory } from '../../helper';
+import { filterOptions } from 'ec.sdk/src/resources/ListResource';
 
 const environmentSymbol = Symbol.for('environment');
 
@@ -63,7 +64,7 @@ class ModelResource extends Resource {
       },
       fields: {
         enumerable: true,
-        get: () => <Array<any>> this.getProperty('fields'),
+        get: () => <Array<any>>this.getProperty('fields'),
         set: (value: Array<any>) => this.setProperty('fields', value)
       },
       hasEntries: {
@@ -115,6 +116,24 @@ class ModelResource extends Resource {
       }
     });
     this.countProperties();
+  }
+
+  /**
+   * Creates a new History EventSource with the given filter options.
+   *
+   * @param {filterOptions | any} options The filter options
+   * @return {Promise<EventSource>} The created EventSource.
+   */
+  newHistory(options?: filterOptions): Promise<any> {
+    return Promise.resolve()
+      .then(() => this.follow('ec:model/dm-entryHistory'))
+      .then(request => {
+        if (options) {
+          request.withTemplateParameters(optionsToQuery(options));
+        }
+
+        return getHistory(this[environmentSymbol], request)
+      });
   }
 
   /**

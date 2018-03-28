@@ -20,7 +20,8 @@ import {
   post,
   postEmpty,
   superagentFormPost,
-  superagentPost
+  superagentPost,
+  getHistory
 } from './helper';
 import DMAssetResource from './resources/publicAPI/DMAssetResource';
 import DMAssetList from './resources/publicAPI/DMAssetList';
@@ -130,19 +131,19 @@ export default class PublicAPI extends Core {
       }
 
       switch (result[1]) {
-      case 'datamanager.entrecode.de':
-        env.environment = 'live';
-        break;
-      case 'datamanager.cachena.entrecode.de':
-        env.environment = 'stage';
-        break;
-      case 'datamanager.buffalo.entrecode.de':
-        env.environment = 'nightly';
-        break;
-      case 'localhost:7471':
-      default:
-        env.environment = 'develop';
-        break;
+        case 'datamanager.entrecode.de':
+          env.environment = 'live';
+          break;
+        case 'datamanager.cachena.entrecode.de':
+          env.environment = 'stage';
+          break;
+        case 'datamanager.buffalo.entrecode.de':
+          env.environment = 'nightly';
+          break;
+        case 'localhost:7471':
+        default:
+          env.environment = 'develop';
+          break;
       }
 
       id = result[2];
@@ -271,7 +272,7 @@ export default class PublicAPI extends Core {
     return Promise.resolve()
       .then(() => {
         if (!email) {
-          throw  new Error('email must be defined');
+          throw new Error('email must be defined');
         }
         return this.follow(`${this[shortIDSymbol]}:_auth/change-email`)
           .then((request) => {
@@ -366,7 +367,7 @@ export default class PublicAPI extends Core {
         const superagentRequest = superagent.post(url);
 
         const isFormData = typeof FormData === 'function' && input instanceof FormData; // eslint-disable-line
-                                                                                        // no-undef
+        // no-undef
         if (isFormData) {
           superagentRequest.send(input);
         } else if (typeof input === 'string') {
@@ -435,7 +436,7 @@ export default class PublicAPI extends Core {
         const superagentRequest = superagent.post(url);
 
         const isFormData = typeof FormData === 'function' && input instanceof FormData; // eslint-disable-line
-                                                                                        // no-undef
+        // no-undef
         if (isFormData) {
           superagentRequest.send(input);
         } else {
@@ -525,7 +526,7 @@ export default class PublicAPI extends Core {
       .then((url) => {
         const request = superagent.post(url);
         const isFormData = typeof FormData === 'function' && input instanceof FormData; // eslint-disable-line
-                                                                                        // no-undef
+        // no-undef
         if (isFormData) {
           request.send(input);
         } else {
@@ -1075,6 +1076,24 @@ export default class PublicAPI extends Core {
         });
         this[modelCacheSymbol] = out; // TODO is this needed?
         return out;
+      });
+  }
+
+  /**
+   * Creates a new History EventSource with the given filter options.
+   *
+   * @param {filterOptions | any} options The filter options
+   * @return {Promise<EventSource>} The created EventSource.
+   */
+  newHistory(options?: filterOptions): Promise<any> {
+    return Promise.resolve()
+      .then(() => this.follow('ec:api/dm-entryHistory'))
+      .then(request => {
+        if (options) {
+          request.withTemplateParameters(optionsToQuery(options));
+        }
+
+        return getHistory(this[environmentSymbol], request)
       });
   }
 
