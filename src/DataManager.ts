@@ -87,16 +87,16 @@ export default class DataManager extends Core {
    */
   createTemplate(template: any): Promise<TemplateResource> {
     return Promise.resolve()
-    .then(() => {
-      if (!template) {
-        throw new Error('Cannot create resource with undefined object.');
-      }
-      return this.link('ec:dm-template/by-id');
-    })
-    .then(link => validator.validate(template, `${link.profile}-template`))
-    .then(() => this.follow('ec:dm-templates'))
-    .then(request => post(request, template))
-    .then(([dm, traversal]) => new TemplateResource(dm, this[environmentSymbol], traversal));
+      .then(() => {
+        if (!template) {
+          throw new Error('Cannot create resource with undefined object.');
+        }
+        return this.link('ec:dm-template/by-id');
+      })
+      .then(link => validator.validate(template, `${link.profile}-template`))
+      .then(() => this.follow('ec:dm-templates'))
+      .then(request => post(request, template))
+      .then(([dm, traversal]) => new TemplateResource(dm, this[environmentSymbol], traversal));
   }
 
   /**
@@ -139,7 +139,7 @@ export default class DataManager extends Core {
 
     const url = `${urls[this[environmentSymbol]]}files/${assetID}/url`;
     return superagentGet(url, locale ? { 'Accept-Language': locale } : {})
-    .then((res) => res.url);
+      .then((res) => res.url);
   }
 
   /**
@@ -158,7 +158,7 @@ export default class DataManager extends Core {
 
     const url = `${urls[this[environmentSymbol]]}files/${assetID}/url?thumb${size ? `&size=${size}` : ''}`;
     return superagentGet(url, locale ? { 'Accept-Language': locale } : {})
-    .then((res) => res.url);
+      .then((res) => res.url);
   }
 
   /**
@@ -177,7 +177,7 @@ export default class DataManager extends Core {
 
     const url = `${urls[this[environmentSymbol]]}files/${assetID}/url${size ? `?size=${size}` : ''}`;
     return superagentGet(url, locale ? { 'Accept-Language': locale } : {})
-    .then((res) => res.url);
+      .then((res) => res.url);
   }
 
   /**
@@ -188,16 +188,16 @@ export default class DataManager extends Core {
    */
   newHistory(options?: filterOptions): Promise<any> {
     return Promise.resolve()
-    .then(() => this.follow('ec:history'))
-    .then(request => {
-      request.follow('ec:entry-history');
+      .then(() => this.follow('ec:history'))
+      .then(request => {
+        request.follow('ec:entry-history');
 
-      if (options) {
-        request.withTemplateParameters(optionsToQuery(options));
-      }
+        if (options) {
+          request.withTemplateParameters(optionsToQuery(options));
+        }
 
-      return getHistory(this[environmentSymbol], request)
-    });
+        return getHistory(this[environmentSymbol], request)
+      });
   }
 
   /**
@@ -212,14 +212,14 @@ export default class DataManager extends Core {
    */
   stats(dataManagerID: string): Promise<DMStatsResource> {
     return Promise.resolve()
-    .then(() => {
-      if (!dataManagerID) {
-        throw new Error('dataManagerID must be defined');
-      }
-      return this.follow('ec:dm-stats');
-    })
-    .then(request => get(this[environmentSymbol], request.withTemplateParameters({ dataManagerID })))
-    .then(([res]) => new DMStatsList(res, this[environmentSymbol]).getFirstItem());
+      .then(() => {
+        if (!dataManagerID) {
+          throw new Error('dataManagerID must be defined');
+        }
+        return this.follow('ec:dm-stats');
+      })
+      .then(request => get(this[environmentSymbol], request.withTemplateParameters({ dataManagerID })))
+      .then(([res]) => new DMStatsList(res, this[environmentSymbol]).getFirstItem());
   }
 
   /**
@@ -233,9 +233,9 @@ export default class DataManager extends Core {
    */
   statsList(): Promise<DMStatsList> {
     return Promise.resolve()
-    .then(() => this.follow('ec:dm-stats'))
-    .then(request => get(this[environmentSymbol], request))
-    .then(([res, traversal]) => new DMStatsList(res, this[environmentSymbol], traversal));
+      .then(() => this.follow('ec:dm-stats'))
+      .then(request => get(this[environmentSymbol], request))
+      .then(([res, traversal]) => new DMStatsList(res, this[environmentSymbol], traversal));
   }
 
   /**

@@ -8,74 +8,74 @@ const listClassSymbol = Symbol('_listClass');
 const nameSymbol = Symbol('_name');
 
 function map(list: ListResource, iterator: (resource: Resource) => Promise<any> | any, results: Array<Resource> = []) {
-  return list.getAllItems().map(entry =>
-    res =>
-      Promise.resolve()
-      .then(() => iterator(entry))
-      .then((result) => {
-        res.push(result);
+  return list.getAllItems()
+    .map(entry =>
+      res => Promise.resolve()
+        .then(() => iterator(entry))
+        .then((result) => {
+          res.push(result);
+          return res;
+        }))
+    .reduce((current, next) => current.then(next), Promise.resolve(results))
+    .then((res: Array<Resource>) => {
+      if (!list.hasNextLink()) {
         return res;
-      }))
-  .reduce((current, next) => current.then(next), Promise.resolve(results))
-  .then((res: Array<Resource>) => {
-    if (!list.hasNextLink()) {
-      return res;
-    }
-    return list.followNextLink()
-    .then(next => map(next, iterator, res));
-  });
+      }
+      return list.followNextLink()
+        .then(next => map(next, iterator, res));
+    });
 }
 
 function filter(list: ListResource, iterator: (resource: Resource) => Promise<boolean> | boolean, results: Array<Resource> = []) {
-  return list.getAllItems().map(entry =>
-    res =>
-      Promise.resolve()
-      .then(() => iterator(entry))
-      .then((add) => {
-        if (add) {
-          res.push(entry);
-        }
+  return list.getAllItems()
+    .map(entry =>
+      res => Promise.resolve()
+        .then(() => iterator(entry))
+        .then((add) => {
+          if (add) {
+            res.push(entry);
+          }
+          return res;
+        }))
+    .reduce((current, next) => current.then(next), Promise.resolve(results))
+    .then((res: Array<Resource>) => {
+      if (!list.hasNextLink()) {
         return res;
-      }))
-  .reduce((current, next) => current.then(next), Promise.resolve(results))
-  .then((res: Array<Resource>) => {
-    if (!list.hasNextLink()) {
-      return res;
-    }
-    return list.followNextLink()
-    .then(next => filter(next, iterator, res));
-  });
+      }
+      return list.followNextLink()
+        .then(next => filter(next, iterator, res));
+    });
 }
 
 function find(list: ListResource, iterator: (resource: Resource) => Promise<boolean> | boolean) {
-  return list.getAllItems().map(entry =>
-    () =>
-      Promise.resolve()
-      .then(() => iterator(entry))
-      .then((found) => {
-        if (!found) {
-          return false;
-        }
-        return entry;
-      }))
-  .reduce((current, next) => current.then((found) => {
-    if (!found) {
-      return next();
-    }
-    return found;
-  }), Promise.resolve(false))
-  .then((res: Resource | boolean) => {
-    if (res) {
-      return res;
-    }
+  return list.getAllItems()
+    .map(entry =>
+      () => Promise.resolve()
+        .then(() => iterator(entry))
+        .then((found) => {
+          if (!found) {
+            return false;
+          }
+          return entry;
+        }))
+    .reduce((current, next) => current.then((found) => {
+      if (!found) {
+        return next();
+      }
+      return found;
+    }), Promise.resolve(false))
+    .then((res: Resource | boolean) => {
+      if (res) {
+        return res;
+      }
 
-    if (list.hasNextLink()) {
-      return list.followNextLink()
-      .then(next => find(next, iterator));
-    }
+      if (list.hasNextLink()) {
+        return list.followNextLink()
+          .then(next => find(next, iterator));
+      }
 
-    return undefined;
-  });
+      return undefined;
+    });
 }
 
 interface ListResource {

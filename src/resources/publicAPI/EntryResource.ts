@@ -3,9 +3,10 @@ import * as validator from 'json-schema-remote';
 
 import LiteEntryResource from './LiteEntryResource';
 import PublicAssetResource from './PublicAssetResource';
-import { fileNegotiate, getSchema } from '../../helper';
+import { fileNegotiate, getSchema, optionsToQuery, getHistory } from '../../helper';
 import { environment } from '../../Core';
 import DMAssetResource from './DMAssetResource';
+import { filterOptions } from 'ec.sdk/src/resources/ListResource';
 
 const environmentSymbol = Symbol.for('environment');
 const resourceSymbol = Symbol.for('resource');
@@ -52,25 +53,25 @@ function getShortID(resource) {
 function loadSchemaForResource(resource: any): any {
   const res = halfred.parse(resource);
   return getSchema(res.link('self').profile)
-  .then(schema =>
-    Object.keys(schema.allOf[1].properties).map((property) => {
-      if (['entry', 'entries'].indexOf(getFieldType(schema, property)) !== -1
-      ) {
-        const field = res[property];
-        if (Array.isArray(field)) {
-          return field[0] && typeof field[0] === 'object' ? field : undefined;
-        } else if (typeof field === 'object') {
-          return field;
+    .then(schema =>
+      Object.keys(schema.allOf[1].properties).map((property) => {
+        if (['entry', 'entries'].indexOf(getFieldType(schema, property)) !== -1
+        ) {
+          const field = res[property];
+          if (Array.isArray(field)) {
+            return field[0] && typeof field[0] === 'object' ? field : undefined;
+          } else if (typeof field === 'object') {
+            return field;
+          }
         }
-      }
-    })
-    .reduce((r, p) => r.concat(p), [])
-    .filter(x => !!x) // filter undefined
-    .filter((x, i, a) => a.findIndex(t => t.id === x.id) === i) // filter duplicates
-    .map(r => () => loadSchemaForResource(r)) // eslint-disable-line comma-dangle
-    .reduce((r, p) => r.then(p), Promise.resolve())
-    .then(() => schema)
-  );
+      })
+        .reduce((r, p) => r.concat(p), [])
+        .filter(x => !!x) // filter undefined
+        .filter((x, i, a) => a.findIndex(t => t.id === x.id) === i) // filter duplicates
+        .map(r => () => loadSchemaForResource(r)) // eslint-disable-line comma-dangle
+        .reduce((r, p) => r.then(p), Promise.resolve())
+        .then(() => schema)
+    );
 }
 
 interface EntryResource {
@@ -147,253 +148,253 @@ class EntryResource extends LiteEntryResource {
         };
 
         switch (type) {
-        case 'datetime':
-          property.get = () => {
-            const val = this.getProperty(key);
-            if (val === undefined || val === null) {
-              return val;
-            }
-            return new Date(val);
-          };
-          property.set = (val) => {
-            let v;
-            if (val instanceof Date) {
-              v = val.toISOString();
-            } else if (val === null || (typeof val === 'string' && datetimeRegex.test(val))) {
-              v = val;
-            } else {
-              throw new Error('input must be a Date, date string or null');
-            }
-
-            this.setProperty(key, v);
-          };
-          break;
-        case 'entry':
-          property.get = () => {
-            const entry = this.getProperty(key);
-            if (!entry) {
-              return entry;
-            }
-            if (typeof entry === 'object'
-              && !(entry instanceof EntryResource)
-              && !(entry instanceof LiteEntryResource)) {
-              // if it is an object but not one of the Resource types it was loaded nested
-              // so convert to EntryResource
-              let link = entry._links.self;
-              if (Array.isArray(link)) {
-                link = link[0];
+          case 'datetime':
+            property.get = () => {
+              const val = this.getProperty(key);
+              if (val === undefined || val === null) {
+                return val;
               }
-              const entrySchema = validator.getSchema(link.profile);
-              this[resourceSymbol][key] = new EntryResource(entry, environment, entrySchema);
-            } else if (typeof entry === 'object' && entry instanceof LiteEntryResource) {
-              // if it is an object and of type LiteEntryResource its one of the resource types
-              // so just return it
-              return entry;
-            } else {
-              // if it is none of the above we convert it to LiteEntryResouce
-              const liteResource = this.getLink(`${this[shortIDSymbol]}:${this.getModelTitle()}/${key}`);
-              if (liteResource) {
-                this[resourceSymbol][key] = new LiteEntryResource(liteResource, this[environmentSymbol]);
+              return new Date(val);
+            };
+            property.set = (val) => {
+              let v;
+              if (val instanceof Date) {
+                v = val.toISOString();
+              } else if (val === null || (typeof val === 'string' && datetimeRegex.test(val))) {
+                v = val;
+              } else {
+                throw new Error('input must be a Date, date string or null');
               }
-            }
 
-            return this.getProperty(key);
-          };
-          property.set = (val) => {
-            let value;
-            if (val === null || typeof val === 'string') {
-              value = val;
-            } else if (val instanceof EntryResource) {
-              value = val.toOriginal();
-            } else if (typeof val === 'object' && '_id' in val) {
-              // this handles generic objects and LiteEntryResources
-              value = val;
-            } else {
-              throw new Error('input must be a String, object/[Lite]EntryResource or null');
-            }
-
-            this.setProperty(key, value);
-          };
-          break;
-        case 'entries':
-          property.get = () => {
-            const entries = this.getProperty(key) || [];
-            this[resourceSymbol][key] = entries.map((entry) => {
-              if (typeof entry === 'object') {
-                if (entry instanceof EntryResource
-                  || entry instanceof LiteEntryResource) {
-                  return entry;
-                }
-
+              this.setProperty(key, v);
+            };
+            break;
+          case 'entry':
+            property.get = () => {
+              const entry = this.getProperty(key);
+              if (!entry) {
+                return entry;
+              }
+              if (typeof entry === 'object'
+                && !(entry instanceof EntryResource)
+                && !(entry instanceof LiteEntryResource)) {
+                // if it is an object but not one of the Resource types it was loaded nested
+                // so convert to EntryResource
                 let link = entry._links.self;
                 if (Array.isArray(link)) {
                   link = link[0];
                 }
                 const entrySchema = validator.getSchema(link.profile);
-                return new EntryResource(entry, environment, entrySchema);
-              } else {
-                const links = this.getLinks(`${this[shortIDSymbol]}:${this.getModelTitle()}/${key}`);
-                if (links) {
-                  const link = links.find((link: any) => link.href.indexOf(entry) !== -1);
-                  if (link) {
-                    return new LiteEntryResource(link, this[environmentSymbol]);
-                  }
-                }
+                this[resourceSymbol][key] = new EntryResource(entry, environment, entrySchema);
+              } else if (typeof entry === 'object' && entry instanceof LiteEntryResource) {
+                // if it is an object and of type LiteEntryResource its one of the resource types
+                // so just return it
                 return entry;
+              } else {
+                // if it is none of the above we convert it to LiteEntryResouce
+                const liteResource = this.getLink(`${this[shortIDSymbol]}:${this.getModelTitle()}/${key}`);
+                if (liteResource) {
+                  this[resourceSymbol][key] = new LiteEntryResource(liteResource, this[environmentSymbol]);
+                }
               }
-            });
-            return this.getProperty(key);
-          };
-          property.set = (val) => {
-            if (!Array.isArray(val)) {
-              throw new Error('only array supported as input type');
-            }
 
-            const value = val.map((v) => {
-              if (typeof v === 'string') {
-                return v;
-              }
-              if (v instanceof EntryResource) {
-                return v.toOriginal();
-              }
-              if (typeof v === 'object' && '_id' in v) {
+              return this.getProperty(key);
+            };
+            property.set = (val) => {
+              let value;
+              if (val === null || typeof val === 'string') {
+                value = val;
+              } else if (val instanceof EntryResource) {
+                value = val.toOriginal();
+              } else if (typeof val === 'object' && '_id' in val) {
                 // this handles generic objects and LiteEntryResources
-
-                return v;
-              }
-              throw new Error('only string and object/[Lite]EntryResource supported as input type');
-            });
-            this.setProperty(key, value);
-          };
-          break;
-        case 'asset':
-          property.get = () => {
-            const asset = this.getProperty(key);
-            if (!asset) {
-              return asset;
-            }
-            if (typeof asset === 'object' && !(asset instanceof PublicAssetResource || asset instanceof DMAssetResource)) {
-              if (/^[a-zA-Z0-9\-_]{22}$/.test(asset.assetID)) {
-                this[resourceSymbol][key] = new DMAssetResource(asset, environment);
+                value = val;
               } else {
-                this[resourceSymbol][key] = new PublicAssetResource(asset, environment);
+                throw new Error('input must be a String, object/[Lite]EntryResource or null');
               }
-              this[resourceSymbol][key] = new PublicAssetResource(asset, environment);
-            } else if (typeof asset !== 'object') {
-              const embedded = this[resourceSymbol].embeddedResource(`${this[shortIDSymbol]}:${this.getModelTitle()}/${key}/asset`);
-              if (embedded) {
-                if (/^[a-zA-Z0-9\-_]{22}$/.test(embedded.assetID)) {
-                  this[resourceSymbol][key] = new DMAssetResource(embedded, environment);
-                } else {
-                  this[resourceSymbol][key] = new PublicAssetResource(embedded, environment);
-                }
-              }
-            }
 
-            return this.getProperty(key);
-          };
-          property.set = (val) => {
-            let value;
-            if (val === null || typeof val === 'string') {
-              value = val;
-            } else if (val instanceof PublicAssetResource || val instanceof DMAssetResource) {
-              value = val.toOriginal();
-            } else if (typeof val === 'object' && 'assetID' in val) {
-              value = val;
-            } else {
-              throw new Error('only string, object/AssetResource/DMAssetResource, and null supported as input type');
-            }
-
-            this.setProperty(key, value);
-          };
-          break;
-        case 'assets':
-          property.get = () => {
-            const assets = this.getProperty(key) || [];
-            this[resourceSymbol][key] = assets.map((asset) => {
-              if (typeof asset === 'object') {
-                if (asset instanceof PublicAssetResource || asset instanceof DMAssetResource) {
-                  return asset;
-                }
-
-                if (/^[a-zA-Z0-9\-_]{22}$/.test(asset.assetID)) {
-                  return new DMAssetResource(asset, environment);
-                }
-
-                return new PublicAssetResource(asset, environment);
-              } else {
-                const embeds = this[resourceSymbol].embeddedArray(`${this[shortIDSymbol]}:${this.getModelTitle()}/${key}/asset`);
-                if (embeds) {
-                  const embed = embeds.find(embed => embed.assetID === asset);
-                  if (embed) {
-                    if (/^[a-zA-Z0-9\-_]{22}$/.test(embed.assetID)) {
-                      return new DMAssetResource(embed, environment);
-                    }
-                    return new PublicAssetResource(embed, environment);
+              this.setProperty(key, value);
+            };
+            break;
+          case 'entries':
+            property.get = () => {
+              const entries = this.getProperty(key) || [];
+              this[resourceSymbol][key] = entries.map((entry) => {
+                if (typeof entry === 'object') {
+                  if (entry instanceof EntryResource
+                    || entry instanceof LiteEntryResource) {
+                    return entry;
                   }
+
+                  let link = entry._links.self;
+                  if (Array.isArray(link)) {
+                    link = link[0];
+                  }
+                  const entrySchema = validator.getSchema(link.profile);
+                  return new EntryResource(entry, environment, entrySchema);
+                } else {
+                  const links = this.getLinks(`${this[shortIDSymbol]}:${this.getModelTitle()}/${key}`);
+                  if (links) {
+                    const link = links.find((link: any) => link.href.indexOf(entry) !== -1);
+                    if (link) {
+                      return new LiteEntryResource(link, this[environmentSymbol]);
+                    }
+                  }
+                  return entry;
                 }
+              });
+              return this.getProperty(key);
+            };
+            property.set = (val) => {
+              if (!Array.isArray(val)) {
+                throw new Error('only array supported as input type');
+              }
+
+              const value = val.map((v) => {
+                if (typeof v === 'string') {
+                  return v;
+                }
+                if (v instanceof EntryResource) {
+                  return v.toOriginal();
+                }
+                if (typeof v === 'object' && '_id' in v) {
+                  // this handles generic objects and LiteEntryResources
+
+                  return v;
+                }
+                throw new Error('only string and object/[Lite]EntryResource supported as input type');
+              });
+              this.setProperty(key, value);
+            };
+            break;
+          case 'asset':
+            property.get = () => {
+              const asset = this.getProperty(key);
+              if (!asset) {
                 return asset;
               }
-            });
-            return this.getProperty(key);
-          };
-          property.set = (val) => {
-            if (!Array.isArray(val)) {
-              throw new Error('only array supported as input type');
-            }
-
-            const value = val.map((v) => {
-              if (typeof v === 'string') {
-                return v;
+              if (typeof asset === 'object' && !(asset instanceof PublicAssetResource || asset instanceof DMAssetResource)) {
+                if (/^[a-zA-Z0-9\-_]{22}$/.test(asset.assetID)) {
+                  this[resourceSymbol][key] = new DMAssetResource(asset, environment);
+                } else {
+                  this[resourceSymbol][key] = new PublicAssetResource(asset, environment);
+                }
+                this[resourceSymbol][key] = new PublicAssetResource(asset, environment);
+              } else if (typeof asset !== 'object') {
+                const embedded = this[resourceSymbol].embeddedResource(`${this[shortIDSymbol]}:${this.getModelTitle()}/${key}/asset`);
+                if (embedded) {
+                  if (/^[a-zA-Z0-9\-_]{22}$/.test(embedded.assetID)) {
+                    this[resourceSymbol][key] = new DMAssetResource(embedded, environment);
+                  } else {
+                    this[resourceSymbol][key] = new PublicAssetResource(embedded, environment);
+                  }
+                }
               }
-              if (v instanceof PublicAssetResource || v instanceof DMAssetResource) {
-                return v.toOriginal();
+
+              return this.getProperty(key);
+            };
+            property.set = (val) => {
+              let value;
+              if (val === null || typeof val === 'string') {
+                value = val;
+              } else if (val instanceof PublicAssetResource || val instanceof DMAssetResource) {
+                value = val.toOriginal();
+              } else if (typeof val === 'object' && 'assetID' in val) {
+                value = val;
+              } else {
+                throw new Error('only string, object/AssetResource/DMAssetResource, and null supported as input type');
               }
-              if (typeof v === 'object' && 'assetID' in v) {
-                return v;
+
+              this.setProperty(key, value);
+            };
+            break;
+          case 'assets':
+            property.get = () => {
+              const assets = this.getProperty(key) || [];
+              this[resourceSymbol][key] = assets.map((asset) => {
+                if (typeof asset === 'object') {
+                  if (asset instanceof PublicAssetResource || asset instanceof DMAssetResource) {
+                    return asset;
+                  }
+
+                  if (/^[a-zA-Z0-9\-_]{22}$/.test(asset.assetID)) {
+                    return new DMAssetResource(asset, environment);
+                  }
+
+                  return new PublicAssetResource(asset, environment);
+                } else {
+                  const embeds = this[resourceSymbol].embeddedArray(`${this[shortIDSymbol]}:${this.getModelTitle()}/${key}/asset`);
+                  if (embeds) {
+                    const embed = embeds.find(embed => embed.assetID === asset);
+                    if (embed) {
+                      if (/^[a-zA-Z0-9\-_]{22}$/.test(embed.assetID)) {
+                        return new DMAssetResource(embed, environment);
+                      }
+                      return new PublicAssetResource(embed, environment);
+                    }
+                  }
+                  return asset;
+                }
+              });
+              return this.getProperty(key);
+            };
+            property.set = (val) => {
+              if (!Array.isArray(val)) {
+                throw new Error('only array supported as input type');
               }
-              throw new Error('only string and object/AssetResource/DMAssetResource supported as input type');
-            });
 
-            this.setProperty(key, value);
-          };
-          break;
-        case 'account':
-          property.get = () => this.getProperty(key);
-          property.set = (val) => {
-            let value;
-            if (val === null || typeof val === 'string') {
-              value = val;
-            } else if (typeof val === 'object' && 'accountID' in val) {
-              value = val.accountID;
-            } else {
-              throw new Error('only string, object/DMAccountResource, and null supported as input type');
-            }
+              const value = val.map((v) => {
+                if (typeof v === 'string') {
+                  return v;
+                }
+                if (v instanceof PublicAssetResource || v instanceof DMAssetResource) {
+                  return v.toOriginal();
+                }
+                if (typeof v === 'object' && 'assetID' in v) {
+                  return v;
+                }
+                throw new Error('only string and object/AssetResource/DMAssetResource supported as input type');
+              });
 
-            this.setProperty(key, value);
-          };
-          break;
-        case 'role':
-          property.get = () => this.getProperty(key);
-          property.set = (val) => {
-            let value;
-            if (val === null || typeof val === 'string') {
-              value = val;
-            } else if (typeof val === 'object' && 'roleID' in val) {
-              value = val.roleID;
-            } else {
-              throw new Error('only string, object/RoleResource, and null supported as input type');
-            }
+              this.setProperty(key, value);
+            };
+            break;
+          case 'account':
+            property.get = () => this.getProperty(key);
+            property.set = (val) => {
+              let value;
+              if (val === null || typeof val === 'string') {
+                value = val;
+              } else if (typeof val === 'object' && 'accountID' in val) {
+                value = val.accountID;
+              } else {
+                throw new Error('only string, object/DMAccountResource, and null supported as input type');
+              }
 
-            this.setProperty(key, value);
-          };
-          break;
-        default:
-          property.get = () => this.getProperty(key);
-          property.set = (val) => {
-            this.setProperty(key, val);
-          };
-          break;
+              this.setProperty(key, value);
+            };
+            break;
+          case 'role':
+            property.get = () => this.getProperty(key);
+            property.set = (val) => {
+              let value;
+              if (val === null || typeof val === 'string') {
+                value = val;
+              } else if (typeof val === 'object' && 'roleID' in val) {
+                value = val.roleID;
+              } else {
+                throw new Error('only string, object/RoleResource, and null supported as input type');
+              }
+
+              this.setProperty(key, value);
+            };
+            break;
+          default:
+            property.get = () => this.getProperty(key);
+            property.set = (val) => {
+              this.setProperty(key, val);
+            };
+            break;
         }
 
         Object.defineProperty(this, key, property);
@@ -552,6 +553,24 @@ class EntryResource extends LiteEntryResource {
   }
 
   /**
+   * Creates a new History EventSource with the given filter options.
+   *
+   * @param {filterOptions | any} options The filter options
+   * @return {Promise<EventSource>} The created EventSource.
+   */
+  newHistory(options?: filterOptions): Promise<any> {
+    return Promise.resolve()
+      .then(() => this.follow('ec:model/dm-entryHistory'))
+      .then(request => {
+        if (options) {
+          request.withTemplateParameters(optionsToQuery(options));
+        }
+
+        return getHistory(this[environmentSymbol], request)
+      });
+  }
+
+  /**
    * Saves this {@link EntryResource}.
    *
    * @returns {Promise<EntryResource>} Promise will resolve to the saved EntryResource. Will
@@ -569,10 +588,10 @@ class EntryResource extends LiteEntryResource {
    */
   validateField(field: string): Promise<boolean> {
     return Promise.resolve()
-    .then(() => {
-      const schema = this[schemaSymbol].allOf[1].properties[field];
-      return validator.validate(this[field], schema);
-    });
+      .then(() => {
+        const schema = this[schemaSymbol].allOf[1].properties[field];
+        return validator.validate(this[field], schema);
+      });
   }
 }
 
@@ -592,6 +611,6 @@ export default EntryResource;
  */
 export function createEntry(resource: any, environment: environment, traversal?: any): Promise<EntryResource> {
   return Promise.resolve()
-  .then(() => loadSchemaForResource(resource))
-  .then(schema => new EntryResource(resource, environment, schema, traversal));
+    .then(() => loadSchemaForResource(resource))
+    .then(schema => new EntryResource(resource, environment, schema, traversal));
 }

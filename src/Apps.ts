@@ -138,8 +138,8 @@ export default class Apps extends Core {
    */
   types(): Promise<TypesResource> {
     return Promise.resolve()
-    .then(() => this.follow('ec:apps/types'))
-    .then(request => get(this[environmentSymbol], request))
-    .then(([res, traversal]) => new TypesResource(res, this[environmentSymbol], traversal));
+      .then(() => this.follow('ec:apps/types'))
+      .then(request => get(this[environmentSymbol], request))
+      .then(([res, traversal]) => new TypesResource(res, this[environmentSymbol], traversal));
   }
 }

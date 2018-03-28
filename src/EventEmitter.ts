@@ -29,7 +29,8 @@
  * @access private
  */
 export class EventEmitter {
-  protected listeners: Map<string, Array<(...args : any[]) => void>>;
+  protected listeners: Map<string, Array<(...args: any[]) => void>>;
+
   /**
    * default constructor initialising a empty {@link Map} for event listeners.
    *

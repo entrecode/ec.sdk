@@ -84,7 +84,7 @@ class LiteEntryResource extends Resource {
    */
   resolve(): Promise<EntryResource> {
     return superagentGet(this.getLink('self').href, { Accept: 'application/json' }, this[environmentSymbol])
-    .then(resource => createEntry(resource, this[environmentSymbol]));
+      .then(resource => createEntry(resource, this[environmentSymbol]));
   }
 
   /**

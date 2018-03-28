@@ -16,7 +16,7 @@ import Resource from '../Resource';
 import RoleList from './RoleList';
 import RoleResource from './RoleResource';
 import { filterOptions } from '../ListResource';
-import { get, getUrl, superagentPost } from '../../helper';
+import { get, getUrl, superagentPost, optionsToQuery, getHistory } from '../../helper';
 import { environment } from '../../Core';
 import PublicAPI from '../../PublicAPI';
 import AssetGroupResource from './AssetGroupResource';
@@ -148,7 +148,7 @@ class DataManagerResource extends Resource {
       },
       locales: {
         enumerable: true,
-        get: () => <Array<string>> this.getProperty('locales'),
+        get: () => <Array<string>>this.getProperty('locales'),
         set: (value: string) => this.setProperty('locales', value),
       },
       shortID: {
@@ -250,9 +250,9 @@ class DataManagerResource extends Resource {
    */
   assetGroupList(options: filterOptions | any = {}): Promise<AssetGroupList> {
     return Promise.resolve()
-    .then(() => {
-      return <Promise<AssetGroupList>>this.resourceList('assetGroup', options);
-    });
+      .then(() => {
+        return <Promise<AssetGroupList>>this.resourceList('assetGroup', options);
+      });
   }
 
   /**
@@ -343,49 +343,48 @@ class DataManagerResource extends Resource {
     }
 
     return getUrl(this[environmentSymbol], this.newRequest().follow('ec:assets'))
-    .then((url) => {
-      const superagentRequest = superagent.post(url);
+      .then((url) => {
+        const superagentRequest = superagent.post(url);
 
-      const isFormData = typeof FormData === 'function' && input instanceof FormData; // eslint-disable-line
-                                                                                      // no-undef
-      if (isFormData) {
-        superagentRequest.send(input);
-      } else if (typeof input === 'string') {
-        superagentRequest.attach('file', input);
-      } else if (Buffer.isBuffer(input)) {
-        if (!('fileName' in options)) {
-          throw new Error('When using buffer file input you must provide options.fileName.');
-        }
-        superagentRequest.attach('file', input, <string>options.fileName);
-      } else {
-        throw new Error('Cannot handle input.');
-      }
-
-      if (options.title) {
+        const isFormData = typeof FormData === 'function' && input instanceof FormData; // eslint-disable-line no-undef
         if (isFormData) {
-          input.set('title', options.title);
+          superagentRequest.send(input);
+        } else if (typeof input === 'string') {
+          superagentRequest.attach('file', input);
+        } else if (Buffer.isBuffer(input)) {
+          if (!('fileName' in options)) {
+            throw new Error('When using buffer file input you must provide options.fileName.');
+          }
+          superagentRequest.attach('file', input, <string>options.fileName);
         } else {
-          superagentRequest.field('title', options.title);
+          throw new Error('Cannot handle input.');
         }
-      }
 
-      if (options.tags) {
-        if (isFormData) {
-          input.set('tags', options.tags);
-        } else {
-          options.tags.forEach((tag) => {
-            superagentRequest.field('tags', tag);
-          });
+        if (options.title) {
+          if (isFormData) {
+            input.set('title', options.title);
+          } else {
+            superagentRequest.field('title', options.title);
+          }
         }
-      }
 
-      return superagentPost(this[environmentSymbol], superagentRequest);
-    })
-    .then((response) => {
-      const url = response._links['ec:asset'].href;
-      const queryStrings = qs.parse(url.substr(url.indexOf('?') + 1));
-      return () => this.asset(<string>queryStrings.assetID);
-    });
+        if (options.tags) {
+          if (isFormData) {
+            input.set('tags', options.tags);
+          } else {
+            options.tags.forEach((tag) => {
+              superagentRequest.field('tags', tag);
+            });
+          }
+        }
+
+        return superagentPost(this[environmentSymbol], superagentRequest);
+      })
+      .then((response) => {
+        const url = response._links['ec:asset'].href;
+        const queryStrings = qs.parse(url.substr(url.indexOf('?') + 1));
+        return () => this.asset(<string>queryStrings.assetID);
+      });
   }
 
   /**
@@ -412,57 +411,57 @@ class DataManagerResource extends Resource {
     }
 
     return getUrl(this[environmentSymbol], this.newRequest().follow('ec:assets'))
-    .then((url) => {
-      const superagentRequest = superagent.post(url);
+      .then((url) => {
+        const superagentRequest = superagent.post(url);
 
-      const isFormData = typeof FormData === 'function' && input instanceof FormData; // eslint-disable-line
-                                                                                      // no-undef
-      if (isFormData) {
-        superagentRequest.send(input);
-      } else {
-        input.forEach((file, index) => {
-          if (typeof file === 'string') {
-            superagentRequest.attach('file', file);
-          } else if (Buffer.isBuffer(file)) {
-            if (!('fileName' in options)
-              || !Array.isArray(options.fileName)
-              || !options.fileName[index]) {
-              throw new Error('When using buffer file input you must provide options.fileName.');
+        const isFormData = typeof FormData === 'function' && input instanceof FormData; // eslint-disable-line
+        // no-undef
+        if (isFormData) {
+          superagentRequest.send(input);
+        } else {
+          input.forEach((file, index) => {
+            if (typeof file === 'string') {
+              superagentRequest.attach('file', file);
+            } else if (Buffer.isBuffer(file)) {
+              if (!('fileName' in options)
+                || !Array.isArray(options.fileName)
+                || !options.fileName[index]) {
+                throw new Error('When using buffer file input you must provide options.fileName.');
+              }
+              superagentRequest.attach('file', file, options.fileName[index]);
+            } else {
+              throw new Error('Cannot handle input.');
             }
-            superagentRequest.attach('file', file, options.fileName[index]);
-          } else {
-            throw new Error('Cannot handle input.');
-          }
-        });
-      }
-      if (options.title) {
-        if (isFormData) {
-          input.set('title', options.title);
-        } else {
-          superagentRequest.field('title', options.title);
-        }
-      }
-
-      if (options.tags) {
-        if (isFormData) {
-          input.set('tags', options.tags);
-        } else {
-          options.tags.forEach((tag) => {
-            superagentRequest.field('tags', tag);
           });
         }
-      }
+        if (options.title) {
+          if (isFormData) {
+            input.set('title', options.title);
+          } else {
+            superagentRequest.field('title', options.title);
+          }
+        }
 
-      return superagentPost(this[environmentSymbol], superagentRequest);
-    })
-    .then((response) => {
-      const urls = response._links['ec:asset'].map((link) => {
-        const queryStrings = qs.parse(link.href.substr(link.href.indexOf('?') + 1));
-        return queryStrings.assetID;
+        if (options.tags) {
+          if (isFormData) {
+            input.set('tags', options.tags);
+          } else {
+            options.tags.forEach((tag) => {
+              superagentRequest.field('tags', tag);
+            });
+          }
+        }
+
+        return superagentPost(this[environmentSymbol], superagentRequest);
+      })
+      .then((response) => {
+        const urls = response._links['ec:asset'].map((link) => {
+          const queryStrings = qs.parse(link.href.substr(link.href.indexOf('?') + 1));
+          return queryStrings.assetID;
+        });
+
+        return () => this.assetList({ assetID: { any: urls } });
       });
-
-      return () => this.assetList({ assetID: { any: urls } });
-    });
   }
 
   /**
@@ -502,12 +501,12 @@ class DataManagerResource extends Resource {
    */
   export(): Promise<any> { // TODO advanced return type
     return Promise.resolve()
-    .then(() => {
-      const request = this.newRequest()
-      .follow('ec:datamanager/export');
-      return get(this[environmentSymbol], request);
-    })
-    .then(([res]) => res);
+      .then(() => {
+        const request = this.newRequest()
+          .follow('ec:datamanager/export');
+        return get(this[environmentSymbol], request);
+      })
+      .then(([res]) => res);
   }
 
   /**
@@ -542,6 +541,24 @@ class DataManagerResource extends Resource {
    */
   modelList(options?: filterOptions): Promise<ModelList> {
     return <Promise<ModelList>>this.resourceList('model', options);
+  }
+
+  /**
+   * Creates a new History EventSource with the given filter options.
+   *
+   * @param {filterOptions | any} options The filter options
+   * @return {Promise<EventSource>} The created EventSource.
+   */
+  newHistory(options?: filterOptions): Promise<any> {
+    return Promise.resolve()
+      .then(() => this.follow('ec:datamanager/dm-entryHistory'))
+      .then(request => {
+        if (options) {
+          request.withTemplateParameters(optionsToQuery(options));
+        }
+
+        return getHistory(this[environmentSymbol], request)
+      });
   }
 
   /**
@@ -602,12 +619,12 @@ class DataManagerResource extends Resource {
    */
   stats(): Promise<DMStatsResource> {
     return Promise.resolve()
-    .then(() => {
-      const request = this.newRequest()
-      .follow('ec:dm-stats');
-      return get(this[environmentSymbol], request);
-    })
-    .then(([res]) => new DMStatsList(res, this[environmentSymbol]).getFirstItem());
+      .then(() => {
+        const request = this.newRequest()
+          .follow('ec:dm-stats');
+        return get(this[environmentSymbol], request);
+      })
+      .then(([res]) => new DMStatsList(res, this[environmentSymbol]).getFirstItem());
   }
 }
 

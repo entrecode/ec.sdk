@@ -198,38 +198,38 @@ class AppResource extends Resource {
    */
   createPlatform(platform: any): Promise<PlatformResource> {
     return Promise.resolve()
-    .then(() => {
-      if (!platform) {
-        throw new Error('Cannot create resource with undefined object.');
-      }
-
-      const out: any = Object.assign({}, platform);
-
-      if (!('_links' in out)) {
-        out._links = {};
-      }
-
-      if (out.codeSource) {
-        out._links['ec:app/codesource'] = out.codeSource.getLink('self');
-        delete out.codeSource;
-      }
-
-      if (out.dataSource) {
-        out._links['ec:app/datasource'] = out.dataSource.getLink('self');
-        delete out.dataSource;
-      }
-
-      if (out.target) {
-        if (!Array.isArray(out.target)) {
-          out.target = [out.target];
+      .then(() => {
+        if (!platform) {
+          throw new Error('Cannot create resource with undefined object.');
         }
 
-        out._links['ec:app/target'] = out.target.map(target => target.getLink('self'));
-        delete out.target;
-      }
+        const out: any = Object.assign({}, platform);
 
-      return <Promise<PlatformResource>>this.create('platform', out);
-    });
+        if (!('_links' in out)) {
+          out._links = {};
+        }
+
+        if (out.codeSource) {
+          out._links['ec:app/codesource'] = out.codeSource.getLink('self');
+          delete out.codeSource;
+        }
+
+        if (out.dataSource) {
+          out._links['ec:app/datasource'] = out.dataSource.getLink('self');
+          delete out.dataSource;
+        }
+
+        if (out.target) {
+          if (!Array.isArray(out.target)) {
+            out.target = [out.target];
+          }
+
+          out._links['ec:app/target'] = out.target.map(target => target.getLink('self'));
+          delete out.target;
+        }
+
+        return <Promise<PlatformResource>>this.create('platform', out);
+      });
   }
 
   /**
