@@ -1,3 +1,11 @@
+<a name="0.13.15"></a>
+## <small>0.13.15 (2018-03-28)</small>
+
+* release version 0.13.15 ([0ee4a47](https://github.com/entrecode/ec.sdk/commit/0ee4a47))
+* fix: fixed wrong imports ([2aae4f9](https://github.com/entrecode/ec.sdk/commit/2aae4f9))
+
+
+
 <a name="0.13.14"></a>
 ## <small>0.13.14 (2018-03-28)</small>
 

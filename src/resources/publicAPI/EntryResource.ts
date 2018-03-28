@@ -6,7 +6,7 @@ import PublicAssetResource from './PublicAssetResource';
 import { fileNegotiate, getSchema, optionsToQuery, getHistory } from '../../helper';
 import { environment } from '../../Core';
 import DMAssetResource from './DMAssetResource';
-import { filterOptions } from 'ec.sdk/src/resources/ListResource';
+import { filterOptions } from '../ListResource';
 
 const environmentSymbol = Symbol.for('environment');
 const resourceSymbol = Symbol.for('resource');

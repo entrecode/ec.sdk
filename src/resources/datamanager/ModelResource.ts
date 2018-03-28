@@ -1,7 +1,7 @@
 import Resource from '../Resource';
 import { environment } from '../../Core';
 import { del, post, optionsToQuery, getHistory } from '../../helper';
-import { filterOptions } from 'ec.sdk/src/resources/ListResource';
+import { filterOptions } from '../ListResource';
 
 const environmentSymbol = Symbol.for('environment');
 
