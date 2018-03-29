@@ -14,6 +14,7 @@ const resourceSymbol = Symbol.for('resource');
 validator.setLoggingFunction(() => {
 });
 
+const resourcePropertiesSymbol = Symbol.for('resourceProperties');
 const schemaSymbol = Symbol('_schema');
 const shortIDSymbol = Symbol('_shortID');
 
@@ -186,7 +187,9 @@ class EntryResource extends LiteEntryResource {
                 }
                 const entrySchema = validator.getSchema(link.profile);
                 this[resourceSymbol][key] = new EntryResource(entry, environment, entrySchema);
-              } else if (typeof entry === 'object' && entry instanceof LiteEntryResource) {
+              } else if (typeof entry === 'object' && (
+                entry instanceof LiteEntryResource || entry instanceof EntryResource
+              )) {
                 // if it is an object and of type LiteEntryResource its one of the resource types
                 // so just return it
                 return entry;
@@ -592,6 +595,67 @@ class EntryResource extends LiteEntryResource {
         const schema = this[schemaSymbol].allOf[1].properties[field];
         return validator.validate(this[field], schema);
       });
+  }
+
+  toOriginal(): any {
+    const out = {};
+
+    const keys = Object.keys(this);
+    if (this[resourcePropertiesSymbol].length !== keys.length) {
+      throw new Error(`Additional properties found: ${keys.filter(k => !this[resourcePropertiesSymbol].includes(k)).join(', ')}`);
+    }
+    Object.keys(this[resourceSymbol].original()).forEach((key) => {
+      const type = this.getFieldType(key);
+      const val = this[resourceSymbol][key];
+      switch (type) {
+        case 'entry':
+          if (val instanceof EntryResource) {
+            out[key] = val.toOriginal();
+          } else if (val instanceof LiteEntryResource) {
+            out[key] = val._id;
+          } else {
+            out[key] = val;
+          }
+          break;
+        case 'entries':
+          out[key] = val.map((v) => {
+            if (v instanceof EntryResource) {
+              return v.toOriginal();
+            } else if (v instanceof LiteEntryResource) {
+              return v._id;
+            } else {
+              return v;
+            }
+          });
+          break;
+        case 'asset':
+          const original = this[resourceSymbol].original();
+          if (typeof val === 'string') {
+            out[key] = val;
+          } else if (!original[key] || typeof original[key] === 'string') {
+            out[key] = val.assetID;
+          } else {
+            out[key] = val;
+          }
+          break;
+        case 'assets':
+          out[key] = val.map((v, i) => {
+            const original = this[resourceSymbol].original();
+            if (typeof v === 'string') {
+              return v;
+            } else if (!original[key][i] || typeof original[key][i] === 'string') {
+              return v.assetID;
+            } else {
+              return v;
+            }
+          });
+          break;
+        default:
+          out[key] = val;
+          break;
+      }
+    });
+    return out;
   }
 }
 

@@ -11,7 +11,7 @@ import { del, get, optionsToQuery, post, put } from '../helper';
 const environmentSymbol = Symbol.for('environment');
 const resourceSymbol = Symbol.for('resource');
 const traversalSymbol = Symbol.for('traversal');
-const resourcePropertiesSymbol = Symbol('resourceProperties');
+const resourcePropertiesSymbol = Symbol.for('resourceProperties');
 const relationsSymbol = Symbol.for('relations');
 
 traverson.registerMediaType(HalAdapter.mediaType, HalAdapter);
