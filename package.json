@@ -25,7 +25,7 @@
   "dependencies": {
     "@types/halfred": "^1.0.2",
     "@types/jwt-decode": "^2.2.1",
-    "@types/node": "^9.4.7",
+    "@types/node": "^9.6.2",
     "@types/shortid": "0.0.29",
     "@types/superagent": "^3.5.7",
     "@types/traverson": "^2.0.28",
@@ -33,7 +33,7 @@
     "browser-cookies": "^1.1.0",
     "eventsource": "^1.0.5",
     "halfred": "^1.0.0",
-    "json-schema-remote": "^1.3.3",
+    "json-schema-remote": "^1.3.5",
     "jwt-decode": "^2.2.0",
     "locale": "^0.1.0",
     "lodash.isequal": "^4.5.0",
@@ -53,7 +53,7 @@
     "browserify": "^16.0.0",
     "chai": "^4.1.2",
     "chai-as-promised": "^7.1.1",
-    "conventional-changelog-cli": "^1.3.13",
+    "conventional-changelog-cli": "^1.3.21",
     "coveralls": "^3.0.0",
     "documentation": "^6.0.0",
     "ec.cookie-mock": "^1.0.1",
@@ -61,11 +61,11 @@
     "mocha": "^5.0.1",
     "mocha-bamboo-reporter": "^1.1.1",
     "nock": "^9.1.0",
-    "sinon": "^4.4.8",
+    "sinon": "^4.5.0",
     "sinon-chai": "^3.0.0",
     "ts-loader": "^3.5.0",
-    "typescript": "^2.7.1",
-    "uglify-js": "^3.3.16",
-    "webpack": "^4.2.0"
+    "typescript": "^2.8.1",
+    "uglify-js": "^3.3.18",
+    "webpack": "^4.5.0"
   }
 }
