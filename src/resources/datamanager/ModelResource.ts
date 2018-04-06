@@ -1,3 +1,4 @@
+import * as validator from 'json-schema-remote';
 import Resource from '../Resource';
 import { environment } from '../../Core';
 import { del, post, optionsToQuery, getHistory } from '../../helper';
@@ -133,6 +134,23 @@ class ModelResource extends Resource {
         }
 
         return getHistory(this[environmentSymbol], request)
+      });
+  }
+
+  /**
+  * Saves this {@link Resource}.
+  *
+  * @param {boolean} safePut true when safe put functionality is required.
+  * @param {string?} overwriteSchemaUrl Other schema url to overwrite the one in
+  *   `_link.self.profile`. Mainly for internal use.
+  * @returns {Promise<Resource>} Promise will resolve to the saved Resource. Will
+  *   be the same object but with refreshed data.
+  */
+  save(safePut: boolean = false, overwriteSchemaUrl?: string): Promise<Resource> {
+    return Promise.resolve()
+      .then(() => {
+        validator.dropSchemas();
+        return super.save(safePut, overwriteSchemaUrl);
       });
   }
 

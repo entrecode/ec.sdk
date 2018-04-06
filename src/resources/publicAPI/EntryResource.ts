@@ -14,6 +14,7 @@ const resourceSymbol = Symbol.for('resource');
 validator.setLoggingFunction(() => {
 });
 
+const resourcePropertiesSymbol = Symbol.for('resourceProperties');
 const schemaSymbol = Symbol('_schema');
 const shortIDSymbol = Symbol('_shortID');
 
@@ -72,6 +73,31 @@ function loadSchemaForResource(resource: any): any {
         .reduce((r, p) => r.then(p), Promise.resolve())
         .then(() => schema)
     );
+}
+
+function negotiater(asset, image, thumb, size, locale) {
+  if (!/^[a-zA-Z0-9\-_]{22}$/.test(asset.assetID)) {
+    return fileNegotiate(asset, image, thumb, size, locale);
+  }
+
+  if (!image || (!size && !thumb)) {
+    return asset.file.url;
+  }
+
+  let file;
+  if (thumb) {
+    file = asset.thumbnails.find(t => t.dimension === size);
+    if (!file) {
+      file = asset.thumbnails[0];
+    }
+  } else {
+    file = asset.fileVariants.find(v => Math.max(v.resolution.width, v.resolution.height) === size);
+  }
+  if (file) {
+    return file.url;
+  }
+
+  return undefined;
 }
 
 interface EntryResource {
@@ -186,7 +212,9 @@ class EntryResource extends LiteEntryResource {
                 }
                 const entrySchema = validator.getSchema(link.profile);
                 this[resourceSymbol][key] = new EntryResource(entry, environment, entrySchema);
-              } else if (typeof entry === 'object' && entry instanceof LiteEntryResource) {
+              } else if (typeof entry === 'object' && (
+                entry instanceof LiteEntryResource || entry instanceof EntryResource
+              )) {
                 // if it is an object and of type LiteEntryResource its one of the resource types
                 // so just return it
                 return entry;
@@ -414,7 +442,7 @@ class EntryResource extends LiteEntryResource {
   }
 
   /**
-   * Best file helper for embedded assets files.
+   * Best file helper for embedded assets files. For AssetsNeue it will only negotiate with already rendered file variants.
    *
    * @param {string} field the asset field name
    * @param {string?} locale - the locale
@@ -431,7 +459,7 @@ class EntryResource extends LiteEntryResource {
       return undefined;
     }
 
-    const results = assets.map(asset => fileNegotiate(asset, false, false, null, locale));
+    const results = assets.map(asset => negotiater(asset, false, false, null, locale));
 
     if (!isAssets) {
       return results[0];
@@ -440,7 +468,7 @@ class EntryResource extends LiteEntryResource {
   }
 
   /**
-   * Best file helper for embedded assets image thumbnails.
+   * Best file helper for embedded assets image thumbnails. For AssetsNeue it will only negotiate with already rendered file variants.
    *
    * @param {string} field the asset field name
    * @param {number?} size - the minimum size of the image
@@ -458,7 +486,7 @@ class EntryResource extends LiteEntryResource {
       return undefined;
     }
 
-    const results = assets.map(asset => fileNegotiate(asset, true, true, size, locale));
+    const results = assets.map(asset => negotiater(asset, true, true, size, locale));
 
     if (!isAssets) {
       return results[0];
@@ -467,7 +495,7 @@ class EntryResource extends LiteEntryResource {
   }
 
   /**
-   * Best file helper for embedded assets images.
+   * Best file helper for embedded assets images. For AssetsNeue it will only negotiate with already rendered file variants.
    *
    * @param {string} field the asset field name
    * @param {number?} size - the minimum size of the image
@@ -485,7 +513,7 @@ class EntryResource extends LiteEntryResource {
       return undefined;
     }
 
-    const results = assets.map(asset => fileNegotiate(asset, true, false, size, locale));
+    const results = assets.map(asset => negotiater(asset, true, false, size, locale));
 
     if (!isAssets) {
       return results[0];
@@ -592,6 +620,67 @@ class EntryResource extends LiteEntryResource {
         const schema = this[schemaSymbol].allOf[1].properties[field];
         return validator.validate(this[field], schema);
       });
+  }
+
+  toOriginal(): any {
+    const out = {};
+
+    const keys = Object.keys(this);
+    if (this[resourcePropertiesSymbol].length !== keys.length) {
+      throw new Error(`Additional properties found: ${keys.filter(k => !this[resourcePropertiesSymbol].includes(k)).join(', ')}`);
+    }
+    Object.keys(this[resourceSymbol].original()).forEach((key) => {
+      const type = this.getFieldType(key);
+      const val = this[resourceSymbol][key];
+      switch (type) {
+        case 'entry':
+          if (val instanceof EntryResource) {
+            out[key] = val.toOriginal();
+          } else if (val instanceof LiteEntryResource) {
+            out[key] = val._id;
+          } else {
+            out[key] = val;
+          }
+          break;
+        case 'entries':
+          out[key] = val.map((v) => {
+            if (v instanceof EntryResource) {
+              return v.toOriginal();
+            } else if (v instanceof LiteEntryResource) {
+              return v._id;
+            } else {
+              return v;
+            }
+          });
+          break;
+        case 'asset':
+          const original = this[resourceSymbol].original();
+          if (typeof val === 'string') {
+            out[key] = val;
+          } else if (!original[key] || typeof original[key] === 'string') {
+            out[key] = val.assetID;
+          } else {
+            out[key] = val;
+          }
+          break;
+        case 'assets':
+          out[key] = val.map((v, i) => {
+            const original = this[resourceSymbol].original();
+            if (typeof v === 'string') {
+              return v;
+            } else if (!original[key][i] || typeof original[key][i] === 'string') {
+              return v.assetID;
+            } else {
+              return v;
+            }
+          });
+          break;
+        default:
+          out[key] = val;
+          break;
+      }
+    });
+    return out;
   }
 }
 
