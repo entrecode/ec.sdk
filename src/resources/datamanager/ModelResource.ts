@@ -150,7 +150,7 @@ class ModelResource extends Resource {
     return Promise.resolve()
       .then(() => {
         validator.dropSchemas();
-        return this.save(safePut, overwriteSchemaUrl);
+        return super.save(safePut, overwriteSchemaUrl);
       });
   }
 
