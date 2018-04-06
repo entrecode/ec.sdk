@@ -560,7 +560,7 @@ class EntryResource extends LiteEntryResource {
    */
   newHistory(options?: filterOptions): Promise<any> {
     return Promise.resolve()
-      .then(() => this.follow('ec:model/dm-entryHistory'))
+      .then(() => this.newRequest().follow('ec:model/dm-entryHistory'))
       .then(request => {
         if (options) {
           request.withTemplateParameters(optionsToQuery(options));
