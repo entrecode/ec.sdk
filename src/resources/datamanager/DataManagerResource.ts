@@ -551,7 +551,7 @@ class DataManagerResource extends Resource {
    */
   newHistory(options?: filterOptions): Promise<any> {
     return Promise.resolve()
-      .then(() => this.follow('ec:datamanager/dm-entryHistory'))
+      .then(() => this.newRequest().follow('ec:datamanager/dm-entryHistory'))
       .then(request => {
         if (options) {
           request.withTemplateParameters(optionsToQuery(options));
