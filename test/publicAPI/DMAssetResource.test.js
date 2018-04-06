@@ -93,10 +93,14 @@ describe('DMAsset Resource', () => {
     const stub = sinon.stub(helper, 'get');
     stub.returns(resolver('dm-asset-bestfile.json'));
     return resource.getImageUrl(500)
-    .should.eventually.equal('https://cdn1.entrecode.de/beefbeef/test1/7mGEhlUXvdxuoCf0vQWtLNQW.jpg')
+    .should.eventually.equal('https://cdn1.buffalo.entrecode.de/ab5047fc/test1/7mGEhlUXvdxuoCf0vQWtLNQW.jpg')
     .notify(() => {
       stub.restore();
     });
+  });
+  it('should get image variant, local match', () => {
+    return resource.getImageUrl(700)
+      .should.eventually.equal('https://cdn1.entrecode.de/beefbeef/test1/7mGEhlUXvdxuoCf0vQWtLNQW_700.jpg');
   });
   it('should get thumbnail', () => {
     const stub = sinon.stub(helper, 'get');

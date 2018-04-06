@@ -143,7 +143,7 @@ class DMAssetResource extends Resource {
   getFileVariant(size?: number, thumb: boolean = false): Promise<string> {
     return Promise.resolve()
       .then(() => {
-        if (!size || !thumb) {
+        if (!size && !thumb) {
           return this.file.url;
         }
 

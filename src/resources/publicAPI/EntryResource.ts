@@ -75,6 +75,31 @@ function loadSchemaForResource(resource: any): any {
     );
 }
 
+function negotiater(asset, image, thumb, size, locale) {
+  if (!/^[a-zA-Z0-9\-_]{22}$/.test(asset.assetID)) {
+    return fileNegotiate(asset, image, thumb, size, locale);
+  }
+
+  if (!image || (!size && !thumb)) {
+    return asset.file.url;
+  }
+
+  let file;
+  if (thumb) {
+    file = asset.thumbnails.find(t => t.dimension === size);
+    if (!file) {
+      file = asset.thumbnails[0];
+    }
+  } else {
+    file = asset.fileVariants.find(v => Math.max(v.resolution.width, v.resolution.height) === size);
+  }
+  if (file) {
+    return file.url;
+  }
+
+  return undefined;
+}
+
 interface EntryResource {
   _created: Date;
   _creator: string;
@@ -417,7 +442,7 @@ class EntryResource extends LiteEntryResource {
   }
 
   /**
-   * Best file helper for embedded assets files.
+   * Best file helper for embedded assets files. For AssetsNeue it will only negotiate with already rendered file variants.
    *
    * @param {string} field the asset field name
    * @param {string?} locale - the locale
@@ -434,7 +459,7 @@ class EntryResource extends LiteEntryResource {
       return undefined;
     }
 
-    const results = assets.map(asset => fileNegotiate(asset, false, false, null, locale));
+    const results = assets.map(asset => negotiater(asset, false, false, null, locale));
 
     if (!isAssets) {
       return results[0];
@@ -443,7 +468,7 @@ class EntryResource extends LiteEntryResource {
   }
 
   /**
-   * Best file helper for embedded assets image thumbnails.
+   * Best file helper for embedded assets image thumbnails. For AssetsNeue it will only negotiate with already rendered file variants.
    *
    * @param {string} field the asset field name
    * @param {number?} size - the minimum size of the image
@@ -461,7 +486,7 @@ class EntryResource extends LiteEntryResource {
       return undefined;
     }
 
-    const results = assets.map(asset => fileNegotiate(asset, true, true, size, locale));
+    const results = assets.map(asset => negotiater(asset, true, true, size, locale));
 
     if (!isAssets) {
       return results[0];
@@ -470,7 +495,7 @@ class EntryResource extends LiteEntryResource {
   }
 
   /**
-   * Best file helper for embedded assets images.
+   * Best file helper for embedded assets images. For AssetsNeue it will only negotiate with already rendered file variants.
    *
    * @param {string} field the asset field name
    * @param {number?} size - the minimum size of the image
@@ -488,7 +513,7 @@ class EntryResource extends LiteEntryResource {
       return undefined;
     }
 
-    const results = assets.map(asset => fileNegotiate(asset, true, false, size, locale));
+    const results = assets.map(asset => negotiater(asset, true, false, size, locale));
 
     if (!isAssets) {
       return results[0];
