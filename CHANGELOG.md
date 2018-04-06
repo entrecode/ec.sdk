@@ -1,3 +1,15 @@
+<a name="0.13.17"></a>
+## <small>0.13.17 (2018-04-06)</small>
+
+* release version 0.13.17 ([55bea2c](https://github.com/entrecode/ec.sdk/commit/55bea2c))
+* feat: drop schemas on ModelResource#save ([9f6d007](https://github.com/entrecode/ec.sdk/commit/9f6d007))
+* feat: negotiate local files in DMAssetResource SDK-40 ([d7b8381](https://github.com/entrecode/ec.sdk/commit/d7b8381))
+* feat: support negotiating of assets neue in EntryResource SDK-42 ([7884bf1](https://github.com/entrecode/ec.sdk/commit/7884bf1))
+* fix: call super instead of this ([5133fe8](https://github.com/entrecode/ec.sdk/commit/5133fe8))
+* fix: fixed isDirty detection when linked type gettes were called ([8ac7b5d](https://github.com/entrecode/ec.sdk/commit/8ac7b5d))
+
+
+
 <a name="0.13.15"></a>
 ## <small>0.13.15 (2018-03-28)</small>
 
