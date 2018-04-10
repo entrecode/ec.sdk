@@ -632,6 +632,10 @@ class EntryResource extends LiteEntryResource {
     Object.keys(this[resourceSymbol].original()).forEach((key) => {
       const type = this.getFieldType(key);
       const val = this[resourceSymbol][key];
+      if (!val) {
+        out[key] = val;
+        return;
+      }
       switch (type) {
         case 'entry':
           if (val instanceof EntryResource) {
