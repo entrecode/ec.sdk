@@ -1,3 +1,11 @@
+<a name="0.13.18"></a>
+## <small>0.13.18 (2018-04-10)</small>
+
+* release version 0.13.18 ([e1310aa](https://github.com/entrecode/ec.sdk/commit/e1310aa))
+* fix: toOriginal in EntryResource when values are undefined ([3e8163b](https://github.com/entrecode/ec.sdk/commit/3e8163b))
+
+
+
 <a name="0.13.17"></a>
 ## <small>0.13.17 (2018-04-06)</small>
 
