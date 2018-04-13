@@ -638,7 +638,7 @@ describe('PublicAPI', () => {
   });
   it('should throw on invalid entry', () => {
     return api.createEntry('allFields', {})
-    .should.be.rejectedWith('JSON Schema Validation error');
+      .should.be.rejectedWith('Missing property in JSON body');
   });
   it('should throw on levels 0', () => {
     return api.createEntry('allFields', {}, 0)

@@ -1,10 +1,11 @@
 import * as halfred from 'halfred';
 import * as validator from 'json-schema-remote';
-
+import { convertValidationError } from 'ec.errors';
 import Resource from '../Resource';
 import DataManagerResource from './DataManagerResource';
 import { get, post, put } from '../../helper';
 import { environment } from '../../Core';
+import Problem from '../../Problem';
 
 const environmentSymbol = Symbol.for('environment');
 const resourceSymbol = Symbol.for('resource');
@@ -80,9 +81,11 @@ class TemplateResource extends Resource {
         }
         return this.resolve();
       })
-      .then(() => {
-        validator.validate(body || {}, this.dataSchema);
-      })
+      .then(() =>
+        validator.validate(body || {}, this.dataSchema)
+          .catch((e) => {
+            throw new Problem(convertValidationError(e));
+          }))
       .then(() => {
         const request = this.newRequest().follow('ec:datamanagers/new-from-template');
         return post(this[environmentSymbol], request, body || {});

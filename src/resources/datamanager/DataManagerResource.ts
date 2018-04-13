@@ -1,6 +1,5 @@
 import * as qs from 'querystring';
 import * as superagent from 'superagent';
-import * as validator from 'json-schema-remote';
 
 import AssetList from './AssetList';
 import AssetResource from './AssetResource';
@@ -25,9 +24,6 @@ import AssetGroupList from './AssetGroupList';
 const environmentSymbol = Symbol.for('environment');
 const apiSymbol = Symbol('api');
 const relationsSymbol = Symbol.for('relations');
-
-validator.setLoggingFunction(() => {
-});
 
 interface DataManagerResource {
   config: any,

@@ -3,12 +3,14 @@ import * as HalAdapter from 'traverson-hal';
 import * as halfred from 'halfred';
 import * as validator from 'json-schema-remote';
 import * as shortID from 'shortid';
+import { convertValidationError } from 'ec.errors';
 
 import events from './EventEmitter';
 import TokenStoreFactory from './TokenStore';
 import { get, getSchema, optionsToQuery, post } from './helper';
 import Resource from './resources/Resource';
 import ListResource, { filterOptions } from './resources/ListResource';
+import Problem from './Problem';
 
 const resourceSymbol = Symbol.for('resource');
 const tokenStoreSymbol = Symbol.for('tokenStore');
@@ -19,6 +21,9 @@ const relationsSymbol = Symbol.for('relations');
 const cookieModifierSymbol = Symbol.for('cookieModifier');
 
 traverson['registerMediaType'](HalAdapter.mediaType, HalAdapter);
+
+validator.setLoggingFunction(() => {
+});
 
 /**
  * Each API connector Class inherits directly from Core class. You cannot instantiate Core
@@ -423,7 +428,11 @@ export default class Core {
         }
         return this.link(this[relationsSymbol][relation].createRelation);
       })
-      .then(link => validator.validate(resource, `${link.profile}${this[relationsSymbol][relation].createTemplateModifier}`))
+      .then(link =>
+        validator.validate(resource, `${link.profile}${this[relationsSymbol][relation].createTemplateModifier}`)
+          .catch((e) => {
+            throw new Problem(convertValidationError(e));
+          }))
       .then(() => this.follow(this[relationsSymbol][relation].relation))
       .then(request => {
         if (this[relationsSymbol][relation].additionalTemplateParam) {
