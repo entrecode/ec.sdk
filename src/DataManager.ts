@@ -1,4 +1,5 @@
 import * as validator from 'json-schema-remote';
+import { convertValidationError } from 'ec.errors';
 
 import Core, { environment, options } from './Core';
 import DataManagerResource from './resources/datamanager/DataManagerResource';
@@ -9,6 +10,7 @@ import TemplateList from './resources/datamanager/TemplateList';
 import TemplateResource from './resources/datamanager/TemplateResource';
 import { filterOptions } from './resources/ListResource';
 import { get, getHistory, optionsToQuery, post, superagentGet } from './helper';
+import Problem from './Problem';
 
 declare const EventSource: any;
 
@@ -93,7 +95,11 @@ export default class DataManager extends Core {
         }
         return this.link('ec:dm-template/by-id');
       })
-      .then(link => validator.validate(template, `${link.profile}-template`))
+      .then(link =>
+        validator.validate(template, `${link.profile}-template`)
+          .catch((e) => {
+            throw new Problem(convertValidationError(e));
+          }))
       .then(() => this.follow('ec:dm-templates'))
       .then(request => post(request, template))
       .then(([dm, traversal]) => new TemplateResource(dm, this[environmentSymbol], traversal));

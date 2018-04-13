@@ -1,5 +1,3 @@
-import * as validator from 'json-schema-remote';
-
 import AccountList from './resources/accounts/AccountList';
 import AccountResource from './resources/accounts/AccountResource';
 import ClientList from './resources/accounts/ClientList';
@@ -15,9 +13,6 @@ import { get, getEmpty, getUrl, post, postEmpty, superagentFormPost } from './he
 const tokenStoreSymbol = Symbol.for('tokenStore');
 const environmentSymbol = Symbol.for('environment');
 const relationsSymbol = Symbol.for('relations');
-
-validator.setLoggingFunction(() => {
-});
 
 const urls = {
   live: 'https://accounts.entrecode.de/',

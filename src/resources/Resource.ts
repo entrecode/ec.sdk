@@ -4,9 +4,11 @@ import * as traverson from 'traverson';
 import * as validator from 'json-schema-remote';
 import * as isEqual from 'lodash.isequal';
 import * as assert from 'assert';
+import { convertValidationError } from 'ec.errors';
 
 import ListResource, { filterOptions } from './ListResource';
 import { del, get, optionsToQuery, post, put } from '../helper';
+import Problem from '../Problem';
 
 const environmentSymbol = Symbol.for('environment');
 const resourceSymbol = Symbol.for('resource');
@@ -152,7 +154,11 @@ class Resource {
         }
         return this.getLink(this[relationsSymbol][relation].createRelation);
       })
-      .then(link => validator.validate(resource, `${link.profile}${this[relationsSymbol][relation].createTemplateModifier}`))
+      .then(link =>
+        validator.validate(resource, `${link.profile}${this[relationsSymbol][relation].createTemplateModifier}`)
+          .catch((e) => {
+            throw new Problem(convertValidationError(e));
+          }))
       .then(() => this.newRequest().follow(this[relationsSymbol][relation].relation))
       .then(request => {
         if (this[relationsSymbol][relation].additionalTemplateParam) {
@@ -411,6 +417,9 @@ class Resource {
       .then(() => {
         const out = this.toOriginal();
         return validator.validate(out, overwriteSchemaUrl || this.getLink('self').profile)
+          .catch((e) => {
+            throw new Problem(convertValidationError(e));
+          })
           .then(() => {
             const request = this.newRequest().follow('self');
 
@@ -490,6 +499,9 @@ class Resource {
    */
   validate(): Promise<boolean> {
     return validator.validate(this.toOriginal(), this.getLink('self').profile)
+      .catch((e) => {
+        throw new Problem(convertValidationError(e));
+      })
       .then(() => true);
   }
 }

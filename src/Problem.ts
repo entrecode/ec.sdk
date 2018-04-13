@@ -1,3 +1,14 @@
+interface Problem extends Error {
+  message: string;
+  code: number;
+  detail: string;
+  remoteStack: string;
+  requestID: string;
+  subErrors: Problem | any; // TODO Error
+  title: string;
+  verbose: string;
+}
+
 /**
  * Class representing Errors sent by all entrecode APIs. Complies to {@link
   * https://tools.ietf.org/html/draft-nottingham-http-problem-07 Problem Details for HTTP APIs}.
@@ -5,15 +16,7 @@
   * resources} but this class won't include any special hal implementation (like getEmbedded or
  * getLinks).
  */
-export default class Problem extends Error {
-  public code: number;
-  public detail: string;
-  public remoteStack: string;
-  public requestID: string;
-  public subErrors: Problem | any; // TODO Error
-  public title: string;
-  public verbose: string;
-
+class Problem extends Error {
   /**
    * Creates a new {@link Problem} with the given error object. May contain embedded {@link
     * Problem}s.
@@ -21,9 +24,14 @@ export default class Problem extends Error {
    * @param {object} error the error received from any entrecode API.
    */
   public constructor(error: Problem | any) {
-    super(error.title);
+    super(error.title || error.message);
 
     Object.assign(this, error);
+    if (!('title' in error)) {
+      Object.assign(this, {
+        title: this.message,
+      });
+    }
 
     if ('stack' in error) {
       this.remoteStack = error.stack;
@@ -35,6 +43,8 @@ export default class Problem extends Error {
         subErrors = [subErrors];
       }
       this.subErrors = subErrors.map(e => new Problem(e));
+    } else if ('subErrors' in error) {
+      this.subErrors = error.subErrors.map(e => new Problem(e));
     } else {
       this.subErrors = [];
     }
@@ -103,3 +113,5 @@ ${this.detail}${this.verbose ? ` - ${this.verbose}` : ''}${this.requestID ? ` ($
     return out;
   }
 }
+
+export default Problem;

@@ -472,7 +472,7 @@ describe('Entry Resource', () => {
   });
   it('should not validate', () => {
     resource.text = 1;
-    return resource.validateField('text').should.be.rejectedWith('JSON Schema Validation error');
+    return resource.validateField('text').should.be.rejectedWith('Invalid format for property in JSON body');
   });
 });
 

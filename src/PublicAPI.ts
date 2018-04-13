@@ -3,6 +3,7 @@ import * as qs from 'querystring';
 import * as ShiroTrie from 'shiro-trie';
 import * as superagent from 'superagent';
 import * as validator from 'json-schema-remote';
+import { convertValidationError } from 'ec.errors';
 import * as validate from 'validator';
 
 import Core, { environment, options } from './Core';
@@ -27,6 +28,7 @@ import DMAssetResource from './resources/publicAPI/DMAssetResource';
 import DMAssetList from './resources/publicAPI/DMAssetList';
 import DataManagerResource from './resources/datamanager/DataManagerResource';
 import DataManager from './DataManager';
+import Problem from './Problem';
 
 const resourceSymbol = Symbol.for('resource');
 const tokenStoreSymbol = Symbol.for('tokenStore');
@@ -609,7 +611,11 @@ export default class PublicAPI extends Core {
 
         return this.link(`${this[shortIDSymbol]}:${model}`);
       })
-      .then(link => validator.validate(e, `${link.profile}?template=post`))
+      .then(link =>
+        validator.validate(e, `${link.profile}?template=post`)
+          .catch((e) => {
+            throw new Problem(convertValidationError(e));
+          }))
       .then(() => this.follow(`${this[shortIDSymbol]}:${model}`))
       .then(request => {
         if (levels) {

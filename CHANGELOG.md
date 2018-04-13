@@ -1,3 +1,11 @@
+<a name="0.13.19"></a>
+## <small>0.13.19 (2018-04-13)</small>
+
+* release version 0.13.19 ([67e6bbf](https://github.com/entrecode/ec.sdk/commit/67e6bbf))
+* feat: convert schema validation errors into entrecode error format SDK-4 SDK-6 ([5ca8d2c](https://github.com/entrecode/ec.sdk/commit/5ca8d2c))
+
+
+
 <a name="0.13.18"></a>
 ## <small>0.13.18 (2018-04-10)</small>
 

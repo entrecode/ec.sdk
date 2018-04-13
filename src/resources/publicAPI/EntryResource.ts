@@ -1,5 +1,6 @@
 import * as halfred from 'halfred';
 import * as validator from 'json-schema-remote';
+import { convertValidationError } from 'ec.errors';
 
 import LiteEntryResource from './LiteEntryResource';
 import PublicAssetResource from './PublicAssetResource';
@@ -7,6 +8,7 @@ import { fileNegotiate, getSchema, optionsToQuery, getHistory } from '../../help
 import { environment } from '../../Core';
 import DMAssetResource from './DMAssetResource';
 import { filterOptions } from '../ListResource';
+import Problem from '../../Problem';
 
 const environmentSymbol = Symbol.for('environment');
 const resourceSymbol = Symbol.for('resource');
@@ -618,7 +620,10 @@ class EntryResource extends LiteEntryResource {
     return Promise.resolve()
       .then(() => {
         const schema = this[schemaSymbol].allOf[1].properties[field];
-        return validator.validate(this[field], schema);
+        return validator.validate(this[field], schema)
+          .catch((e) => {
+            throw new Problem(convertValidationError(e));
+          });
       });
   }
 

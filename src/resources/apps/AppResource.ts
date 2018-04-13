@@ -1,4 +1,3 @@
-import * as validator from 'json-schema-remote';
 import Resource from '../Resource';
 import PlatformList from './PlatformList';
 import PlatformResource from './PlatformResource';
@@ -12,9 +11,6 @@ import { filterOptions } from '../ListResource';
 import { environment } from '../../Core';
 
 const relationsSymbol = Symbol.for('relations');
-
-validator.setLoggingFunction(() => {
-});
 
 interface AppResource {
   appID: string,
