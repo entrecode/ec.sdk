@@ -4,7 +4,8 @@ import * as traverson from 'traverson';
 import * as validator from 'json-schema-remote';
 import * as isEqual from 'lodash.isequal';
 import * as assert from 'assert';
-import { convertValidationError } from 'ec.errors';
+
+const { convertValidationError } = require('ec.errors')();
 
 import ListResource, { filterOptions } from './ListResource';
 import { del, get, optionsToQuery, post, put } from '../helper';

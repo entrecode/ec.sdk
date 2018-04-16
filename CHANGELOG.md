@@ -1,3 +1,28 @@
+<a name="0.14.0"></a>
+## 0.14.0 (2018-04-16)
+
+* release version 0.14.0 ([0a34e00](https://github.com/entrecode/ec.sdk/commit/0a34e00))
+* fix: removed duplicate create/signup anon function ([0038b75](https://github.com/entrecode/ec.sdk/commit/0038b75))
+* fix: updated ec.errors to 0.2.0 to support transpiling ([dd69684](https://github.com/entrecode/ec.sdk/commit/dd69684))
+
+
+### BREAKING CHANGE
+
+* removed `signupAnonymous()` use `createAnonymous(validUntil)`.
+
+before:
+```js
+const anon = await api.signupAnonymous();
+api.setToken(anon);
+```
+
+after:
+```js
+const {jwt} = await api.createAnonymous();
+api.setToken(jwt);
+```
+
+
 <a name="0.13.19"></a>
 ## <small>0.13.19 (2018-04-13)</small>
 
