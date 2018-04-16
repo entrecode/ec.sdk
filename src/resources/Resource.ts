@@ -441,8 +441,14 @@ class Resource {
           });
       })
       .then(([res, traversal]) => {
-        this[resourceSymbol] = halfred.parse(res);
-        this[traversalSymbol] = traversal;
+        if (res) {
+          this[resourceSymbol] = halfred.parse(res);
+        }
+
+        if (traversal) {
+          this[traversalSymbol] = traversal;
+        }
+
         return this;
       });
   }

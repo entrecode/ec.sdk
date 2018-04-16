@@ -1,3 +1,12 @@
+<a name="0.14.1"></a>
+## <small>0.14.1 (2018-04-16)</small>
+
+* release version 0.14.1 ([981fc00](https://github.com/entrecode/ec.sdk/commit/981fc00))
+* fix: DMClientResource getter and setter wrong ([123841d](https://github.com/entrecode/ec.sdk/commit/123841d))
+* fix: when saving a resource only change object internals on !==204 response ([9574a60](https://github.com/entrecode/ec.sdk/commit/9574a60))
+
+
+
 <a name="0.14.0"></a>
 ## 0.14.0 (2018-04-16)
 
