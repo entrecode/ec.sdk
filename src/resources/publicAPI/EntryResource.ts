@@ -1,6 +1,7 @@
 import * as halfred from 'halfred';
 import * as validator from 'json-schema-remote';
-import { convertValidationError } from 'ec.errors';
+
+const { convertValidationError } = require('ec.errors')();
 
 import LiteEntryResource from './LiteEntryResource';
 import PublicAssetResource from './PublicAssetResource';

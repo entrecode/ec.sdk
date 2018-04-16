@@ -3,7 +3,8 @@ import * as HalAdapter from 'traverson-hal';
 import * as halfred from 'halfred';
 import * as validator from 'json-schema-remote';
 import * as shortID from 'shortid';
-import { convertValidationError } from 'ec.errors';
+
+const { convertValidationError } = require('ec.errors')();
 
 import events from './EventEmitter';
 import TokenStoreFactory from './TokenStore';

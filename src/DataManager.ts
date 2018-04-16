@@ -1,5 +1,6 @@
 import * as validator from 'json-schema-remote';
-import { convertValidationError } from 'ec.errors';
+
+const { convertValidationError } = require('ec.errors')();
 
 import Core, { environment, options } from './Core';
 import DataManagerResource from './resources/datamanager/DataManagerResource';

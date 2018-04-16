@@ -3,8 +3,9 @@ import * as qs from 'querystring';
 import * as ShiroTrie from 'shiro-trie';
 import * as superagent from 'superagent';
 import * as validator from 'json-schema-remote';
-import { convertValidationError } from 'ec.errors';
 import * as validate from 'validator';
+
+const { convertValidationError } = require('ec.errors')();
 
 import Core, { environment, options } from './Core';
 import EntryList, { createList } from './resources/publicAPI/EntryList';
