@@ -326,11 +326,11 @@ export default class PublicAPI extends Core {
    * return api.createAnonymous()
    * .then(token => save(token));
    *
-   * @param {Date} validUntil valid until date
+   * @param {Date}? validUntil valid until date
    * @returns {Promise<{jwt: string, accountID: string, iat: number, exp: number}>} the created api
    *   token
    */
-  createAnonymous(validUntil: Date): Promise<jwtResponse> {
+  createAnonymous(validUntil?: Date): Promise<jwtResponse> {
     return this.follow(`${this[shortIDSymbol]}:_auth/anonymous`)
       .then((request) => {
         if (validUntil) {
@@ -1227,24 +1227,6 @@ export default class PublicAPI extends Core {
 
     this[tokenStoreSymbol].setClientID(clientID);
     return this;
-  }
-
-  /**
-   * Register a new anonymous user
-   *
-   * @returns {Promise<string>} the jwt of the created user
-   */
-  signupAnonymous(): Promise<string> {
-    return Promise.resolve()
-      .then(() => {
-        return this.follow(`${this[shortIDSymbol]}:_auth/anonymous`);
-      })
-      .then((request) => {
-        return post(this[environmentSymbol], request);
-      })
-      .then(([res]) => {
-        return <string>res.jwt;
-      });
   }
 
   /**
