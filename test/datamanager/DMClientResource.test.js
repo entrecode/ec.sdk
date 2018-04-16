@@ -25,9 +25,9 @@ describe('DMClient ListResource', () => {
         return resolve(JSON.parse(res));
       });
     })
-    .then((json) => {
-      listJson = json;
-    });
+      .then((json) => {
+        listJson = json;
+      });
   });
   beforeEach(() => {
     list = new DMClientList(listJson);
@@ -58,9 +58,9 @@ describe('DMClient Resource', () => {
         return resolve(JSON.parse(res));
       });
     })
-    .then((json) => {
-      resourceJson = json;
-    });
+      .then((json) => {
+        resourceJson = json;
+      });
   });
   beforeEach(() => {
     resource = new DMClientResource(resourceJson);
@@ -75,9 +75,7 @@ describe('DMClient Resource', () => {
     resource.should.be.instanceOf(DMClientResource);
   });
 
-  const getter = [
-    'clientID', 'callbackURL', 'hexColor', 'disableStrategies',
-  ];
+  const getter = ['clientID', 'callbackURL', 'hexColor', 'disableStrategies', 'tokenMethod'];
   getter.forEach((name) => {
     it(`should call resource.getProperty with ${name}`, () => {
       const spy = sinon.spy(resource, 'getProperty');
@@ -91,9 +89,7 @@ describe('DMClient Resource', () => {
     });
   });
 
-  const setter = [
-    'callbackURL', 'hexColor', 'disableStrategies',
-  ];
+  const setter = ['callbackURL', 'hexColor', 'disableStrategies', 'tokenMethod'];
   setter.forEach((name) => {
     it(`should call resource.setProperty with ${name}`, () => {
       const spy = sinon.spy(resource, 'setProperty');

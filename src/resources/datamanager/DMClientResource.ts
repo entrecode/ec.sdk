@@ -4,6 +4,7 @@ import { environment } from '../../Core';
 interface DMClientResource {
   callbackURL: string,
   clientID: string,
+  tokenMethod: Array<string>,
   disableStrategies: Array<string>,
   hexColor: string,
 }
@@ -14,11 +15,10 @@ interface DMClientResource {
  * @class
  *
  * @prop {string} clientID - name/id of this client.
- * @prop {string} callbackURL - url used for callback requests
- * @prop {{tokenMethod: (query|cookie|body),disableStrategies:
- *   Array<'facebook'|'google'|'password'>}} config - Configuration for this client.
- * @prop {string}        hexColor          - Strategies disabled in this client.
+ * @prop {string} callbackURL - url used for callback requests.
+ * @prop {Array<string>} tokenMethod - list of available token methods.
  * @prop {array<String>} disableStrategies - Strategies disabled in this client.
+ * @prop {string} hexColor - hex color for this client.
  */
 class DMClientResource extends Resource {
   /**
@@ -42,10 +42,15 @@ class DMClientResource extends Resource {
         enumerable: true,
         get: () => <string>this.getProperty('clientID'),
       },
+      tokenMethod: {
+        enumerable: true,
+        get: () => <Array<string>>this.getProperty('tokenMethod'),
+        set: (value: Array<string>) => this.setProperty('tokenMethod', value),
+      },
       disableStrategies: {
         enumerable: true,
-        get: () => <Array<string>> this.getProperty('disableStrategies'),
-        set: (value: Array<string>) => this.setProperty('disableStrategies', value)
+        get: () => <Array<string>>this.getProperty('disableStrategies'),
+        set: (value: Array<string>) => this.setProperty('disableStrategies', value),
       },
       hexColor: {
         enumerable: true,
