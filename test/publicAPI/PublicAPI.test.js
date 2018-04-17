@@ -92,36 +92,36 @@ describe('PublicAPI', () => {
 
   ['dataManagerID', 'title', 'description', 'locales',
     'defaultLocale', 'models', 'account', 'config']
-  .forEach((property) => {
-    it(`getter for ${property}`, () => {
-      const stub = sinon.stub(helper, 'get');
-      stub.returns(resolver('public-dm-root.json'));
+    .forEach((property) => {
+      it(`getter for ${property}`, () => {
+        const stub = sinon.stub(helper, 'get');
+        stub.returns(resolver('public-dm-root.json'));
 
-      return api.resolve()
-      .then(() => {
-        api[property].should.exist;
-        stub.restore();
-      })
-      .catch((err) => {
-        stub.restore();
-        throw err;
+        return api.resolve()
+          .then(() => {
+            api[property].should.exist;
+            stub.restore();
+          })
+          .catch((err) => {
+            stub.restore();
+            throw err;
+          });
       });
     });
-  });
 
   it('should resolve data manager root response', () => {
     const stub = sinon.stub(helper, 'get');
     stub.returns(resolver('public-dm-root.json'));
 
     return api.resolve()
-    .then(() => {
-      api[resourceSymbol].should.have.property('dataManagerID', '48e18a34-cf64-4f4a-bc47-45323a7f0e44');
-      stub.restore();
-    })
-    .catch((err) => {
-      stub.restore();
-      throw err;
-    });
+      .then(() => {
+        api[resourceSymbol].should.have.property('dataManagerID', '48e18a34-cf64-4f4a-bc47-45323a7f0e44');
+        stub.restore();
+      })
+      .catch((err) => {
+        stub.restore();
+        throw err;
+      });
   });
   it('should resolve data manager root response cache', () => {
     const stub = sinon.stub(helper, 'get');
@@ -129,15 +129,15 @@ describe('PublicAPI', () => {
     stub.onSecondCall().throws(new Error('should not happen in tests'));
 
     return api.resolve()
-    .then(() => api.resolve())
-    .then(() => {
-      api[resourceSymbol].should.have.property('dataManagerID', '48e18a34-cf64-4f4a-bc47-45323a7f0e44');
-      stub.restore();
-    })
-    .catch((err) => {
-      stub.restore();
-      throw err;
-    });
+      .then(() => api.resolve())
+      .then(() => {
+        api[resourceSymbol].should.have.property('dataManagerID', '48e18a34-cf64-4f4a-bc47-45323a7f0e44');
+        stub.restore();
+      })
+      .catch((err) => {
+        stub.restore();
+        throw err;
+      });
   });
   it('should resolve data manager root response cache reload', () => {
     const stub = sinon.stub(helper, 'get');
@@ -146,47 +146,47 @@ describe('PublicAPI', () => {
     stub.onThirdCall().throws(new Error('should not happen in tests'));
 
     return api.resolve()
-    .then(() => api.resolve(true))
-    .then(() => {
-      api[resourceSymbol].should.have.property('dataManagerID', '48e18a34-cf64-4f4a-bc47-45323a7f0e44');
-      stub.restore();
-    })
-    .catch((err) => {
-      stub.restore();
-      throw err;
-    });
+      .then(() => api.resolve(true))
+      .then(() => {
+        api[resourceSymbol].should.have.property('dataManagerID', '48e18a34-cf64-4f4a-bc47-45323a7f0e44');
+        stub.restore();
+      })
+      .catch((err) => {
+        stub.restore();
+        throw err;
+      });
   });
   it('should load modelLst', () => {
     const stub = sinon.stub(helper, 'get');
     stub.returns(resolver('public-dm-root.json'));
 
     return api.modelList()
-    .then((list) => {
-      list.should.be.instanceOf(Object);
-      list.should.have.property('allFields');
-      // TODO properties should be model objects
-      stub.restore();
-    })
-    .catch((err) => {
-      stub.restore();
-      throw err;
-    });
+      .then((list) => {
+        list.should.be.instanceOf(Object);
+        list.should.have.property('allFields');
+        // TODO properties should be model objects
+        stub.restore();
+      })
+      .catch((err) => {
+        stub.restore();
+        throw err;
+      });
   });
   it('should load me', () => {
     const stub = sinon.stub(helper, 'get');
     stub.returns(resolver('public-dm-root.json'));
 
     return api.me()
-    .then((me) => {
-      me.should.be.instanceOf(Object);
-      me.should.have.property('accountID', '49518e7d-a8b0-444a-b829-7fe3c86810ab');
-      // TODO properties should be model objects
-      stub.restore();
-    })
-    .catch((err) => {
-      stub.restore();
-      throw err;
-    });
+      .then((me) => {
+        me.should.be.instanceOf(Object);
+        me.should.have.property('accountID', '49518e7d-a8b0-444a-b829-7fe3c86810ab');
+        // TODO properties should be model objects
+        stub.restore();
+      })
+      .catch((err) => {
+        stub.restore();
+        throw err;
+      });
   });
 
   it('should set clientID', () => {
@@ -208,7 +208,7 @@ describe('PublicAPI', () => {
 
     api.setClientID('rest');
     return api.login('andre@entrecode.de', 'mysecret').should.eventually.be.fulfilled
-    .and.notify(() => stub.restore());
+      .and.notify(() => stub.restore());
   });
   it('should reject when already logged in', () => {
     api[tokenStoreSymbol].setToken('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJlbnRyZWNvZGVUZXN0IiwiaWF0IjoxNDg1NzgzNTg4LCJleHAiOjQ2NDE0NTcxODgsImF1ZCI6IlRlc3QiLCJzdWIiOiJ0ZXN0QGVudHJlY29kZS5kZSJ9.Vhrq5GR2hNz-RoAhdlnIIWHelPciBPCemEa74s7cXn8');
@@ -237,7 +237,7 @@ describe('PublicAPI', () => {
     stub.returns(Promise.resolve());
 
     return api.logout().should.be.eventually.fulfilled
-    .and.notify(() => stub.restore());
+      .and.notify(() => stub.restore());
   });
   it('should be successful on no token', () => {
     return api.logout().should.be.eventually.fulfilled;
@@ -255,10 +255,10 @@ describe('PublicAPI', () => {
     follow.returns(Promise.resolve(api.newRequest()));
 
     return api.emailAvailable('someone@example.com').should.be.eventually.equal(true)
-    .and.notify(() => {
-      stub.restore();
-      follow.restore();
-    });
+      .and.notify(() => {
+        stub.restore();
+        follow.restore();
+      });
   });
   it('should be rejected on undefined email', () => {
     return api.emailAvailable().should.be.rejectedWith('email must be defined');
@@ -274,30 +274,30 @@ describe('PublicAPI', () => {
     api[tokenStoreSymbol].hasToken().should.be.false;
 
     return api.signup('someone@example.com', 'suchsecurewow')
-    .then((tokenResponse) => {
-      tokenResponse.should.be.equal('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJlbnRyZWNvZGVUZXN0IiwiaWF0IjoxNDg1NzgzNTg4LCJleHAiOjQ2NDE0NTcxODgsImF1ZCI6IlRlc3QiLCJzdWIiOiJ0ZXN0QGVudHJlY29kZS5kZSJ9.Vhrq5GR2hNz-RoAhdlnIIWHelPciBPCemEa74s7cXn8');
-      api[tokenStoreSymbol].hasToken().should.be.true;
-      token.restore();
-      url.restore();
-    })
-    .catch((err) => {
-      token.restore();
-      url.restore();
-      throw err;
-    });
+      .then((tokenResponse) => {
+        tokenResponse.should.be.equal('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJlbnRyZWNvZGVUZXN0IiwiaWF0IjoxNDg1NzgzNTg4LCJleHAiOjQ2NDE0NTcxODgsImF1ZCI6IlRlc3QiLCJzdWIiOiJ0ZXN0QGVudHJlY29kZS5kZSJ9.Vhrq5GR2hNz-RoAhdlnIIWHelPciBPCemEa74s7cXn8');
+        api[tokenStoreSymbol].hasToken().should.be.true;
+        token.restore();
+        url.restore();
+      })
+      .catch((err) => {
+        token.restore();
+        url.restore();
+        throw err;
+      });
   });
   it('should be rejected on undefined email', () => {
     return api.signup(null, 'supersecure')
-    .should.be.rejectedWith('email must be defined');
+      .should.be.rejectedWith('email must be defined');
   });
   it('should be rejected on undefined password', () => {
     return api.signup('someone@example.com', null)
-    .should.be.rejectedWith('password must be defined');
+      .should.be.rejectedWith('password must be defined');
   });
   it('should be rejected on undefined clientID', () => {
     api[tokenStoreSymbol].clientID = undefined;
     return api.signup('someone@example.com', 'supersecure')
-    .should.be.rejectedWith('clientID must be set with PublicAPI#setClientID');
+      .should.be.rejectedWith('clientID must be set with PublicAPI#setClientID');
   });
 
   it('should reset password', () => {
@@ -306,13 +306,13 @@ describe('PublicAPI', () => {
     stub.returns(Promise.resolve());
 
     return api.resetPassword('someone@entrecode.de')
-    .then(() => {
-      stub.restore();
-    })
-    .catch((err) => {
-      stub.restore();
-      throw err;
-    });
+      .then(() => {
+        stub.restore();
+      })
+      .catch((err) => {
+        stub.restore();
+        throw err;
+      });
   });
   it('should be rejected on undefined email', () => {
     return api.resetPassword().should.be.rejectedWith('email must be defined');
@@ -320,7 +320,7 @@ describe('PublicAPI', () => {
   it('should be rejected on undefiend clientID', () => {
     api[tokenStoreSymbol].clientID = undefined;
     return api.resetPassword('someone@entrecode.de')
-    .should.be.rejectedWith('clientID must be set with PublicAPI#setClientID');
+      .should.be.rejectedWith('clientID must be set with PublicAPI#setClientID');
   });
 
   it('should create anonymous', () => {
@@ -328,47 +328,47 @@ describe('PublicAPI', () => {
     stub.returns(resolver('public-create-anon.json'));
 
     return api.createAnonymous()
-    .should.eventually.have.property('accountID', 'b6d0671d-17f3-43b7-9eb2-e2b0e4040015')
-    .and.notify(() => stub.restore());
+      .should.eventually.have.property('accountID', 'b6d0671d-17f3-43b7-9eb2-e2b0e4040015')
+      .and.notify(() => stub.restore());
   });
   it('should create anonymous, validUntil', () => {
     const stub = sinon.stub(helper, 'post');
     stub.returns(resolver('public-create-anon.json'));
 
     return api.createAnonymous(new Date())
-    .should.eventually.have.property('accountID', 'b6d0671d-17f3-43b7-9eb2-e2b0e4040015')
-    .and.notify(() => stub.restore());
+      .should.eventually.have.property('accountID', 'b6d0671d-17f3-43b7-9eb2-e2b0e4040015')
+      .and.notify(() => stub.restore());
   });
 
   it('should get schema', () => {
     return api.getSchema('allFields')
-    .should.eventually.have.property('id', 'https://datamanager.entrecode.de/api/schema/beefbeef/allFields');
+      .should.eventually.have.property('id', 'https://datamanager.entrecode.de/api/schema/beefbeef/allFields');
   });
   it('should get schema, method set', () => {
     return api.getSchema('allFields', 'put')
-    .should.eventually.have.property('id', 'https://datamanager.entrecode.de/api/schema/beefbeef/allFields?template=put');
+      .should.eventually.have.property('id', 'https://datamanager.entrecode.de/api/schema/beefbeef/allFields?template=put');
   });
   it('should get schema, cached', () => {
     const stub = sinon.stub(helper, 'superagentGet');
     stub.returns(Promise.resolve(publicSchema));
 
     return api.getSchema('allFields')
-    .then(() => api.getSchema('allFields'))
-    .then((schema) => {
-      schema.should.have.property('id', 'https://datamanager.entrecode.de/api/schema/beefbeef/allFields');
-      stub.restore();
-    })
-    .catch((err) => {
-      stub.restore();
-      throw err;
-    });
+      .then(() => api.getSchema('allFields'))
+      .then((schema) => {
+        schema.should.have.property('id', 'https://datamanager.entrecode.de/api/schema/beefbeef/allFields');
+        stub.restore();
+      })
+      .catch((err) => {
+        stub.restore();
+        throw err;
+      });
   });
   it('should reject on undefined model', () => {
     return api.getSchema().should.be.rejectedWith('model must be defined');
   });
   it('should reject on invalid method', () => {
     return api.getSchema('allFields', 'patch')
-    .should.be.rejectedWith('invalid method, only: get, post, and put');
+      .should.be.rejectedWith('invalid method, only: get, post, and put');
   });
 
   it('should check permission ok', () => {
@@ -377,14 +377,14 @@ describe('PublicAPI', () => {
     stub.onSecondCall().returns(resolver('public-permissions.json'));
 
     return api.checkPermission('entry:get:read')
-    .then((ok) => {
-      ok.should.be.true;
-      stub.restore();
-    })
-    .catch((err) => {
-      stub.restore();
-      throw err;
-    });
+      .then((ok) => {
+        ok.should.be.true;
+        stub.restore();
+      })
+      .catch((err) => {
+        stub.restore();
+        throw err;
+      });
   });
   it('should check permission not ok', () => {
     const stub = sinon.stub(helper, 'get');
@@ -392,14 +392,14 @@ describe('PublicAPI', () => {
     stub.onSecondCall().returns(resolver('public-permissions.json'));
 
     return api.checkPermission('nonono')
-    .then((ok) => {
-      ok.should.be.false;
-      stub.restore();
-    })
-    .catch((err) => {
-      stub.restore();
-      throw err;
-    });
+      .then((ok) => {
+        ok.should.be.false;
+        stub.restore();
+      })
+      .catch((err) => {
+        stub.restore();
+        throw err;
+      });
   });
   it('should check permission cached', () => {
     const stub = sinon.stub(helper, 'get');
@@ -408,16 +408,16 @@ describe('PublicAPI', () => {
     stub.onThirdCall().throws(new Error('should not happen in tests'));
 
     return api.checkPermission('entry:get:read')
-    .then(() => api.checkPermission('entry:get:read'))
-    .then((ok) => {
-      ok.should.be.true;
-      stub.should.have.callCount(2);
-      stub.restore();
-    })
-    .catch((err) => {
-      stub.restore();
-      throw err;
-    });
+      .then(() => api.checkPermission('entry:get:read'))
+      .then((ok) => {
+        ok.should.be.true;
+        stub.should.have.callCount(2);
+        stub.restore();
+      })
+      .catch((err) => {
+        stub.restore();
+        throw err;
+      });
   });
   it('should check permission cached, refresh', () => {
     const stub = sinon.stub(helper, 'get');
@@ -426,20 +426,20 @@ describe('PublicAPI', () => {
     stub.onThirdCall().returns(resolver('public-permissions.json'));
 
     return api.checkPermission('entry:get:read')
-    .then(() => api.checkPermission('entry:get:read', true))
-    .then((ok) => {
-      ok.should.be.true;
-      stub.should.have.callCount(3);
-      stub.restore();
-    })
-    .catch((err) => {
-      stub.restore();
-      throw err;
-    });
+      .then(() => api.checkPermission('entry:get:read', true))
+      .then((ok) => {
+        ok.should.be.true;
+        stub.should.have.callCount(3);
+        stub.restore();
+      })
+      .catch((err) => {
+        stub.restore();
+        throw err;
+      });
   });
   it('should reject on undefined permission', () => {
     return api.checkPermission()
-    .should.be.rejectedWith('permission must be defined');
+      .should.be.rejectedWith('permission must be defined');
   });
 
   it('should resolve on entryList', () => {
@@ -448,26 +448,26 @@ describe('PublicAPI', () => {
     stub.onSecondCall().returns(resolver('public-entry-list.json'));
 
     return api.entryList('allFields')
-    .then((list) => {
-      list.should.be.instanceof(EntryList);
-      stub.restore();
-    })
-    .catch((err) => {
-      stub.restore();
-      throw err;
-    });
+      .then((list) => {
+        list.should.be.instanceof(EntryList);
+        stub.restore();
+      })
+      .catch((err) => {
+        stub.restore();
+        throw err;
+      });
   });
   it('should throw on undefined model', () => {
     return api.entryList()
-    .should.be.rejectedWith('model must be defined');
+      .should.be.rejectedWith('model must be defined');
   });
   it('should throw on filter only id', () => {
     return api.entryList('allFields', { id: '1234567' })
-    .should.be.rejectedWith('Providing only an id/_id in entryList filter will result in single resource response. Please use PublicAPI#entry');
+      .should.be.rejectedWith('Providing only an id/_id in entryList filter will result in single resource response. Please use PublicAPI#entry');
   });
   it('should throw on filter only _id', () => {
     return api.entryList('allFields', { _id: '1234567' })
-    .should.be.rejectedWith('Providing only an id/_id in entryList filter will result in single resource response. Please use PublicAPI#entry');
+      .should.be.rejectedWith('Providing only an id/_id in entryList filter will result in single resource response. Please use PublicAPI#entry');
   });
 
   it('should resolve on entry', () => {
@@ -476,14 +476,14 @@ describe('PublicAPI', () => {
     stub.onSecondCall().returns(resolver('public-entry.json'));
 
     return api.entry('allFields', '1234567', { _fields: ['a', 'b'] })
-    .then((entry) => {
-      entry.should.be.instanceof(EntryResource);
-      stub.restore();
-    })
-    .catch((err) => {
-      stub.restore();
-      throw err;
-    });
+      .then((entry) => {
+        entry.should.be.instanceof(EntryResource);
+        stub.restore();
+      })
+      .catch((err) => {
+        stub.restore();
+        throw err;
+      });
   });
   it('should resolve on entry, level ', () => {
     const stub = sinon.stub(helper, 'get');
@@ -491,30 +491,30 @@ describe('PublicAPI', () => {
     stub.onSecondCall().returns(resolver('public-entry.json'));
 
     return api.entry('allFields', '1234567', 2)
-    .then((entry) => {
-      entry.should.be.instanceof(EntryResource);
-      stub.restore();
-    })
-    .catch((err) => {
-      stub.restore();
-      throw err;
-    });
+      .then((entry) => {
+        entry.should.be.instanceof(EntryResource);
+        stub.restore();
+      })
+      .catch((err) => {
+        stub.restore();
+        throw err;
+      });
   });
   it('should throw on undefined model', () => {
     return api.entry()
-    .should.be.rejectedWith('model must be defined');
+      .should.be.rejectedWith('model must be defined');
   });
   it('should throw on undefined id', () => {
     return api.entry('allFields')
-    .should.be.rejectedWith('id must be defined');
+      .should.be.rejectedWith('id must be defined');
   });
   it('should throw on invalid _levels', () => {
     return api.entry('allFields', '1234567', { _levels: 'string' })
-    .should.be.rejectedWith('_levels must be integer');
+      .should.be.rejectedWith('_levels must be integer');
   });
   it('should throw on invalid _fields', () => {
     return api.entry('allFields', '1234567', { _fields: 'string' })
-    .should.be.rejectedWith('_fields must be Array<string>');
+      .should.be.rejectedWith('_fields must be Array<string>');
   });
 
   it('should create entry', () => {
@@ -543,16 +543,16 @@ describe('PublicAPI', () => {
         '1234567',
       ],
     })
-    .then((entry) => {
-      entry.should.be.instanceOf(EntryResource);
-      getStub.restore();
-      postStub.restore();
-    })
-    .catch((err) => {
-      getStub.restore();
-      postStub.restore();
-      throw err;
-    });
+      .then((entry) => {
+        entry.should.be.instanceOf(EntryResource);
+        getStub.restore();
+        postStub.restore();
+      })
+      .catch((err) => {
+        getStub.restore();
+        postStub.restore();
+        throw err;
+      });
   });
   it('should create entry', () => {
     const getStub = sinon.stub(helper, 'get');
@@ -580,16 +580,16 @@ describe('PublicAPI', () => {
         '1234567',
       ],
     })
-    .then((entry) => {
-      should.equal(entry, undefined);
-      getStub.restore();
-      postStub.restore();
-    })
-    .catch((err) => {
-      getStub.restore();
-      postStub.restore();
-      throw err;
-    });
+      .then((entry) => {
+        should.equal(entry, undefined);
+        getStub.restore();
+        postStub.restore();
+      })
+      .catch((err) => {
+        getStub.restore();
+        postStub.restore();
+        throw err;
+      });
   });
   it('should create entry, levels', () => {
     const getStub = sinon.stub(helper, 'get');
@@ -617,24 +617,24 @@ describe('PublicAPI', () => {
         '1234567',
       ],
     }, 1)
-    .then((entry) => {
-      entry.should.be.instanceOf(EntryResource);
-      getStub.restore();
-      postStub.restore();
-    })
-    .catch((err) => {
-      getStub.restore();
-      postStub.restore();
-      throw err;
-    });
+      .then((entry) => {
+        entry.should.be.instanceOf(EntryResource);
+        getStub.restore();
+        postStub.restore();
+      })
+      .catch((err) => {
+        getStub.restore();
+        postStub.restore();
+        throw err;
+      });
   });
   it('should throw on undefined model', () => {
     return api.createEntry()
-    .should.be.rejectedWith('model must be defined');
+      .should.be.rejectedWith('model must be defined');
   });
   it('should throw on undefined entry', () => {
     return api.createEntry('allFields')
-    .should.be.rejectedWith('Cannot create resource with undefined object.');
+      .should.be.rejectedWith('Cannot create resource with undefined object.');
   });
   it('should throw on invalid entry', () => {
     return api.createEntry('allFields', {})
@@ -642,11 +642,11 @@ describe('PublicAPI', () => {
   });
   it('should throw on levels 0', () => {
     return api.createEntry('allFields', {}, 0)
-    .should.be.rejectedWith('levels must be between 1 and 5');
+      .should.be.rejectedWith('levels must be between 1 and 5');
   });
   it('should throw on levels 5', () => {
     return api.createEntry('allFields', {}, 5)
-    .should.be.rejectedWith('levels must be between 1 and 5');
+      .should.be.rejectedWith('levels must be between 1 and 5');
   });
 
   it('should load asset list', () => {
@@ -655,32 +655,32 @@ describe('PublicAPI', () => {
     stub.onSecondCall().returns(resolver('asset-list.json'));
 
     return api.assetList()
-    .then((list) => {
-      list.should.be.instanceof(PublicAssetList);
-      stub.restore();
-    })
-    .catch((err) => {
-      stub.restore();
-      throw err;
-    });
+      .then((list) => {
+        list.should.be.instanceof(PublicAssetList);
+        stub.restore();
+      })
+      .catch((err) => {
+        stub.restore();
+        throw err;
+      });
   });
   it('should throw on asset list filtered with assetID', () => {
     return api.assetList({ assetID: 'id' })
-    .should.be.rejectedWith('Cannot filter assetList only by assetID. Use PublicAPI#asset() instead');
+      .should.be.rejectedWith('Cannot filter assetList only by assetID. Use PublicAPI#asset() instead');
   });
   it('should load asset resource', () => {
     const stub = sinon.stub(helper, 'get');
     stub.returns(resolver('asset-single.json'));
 
     return api.asset('id')
-    .then((model) => {
-      model.should.be.instanceof(PublicAssetResource);
-      stub.restore();
-    })
-    .catch((err) => {
-      stub.restore();
-      throw err;
-    });
+      .then((model) => {
+        model.should.be.instanceof(PublicAssetResource);
+        stub.restore();
+      })
+      .catch((err) => {
+        stub.restore();
+        throw err;
+      });
   });
   it('should be rejected on undefined assetID', () => {
     return api.asset().should.be.rejectedWith('assetID must be defined');
@@ -702,19 +702,19 @@ describe('PublicAPI', () => {
     stubGet.onSecondCall().returns(resolver('public-asset.json'));
 
     return api.createAsset(`${__dirname}/../mocks/test.png`)
-    .then(response => response())
-    .then((response) => {
-      response.should.be.instanceof(PublicAssetResource);
-      stubGetUrl.restore();
-      stubSuperagentPost.restore();
-      stubGet.restore();
-    })
-    .catch((err) => {
-      stubGetUrl.restore();
-      stubSuperagentPost.restore();
-      stubGet.restore();
-      throw err;
-    });
+      .then(response => response())
+      .then((response) => {
+        response.should.be.instanceof(PublicAssetResource);
+        stubGetUrl.restore();
+        stubSuperagentPost.restore();
+        stubGet.restore();
+      })
+      .catch((err) => {
+        stubGetUrl.restore();
+        stubSuperagentPost.restore();
+        stubGet.restore();
+        throw err;
+      });
   });
   it('should create asset, buffer, title and tags', () => {
     const stubGetUrl = sinon.stub(helper, 'getUrl');
@@ -736,37 +736,37 @@ describe('PublicAPI', () => {
         return resolve(file);
       });
     })
-    .then(file => api.createAsset(file, {
-      fileName: 'test.png',
-      title: 'hello',
-      tags: ['helloTag'],
-    }))
-    .then((response) => {
-      response.should.be.a('function');
-      stubGetUrl.restore();
-      stubSuperagentPost.restore();
-    })
-    .catch((err) => {
-      stubGetUrl.restore();
-      stubSuperagentPost.restore();
-      throw err;
-    });
+      .then(file => api.createAsset(file, {
+        fileName: 'test.png',
+        title: 'hello',
+        tags: ['helloTag'],
+      }))
+      .then((response) => {
+        response.should.be.a('function');
+        stubGetUrl.restore();
+        stubSuperagentPost.restore();
+      })
+      .catch((err) => {
+        stubGetUrl.restore();
+        stubSuperagentPost.restore();
+        throw err;
+      });
   });
   it('should be rejected on create with buffer and no file name', () => {
     const stubGetUrl = sinon.stub(helper, 'getUrl');
     stubGetUrl.returns(Promise.resolve('https://datamanager.entrecode.de/asset/beefbeef'));
 
     return api.createAsset(new Buffer([]))
-    .then(() => {
-      throw new Error('Unexpectedly resolved');
-    })
-    .catch((err) => {
-      stubGetUrl.restore();
-      if (err.message === 'Unexpectedly resolved') {
-        throw err;
-      }
-      err.message.should.be.equal('When using buffer file input you must provide options.fileName.');
-    });
+      .then(() => {
+        throw new Error('Unexpectedly resolved');
+      })
+      .catch((err) => {
+        stubGetUrl.restore();
+        if (err.message === 'Unexpectedly resolved') {
+          throw err;
+        }
+        err.message.should.be.equal('When using buffer file input you must provide options.fileName.');
+      });
   });
   it('should create asset, FormData (mock), title and tags', () => {
     global.FormData = fdMock;
@@ -785,18 +785,18 @@ describe('PublicAPI', () => {
       title: 'hello',
       tags: ['whatwhat'],
     })
-    .then((response) => {
-      response.should.be.a('function');
-      stubGetUrl.restore();
-      stubSuperagentPost.restore();
-      global.FormData = undefined;
-    })
-    .catch((err) => {
-      stubGetUrl.restore();
-      stubSuperagentPost.restore();
-      global.FormData = undefined;
-      throw err;
-    });
+      .then((response) => {
+        response.should.be.a('function');
+        stubGetUrl.restore();
+        stubSuperagentPost.restore();
+        global.FormData = undefined;
+      })
+      .catch((err) => {
+        stubGetUrl.restore();
+        stubSuperagentPost.restore();
+        global.FormData = undefined;
+        throw err;
+      });
   });
   it('should be rejected on create asset with undefined value', () => {
     return api.createAsset().should.be.rejectedWith('Cannot create resource with undefined object.');
@@ -805,7 +805,7 @@ describe('PublicAPI', () => {
     const stubGetUrl = sinon.stub(helper, 'getUrl');
     stubGetUrl.returns(Promise.resolve('https://datamanager.entrecode.de/asset/beefbeef'));
     return api.createAsset([]).should.be.rejectedWith('Cannot handle input.')
-    .notify(() => stubGetUrl.restore());
+      .notify(() => stubGetUrl.restore());
   });
 
   it('should create assets, path', () => {
@@ -829,19 +829,19 @@ describe('PublicAPI', () => {
     stubGet.onSecondCall().returns(resolver('public-asset-list.json'));
 
     return api.createAssets([`${__dirname}/../mocks/test.png`, `${__dirname}/../mocks/test.png`])
-    .then(response => response())
-    .then((response) => {
-      response.should.be.instanceof(PublicAssetList);
-      stubGetUrl.restore();
-      stubSuperagentPost.restore();
-      stubGet.restore();
-    })
-    .catch((err) => {
-      stubGetUrl.restore();
-      stubSuperagentPost.restore();
-      stubGet.restore();
-      throw err;
-    });
+      .then(response => response())
+      .then((response) => {
+        response.should.be.instanceof(PublicAssetList);
+        stubGetUrl.restore();
+        stubSuperagentPost.restore();
+        stubGet.restore();
+      })
+      .catch((err) => {
+        stubGetUrl.restore();
+        stubSuperagentPost.restore();
+        stubGet.restore();
+        throw err;
+      });
   });
   it('should create assets, buffer, title and tags', () => {
     const stubGetUrl = sinon.stub(helper, 'getUrl');
@@ -868,69 +868,69 @@ describe('PublicAPI', () => {
         return resolve(file);
       });
     })
-    .then(file => api.createAssets([file, file], {
-      fileName: ['test.png', 'test.png'],
-      title: 'hello',
-      tags: ['helloTag'],
-    }))
-    .then((response) => {
-      response.should.be.a('function');
-      stubGetUrl.restore();
-      stubSuperagentPost.restore();
-    })
-    .catch((err) => {
-      stubGetUrl.restore();
-      stubSuperagentPost.restore();
-      throw err;
-    });
+      .then(file => api.createAssets([file, file], {
+        fileName: ['test.png', 'test.png'],
+        title: 'hello',
+        tags: ['helloTag'],
+      }))
+      .then((response) => {
+        response.should.be.a('function');
+        stubGetUrl.restore();
+        stubSuperagentPost.restore();
+      })
+      .catch((err) => {
+        stubGetUrl.restore();
+        stubSuperagentPost.restore();
+        throw err;
+      });
   });
   it('should be rejected on create assets with buffer and no file name #1', () => {
     const stubGetUrl = sinon.stub(helper, 'getUrl');
     stubGetUrl.returns(Promise.resolve('https://datamanager.entrecode.de/asset/beefbeef'));
 
     return api.createAssets([new Buffer([])])
-    .then(() => {
-      throw new Error('Unexpectedly resolved');
-    })
-    .catch((err) => {
-      stubGetUrl.restore();
-      if (err.message === 'Unexpectedly resolved') {
-        throw err;
-      }
-      err.message.should.be.equal('When using buffer file input you must provide options.fileName.');
-    });
+      .then(() => {
+        throw new Error('Unexpectedly resolved');
+      })
+      .catch((err) => {
+        stubGetUrl.restore();
+        if (err.message === 'Unexpectedly resolved') {
+          throw err;
+        }
+        err.message.should.be.equal('When using buffer file input you must provide options.fileName.');
+      });
   });
   it('should be rejected on create assets with buffer and no file name #2', () => {
     const stubGetUrl = sinon.stub(helper, 'getUrl');
     stubGetUrl.returns(Promise.resolve('https://datamanager.entrecode.de/asset/beefbeef'));
 
     return api.createAssets([new Buffer([])], { fileName: 'string' })
-    .then(() => {
-      throw new Error('Unexpectedly resolved');
-    })
-    .catch((err) => {
-      stubGetUrl.restore();
-      if (err.message === 'Unexpectedly resolved') {
-        throw err;
-      }
-      err.message.should.be.equal('When using buffer file input you must provide options.fileName.');
-    });
+      .then(() => {
+        throw new Error('Unexpectedly resolved');
+      })
+      .catch((err) => {
+        stubGetUrl.restore();
+        if (err.message === 'Unexpectedly resolved') {
+          throw err;
+        }
+        err.message.should.be.equal('When using buffer file input you must provide options.fileName.');
+      });
   });
   it('should be rejected on create assets with buffer and no file name #3', () => {
     const stubGetUrl = sinon.stub(helper, 'getUrl');
     stubGetUrl.returns(Promise.resolve('https://datamanager.entrecode.de/asset/beefbeef'));
 
     return api.createAssets([new Buffer([])], { fileName: [] })
-    .then(() => {
-      throw new Error('Unexpectedly resolved');
-    })
-    .catch((err) => {
-      stubGetUrl.restore();
-      if (err.message === 'Unexpectedly resolved') {
-        throw err;
-      }
-      err.message.should.be.equal('When using buffer file input you must provide options.fileName.');
-    });
+      .then(() => {
+        throw new Error('Unexpectedly resolved');
+      })
+      .catch((err) => {
+        stubGetUrl.restore();
+        if (err.message === 'Unexpectedly resolved') {
+          throw err;
+        }
+        err.message.should.be.equal('When using buffer file input you must provide options.fileName.');
+      });
   });
   it('should create assets, FormData (mock), title and tags', () => {
     global.FormData = fdMock;
@@ -954,18 +954,18 @@ describe('PublicAPI', () => {
       title: 'hello',
       tags: ['whatwhat'],
     })
-    .then((response) => {
-      response.should.be.a('function');
-      stubGetUrl.restore();
-      stubSuperagentPost.restore();
-      global.FormData = undefined;
-    })
-    .catch((err) => {
-      stubGetUrl.restore();
-      stubSuperagentPost.restore();
-      global.FormData = undefined;
-      throw err;
-    });
+      .then((response) => {
+        response.should.be.a('function');
+        stubGetUrl.restore();
+        stubSuperagentPost.restore();
+        global.FormData = undefined;
+      })
+      .catch((err) => {
+        stubGetUrl.restore();
+        stubSuperagentPost.restore();
+        global.FormData = undefined;
+        throw err;
+      });
   });
   it('should be rejected on create assets with undefined value', () => {
     return api.createAssets().should.be.rejectedWith('Cannot create resource with undefined object.');
@@ -974,7 +974,7 @@ describe('PublicAPI', () => {
     const stubGetUrl = sinon.stub(helper, 'getUrl');
     stubGetUrl.returns(Promise.resolve('https://datamanager.entrecode.de/asset/beefbeef'));
     return api.createAssets([[]]).should.be.rejectedWith('Cannot handle input.')
-    .notify(() => stubGetUrl.restore());
+      .notify(() => stubGetUrl.restore());
   });
 
   it('should get best file', () => {
@@ -983,8 +983,8 @@ describe('PublicAPI', () => {
     stub.onSecondCall().returns(resolver('best-file.json'));
 
     return api.getFileUrl('e766d956-6f43-49fa-8f30-023e4cd29779')
-    .should.eventually.be.equal('https://cdn2.entrecode.de/files/01bd8e08/J2DJfjfEVby3KcxGNrJyFdEz_512.png')
-    .notify(() => stub.restore());
+      .should.eventually.be.equal('https://cdn2.entrecode.de/files/01bd8e08/J2DJfjfEVby3KcxGNrJyFdEz_512.png')
+      .notify(() => stub.restore());
   });
   it('should get best file assetNeue', () => {
     const stub = sinon.stub(helper, 'get');
@@ -992,12 +992,17 @@ describe('PublicAPI', () => {
     stub.onSecondCall().returns(resolver('best-file.json'));
 
     return api.getFileUrl('notUUID')
-    .should.eventually.be.equal('https://cdn2.entrecode.de/files/01bd8e08/J2DJfjfEVby3KcxGNrJyFdEz_512.png')
-    .notify(() => stub.restore());
+      .should.eventually.be.equal('https://cdn2.entrecode.de/files/01bd8e08/J2DJfjfEVby3KcxGNrJyFdEz_512.png')
+      .notify(() => stub.restore());
+  });
+  it('should get error on 404', () => {
+    mock.reset();
+    return api.getFileUrl('8e2ef37e-68f8-46c7-b4ba-e9f44bc00257')
+      .should.eventually.be.rejectedWith('404');
   });
   it('should be rejected on undefined assetID', () => {
     return api.getFileUrl()
-    .should.be.rejectedWith('assetID must be defined');
+      .should.be.rejectedWith('assetID must be defined');
   });
   it('should get best image', () => {
     const stub = sinon.stub(helper, 'get');
@@ -1005,8 +1010,8 @@ describe('PublicAPI', () => {
     stub.onSecondCall().returns(resolver('best-file.json'));
 
     return api.getImageUrl('e766d956-6f43-49fa-8f30-023e4cd29779')
-    .should.eventually.be.equal('https://cdn2.entrecode.de/files/01bd8e08/J2DJfjfEVby3KcxGNrJyFdEz_512.png')
-    .notify(() => stub.restore());
+      .should.eventually.be.equal('https://cdn2.entrecode.de/files/01bd8e08/J2DJfjfEVby3KcxGNrJyFdEz_512.png')
+      .notify(() => stub.restore());
   });
   it('should get best image with size', () => {
     const stub = sinon.stub(helper, 'get');
@@ -1014,12 +1019,12 @@ describe('PublicAPI', () => {
     stub.onSecondCall().returns(resolver('best-file.json'));
 
     return api.getImageUrl('e766d956-6f43-49fa-8f30-023e4cd29779', 2)
-    .should.eventually.be.equal('https://cdn2.entrecode.de/files/01bd8e08/J2DJfjfEVby3KcxGNrJyFdEz_512.png')
-    .notify(() => stub.restore());
+      .should.eventually.be.equal('https://cdn2.entrecode.de/files/01bd8e08/J2DJfjfEVby3KcxGNrJyFdEz_512.png')
+      .notify(() => stub.restore());
   });
   it('should be rejected on undefined assetID', () => {
     return api.getImageUrl()
-    .should.be.rejectedWith('assetID must be defined');
+      .should.be.rejectedWith('assetID must be defined');
   });
   it('should get best thumb', () => {
     const stub = sinon.stub(helper, 'get');
@@ -1027,8 +1032,8 @@ describe('PublicAPI', () => {
     stub.onSecondCall().returns(resolver('best-file.json'));
 
     return api.getImageThumbUrl('e766d956-6f43-49fa-8f30-023e4cd29779')
-    .should.eventually.be.equal('https://cdn2.entrecode.de/files/01bd8e08/J2DJfjfEVby3KcxGNrJyFdEz_512.png')
-    .notify(() => stub.restore());
+      .should.eventually.be.equal('https://cdn2.entrecode.de/files/01bd8e08/J2DJfjfEVby3KcxGNrJyFdEz_512.png')
+      .notify(() => stub.restore());
   });
   it('should get best thumb assetNeue', () => {
     const stub = sinon.stub(helper, 'get');
@@ -1036,8 +1041,8 @@ describe('PublicAPI', () => {
     stub.onSecondCall().returns(resolver('best-file.json'));
 
     return api.getImageThumbUrl('notUUID')
-    .should.eventually.be.equal('https://cdn2.entrecode.de/files/01bd8e08/J2DJfjfEVby3KcxGNrJyFdEz_512.png')
-    .notify(() => stub.restore());
+      .should.eventually.be.equal('https://cdn2.entrecode.de/files/01bd8e08/J2DJfjfEVby3KcxGNrJyFdEz_512.png')
+      .notify(() => stub.restore());
   });
   it('should get best thumb with size', () => {
     const stub = sinon.stub(helper, 'get');
@@ -1045,12 +1050,12 @@ describe('PublicAPI', () => {
     stub.onSecondCall().returns(resolver('best-file.json'));
 
     return api.getImageThumbUrl('e766d956-6f43-49fa-8f30-023e4cd29779', 2)
-    .should.eventually.be.equal('https://cdn2.entrecode.de/files/01bd8e08/J2DJfjfEVby3KcxGNrJyFdEz_512.png')
-    .notify(() => stub.restore());
+      .should.eventually.be.equal('https://cdn2.entrecode.de/files/01bd8e08/J2DJfjfEVby3KcxGNrJyFdEz_512.png')
+      .notify(() => stub.restore());
   });
   it('should be rejected on undefined assetID', () => {
     return api.getImageThumbUrl()
-    .should.be.rejectedWith('assetID must be defined');
+      .should.be.rejectedWith('assetID must be defined');
   });
 
   it('should change email', () => {
@@ -1059,13 +1064,13 @@ describe('PublicAPI', () => {
     stub.returns(Promise.resolve());
 
     return api.changeEmail('someone@entrecode.de')
-    .then(() => {
-      stub.restore();
-    })
-    .catch((err) => {
-      stub.restore();
-      throw err;
-    });
+      .then(() => {
+        stub.restore();
+      })
+      .catch((err) => {
+        stub.restore();
+        throw err;
+      });
   });
   it('should be rejected on undefined email', () => {
     return api.changeEmail().should.be.rejectedWith('email must be defined');
@@ -1077,14 +1082,14 @@ describe('PublicAPI', () => {
     stub.onSecondCall().returns(resolver('dm-asset-list.json'));
 
     return api.dmAssetList('test1')
-    .then((list) => {
-      list.should.be.instanceof(DMAssetList);
-      stub.restore();
-    })
-    .catch((err) => {
-      stub.restore();
-      throw err;
-    });
+      .then((list) => {
+        list.should.be.instanceof(DMAssetList);
+        stub.restore();
+      })
+      .catch((err) => {
+        stub.restore();
+        throw err;
+      });
   });
   it('should be rejected on undefined assetGroupID', () => {
     return api.dmAssetList().should.be.rejectedWith('assetGroupID must be defined');
@@ -1094,7 +1099,7 @@ describe('PublicAPI', () => {
   });
   it('should throw on asset list neue filtered with assetID', () => {
     return api.dmAssetList('test1', { assetID: 'id' })
-    .should.be.rejectedWith('Cannot filter assetList only by assetID. Use PublicAPI#dmAsset() instead');
+      .should.be.rejectedWith('Cannot filter assetList only by assetID. Use PublicAPI#dmAsset() instead');
   });
   it('should load asset resource neue', () => {
     const stub = sinon.stub(helper, 'get');
@@ -1102,14 +1107,14 @@ describe('PublicAPI', () => {
     stub.onSecondCall().returns(resolver('dm-asset-single.json'));
 
     return api.dmAsset('test1', 'id')
-    .then((model) => {
-      model.should.be.instanceof(DMAssetResource);
-      stub.restore();
-    })
-    .catch((err) => {
-      stub.restore();
-      throw err;
-    });
+      .then((model) => {
+        model.should.be.instanceof(DMAssetResource);
+        stub.restore();
+      })
+      .catch((err) => {
+        stub.restore();
+        throw err;
+      });
   });
   it('should be rejected on undefined assetID', () => {
     return api.dmAsset('test1').should.be.rejectedWith('assetID must be defined');
@@ -1127,16 +1132,16 @@ describe('PublicAPI', () => {
       stubSuperagentPost.returns(resolver('dm-asset-create.json', null, true));
 
       return api.createDMAssets('test1', `${__dirname}/../mocks/test.png`)
-      .then((response) => {
-        response.should.be.instanceof(DMAssetList);
-        stubGetUrl.restore();
-        stubSuperagentPost.restore();
-      })
-      .catch((err) => {
-        stubGetUrl.restore();
-        stubSuperagentPost.restore();
-        throw err;
-      });
+        .then((response) => {
+          response.should.be.instanceof(DMAssetList);
+          stubGetUrl.restore();
+          stubSuperagentPost.restore();
+        })
+        .catch((err) => {
+          stubGetUrl.restore();
+          stubSuperagentPost.restore();
+          throw err;
+        });
     });
     it('should create dmAssets, 204', () => {
       mock.reset();
@@ -1146,16 +1151,16 @@ describe('PublicAPI', () => {
       stubSuperagentPost.returns([]);
 
       return api.createDMAssets('test1', `${__dirname}/../mocks/test.png`)
-      .then((response) => {
-        should.equal(response, undefined);
-        stubGetUrl.restore();
-        stubSuperagentPost.restore();
-      })
-      .catch((err) => {
-        stubGetUrl.restore();
-        stubSuperagentPost.restore();
-        throw err;
-      });
+        .then((response) => {
+          should.equal(response, undefined);
+          stubGetUrl.restore();
+          stubSuperagentPost.restore();
+        })
+        .catch((err) => {
+          stubGetUrl.restore();
+          stubSuperagentPost.restore();
+          throw err;
+        });
     });
     it('should create dmAssets, path #2', () => {
       mock.reset();
@@ -1165,16 +1170,16 @@ describe('PublicAPI', () => {
       stubSuperagentPost.returns(resolver('dm-asset-create.json', null, true));
 
       return api.createDMAssets('test1', `${__dirname}/../mocks/test.png`, { fileName: 'name' })
-      .then((response) => {
-        response.should.be.instanceof(DMAssetList);
-        stubGetUrl.restore();
-        stubSuperagentPost.restore();
-      })
-      .catch((err) => {
-        stubGetUrl.restore();
-        stubSuperagentPost.restore();
-        throw err;
-      });
+        .then((response) => {
+          response.should.be.instanceof(DMAssetList);
+          stubGetUrl.restore();
+          stubSuperagentPost.restore();
+        })
+        .catch((err) => {
+          stubGetUrl.restore();
+          stubSuperagentPost.restore();
+          throw err;
+        });
     });
     it('should create dmAssets, path array', () => {
       mock.reset();
@@ -1184,16 +1189,16 @@ describe('PublicAPI', () => {
       stubSuperagentPost.returns(resolver('dm-asset-create.json', null, true));
 
       return api.createDMAssets('test1', [`${__dirname}/../mocks/test.png`, `${__dirname}/../mocks/test.png`])
-      .then((response) => {
-        response.should.be.instanceof(DMAssetList);
-        stubGetUrl.restore();
-        stubSuperagentPost.restore();
-      })
-      .catch((err) => {
-        stubGetUrl.restore();
-        stubSuperagentPost.restore();
-        throw err;
-      });
+        .then((response) => {
+          response.should.be.instanceof(DMAssetList);
+          stubGetUrl.restore();
+          stubSuperagentPost.restore();
+        })
+        .catch((err) => {
+          stubGetUrl.restore();
+          stubSuperagentPost.restore();
+          throw err;
+        });
     });
     it('should create dmAssets, buffer, title and tags', () => {
       mock.reset();
@@ -1210,21 +1215,21 @@ describe('PublicAPI', () => {
           return resolve(file);
         });
       })
-      .then(file => api.createDMAssets('test1', [file, file], {
-        fileName: ['test.png', 'test.png'],
-        title: 'hello',
-        tags: ['helloTag'],
-      }))
-      .then((response) => {
-        response.should.be.instanceof(DMAssetList);
-        stubGetUrl.restore();
-        stubSuperagentPost.restore();
-      })
-      .catch((err) => {
-        stubGetUrl.restore();
-        stubSuperagentPost.restore();
-        throw err;
-      });
+        .then(file => api.createDMAssets('test1', [file, file], {
+          fileName: ['test.png', 'test.png'],
+          title: 'hello',
+          tags: ['helloTag'],
+        }))
+        .then((response) => {
+          response.should.be.instanceof(DMAssetList);
+          stubGetUrl.restore();
+          stubSuperagentPost.restore();
+        })
+        .catch((err) => {
+          stubGetUrl.restore();
+          stubSuperagentPost.restore();
+          throw err;
+        });
     });
     it('should be rejected on create dmAssets with buffer and no file name #1', () => {
       mock.reset();
@@ -1232,16 +1237,16 @@ describe('PublicAPI', () => {
       stubGetUrl.returns(Promise.resolve('https://datamanager.entrecode.de/a/beefbeef/test1'));
 
       return api.createDMAssets('test1', [new Buffer([])])
-      .then(() => {
-        throw new Error('Unexpectedly resolved');
-      })
-      .catch((err) => {
-        stubGetUrl.restore();
-        if (err.message === 'Unexpectedly resolved') {
-          throw err;
-        }
-        err.message.should.be.equal('When using buffer file input you must provide options.fileName.');
-      });
+        .then(() => {
+          throw new Error('Unexpectedly resolved');
+        })
+        .catch((err) => {
+          stubGetUrl.restore();
+          if (err.message === 'Unexpectedly resolved') {
+            throw err;
+          }
+          err.message.should.be.equal('When using buffer file input you must provide options.fileName.');
+        });
     });
     it('should be rejected on create dmAssets with buffer and no file name #2', () => {
       mock.reset();
@@ -1249,16 +1254,16 @@ describe('PublicAPI', () => {
       stubGetUrl.returns(Promise.resolve('https://datamanager.entrecode.de/a/beefbeef/test1'));
 
       return api.createDMAssets('test1', [new Buffer([])], { fileName: 'string' })
-      .then(() => {
-        throw new Error('Unexpectedly resolved');
-      })
-      .catch((err) => {
-        stubGetUrl.restore();
-        if (err.message === 'Unexpectedly resolved') {
-          throw err;
-        }
-        err.message.should.be.equal('When using buffer file input you must provide options.fileName.');
-      });
+        .then(() => {
+          throw new Error('Unexpectedly resolved');
+        })
+        .catch((err) => {
+          stubGetUrl.restore();
+          if (err.message === 'Unexpectedly resolved') {
+            throw err;
+          }
+          err.message.should.be.equal('When using buffer file input you must provide options.fileName.');
+        });
     });
     it('should be rejected on create dmAssets with buffer and no file name #3', () => {
       mock.reset();
@@ -1266,16 +1271,16 @@ describe('PublicAPI', () => {
       stubGetUrl.returns(Promise.resolve('https://datamanager.entrecode.de/a/beefbeef/test1'));
 
       return api.createDMAssets('test1', [new Buffer([])], { fileName: [] })
-      .then(() => {
-        throw new Error('Unexpectedly resolved');
-      })
-      .catch((err) => {
-        stubGetUrl.restore();
-        if (err.message === 'Unexpectedly resolved') {
-          throw err;
-        }
-        err.message.should.be.equal('When using buffer file input you must provide options.fileName.');
-      });
+        .then(() => {
+          throw new Error('Unexpectedly resolved');
+        })
+        .catch((err) => {
+          stubGetUrl.restore();
+          if (err.message === 'Unexpectedly resolved') {
+            throw err;
+          }
+          err.message.should.be.equal('When using buffer file input you must provide options.fileName.');
+        });
     });
     it('should create dmAssets, FormData (mock), title and tags', () => {
       mock.reset();
@@ -1289,18 +1294,18 @@ describe('PublicAPI', () => {
         title: 'hello',
         tags: ['whatwhat'],
       })
-      .then((response) => {
-        response.should.be.instanceof(DMAssetList);
-        stubGetUrl.restore();
-        stubSuperagentPost.restore();
-        global.FormData = undefined;
-      })
-      .catch((err) => {
-        stubGetUrl.restore();
-        stubSuperagentPost.restore();
-        global.FormData = undefined;
-        throw err;
-      });
+        .then((response) => {
+          response.should.be.instanceof(DMAssetList);
+          stubGetUrl.restore();
+          stubSuperagentPost.restore();
+          global.FormData = undefined;
+        })
+        .catch((err) => {
+          stubGetUrl.restore();
+          stubSuperagentPost.restore();
+          global.FormData = undefined;
+          throw err;
+        });
     });
     it('should be rejected on create dmAssets with undefined assetGroupID', () => {
       mock.reset();
@@ -1319,7 +1324,7 @@ describe('PublicAPI', () => {
       const stubGetUrl = sinon.stub(helper, 'getUrl');
       stubGetUrl.returns(Promise.resolve('https://datamanager.entrecode.de/asset/beefbeef'));
       return api.createDMAssets('test1', [[]]).should.be.rejectedWith('Cannot handle input.')
-      .notify(() => stubGetUrl.restore());
+        .notify(() => stubGetUrl.restore());
     });
   });
 });
