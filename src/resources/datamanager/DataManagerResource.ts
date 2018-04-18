@@ -20,6 +20,7 @@ import { environment } from '../../Core';
 import PublicAPI from '../../PublicAPI';
 import AssetGroupResource from './AssetGroupResource';
 import AssetGroupList from './AssetGroupList';
+import HistoryEvents from '../publicAPI/HistoryEvents';
 
 const environmentSymbol = Symbol.for('environment');
 const apiSymbol = Symbol('api');
@@ -555,6 +556,25 @@ class DataManagerResource extends Resource {
 
         return getHistory(this[environmentSymbol], request)
       });
+  }
+
+  /**
+   * Creates a new HistoryEventsResource with past events.
+   * 
+   * @param {filterOptions?} options The filter options.
+   * @returns {Promise<HistoryEventsResource} Event list of past events.
+   */
+  getPastEvents(options?: filterOptions): Promise<any> {
+    return Promise.resolve()
+      .then(() => this.newRequest().follow('ec:datamanager/dm-entryHistory'))
+      .then((request) => {
+        if (options) {
+          request.withTemplateParameters(optionsToQuery(options));
+        }
+
+        return get(this[environmentSymbol], request)
+      })
+      .then(([res]) => new HistoryEvents(res, this[environmentSymbol]));
   }
 
   /**

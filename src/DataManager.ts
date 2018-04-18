@@ -12,6 +12,7 @@ import TemplateResource from './resources/datamanager/TemplateResource';
 import { filterOptions } from './resources/ListResource';
 import { get, getHistory, optionsToQuery, post, superagentGet } from './helper';
 import Problem from './Problem';
+import HistoryEvents from './resources/publicAPI/HistoryEvents';
 
 declare const EventSource: any;
 
@@ -196,7 +197,7 @@ export default class DataManager extends Core {
   newHistory(options?: filterOptions): Promise<any> {
     return Promise.resolve()
       .then(() => this.follow('ec:history'))
-      .then(request => {
+      .then((request) => {
         request.follow('ec:entry-history');
 
         if (options) {
@@ -205,6 +206,27 @@ export default class DataManager extends Core {
 
         return getHistory(this[environmentSymbol], request)
       });
+  }
+
+  /**
+ * Creates a new HistoryEventsResource with past events.
+ * 
+ * @param {filterOptions?} options The filter options.
+ * @returns {Promise<HistoryEventsResource} Event list of past events.
+ */
+  getPastEvents(options?: filterOptions): Promise<any> {
+    return Promise.resolve()
+      .then(() => this.follow('ec:history'))
+      .then((request) => {
+        request.follow('ec:entry-history');
+
+        if (options) {
+          request.withTemplateParameters(optionsToQuery(options));
+        }
+
+        return get(this[environmentSymbol], request)
+      })
+      .then(([res]) => new HistoryEvents(res, this[environmentSymbol]));
   }
 
   /**

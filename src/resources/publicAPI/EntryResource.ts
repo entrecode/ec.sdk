@@ -5,11 +5,12 @@ const { convertValidationError } = require('ec.errors')();
 
 import LiteEntryResource from './LiteEntryResource';
 import PublicAssetResource from './PublicAssetResource';
-import { fileNegotiate, getSchema, optionsToQuery, getHistory } from '../../helper';
+import { get, fileNegotiate, getSchema, optionsToQuery, getHistory } from '../../helper';
 import { environment } from '../../Core';
 import DMAssetResource from './DMAssetResource';
 import { filterOptions } from '../ListResource';
 import Problem from '../../Problem';
+import HistoryEvents from './HistoryEvents';
 
 const environmentSymbol = Symbol.for('environment');
 const resourceSymbol = Symbol.for('resource');
@@ -599,6 +600,25 @@ class EntryResource extends LiteEntryResource {
 
         return getHistory(this[environmentSymbol], request)
       });
+  }
+
+  /**
+   * Creates a new HistoryEventsResource with past events.
+   * 
+   * @param {filterOptions?} options The filter options.
+   * @returns {Promise<HistoryEventsResource} Event list of past events.
+   */
+  getPastEvents(options?: filterOptions): Promise<any> {
+    return Promise.resolve()
+      .then(() => this.newRequest().follow('ec:model/dm-entryHistory'))
+      .then((request) => {
+        if (options) {
+          request.withTemplateParameters(optionsToQuery(options));
+        }
+
+        return get(this[environmentSymbol], request)
+      })
+      .then(([res]) => new HistoryEvents(res, this[environmentSymbol]));
   }
 
   /**
