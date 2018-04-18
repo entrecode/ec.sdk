@@ -44,6 +44,9 @@ function jsonHandler(callback) {
     }
 
     try {
+      if (!res.body || res.body.length === 0) {
+        return callback(new Error(res.statusCode));
+      }
       return callback(new Problem(JSON.parse(res.body)));
     } catch (e) {
       return callback(new Error(`ec.sdk: unable to parse body: ${res.body}`))
@@ -526,32 +529,32 @@ export function optionsToQuery(options: filterOptions, templateURL?: string): an
       } else if (typeof options[key] === 'object') {
         Object.keys(options[key]).forEach((searchKey) => {
           switch (searchKey) {
-          case 'exact':
-          case 'search':
-          case 'from':
-          case 'to':
-            if (Array.isArray(options[key][searchKey])) {
-              throw new Error(`${key}.${searchKey} must not be of type Array`)
-            }
-            if (options[key][searchKey] instanceof Date) {
-              out[`${key}${modifier[searchKey]}`] = options[key][searchKey].toISOString();
-            } else {
-              out[`${key}${modifier[searchKey]}`] = options[key][searchKey];
-            }
-            break;
-          case 'any':
-          case 'all':
-            if (!Array.isArray(options[key][searchKey])) {
-              throw new Error(`${key}.${searchKey} must be an Array.`);
-            }
-            const invalid = options[key][searchKey].filter((val) => !(typeof val === 'string' || typeof val === 'number'));
-            if (invalid.length > 0) {
-              throw new Error(`${key}.${searchKey} array must contain only strings or numbers`);
-            }
-            out[key] = options[key][searchKey].join(modifier[searchKey]);
-            break;
-          default:
-            throw new Error(`No handling of ${key}.${searchKey} filter supported.`);
+            case 'exact':
+            case 'search':
+            case 'from':
+            case 'to':
+              if (Array.isArray(options[key][searchKey])) {
+                throw new Error(`${key}.${searchKey} must not be of type Array`)
+              }
+              if (options[key][searchKey] instanceof Date) {
+                out[`${key}${modifier[searchKey]}`] = options[key][searchKey].toISOString();
+              } else {
+                out[`${key}${modifier[searchKey]}`] = options[key][searchKey];
+              }
+              break;
+            case 'any':
+            case 'all':
+              if (!Array.isArray(options[key][searchKey])) {
+                throw new Error(`${key}.${searchKey} must be an Array.`);
+              }
+              const invalid = options[key][searchKey].filter((val) => !(typeof val === 'string' || typeof val === 'number'));
+              if (invalid.length > 0) {
+                throw new Error(`${key}.${searchKey} array must contain only strings or numbers`);
+              }
+              out[key] = options[key][searchKey].join(modifier[searchKey]);
+              break;
+            default:
+              throw new Error(`No handling of ${key}.${searchKey} filter supported.`);
           }
         });
       } else {
@@ -566,7 +569,7 @@ export function optionsToQuery(options: filterOptions, templateURL?: string): an
       .reduce((a, b) => a.concat(b), []);
 
     const missings = Object.keys(out).filter(k => results.indexOf(k) === -1); // TODO was
-                                                                              // array.includes
+    // array.includes
 
     if (missings.length > 0) {
       const err: any = new Error('Invalid filter options. Check error#array for details.');

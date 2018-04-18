@@ -30,6 +30,7 @@ import DMAssetList from './resources/publicAPI/DMAssetList';
 import DataManagerResource from './resources/datamanager/DataManagerResource';
 import DataManager from './DataManager';
 import Problem from './Problem';
+import HistoryEvents from './resources/publicAPI/HistoryEvents';
 
 const resourceSymbol = Symbol.for('resource');
 const tokenStoreSymbol = Symbol.for('tokenStore');
@@ -1095,13 +1096,32 @@ export default class PublicAPI extends Core {
   newHistory(options?: filterOptions): Promise<any> {
     return Promise.resolve()
       .then(() => this.follow('ec:api/dm-entryHistory'))
-      .then(request => {
+      .then((request) => {
         if (options) {
           request.withTemplateParameters(optionsToQuery(options));
         }
 
         return getHistory(this[environmentSymbol], request)
       });
+  }
+
+  /**
+   * Creates a new HistoryEventsResource with past events.
+   * 
+   * @param {filterOptions?} options The filter options.
+   * @returns {Promise<HistoryEventsResource} Event list of past events.
+   */
+  getPastEvents(options?: filterOptions): Promise<any> {
+    return Promise.resolve()
+      .then(() => this.follow('ec:api/dm-entryHistory'))
+      .then((request) => {
+        if (options) {
+          request.withTemplateParameters(optionsToQuery(options));
+        }
+
+        return get(this[environmentSymbol], request)
+      })
+      .then(([res]) => new HistoryEvents(res, this[environmentSymbol]));
   }
 
   /**
