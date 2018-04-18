@@ -339,8 +339,8 @@
       }
     }
   ],
-  "account": null,
-  "role": null,
+  "account": "2bf325a9-c8f9-4e7d-b244-faa1090a479d",
+  "role": "2bf325a9-c8f9-4e7d-b244-faa1090a479d",
   "_links": {
     "collection": {
       "profile": "https://datamanager.entrecode.de/api/schema/beefbeef/allFields",
@@ -371,6 +371,16 @@
       "href": "https://datamanager.entrecode.de/api/beefbeef/contains_entries?id=EJlJtSrkgl",
       "name": "contains_entries",
       "title": "EJlJtSrkgl"
+    },
+    "beefbeef:allFields/account": {
+      "profile": "https://entrecode.de/schema/dm-account",
+      "href": "https://datamanager.entrecode.de/account?dataManagerID=48e18a34-cf64-4f4a-bc47-45323a7f0e44&accountID=49518e7d-a8b0-444a-b829-7fe3c86810ab",
+      "title": null
+    },
+    "beefbeef:allFields/role": {
+      "profile": "https://entrecode.de/schema/dm-role",
+      "href": "https://datamanager.entrecode.de/role?dataManagerID=48e18a34-cf64-4f4a-bc47-45323a7f0e44&roleID=3779d1ee-ce4f-4081-b2a7-6245e8540b18",
+      "title": "Registered Users"
     }
   },
   "_embedded": {

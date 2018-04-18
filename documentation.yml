@@ -94,5 +94,7 @@ toc:
   - PublicAssetResource
   - PublicTagList
   - PublicTagResource
+  - LiteDMAccountResource
+  - LiteRoleResource
   - name: Changelog
     file: ./CHANGELOG.md
