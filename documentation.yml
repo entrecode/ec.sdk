@@ -23,6 +23,8 @@ toc:
   - ListResource
   - filterOptions
   - filter
+  - HistoryEvents
+  - HistoryEvent
   - name: Accounts Resources
     file: ./src/doc/5-account-resources.md
   - AccountResource
