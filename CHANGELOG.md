@@ -1,3 +1,29 @@
+<a name="0.15.0"></a>
+## 0.15.0 (2018-04-18)
+
+* release version 0.15.0 ([de10b42](https://github.com/entrecode/ec.sdk/commit/de10b42))
+* doc: doc for HistoryEvent ([6edfa19](https://github.com/entrecode/ec.sdk/commit/6edfa19))
+* feat: LiteDMAccountResource and LiteRoleResource ([8f46c82](https://github.com/entrecode/ec.sdk/commit/8f46c82))
+
+
+### BREAKING CHANGE
+
+* introducing LiteDMAccountResource and LiteRoleResource, will break existing account/role fields
+
+before:
+```js
+const entry: EntryResource = await loadEntry();
+console.log(entry.account); // will log accountID
+console.log(entry.role); // will log roleID
+```
+
+```js
+const entry: EntryResource = await loadEntry();
+console.log(entry.account.accountID); // will log accountID
+console.log(entry.role.roleID); // will log roleID
+```
+
+
 <a name="0.14.2"></a>
 ## <small>0.14.2 (2018-04-18)</small>
 
