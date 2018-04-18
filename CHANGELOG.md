@@ -1,3 +1,12 @@
+<a name="0.14.2"></a>
+## <small>0.14.2 (2018-04-18)</small>
+
+* release version 0.14.2 ([8a647b0](https://github.com/entrecode/ec.sdk/commit/8a647b0))
+* feat: HistoryEvents resource for past events ([29c86b6](https://github.com/entrecode/ec.sdk/commit/29c86b6))
+* fix: body parsing of empty error responses SDK-55 ([d6b5820](https://github.com/entrecode/ec.sdk/commit/d6b5820))
+
+
+
 <a name="0.14.1"></a>
 ## <small>0.14.1 (2018-04-16)</small>
 
