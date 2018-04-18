@@ -83,6 +83,7 @@ class LiteEntryResource extends Resource {
    * @returns {Promise<EntryResource>} Promise resolving to {@link EntryResource}.
    */
   resolve(): Promise<EntryResource> {
+    // TODO switch to traverson loading (traverson.from(self))
     return superagentGet(this.getLink('self').href, { Accept: 'application/json' }, this[environmentSymbol])
       .then(resource => createEntry(resource, this[environmentSymbol]));
   }

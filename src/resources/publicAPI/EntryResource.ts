@@ -4,6 +4,8 @@ import * as validator from 'json-schema-remote';
 const { convertValidationError } = require('ec.errors')();
 
 import LiteEntryResource from './LiteEntryResource';
+import LiteDMAccountResource from './LiteDMAccountResource';
+import LiteRoleResource from './LiteRoleResource';
 import PublicAssetResource from './PublicAssetResource';
 import { get, fileNegotiate, getSchema, optionsToQuery, getHistory } from '../../helper';
 import { environment } from '../../Core';
@@ -392,7 +394,20 @@ class EntryResource extends LiteEntryResource {
             };
             break;
           case 'account':
-            property.get = () => this.getProperty(key);
+            property.get = () => {
+              const account = this.getProperty(key);
+              if (!account || typeof account === 'object') {
+                // if undefined return, if object it is a LiteDMAccountResource return.
+                return account;
+              }
+
+              const liteResource = this.getLink(`${this[shortIDSymbol]}:${this.getModelTitle()}/${key}`);
+              if (liteResource) {
+                this[resourceSymbol][key] = new LiteDMAccountResource(liteResource, this[environmentSymbol]);
+              }
+
+              return this.getProperty(key);
+            };
             property.set = (val) => {
               let value;
               if (val === null || typeof val === 'string') {
@@ -407,7 +422,20 @@ class EntryResource extends LiteEntryResource {
             };
             break;
           case 'role':
-            property.get = () => this.getProperty(key);
+            property.get = () => {
+              const role = this.getProperty(key);
+              if (!role || typeof role === 'object') {
+                // if undefined return, if object it is a LiteRoleResource return.
+                return role;
+              }
+
+              const liteResource = this.getLink(`${this[shortIDSymbol]}:${this.getModelTitle()}/${key}`);
+              if (liteResource) {
+                this[resourceSymbol][key] = new LiteRoleResource(liteResource, this[environmentSymbol]);
+              }
+
+              return this.getProperty(key);
+            };
             property.set = (val) => {
               let value;
               if (val === null || typeof val === 'string') {
@@ -704,6 +732,20 @@ class EntryResource extends LiteEntryResource {
               return v;
             }
           });
+          break;
+        case 'account':
+          if (typeof val === 'object') {
+            out[key] = val.accountID
+          } else {
+            out[key] = val;
+          }
+          break;
+        case 'role':
+          if (typeof val === 'object') {
+            out[key] = val.roleID
+          } else {
+            out[key] = val;
+          }
           break;
         default:
           out[key] = val;
