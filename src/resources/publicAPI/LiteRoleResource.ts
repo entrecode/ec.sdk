@@ -47,6 +47,7 @@ class LiteRoleResource extends Resource {
         get: () => <string>this.getProperty(key),
       });
     });
+    this.countProperties();
   }
 
   private get dataManagerID() {

@@ -51,6 +51,7 @@ class LiteDMAccountResource extends Resource {
       enumerable: false,
       get: () => this.email || this.accountID,
     });
+    this.countProperties();
   }
 
   private get dataManagerID() {
