@@ -33,7 +33,7 @@ class LiteDMAccountResource extends Resource {
             href: liteResource.href,
           }
         },
-        email: liteResource.title,
+        email: liteResource.title || liteResource.name,
         dataManagerID: qs.dataManagerID,
       };
     }

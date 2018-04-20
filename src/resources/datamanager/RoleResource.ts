@@ -1,8 +1,13 @@
 import Resource from '../Resource';
 import { environment } from '../../Core';
+import DMAccountResource from './DMAccountResource';
+import LiteDMAccountResource from '../publicAPI/LiteDMAccountResource';
+
+const environmentSymbol = Symbol.for('environment');
+const resourceSymbol = Symbol.for('resource');
 
 interface RoleResource {
-  accounts: Array<string>,
+  accounts: Array<LiteDMAccountResource>,
   addRegistered: boolean,
   addUnregistered: boolean,
   label: string,
@@ -20,7 +25,7 @@ interface RoleResource {
  * @prop {string} label - A label for the role
  * @prop {boolean} addUnregistered - Whether or not to add unregistered users to this role
  * @prop {boolean} addRegistered - Whether or not to add registered users to this role
- * @prop {array<string>} accounts - array of accountIDs associated to this role
+ * @prop {array<LiteDMAccountResource>} accounts - array of accountIDs associated to this role
  */
 class RoleResource extends Resource {
   /**
@@ -37,8 +42,28 @@ class RoleResource extends Resource {
     Object.defineProperties(this, {
       accounts: {
         enumerable: true,
-        get: () => <Array<string>>this.getProperty('accounts'),
-        set: (value: Array<string>) => this.setProperty('accounts', value),
+        get: () => {
+          const accounts = this.getProperty('accounts');
+          if (accounts.length === 0 || typeof accounts[0] === 'object') {
+            return accounts;
+          }
+
+          const liteResources = this.getLinks('ec:dm-account');
+          if (liteResources) {
+            this[resourceSymbol].accounts = liteResources.map(liteResource => new LiteDMAccountResource(liteResource, this[environmentSymbol]));
+          }
+
+          return this.getProperty('accounts');
+        },
+        set: (value: Array<string | LiteDMAccountResource | DMAccountResource>) => {
+          this.setProperty('accounts', value.map((res) => {
+            if (typeof res === 'string') {
+              return res;
+            }
+            return res.accountID;
+          }));
+          return this;
+        },
       },
       addRegistered: {
         enumerable: true,
