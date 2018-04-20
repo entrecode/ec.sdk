@@ -1,3 +1,13 @@
+<a name="0.16.0"></a>
+## 0.16.0 (2018-04-20)
+
+*  feat: title property in DMAccountResource and LiteDMAccountResource ([2be7671](https://github.com/entrecode/ec.sdk/commit/2be7671))
+* release version 0.16.0 ([497a6e5](https://github.com/entrecode/ec.sdk/commit/497a6e5))
+* feat: LiteDMAccountResource in RoleResource ([d2ecc03](https://github.com/entrecode/ec.sdk/commit/d2ecc03))
+* fix: isDirty detection for LiteRoleResources and LiteDMAccountResources ([960e94c](https://github.com/entrecode/ec.sdk/commit/960e94c))
+
+
+
 <a name="0.15.0"></a>
 ## 0.15.0 (2018-04-18)
 
