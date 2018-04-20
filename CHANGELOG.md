@@ -6,6 +6,21 @@
 * feat: LiteDMAccountResource in RoleResource ([d2ecc03](https://github.com/entrecode/ec.sdk/commit/d2ecc03))
 * fix: isDirty detection for LiteRoleResources and LiteDMAccountResources ([960e94c](https://github.com/entrecode/ec.sdk/commit/960e94c))
 
+BREAKING CHANGE:
+
+RoleResource's accounts field now has an array of LiteDMAccountResources not strings
+
+before:
+```js
+const role = await dm.role(roleID);
+console.info(role.accounts[0]); // logs uuid string
+```
+
+after:
+```js
+const role = await dm.role(roleID);
+console.info(role.accounts[0].accountID); // logs uuid string
+```
 
 
 <a name="0.15.0"></a>
