@@ -93,4 +93,14 @@ describe('DMAccount Resource', () => {
       spy.restore();
     });
   });
+  it('should have title property', () => {
+    const spy = sinon.spy(resource, 'getProperty');
+
+    const property = resource.title;
+    spy.should.have.been.calledOnce;
+    spy.should.have.been.calledWith('email');
+    property.should.be.equal(resource.getProperty('email'));
+
+    spy.restore();
+  });
 });

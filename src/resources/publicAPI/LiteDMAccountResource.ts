@@ -9,6 +9,7 @@ import DMAccountResource from '../datamanager/DMAccountResource';
 const environmentSymbol = Symbol.for('environment');
 
 interface LiteDMAccountResource {
+  title: string;
   accountID: string;
   email: string;
 }
@@ -45,6 +46,10 @@ class LiteDMAccountResource extends Resource {
         enumerable: true,
         get: () => <string>this.getProperty(key),
       });
+    });
+    Object.defineProperty(this, 'title', {
+      enumerable: false,
+      get: () => this.email || this.accountID,
     });
   }
 
