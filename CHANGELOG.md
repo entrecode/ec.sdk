@@ -6,7 +6,7 @@
 * feat: LiteDMAccountResource in RoleResource ([d2ecc03](https://github.com/entrecode/ec.sdk/commit/d2ecc03))
 * fix: isDirty detection for LiteRoleResources and LiteDMAccountResources ([960e94c](https://github.com/entrecode/ec.sdk/commit/960e94c))
 
-BREAKING CHANGE:
+### BREAKING CHANGE:
 
 RoleResource's accounts field now has an array of LiteDMAccountResources not strings
 
