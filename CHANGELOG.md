@@ -1,3 +1,9 @@
+<a name="0.16.1"></a>
+## <small>0.16.1 (2018-04-27)</small>
+
+
+
+
 <a name="0.16.0"></a>
 ## 0.16.0 (2018-04-20)
 
@@ -21,7 +27,6 @@ after:
 const role = await dm.role(roleID);
 console.info(role.accounts[0].accountID); // logs uuid string
 ```
-
 
 <a name="0.15.0"></a>
 ## 0.15.0 (2018-04-18)
