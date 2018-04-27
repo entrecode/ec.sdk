@@ -13,6 +13,8 @@ import DeletedAssetResource from './resources/datamanager/DeletedAssetResource';
 import PublicAssetResource from './resources/publicAPI/PublicAssetResource';
 import { environment } from './Core';
 
+const { newError } = require('ec.errors')();
+
 const packageJson: any = require('../package.json');
 
 validator.setLoggingFunction(() => {
@@ -572,18 +574,22 @@ export function optionsToQuery(options: filterOptions, templateURL?: string): an
     // array.includes
 
     if (missings.length > 0) {
-      const err: any = new Error('Invalid filter options. Check error#array for details.');
-      err.array = missings.map((missing) => {
+      const err: any = new Error('Invalid filter options. Check error#subErrors for details.');
+      err.subErrors = missings.map((missing) => {
+        let error;
         if (missing.indexOf('~') !== -1) {
-          return new Error(`Cannot apply 'search' filter to '${missing.substr(0, missing.indexOf('~'))}'`);
+          error = newError(212, `Cannot apply 'search' filter to '${missing.substr(0, missing.indexOf('~'))}'`, missing.substr(0, missing.indexOf('~')));
         } else if (missing.indexOf('From') !== -1) {
-          return new Error(`Cannot apply 'from' filter to '${missing.substr(0, missing.indexOf('From'))}'`);
+          error = newError(212, `Cannot apply 'from' filter to '${missing.substr(0, missing.indexOf('From'))}'`, missing.substr(0, missing.indexOf('From')));
         } else if (missing.indexOf('To') !== -1) {
-          return new Error(`Cannot apply 'to' filter to '${missing.substr(0, missing.indexOf('To'))}'`);
+          error = newError(212, `Cannot apply 'to' filter to '${missing.substr(0, missing.indexOf('To'))}'`, missing.substr(0, missing.indexOf('To')));
         } else if (['page', 'size', 'sort'].indexOf(missing) !== -1) { // TODO was array.includes
-          return new Error(`Cannot apply ${missing} option`);
+          error = newError(212, `Cannot apply ${missing} option`, missing);
+        } else {
+          error = newError(212, `Cannot apply 'exact' filter to '${missing}'`, missing);
         }
-        return new Error(`Cannot apply 'exact' filter to '${missing}'`);
+
+        return new Problem(error);
       });
       throw err;
     }
