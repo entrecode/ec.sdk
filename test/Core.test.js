@@ -923,8 +923,8 @@ describe('optionsToQuery', () => {
       try {
         helper.optionsToQuery(obj, '{?other}');
       } catch (e) {
-        e.should.have.property('array');
-        return e.array.should.have.property('length', 7);
+        e.should.have.property('subErrors');
+        return e.subErrors.should.have.property('length', 7);
       }
       throw new Error('failed');
     });
