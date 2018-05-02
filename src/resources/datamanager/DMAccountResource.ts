@@ -2,6 +2,7 @@ import Resource from '../Resource';
 import { environment } from '../../Core';
 
 interface DMAccountResource {
+  title: string,
   accountID: string,
   email: string,
   hasPassword: boolean,
@@ -45,6 +46,10 @@ class DMAccountResource extends Resource {
         enumerable: true,
         get: () => <Array<any>>this.getProperty('oauth'),
       },
+    });
+    Object.defineProperty(this, 'title', {
+      enumerable: true,
+      get: () => this.email || this.accountID,
     });
     this.countProperties();
   }

@@ -1,10 +1,12 @@
 import * as halfred from 'halfred';
 import * as validator from 'json-schema-remote';
-
 import Resource from '../Resource';
 import DataManagerResource from './DataManagerResource';
 import { get, post, put } from '../../helper';
 import { environment } from '../../Core';
+import Problem from '../../Problem';
+
+const { convertValidationError } = require('ec.errors')();
 
 const environmentSymbol = Symbol.for('environment');
 const resourceSymbol = Symbol.for('resource');
@@ -74,35 +76,37 @@ class TemplateResource extends Resource {
    */
   createDM(body: any): Promise<DataManagerResource> {
     return Promise.resolve()
-    .then(() => {
-      if (this[resolvedSymbol]) {
-        return undefined;
-      }
-      return this.resolve();
-    })
-    .then(() => {
-      validator.validate(body || {}, this.dataSchema);
-    })
-    .then(() => {
-      const request = this.newRequest().follow('ec:datamanagers/new-from-template');
-      return post(this[environmentSymbol], request, body || {});
-    })
-    .then(([res, traversal]) => new DataManagerResource(res, this[environmentSymbol], traversal));
+      .then(() => {
+        if (this[resolvedSymbol]) {
+          return undefined;
+        }
+        return this.resolve();
+      })
+      .then(() =>
+        validator.validate(body || {}, this.dataSchema)
+          .catch((e) => {
+            throw new Problem(convertValidationError(e));
+          }))
+      .then(() => {
+        const request = this.newRequest().follow('ec:datamanagers/new-from-template');
+        return post(this[environmentSymbol], request, body || {});
+      })
+      .then(([res, traversal]) => new DataManagerResource(res, this[environmentSymbol], traversal));
   }
 
   resolve(): Promise<TemplateResource> {
     return Promise.resolve()
-    .then(() => {
-      const request = this.newRequest()
-      .follow('self');
-      return get(this[environmentSymbol], request);
-    })
-    .then(([res, traversal]) => {
-      this[resolvedSymbol] = true;
-      this[traversalSymbol] = traversal;
-      this[resourceSymbol] = halfred.parse(res);
-      return this;
-    });
+      .then(() => {
+        const request = this.newRequest()
+          .follow('self');
+        return get(this[environmentSymbol], request);
+      })
+      .then(([res, traversal]) => {
+        this[resolvedSymbol] = true;
+        this[traversalSymbol] = traversal;
+        this[resourceSymbol] = halfred.parse(res);
+        return this;
+      });
   }
 
   /**
@@ -117,10 +121,10 @@ class TemplateResource extends Resource {
     }
 
     const request = this.newRequest()
-    .follow('ec:datamanager/update-from-template')
-    .withTemplateParameters({ dataManagerID });
+      .follow('ec:datamanager/update-from-template')
+      .withTemplateParameters({ dataManagerID });
     return put(this[environmentSymbol], request, {})
-    .then(([res, traversal]) => new DataManagerResource(res, this[environmentSymbol], traversal));
+      .then(([res, traversal]) => new DataManagerResource(res, this[environmentSymbol], traversal));
   }
 }
 

@@ -24,6 +24,7 @@ const TraversonMock = require('./mocks/TraversonMock');
 const tokenStoreSymbol = Symbol.for('tokenStore');
 const traversalSymbol = Symbol.for('traversal');
 const environmentSymbol = Symbol.for('environment');
+const relationsSymbol = Symbol.for('relations');
 
 nock.disableNetConnect();
 chai.should();
@@ -177,6 +178,7 @@ describe('Core', () => {
     return core.resourceList('asdf').should.be.rejectedWith('unknown relation, use one of');
   });
   it('resourceList called with levels param', () => {
+    core[relationsSymbol] = { dummy: {} };
     return core.resourceList('dummy', { _levels: 2 })
     .should.be.rejectedWith('_levels on list resources not supported');
   });
@@ -187,6 +189,7 @@ describe('Core', () => {
     return core.create('asdf').should.be.rejectedWith('unknown relation, use one of');
   });
   it('create called with relation without create options', () => {
+    core[relationsSymbol] = { dummy: {} };
     return core.create('dummy').should.be.rejectedWith('Resource has no createRelation');
   });
   it('should instantiate with options, environment', () => {
@@ -198,7 +201,7 @@ describe('Core', () => {
     core[environmentSymbol].should.match(/live[0-9A-Za-z-_]{7,14}/);
   });
   it('should instantiate with options, cookieModifier', () => {
-    const core = new Core.default({ live: 'https://datamanager.entrecode.de' }, { cookieModifier: 'Test'});
+    const core = new Core.default({ live: 'https://datamanager.entrecode.de' }, { cookieModifier: 'Test' });
     core[environmentSymbol].should.be.equal('liveTest');
   });
 });
@@ -920,8 +923,8 @@ describe('optionsToQuery', () => {
       try {
         helper.optionsToQuery(obj, '{?other}');
       } catch (e) {
-        e.should.have.property('array');
-        return e.array.should.have.property('length', 7);
+        e.should.have.property('subErrors');
+        return e.subErrors.should.have.property('length', 7);
       }
       throw new Error('failed');
     });

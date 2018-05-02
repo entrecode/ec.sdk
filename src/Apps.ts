@@ -1,5 +1,3 @@
-import * as validator from 'json-schema-remote';
-
 import AppList from './resources/apps/AppList';
 import AppResource from './resources/apps/AppResource';
 import AppStatsList from './resources/apps/AppStatsList';
@@ -12,8 +10,6 @@ import { get } from './helper';
 const environmentSymbol = Symbol.for('environment');
 const relationsSymbol = Symbol.for('relations');
 
-validator.setLoggingFunction(() => {
-});
 
 const urls = {
   live: 'https://appserver.entrecode.de/',
@@ -138,8 +134,8 @@ export default class Apps extends Core {
    */
   types(): Promise<TypesResource> {
     return Promise.resolve()
-    .then(() => this.follow('ec:apps/types'))
-    .then(request => get(this[environmentSymbol], request))
-    .then(([res, traversal]) => new TypesResource(res, this[environmentSymbol], traversal));
+      .then(() => this.follow('ec:apps/types'))
+      .then(request => get(this[environmentSymbol], request))
+      .then(([res, traversal]) => new TypesResource(res, this[environmentSymbol], traversal));
   }
 }

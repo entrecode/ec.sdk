@@ -142,23 +142,37 @@ class DMAssetResource extends Resource {
    */
   getFileVariant(size?: number, thumb: boolean = false): Promise<string> {
     return Promise.resolve()
-    .then(() => {
-      const request = this.newRequest();
-      if (thumb) {
-        request.follow('ec:dm-asset/thumbnail');
-      } else {
-        request.follow('ec:dm-asset/file-variant');
-      }
-      const templateParams: any = {};
-      if (size) {
-        templateParams.size = size;
-      }
-      request.withTemplateParameters(templateParams);
-      return get(this[environmentSymbol], request);
-    })
-    .then(([res]) => {
-      return res.url;
-    });
+      .then(() => {
+        if (!size && !thumb) {
+          return this.file.url;
+        }
+
+        let file;
+        if (thumb) {
+          file = this.thumbnails.find(t => t.dimension === size);
+        } else {
+          file = this.fileVariants.find(v => Math.max(v.resolution.width, v.resolution.height) === size);
+        }
+        if (file) {
+          return file.url;
+        }
+
+        const request = this.newRequest();
+        if (thumb) {
+          request.follow('ec:dm-asset/thumbnail');
+        } else {
+          request.follow('ec:dm-asset/file-variant');
+        }
+        const templateParams: any = {};
+        if (size) {
+          templateParams.size = size;
+        }
+        request.withTemplateParameters(templateParams);
+        return get(this[environmentSymbol], request)
+          .then(([res]) => {
+            return res.url;
+          });
+      });
   }
 
   /**

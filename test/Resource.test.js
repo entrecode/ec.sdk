@@ -15,6 +15,7 @@ const DataManagerResource = require('../lib/resources/datamanager/DataManagerRes
 
 const environmentSymbol = Symbol.for('environment');
 const traversalSymbol = Symbol.for('traversal');
+const relationsSymbol = Symbol.for('relations');
 
 const schemaNock = require('./mocks/nock');
 
@@ -91,14 +92,14 @@ describe('Resource', () => {
     stub.returns(resolver('dm-single.json', resource._traversal));
 
     return resource.save()
-    .then(() => {
-      stub.should.be.calledOnce;
-      stub.restore();
-    })
-    .catch((err) => {
-      stub.restore();
-      throw err;
-    });
+      .then(() => {
+        stub.should.be.calledOnce;
+        stub.restore();
+      })
+      .catch((err) => {
+        stub.restore();
+        throw err;
+      });
   });
   it('should throw on safePut without modified date', () => {
     schemaNock.reset();
@@ -117,36 +118,36 @@ describe('Resource', () => {
         return resolve(JSON.parse(res));
       })
     })
-    .then(json => EntryResource.createEntry(json, 'live'))
-    .then(res => res.save(true))
-    .then((res) => {
-      res[traversalSymbol];
-      stub.should.be.calledOnce;
-      stub.restore();
-    })
-    .catch((err) => {
-      stub.restore();
-      throw err;
-    });
+      .then(json => EntryResource.createEntry(json, 'live'))
+      .then(res => res.save(true))
+      .then((res) => {
+        res[traversalSymbol];
+        stub.should.be.calledOnce;
+        stub.restore();
+      })
+      .catch((err) => {
+        stub.restore();
+        throw err;
+      });
   });
   it('should reject on schema error', () => {
     schemaNock.reset();
     resource.setProperty('title', {});
-    return resource.save().should.be.rejectedWith('JSON Schema Validation error');
+    return resource.save().should.be.rejectedWith('Invalid format for property in JSON body');
   });
   it('should call del on del', () => {
     const stub = sinon.stub(helper, 'del');
     stub.returns(Promise.resolve({}, resource._traversal));
 
     return resource.del()
-    .then(() => {
-      stub.should.be.calledOnce;
-      stub.restore();
-    })
-    .catch((err) => {
-      stub.restore();
-      throw err;
-    });
+      .then(() => {
+        stub.should.be.calledOnce;
+        stub.restore();
+      })
+      .catch((err) => {
+        stub.restore();
+        throw err;
+      });
   });
   it('should return true for existing link', () => {
     resource.hasLink('self').should.be.true;
@@ -181,17 +182,17 @@ describe('Resource', () => {
     stub.returns(resolver('dm-single.json'), resource._traversal);
 
     return resource.followLink('self')
-    .then(() => {
-      stub.should.be.calledOnce;
-      stub.restore();
-    });
+      .then(() => {
+        stub.should.be.calledOnce;
+        stub.restore();
+      });
   });
   it('should throw error on follow missing link', () => {
     const stub = sinon.stub(helper, 'get');
     stub.returns(Promise.reject(new Error('Traverson throws this')));
 
     return resource.followLink('self').should.be.rejected
-    .and.notify(() => stub.restore());
+      .and.notify(() => stub.restore());
   });
   it('should return resource on get', () => {
     const obj = resource.getAll();
@@ -223,9 +224,9 @@ describe('Resource', () => {
 
     const obj = resource.getAll();
     ['created', 'description', 'config', 'hexColor', 'locales', 'title']
-    .forEach((property) => {
-      obj.should.have.property(property, newResource[property]);
-    });
+      .forEach((property) => {
+        obj.should.have.property(property, newResource[property]);
+      });
   });
   it('should assign some values on set', () => {
     const newResource = {
@@ -237,9 +238,9 @@ describe('Resource', () => {
 
     const obj = resource.getAll();
     ['description', 'title']
-    .forEach((property) => {
-      obj.should.have.property(property, newResource[property]);
-    });
+      .forEach((property) => {
+        obj.should.have.property(property, newResource[property]);
+      });
   });
   it('should throw on undefined value', () => {
     const throws = () => {
@@ -268,10 +269,10 @@ describe('Resource', () => {
     stub.returns(resolver('dm-single.json', resource._traversal));
 
     return resource.resolve()
-    .then(() => {
-      stub.should.be.calledOnce;
-      stub.restore();
-    });
+      .then(() => {
+        stub.should.be.calledOnce;
+        stub.restore();
+      });
   });
   it('should throw on get unknown property', () => {
     resource.missing = 'yes its missing';
@@ -290,8 +291,9 @@ describe('Resource', () => {
     return resource.resourceList('asdf').should.be.rejectedWith('unknown relation, use one of');
   });
   it('resourceList called with levels param', () => {
+    resource[relationsSymbol] = { dummy: {} };
     return resource.resourceList('dummy', { _levels: 2 })
-    .should.be.rejectedWith('_levels on list resources not supported');
+      .should.be.rejectedWith('_levels on list resources not supported');
   });
   it('create called without relation', () => {
     return resource.create().should.be.rejectedWith('relation must be defined');
@@ -300,6 +302,7 @@ describe('Resource', () => {
     return resource.create('asdf').should.be.rejectedWith('unknown relation, use one of');
   });
   it('create called with relation without create options', () => {
+    resource[relationsSymbol] = { dummy: {} };
     return resource.create('dummy').should.be.rejectedWith('Resource has no createRelation');
   });
   it('should validate', () => {
@@ -309,6 +312,7 @@ describe('Resource', () => {
     schemaNock.reset();
     const dm = new DataManagerResource(resourceJson);
     dm.hexColor = 1;
-    return dm.validate().should.be.rejectedWith('JSON Schema Validation error');
+    dm.locales = 'string';
+    return dm.validate().should.be.rejectedWith('Invalid format for property in JSON body');
   });
 });

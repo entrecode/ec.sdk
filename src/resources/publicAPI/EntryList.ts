@@ -40,9 +40,9 @@ export default class EntryList extends ListResource {
  */
 export function createList(resource: any, environment: environment, traversal: any, name: string): Promise<EntryList> {
   return Promise.resolve()
-  .then(() => {
-    const res = halfred.parse(resource);
-    return getSchema(res.link('self').profile);
-  })
-  .then(schema => new EntryList(resource, environment, traversal, name, schema));
+    .then(() => {
+      const res = halfred.parse(resource);
+      return getSchema(res.link('self').profile);
+    })
+    .then(schema => new EntryList(resource, environment, traversal, name, schema));
 }

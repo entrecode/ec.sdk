@@ -1,4 +1,5 @@
 import * as locale from 'locale';
+import * as EventSource from 'eventsource/lib/eventsource-polyfill';
 import * as superagent from 'superagent';
 import * as validator from 'json-schema-remote';
 
@@ -11,6 +12,8 @@ import AssetResource from './resources/datamanager/AssetResource';
 import DeletedAssetResource from './resources/datamanager/DeletedAssetResource';
 import PublicAssetResource from './resources/publicAPI/PublicAssetResource';
 import { environment } from './Core';
+
+const { newError } = require('ec.errors')();
 
 const packageJson: any = require('../package.json');
 
@@ -43,6 +46,9 @@ function jsonHandler(callback) {
     }
 
     try {
+      if (!res.body || res.body.length === 0) {
+        return callback(new Error(res.statusCode));
+      }
       return callback(new Problem(JSON.parse(res.body)));
     } catch (e) {
       return callback(new Error(`ec.sdk: unable to parse body: ${res.body}`))
@@ -185,7 +191,7 @@ export function get(environment: environment, t: any): Promise<any> {
  */
 export function getEmpty(environment: environment, t: any): Promise<void> {
   return traversonWrapper('getEmpty', environment, t)
-  .then(() => Promise.resolve());
+    .then(() => Promise.resolve());
 }
 
 /**
@@ -206,7 +212,7 @@ export function getEmpty(environment: environment, t: any): Promise<void> {
  */
 export function postEmpty(environment: environment, t: any, body: any): Promise<void> {
   return traversonWrapper('postEmpty', environment, t, body)
-  .then(() => Promise.resolve());
+    .then(() => Promise.resolve());
 }
 
 /**
@@ -224,6 +230,42 @@ export function postEmpty(environment: environment, t: any, body: any): Promise<
  */
 export function getUrl(environment: environment, t: any): Promise<string> {
   return traversonWrapper('getUrl', environment, t);
+}
+
+export function getHistory(environment: environment, t: any): Promise<EventSource> {
+  return getUrl(environment, t)
+    .then((url) => {
+      const eventSourceInitDict = {
+        headers: {},
+      };
+
+      const store = TokenStoreFactory(environment);
+      let secondStore: TokenStore;
+      if (!store.hasToken()) {
+        // when no token is present see if we have a public environment (with shortID)
+        // if so look in second store
+        const result = /^(live|stage|nightly|develop|test)[A-Fa-f0-9]{8}$/.exec(environment);
+        if (result) {
+          secondStore = TokenStoreFactory(<environment>result[1]);
+        }
+      }
+
+      if (store.hasToken()) {
+        eventSourceInitDict.headers['Authorization'] = `Bearer ${store.getToken()}`;
+      } else if (secondStore && secondStore.hasToken()) {
+        eventSourceInitDict.headers['Authorization'] = `Bearer ${secondStore.getToken()}`;
+      }
+
+      if (store.hasUserAgent()) {
+        eventSourceInitDict.headers['X-User-Agent'] = `${store.getUserAgent()} ec.sdk/${packageJson.version}`;
+      } else if (secondStore && secondStore.hasUserAgent()) {
+        eventSourceInitDict.headers['X-User-Agent'] = `${secondStore.getUserAgent()} ec.sdk/${packageJson.version}`;
+      } else {
+        eventSourceInitDict.headers['X-User-Agent'] = `ec.sdk/${packageJson.version}`;
+      }
+
+      return new EventSource(url, eventSourceInitDict);
+    });
 }
 
 /**
@@ -296,17 +338,17 @@ export function del(environment: environment, t: any): Promise<any> {
  */
 export function superagentFormPost(url: string, form: any): Promise<any> {
   return superagent['post'](url)
-  .type('form')
-  .send(form)
-  .then(res => Promise.resolve(res.body ? res.body : {}))
-  .catch((err) => {
-    let problem;
-    if (err.status && err.response && 'body' in err.response) {
-      problem = new Problem(err.response.body);
-    }
-    events.emit('error', problem || err);
-    throw problem || err;
-  });
+    .type('form')
+    .send(form)
+    .then(res => Promise.resolve(res.body ? res.body : {}))
+    .catch((err) => {
+      let problem;
+      if (err.status && err.response && 'body' in err.response) {
+        problem = new Problem(err.response.body);
+      }
+      events.emit('error', problem || err);
+      throw problem || err;
+    });
 }
 
 /**
@@ -329,15 +371,15 @@ export function superagentGet(url: string, headers?: any, environment?: environm
   addHeaderToSuperagent(request, environment);
 
   return request
-  .then(res => res.body ? res.body : {})
-  .catch((err) => {
-    let problem;
-    if (err.status && err.response && 'body' in err.response) {
-      problem = new Problem(err.response.body);
-    }
-    events.emit('error', problem || err);
-    throw problem || err;
-  });
+    .then(res => res.body ? res.body : {})
+    .catch((err) => {
+      let problem;
+      if (err.status && err.response && 'body' in err.response) {
+        problem = new Problem(err.response.body);
+      }
+      events.emit('error', problem || err);
+      throw problem || err;
+    });
 }
 
 /**
@@ -372,14 +414,14 @@ export function superagentPost(environment: environment, request: any): Promise<
 
   addHeaderToSuperagent(request, environment);
   return request.then(res => Promise.resolve(res.body ? res.body : {}))
-  .catch((err) => {
-    let problem;
-    if (err.status && err.response && 'body' in err.response) {
-      problem = new Problem(err.response.body);
-    }
-    events.emit('error', problem || err);
-    throw problem || err;
-  });
+    .catch((err) => {
+      let problem;
+      if (err.status && err.response && 'body' in err.response) {
+        problem = new Problem(err.response.body);
+      }
+      events.emit('error', problem || err);
+      throw problem || err;
+    });
 }
 
 /**
@@ -489,32 +531,32 @@ export function optionsToQuery(options: filterOptions, templateURL?: string): an
       } else if (typeof options[key] === 'object') {
         Object.keys(options[key]).forEach((searchKey) => {
           switch (searchKey) {
-          case 'exact':
-          case 'search':
-          case 'from':
-          case 'to':
-            if (Array.isArray(options[key][searchKey])) {
-              throw new Error(`${key}.${searchKey} must not be of type Array`)
-            }
-            if (options[key][searchKey] instanceof Date) {
-              out[`${key}${modifier[searchKey]}`] = options[key][searchKey].toISOString();
-            } else {
-              out[`${key}${modifier[searchKey]}`] = options[key][searchKey];
-            }
-            break;
-          case 'any':
-          case 'all':
-            if (!Array.isArray(options[key][searchKey])) {
-              throw new Error(`${key}.${searchKey} must be an Array.`);
-            }
-            const invalid = options[key][searchKey].filter((val) => !(typeof val === 'string' || typeof val === 'number'));
-            if (invalid.length > 0) {
-              throw new Error(`${key}.${searchKey} array must contain only strings or numbers`);
-            }
-            out[key] = options[key][searchKey].join(modifier[searchKey]);
-            break;
-          default:
-            throw new Error(`No handling of ${key}.${searchKey} filter supported.`);
+            case 'exact':
+            case 'search':
+            case 'from':
+            case 'to':
+              if (Array.isArray(options[key][searchKey])) {
+                throw new Error(`${key}.${searchKey} must not be of type Array`)
+              }
+              if (options[key][searchKey] instanceof Date) {
+                out[`${key}${modifier[searchKey]}`] = options[key][searchKey].toISOString();
+              } else {
+                out[`${key}${modifier[searchKey]}`] = options[key][searchKey];
+              }
+              break;
+            case 'any':
+            case 'all':
+              if (!Array.isArray(options[key][searchKey])) {
+                throw new Error(`${key}.${searchKey} must be an Array.`);
+              }
+              const invalid = options[key][searchKey].filter((val) => !(typeof val === 'string' || typeof val === 'number'));
+              if (invalid.length > 0) {
+                throw new Error(`${key}.${searchKey} array must contain only strings or numbers`);
+              }
+              out[key] = options[key][searchKey].join(modifier[searchKey]);
+              break;
+            default:
+              throw new Error(`No handling of ${key}.${searchKey} filter supported.`);
           }
         });
       } else {
@@ -525,25 +567,29 @@ export function optionsToQuery(options: filterOptions, templateURL?: string): an
 
   if (templateURL) {
     const results = templateURL.match(/{[^}]*}/g)
-    .map(result => /^{[?&]([^}]+)}$/.exec(result)[1].split(','))
-    .reduce((a, b) => a.concat(b), []);
+      .map(result => /^{[?&]([^}]+)}$/.exec(result)[1].split(','))
+      .reduce((a, b) => a.concat(b), []);
 
     const missings = Object.keys(out).filter(k => results.indexOf(k) === -1); // TODO was
-                                                                              // array.includes
+    // array.includes
 
     if (missings.length > 0) {
-      const err: any = new Error('Invalid filter options. Check error#array for details.');
-      err.array = missings.map((missing) => {
+      const err: any = new Error('Invalid filter options. Check error#subErrors for details.');
+      err.subErrors = missings.map((missing) => {
+        let error;
         if (missing.indexOf('~') !== -1) {
-          return new Error(`Cannot apply 'search' filter to '${missing.substr(0, missing.indexOf('~'))}'`);
+          error = newError(212, `Cannot apply 'search' filter to '${missing.substr(0, missing.indexOf('~'))}'`, missing.substr(0, missing.indexOf('~')));
         } else if (missing.indexOf('From') !== -1) {
-          return new Error(`Cannot apply 'from' filter to '${missing.substr(0, missing.indexOf('From'))}'`);
+          error = newError(212, `Cannot apply 'from' filter to '${missing.substr(0, missing.indexOf('From'))}'`, missing.substr(0, missing.indexOf('From')));
         } else if (missing.indexOf('To') !== -1) {
-          return new Error(`Cannot apply 'to' filter to '${missing.substr(0, missing.indexOf('To'))}'`);
+          error = newError(212, `Cannot apply 'to' filter to '${missing.substr(0, missing.indexOf('To'))}'`, missing.substr(0, missing.indexOf('To')));
         } else if (['page', 'size', 'sort'].indexOf(missing) !== -1) { // TODO was array.includes
-          return new Error(`Cannot apply ${missing} option`);
+          error = newError(212, `Cannot apply ${missing} option`, missing);
+        } else {
+          error = newError(212, `Cannot apply 'exact' filter to '${missing}'`, missing);
         }
-        return new Error(`Cannot apply 'exact' filter to '${missing}'`);
+
+        return new Problem(error);
       });
       throw err;
     }
@@ -570,7 +616,7 @@ export function fileNegotiate(asset: AssetResource | DeletedAssetResource | Publ
   if (requestedLocale) {
     const supportedLocales = new locale['Locales'](
       Array.from(new Set(f.map(e => e.locale))) // unique
-      .filter(a => !!a));// remove falsy values
+        .filter(a => !!a));// remove falsy values
     let bestLocale = (new locale['Locales'](requestedLocale)).best(supportedLocales).toString();
     bestLocale = /^([^.]+)/.exec(bestLocale)[1]; // remove charset
     const filesWithLocale = f.filter(file => file.locale === bestLocale);
@@ -612,9 +658,9 @@ export function fileNegotiate(asset: AssetResource | DeletedAssetResource | Publ
   if (size) {
     // remove all image resolutions that are too small
     imageFiles = imageFiles
-    .filter(file => file.resolution.height >= size || file.resolution.width >= size)
-    // choose smallest image of all that are greater than size parameter
-    .slice(-1);
+      .filter(file => file.resolution.height >= size || file.resolution.width >= size)
+      // choose smallest image of all that are greater than size parameter
+      .slice(-1);
   }
 
   if (imageFiles.length > 0) { // if all is good, we have an image now
@@ -633,16 +679,16 @@ export function fileNegotiate(asset: AssetResource | DeletedAssetResource | Publ
  */
 export function getSchema(link: string): any {
   return Promise.resolve()
-  .then(() => {
-    const schema = validator.getSchema(link);
-    if (schema) {
-      return schema;
-    }
+    .then(() => {
+      const schema = validator.getSchema(link);
+      if (schema) {
+        return schema;
+      }
 
-    return superagentGet(link)
-    .then((loadedSchema) => {
-      validator['preload'](link, loadedSchema);
-      return loadedSchema;
+      return superagentGet(link)
+        .then((loadedSchema) => {
+          validator['preload'](link, loadedSchema);
+          return loadedSchema;
+        });
     });
-  });
 }

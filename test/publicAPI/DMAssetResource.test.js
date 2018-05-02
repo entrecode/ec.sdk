@@ -27,9 +27,9 @@ describe('DMAsset ListResource', () => {
         return resolve(JSON.parse(res));
       });
     })
-    .then((json) => {
-      listJson = json;
-    });
+      .then((json) => {
+        listJson = json;
+      });
   });
   beforeEach(() => {
     list = new DMAssetList(listJson);
@@ -60,9 +60,9 @@ describe('DMAsset Resource', () => {
         return resolve(JSON.parse(res));
       });
     })
-    .then((json) => {
-      resourceJson = json;
-    });
+      .then((json) => {
+        resourceJson = json;
+      });
   });
   beforeEach(() => {
     resource = new DMAssetResource(resourceJson);
@@ -81,33 +81,36 @@ describe('DMAsset Resource', () => {
   });
   it('should get original file', () => {
     resource.getOriginalFile().should.deep.equal({
-      "url": "https://cdn1.entrecode.de/beefbeef/test1/7mGEhlUXvdxuoCf0vQWtLNQW.jpg",
-      "size": 3644378,
-      "resolution": {
-        "width": 2736,
-        "height": 4864
+      url: 'https://cdn1.entrecode.de/beefbeef/test1/7mGEhlUXvdxuoCf0vQWtLNQW.jpg',
+      size: 3644378,
+      resolution: {
+        width: 2736,
+        height: 4864,
       },
     });
   });
   it('should get image variant', () => {
     const stub = sinon.stub(helper, 'get');
     stub.returns(resolver('dm-asset-bestfile.json'));
-
     return resource.getImageUrl(500)
     .should.eventually.equal('https://cdn1.buffalo.entrecode.de/ab5047fc/test1/7mGEhlUXvdxuoCf0vQWtLNQW.jpg')
     .notify(() => {
       stub.restore();
     });
   });
+  it('should get image variant, local match', () => {
+    return resource.getImageUrl(700)
+      .should.eventually.equal('https://cdn1.entrecode.de/beefbeef/test1/7mGEhlUXvdxuoCf0vQWtLNQW_700.jpg');
+  });
   it('should get thumbnail', () => {
     const stub = sinon.stub(helper, 'get');
     stub.returns(resolver('dm-asset-bestfile.json'));
 
     return resource.getImageThumbUrl(50)
-    .should.eventually.equal('https://cdn1.buffalo.entrecode.de/ab5047fc/test1/7mGEhlUXvdxuoCf0vQWtLNQW.jpg')
-    .notify(() => {
-      stub.restore();
-    });
+      .should.eventually.equal('https://cdn1.buffalo.entrecode.de/ab5047fc/test1/7mGEhlUXvdxuoCf0vQWtLNQW.jpg')
+      .notify(() => {
+        stub.restore();
+      });
   });
 
   const dateGetter = ['created', 'modified'];

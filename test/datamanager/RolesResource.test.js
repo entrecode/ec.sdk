@@ -9,6 +9,7 @@ const ListResource = require('../../lib/resources/ListResource').default;
 const RoleList = require('../../lib/resources/datamanager/RoleList').default;
 const RoleResource = require('../../lib/resources/datamanager/RoleResource').default;
 const Resource = require('../../lib/resources/Resource').default;
+const LiteDMAccountResource = require('../../lib/resources/publicAPI/LiteDMAccountResource').default;
 
 chai.should();
 chai.use(sinonChai);
@@ -25,9 +26,9 @@ describe('Role ListResource', () => {
         return resolve(JSON.parse(res));
       });
     })
-    .then((json) => {
-      listJson = json;
-    });
+      .then((json) => {
+        listJson = json;
+      });
   });
   beforeEach(() => {
     list = new RoleList(listJson);
@@ -58,9 +59,9 @@ describe('Role Resource', () => {
         return resolve(JSON.parse(res));
       });
     })
-    .then((json) => {
-      resourceJson = json;
-    });
+      .then((json) => {
+        resourceJson = json;
+      });
   });
   beforeEach(() => {
     resource = new RoleResource(resourceJson);
@@ -75,7 +76,7 @@ describe('Role Resource', () => {
     resource.should.be.instanceOf(RoleResource);
   });
 
-  const getter = ['roleID', 'name', 'label', 'addUnregistered', 'addRegistered', 'accounts'];
+  const getter = ['roleID', 'name', 'label', 'addUnregistered', 'addRegistered'];
   getter.forEach((name) => {
     it(`should call resource.getProperty with ${name}`, () => {
       const spy = sinon.spy(resource, 'getProperty');
@@ -89,7 +90,7 @@ describe('Role Resource', () => {
     });
   });
 
-  const setter = ['name', 'label', 'addUnregistered', 'addRegistered', 'accounts'];
+  const setter = ['name', 'label', 'addUnregistered', 'addRegistered'];
   setter.forEach((name) => {
     it(`should call resource.setProperty with ${name}`, () => {
       const spy = sinon.spy(resource, 'setProperty');
@@ -100,5 +101,30 @@ describe('Role Resource', () => {
 
       spy.restore();
     });
+  });
+
+  it('should get accounts as Lite', () => {
+    const { accounts } = resource;
+    accounts.should.have.property('length', 2);
+    accounts.forEach((account) => {
+      account.should.be.instanceOf(LiteDMAccountResource);
+    });
+  });
+  it('should set accounts with Lite', () => {
+    const spy = sinon.spy(resource, 'setProperty');
+
+    const accounts = [
+      new LiteDMAccountResource({
+        profile: 'https://entrecode.de/schema/dm-account',
+        name: 'andre+t56@gmail.com',
+        href: 'https://datamanager.entrecode.de/account?dataManagerID=f7bfb69a-56a2-4475-b4ea-58b976eb7618&accountID=7b174a98-e062-464c-ab43-eb33b10f3271',
+      }),
+      'f3c3aaa4-dd4a-4561-9a75-ed8180444425',
+    ];
+    resource.accounts = accounts;
+    spy.should.have.been.calledOnce;
+    spy.should.have.been.calledWith('accounts', ['7b174a98-e062-464c-ab43-eb33b10f3271', 'f3c3aaa4-dd4a-4561-9a75-ed8180444425']);
+
+    spy.restore();
   });
 });

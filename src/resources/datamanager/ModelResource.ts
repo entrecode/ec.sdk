@@ -1,6 +1,9 @@
+import * as validator from 'json-schema-remote';
 import Resource from '../Resource';
 import { environment } from '../../Core';
-import { del, post } from '../../helper';
+import { get, del, post, optionsToQuery, getHistory } from '../../helper';
+import { filterOptions } from '../ListResource';
+import HistoryEvents from '../publicAPI/HistoryEvents';
 
 const environmentSymbol = Symbol.for('environment');
 
@@ -63,7 +66,7 @@ class ModelResource extends Resource {
       },
       fields: {
         enumerable: true,
-        get: () => <Array<any>> this.getProperty('fields'),
+        get: () => <Array<any>>this.getProperty('fields'),
         set: (value: Array<any>) => this.setProperty('fields', value)
       },
       hasEntries: {
@@ -118,15 +121,69 @@ class ModelResource extends Resource {
   }
 
   /**
+   * Creates a new History EventSource with the given filter options.
+   *
+   * @param {filterOptions | any} options The filter options
+   * @return {Promise<EventSource>} The created EventSource.
+   */
+  newHistory(options?: filterOptions): Promise<any> {
+    return Promise.resolve()
+      .then(() => this.newRequest().follow('ec:model/dm-entryHistory'))
+      .then(request => {
+        if (options) {
+          request.withTemplateParameters(optionsToQuery(options));
+        }
+
+        return getHistory(this[environmentSymbol], request)
+      });
+  }
+
+  /**
+   * Creates a new HistoryEventsResource with past events.
+   * 
+   * @param {filterOptions?} options The filter options.
+   * @returns {Promise<HistoryEventsResource} Event list of past events.
+   */
+  getPastEvents(options?: filterOptions): Promise<any> {
+    return Promise.resolve()
+      .then(() => this.newRequest().follow('ec:model/dm-entryHistory'))
+      .then((request) => {
+        if (options) {
+          request.withTemplateParameters(optionsToQuery(options));
+        }
+
+        return get(this[environmentSymbol], request)
+      })
+      .then(([res]) => new HistoryEvents(res, this[environmentSymbol]));
+  }
+
+  /**
+  * Saves this {@link Resource}.
+  *
+  * @param {boolean} safePut true when safe put functionality is required.
+  * @param {string?} overwriteSchemaUrl Other schema url to overwrite the one in
+  *   `_link.self.profile`. Mainly for internal use.
+  * @returns {Promise<Resource>} Promise will resolve to the saved Resource. Will
+  *   be the same object but with refreshed data.
+  */
+  save(safePut: boolean = false, overwriteSchemaUrl?: string): Promise<Resource> {
+    return Promise.resolve()
+      .then(() => {
+        validator.dropSchemas();
+        return super.save(safePut, overwriteSchemaUrl);
+      });
+  }
+
+  /**
    * Start a purge for this model.
    *
    * @returns {Promise<void>} Returns a Promise resolving on accepted purge request.
    */
   purge() {
     return Promise.resolve()
-    .then(() => this.newRequest().follow('ec:model/purge'))
-    .then(request => del(this[environmentSymbol], request))
-    .then(() => undefined);
+      .then(() => this.newRequest().follow('ec:model/purge'))
+      .then(request => del(this[environmentSymbol], request))
+      .then(() => undefined);
   }
 
   /**
@@ -136,9 +193,9 @@ class ModelResource extends Resource {
    */
   sync() {
     return Promise.resolve()
-    .then(() => this.newRequest().follow('ec:model/sync'))
-    .then(request => post(this[environmentSymbol], request))
-    .then(([res]) => res);
+      .then(() => this.newRequest().follow('ec:model/sync'))
+      .then(request => post(this[environmentSymbol], request))
+      .then(([res]) => res);
   }
 }
 

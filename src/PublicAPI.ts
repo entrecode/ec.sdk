@@ -5,6 +5,8 @@ import * as superagent from 'superagent';
 import * as validator from 'json-schema-remote';
 import * as validate from 'validator';
 
+const { convertValidationError } = require('ec.errors')();
+
 import Core, { environment, options } from './Core';
 import EntryList, { createList } from './resources/publicAPI/EntryList';
 import EntryResource, { createEntry } from './resources/publicAPI/EntryResource';
@@ -20,12 +22,15 @@ import {
   post,
   postEmpty,
   superagentFormPost,
-  superagentPost
+  superagentPost,
+  getHistory
 } from './helper';
 import DMAssetResource from './resources/publicAPI/DMAssetResource';
 import DMAssetList from './resources/publicAPI/DMAssetList';
 import DataManagerResource from './resources/datamanager/DataManagerResource';
 import DataManager from './DataManager';
+import Problem from './Problem';
+import HistoryEvents from './resources/publicAPI/HistoryEvents';
 
 const resourceSymbol = Symbol.for('resource');
 const tokenStoreSymbol = Symbol.for('tokenStore');
@@ -33,6 +38,7 @@ const traversalSymbol = Symbol.for('traversal');
 const eventsSymbol = Symbol.for('events');
 const environmentSymbol = Symbol.for('environment');
 const cookieModifierSymbol = Symbol.for('cookieModifier');
+const relationsSymbol = Symbol.for('relations');
 
 const shortIDSymbol = Symbol('_shortID');
 const modelCacheSymbol = Symbol('_modelCache');
@@ -129,19 +135,19 @@ export default class PublicAPI extends Core {
       }
 
       switch (result[1]) {
-      case 'datamanager.entrecode.de':
-        env.environment = 'live';
-        break;
-      case 'datamanager.cachena.entrecode.de':
-        env.environment = 'stage';
-        break;
-      case 'datamanager.buffalo.entrecode.de':
-        env.environment = 'nightly';
-        break;
-      case 'localhost:7471':
-      default:
-        env.environment = 'develop';
-        break;
+        case 'datamanager.entrecode.de':
+          env.environment = 'live';
+          break;
+        case 'datamanager.cachena.entrecode.de':
+          env.environment = 'stage';
+          break;
+        case 'datamanager.buffalo.entrecode.de':
+          env.environment = 'nightly';
+          break;
+        case 'localhost:7471':
+        default:
+          env.environment = 'develop';
+          break;
       }
 
       id = result[2];
@@ -213,16 +219,16 @@ export default class PublicAPI extends Core {
    */
   asset(assetID: string): Promise<PublicAssetResource> {
     return Promise.resolve()
-    .then(() => {
-      if (!assetID) {
-        throw new Error('assetID must be defined');
-      }
-      const request = this.newRequest()
-      .follow('ec:api/assets')
-      .withTemplateParameters({ assetID });
-      return get(this[environmentSymbol], request);
-    })
-    .then(([res, traversal]) => new PublicAssetResource(res, this[environmentSymbol], traversal));
+      .then(() => {
+        if (!assetID) {
+          throw new Error('assetID must be defined');
+        }
+        const request = this.newRequest()
+          .follow('ec:api/assets')
+          .withTemplateParameters({ assetID });
+        return get(this[environmentSymbol], request);
+      })
+      .then(([res, traversal]) => new PublicAssetResource(res, this[environmentSymbol], traversal));
   }
 
   /**
@@ -238,22 +244,22 @@ export default class PublicAPI extends Core {
    */
   assetList(options?: filterOptions | any): Promise<PublicAssetList> {
     return Promise.resolve()
-    .then(() => {
-      if (
-        options
-        && Object.keys(options).length === 1 && 'assetID' in options
-        && (typeof options.assetID === 'string' || (!('any' in options.assetID) && !('all' in options.assetID)))
-      ) {
-        throw new Error('Cannot filter assetList only by assetID. Use PublicAPI#asset() instead');
-      }
+      .then(() => {
+        if (
+          options
+          && Object.keys(options).length === 1 && 'assetID' in options
+          && (typeof options.assetID === 'string' || (!('any' in options.assetID) && !('all' in options.assetID)))
+        ) {
+          throw new Error('Cannot filter assetList only by assetID. Use PublicAPI#asset() instead');
+        }
 
-      return this.follow('ec:api/assets');
-    })
-    .then((request) => {
-      request.withTemplateParameters(optionsToQuery(options, this.getLink('ec:api/assets').href));
-      return get(this[environmentSymbol], request);
-    })
-    .then(([res, traversal]) => new PublicAssetList(res, this[environmentSymbol], traversal));
+        return this.follow('ec:api/assets');
+      })
+      .then((request) => {
+        request.withTemplateParameters(optionsToQuery(options, this.getLink('ec:api/assets').href));
+        return get(this[environmentSymbol], request);
+      })
+      .then(([res, traversal]) => new PublicAssetList(res, this[environmentSymbol], traversal));
   }
 
   /**
@@ -268,15 +274,15 @@ export default class PublicAPI extends Core {
    */
   changeEmail(email: string): Promise<void> {
     return Promise.resolve()
-    .then(() => {
-      if (!email) {
-        throw  new Error('email must be defined');
-      }
-      return this.follow(`${this[shortIDSymbol]}:_auth/change-email`)
-      .then((request) => {
-        return postEmpty(this[environmentSymbol], request, { email });
+      .then(() => {
+        if (!email) {
+          throw new Error('email must be defined');
+        }
+        return this.follow(`${this[shortIDSymbol]}:_auth/change-email`)
+          .then((request) => {
+            return postEmpty(this[environmentSymbol], request, { email });
+          });
       });
-    });
   }
 
   /**
@@ -289,30 +295,30 @@ export default class PublicAPI extends Core {
    */
   checkPermission(permission: string, refresh: boolean = false): Promise<boolean> {
     return Promise.resolve()
-    .then(() => {
-      if (!permission) {
-        throw new Error('permission must be defined');
-      }
+      .then(() => {
+        if (!permission) {
+          throw new Error('permission must be defined');
+        }
 
-      if (!refresh && this[permissionsSymbol] && new Date().getTime() - this[permissionsLoadedTimeSymbol] <= 300000) { // 5 Minutes
-        return undefined;
-      }
-
-      if (!this[requestCacheSymbol]) {
-        this[requestCacheSymbol] = this.follow('_permissions')
-        .then(request => get(this[environmentSymbol], request))
-        .then(([response]) => {
-          this[requestCacheSymbol] = undefined;
-          this[permissionsSymbol] = ShiroTrie.newTrie();
-          this[permissionsSymbol].add(response.permissions);
-          this[permissionsLoadedTimeSymbol] = new Date();
+        if (!refresh && this[permissionsSymbol] && new Date().getTime() - this[permissionsLoadedTimeSymbol] <= 300000) { // 5 Minutes
           return undefined;
-        });
-      }
+        }
 
-      return this[requestCacheSymbol];
-    })
-    .then(() => this[permissionsSymbol].check(permission));
+        if (!this[requestCacheSymbol]) {
+          this[requestCacheSymbol] = this.follow('_permissions')
+            .then(request => get(this[environmentSymbol], request))
+            .then(([response]) => {
+              this[requestCacheSymbol] = undefined;
+              this[permissionsSymbol] = ShiroTrie.newTrie();
+              this[permissionsSymbol].add(response.permissions);
+              this[permissionsLoadedTimeSymbol] = new Date();
+              return undefined;
+            });
+        }
+
+        return this[requestCacheSymbol];
+      })
+      .then(() => <boolean>this[permissionsSymbol].check(permission));
   }
 
   /**
@@ -322,19 +328,19 @@ export default class PublicAPI extends Core {
    * return api.createAnonymous()
    * .then(token => save(token));
    *
-   * @param {Date} validUntil valid until date
+   * @param {Date}? validUntil valid until date
    * @returns {Promise<{jwt: string, accountID: string, iat: number, exp: number}>} the created api
    *   token
    */
-  createAnonymous(validUntil: Date): Promise<jwtResponse> {
+  createAnonymous(validUntil?: Date): Promise<jwtResponse> {
     return this.follow(`${this[shortIDSymbol]}:_auth/anonymous`)
-    .then((request) => {
-      if (validUntil) {
-        request.withTemplateParameters({ validUntil: validUntil.toISOString() });
-      }
-      return post(this[environmentSymbol], request, {});
-    })
-    .then(([tokenResponse]) => tokenResponse);
+      .then((request) => {
+        if (validUntil) {
+          request.withTemplateParameters({ validUntil: validUntil.toISOString() });
+        }
+        return post(this[environmentSymbol], request, {});
+      })
+      .then(([tokenResponse]) => tokenResponse);
   }
 
   /**
@@ -360,50 +366,50 @@ export default class PublicAPI extends Core {
     }
 
     return this.follow('ec:api/assets')
-    .then((request) => getUrl(this[environmentSymbol], request))
-    .then((url) => {
-      const superagentRequest = superagent.post(url);
+      .then((request) => getUrl(this[environmentSymbol], request))
+      .then((url) => {
+        const superagentRequest = superagent.post(url);
 
-      const isFormData = typeof FormData === 'function' && input instanceof FormData; // eslint-disable-line
-                                                                                      // no-undef
-      if (isFormData) {
-        superagentRequest.send(input);
-      } else if (typeof input === 'string') {
-        superagentRequest.attach('file', input);
-      } else if (Buffer.isBuffer(input)) {
-        if (!('fileName' in options)) {
-          throw new Error('When using buffer file input you must provide options.fileName.');
-        }
-        superagentRequest.attach('file', input, <string>options.fileName);
-      } else {
-        throw new Error('Cannot handle input.');
-      }
-
-      if (options.title) {
+        const isFormData = typeof FormData === 'function' && input instanceof FormData; // eslint-disable-line
+        // no-undef
         if (isFormData) {
-          input.set('title', options.title);
+          superagentRequest.send(input);
+        } else if (typeof input === 'string') {
+          superagentRequest.attach('file', input);
+        } else if (Buffer.isBuffer(input)) {
+          if (!('fileName' in options)) {
+            throw new Error('When using buffer file input you must provide options.fileName.');
+          }
+          superagentRequest.attach('file', input, <string>options.fileName);
         } else {
-          superagentRequest.field('title', options.title);
+          throw new Error('Cannot handle input.');
         }
-      }
 
-      if (options.tags) {
-        if (isFormData) {
-          input.set('tags', options.tags);
-        } else {
-          options.tags.forEach((tag) => {
-            superagentRequest.field('tags', tag);
-          });
+        if (options.title) {
+          if (isFormData) {
+            input.set('title', options.title);
+          } else {
+            superagentRequest.field('title', options.title);
+          }
         }
-      }
 
-      return superagentPost(this[environmentSymbol], superagentRequest);
-    })
-    .then((response) => {
-      const url = response._links['ec:asset'].href;
-      const queryStrings = qs.parse(url.substr(url.indexOf('?') + 1));
-      return () => this.asset(<string>queryStrings.assetID);
-    });
+        if (options.tags) {
+          if (isFormData) {
+            input.set('tags', options.tags);
+          } else {
+            options.tags.forEach((tag) => {
+              superagentRequest.field('tags', tag);
+            });
+          }
+        }
+
+        return superagentPost(this[environmentSymbol], superagentRequest);
+      })
+      .then((response) => {
+        const url = response._links['ec:asset'].href;
+        const queryStrings = qs.parse(url.substr(url.indexOf('?') + 1));
+        return () => this.asset(<string>queryStrings.assetID);
+      });
   }
 
   /**
@@ -429,58 +435,58 @@ export default class PublicAPI extends Core {
     }
 
     return this.follow('ec:api/assets')
-    .then((request) => getUrl(this[environmentSymbol], request))
-    .then((url) => {
-      const superagentRequest = superagent.post(url);
+      .then((request) => getUrl(this[environmentSymbol], request))
+      .then((url) => {
+        const superagentRequest = superagent.post(url);
 
-      const isFormData = typeof FormData === 'function' && input instanceof FormData; // eslint-disable-line
-                                                                                      // no-undef
-      if (isFormData) {
-        superagentRequest.send(input);
-      } else {
-        input.forEach((file, index) => {
-          if (typeof file === 'string') {
-            superagentRequest.attach('file', file);
-          } else if (Buffer.isBuffer(file)) {
-            if (!('fileName' in options)
-              || !Array.isArray(options.fileName)
-              || !options.fileName[index]) {
-              throw new Error('When using buffer file input you must provide options.fileName.');
+        const isFormData = typeof FormData === 'function' && input instanceof FormData; // eslint-disable-line
+        // no-undef
+        if (isFormData) {
+          superagentRequest.send(input);
+        } else {
+          input.forEach((file, index) => {
+            if (typeof file === 'string') {
+              superagentRequest.attach('file', file);
+            } else if (Buffer.isBuffer(file)) {
+              if (!('fileName' in options)
+                || !Array.isArray(options.fileName)
+                || !options.fileName[index]) {
+                throw new Error('When using buffer file input you must provide options.fileName.');
+              }
+              superagentRequest.attach('file', file, options.fileName[index]);
+            } else {
+              throw new Error('Cannot handle input.');
             }
-            superagentRequest.attach('file', file, options.fileName[index]);
-          } else {
-            throw new Error('Cannot handle input.');
-          }
-        });
-      }
-      if (options.title) {
-        if (isFormData) {
-          input.set('title', options.title);
-        } else {
-          superagentRequest.field('title', options.title);
-        }
-      }
-
-      if (options.tags) {
-        if (isFormData) {
-          input.set('tags', options.tags);
-        } else {
-          options.tags.forEach((tag) => {
-            superagentRequest.field('tags', tag);
           });
         }
-      }
+        if (options.title) {
+          if (isFormData) {
+            input.set('title', options.title);
+          } else {
+            superagentRequest.field('title', options.title);
+          }
+        }
 
-      return superagentPost(this[environmentSymbol], superagentRequest);
-    })
-    .then((response) => {
-      const urls = response._links['ec:asset'].map((link) => {
-        const queryStrings = qs.parse(link.href.substr(link.href.indexOf('?') + 1));
-        return queryStrings.assetID;
+        if (options.tags) {
+          if (isFormData) {
+            input.set('tags', options.tags);
+          } else {
+            options.tags.forEach((tag) => {
+              superagentRequest.field('tags', tag);
+            });
+          }
+        }
+
+        return superagentPost(this[environmentSymbol], superagentRequest);
+      })
+      .then((response) => {
+        const urls = response._links['ec:asset'].map((link) => {
+          const queryStrings = qs.parse(link.href.substr(link.href.indexOf('?') + 1));
+          return queryStrings.assetID;
+        });
+
+        return () => this.assetList({ assetID: { any: urls } });
       });
-
-      return () => this.assetList({ assetID: { any: urls } });
-    });
   }
 
   /**
@@ -503,66 +509,76 @@ export default class PublicAPI extends Core {
    */
   createDMAssets(assetGroupID: string, input: any, options: any = {}): Promise<DMAssetList | void> {
     return Promise.resolve()
-    .then(() => {
-      if (!assetGroupID) {
-        throw new Error('assetGroupID must be defined');
-      }
-
-      if (!input) {
-        throw new Error('Cannot create resource with undefined object.');
-      }
-
-      return this.follow(`ec:dm-assets/${assetGroupID}`);
-    })
-    .catch((error) => {
-      if (error.message.indexOf('Link not present in root response.') !== -1) {
-        throw new Error('assetGroup not found')
-      }
-      throw error;
-    })
-    .then((request) => getUrl(this[environmentSymbol], request))
-    .then((url) => {
-      const request = superagent.post(url);
-      const isFormData = typeof FormData === 'function' && input instanceof FormData; // eslint-disable-line
-                                                                                      // no-undef
-      if (isFormData) {
-        request.send(input);
-      } else {
-        let assets;
-        if (!Array.isArray(input)) {
-          assets = [input];
-          if ('fileName' in options && !Array.isArray(options.fileName)) {
-            options.fileName = [options.fileName];
-          }
-        } else {
-          assets = input;
+      .then(() => {
+        if (!assetGroupID) {
+          throw new Error('assetGroupID must be defined');
         }
-        assets.forEach((file, index) => {
-          if (typeof file === 'string') {
-            request.attach('file', file);
-          } else if (Buffer.isBuffer(file)) {
-            if (!('fileName' in options)
-              || !Array.isArray(options.fileName)
-              || !options.fileName[index]) {
-              throw new Error('When using buffer file input you must provide options.fileName.');
+
+        if (!input) {
+          throw new Error('Cannot create resource with undefined object.');
+        }
+
+        return this.follow(`ec:dm-assets/${assetGroupID}`);
+      })
+      .catch((error) => {
+        if (error.message.indexOf('Link not present in root response.') !== -1) {
+          throw new Error('assetGroup not found')
+        }
+        throw error;
+      })
+      .then((request) => getUrl(this[environmentSymbol], request))
+      .then((url) => {
+        const request = superagent.post(url);
+        const isFormData = typeof FormData === 'function' && input instanceof FormData; // eslint-disable-line
+        // no-undef
+        if (isFormData) {
+          request.send(input);
+        } else {
+          let assets;
+          if (!Array.isArray(input)) {
+            assets = [input];
+            if ('fileName' in options && !Array.isArray(options.fileName)) {
+              options.fileName = [options.fileName];
             }
-            request.attach('file', file, options.fileName[index]);
           } else {
-            throw new Error('Cannot handle input.')
+            assets = input;
           }
-        });
-      }
+          assets.forEach((file, index) => {
+            if (typeof file === 'string') {
+              request.attach('file', file);
+            } else if (Buffer.isBuffer(file)) {
+              if (!('fileName' in options)
+                || !Array.isArray(options.fileName)
+                || !options.fileName[index]) {
+                throw new Error('When using buffer file input you must provide options.fileName.');
+              }
+              request.attach('file', file, options.fileName[index]);
+            } else {
+              throw new Error('Cannot handle input.')
+            }
+          });
 
-      // TODO options and tags?
+          if ('preserveFilenames' in options) {
+            request.field('preserveFilenames', `${options.preserveFilenames}`);
+          }
 
-      return superagentPost(this[environmentSymbol], request);
-    })
-    .then((response) => {
-      if (!response || Object.keys(response).length === 0) {
-        return undefined;
-      }
-      return new DMAssetList(response, this[environmentSymbol]);
-    });
+          if ('ignoreDuplicates' in options) {
+            request.field('ignoreDuplicates', `${options.ignoreDuplicates}`);
+          }
+
+          if ('includeAssetIDInPath' in options) {
+            request.field('includeAssetIDInPath', `${options.includeAssetIDInPath}`);
+          }
+        }
+
+        return superagentPost(this[environmentSymbol], request);
+      })
+      .then((response) => {
+        if (!response || Object.keys(response).length === 0) {
+          return undefined;
+        }
+        return new DMAssetList(response, this[environmentSymbol]);
+      });
   }
 
   /**
@@ -576,41 +592,45 @@ export default class PublicAPI extends Core {
   createEntry(model: string, entry: any, levels?: number): Promise<EntryResource | void> {
     let e;
     return Promise.resolve()
-    .then(() => {
-      if (!model) {
-        throw new Error('model must be defined');
-      }
+      .then(() => {
+        if (!model) {
+          throw new Error('model must be defined');
+        }
 
-      if (!entry) {
-        throw new Error('Cannot create resource with undefined object.');
-      }
+        if (!entry) {
+          throw new Error('Cannot create resource with undefined object.');
+        }
 
-      if (entry instanceof EntryResource) {
-        e = entry.toOriginal();
-      } else {
-        e = entry;
-      }
+        if (entry instanceof EntryResource) {
+          e = entry.toOriginal();
+        } else {
+          e = entry;
+        }
 
-      if (levels < 1 || levels >= 5) {
-        throw new Error('levels must be between 1 and 5');
-      }
+        if (levels < 1 || levels >= 5) {
+          throw new Error('levels must be between 1 and 5');
+        }
 
-      return this.link(`${this[shortIDSymbol]}:${model}`);
-    })
-    .then(link => validator.validate(e, `${link.profile}?template=post`))
-    .then(() => this.follow(`${this[shortIDSymbol]}:${model}`))
-    .then(request => {
-      if (levels) {
-        request.withTemplateParameters({ _levels: levels });
-      }
-      return post(this[environmentSymbol], request, e)
-    })
-    .then(([res, traversal]) => {
-      if (!res || Object.keys(res).length === 0) {
-        return undefined;
-      }
-      return createEntry(res, this[environmentSymbol], traversal)
-    });
+        return this.link(`${this[shortIDSymbol]}:${model}`);
+      })
+      .then(link =>
+        validator.validate(e, `${link.profile}?template=post`)
+          .catch((e) => {
+            throw new Problem(convertValidationError(e));
+          }))
+      .then(() => this.follow(`${this[shortIDSymbol]}:${model}`))
+      .then(request => {
+        if (levels) {
+          request.withTemplateParameters({ _levels: levels });
+        }
+        return post(this[environmentSymbol], request, e)
+      })
+      .then(([res, traversal]) => {
+        if (!res || Object.keys(res).length === 0) {
+          return undefined;
+        }
+        return createEntry(res, this[environmentSymbol], traversal)
+      });
   }
 
   /**
@@ -626,22 +646,22 @@ export default class PublicAPI extends Core {
    */
   dmAsset(assetGroupID: string, assetID: string): Promise<DMAssetResource> {
     return Promise.resolve()
-    .then(() => {
-      if (!assetGroupID) {
-        throw new Error('assetGroupID must be defined');
-      }
+      .then(() => {
+        if (!assetGroupID) {
+          throw new Error('assetGroupID must be defined');
+        }
 
-      if (!assetID) {
-        throw new Error('assetID must be defined');
-      }
+        if (!assetID) {
+          throw new Error('assetID must be defined');
+        }
 
-      return this.follow('ec:dm-asset/by-id');
-    })
-    .then((request) => {
-      request.withTemplateParameters({ assetID, assetGroupID });
-      return get(this[environmentSymbol], request);
-    })
-    .then(([res, traversal]) => new DMAssetResource(res, this[environmentSymbol], traversal));
+        return this.follow('ec:dm-asset/by-id');
+      })
+      .then((request) => {
+        request.withTemplateParameters({ assetID, assetGroupID });
+        return get(this[environmentSymbol], request);
+      })
+      .then(([res, traversal]) => new DMAssetResource(res, this[environmentSymbol], traversal));
   }
 
   /**
@@ -657,33 +677,33 @@ export default class PublicAPI extends Core {
    */
   dmAssetList(assetGroupID: string, options?: filterOptions | any): Promise<DMAssetList> {
     return Promise.resolve()
-    .then(() => {
-      if (!assetGroupID) {
-        throw new Error('assetGroupID must be defined');
-      }
+      .then(() => {
+        if (!assetGroupID) {
+          throw new Error('assetGroupID must be defined');
+        }
 
-      if (
-        options
-        && Object.keys(options).length === 1 && 'assetID' in options
-        && (typeof options.assetID === 'string' || (!('any' in options.assetID) && !('all' in options.assetID)))
-      ) {
-        throw new Error('Cannot filter assetList only by assetID. Use PublicAPI#dmAsset() instead');
-      }
+        if (
+          options
+          && Object.keys(options).length === 1 && 'assetID' in options
+          && (typeof options.assetID === 'string' || (!('any' in options.assetID) && !('all' in options.assetID)))
+        ) {
+          throw new Error('Cannot filter assetList only by assetID. Use PublicAPI#dmAsset() instead');
+        }
 
-      return this.follow(`ec:dm-assets/${assetGroupID}`);
-    })
-    .catch((error) => {
-      if (error.message.indexOf('Link not present in root response.') !== -1) {
-        throw new Error('assetGroup not found')
-      }
+        return this.follow(`ec:dm-assets/${assetGroupID}`);
+      })
+      .catch((error) => {
+        if (error.message.indexOf('Link not present in root response.') !== -1) {
+          throw new Error('assetGroup not found')
+        }
 
-      throw error;
-    })
-    .then((request) => {
-      request.withTemplateParameters(optionsToQuery(options, this.getLink(`ec:dm-assets/${assetGroupID}`).href));
-      return get(this[environmentSymbol], request);
-    })
-    .then(([res, traversal]) => new DMAssetList(res, this[environmentSymbol], traversal));
+        throw error;
+      })
+      .then((request) => {
+        request.withTemplateParameters(optionsToQuery(options, this.getLink(`ec:dm-assets/${assetGroupID}`).href));
+        return get(this[environmentSymbol], request);
+      })
+      .then(([res, traversal]) => new DMAssetList(res, this[environmentSymbol], traversal));
   }
 
   /**
@@ -704,18 +724,18 @@ export default class PublicAPI extends Core {
    */
   emailAvailable(email: string): Promise<boolean> {
     return Promise.resolve()
-    .then(() => {
-      if (!email) {
-        throw new Error('email must be defined');
-      }
+      .then(() => {
+        if (!email) {
+          throw new Error('email must be defined');
+        }
 
-      return this.follow(`${this[shortIDSymbol]}:_auth/email-available`);
-    })
-    .then((request) => {
-      request.withTemplateParameters({ email });
-      return get(this[environmentSymbol], request);
-    })
-    .then(([a]) => a.available);
+        return this.follow(`${this[shortIDSymbol]}:_auth/email-available`);
+      })
+      .then((request) => {
+        request.withTemplateParameters({ email });
+        return get(this[environmentSymbol], request);
+      })
+      .then(([a]) => <boolean>a.available);
   }
 
   /**
@@ -735,39 +755,39 @@ export default class PublicAPI extends Core {
    */
   entry(model: string, id: string, options: number | any = {}): Promise<EntryResource> {
     return Promise.resolve()
-    .then(() => {
-      if (!model) {
-        throw new Error('model must be defined');
-      }
+      .then(() => {
+        if (!model) {
+          throw new Error('model must be defined');
+        }
 
-      if (!id) {
-        throw new Error('id must be defined');
-      }
+        if (!id) {
+          throw new Error('id must be defined');
+        }
 
-      if (Number.isInteger(options)) {
-        options = { _levels: options };
-      }
+        if (Number.isInteger(options)) {
+          options = { _levels: options };
+        }
 
-      if ('_levels' in options && !Number.isInteger(options._levels)) {
-        throw new Error('_levels must be integer');
-      }
+        if ('_levels' in options && !Number.isInteger(options._levels)) {
+          throw new Error('_levels must be integer');
+        }
 
-      if ('_fields' in options && !Array.isArray(options._fields)) {
-        throw new Error('_fields must be Array<string>');
-      }
+        if ('_fields' in options && !Array.isArray(options._fields)) {
+          throw new Error('_fields must be Array<string>');
+        }
 
-      if ('_fields' in options) {
-        options._fields = options._fields.join(',');
-      }
+        if ('_fields' in options) {
+          options._fields = options._fields.join(',');
+        }
 
-      return this.follow(`${this[shortIDSymbol]}:${model}`);
-    })
-    .then((request) => {
-      options._id = id;
-      request.withTemplateParameters(options);
-      return get(this[environmentSymbol], request);
-    })
-    .then(([res, traversal]) => createEntry(res, this[environmentSymbol], traversal));
+        return this.follow(`${this[shortIDSymbol]}:${model}`);
+      })
+      .then((request) => {
+        options._id = id;
+        request.withTemplateParameters(options);
+        return get(this[environmentSymbol], request);
+      })
+      .then(([res, traversal]) => createEntry(res, this[environmentSymbol], traversal));
   }
 
   /**
@@ -788,27 +808,27 @@ export default class PublicAPI extends Core {
    */
   entryList(model: string, options?: filterOptions | any): Promise<EntryList> { // remove any
     return Promise.resolve()
-    .then(() => {
-      if (!model) {
-        throw new Error('model must be defined');
-      }
+      .then(() => {
+        if (!model) {
+          throw new Error('model must be defined');
+        }
 
-      if (
-        options && Object.keys(options).length === 1
-        && ((options.id && (typeof options.id === 'string' || (!('any' in options.id) && !('all' in options.id))))
-          ||
-          (options._id && (typeof options._id === 'string' || (!('any' in options._id) && !('all' in options._id)))))
-      ) {
-        throw new Error('Providing only an id/_id in entryList filter will result in single resource response. Please use PublicAPI#entry');
-      }
+        if (
+          options && Object.keys(options).length === 1
+          && ((options.id && (typeof options.id === 'string' || (!('any' in options.id) && !('all' in options.id))))
+            ||
+            (options._id && (typeof options._id === 'string' || (!('any' in options._id) && !('all' in options._id)))))
+        ) {
+          throw new Error('Providing only an id/_id in entryList filter will result in single resource response. Please use PublicAPI#entry');
+        }
 
-      return this.follow(`${this[shortIDSymbol]}:${model}`);
-    })
-    .then((request) => {
-      request.withTemplateParameters(optionsToQuery(options, this.getLink(`${this[shortIDSymbol]}:${model}`).href));
-      return get(this[environmentSymbol], request);
-    })
-    .then(([res, traversal]) => createList(res, this[environmentSymbol], traversal, `${this[shortIDSymbol]}:${model}`));
+        return this.follow(`${this[shortIDSymbol]}:${model}`);
+      })
+      .then((request) => {
+        request.withTemplateParameters(optionsToQuery(options, this.getLink(`${this[shortIDSymbol]}:${model}`).href));
+        return get(this[environmentSymbol], request);
+      })
+      .then(([res, traversal]) => createList(res, this[environmentSymbol], traversal, `${this[shortIDSymbol]}:${model}`));
   }
 
   /**
@@ -821,10 +841,10 @@ export default class PublicAPI extends Core {
    */
   getAuthLink(name: string, templateParameter: any = {}): Promise<string> { // todo clientID?
     return this.follow(`${this.shortID}:_auth/${name}`)
-    .then(request => {
-      request.withTemplateParameters(templateParameter);
-      return getUrl(this[environmentSymbol], request);
-    });
+      .then(request => {
+        request.withTemplateParameters(templateParameter);
+        return getUrl(this[environmentSymbol], request);
+      });
   }
 
   /**
@@ -834,7 +854,7 @@ export default class PublicAPI extends Core {
    * @returns {Promise<string>} URL to the file
    */
   getFileUrl(assetID: string): Promise<string> {
-    return this.getFileVariant(assetID);
+    return <Promise<string>>this.getFileVariant(assetID);
   }
 
   /**
@@ -848,35 +868,35 @@ export default class PublicAPI extends Core {
    */
   getFileVariant(assetID: string, thumb: boolean = false, size?: number) {
     return Promise.resolve()
-    .then(() => {
-      if (!assetID) {
-        throw new Error('assetID must be defined');
-      }
+      .then(() => {
+        if (!assetID) {
+          throw new Error('assetID must be defined');
+        }
 
-      let relation;
-      const params: any = {};
+        let relation;
+        const params: any = {};
 
-      params.assetID = assetID;
-      if (size) {
-        params.size = size;
-      }
+        params.assetID = assetID;
+        if (size) {
+          params.size = size;
+        }
 
-      if (validate.isUUID(assetID, 4)) {
-        relation = 'ec:api/assets/bestFile';
-        params.thumb = thumb;
-      } else if (thumb) {
-        relation = 'ec:dm-asset/thumbnail';
-      } else {
-        relation = 'ec:dm-asset/file';
-      }
+        if (validate.isUUID(assetID, 4)) {
+          relation = 'ec:api/assets/bestFile';
+          params.thumb = thumb;
+        } else if (thumb) {
+          relation = 'ec:dm-asset/thumbnail';
+        } else {
+          relation = 'ec:dm-asset/file';
+        }
 
-      return this.follow(relation)
-      .then((request) => {
-        request.withTemplateParameters(params);
-        return get(this[environmentSymbol], request);
-      });
-    })
-    .then(([res]) => res.url);
+        return this.follow(relation)
+          .then((request) => {
+            request.withTemplateParameters(params);
+            return get(this[environmentSymbol], request);
+          });
+      })
+      .then(([res]) => res.url);
   }
 
   /**
@@ -887,7 +907,7 @@ export default class PublicAPI extends Core {
    * @returns {Promise<string>} URL to the file
    */
   getImageThumbUrl(assetID: string, size: number): Promise<string> {
-    return this.getFileVariant(assetID, true, size);
+    return <Promise<string>>this.getFileVariant(assetID, true, size);
   }
 
   /**
@@ -898,7 +918,7 @@ export default class PublicAPI extends Core {
    * @returns {Promise<string>} URL to the file
    */
   getImageUrl(assetID: string, size: number): Promise<string> {
-    return this.getFileVariant(assetID, false, size);
+    return <Promise<string>>this.getFileVariant(assetID, false, size);
   }
 
   /**
@@ -911,41 +931,56 @@ export default class PublicAPI extends Core {
    */
   getSchema(model: string, method: string = 'get') {
     return Promise.resolve()
-    .then(() => {
-      if (!model) {
-        throw new Error('model must be defined');
-      }
-
-      if (['get', 'put', 'post'].indexOf(method) == -1) {
-        throw new Error('invalid method, only: get, post, and put');
-      }
-
-      if (!this[resourceSymbol]) {
-        return this.resolve();
-      }
-      return undefined;
-    })
-    .then(() => {
-      let link = this.getLink(`${this[shortIDSymbol]}:${model}`);
-
-      if(!link){
-        throw new Error(`Model ${model} not found.`);
-      }
-
-      link = link.profile;
-      if (method !== 'get') {
-        link = link.split('?');
-        if (link.length === 1) {
-          link.push('');
+      .then(() => {
+        if (!model) {
+          throw new Error('model must be defined');
         }
-        link[1] = qs.parse(link[1]);
-        link[1].template = method;
-        link[1] = qs.stringify(link[1]);
-        link = link.join('?');
-      }
 
-      return getSchema(link);
-    });
+        if (['get', 'put', 'post'].indexOf(method) == -1) {
+          throw new Error('invalid method, only: get, post, and put');
+        }
+
+        if (!this[resourceSymbol]) {
+          return this.resolve();
+        }
+        return undefined;
+      })
+      .then(() => {
+        const link = this.getLink(`${this[shortIDSymbol]}:${model}`);
+
+        if (link) {
+          return link;
+        }
+
+        return get(this[environmentSymbol], this.newRequest().follow('self'))
+          .then(([res, traversal]) => {
+            this[resourceSymbol] = halfred.parse(res);
+            this[traversalSymbol] = traversal;
+
+            const link = this.getLink(`${this[shortIDSymbol]}:${model}`);
+
+            if (!link) {
+              throw new Error(`Model ${model} not found.`);
+            }
+
+            return link;
+          });
+      })
+      .then((link) => {
+        link = link.profile;
+        if (method !== 'get') {
+          link = link.split('?');
+          if (link.length === 1) {
+            link.push('');
+          }
+          link[1] = qs.parse(link[1]);
+          link[1].template = method;
+          link[1] = qs.stringify(link[1]);
+          link = link.join('?');
+        }
+
+        return getSchema(<string>link);
+      });
   }
 
   /**
@@ -958,33 +993,33 @@ export default class PublicAPI extends Core {
    */
   login(email: string, password: string): Promise<string> {
     return Promise.resolve()
-    .then(() => {
-      if (this[tokenStoreSymbol].hasToken()) {
-        throw new Error('already logged in or old token present. logout first');
-      }
+      .then(() => {
+        if (this[tokenStoreSymbol].hasToken()) {
+          throw new Error('already logged in or old token present. logout first');
+        }
 
-      if (!this[tokenStoreSymbol].hasClientID()) {
-        throw new Error('clientID must be set with PublicAPI#setClientID(clientID: string)');
-      }
-      if (!email) {
-        throw new Error('email must be defined');
-      }
-      if (!password) {
-        throw new Error('password must be defined');
-      }
+        if (!this[tokenStoreSymbol].hasClientID()) {
+          throw new Error('clientID must be set with PublicAPI#setClientID(clientID: string)');
+        }
+        if (!email) {
+          throw new Error('email must be defined');
+        }
+        if (!password) {
+          throw new Error('password must be defined');
+        }
 
-      return this.follow(`${this[shortIDSymbol]}:_auth/login`);
-    })
-    .then((request) => {
-      request.withTemplateParameters({ clientID: this[tokenStoreSymbol].getClientID() });
-      return post(this[environmentSymbol], request, { email, password });
-    })
-    .then(([token]) => {
-      this[tokenStoreSymbol].setToken(token.token);
-      this[eventsSymbol].emit('login', token.token);
+        return this.follow(`${this[shortIDSymbol]}:_auth/login`);
+      })
+      .then((request) => {
+        request.withTemplateParameters({ clientID: this[tokenStoreSymbol].getClientID() });
+        return post(this[environmentSymbol], request, { email, password });
+      })
+      .then(([token]) => {
+        this[tokenStoreSymbol].setToken(token.token);
+        this[eventsSymbol].emit('login', token.token);
 
-      return token.token;
-    });
+        return <string>token.token;
+      });
   }
 
   /**
@@ -995,29 +1030,29 @@ export default class PublicAPI extends Core {
    */
   logout(): Promise<void> {
     return Promise.resolve()
-    .then(() => {
-      if (!this[tokenStoreSymbol].hasToken()) {
+      .then(() => {
+        if (!this[tokenStoreSymbol].hasToken()) {
+          return Promise.resolve();
+        }
+
+        if (!this[tokenStoreSymbol].hasClientID()) {
+          throw new Error('clientID must be set with PublicAPI#setClientID(clientID: string)');
+        }
+
+        return this.follow(`${this[shortIDSymbol]}:_auth/logout`)
+          .then((request) => {
+            request.withTemplateParameters({
+              clientID: this[tokenStoreSymbol].getClientID(),
+              token: this[tokenStoreSymbol].getToken(),
+            });
+            return post(this[environmentSymbol], request);
+          });
+      })
+      .then(() => {
+        this[eventsSymbol].emit('logout');
+        this[tokenStoreSymbol].deleteToken();
         return Promise.resolve();
-      }
-
-      if (!this[tokenStoreSymbol].hasClientID()) {
-        throw new Error('clientID must be set with PublicAPI#setClientID(clientID: string)');
-      }
-
-      return this.follow(`${this[shortIDSymbol]}:_auth/logout`)
-      .then((request) => {
-        request.withTemplateParameters({
-          clientID: this[tokenStoreSymbol].getClientID(),
-          token: this[tokenStoreSymbol].getToken(),
-        });
-        return post(this[environmentSymbol], request);
       });
-    })
-    .then(() => {
-      this[eventsSymbol].emit('logout');
-      this[tokenStoreSymbol].deleteToken();
-      return Promise.resolve();
-    });
   }
 
   /**
@@ -1028,9 +1063,9 @@ export default class PublicAPI extends Core {
    */
   me(reload: boolean = false): Promise<any> { //TODO advanced type
     return this.resolve(reload)
-    .then(() => {
-      return this[resourceSymbol].account;
-    });
+      .then(() => {
+        return this[resourceSymbol].account;
+      });
   }
 
   /**
@@ -1042,14 +1077,51 @@ export default class PublicAPI extends Core {
    */
   modelList(reload: boolean = false): Promise<any> {
     return this.resolve(reload)
-    .then(() => {
-      const out = {};
-      this.models.forEach((model) => {
-        out[model.title] = model;
+      .then(() => {
+        const out = {};
+        this.models.forEach((model) => {
+          out[model.title] = model;
+        });
+        this[modelCacheSymbol] = out; // TODO is this needed?
+        return out;
       });
-      this[modelCacheSymbol] = out; // TODO is this needed?
-      return out;
-    });
+  }
+
+  /**
+   * Creates a new History EventSource with the given filter options.
+   *
+   * @param {filterOptions | any} options The filter options
+   * @return {Promise<EventSource>} The created EventSource.
+   */
+  newHistory(options?: filterOptions): Promise<any> {
+    return Promise.resolve()
+      .then(() => this.follow('ec:api/dm-entryHistory'))
+      .then((request) => {
+        if (options) {
+          request.withTemplateParameters(optionsToQuery(options));
+        }
+
+        return getHistory(this[environmentSymbol], request)
+      });
+  }
+
+  /**
+   * Creates a new HistoryEventsResource with past events.
+   * 
+   * @param {filterOptions?} options The filter options.
+   * @returns {Promise<HistoryEventsResource} Event list of past events.
+   */
+  getPastEvents(options?: filterOptions): Promise<any> {
+    return Promise.resolve()
+      .then(() => this.follow('ec:api/dm-entryHistory'))
+      .then((request) => {
+        if (options) {
+          request.withTemplateParameters(optionsToQuery(options));
+        }
+
+        return get(this[environmentSymbol], request)
+      })
+      .then(([res]) => new HistoryEvents(res, this[environmentSymbol]));
   }
 
   /**
@@ -1064,22 +1136,22 @@ export default class PublicAPI extends Core {
    */
   resetPassword(email: string): Promise<void> {
     return Promise.resolve()
-    .then(() => {
-      if (!email) {
-        throw new Error('email must be defined');
-      }
-      if (!this[tokenStoreSymbol].hasClientID()) {
-        throw new Error('clientID must be set with PublicAPI#setClientID(clientID: string)');
-      }
+      .then(() => {
+        if (!email) {
+          throw new Error('email must be defined');
+        }
+        if (!this[tokenStoreSymbol].hasClientID()) {
+          throw new Error('clientID must be set with PublicAPI#setClientID(clientID: string)');
+        }
 
-      return this.follow(`${this[shortIDSymbol]}:_auth/password-reset`);
-    }).then((request) => {
-      request.withTemplateParameters({
-        clientID: this[tokenStoreSymbol].getClientID(),
-        email,
+        return this.follow(`${this[shortIDSymbol]}:_auth/password-reset`);
+      }).then((request) => {
+        request.withTemplateParameters({
+          clientID: this[tokenStoreSymbol].getClientID(),
+          email,
+        });
+        return getEmpty(this[environmentSymbol], request);
       });
-      return getEmpty(this[environmentSymbol], request);
-    });
   }
 
   /**
@@ -1094,23 +1166,60 @@ export default class PublicAPI extends Core {
     }
 
     return get(this[environmentSymbol], this.newRequest())
-    .then(([res, traversal]) => {
-      this[resourceSymbol] = halfred.parse(res);
-      this[traversalSymbol] = traversal;
+      .then(([res, traversal]) => {
+        this[resourceSymbol] = halfred.parse(res);
+        this[traversalSymbol] = traversal;
 
-      return this;
-    });
+        const assetGroups = Object.keys(this[resourceSymbol].allLinks()).filter(x => x.indexOf(`ec:dm-assets/`) !== -1);
+
+        const relations = {
+          legacyAsset: {
+            relation: 'ec:api/assets',
+            createRelation: false,
+            createTemplateModifier: '',
+            id: 'assetID',
+            ResourceClass: PublicAssetResource,
+            ListClass: PublicAssetList,
+          }
+        };
+        assetGroups.forEach((relation) => {
+          const relationName = `dmAsset.${relation.substr(13)}`;
+          relations[relationName] = {
+            relation: relation,
+            createRelation: false,
+            createTemplateModifier: '',
+            id: 'assetID',
+            ResourceClass: DMAssetResource,
+            ListClass: DMAssetList,
+          }
+        });
+        this[resourceSymbol].models.forEach((model) => {
+          relations[`model.${model.title}`] = {
+            relation: `${this[shortIDSymbol]}:${model.title}`,
+            createRelation: false, // TODO
+            createTemplateModifier: '',
+            id: '_id',
+            resourceFunction: createEntry,
+            listFunction: createList,
+          }
+        });
+
+        this[relationsSymbol] = relations;
+
+        return this;
+      });
   }
 
   /**
-   * Get the {@link DataManagerResource} for this PublicAPI Connector. Does only make sense for ec users (check not enforced).
+   * Get the {@link DataManagerResource} for this PublicAPI Connector. Does only make sense for ec
+   * users (check not enforced).
    *
    * @returns {Promise<DataManagerResource>}
    */
   getDataManagerResource(): Promise<DataManagerResource> {
     const options: any = {};
 
-    if(this[cookieModifierSymbol].length ===0){
+    if (this[cookieModifierSymbol].length === 0) {
       options.environment = this[environmentSymbol]
     } else {
       options.environment = this[environmentSymbol];
@@ -1142,24 +1251,6 @@ export default class PublicAPI extends Core {
   }
 
   /**
-   * Register a new anonymous user
-   *
-   * @returns {Promise<string>} the jwt of the created user
-   */
-  signupAnonymous(): Promise<string> {
-    return Promise.resolve()
-    .then(() => {
-      return this.follow(`${this[shortIDSymbol]}:_auth/anonymous`);
-    })
-    .then((request) => {
-      return post(this[environmentSymbol], request);
-    })
-    .then(([res]) => {
-      return res.jwt;
-    });
-  }
-
-  /**
    * Signup a new account. Invite may be required.
    *
    * @example
@@ -1176,31 +1267,31 @@ export default class PublicAPI extends Core {
    */
   signup(email: string, password: string, invite?: string): Promise<string> {
     return Promise.resolve()
-    .then(() => {
-      if (!email) {
-        throw new Error('email must be defined');
-      }
-      if (!password) {
-        throw new Error('password must be defined');
-      }
-      if (!this[tokenStoreSymbol].hasClientID()) {
-        throw new Error('clientID must be set with PublicAPI#setClientID(clientID: string)');
-      }
+      .then(() => {
+        if (!email) {
+          throw new Error('email must be defined');
+        }
+        if (!password) {
+          throw new Error('password must be defined');
+        }
+        if (!this[tokenStoreSymbol].hasClientID()) {
+          throw new Error('clientID must be set with PublicAPI#setClientID(clientID: string)');
+        }
 
-      return this.follow(`${this[shortIDSymbol]}:_auth/signup`);
-    })
-    .then((request) => {
-      request.withTemplateParameters({
-        clientID: this[tokenStoreSymbol].getClientID(),
-        invite,
+        return this.follow(`${this[shortIDSymbol]}:_auth/signup`);
+      })
+      .then((request) => {
+        request.withTemplateParameters({
+          clientID: this[tokenStoreSymbol].getClientID(),
+          invite,
+        });
+        return getUrl(this[environmentSymbol], request);
+      })
+      .then(url => superagentFormPost(url, { email, password }))
+      .then((token) => {
+        this[tokenStoreSymbol].setToken(token.token);
+        return Promise.resolve(token.token);
       });
-      return getUrl(this[environmentSymbol], request);
-    })
-    .then(url => superagentFormPost(url, { email, password }))
-    .then((token) => {
-      this[tokenStoreSymbol].setToken(token.token);
-      return Promise.resolve(token.token);
-    });
   }
 }
 

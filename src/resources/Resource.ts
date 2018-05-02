@@ -5,13 +5,16 @@ import * as validator from 'json-schema-remote';
 import * as isEqual from 'lodash.isequal';
 import * as assert from 'assert';
 
+const { convertValidationError } = require('ec.errors')();
+
 import ListResource, { filterOptions } from './ListResource';
 import { del, get, optionsToQuery, post, put } from '../helper';
+import Problem from '../Problem';
 
 const environmentSymbol = Symbol.for('environment');
 const resourceSymbol = Symbol.for('resource');
 const traversalSymbol = Symbol.for('traversal');
-const resourcePropertiesSymbol = Symbol('resourceProperties');
+const resourcePropertiesSymbol = Symbol.for('resourceProperties');
 const relationsSymbol = Symbol.for('relations');
 
 traverson.registerMediaType(HalAdapter.mediaType, HalAdapter);
@@ -84,8 +87,24 @@ class Resource {
       },
     });
 
-    this[relationsSymbol] = { dummy: {} };
+    this[relationsSymbol] = {};
     this.countProperties();
+  }
+
+  /**
+   * Returns a collection of available relations in this Resource.
+   *
+   * @return {object} Collection of available relations
+   */
+  getAvailableRelations(): any {
+    const out = {};
+    Object.keys(this[relationsSymbol]).forEach((rel) => {
+      out[rel] = {
+        id: this[relationsSymbol][rel].id,
+        createable: !!this[relationsSymbol][rel].createRelation,
+      }
+    });
+    return out;
   }
 
   /**
@@ -121,33 +140,37 @@ class Resource {
    */
   create(relation: string, resource: any): Promise<Resource> {
     return Promise.resolve()
-    .then(() => {
-      if (!relation) {
-        throw new Error('relation must be defined');
-      }
-      if (!this[relationsSymbol][relation]) {
-        throw new Error(`unknown relation, use one of ${Object.keys(this[relationsSymbol]).join(', ')}`)
-      }
-      if (!this[relationsSymbol][relation].createRelation) {
-        throw new Error('Resource has no createRelation');
-      }
-      if (!resource) {
-        throw new Error('Cannot create resource with undefined object.');
-      }
-      return this.getLink(this[relationsSymbol][relation].createRelation);
-    })
-    .then(link => validator.validate(resource, `${link.profile}${this[relationsSymbol][relation].createTemplateModifier}`))
-    .then(() => this.newRequest().follow(this[relationsSymbol][relation].relation))
-    .then(request => {
-      if (this[relationsSymbol][relation].additionalTemplateParam) {
-        request.withTemplateParameters(optionsToQuery({
-          [this[relationsSymbol][relation].additionalTemplateParam]: this[this[relationsSymbol][relation].additionalTemplateParam],
-        }));
-      }
-      return post(this[environmentSymbol], request, resource)
-    })
-    .then(([c, traversal]) =>
-      new this[relationsSymbol][relation].ResourceClass(c, this[environmentSymbol], traversal));
+      .then(() => {
+        if (!relation) {
+          throw new Error('relation must be defined');
+        }
+        if (!this[relationsSymbol][relation]) {
+          throw new Error(`unknown relation, use one of ${Object.keys(this[relationsSymbol]).join(', ')}`)
+        }
+        if (!this[relationsSymbol][relation].createRelation) {
+          throw new Error('Resource has no createRelation');
+        }
+        if (!resource) {
+          throw new Error('Cannot create resource with undefined object.');
+        }
+        return this.getLink(this[relationsSymbol][relation].createRelation);
+      })
+      .then(link =>
+        validator.validate(resource, `${link.profile}${this[relationsSymbol][relation].createTemplateModifier}`)
+          .catch((e) => {
+            throw new Problem(convertValidationError(e));
+          }))
+      .then(() => this.newRequest().follow(this[relationsSymbol][relation].relation))
+      .then(request => {
+        if (this[relationsSymbol][relation].additionalTemplateParam) {
+          request.withTemplateParameters(optionsToQuery({
+            [this[relationsSymbol][relation].additionalTemplateParam]: this[this[relationsSymbol][relation].additionalTemplateParam],
+          }));
+        }
+        return post(this[environmentSymbol], request, resource)
+      })
+      .then(([c, traversal]) =>
+        new this[relationsSymbol][relation].ResourceClass(c, this[environmentSymbol], traversal));
   }
 
   /**
@@ -171,9 +194,9 @@ class Resource {
    */
   followLink(link: string, ResourceClass = Resource, name: string, schema: any): Promise<Resource> {
     return get(this[environmentSymbol], this.newRequest().follow(link))
-    .then(([res, traversal]) => {
-      return new ResourceClass(res, this[environmentSymbol], traversal, name, schema);
-    });
+      .then(([res, traversal]) => {
+        return new ResourceClass(res, this[environmentSymbol], traversal, name, schema);
+      });
   }
 
   /**
@@ -283,15 +306,12 @@ class Resource {
    * @returns {Promise<Resource>} this resource
    */
   resolve(): Promise<Resource> {
-    return get(
-      this[environmentSymbol],
-      this.newRequest().follow('self')
-    )
-    .then(([res, traversal]) => {
-      this[resourceSymbol] = halfred.parse(res);
-      this[traversalSymbol] = traversal;
-      return this;
-    });
+    return get(this[environmentSymbol], this.newRequest().follow('self'))
+      .then(([res, traversal]) => {
+        this[resourceSymbol] = halfred.parse(res);
+        this[traversalSymbol] = traversal;
+        return this;
+      });
   }
 
   /**
@@ -307,26 +327,26 @@ class Resource {
    */
   resource(relation: string, resourceID, additionalTemplateParams: any = {}): Promise<Resource> {
     return Promise.resolve()
-    .then(() => {
-      if (!relation) {
-        throw new Error('relation must be defined');
-      }
-      if (!this[relationsSymbol][relation]) {
-        throw new Error(`unknown relation, use one of ${Object.keys(this[relationsSymbol]).join(', ')}`)
-      }
-      if (!resourceID) {
-        throw new Error('resourceID must be defined');
-      }
+      .then(() => {
+        if (!relation) {
+          throw new Error('relation must be defined');
+        }
+        if (!this[relationsSymbol][relation]) {
+          throw new Error(`unknown relation, use one of ${Object.keys(this[relationsSymbol]).join(', ')}`)
+        }
+        if (!resourceID) {
+          throw new Error('resourceID must be defined');
+        }
 
-      return this.newRequest().follow(this[relationsSymbol][relation].relation)
-    })
-    .then((request) => {
-      const params = Object.assign({}, additionalTemplateParams, { [this[relationsSymbol][relation].id]: resourceID });
-      request.withTemplateParameters(params);
-      return get(this[environmentSymbol], request);
-    })
-    .then(([res, traversal]) =>
-      new this[relationsSymbol][relation].ResourceClass(res, this[environmentSymbol], traversal));
+        return this.newRequest().follow(this[relationsSymbol][relation].relation)
+      })
+      .then((request) => {
+        const params = Object.assign({}, additionalTemplateParams, { [this[relationsSymbol][relation].id]: resourceID });
+        request.withTemplateParameters(params);
+        return get(this[environmentSymbol], request);
+      })
+      .then(([res, traversal]) =>
+        new this[relationsSymbol][relation].ResourceClass(res, this[environmentSymbol], traversal));
   }
 
   /**
@@ -349,39 +369,39 @@ class Resource {
    */
   resourceList(relation: string, options?: filterOptions | any, additionalTemplateParams: any = {}): Promise<ListResource> {
     return Promise.resolve()
-    .then(() => {
-      if (!relation) {
-        throw new Error('relation must be defined');
-      }
-      if (!this[relationsSymbol][relation]) {
-        throw new Error(`unknown relation, use one of ${Object.keys(this[relationsSymbol]).join(', ')}`)
-      }
+      .then(() => {
+        if (!relation) {
+          throw new Error('relation must be defined');
+        }
+        if (!this[relationsSymbol][relation]) {
+          throw new Error(`unknown relation, use one of ${Object.keys(this[relationsSymbol]).join(', ')}`)
+        }
 
-      const id = this[relationsSymbol][relation].id;
-      if (
-        options && Object.keys(options).length === 1 && id in options
-        && (typeof options[id] === 'string' || (!('any' in options[id] && !('all' in options[id]))))
-      ) {
-        throw new Error('Providing only an id in ResourceList filter will result in single resource response.');
-      }
+        const id = this[relationsSymbol][relation].id;
+        if (
+          options && Object.keys(options).length === 1 && id in options
+          && (typeof options[id] === 'string' || (!('any' in options[id] && !('all' in options[id]))))
+        ) {
+          throw new Error('Providing only an id in ResourceList filter will result in single resource response.');
+        }
 
-      if (options && '_levels' in options) {
-        throw new Error('_levels on list resources not supported');
-      }
+        if (options && '_levels' in options) {
+          throw new Error('_levels on list resources not supported');
+        }
 
-      return this.newRequest().follow(this[relationsSymbol][relation].relation);
-    })
-    .then((request) => {
-      if (this[relationsSymbol][relation].additionalTemplateParam && !(this[relationsSymbol][relation].additionalTemplateParam in additionalTemplateParams)) {
-        additionalTemplateParams[this[relationsSymbol][relation].additionalTemplateParam] = this[this[relationsSymbol][relation].additionalTemplateParam]
-      }
-      const params = Object.assign({}, additionalTemplateParams, options);
-      request.withTemplateParameters(
-        optionsToQuery(params, this.getLink(this[relationsSymbol][relation].relation).href));
-      return get(this[environmentSymbol], request);
-    })
-    .then(([res, traversal]) =>
-      new this[relationsSymbol][relation].ListClass(res, this[environmentSymbol], traversal));
+        return this.newRequest().follow(this[relationsSymbol][relation].relation);
+      })
+      .then((request) => {
+        if (this[relationsSymbol][relation].additionalTemplateParam && !(this[relationsSymbol][relation].additionalTemplateParam in additionalTemplateParams)) {
+          additionalTemplateParams[this[relationsSymbol][relation].additionalTemplateParam] = this[this[relationsSymbol][relation].additionalTemplateParam]
+        }
+        const params = Object.assign({}, additionalTemplateParams, options);
+        request.withTemplateParameters(
+          optionsToQuery(params, this.getLink(this[relationsSymbol][relation].relation).href));
+        return get(this[environmentSymbol], request);
+      })
+      .then(([res, traversal]) =>
+        new this[relationsSymbol][relation].ListClass(res, this[environmentSymbol], traversal));
   }
 
   /**
@@ -395,33 +415,42 @@ class Resource {
    */
   save(safePut: boolean = false, overwriteSchemaUrl?: string): Promise<Resource> {
     return Promise.resolve()
-    .then(() => {
-      const out = this.toOriginal();
-      return validator.validate(out, overwriteSchemaUrl || this.getLink('self').profile)
       .then(() => {
-        const request = this.newRequest().follow('self');
+        const out = this.toOriginal();
+        return validator.validate(out, overwriteSchemaUrl || this.getLink('self').profile)
+          .catch((e) => {
+            throw new Problem(convertValidationError(e));
+          })
+          .then(() => {
+            const request = this.newRequest().follow('self');
 
-        if (safePut) {
-          if (!('_modified' in out)) {
-            throw new Error('safe put without _modified date');
-          }
+            if (safePut) {
+              if (!('_modified' in out)) {
+                throw new Error('safe put without _modified date');
+              }
 
-          const date = new Date(out._modified);
-          request.addRequestOptions({
-            headers: {
-              'If-Modified-Since': date.toUTCString(),
+              const date = new Date(out._modified);
+              request.addRequestOptions({
+                headers: {
+                  'If-Modified-Since': date.toUTCString(),
+                }
+              });
             }
-          });
-        }
 
-        return put(this[environmentSymbol], request, out)
+            return put(this[environmentSymbol], request, out)
+          });
       })
       .then(([res, traversal]) => {
-        this[resourceSymbol] = halfred.parse(res);
-        this[traversalSymbol] = traversal;
+        if (res) {
+          this[resourceSymbol] = halfred.parse(res);
+        }
+
+        if (traversal) {
+          this[traversalSymbol] = traversal;
+        }
+
         return this;
       });
-    });
   }
 
   /**
@@ -477,7 +506,10 @@ class Resource {
    */
   validate(): Promise<boolean> {
     return validator.validate(this.toOriginal(), this.getLink('self').profile)
-    .then(() => true);
+      .catch((e) => {
+        throw new Problem(convertValidationError(e));
+      })
+      .then(() => true);
   }
 }
 

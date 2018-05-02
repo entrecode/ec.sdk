@@ -180,8 +180,8 @@ class AccountResource extends Resource {
    */
   getAllPermissions(): Array<string> {
     return (this.groups ? this.groups : [{ permissions: [] }])
-    .map(g => g.permissions)
-    .reduce((all, current) => all.concat(current), this.permissions);
+      .map(g => g.permissions)
+      .reduce((all, current) => all.concat(current), this.permissions);
   }
 
   /**
@@ -191,12 +191,12 @@ class AccountResource extends Resource {
    */
   tokenList(): Promise<TokenList> {
     return Promise.resolve()
-    .then(() => {
-      const request = this.newRequest().follow('ec:account/tokens');
+      .then(() => {
+        const request = this.newRequest().follow('ec:account/tokens');
 
-      return get(this[environmentSymbol], request)
+        return get(this[environmentSymbol], request)
+      })
       .then(([tokenList, traversal]) => new TokenList(tokenList, this[environmentSymbol], traversal));
-    });
   }
 
   // TODO remove permission

@@ -13,6 +13,8 @@ const ListResource = require('../../lib/resources/ListResource').default;
 const EntryList = require('../../lib/resources/publicAPI/EntryList');
 const EntryResource = require('../../lib/resources/publicAPI/EntryResource');
 const LiteEntryResource = require('../../lib/resources/publicAPI/LiteEntryResource');
+const LiteDMAccountResource = require('../../lib/resources/publicAPI/LiteDMAccountResource').default;
+const LiteRoleResource = require('../../lib/resources/publicAPI/LiteRoleResource').default;
 const PublicAssetResource = require('../../lib/resources/publicAPI/PublicAssetResource').default;
 
 const should = chai.should();
@@ -30,14 +32,14 @@ describe('Entry List', () => {
         return resolve(JSON.parse(res));
       });
     })
-    .then((json) => {
-      listJson = json;
-    });
+      .then((json) => {
+        listJson = json;
+      });
   });
   beforeEach(() => {
     mock.reset();
     return EntryList.createList(listJson, 'live', undefined, 'beefbeef:allFields')
-    .then(l => list = l); // eslint-disable-line no-return-assign
+      .then(l => list = l); // eslint-disable-line no-return-assign
   });
   afterEach(() => {
     list = null;
@@ -71,28 +73,28 @@ describe('Entry Resource', () => {
         return resolve(JSON.parse(res));
       });
     })
-    .then((json) => {
-      resourceJson = json;
-      return new Promise((resolve, reject) => {
-        fs.readFile(`${__dirname}/../mocks/public-asset.json`, 'utf-8', (err, res) => {
-          if (err) {
-            return reject(err);
-          }
-          return resolve(JSON.parse(res));
+      .then((json) => {
+        resourceJson = json;
+        return new Promise((resolve, reject) => {
+          fs.readFile(`${__dirname}/../mocks/public-asset.json`, 'utf-8', (err, res) => {
+            if (err) {
+              return reject(err);
+            }
+            return resolve(JSON.parse(res));
+          });
         });
-      });
-    })
-    .then((json) => {
-      asset = new PublicAssetResource(json);
-    }));
+      })
+      .then((json) => {
+        asset = new PublicAssetResource(json);
+      }));
   beforeEach(() => {
     mock.reset();
     return EntryResource.createEntry(resourceJson)
-    .then((res) => {
-      resource = res;
-      getSpy = sinon.spy(resource, 'getProperty');
-      setSpy = sinon.spy(resource, 'setProperty');
-    });
+      .then((res) => {
+        resource = res;
+        getSpy = sinon.spy(resource, 'getProperty');
+        setSpy = sinon.spy(resource, 'setProperty');
+      });
   });
   afterEach(() => {
     resource = null;
@@ -115,14 +117,14 @@ describe('Entry Resource', () => {
     stub.returns(resolver('public-entry.json', resource._traversal));
 
     return resource.save()
-    .then(() => {
-      stub.should.be.calledOnce;
-      stub.restore();
-    })
-    .catch((err) => {
-      stub.restore();
-      throw err;
-    });
+      .then(() => {
+        stub.should.be.calledOnce;
+        stub.restore();
+      })
+      .catch((err) => {
+        stub.restore();
+        throw err;
+      });
   });
 
   it('should get id', () => {
@@ -147,25 +149,25 @@ describe('Entry Resource', () => {
     resource._modified.toISOString().should.be.equal('2017-05-15T12:56:30.906Z');
   });
   it('should get _creator', () => {
-    should.equal(resource._creator, null)
+    should.equal(resource._creator, null);
   });
-  it('should not include missing fields in original, CMS-2994', function () {
+  it('should not include missing fields in original, CMS-2994', () => {
     const strippedResourceJson = JSON.parse(JSON.stringify(resourceJson));
     delete strippedResourceJson.decimal;
     delete strippedResourceJson.email;
     delete strippedResourceJson.json;
     return EntryResource.createEntry(strippedResourceJson)
-    .then((res) => {
-      res.should.have.property('boolean', true);
-      res.should.have.property('decimal', undefined);
-      res.should.have.property('email', undefined);
-      res.should.have.property('json', undefined);
-      const original = res.toOriginal();
-      original.should.have.property('boolean', true);
-      original.should.not.have.property('decimal');
-      original.should.not.have.property('email');
-      original.should.not.have.property('json');
-    });
+      .then((res) => {
+        res.should.have.property('boolean', true);
+        res.should.have.property('decimal', undefined);
+        res.should.have.property('email', undefined);
+        res.should.have.property('json', undefined);
+        const original = res.toOriginal();
+        original.should.have.property('boolean', true);
+        original.should.not.have.property('decimal');
+        original.should.not.have.property('email');
+        original.should.not.have.property('json');
+      });
   });
 
   it('should get _entryTitle', () => {
@@ -233,7 +235,9 @@ describe('Entry Resource', () => {
     setSpy.should.have.been.calledWith('datetime', null);
   });
   it('should throw on set datetime field, not date string', () => {
-    const throws = () => resource.datetime = 'hehe';
+    const throws = () => {
+      resource.datetime = 'hehe';
+    };
     throws.should.throw('input must be a Date, date string or null');
   });
 
@@ -242,7 +246,8 @@ describe('Entry Resource', () => {
     getSpy.should.have.been.calledWith('entry');
   });
   it('should get entry field #2', () => {
-    const entry = resource.entry;
+    const { entry } = resource;
+    entry.should.be.instanceOf(LiteEntryResource.default);
     resource.entry.should.be.instanceOf(LiteEntryResource.default);
     getSpy.should.have.been.calledWith('entry');
   });
@@ -264,12 +269,14 @@ describe('Entry Resource', () => {
     setSpy.should.have.been.calledWith('entry', null);
   });
   it('should throw on set entry field, invalid object', () => {
-    const throws = () => resource.entry = { invalid: 'object' };
+    const throws = () => {
+      resource.entry = { invalid: 'object' };
+    };
     throws.should.throw('input must be a String, object/[Lite]EntryResource or null');
   });
 
   it('should get entries field', () => {
-    const entries = resource.entries;
+    const { entries } = resource;
     entries.should.have.property('length', 2);
     entries[0].should.be.instanceOf(LiteEntryResource.default);
     entries[0].should.have.property('_id', 'EJlJtSrkgl');
@@ -277,12 +284,12 @@ describe('Entry Resource', () => {
     getSpy.should.have.been.calledWith('entries');
   });
   it('should get entries field #2', () => {
-    let entries = resource.entries;
-    entries = resource.entries;
+    const { entries } = resource;
+    const entries2 = resource.entries;
     entries.should.have.property('length', 2);
     entries[0].should.be.instanceOf(LiteEntryResource.default);
     entries[0].should.have.property('_id', 'EJlJtSrkgl');
-    entries[1].should.be.equal('ejLjTsRKGl');
+    entries2[1].should.be.equal('ejLjTsRKGl');
   });
   it('should set entries field, string', () => {
     resource.entries = ['1234567'];
@@ -298,11 +305,15 @@ describe('Entry Resource', () => {
     setSpy.should.have.been.calledWith('entries', [original]);
   });
   it('should throw on set entries field, not an array', () => {
-    const throws = () => resource.entries = {};
+    const throws = () => {
+      resource.entries = {};
+    };
     throws.should.throw('only array supported as input type');
   });
   it('should throw on set entries field, invalid object', () => {
-    const throws = () => resource.entries = [{ invalid: 'object' }];
+    const throws = () => {
+      resource.entries = [{ invalid: 'object' }];
+    };
     throws.should.throw('only string and object/[Lite]EntryResource supported as input type');
   });
 
@@ -328,12 +339,14 @@ describe('Entry Resource', () => {
     setSpy.should.have.been.calledWith('asset', null);
   });
   it('should throw on set asset field, invalid object', () => {
-    const throws = () => resource.asset = { invalid: 'object' };
-    throws.should.throw('only string, object/AssetResource, and null supported as input type');
+    const throws = () => {
+      resource.asset = { invalid: 'object' };
+    };
+    throws.should.throw('only string, object/AssetResource/DMAssetResource, and null supported as input type');
   });
 
   it('should get assets field', () => {
-    const assets = resource.assets;
+    const { assets } = resource;
     assets.should.have.property('length', 2);
     assets[0].should.have.property('assetID', '2bf325a9-c8f9-4e7d-b244-faa1090a479d');
     assets[1].should.be.equal('5cd2b613-9cc7-4770-88b8-69906bfb796d');
@@ -353,16 +366,21 @@ describe('Entry Resource', () => {
     setSpy.should.have.been.calledWith('assets', [original]);
   });
   it('should throw on set assets field, not an array', () => {
-    const throws = () => resource.assets = {};
+    const throws = () => {
+      resource.assets = {};
+    };
     throws.should.throw('only array supported as input type');
   });
   it('should throw on set assets field, invalid object', () => {
-    const throws = () => resource.assets = [{ invalid: 'object' }];
-    throws.should.throw('only string and object/AssetResource supported as input type');
+    const throws = () => {
+      resource.assets = [{ invalid: 'object' }];
+    };
+    throws.should.throw('only string and object/AssetResource/DMAssetResource supported as input type');
   });
 
   it('should get account field', () => {
-    resource.account.should.equal('2bf325a9-c8f9-4e7d-b244-faa1090a479d');
+    resource.account.should.be.instanceOf(LiteDMAccountResource);
+    resource.account.accountID.should.equal('49518e7d-a8b0-444a-b829-7fe3c86810ab');
     getSpy.should.have.been.calledWith('account');
   });
   it('should set account field, string', () => {
@@ -373,21 +391,29 @@ describe('Entry Resource', () => {
     resource.account = { accountID: 'df96ce29-d5a1-4a6f-9094-62506b708378' };
     setSpy.should.have.been.calledWith('account', 'df96ce29-d5a1-4a6f-9094-62506b708378');
   });
-  it.skip('should set account field, DMAccountResource', () => {
-    resource.account = { accountID: 'df96ce29-d5a1-4a6f-9094-62506b708378' };
-    setSpy.should.have.been.calledWith('account', 'df96ce29-d5a1-4a6f-9094-62506b708378');
+  it('should set account field, LiteDMAccountResource', () => {
+    const account = new LiteDMAccountResource({
+      profile: 'https://entrecode.de/schema/dm-account',
+      href: 'https://datamanager.entrecode.de/account?dataManagerID=48e18a34-cf64-4f4a-bc47-45323a7f0e44&accountID=49518e7d-a8b0-444a-b829-7fe3c86810ab',
+      title: null,
+    });
+    resource.account = account;
+    setSpy.should.have.been.calledWith('account', '49518e7d-a8b0-444a-b829-7fe3c86810ab');
   });
   it('should set account field, null', () => {
     resource.account = null;
     setSpy.should.have.been.calledWith('account', null);
   });
   it('should throw on set account field, invalid object', () => {
-    const throws = () => resource.account = { invalid: 'object' };
+    const throws = () => {
+      resource.account = { invalid: 'object' };
+    };
     throws.should.throw('only string, object/DMAccountResource, and null supported as input type');
   });
 
   it('should get role field', () => {
-    resource.role.should.equal('2bf325a9-c8f9-4e7d-b244-faa1090a479d');
+    resource.role.should.be.instanceOf(LiteRoleResource);
+    resource.role.roleID.should.equal('3779d1ee-ce4f-4081-b2a7-6245e8540b18');
     getSpy.should.have.been.calledWith('role');
   });
   it('should set role field, string', () => {
@@ -398,16 +424,23 @@ describe('Entry Resource', () => {
     resource.role = { roleID: 'df96ce29-d5a1-4a6f-9094-62506b708378' };
     setSpy.should.have.been.calledWith('role', 'df96ce29-d5a1-4a6f-9094-62506b708378');
   });
-  it.skip('should set role field, RoleResource', () => {
-    resource.role = { roleID: 'df96ce29-d5a1-4a6f-9094-62506b708378' };
-    setSpy.should.have.been.calledWith('role', 'df96ce29-d5a1-4a6f-9094-62506b708378');
+  it('should set role field, LiteRoleResource', () => {
+    const role = new LiteRoleResource({
+      profile: 'https://entrecode.de/schema/dm-role',
+      href: 'https://datamanager.entrecode.de/role?dataManagerID=48e18a34-cf64-4f4a-bc47-45323a7f0e44&roleID=3779d1ee-ce4f-4081-b2a7-6245e8540b18',
+      title: 'Registered Users',
+    });
+    resource.role = role;
+    setSpy.should.have.been.calledWith('role', '3779d1ee-ce4f-4081-b2a7-6245e8540b18');
   });
   it('should set role field, null', () => {
     resource.role = null;
     setSpy.should.have.been.calledWith('role', null);
   });
   it('should throw on set role field, invalid object', () => {
-    const throws = () => resource.role = { invalid: 'object' };
+    const throws = () => {
+      resource.role = { invalid: 'object' };
+    };
     throws.should.throw('only string, object/RoleResource, and null supported as input type');
   });
 
@@ -472,7 +505,7 @@ describe('Entry Resource', () => {
   });
   it('should not validate', () => {
     resource.text = 1;
-    return resource.validateField('text').should.be.rejectedWith('JSON Schema Validation error');
+    return resource.validateField('text').should.be.rejectedWith('Invalid format for property in JSON body');
   });
 });
 
@@ -488,15 +521,15 @@ describe('Entry Resource with nested', () => {
         return resolve(JSON.parse(json));
       });
     })
-    .then((json) => {
-      resJson = json;
-    }));
+      .then((json) => {
+        resJson = json;
+      }));
   beforeEach(() => {
     mock.reset();
     return EntryResource.createEntry(resJson)
-    .then((r) => {
-      res = r;
-    });
+      .then((r) => {
+        res = r;
+      });
   });
   afterEach(() => {
     res = null;
@@ -511,9 +544,9 @@ describe('Entry Resource with nested', () => {
     const nullJson = Object.assign({}, resJson);
     nullJson.entry = null;
     return EntryResource.createEntry(nullJson)
-    .then((r) => {
-      should.equal(r.entry, null);
-    });
+      .then((r) => {
+        should.equal(r.entry, null);
+      });
   });
   it('should get nested entry, entries', () => {
     res.entries.forEach((entry) => {
@@ -527,10 +560,10 @@ describe('Entry Resource with nested', () => {
     const nullJson = Object.assign({}, resJson);
     nullJson.entries = null;
     return EntryResource.createEntry(nullJson)
-    .then((r) => {
-      r.entries.should.be.an('array');
-      r.entries.should.have.property('length', 0);
-    });
+      .then((r) => {
+        r.entries.should.be.an('array');
+        r.entries.should.have.property('length', 0);
+      });
   });
   it('should get nested asset, asset', () => {
     res.asset.should.be.instanceOf(PublicAssetResource);
@@ -539,9 +572,9 @@ describe('Entry Resource with nested', () => {
     const nullJson = Object.assign({}, resJson);
     nullJson.asset = null;
     return EntryResource.createEntry(nullJson)
-    .then((r) => {
-      should.equal(r.asset, null);
-    });
+      .then((r) => {
+        should.equal(r.asset, null);
+      });
   });
   it('should get nested asset, assets', () => {
     res.assets.forEach((asset) => {
@@ -555,10 +588,10 @@ describe('Entry Resource with nested', () => {
     const nullJson = Object.assign({}, resJson);
     nullJson.assets = null;
     return EntryResource.createEntry(nullJson)
-    .then((r) => {
-      r.assets.should.be.an('array');
-      r.assets.should.have.property('length', 0);
-    });
+      .then((r) => {
+        r.assets.should.be.an('array');
+        r.assets.should.have.property('length', 0);
+      });
   });
 });
 
@@ -574,15 +607,15 @@ describe('Entry Resource with nested and array links', () => {
         return resolve(JSON.parse(json));
       });
     })
-    .then((json) => {
-      resJson = json;
-    }));
+      .then((json) => {
+        resJson = json;
+      }));
   beforeEach(() => {
     mock.reset();
     return EntryResource.createEntry(resJson)
-    .then((r) => {
-      res = r;
-    });
+      .then((r) => {
+        res = r;
+      });
   });
   afterEach(() => {
     res = null;
@@ -624,20 +657,20 @@ describe('LiteEntry Resource', () => {
         return resolve(JSON.parse(res));
       });
     })
-    .then((json) => {
-      resourceJson = json;
-      return new Promise((resolve, reject) => {
-        fs.readFile(`${__dirname}/../mocks/public-asset.json`, 'utf-8', (err, res) => {
-          if (err) {
-            return reject(err);
-          }
-          return resolve(JSON.parse(res));
+      .then((json) => {
+        resourceJson = json;
+        return new Promise((resolve, reject) => {
+          fs.readFile(`${__dirname}/../mocks/public-asset.json`, 'utf-8', (err, res) => {
+            if (err) {
+              return reject(err);
+            }
+            return resolve(JSON.parse(res));
+          });
         });
-      });
-    })
-    .then((json) => {
-      asset = new PublicAssetResource(json);
-    }));
+      })
+      .then((json) => {
+        asset = new PublicAssetResource(json);
+      }));
   beforeEach(() => {
     mock.reset();
     resource = new LiteEntryResource.default(resourceJson);
@@ -655,21 +688,21 @@ describe('LiteEntry Resource', () => {
   });
   it('should throw on save', () => {
     const throws = () => resource.save();
-    throws.should.throw('LiteEntryResource cannot be saved')
+    throws.should.throw('LiteEntryResource cannot be saved');
   });
   it('should resolve', () => {
     const stub = sinon.stub(helper, 'superagentGet');
     stub.returns(resolver('public-entry.json', null, true));
 
     return resource.resolve()
-    .then((res) => {
-      res.should.be.instanceOf(EntryResource.default)
-      stub.restore();
-    })
-    .catch((err) => {
-      stub.restore();
-      throw err;
-    });
+      .then((res) => {
+        res.should.be.instanceOf(EntryResource.default)
+        stub.restore();
+      })
+      .catch((err) => {
+        stub.restore();
+        throw err;
+      });
   });
   it('should get id', () => {
     resource.id.should.be.equal('B17u3r5lx-');

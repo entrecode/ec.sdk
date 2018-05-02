@@ -1,3 +1,213 @@
+<a name="0.16.1"></a>
+## <small>0.16.1 (2018-04-27)</small>
+
+
+
+
+<a name="0.16.0"></a>
+## 0.16.0 (2018-04-20)
+
+*  feat: title property in DMAccountResource and LiteDMAccountResource ([2be7671](https://github.com/entrecode/ec.sdk/commit/2be7671))
+* release version 0.16.0 ([497a6e5](https://github.com/entrecode/ec.sdk/commit/497a6e5))
+* feat: LiteDMAccountResource in RoleResource ([d2ecc03](https://github.com/entrecode/ec.sdk/commit/d2ecc03))
+* fix: isDirty detection for LiteRoleResources and LiteDMAccountResources ([960e94c](https://github.com/entrecode/ec.sdk/commit/960e94c))
+
+### BREAKING CHANGE:
+
+RoleResource's accounts field now has an array of LiteDMAccountResources not strings
+
+before:
+```js
+const role = await dm.role(roleID);
+console.info(role.accounts[0]); // logs uuid string
+```
+
+after:
+```js
+const role = await dm.role(roleID);
+console.info(role.accounts[0].accountID); // logs uuid string
+```
+
+<a name="0.15.0"></a>
+## 0.15.0 (2018-04-18)
+
+* release version 0.15.0 ([de10b42](https://github.com/entrecode/ec.sdk/commit/de10b42))
+* doc: doc for HistoryEvent ([6edfa19](https://github.com/entrecode/ec.sdk/commit/6edfa19))
+* feat: LiteDMAccountResource and LiteRoleResource ([8f46c82](https://github.com/entrecode/ec.sdk/commit/8f46c82))
+
+
+### BREAKING CHANGE
+
+* introducing LiteDMAccountResource and LiteRoleResource, will break existing account/role fields
+
+before:
+```js
+const entry: EntryResource = await loadEntry();
+console.log(entry.account); // will log accountID
+console.log(entry.role); // will log roleID
+```
+
+```js
+const entry: EntryResource = await loadEntry();
+console.log(entry.account.accountID); // will log accountID
+console.log(entry.role.roleID); // will log roleID
+```
+
+
+<a name="0.14.2"></a>
+## <small>0.14.2 (2018-04-18)</small>
+
+* release version 0.14.2 ([8a647b0](https://github.com/entrecode/ec.sdk/commit/8a647b0))
+* feat: HistoryEvents resource for past events ([29c86b6](https://github.com/entrecode/ec.sdk/commit/29c86b6))
+* fix: body parsing of empty error responses SDK-55 ([d6b5820](https://github.com/entrecode/ec.sdk/commit/d6b5820))
+
+
+
+<a name="0.14.1"></a>
+## <small>0.14.1 (2018-04-16)</small>
+
+* release version 0.14.1 ([981fc00](https://github.com/entrecode/ec.sdk/commit/981fc00))
+* fix: DMClientResource getter and setter wrong ([123841d](https://github.com/entrecode/ec.sdk/commit/123841d))
+* fix: when saving a resource only change object internals on !==204 response ([9574a60](https://github.com/entrecode/ec.sdk/commit/9574a60))
+
+
+
+<a name="0.14.0"></a>
+## 0.14.0 (2018-04-16)
+
+* release version 0.14.0 ([0a34e00](https://github.com/entrecode/ec.sdk/commit/0a34e00))
+* fix: removed duplicate create/signup anon function ([0038b75](https://github.com/entrecode/ec.sdk/commit/0038b75))
+* fix: updated ec.errors to 0.2.0 to support transpiling ([dd69684](https://github.com/entrecode/ec.sdk/commit/dd69684))
+
+
+### BREAKING CHANGE
+
+* removed `signupAnonymous()` use `createAnonymous(validUntil)`.
+
+before:
+```js
+const anon = await api.signupAnonymous();
+api.setToken(anon);
+```
+
+after:
+```js
+const {jwt} = await api.createAnonymous();
+api.setToken(jwt);
+```
+
+
+<a name="0.13.19"></a>
+## <small>0.13.19 (2018-04-13)</small>
+
+* release version 0.13.19 ([67e6bbf](https://github.com/entrecode/ec.sdk/commit/67e6bbf))
+* feat: convert schema validation errors into entrecode error format SDK-4 SDK-6 ([5ca8d2c](https://github.com/entrecode/ec.sdk/commit/5ca8d2c))
+
+
+
+<a name="0.13.18"></a>
+## <small>0.13.18 (2018-04-10)</small>
+
+* release version 0.13.18 ([e1310aa](https://github.com/entrecode/ec.sdk/commit/e1310aa))
+* fix: toOriginal in EntryResource when values are undefined ([3e8163b](https://github.com/entrecode/ec.sdk/commit/3e8163b))
+
+
+
+<a name="0.13.17"></a>
+## <small>0.13.17 (2018-04-06)</small>
+
+* release version 0.13.17 ([55bea2c](https://github.com/entrecode/ec.sdk/commit/55bea2c))
+* feat: drop schemas on ModelResource#save ([9f6d007](https://github.com/entrecode/ec.sdk/commit/9f6d007))
+* feat: negotiate local files in DMAssetResource SDK-40 ([d7b8381](https://github.com/entrecode/ec.sdk/commit/d7b8381))
+* feat: support negotiating of assets neue in EntryResource SDK-42 ([7884bf1](https://github.com/entrecode/ec.sdk/commit/7884bf1))
+* fix: call super instead of this ([5133fe8](https://github.com/entrecode/ec.sdk/commit/5133fe8))
+* fix: fixed isDirty detection when linked type gettes were called ([8ac7b5d](https://github.com/entrecode/ec.sdk/commit/8ac7b5d))
+
+
+
+<a name="0.13.15"></a>
+## <small>0.13.15 (2018-03-28)</small>
+
+* release version 0.13.15 ([0ee4a47](https://github.com/entrecode/ec.sdk/commit/0ee4a47))
+* fix: fixed wrong imports ([2aae4f9](https://github.com/entrecode/ec.sdk/commit/2aae4f9))
+
+
+
+<a name="0.13.14"></a>
+## <small>0.13.14 (2018-03-28)</small>
+
+* release version 0.13.14 ([6f1fb02](https://github.com/entrecode/ec.sdk/commit/6f1fb02))
+* feat: newHistory for DataManagerResource, ModelResource, EntryResource, and PublicAPI ([6dfb8dd](https://github.com/entrecode/ec.sdk/commit/6dfb8dd))
+* chore: applied new codestyle <3 ([fdd14bc](https://github.com/entrecode/ec.sdk/commit/fdd14bc))
+* fix: removes dummy resource in Resources ([0352921](https://github.com/entrecode/ec.sdk/commit/0352921))
+
+
+
+<a name="0.13.13"></a>
+## <small>0.13.13 (2018-03-23)</small>
+
+*  refactor: prepared history helper for usage in other resources than DataManager API Connector ([26051e5](https://github.com/entrecode/ec.sdk/commit/26051e5))
+* 0.13.13 beta ([de14f3f](https://github.com/entrecode/ec.sdk/commit/de14f3f))
+* release version 0.13.13 ([03b07b6](https://github.com/entrecode/ec.sdk/commit/03b07b6))
+* chore: fixed some eslint errors ([1ec3f7b](https://github.com/entrecode/ec.sdk/commit/1ec3f7b))
+* chore: removed trailing space in release.sh ([aeb20db](https://github.com/entrecode/ec.sdk/commit/aeb20db))
+* chore: version 0.13.13-beta.3 ([e2e2866](https://github.com/entrecode/ec.sdk/commit/e2e2866))
+* test: disabled history test, mocking invalid ([228b4f1](https://github.com/entrecode/ec.sdk/commit/228b4f1))
+* feat: entryList, entry, dmAssetList, and dmAssetResource as generics ([6e82550](https://github.com/entrecode/ec.sdk/commit/6e82550))
+* feat: make available relations accessible SDK-2 ([5fa4405](https://github.com/entrecode/ec.sdk/commit/5fa4405))
+* feat: support DMAssets in EntryResource SDK-28 ([e5a8362](https://github.com/entrecode/ec.sdk/commit/e5a8362))
+* refactor: even more tslint fixes ([0876cf9](https://github.com/entrecode/ec.sdk/commit/0876cf9))
+* refactor: renamed generic asset into dmAsset ([c69e70e](https://github.com/entrecode/ec.sdk/commit/c69e70e))
+* fix: relation for generic model list ([04266d2](https://github.com/entrecode/ec.sdk/commit/04266d2))
+
+
+
+<a name="0.13.12"></a>
+## <small>0.13.12 (2018-03-23)</small>
+
+* release version 0.13.12 ([6898f1c](https://github.com/entrecode/ec.sdk/commit/6898f1c))
+* fix: getting schema in PublicAPI of newly created model ([f42be81](https://github.com/entrecode/ec.sdk/commit/f42be81))
+* chore: added shortid typings ([63378b9](https://github.com/entrecode/ec.sdk/commit/63378b9))
+* refactor: applied codestyle ([d8a6f88](https://github.com/entrecode/ec.sdk/commit/d8a6f88))
+* refactor: applied markdownlint ([ee2c38b](https://github.com/entrecode/ec.sdk/commit/ee2c38b))
+* refactor: removed dummy relation, only add in tests ([e31e668](https://github.com/entrecode/ec.sdk/commit/e31e668))
+
+
+
+<a name="0.13.11"></a>
+## <small>0.13.11 (2018-03-23)</small>
+
+* fixed regex in recognizing new assets ([c6ad916](https://github.com/entrecode/ec.sdk/commit/c6ad916))
+* release version 0.13.11 ([e1da441](https://github.com/entrecode/ec.sdk/commit/e1da441))
+
+
+
+<a name="0.13.10"></a>
+## <small>0.13.10 (2018-03-22)</small>
+
+* release version 0.13.10 ([7625c90](https://github.com/entrecode/ec.sdk/commit/7625c90))
+* fix: DMAssetResource import ([88decbf](https://github.com/entrecode/ec.sdk/commit/88decbf))
+* feat: dm-assets in assets getter for EntryResource ([614e492](https://github.com/entrecode/ec.sdk/commit/614e492))
+
+
+
+<a name="0.13.9"></a>
+## <small>0.13.9 (2018-03-22)</small>
+
+* release version 0.13.9 ([43be39d](https://github.com/entrecode/ec.sdk/commit/43be39d))
+* fix: options in createDmAsset must be string ([2390de8](https://github.com/entrecode/ec.sdk/commit/2390de8))
+
+
+
+<a name="0.13.8"></a>
+## <small>0.13.8 (2018-03-22)</small>
+
+* release version 0.13.8 ([83587df](https://github.com/entrecode/ec.sdk/commit/83587df))
+* feat: options in createDmAssets ([34a85f6](https://github.com/entrecode/ec.sdk/commit/34a85f6))
+* chore: new package-lock ([e64031f](https://github.com/entrecode/ec.sdk/commit/e64031f))
+
+
+
 <a name="0.13.7"></a>
 ## <small>0.13.7 (2018-03-21)</small>
 
