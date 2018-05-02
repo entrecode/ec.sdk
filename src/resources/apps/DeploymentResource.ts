@@ -9,7 +9,7 @@ interface DeploymentResource {
   platformID: string,
   results: Array<any>,
   started: Date,
-  successful: boolean,
+  successful: 'success' | 'running' | 'error',
   targetIDs: Array<string>,
 }
 
