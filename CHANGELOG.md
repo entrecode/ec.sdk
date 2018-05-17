@@ -1,3 +1,20 @@
+<a name="0.16.2"></a>
+## <small>0.16.2 (2018-05-17)</small>
+
+* added privacy link to docs ([84159f7](https://github.com/entrecode/ec.sdk/commit/84159f7))
+* release version 0.16.2 ([bfac202](https://github.com/entrecode/ec.sdk/commit/bfac202))
+* chore: add node 10 to travis ([60653a3](https://github.com/entrecode/ec.sdk/commit/60653a3))
+* chore(package): update sinon to version 5.0.0 ([58d5475](https://github.com/entrecode/ec.sdk/commit/58d5475))
+* fix: added missing properties to DataManagerResource SDK-65 ([a3584f6](https://github.com/entrecode/ec.sdk/commit/a3584f6))
+* fix: default for environment when options is used SDK-63 ([5d3a787](https://github.com/entrecode/ec.sdk/commit/5d3a787))
+* fix: fixed wrong typings in Build and Deployment Resources ([22272bd](https://github.com/entrecode/ec.sdk/commit/22272bd))
+* fix: load of me() in PublicAPI did not reload properly SDK-32 ([b76e536](https://github.com/entrecode/ec.sdk/commit/b76e536))
+* fix(package): update @types/node to version 10.0.3 ([ef273d4](https://github.com/entrecode/ec.sdk/commit/ef273d4))
+* fix(package): update validator to version 10.0.0 ([ba3d20a](https://github.com/entrecode/ec.sdk/commit/ba3d20a))
+* feat: standart error format for 5xx errors SDK-56 ([002b768](https://github.com/entrecode/ec.sdk/commit/002b768))
+
+
+
 <a name="0.16.1"></a>
 ## <small>0.16.1 (2018-04-27)</small>
 
