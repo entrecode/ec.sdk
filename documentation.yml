@@ -100,3 +100,5 @@ toc:
   - LiteRoleResource
   - name: Changelog
     file: ./CHANGELOG.md
+  - name: Impressum & Datenschutz
+    file: ./src/doc/9-privacy.md

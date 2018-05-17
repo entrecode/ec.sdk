@@ -44,7 +44,7 @@
     "superagent": "^3.8.1",
     "traverson": "^6.0.3",
     "traverson-hal": "^6.0.0",
-    "validator": "^9.4.0"
+    "validator": "^10.0.0"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
