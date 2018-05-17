@@ -124,6 +124,10 @@ export default class PublicAPI extends Core {
       env = envOrOptions;
     }
 
+    if (!env.environment) {
+      env.environment = 'live';
+    }
+
     let id;
 
     if (/^[a-f0-9]{8}$/i.test(idOrURL)) {
