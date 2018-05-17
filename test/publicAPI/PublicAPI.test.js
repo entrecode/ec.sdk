@@ -998,7 +998,7 @@ describe('PublicAPI', () => {
   it('should get error on 404', () => {
     mock.reset();
     return api.getFileUrl('8e2ef37e-68f8-46c7-b4ba-e9f44bc00257')
-      .should.eventually.be.rejectedWith('404');
+      .should.eventually.be.rejectedWith('Resource not found');
   });
   it('should be rejected on undefined assetID', () => {
     return api.getFileUrl()
