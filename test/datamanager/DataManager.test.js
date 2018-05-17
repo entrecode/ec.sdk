@@ -36,7 +36,7 @@ const HistoryEvents = require('../../lib/resources/publicAPI/HistoryEvents').def
 
 const nock = require('../mocks/nock.js');
 
-chai.should();
+const should = chai.should();
 chai.use(sinonChai);
 chai.use(chaiAsPromised);
 
@@ -430,7 +430,7 @@ describe('DataManager Resource', () => {
     });
   });
 
-  const functions = ['title', 'description', 'config', 'hexColor', 'locales'];
+  const functions = ['title', 'description', 'config', 'hexColor', 'defaultLocale', 'locales', 'publicAssetRights', 'rights'];
   functions.forEach((name) => {
     it(`should call resource.getProperty with ${name}`, () => {
       const spy = sinon.spy(resource, 'getProperty');
@@ -438,7 +438,7 @@ describe('DataManager Resource', () => {
       const property = resource[name];
       spy.should.have.been.calledOnce;
       spy.should.have.been.calledWith(name);
-      property.should.be.equal(resource.getProperty(name));
+      should.equal(resource.getProperty(name), property);
 
       spy.restore();
     });
