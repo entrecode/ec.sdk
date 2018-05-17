@@ -7,7 +7,7 @@ interface BuildResource {
   events: Array<any>,
   finished: Date,
   started: Date,
-  successful: boolean,
+  successful: 'success' | 'running' | 'error',
 }
 
 /**

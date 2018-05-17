@@ -47,11 +47,24 @@ function jsonHandler(callback) {
 
     try {
       if (!res.body || res.body.length === 0) {
-        return callback(new Error(res.statusCode));
+        let code;
+        switch (res.statusCode) {
+          case 404:
+            code = '100';
+            break;
+          case 502:
+            code = '103';
+            break;
+          default:
+            code = '000';
+            break;
+        }
+        return callback(new Problem(newError(code, `ec.sdk: empty body on unsuccessful status: ${res.statusCode}`)));
       }
+      
       return callback(new Problem(JSON.parse(res.body)));
     } catch (e) {
-      return callback(new Error(`ec.sdk: unable to parse body: ${res.body}`))
+      return callback(new Problem(newError('000', `ec.sdk: unable to parse body: ${res.body}`)));
     }
   };
 }

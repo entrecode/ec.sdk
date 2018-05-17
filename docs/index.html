@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset='utf-8' />
-  <title>ec.sdk 0.16.1 | Documentation</title>
+  <title>ec.sdk 0.16.2 | Documentation</title>
   <meta name='viewport' content='width=device-width,initial-scale=1'>
   <link href='assets/bass.css' type='text/css' rel='stylesheet' />
   <link href='assets/style.css' type='text/css' rel='stylesheet' />
@@ -14,7 +14,7 @@
       <div id='split-left' class='overflow-auto fs0 height-viewport-100'>
         <div class='py1 px2'>
           <h3 class='mb0 no-anchor'>ec.sdk</h3>
-          <div class='mb1'><code>0.16.1</code></div>
+          <div class='mb1'><code>0.16.2</code></div>
           <input
             placeholder='Filter'
             id='filter-input'
@@ -2764,6 +2764,16 @@
                   href='#changelog'
                   class="h5 bold black caps">
                   Changelog
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#impressum--datenschutz'
+                  class="h5 bold black caps">
+                  Impressum &amp; Datenschutz
                   
                 </a>
                 
@@ -9372,8 +9382,8 @@ cookie stored.</p>
         <div class='space-bottom0'>
           <div>
             <span class='code bold'>reload</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>?
-            = <code>false</code>)</code>
-	    whether or not to force reload
+            = <code>true</code>)</code>
+	    whether or not to force reload, default true
 
           </div>
           
@@ -19283,6 +19293,27 @@ by the options parameter.</p>
           
         </div>
       
+        <div class='space-bottom0'>
+          <span class='code bold'>defaultLocale</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+          : Default locale for this dataManager
+
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <span class='code bold'>publicAssetRights</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>>)</code>
+          : right for public legacy assets
+
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <span class='code bold'>right</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>>)</code>
+          : really old rights, deprecated
+
+          
+        </div>
+      
     </div>
   
 
@@ -28947,7 +28978,22 @@ be the same object but with refreshed data.
   </h2>
 
   
-    <p><a name="0.16.1"></a></p>
+    <p><a name="0.16.2"></a></p>
+<h2><small>0.16.2 (2018-05-17)</small></h2>
+<ul>
+<li>added privacy link to docs (<a href="https://github.com/entrecode/ec.sdk/commit/84159f7">84159f7</a>)</li>
+<li>release version 0.16.2 (<a href="https://github.com/entrecode/ec.sdk/commit/bfac202">bfac202</a>)</li>
+<li>chore: add node 10 to travis (<a href="https://github.com/entrecode/ec.sdk/commit/60653a3">60653a3</a>)</li>
+<li>chore(package): update sinon to version 5.0.0 (<a href="https://github.com/entrecode/ec.sdk/commit/58d5475">58d5475</a>)</li>
+<li>fix: added missing properties to DataManagerResource SDK-65 (<a href="https://github.com/entrecode/ec.sdk/commit/a3584f6">a3584f6</a>)</li>
+<li>fix: default for environment when options is used SDK-63 (<a href="https://github.com/entrecode/ec.sdk/commit/5d3a787">5d3a787</a>)</li>
+<li>fix: fixed wrong typings in Build and Deployment Resources (<a href="https://github.com/entrecode/ec.sdk/commit/22272bd">22272bd</a>)</li>
+<li>fix: load of me() in PublicAPI did not reload properly SDK-32 (<a href="https://github.com/entrecode/ec.sdk/commit/b76e536">b76e536</a>)</li>
+<li>fix(package): update @types/node to version 10.0.3 (<a href="https://github.com/entrecode/ec.sdk/commit/ef273d4">ef273d4</a>)</li>
+<li>fix(package): update validator to version 10.0.0 (<a href="https://github.com/entrecode/ec.sdk/commit/ba3d20a">ba3d20a</a>)</li>
+<li>feat: standart error format for 5xx errors SDK-56 (<a href="https://github.com/entrecode/ec.sdk/commit/002b768">002b768</a>)</li>
+</ul>
+<p><a name="0.16.1"></a></p>
 <h2><small>0.16.1 (2018-04-27)</small></h2>
 <p><a name="0.16.0"></a></p>
 <h2>0.16.0 (2018-04-20)</h2>
@@ -28957,7 +29003,6 @@ be the same object but with refreshed data.
 <li>feat: LiteDMAccountResource in RoleResource (<a href="https://github.com/entrecode/ec.sdk/commit/d2ecc03">d2ecc03</a>)</li>
 <li>fix: isDirty detection for LiteRoleResources and LiteDMAccountResources (<a href="https://github.com/entrecode/ec.sdk/commit/960e94c">960e94c</a>)</li>
 </ul>
-<h1>&#x3C;&#x3C;&#x3C;&#x3C;&#x3C;&#x3C;&#x3C; HEAD</h1>
 <h3>BREAKING CHANGE:</h3>
 <p>RoleResource's accounts field now has an array of LiteDMAccountResources not strings</p>
 <p>before:</p>
@@ -28966,21 +29011,6 @@ be the same object but with refreshed data.
 <p>after:</p>
 <pre class='hljs'><span class="hljs-keyword">const</span> role = <span class="hljs-keyword">await</span> dm.role(roleID);
 <span class="hljs-built_in">console</span>.info(role.accounts[<span class="hljs-number">0</span>].accountID); <span class="hljs-comment">// logs uuid string</span></pre>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<p>release/0.16.1</p>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
 <p><a name="0.15.0"></a></p>
 <h2>0.15.0 (2018-04-18)</h2>
 <ul>
@@ -30076,6 +30106,21 @@ accounts.account(…);</pre>
 <ul>
 <li>initial release</li>
 </ul>
+
+  
+</section>
+</div>
+          
+        
+          
+            <div class='keyline-top-not py2'><section class='py2 clearfix'>
+
+  <h2 id='impressum--datenschutz' class='mt0'>
+    Impressum &amp; Datenschutz
+  </h2>
+
+  
+    <p><a href="https://entrecode.de/datenschutz">Impressum &#x26; Datenschutz (Privacy)</a></p>
 
   
 </section>

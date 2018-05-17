@@ -35,6 +35,9 @@ interface DataManagerResource {
   locales: Array<string>,
   shortID: string,
   title: string,
+  defaultLocale: string,
+  publicAssetRights: Array<string>,
+  rights: Array<string>,
 }
 
 /**
@@ -42,14 +45,17 @@ interface DataManagerResource {
  *
  * @class
  *
- * @prop {string}         dataManagerID   - The id of the dataManager
- * @prop {object}         config          - The dataManager config
- * @prop {Date}           created         - The Date this dataManager was created
- * @prop {string}         description     - The description
- * @prop {string}         hexColor        - The hexColor for frontend usage
- * @prop {Array<string>}  locales         - Array of available locales
- * @prop {string}         shortID         - Shortened {@link DataManager#dataManagerID}
- * @prop {string}         title           - Title of the dataManager
+ * @prop {string}         dataManagerID     - The id of the dataManager
+ * @prop {object}         config            - The dataManager config
+ * @prop {Date}           created           - The Date this dataManager was created
+ * @prop {string}         description       - The description
+ * @prop {string}         hexColor          - The hexColor for frontend usage
+ * @prop {Array<string>}  locales           - Array of available locales
+ * @prop {string}         shortID           - Shortened {@link DataManager#dataManagerID}
+ * @prop {string}         title             - Title of the dataManager
+ * @prop {string}         defaultLocale     - Default locale for this dataManager
+ * @prop {Array<string>}  publicAssetRights - right for public legacy assets
+ * @prop {Array<string>}  right             - really old rights, deprecated
  */
 class DataManagerResource extends Resource {
   /**
@@ -156,6 +162,21 @@ class DataManagerResource extends Resource {
         enumerable: true,
         get: () => <string>this.getProperty('title'),
         set: (value: string) => this.setProperty('title', value),
+      },
+      defaultLocale: {
+        enumerable: true,
+        get: () => <string>this.getProperty('defaultLocale'),
+        set: (value: string) => this.setProperty('defaultLocale', value),
+      },
+      publicAssetRights: {
+        enumerable: true,
+        get: () => <Array<string>>this.getProperty('publicAssetRights'),
+        set: (value: Array<string>) => this.setProperty('publicAssetRights', value),
+      },
+      rights: {
+        enumerable: true,
+        get: () => <Array<string>>this.getProperty('rights'),
+        set: (value: Array<string>) => this.setProperty('rights', value),
       }
     });
     this.countProperties();

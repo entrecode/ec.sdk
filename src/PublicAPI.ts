@@ -124,6 +124,10 @@ export default class PublicAPI extends Core {
       env = envOrOptions;
     }
 
+    if (!env.environment) {
+      env.environment = 'live';
+    }
+
     let id;
 
     if (/^[a-f0-9]{8}$/i.test(idOrURL)) {
@@ -1058,14 +1062,12 @@ export default class PublicAPI extends Core {
   /**
    * Loads the account object of a public user.
    *
-   * @param {boolean?} reload whether or not to force reload
+   * @param {boolean?} reload whether or not to force reload, default true
    * @returns {Promise<any>} Object account info
    */
-  me(reload: boolean = false): Promise<any> { //TODO advanced type
+  me(reload: boolean = true): Promise<any> { //TODO advanced type
     return this.resolve(reload)
-      .then(() => {
-        return this[resourceSymbol].account;
-      });
+      .then(() => this.account);
   }
 
   /**
@@ -1165,7 +1167,7 @@ export default class PublicAPI extends Core {
       return Promise.resolve(this);
     }
 
-    return get(this[environmentSymbol], this.newRequest())
+    return get(this[environmentSymbol], this.newRequest().follow('self'))
       .then(([res, traversal]) => {
         this[resourceSymbol] = halfred.parse(res);
         this[traversalSymbol] = traversal;
