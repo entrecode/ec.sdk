@@ -4,6 +4,8 @@
   "pending": false,
   "hasPassword": true,
   "oauth": [],
+  "created": "2015-03-11T09:46:49.907Z",
+  "pendingUpdated": "2015-03-11T09:46:49.907Z",
   "_links": {
     "ec:dm-role": {
       "profile": "https://entrecode.de/schema/dm-role",

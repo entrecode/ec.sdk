@@ -80,7 +80,21 @@ describe('DMAccount Resource', () => {
     resource.hasPassword.should.be.true;
   });
 
-  const getter = ['accountID', 'email', 'oauth'];
+  const dateGetter = ['created', 'pendingUpdated'];
+  dateGetter.forEach((name) => {
+    it(`should call resource.getProperty with ${name}`, () => {
+      const spy = sinon.spy(resource, 'getProperty');
+
+      const property = resource[name];
+      spy.should.have.been.calledOnce;
+      spy.should.have.been.calledWith(name);
+      property.toISOString().should.be.equal(resource.getProperty(name));
+
+      spy.restore();
+    });
+  });
+
+  const getter = ['accountID', 'email', 'oauth', 'pending'];
   getter.forEach((name) => {
     it(`should call resource.getProperty with ${name}`, () => {
       const spy = sinon.spy(resource, 'getProperty');

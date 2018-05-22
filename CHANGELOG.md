@@ -1,3 +1,11 @@
+<a name="0.16.3"></a>
+## <small>0.16.3 (2018-05-22)</small>
+
+* release version 0.16.3 ([614fda7](https://github.com/entrecode/ec.sdk/commit/614fda7))
+* feat: adds pending, pendingUpdated, and created to DMAccountResource ([9fdae17](https://github.com/entrecode/ec.sdk/commit/9fdae17))
+
+
+
 <a name="0.16.2"></a>
 ## <small>0.16.2 (2018-05-17)</small>
 
