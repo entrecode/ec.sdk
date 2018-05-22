@@ -7,6 +7,9 @@ interface DMAccountResource {
   email: string,
   hasPassword: boolean,
   oauth: Array<any>,
+  pending: boolean,
+  pendingUpdated: Date,
+  created: Date,
 }
 
 /**
@@ -18,6 +21,9 @@ interface DMAccountResource {
  * @prop {string}         email             - The current email.
  * @prop {boolean}        hasPassword       - Whether or not this account has a password
  * @prop {Array<string>}  oauth             - Array of connected oauth accounts
+ * @prop {boolean}        pending           - wheter or not this account is in pending state
+ * @prop {Date}           pendingUpdated    - Date on which pending state got updated
+ * @prop {Date}           created           - Date on which this account was created
  */
 class DMAccountResource extends Resource {
   /**
@@ -45,6 +51,18 @@ class DMAccountResource extends Resource {
       oauth: {
         enumerable: true,
         get: () => <Array<any>>this.getProperty('oauth'),
+      },
+      pending: {
+        enumerable: true,
+        get: () => <boolean>this.getProperty('pending'),
+      },
+      pendingUpdated: {
+        enumerable: true,
+        get: () => new Date(this.getProperty('pendingUpdated')),
+      },
+      created: {
+        enumerable: true,
+        get: () => new Date(this.getProperty('created')),
       },
     });
     Object.defineProperty(this, 'title', {
