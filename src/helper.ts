@@ -17,6 +17,8 @@ const { newError } = require('ec.errors')();
 
 const packageJson: any = require('../package.json');
 
+const historyMap = new Map();
+
 validator.setLoggingFunction(() => {
 });
 
@@ -61,7 +63,7 @@ function jsonHandler(callback) {
         }
         return callback(new Problem(newError(code, `ec.sdk: empty body on unsuccessful status: ${res.statusCode}`)));
       }
-      
+
       return callback(new Problem(JSON.parse(res.body)));
     } catch (e) {
       return callback(new Problem(newError('000', `ec.sdk: unable to parse body: ${res.body}`)));
@@ -248,10 +250,6 @@ export function getUrl(environment: environment, t: any): Promise<string> {
 export function getHistory(environment: environment, t: any): Promise<EventSource> {
   return getUrl(environment, t)
     .then((url) => {
-      const eventSourceInitDict = {
-        headers: {},
-      };
-
       const store = TokenStoreFactory(environment);
       let secondStore: TokenStore;
       if (!store.hasToken()) {
@@ -263,21 +261,26 @@ export function getHistory(environment: environment, t: any): Promise<EventSourc
         }
       }
 
+      let token;
       if (store.hasToken()) {
-        eventSourceInitDict.headers['Authorization'] = `Bearer ${store.getToken()}`;
+        token = store.getToken();
       } else if (secondStore && secondStore.hasToken()) {
-        eventSourceInitDict.headers['Authorization'] = `Bearer ${secondStore.getToken()}`;
+        token = secondStore.getToken();
       }
 
-      if (store.hasUserAgent()) {
-        eventSourceInitDict.headers['X-User-Agent'] = `${store.getUserAgent()} ec.sdk/${packageJson.version}`;
-      } else if (secondStore && secondStore.hasUserAgent()) {
-        eventSourceInitDict.headers['X-User-Agent'] = `${secondStore.getUserAgent()} ec.sdk/${packageJson.version}`;
-      } else {
-        eventSourceInitDict.headers['X-User-Agent'] = `ec.sdk/${packageJson.version}`;
+      if (token) {
+        if (url.indexOf('?') === -1) {
+          url = `${url}?_token=${token}`;
+        } else {
+          url = `${url}&_token=${token}`;
+        }
       }
 
-      return new EventSource(url, eventSourceInitDict);
+      if (!historyMap.has(url)) {
+        historyMap.set(url, new EventSource(url));
+      }
+      
+      return historyMap.get(url);
     });
 }
 
