@@ -410,24 +410,6 @@ export default class Accounts extends Core {
   }
 
   /**
-   * Creates a nes API key account
-   *
-   * @return {Promise<string>} the jwt of the created API key
-   */
-  createAPIKey(): Promise<string> {
-    return Promise.resolve()
-      .then(() => {
-        return this.follow('ec:auth/create-anonymous');
-      })
-      .then((request) => {
-        return post(request, {});
-      })
-      .then(([res]) => {
-        return <string>res.jwt;
-      });
-  }
-
-  /**
    * Signup a new account. Invite may be required.
    *
    * @example
