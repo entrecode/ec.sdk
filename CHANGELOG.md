@@ -1,3 +1,30 @@
+<a name="0.16.4"></a>
+## <small>0.16.4 (2018-05-25)</small>
+
+* release version 0.16.4 ([be2d5fd](https://github.com/entrecode/ec.sdk/commit/be2d5fd))
+* feat: assetGroupList on PublicAPI root SDK-71 ([4484792](https://github.com/entrecode/ec.sdk/commit/4484792))
+* feat: removed Account#createAPIKey ([be6536d](https://github.com/entrecode/ec.sdk/commit/be6536d))
+* test: test for _fromEventNumber query param ([297d614](https://github.com/entrecode/ec.sdk/commit/297d614))
+* fix: token in history as query param and make singleton SDK-69 SKD-70 SDK-43 ([00f4f1a](https://github.com/entrecode/ec.sdk/commit/00f4f1a))
+* chore(package): update documentation to version 7.0.0 ([052d9d5](https://github.com/entrecode/ec.sdk/commit/052d9d5))
+
+
+### BREAKING CHANGE
+
+* removed duplicate function
+
+before:
+```js
+const jwt = await accounts.createAPIKey();
+```
+
+after:
+```js
+const jwt = (await accounts.createApiToken()).jwt;
+// has iat, exp and, accountID as well
+```
+
+
 <a name="0.16.3"></a>
 ## <small>0.16.3 (2018-05-22)</small>
 
