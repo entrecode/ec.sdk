@@ -1090,6 +1090,26 @@ export default class PublicAPI extends Core {
   }
 
   /**
+   * Load the list of assetGroupIDs.
+   *
+   * @param {boolean?} reload whether or not to force reload
+   * @returns {Promise<Array<string>>} Resolves to an array with all available asssetGroupIDs
+   */
+  assetGroupList(reload: boolean = false): Promise<any> {
+    return this.resolve(reload)
+      .then(() => Object.keys(this[resourceSymbol].allLinks())
+        .map((key) => {
+          const result = /^ec:dm-assets\/(.*)$/.exec(key);
+          if (!result) {
+            return undefined;
+          }
+
+          return result[1];
+        })
+        .filter(x => !!x));
+  }
+
+  /**
    * Creates a new History EventSource with the given filter options.
    *
    * @param {filterOptions | any} options The filter options

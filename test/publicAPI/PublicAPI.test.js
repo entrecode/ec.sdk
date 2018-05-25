@@ -156,7 +156,7 @@ describe('PublicAPI', () => {
         throw err;
       });
   });
-  it('should load modelLst', () => {
+  it('should load modelList', () => {
     const stub = sinon.stub(helper, 'get');
     stub.returns(resolver('public-dm-root.json'));
 
@@ -165,6 +165,21 @@ describe('PublicAPI', () => {
         list.should.be.instanceOf(Object);
         list.should.have.property('allFields');
         // TODO properties should be model objects
+        stub.restore();
+      })
+      .catch((err) => {
+        stub.restore();
+        throw err;
+      });
+  });
+  it('should load assetGroupList', () => {
+    const stub = sinon.stub(helper, 'get');
+    stub.returns(resolver('public-dm-root.json'));
+
+    return api.assetGroupList()
+      .then((list) => {
+        list.should.be.instanceOf(Array);
+        list.should.have.property('length', 1);
         stub.restore();
       })
       .catch((err) => {
