@@ -723,6 +723,12 @@ describe('optionsToQuery', () => {
     };
     helper.optionsToQuery(obj).should.have.property('size', 1);
   });
+  it('should have _fromEventNumber', () => {
+    const obj = {
+      _fromEventNumber: 1,
+    };
+    helper.optionsToQuery(obj).should.have.property('_fromEventNumber', 1);
+  });
   it('should throw on size not an integer', () => {
     const throws = () => {
       helper.optionsToQuery({ size: 'string' });
