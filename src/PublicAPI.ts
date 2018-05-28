@@ -503,6 +503,8 @@ export default class PublicAPI extends Core {
    * For frontend usage you must provide a
    * {@link https://developer.mozilla.org/de/docs/Web/API/FormData|FormData} object containing the
    * multiple files in a field with the name 'file'.
+   * 
+   * In both cases you can add a string representing an url. DataManager will then create the assets from this url.
    *
    * @param {string} assetGroupID the asset group in which the asset should be created.
    * @param {object|array<object|string>|string} input representing the asset, either an array of
@@ -549,7 +551,11 @@ export default class PublicAPI extends Core {
           }
           assets.forEach((file, index) => {
             if (typeof file === 'string') {
-              request.attach('file', file);
+              if (validate.isURL(file)) {
+                request.field('url', file);
+              } else {
+                request.attach('file', file);
+              }
             } else if (Buffer.isBuffer(file)) {
               if (!('fileName' in options)
                 || !Array.isArray(options.fileName)
