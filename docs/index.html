@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset='utf-8' />
-  <title>ec.sdk 0.16.4 | Documentation</title>
+  <title>ec.sdk 0.16.5 | Documentation</title>
   <meta name='viewport' content='width=device-width,initial-scale=1'>
   <link href='assets/bass.css' type='text/css' rel='stylesheet' />
   <link href='assets/style.css' type='text/css' rel='stylesheet' />
@@ -14,7 +14,7 @@
       <div id='split-left' class='overflow-auto fs0 height-viewport-100'>
         <div class='py1 px2'>
           <h3 class='mb0 no-anchor'>ec.sdk</h3>
-          <div class='mb1'><code>0.16.4</code></div>
+          <div class='mb1'><code>0.16.5</code></div>
           <input
             placeholder='Filter'
             id='filter-input'
@@ -27022,7 +27022,7 @@ otherwise.
     <div>
       
         <div class='space-bottom0'>
-          <span class='code bold'>tokenID</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+          <span class='code bold'>assetID</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
           : The id of this asset
 
           
@@ -27036,29 +27036,99 @@ otherwise.
         </div>
       
         <div class='space-bottom0'>
-          <span class='code bold'>tags</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">array</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>>)</code>
-          : array of tags
+          <span class='code bold'>type</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+          : The type of this asset
+
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <span class='code bold'>assetGroupID</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+          : The assetGroupID this asset belongs to
+
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <span class='code bold'>caption</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+          : The caption of this asset
 
           
         </div>
       
         <div class='space-bottom0'>
           <span class='code bold'>created</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Date">Date</a>)</code>
-          : Timestamp when this asset was created
+          : The creation Date
 
           
         </div>
       
         <div class='space-bottom0'>
-          <span class='code bold'>type</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
-          : type of this asset, like image
+          <span class='code bold'>modified</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Date">Date</a>)</code>
+          : Date on which the asset got modified
 
           
         </div>
       
         <div class='space-bottom0'>
-          <span class='code bold'>files</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">array</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>>)</code>
-          : all files associated with this asset
+          <span class='code bold'>creator</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+          : The user who created this asset
+
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <span class='code bold'>creatorType</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+          : The type of user the creator is of
+
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <span class='code bold'>duplicates</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>)</code>
+          : The total number of duplicate assets
+
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <span class='code bold'>file</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+          : Object describing the original file of this asset
+
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <span class='code bold'>fileVariants</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>>)</code>
+          : Array of all other file variants (not thumbs)
+
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <span class='code bold'>thumbnails</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>>)</code>
+          : Array of all thumbnails
+
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <span class='code bold'>isUsed</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">Boolean</a>)</code>
+          : Whether or not this asses is used in any entry
+
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <span class='code bold'>mimetype</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+          : Mimetype of the assets file
+
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <span class='code bold'>tags</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>>)</code>
+          : Array of tags
 
           
         </div>
