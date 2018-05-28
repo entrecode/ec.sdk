@@ -28,6 +28,7 @@ interface DMAssetResource {
   thumbnails: Array<any>,
   title: string,
   type: string,
+  assetGroupID: string,
 }
 
 /**
@@ -35,12 +36,22 @@ interface DMAssetResource {
  *
  * @class
  *
- * @prop {string}        tokenID - The id of this asset
- * @prop {string}        title   - The title of this asset
- * @prop {array<string>} tags    - array of tags
- * @prop {Date}          created - Timestamp when this asset was created
- * @prop {string}        type    - type of this asset, like image
- * @prop {array<object>} files   - all files associated with this asset
+ * @prop {string} assetID - The id of this asset
+ * @prop {string} title - The title of this asset
+ * @prop {string} type - The type of this asset
+ * @prop {string} assetGroupID - The assetGroupID this asset belongs to
+ * @prop {string} caption - The caption of this asset
+ * @prop {Date} created - The creation Date
+ * @prop {Date} modified - Date on which the asset got modified
+ * @prop {string} creator - The user who created this asset
+ * @prop {string} creatorType - The type of user the creator is of
+ * @prop {number} duplicates - The total number of duplicate assets
+ * @prop {object} file - Object describing the original file of this asset
+ * @prop {Array<object>} fileVariants - Array of all other file variants (not thumbs)
+ * @prop {Array<object>} thumbnails - Array of all thumbnails
+ * @prop {Boolean} isUsed - Whether or not this asses is used in any entry
+ * @prop {string} mimetype - Mimetype of the assets file
+ * @prop {Array<string>} tags - Array of tags
  */
 class DMAssetResource extends Resource {
   /**
@@ -119,6 +130,15 @@ class DMAssetResource extends Resource {
       type: {
         enumerable: true,
         get: () => <string>this.getProperty('type'),
+      },
+      assetGroupID: {
+        enumerable: false,
+        get: () => {
+          const result = /\/a\/[a-f0-9]{8}\/(\w+)\//.exec(this.getLink('self').href);
+          if (result) {
+            return <string>result[1];
+          }
+        }
       }
     });
     this.countProperties();
