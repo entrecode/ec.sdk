@@ -322,6 +322,28 @@ class Resource {
   }
 
   /**
+   * Get a list of all avaliable filter options for a given relation.
+   * 
+   * @param {string} relation The shortened relation name
+   * @returns {Promise<Array<string>>} resolves to an array of avaliable filter options (query string notation).
+   */
+  getFilterOptions(relation: string): Promise<any> {
+    return Promise.resolve()
+      .then(() => {
+        if (!relation) {
+          throw new Error('relation must be defined');
+        }
+        if (!this[relationsSymbol][relation]) {
+          throw new Error(`unknown relation, use one of ${Object.keys(this[relationsSymbol]).join(', ')}`)
+        }
+        let link = this.getLink(this[relationsSymbol][relation].relation);
+        return link.href.match(/{[^}]*}/g)
+          .map(result => /^{[?&]([^}]+)}$/.exec(result)[1].split(','))
+          .reduce((a, b) => a.concat(b), [])
+      });
+  }
+
+  /**
    * Get a single {@link Resource} identified by resourceID.
    *
    * @example

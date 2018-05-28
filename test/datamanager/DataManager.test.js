@@ -334,6 +334,22 @@ describe('DataManager class', () => {
         throw e;
       });
   });
+  it('should get filter options', () => {
+    const dm = new DataManager('live');
+    const stub = sinon.stub(helper, 'get');
+    stub.returns(resolver('dm-list.json'));
+
+    return dm.getFilterOptions('dataManager')
+      .then((options) => {
+        options.should.be.an('array');
+        options.length.should.be.equal(11);
+        stub.restore();
+      })
+      .catch((err) => {
+        stub.restore();
+        throw err;
+      });
+  });
 });
 
 describe('DataManager ListResource', () => {
@@ -1054,6 +1070,13 @@ describe('DataManager Resource', () => {
   it('should get public API', () => {
     resource.getPublicAPI().should.be.instanceOf(PublicAPI);
     resource.getPublicAPI().should.have.property('shortID', 'beefbeef');
+  });
+  it('should get filter options', () => {
+    return resource.getFilterOptions('model')
+      .then((options) => {
+        options.should.be.an('array');
+        options.length.should.be.equal(9);
+      });
   });
 
   it('should load asset group list', () => {

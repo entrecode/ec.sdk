@@ -297,6 +297,33 @@ export default class Core {
     return this;
   }
 
+
+  /**
+   * Get a list of all avaliable filter options for a given relation.
+   * 
+   * @param {string} relation The shortened relation name
+   * @returns {Promise<Array<string>>} resolves to an array of avaliable filter options (query string notation).
+   */
+  getFilterOptions(relation: string): Promise<any> {
+    return Promise.resolve()
+      .then(() => {
+        if (!relation) {
+          throw new Error('relation must be defined');
+        }
+        if (!this[relationsSymbol][relation]) {
+          throw new Error(`unknown relation, use one of ${Object.keys(this[relationsSymbol]).join(', ')}`)
+        }
+        return this.newRequest();
+      })
+      .then((request) => get(this[environmentSymbol], request))
+      .then(([res, traversal]) => {
+        let link = halfred.parse(res).link(this[relationsSymbol][relation].relation);
+        return link.href.match(/{[^}]*}/g)
+          .map(result => /^{[?&]([^}]+)}$/.exec(result)[1].split(','))
+          .reduce((a, b) => a.concat(b), [])
+      });
+  }
+
   /**
    * Get a single {@link Resource} identified by resourceID.
    *
