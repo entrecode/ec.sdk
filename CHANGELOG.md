@@ -1,3 +1,11 @@
+<a name="0.16.5"></a>
+## <small>0.16.5 (2018-05-28)</small>
+
+* release version 0.16.5 ([a2cf4cb](https://github.com/entrecode/ec.sdk/commit/a2cf4cb))
+* feat: assetGroupID property for DMAssets ([de8e969](https://github.com/entrecode/ec.sdk/commit/de8e969))
+
+
+
 <a name="0.16.4"></a>
 ## <small>0.16.4 (2018-05-25)</small>
 
