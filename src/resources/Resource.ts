@@ -183,6 +183,13 @@ class Resource {
   }
 
   /**
+   * alias for Resource#del()
+   */
+  delete(): Promise<void> {
+    return this.del();
+  }
+
+  /**
    * Loads the given {@link https://tools.ietf.org/html/draft-kelly-json-hal-08#section-5 link} and
    * returns a {@link Resource} with the loaded result.
    *
