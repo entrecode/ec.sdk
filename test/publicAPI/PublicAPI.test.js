@@ -35,7 +35,7 @@ nock.disableNetConnect();
 describe('PublicAPI', () => {
   let api;
   beforeEach(() => {
-    api = new Api.default('beefbeef', 'live'); // eslint-disable-line new-cap
+    api = new Api.default('beefbeef', { environment: 'live', noCookie: true }); // eslint-disable-line new-cap
     mock.reset();
   });
   it('should be instance of PublicAPI', () => {
@@ -191,11 +191,12 @@ describe('PublicAPI', () => {
     const stub = sinon.stub(helper, 'get');
     stub.returns(resolver('public-dm-root.json'));
 
-    return api.me()
+    return api
+      .setToken('eyJhbGciOiJSUzUxMiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6bnVsbCwianRpIjoiMTZiYjVmNDUtMTc0Ny00YjQ4LWEwMTItYjhkYjBkMDE1NDVjIiwiaWF0IjoxNTIzODY2NzM2LCJleHAiOjQ2Nzc0NjY3MzYsImlzcyI6ImVjX2FkbWluIiwic3ViIjoiMzk4MWI3YzktMzNlOC00MDg0LWI4YTYtMDU2NDBjNzUwNTZmIn0.nWturDuNcjlEE99YKCWXxwyi6gV9wKrSZg4o2nfFhG4Xtb8LzdUQKtmNGTHiBIjIkeHm2dH6RO5sTGIZboiJfLePGzE8UVYmx_e5GbfCz_gq636lFHl6fUGUdD-dwGvB65L5nWsJ-eEvYEbuQz_tuK6j1aLGmnOnSPjlCqdbE_Y')
+      .me()
       .then((me) => {
         me.should.be.instanceOf(Object);
         me.should.have.property('accountID', '49518e7d-a8b0-444a-b829-7fe3c86810ab');
-        // TODO properties should be model objects
         stub.restore();
       })
       .catch((err) => {
@@ -247,6 +248,7 @@ describe('PublicAPI', () => {
     return api.setClientID('rest').login('user', null).should.be.rejectedWith('password must be defined');
   });
   it('should logout successfully', () => {
+    api.setClientID('rest');
     api.setToken('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJlbnRyZWNvZGVUZXN0IiwiaWF0IjoxNDg1NzgzNTg4LCJleHAiOjQ2NDE0NTcxODgsImF1ZCI6IlRlc3QiLCJzdWIiOiJ0ZXN0QGVudHJlY29kZS5kZSJ9.Vhrq5GR2hNz-RoAhdlnIIWHelPciBPCemEa74s7cXn8');
     const stub = sinon.stub(helper, 'post');
     stub.returns(Promise.resolve());

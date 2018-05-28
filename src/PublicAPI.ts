@@ -1072,8 +1072,19 @@ export default class PublicAPI extends Core {
    * @returns {Promise<any>} Object account info
    */
   me(reload: boolean = true): Promise<any> { //TODO advanced type
-    return this.resolve(reload)
-      .then(() => this.account);
+    return Promise.resolve()
+      .then(() => {
+        if (this[resourceSymbol] && this.account) {
+          return this.account;
+        }
+
+        if (!this[tokenStoreSymbol].hasToken()) {
+          throw new Error('No token stored. PublicAPI#me() unable to run.');
+        }
+
+        return this.resolve(reload)
+          .then(() => this.account);
+      });
   }
 
   /**
