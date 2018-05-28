@@ -1,3 +1,11 @@
+<a name="0.16.6"></a>
+## <small>0.16.6 (2018-05-28)</small>
+
+* release version 0.16.6 ([3711bbc](https://github.com/entrecode/ec.sdk/commit/3711bbc))
+* feat: add url upload option for dmAssets ([3716c3d](https://github.com/entrecode/ec.sdk/commit/3716c3d))
+
+
+
 <a name="0.16.5"></a>
 ## <small>0.16.5 (2018-05-28)</small>
 
