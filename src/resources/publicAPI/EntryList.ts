@@ -23,6 +23,27 @@ export default class EntryList extends ListResource {
   constructor(resource: any, environment: environment, traversal: any, name: string, schema: any) {
     super(resource, environment, traversal, name, schema, EntryList, EntryResource);
   }
+
+  /**
+   * Get the first {@link https://tools.ietf.org/html/draft-kelly-json-hal-08#section-4.1.2
+   * embedded} item from the list
+   *
+   * @returns {EntryResource} the first item.
+   */
+  getFirstItem(): EntryResource {
+    return <EntryResource>super.getFirstItem();
+  }
+
+  /**
+   * Get the n'th {@link https://tools.ietf.org/html/draft-kelly-json-hal-08#section-4.1.2
+   * embedded} item from the list
+   *
+   * @param {number} n index of the item
+   * @returns {EntryResource} the requested item.
+   */
+  getItem(n: number): EntryResource {
+    return <EntryResource>super.getItem(n);
+  }
 }
 
 /**
