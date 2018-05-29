@@ -8,7 +8,7 @@ const { convertValidationError } = require('ec.errors')();
 
 import { EventEmitterFactory } from './EventEmitter';
 import TokenStoreFactory from './TokenStore';
-import { get, getSchema, optionsToQuery, post } from './helper';
+import { locale, setLocale, get, getSchema, optionsToQuery, post } from './helper';
 import Resource from './resources/Resource';
 import ListResource, { filterOptions } from './resources/ListResource';
 import Problem from './Problem';
@@ -297,6 +297,13 @@ export default class Core {
     return this;
   }
 
+  /**
+   * Set the global locale for error output. 'de' and 'en' are available.
+   */
+  setLocale(globalLocale: string = 'en'): Core {
+    setLocale(globalLocale);
+    return this;
+  }
 
   /**
    * Get a list of all avaliable filter options for a given relation.
@@ -459,7 +466,7 @@ export default class Core {
       .then(link =>
         validator.validate(resource, `${link.profile}${this[relationsSymbol][relation].createTemplateModifier}`)
           .catch((e) => {
-            throw new Problem(convertValidationError(e));
+            throw new Problem(convertValidationError(e), locale);
           }))
       .then(() => this.follow(this[relationsSymbol][relation].relation))
       .then(request => {

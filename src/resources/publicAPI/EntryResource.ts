@@ -7,7 +7,7 @@ import LiteEntryResource from './LiteEntryResource';
 import LiteDMAccountResource from './LiteDMAccountResource';
 import LiteRoleResource from './LiteRoleResource';
 import PublicAssetResource from './PublicAssetResource';
-import { get, fileNegotiate, getSchema, optionsToQuery, getHistory } from '../../helper';
+import { get, fileNegotiate, getSchema, optionsToQuery, getHistory, locale } from '../../helper';
 import { environment } from '../../Core';
 import DMAssetResource from './DMAssetResource';
 import { filterOptions } from '../ListResource';
@@ -671,7 +671,7 @@ class EntryResource extends LiteEntryResource {
         const schema = this[schemaSymbol].allOf[1].properties[field];
         return validator.validate(this[field], schema)
           .catch((e) => {
-            throw new Problem(convertValidationError(e));
+            throw new Problem(convertValidationError(e), locale);
           });
       });
   }

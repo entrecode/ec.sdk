@@ -23,7 +23,8 @@ import {
   postEmpty,
   superagentFormPost,
   superagentPost,
-  getHistory
+  getHistory,
+  locale,
 } from './helper';
 import DMAssetResource from './resources/publicAPI/DMAssetResource';
 import DMAssetList from './resources/publicAPI/DMAssetList';
@@ -626,7 +627,7 @@ export default class PublicAPI extends Core {
       .then(link =>
         validator.validate(e, `${link.profile}?template=post`)
           .catch((e) => {
-            throw new Problem(convertValidationError(e));
+            throw new Problem(convertValidationError(e), locale);
           }))
       .then(() => this.follow(`${this[shortIDSymbol]}:${model}`))
       .then(request => {

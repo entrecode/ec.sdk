@@ -8,7 +8,7 @@ import * as assert from 'assert';
 const { convertValidationError } = require('ec.errors')();
 
 import ListResource, { filterOptions } from './ListResource';
-import { del, get, optionsToQuery, post, put } from '../helper';
+import { del, get, optionsToQuery, post, put, locale } from '../helper';
 import Problem from '../Problem';
 
 const environmentSymbol = Symbol.for('environment');
@@ -158,7 +158,7 @@ class Resource {
       .then(link =>
         validator.validate(resource, `${link.profile}${this[relationsSymbol][relation].createTemplateModifier}`)
           .catch((e) => {
-            throw new Problem(convertValidationError(e));
+            throw new Problem(convertValidationError(e), locale);
           }))
       .then(() => this.newRequest().follow(this[relationsSymbol][relation].relation))
       .then(request => {
@@ -448,7 +448,7 @@ class Resource {
         const out = this.toOriginal();
         return validator.validate(out, overwriteSchemaUrl || this.getLink('self').profile)
           .catch((e) => {
-            throw new Problem(convertValidationError(e));
+            throw new Problem(convertValidationError(e), locale);
           })
           .then(() => {
             const request = this.newRequest().follow('self');
@@ -536,7 +536,7 @@ class Resource {
   validate(): Promise<boolean> {
     return validator.validate(this.toOriginal(), this.getLink('self').profile)
       .catch((e) => {
-        throw new Problem(convertValidationError(e));
+        throw new Problem(convertValidationError(e), locale);
       })
       .then(() => true);
   }

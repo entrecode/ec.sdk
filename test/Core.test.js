@@ -206,6 +206,11 @@ describe('Core', () => {
     const core = new Core.default({ live: 'https://datamanager.entrecode.de' }, { cookieModifier: 'Test' });
     core[environmentSymbol].should.be.equal('liveTest');
   });
+  it('should set locale', () => {
+    core.setLocale('de');
+    helper.locale.should.be.equal('de');
+    core.setLocale('en');
+  });
 });
 
 describe('Network Helper', () => {

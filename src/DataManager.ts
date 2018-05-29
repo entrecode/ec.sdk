@@ -10,7 +10,7 @@ import DMStatsResource from './resources/datamanager/DMStatsResource';
 import TemplateList from './resources/datamanager/TemplateList';
 import TemplateResource from './resources/datamanager/TemplateResource';
 import { filterOptions } from './resources/ListResource';
-import { get, getHistory, optionsToQuery, post, superagentGet } from './helper';
+import { locale, get, getHistory, optionsToQuery, post, superagentGet } from './helper';
 import Problem from './Problem';
 import HistoryEvents from './resources/publicAPI/HistoryEvents';
 
@@ -100,7 +100,7 @@ export default class DataManager extends Core {
       .then(link =>
         validator.validate(template, `${link.profile}-template`)
           .catch((e) => {
-            throw new Problem(convertValidationError(e));
+            throw new Problem(convertValidationError(e), locale);
           }))
       .then(() => this.follow('ec:dm-templates'))
       .then(request => post(request, template))

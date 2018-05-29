@@ -1,10 +1,14 @@
+const { getLocalised } = require('ec.errors')();
+
 interface Problem extends Error {
+  status: number;
+  type: string;
   message: string;
   code: number;
   detail: string;
   remoteStack: string;
   requestID: string;
-  subErrors: Problem | any; // TODO Error
+  subErrors: Problem | any;
   title: string;
   verbose: string;
 }
@@ -23,7 +27,7 @@ class Problem extends Error {
    *
    * @param {object} error the error received from any entrecode API.
    */
-  public constructor(error: Problem | any) {
+  public constructor(error: Problem | any, locale: string = 'en') {
     super(error.title || error.message);
 
     Object.assign(this, error);
@@ -31,6 +35,12 @@ class Problem extends Error {
       Object.assign(this, {
         title: this.message,
       });
+    }
+
+    if (locale !== 'en') {
+      const localised = getLocalised(Object.assign({}, this), locale);
+      this.message = localised.message;
+      this.title = localised.message;
     }
 
     if ('stack' in error) {
@@ -42,9 +52,9 @@ class Problem extends Error {
       if (!Array.isArray(subErrors)) {
         subErrors = [subErrors];
       }
-      this.subErrors = subErrors.map(e => new Problem(e));
+      this.subErrors = subErrors.map(e => new Problem(e, locale));
     } else if ('subErrors' in error) {
-      this.subErrors = error.subErrors.map(e => new Problem(e));
+      this.subErrors = error.subErrors.map(e => new Problem(e, locale));
     } else {
       this.subErrors = [];
     }

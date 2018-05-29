@@ -1,4 +1,4 @@
-import * as locale from 'locale';
+import * as localeLib from 'locale';
 import * as EventSource from 'eventsource/lib/eventsource-polyfill';
 import * as superagent from 'superagent';
 import * as validator from 'json-schema-remote';
@@ -61,12 +61,12 @@ function jsonHandler(callback) {
             code = '000';
             break;
         }
-        return callback(new Problem(newError(code, `ec.sdk: empty body on unsuccessful status: ${res.statusCode}`)));
+        return callback(new Problem(newError(code, `ec.sdk: empty body on unsuccessful status: ${res.statusCode}`), locale));
       }
 
-      return callback(new Problem(JSON.parse(res.body)));
+      return callback(new Problem(JSON.parse(res.body), locale));
     } catch (e) {
-      return callback(new Problem(newError('000', `ec.sdk: unable to parse body: ${res.body}`)));
+      return callback(new Problem(newError('000', `ec.sdk: unable to parse body: ${res.body}`)), locale);
     }
   };
 }
@@ -360,7 +360,7 @@ export function superagentFormPost(environment: environment, url: string, form: 
     .catch((err) => {
       let problem;
       if (err.status && err.response && 'body' in err.response) {
-        problem = new Problem(err.response.body);
+        problem = new Problem(err.response.body, locale);
       }
       EventEmitterFactory(environment).emit('error', problem || err);
       throw problem || err;
@@ -391,7 +391,7 @@ export function superagentGet(url: string, headers?: any, environment?: environm
     .catch((err) => {
       let problem;
       if (err.status && err.response && 'body' in err.response) {
-        problem = new Problem(err.response.body);
+        problem = new Problem(err.response.body, locale);
       }
       EventEmitterFactory(environment).emit('error', problem || err);
       throw problem || err;
@@ -433,7 +433,7 @@ export function superagentPost(environment: environment, request: any): Promise<
     .catch((err) => {
       let problem;
       if (err.status && err.response && 'body' in err.response) {
-        problem = new Problem(err.response.body);
+        problem = new Problem(err.response.body), locale;
       }
       EventEmitterFactory(environment).emit('error', problem || err);
       throw problem || err;
@@ -605,7 +605,7 @@ export function optionsToQuery(options: filterOptions, templateURL?: string): an
           error = newError(212, `Cannot apply 'exact' filter to '${missing}'`, missing);
         }
 
-        return new Problem(error);
+        return new Problem(error, locale);
       });
       throw err;
     }
@@ -630,10 +630,10 @@ export function fileNegotiate(asset: AssetResource | DeletedAssetResource | Publ
   let f = JSON.parse(JSON.stringify(asset.files));
 
   if (requestedLocale) {
-    const supportedLocales = new locale['Locales'](
+    const supportedLocales = new localeLib['Locales'](
       Array.from(new Set(f.map(e => e.locale))) // unique
         .filter(a => !!a));// remove falsy values
-    let bestLocale = (new locale['Locales'](requestedLocale)).best(supportedLocales).toString();
+    let bestLocale = (new localeLib['Locales'](requestedLocale)).best(supportedLocales).toString();
     bestLocale = /^([^.]+)/.exec(bestLocale)[1]; // remove charset
     const filesWithLocale = f.filter(file => file.locale === bestLocale);
     if (filesWithLocale && filesWithLocale.length > 0) {
@@ -707,4 +707,10 @@ export function getSchema(link: string): any {
           return loadedSchema;
         });
     });
+}
+
+export let locale = 'en';
+
+export function setLocale(globalLocale: string = 'en') {
+  locale = globalLocale;
 }

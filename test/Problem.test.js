@@ -9,34 +9,36 @@ chai.should();
 chai.use(chaiAsPromised);
 
 describe('Problem', () => {
+  const json = {
+    title: 'title',
+    code: 1100,
+    status: 400,
+    type: 'https://doc.entrecode.de/#error-100',
+    detail: 'detail',
+    verbose: 'verbose',
+    requestID: 'id',
+    stack: 'Error: title\n    at newError (/path/file.js:7:7)',
+    _embedded: {
+      error: [
+        {
+          status: 400,
+          code: 1100,
+          title: 'embedded1',
+          type: 'https://doc.entrecode.de/#error-100',
+        },
+        {
+          status: 400,
+          code: 1100,
+          title: 'embedded1',
+          type: 'https://doc.entrecode.de/#error-100',
+        },
+      ],
+    },
+  };
+
   let error;
   beforeEach(() => {
-    error = new Problem({
-      title: 'title',
-      code: 1100,
-      status: 400,
-      type: 'https://doc.entrecode.de/#error-100',
-      detail: 'detail',
-      verbose: 'verbose',
-      requestID: 'id',
-      stack: 'Error: title\n    at newError (/path/file.js:7:7)',
-      _embedded: {
-        error: [
-          {
-            status: 400,
-            code: 1100,
-            title: 'embedded1',
-            type: 'https://doc.entrecode.de/#error-100',
-          },
-          {
-            status: 400,
-            code: 1100,
-            title: 'embedded1',
-            type: 'https://doc.entrecode.de/#error-100',
-          },
-        ],
-      },
-    });
+    error = new Problem(json);
   });
   afterEach(() => {
     error = null;
@@ -49,6 +51,10 @@ describe('Problem', () => {
   });
   it('should have title', () => {
     error.should.have.property('title', 'title');
+  });
+  it('should have localized title', () => {
+    const err = new Problem(json, 'de');
+    err.should.have.property('title', 'Resource nicht gefunden');
   });
   it('should have message equal title', () => {
     error.should.have.property('message', error.title);
@@ -73,11 +79,11 @@ describe('Problem', () => {
   });
   it('should have short pretty string representation', () => {
     error.short().should.be
-    .equal('title (1100)');
+      .equal('title (1100)');
   });
   it('should have long pretty string representation', () => {
     error.long().should.be
-    .equal('title (1100)\ndetail - verbose (id)');
+      .equal('title (1100)\ndetail - verbose (id)');
   });
   it('should have long string without verbose and requestID', () => {
     error = new Problem({
@@ -88,7 +94,7 @@ describe('Problem', () => {
       detail: 'detail',
     });
     error.long().should.be
-    .equal('title (1100)\ndetail');
+      .equal('title (1100)\ndetail');
   });
   it('should have sub errors', () => {
     error.subErrors.should.be.instanceOf(Array);
@@ -126,10 +132,10 @@ describe('Problem', () => {
   });
   it('should have short pretty string for all errors', () => {
     error.shortAll().should.be
-    .equal('title (1100)\nSubErrors:\n  embedded1 (1100)\n  embedded1 (1100)\n');
+      .equal('title (1100)\nSubErrors:\n  embedded1 (1100)\n  embedded1 (1100)\n');
   });
   it('should have long pretty string for all errors', () => {
     error.longAll().should.be
-    .equal('title (1100)\ndetail - verbose (id)\nSubErrors:\n  embedded1 (1100)\n  embedded1 (1100)\n');
+      .equal('title (1100)\ndetail - verbose (id)\nSubErrors:\n  embedded1 (1100)\n  embedded1 (1100)\n');
   });
 });
