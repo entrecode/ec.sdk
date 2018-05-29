@@ -69,6 +69,12 @@ const urls = {
  * @class
  *
  * @example
+ * // node usage:
+ * const { PublicAPI } = require('ec.sdk');
+ * const api = new PublicAPI('beefbeef', { environment: 'live', noCookie: true }, true); // for ec user
+ * api.setToken(config.accessToken);
+ * 
+ * // frontend usage with session:
  * const session new Session();
  * let api = new PublicAPI('beefbeef', 'live', true);
  * // same as
