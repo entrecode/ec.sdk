@@ -4,7 +4,9 @@ const chai = require('chai');
 const sinon = require('sinon');
 const sinonChai = require('sinon-chai');
 
-const emitter = require('../lib/EventEmitter').default;
+const { EventEmitterFactory } = require('../lib/EventEmitter');
+
+const emitter = EventEmitterFactory();
 
 const should = chai.should();
 chai.use(sinonChai);

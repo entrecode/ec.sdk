@@ -6,7 +6,7 @@ import * as shortID from 'shortid';
 
 const { convertValidationError } = require('ec.errors')();
 
-import events from './EventEmitter';
+import { EventEmitterFactory } from './EventEmitter';
 import TokenStoreFactory from './TokenStore';
 import { get, getSchema, optionsToQuery, post } from './helper';
 import Resource from './resources/Resource';
@@ -77,9 +77,9 @@ export default class Core {
       throw new Error('invalid environment specified');
     }
 
-    this[eventsSymbol] = events;
-    this[cookieModifierSymbol] = cookieModifier;
     this[environmentSymbol] = environment + cookieModifier;
+    this[eventsSymbol] = EventEmitterFactory(this[environmentSymbol]);
+    this[cookieModifierSymbol] = cookieModifier;
     this[tokenStoreSymbol] = TokenStoreFactory(environment + cookieModifier);
     this[traversalSymbol] = traverson.from(urls[environment]).jsonHal();
     this[relationsSymbol] = {};

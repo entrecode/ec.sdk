@@ -1,3 +1,5 @@
+import { environment } from "./Core";
+
 /**
  * Login event is emitted when a login succeeds with {@link Session#login}. The newly created
  * accessToken is passed as event parameter.
@@ -133,4 +135,20 @@ export class EventEmitter {
  * Global event emitter. All received errors will be emitted as an error event here.
  * You can access this emitter with {@link Core#on}.
  */
-export default new EventEmitter();
+// export default new EventEmitter();
+
+const emitterMap = new Map();
+
+/**
+ * Create or get an event Emitter for a specific environment.
+ * 
+ * @param {string} environment environment string to create emitter for
+ * @returns {EventEmitter} EventEmitter bound to the specific environment
+ */
+export function EventEmitterFactory(environment: environment = 'live') {
+  if (!emitterMap.has(environment)) {
+    emitterMap.set(environment, new EventEmitter());
+  }
+
+  return emitterMap.get(environment);
+}

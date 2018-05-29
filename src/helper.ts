@@ -3,7 +3,7 @@ import * as EventSource from 'eventsource/lib/eventsource-polyfill';
 import * as superagent from 'superagent';
 import * as validator from 'json-schema-remote';
 
-import events from './EventEmitter';
+import { EventEmitterFactory } from './EventEmitter';
 import Problem from './Problem';
 import TokenStoreFactory, { TokenStore } from './TokenStore';
 import { filterOptions } from './resources/ListResource';
@@ -118,10 +118,10 @@ function traversonWrapper(func: string, environment: environment, t: any, body?:
         if (TokenStoreFactory(environment) && err instanceof Problem &&
           (err.code % 1000 === 401 || err.code % 1000 === 402)) {
           TokenStoreFactory(environment).deleteToken();
-          events.emit('logout', err);
+          EventEmitterFactory(environment).emit('logout', err);
         }
 
-        events.emit('error', err);
+        EventEmitterFactory(environment).emit('error', err);
         return reject(err);
       }
 
@@ -279,7 +279,7 @@ export function getHistory(environment: environment, t: any): Promise<EventSourc
       if (!historyMap.has(url)) {
         historyMap.set(url, new EventSource(url));
       }
-      
+
       return historyMap.get(url);
     });
 }
@@ -352,7 +352,7 @@ export function del(environment: environment, t: any): Promise<any> {
  * @param {object} form the form to post as object
  * @returns {Promise} Promise resolving to response body.
  */
-export function superagentFormPost(url: string, form: any): Promise<any> {
+export function superagentFormPost(environment: environment, url: string, form: any): Promise<any> {
   return superagent['post'](url)
     .type('form')
     .send(form)
@@ -362,7 +362,7 @@ export function superagentFormPost(url: string, form: any): Promise<any> {
       if (err.status && err.response && 'body' in err.response) {
         problem = new Problem(err.response.body);
       }
-      events.emit('error', problem || err);
+      EventEmitterFactory(environment).emit('error', problem || err);
       throw problem || err;
     });
 }
@@ -393,7 +393,7 @@ export function superagentGet(url: string, headers?: any, environment?: environm
       if (err.status && err.response && 'body' in err.response) {
         problem = new Problem(err.response.body);
       }
-      events.emit('error', problem || err);
+      EventEmitterFactory(environment).emit('error', problem || err);
       throw problem || err;
     });
 }
@@ -435,7 +435,7 @@ export function superagentPost(environment: environment, request: any): Promise<
       if (err.status && err.response && 'body' in err.response) {
         problem = new Problem(err.response.body);
       }
-      events.emit('error', problem || err);
+      EventEmitterFactory(environment).emit('error', problem || err);
       throw problem || err;
     });
 }
