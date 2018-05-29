@@ -446,7 +446,7 @@ export default class Accounts extends Core {
         });
         return getUrl(this[environmentSymbol], request);
       })
-      .then(url => superagentFormPost(url, { email, password }))
+      .then(url => superagentFormPost(this[environmentSymbol], url, { email, password }))
       .then((token) => {
         this[tokenStoreSymbol].setToken(token.token);
         return Promise.resolve(token.token);

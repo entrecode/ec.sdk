@@ -6,9 +6,9 @@ import * as shortID from 'shortid';
 
 const { convertValidationError } = require('ec.errors')();
 
-import events from './EventEmitter';
+import { EventEmitterFactory } from './EventEmitter';
 import TokenStoreFactory from './TokenStore';
-import { get, getSchema, optionsToQuery, post } from './helper';
+import { locale, setLocale, get, getSchema, optionsToQuery, post } from './helper';
 import Resource from './resources/Resource';
 import ListResource, { filterOptions } from './resources/ListResource';
 import Problem from './Problem';
@@ -77,9 +77,9 @@ export default class Core {
       throw new Error('invalid environment specified');
     }
 
-    this[eventsSymbol] = events;
-    this[cookieModifierSymbol] = cookieModifier;
     this[environmentSymbol] = environment + cookieModifier;
+    this[eventsSymbol] = EventEmitterFactory(this[environmentSymbol]);
+    this[cookieModifierSymbol] = cookieModifier;
     this[tokenStoreSymbol] = TokenStoreFactory(environment + cookieModifier);
     this[traversalSymbol] = traverson.from(urls[environment]).jsonHal();
     this[relationsSymbol] = {};
@@ -298,6 +298,40 @@ export default class Core {
   }
 
   /**
+   * Set the global locale for error output. 'de' and 'en' are available.
+   */
+  setLocale(globalLocale: string = 'en'): Core {
+    setLocale(globalLocale);
+    return this;
+  }
+
+  /**
+   * Get a list of all avaliable filter options for a given relation.
+   * 
+   * @param {string} relation The shortened relation name
+   * @returns {Promise<Array<string>>} resolves to an array of avaliable filter options (query string notation).
+   */
+  getFilterOptions(relation: string): Promise<any> {
+    return Promise.resolve()
+      .then(() => {
+        if (!relation) {
+          throw new Error('relation must be defined');
+        }
+        if (!this[relationsSymbol][relation]) {
+          throw new Error(`unknown relation, use one of ${Object.keys(this[relationsSymbol]).join(', ')}`)
+        }
+        return this.newRequest();
+      })
+      .then((request) => get(this[environmentSymbol], request))
+      .then(([res, traversal]) => {
+        let link = halfred.parse(res).link(this[relationsSymbol][relation].relation);
+        return link.href.match(/{[^}]*}/g)
+          .map(result => /^{[?&]([^}]+)}$/.exec(result)[1].split(','))
+          .reduce((a, b) => a.concat(b), [])
+      });
+  }
+
+  /**
    * Get a single {@link Resource} identified by resourceID.
    *
    * @example
@@ -432,7 +466,7 @@ export default class Core {
       .then(link =>
         validator.validate(resource, `${link.profile}${this[relationsSymbol][relation].createTemplateModifier}`)
           .catch((e) => {
-            throw new Problem(convertValidationError(e));
+            throw new Problem(convertValidationError(e), locale);
           }))
       .then(() => this.follow(this[relationsSymbol][relation].relation))
       .then(request => {

@@ -2,7 +2,7 @@ import * as halfred from 'halfred';
 import * as validator from 'json-schema-remote';
 import Resource from '../Resource';
 import DataManagerResource from './DataManagerResource';
-import { get, post, put } from '../../helper';
+import { get, post, put, locale } from '../../helper';
 import { environment } from '../../Core';
 import Problem from '../../Problem';
 
@@ -85,7 +85,7 @@ class TemplateResource extends Resource {
       .then(() =>
         validator.validate(body || {}, this.dataSchema)
           .catch((e) => {
-            throw new Problem(convertValidationError(e));
+            throw new Problem(convertValidationError(e), locale);
           }))
       .then(() => {
         const request = this.newRequest().follow('ec:datamanagers/new-from-template');

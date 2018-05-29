@@ -1,3 +1,17 @@
+<a name="0.16.7"></a>
+## <small>0.16.7 (2018-05-29)</small>
+
+* release version 0.16.7 ([c4a543b](https://github.com/entrecode/ec.sdk/commit/c4a543b))
+* feat: add delete alias for Resource#del ([fe477b1](https://github.com/entrecode/ec.sdk/commit/fe477b1))
+* feat: Core#setLocale for localisation of error output (where available) ([a0e5222](https://github.com/entrecode/ec.sdk/commit/a0e5222))
+* feat: EntryList#getItem(n) and #getFirstItem() without typecast ([ad72872](https://github.com/entrecode/ec.sdk/commit/ad72872))
+* feat: EventEmitter on a per environment base ([cc898ca](https://github.com/entrecode/ec.sdk/commit/cc898ca))
+* feat: getFilterOptions for all shortened relations ([e39aa3a](https://github.com/entrecode/ec.sdk/commit/e39aa3a))
+* feat: rebuildDoc und DataManagerResource ([b6a7d32](https://github.com/entrecode/ec.sdk/commit/b6a7d32))
+* fix: spare request in PublicAPI#me() SDK-24 ([eac533d](https://github.com/entrecode/ec.sdk/commit/eac533d))
+
+
+
 <a name="0.16.6"></a>
 ## <small>0.16.6 (2018-05-28)</small>
 

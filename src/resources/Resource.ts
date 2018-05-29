@@ -8,7 +8,7 @@ import * as assert from 'assert';
 const { convertValidationError } = require('ec.errors')();
 
 import ListResource, { filterOptions } from './ListResource';
-import { del, get, optionsToQuery, post, put } from '../helper';
+import { del, get, optionsToQuery, post, put, locale } from '../helper';
 import Problem from '../Problem';
 
 const environmentSymbol = Symbol.for('environment');
@@ -158,7 +158,7 @@ class Resource {
       .then(link =>
         validator.validate(resource, `${link.profile}${this[relationsSymbol][relation].createTemplateModifier}`)
           .catch((e) => {
-            throw new Problem(convertValidationError(e));
+            throw new Problem(convertValidationError(e), locale);
           }))
       .then(() => this.newRequest().follow(this[relationsSymbol][relation].relation))
       .then(request => {
@@ -180,6 +180,13 @@ class Resource {
    */
   del(): Promise<void> {
     return del(this[environmentSymbol], this.newRequest().follow('self'));
+  }
+
+  /**
+   * alias for Resource#del()
+   */
+  delete(): Promise<void> {
+    return this.del();
   }
 
   /**
@@ -315,6 +322,28 @@ class Resource {
   }
 
   /**
+   * Get a list of all avaliable filter options for a given relation.
+   * 
+   * @param {string} relation The shortened relation name
+   * @returns {Promise<Array<string>>} resolves to an array of avaliable filter options (query string notation).
+   */
+  getFilterOptions(relation: string): Promise<any> {
+    return Promise.resolve()
+      .then(() => {
+        if (!relation) {
+          throw new Error('relation must be defined');
+        }
+        if (!this[relationsSymbol][relation]) {
+          throw new Error(`unknown relation, use one of ${Object.keys(this[relationsSymbol]).join(', ')}`)
+        }
+        let link = this.getLink(this[relationsSymbol][relation].relation);
+        return link.href.match(/{[^}]*}/g)
+          .map(result => /^{[?&]([^}]+)}$/.exec(result)[1].split(','))
+          .reduce((a, b) => a.concat(b), [])
+      });
+  }
+
+  /**
    * Get a single {@link Resource} identified by resourceID.
    *
    * @example
@@ -419,7 +448,7 @@ class Resource {
         const out = this.toOriginal();
         return validator.validate(out, overwriteSchemaUrl || this.getLink('self').profile)
           .catch((e) => {
-            throw new Problem(convertValidationError(e));
+            throw new Problem(convertValidationError(e), locale);
           })
           .then(() => {
             const request = this.newRequest().follow('self');
@@ -507,7 +536,7 @@ class Resource {
   validate(): Promise<boolean> {
     return validator.validate(this.toOriginal(), this.getLink('self').profile)
       .catch((e) => {
-        throw new Problem(convertValidationError(e));
+        throw new Problem(convertValidationError(e), locale);
       })
       .then(() => true);
   }

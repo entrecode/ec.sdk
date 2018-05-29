@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset='utf-8' />
-  <title>ec.sdk 0.16.6 | Documentation</title>
+  <title>ec.sdk 0.16.7 | Documentation</title>
   <meta name='viewport' content='width=device-width,initial-scale=1'>
   <link href='assets/bass.css' type='text/css' rel='stylesheet' />
   <link href='assets/style.css' type='text/css' rel='stylesheet' />
@@ -14,7 +14,7 @@
       <div id='split-left' class='overflow-auto fs0 height-viewport-100'>
         <div class='py1 px2'>
           <h3 class='mb0 no-anchor'>ec.sdk</h3>
-          <div class='mb1'><code>0.16.6</code></div>
+          <div class='mb1'><code>0.16.7</code></div>
           <input
             placeholder='Filter'
             id='filter-input'
@@ -109,6 +109,18 @@
                         href='#coresetuseragent'
                         class='regular pre-open'>
                         #setUserAgent
+                      </a></li>
+                      
+                      <li><a
+                        href='#coresetlocale'
+                        class='regular pre-open'>
+                        #setLocale
+                      </a></li>
+                      
+                      <li><a
+                        href='#coregetfilteroptions'
+                        class='regular pre-open'>
+                        #getFilterOptions
                       </a></li>
                       
                       <li><a
@@ -836,6 +848,12 @@
                       </a></li>
                       
                       <li><a
+                        href='#resourcedelete'
+                        class='regular pre-open'>
+                        #delete
+                      </a></li>
+                      
+                      <li><a
                         href='#resourcefollowlink'
                         class='regular pre-open'>
                         #followLink
@@ -881,6 +899,12 @@
                         href='#resourceresolve'
                         class='regular pre-open'>
                         #resolve
+                      </a></li>
+                      
+                      <li><a
+                        href='#resourcegetfilteroptions'
+                        class='regular pre-open'>
+                        #getFilterOptions
                       </a></li>
                       
                       <li><a
@@ -1844,6 +1868,12 @@
                       </a></li>
                       
                       <li><a
+                        href='#datamanagerresourcerebuilddoc'
+                        class='regular pre-open'>
+                        #rebuildDoc
+                      </a></li>
+                      
+                      <li><a
                         href='#datamanagerresourcestats'
                         class='regular pre-open'>
                         #stats
@@ -2510,10 +2540,34 @@
                 
                 <li><a
                   href='#entrylist'
-                  class="">
+                  class=" toggle-sibling">
                   EntryList
-                  
+                  <span class='icon'>▸</span>
                 </a>
+                
+                <div class='toggle-target display-none'>
+                  
+                  
+                    <ul class='list-reset py1-ul pl1'>
+                      <li class='h5'><span>Instance members</span></li>
+                      
+                      <li><a
+                        href='#entrylistgetfirstitem'
+                        class='regular pre-open'>
+                        #getFirstItem
+                      </a></li>
+                      
+                      <li><a
+                        href='#entrylistgetitem'
+                        class='regular pre-open'>
+                        #getItem
+                      </a></li>
+                      
+                    </ul>
+                  
+                  
+                  
+                </div>
                 
                 </li>
               
@@ -2774,6 +2828,26 @@
                   href='#impressum--datenschutz'
                   class="h5 bold black caps">
                   Impressum &amp; Datenschutz
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#emittermap'
+                  class="">
+                  emitterMap
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#eventemitterfactory'
+                  class="">
+                  EventEmitterFactory
                   
                 </a>
                 
@@ -3661,6 +3735,134 @@ function to add any string.</p>
       <pre class='p1 overflow-auto round fill-light'>accounts.setUserAgent(<span class="hljs-string">'editor/0.15.3 (a comment)'</span>);
 <span class="hljs-comment">// all subsequent requests will use x-user-agent: editor/0.15.3 (a comment) ec.sdk/&lt;version&gt;</span></pre>
     
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='coresetlocale'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>setLocale(globalLocale)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Set the global locale for error output. 'de' and 'en' are available.</p>
+
+
+  <div class='pre p1 fill-light mt0'>setLocale(globalLocale: any)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>globalLocale</span> <code class='quiet'>(any
+            = <code>&#39;en&#39;</code>)</code>
+	    
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='coregetfilteroptions'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>getFilterOptions(relation)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Get a list of all avaliable filter options for a given relation.</p>
+
+
+  <div class='pre p1 fill-light mt0'>getFilterOptions(relation: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>>></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>relation</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    The shortened relation name
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>>></code>:
+        resolves to an array of avaliable filter options (query string notation).
+
+      
+    
+  
+
+  
+
   
 
   
@@ -10106,7 +10308,7 @@ Problems also comply to <a href="https://tools.ietf.org/html/draft-kelly-json-ha
 getLinks).</p>
 
 
-  <div class='pre p1 fill-light mt0'>new Problem(error: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</div>
+  <div class='pre p1 fill-light mt0'>new Problem(error: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, locale: any)</div>
   
   
     <p>
@@ -10133,6 +10335,15 @@ getLinks).</p>
             <span class='code bold'>error</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
 	    the error received from any entrecode API.
 
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>locale</span> <code class='quiet'>(any
+            = <code>&#39;en&#39;</code>)</code>
+	    
           </div>
           
         </div>
@@ -10965,6 +11176,52 @@ resource.</p>
       </div>
     </div>
   
+    <div class='border-bottom' id='resourcedelete'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>delete()</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>alias for Resource#del()</p>
+
+
+  <div class='pre p1 fill-light mt0'>delete()</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
     <div class='border-bottom' id='resourcefollowlink'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
@@ -11499,6 +11756,74 @@ afterwards.</p>
       <div class='py1 quiet mt1 prose-big'>Returns</div>
       <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#resource">Resource</a>></code>:
         this resource
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='resourcegetfilteroptions'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>getFilterOptions(relation)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Get a list of all avaliable filter options for a given relation.</p>
+
+
+  <div class='pre p1 fill-light mt0'>getFilterOptions(relation: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>>></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>relation</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    The shortened relation name
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>>></code>:
+        resolves to an array of avaliable filter options (query string notation).
 
       
     
@@ -20967,6 +21292,60 @@ filter options.
       </div>
     </div>
   
+    <div class='border-bottom' id='datamanagerresourcerebuilddoc'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>rebuildDoc()</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Invoke this to recreate public api documentation for this datamangager. DataManager will respond with 202 Accepted upon successful request so this simply resolves undefined.</p>
+
+
+  <div class='pre p1 fill-light mt0'>rebuildDoc(): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/undefined">undefined</a></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/undefined">undefined</a></code>:
+        returns undefined.
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
     <div class='border-bottom' id='datamanagerresourcestats'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
@@ -26943,6 +27322,134 @@ otherwise.
   
 
   
+    <div class='py1 quiet mt1 prose-big'>Instance Members</div>
+    <div class="clearfix">
+  
+    <div class='border-bottom' id='entrylistgetfirstitem'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>getFirstItem()</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Get the first <a href="https://tools.ietf.org/html/draft-kelly-json-hal-08#section-4.1.2">embedded</a> item from the list</p>
+
+
+  <div class='pre p1 fill-light mt0'>getFirstItem(): <a href="#entryresource">EntryResource</a></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="#entryresource">EntryResource</a></code>:
+        the first item.
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='entrylistgetitem'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>getItem(n)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Get the n'th <a href="https://tools.ietf.org/html/draft-kelly-json-hal-08#section-4.1.2">embedded</a> item from the list</p>
+
+
+  <div class='pre p1 fill-light mt0'>getItem(n: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>): <a href="#entryresource">EntryResource</a></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>n</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>)</code>
+	    index of the item
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="#entryresource">EntryResource</a></code>:
+        the requested item.
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+</div>
+
+  
 
   
 </section>
@@ -29085,7 +29592,19 @@ be the same object but with refreshed data.
   </h2>
 
   
-    <p><a name="0.16.6"></a></p>
+    <p><a name="0.16.7"></a></p>
+<h2><small>0.16.7 (2018-05-29)</small></h2>
+<ul>
+<li>release version 0.16.7 (<a href="https://github.com/entrecode/ec.sdk/commit/c4a543b">c4a543b</a>)</li>
+<li>feat: add delete alias for Resource#del (<a href="https://github.com/entrecode/ec.sdk/commit/fe477b1">fe477b1</a>)</li>
+<li>feat: Core#setLocale for localisation of error output (where available) (<a href="https://github.com/entrecode/ec.sdk/commit/a0e5222">a0e5222</a>)</li>
+<li>feat: EntryList#getItem(n) and #getFirstItem() without typecast (<a href="https://github.com/entrecode/ec.sdk/commit/ad72872">ad72872</a>)</li>
+<li>feat: EventEmitter on a per environment base (<a href="https://github.com/entrecode/ec.sdk/commit/cc898ca">cc898ca</a>)</li>
+<li>feat: getFilterOptions for all shortened relations (<a href="https://github.com/entrecode/ec.sdk/commit/e39aa3a">e39aa3a</a>)</li>
+<li>feat: rebuildDoc und DataManagerResource (<a href="https://github.com/entrecode/ec.sdk/commit/b6a7d32">b6a7d32</a>)</li>
+<li>fix: spare request in PublicAPI#me() SDK-24 (<a href="https://github.com/entrecode/ec.sdk/commit/eac533d">eac533d</a>)</li>
+</ul>
+<p><a name="0.16.6"></a></p>
 <h2><small>0.16.6 (2018-05-28)</small></h2>
 <ul>
 <li>release version 0.16.6 (<a href="https://github.com/entrecode/ec.sdk/commit/3711bbc">3711bbc</a>)</li>
@@ -30269,6 +30788,124 @@ accounts.account(…);</pre>
   
 </section>
 </div>
+          
+        
+          
+            <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='emittermap'>
+      emitterMap
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Global event emitter. All received errors will be emitted as an error event here.
+You can access this emitter with <a href="#coreon">Core#on</a>.</p>
+
+
+  <div class='pre p1 fill-light mt0'>emitterMap</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+            <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='eventemitterfactory'>
+      EventEmitterFactory
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Create or get an event Emitter for a specific environment.</p>
+
+
+  <div class='pre p1 fill-light mt0'>new EventEmitterFactory(environment: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>): EventEmitter</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>environment</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>
+            = <code>&#39;live&#39;</code>)</code>
+	    environment string to create emitter for
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code>EventEmitter</code>:
+        EventEmitter bound to the specific environment
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
           
         
       </div>

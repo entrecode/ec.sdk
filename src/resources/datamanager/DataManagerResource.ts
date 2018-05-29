@@ -644,6 +644,21 @@ class DataManagerResource extends Resource {
   }
 
   /**
+   * Invoke this to recreate public api documentation for this datamangager. DataManager will respond with 202 Accepted upon successful request so this simply resolves undefined.
+   * 
+   * @returns {undefined} returns undefined.
+   */
+  rebuildDoc(): Promise<void> {
+    return Promise.resolve()
+      .then(() => {
+        const request = this.newRequest()
+          .follow('ec:api-doc/build');
+        return get(this[environmentSymbol], request);
+      })
+      .then(([res]) => undefined);
+  }
+
+  /**
    * Load a single {@link DMStatsResource}.
    *
    * @example

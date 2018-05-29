@@ -23,7 +23,8 @@ import {
   postEmpty,
   superagentFormPost,
   superagentPost,
-  getHistory
+  getHistory,
+  locale,
 } from './helper';
 import DMAssetResource from './resources/publicAPI/DMAssetResource';
 import DMAssetList from './resources/publicAPI/DMAssetList';
@@ -626,7 +627,7 @@ export default class PublicAPI extends Core {
       .then(link =>
         validator.validate(e, `${link.profile}?template=post`)
           .catch((e) => {
-            throw new Problem(convertValidationError(e));
+            throw new Problem(convertValidationError(e), locale);
           }))
       .then(() => this.follow(`${this[shortIDSymbol]}:${model}`))
       .then(request => {
@@ -1072,8 +1073,19 @@ export default class PublicAPI extends Core {
    * @returns {Promise<any>} Object account info
    */
   me(reload: boolean = true): Promise<any> { //TODO advanced type
-    return this.resolve(reload)
-      .then(() => this.account);
+    return Promise.resolve()
+      .then(() => {
+        if (this[resourceSymbol] && this.account) {
+          return this.account;
+        }
+
+        if (!this[tokenStoreSymbol].hasToken()) {
+          throw new Error('No token stored. PublicAPI#me() unable to run.');
+        }
+
+        return this.resolve(reload)
+          .then(() => this.account);
+      });
   }
 
   /**
@@ -1315,7 +1327,7 @@ export default class PublicAPI extends Core {
         });
         return getUrl(this[environmentSymbol], request);
       })
-      .then(url => superagentFormPost(url, { email, password }))
+      .then(url => superagentFormPost(this[environmentSymbol], url, { email, password }))
       .then((token) => {
         this[tokenStoreSymbol].setToken(token.token);
         return Promise.resolve(token.token);
