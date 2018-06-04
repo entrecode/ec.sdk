@@ -1,3 +1,10 @@
+## <small>0.16.9 (2018-06-04)</small>
+
+* release version 0.16.9 ([dd42b00](https://github.com/entrecode/ec.sdk/commit/dd42b00))
+* chore: patches, pin to typescript 2.8.x for now ([a4d2bfe](https://github.com/entrecode/ec.sdk/commit/a4d2bfe))
+
+
+
 <a name="0.16.8"></a>
 ## <small>0.16.8 (2018-06-04)</small>
 
