@@ -2,10 +2,10 @@ import Resource from './Resource';
 
 const environmentSymbol = Symbol.for('environment');
 const resourceSymbol = Symbol.for('resource');
+const itemSchemaSymbol = Symbol.for('itemSchema');
+const nameSymbol = Symbol.for('name');
 const itemClassSymbol = Symbol('_itemClass');
-const itemSchemaSymbol = Symbol('_itmeSchema');
 const listClassSymbol = Symbol('_listClass');
-const nameSymbol = Symbol('_name');
 
 function map(list: ListResource, iterator: (resource: Resource) => Promise<any> | any, results: Array<Resource> = []) {
   return list.getAllItems()

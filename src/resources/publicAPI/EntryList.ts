@@ -5,6 +5,11 @@ import ListResource from '../ListResource';
 import { getSchema } from '../../helper';
 import { environment } from '../../Core';
 
+const resourceSymbol = Symbol.for('resource');
+const itemSchemaSymbol = Symbol.for('itemSchema');
+const nameSymbol = Symbol.for('name');
+const environmentSymbol = Symbol.for('environment');
+
 /**
  * Entry list class
  *
@@ -25,13 +30,25 @@ export default class EntryList extends ListResource {
   }
 
   /**
+   * Get all list items {@link https://tools.ietf.org/html/draft-kelly-json-hal-08#section-4.1.2
+   * embedded} into this {@link EntryListResource}.
+   *
+   * @returns {Array<EntryResource>} an array of all list items.
+   */
+  getAllItems(): Array<any> {
+    const array = this[resourceSymbol].embeddedArray(this[nameSymbol]) || [];
+    return array.map((resource) =>
+      new EntryResource(resource, this[environmentSymbol], this[itemSchemaSymbol]));
+  }
+
+  /**
    * Get the first {@link https://tools.ietf.org/html/draft-kelly-json-hal-08#section-4.1.2
    * embedded} item from the list
    *
    * @returns {EntryResource} the first item.
    */
   getFirstItem(): EntryResource {
-    return <EntryResource>super.getFirstItem();
+    return this.getItem(0);
   }
 
   /**
@@ -42,7 +59,18 @@ export default class EntryList extends ListResource {
    * @returns {EntryResource} the requested item.
    */
   getItem(n: number): EntryResource {
-    return <EntryResource>super.getItem(n);
+    if (n === undefined) { // undefined check
+      throw new Error('Index must be defined.');
+    }
+    const array = this[resourceSymbol].embeddedArray(this[nameSymbol]);
+    if (!array || array.length === 0) {
+      throw new Error('Cannot get n\'th item of empty list.');
+    }
+    if (array.length <= n) {
+      throw new Error(`Cannot get ${n}'th item of list with length ${array.length}`);
+    }
+
+    return new EntryResource(array[n], this[environmentSymbol], this[itemSchemaSymbol]);
   }
 }
 

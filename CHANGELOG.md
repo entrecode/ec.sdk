@@ -1,3 +1,12 @@
+<a name="0.16.8"></a>
+## <small>0.16.8 (2018-06-04)</small>
+
+* release version 0.16.8 ([633f74d](https://github.com/entrecode/ec.sdk/commit/633f74d))
+* updated doc ([592eec3](https://github.com/entrecode/ec.sdk/commit/592eec3))
+* fix: should fix typecast errors SDK-74 ([477fd9b](https://github.com/entrecode/ec.sdk/commit/477fd9b))
+
+
+
 <a name="0.16.7"></a>
 ## <small>0.16.7 (2018-05-29)</small>
 

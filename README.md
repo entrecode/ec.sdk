@@ -104,11 +104,11 @@ class MyExample {
 
 ##### Node
 
-Require statements are different on node. Otherwise proceed as expected.
+Require statements are different on node. Also, you probably don't want to share tokens in a node.js environment. You'll need to use `noCookie` or namespacing via `cookieModifier`.
 
 ```js
 const ec = require('ec.sdk');
-const dataManager = new ec.DataManager('live');
+const dataManager = new ec.DataManager({ environment: 'live', cookieModifier: 'myScriptName' });
 dataManager.setToken(accessToken);
 
 dataManager.dataManagerList()
