@@ -106,7 +106,7 @@ const urls = {
  * @prop {string} title title of the connected Data Manager
  *
  * @param {string} idOrURL shortID of the desired DataManager or url in old sdk like syntax.
- * @param {environment?} environment the environment to connect to, ignored when url is passed to
+ * @param {environment|envOptions?} environment the environment to connect to, ignored when url is passed to
  *   idOrUrl.
  * @param {boolean?} ecUser if you are an ecUser it is best to set this to true
  */
@@ -133,6 +133,10 @@ export default class PublicAPI extends Core {
 
     if (!env.environment) {
       env.environment = 'live';
+    }
+
+    if (env.ecUser) {
+      ecUser = env.ecUser;
     }
 
     let id;

@@ -709,6 +709,16 @@
               
                 
                 <li><a
+                  href='#options'
+                  class="">
+                  options
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
                   href='#events-and-errors'
                   class="h5 bold black caps">
                   Events and Errors
@@ -2834,26 +2844,6 @@
                   href='#impressum--datenschutz'
                   class="h5 bold black caps">
                   Impressum &amp; Datenschutz
-                  
-                </a>
-                
-                </li>
-              
-                
-                <li><a
-                  href='#emittermap'
-                  class="">
-                  emitterMap
-                  
-                </a>
-                
-                </li>
-              
-                
-                <li><a
-                  href='#eventemitterfactory'
-                  class="">
-                  EventEmitterFactory
                   
                 </a>
                 
@@ -7556,7 +7546,7 @@ tokenStore for ecUsers and not the ones for each Data Manager. If you don't do t
 the token with <code>publicAPI.setToken(session.getToken());</code>.</p>
 
 
-  <div class='pre p1 fill-light mt0'>new PublicAPI(idOrURL: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, envOrOptions: any, ecUser: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>?, environment: <a href="#environment">environment</a>?)</div>
+  <div class='pre p1 fill-light mt0'>new PublicAPI(idOrURL: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, envOrOptions: any, ecUser: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>?, environment: (<a href="#environment">environment</a> | envOptions?))</div>
   
   
     <p>
@@ -7608,7 +7598,7 @@ the token with <code>publicAPI.setToken(session.getToken());</code>.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>environment</span> <code class='quiet'>(<a href="#environment">environment</a>?)</code>
+            <span class='code bold'>environment</span> <code class='quiet'>((<a href="#environment">environment</a> | envOptions?))</code>
 	    the environment to connect to, ignored when url is passed to
 idOrUrl.
 
@@ -10273,6 +10263,84 @@ used as key to store tokens into cookies (for browsers).</p>
 <span class="hljs-keyword">const</span> dataManager = <span class="hljs-keyword">new</span> DataManager(<span class="hljs-string">'nightly'</span>);
 <span class="hljs-comment">// will connect to your local instances, well maybe</span>
 <span class="hljs-keyword">const</span> accounts = <span class="hljs-keyword">new</span> Accounts(<span class="hljs-string">'develop'</span>);</pre>
+    
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+            <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='options'>
+      options
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>In node context it is advised to configure token handling more specifically. Normally ec.sdk will share
+a given token with other API Connectors (see <a href="#core">Core</a>), in most cases this is not desired in node
+scripts. By providing an options object instead of an <a href="#environment">environment</a> string when creating the API
+Conenctor you can overwrite the handling.</p>
+
+
+  <div class='pre p1 fill-light mt0'>options</div>
+  
+    <p>
+      Type:
+      {environment: <a href="#environment">environment</a>, noCookie: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>, cookieModifier: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, ecUser: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>}
+    </p>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-comment">// will not share any token with other API connectors (token name is appended with a generated shortID)</span>
+<span class="hljs-keyword">new</span> PublicAPI(<span class="hljs-string">'beefbeef'</span>, { <span class="hljs-attr">noCookie</span>: <span class="hljs-literal">true</span> });
+
+<span class="hljs-comment">// will share token with all `userA` PublicAPI Connectors for 'beefbeef'</span>
+<span class="hljs-keyword">new</span> PublicAPI(<span class="hljs-string">'beefbeef'</span>, { <span class="hljs-attr">cookieModifier</span>: <span class="hljs-string">'userA'</span> });
+
+<span class="hljs-comment">// will share token with all `userA` API Connectors, even DataManager and so on</span>
+<span class="hljs-keyword">new</span> PublicAPI(<span class="hljs-string">'beefbeef'</span>, { <span class="hljs-attr">cookieModifier</span>: <span class="hljs-string">'userA'</span>, <span class="hljs-attr">ecUser</span>: <span class="hljs-literal">true</span> });
+<span class="hljs-comment">// same</span>
+<span class="hljs-keyword">new</span> PublicAPI(<span class="hljs-string">'beefbeef'</span>, { <span class="hljs-attr">cookieModifier</span>: <span class="hljs-string">'userA'</span> }, <span class="hljs-literal">true</span>);
+
+<span class="hljs-comment">// will share token with all PublicAPI Connectors for 'beefbeef'</span>
+<span class="hljs-keyword">new</span> PublicAPI(<span class="hljs-string">'beefbeef'</span>)
+
+<span class="hljs-comment">// will share token with all API connectors</span>
+<span class="hljs-keyword">new</span> PublicAPI(<span class="hljs-string">'beefbeef'</span>, { <span class="hljs-attr">ecUser</span>: <span class="hljs-literal">true</span> });
+<span class="hljs-comment">// same</span>
+<span class="hljs-keyword">new</span> PublicAPI(<span class="hljs-string">'beefbeef'</span>, <span class="hljs-string">'live'</span>, <span class="hljs-literal">true</span>);</pre>
     
   
 
@@ -30866,124 +30934,6 @@ accounts.account(…);</pre>
   
 </section>
 </div>
-          
-        
-          
-            <section class='p2 mb2 clearfix bg-white minishadow'>
-
-  
-  <div class='clearfix'>
-    
-    <h3 class='fl m0' id='emittermap'>
-      emitterMap
-    </h3>
-    
-    
-  </div>
-  
-
-  <p>Global event emitter. All received errors will be emitted as an error event here.
-You can access this emitter with <a href="#coreon">Core#on</a>.</p>
-
-
-  <div class='pre p1 fill-light mt0'>emitterMap</div>
-  
-  
-
-  
-  
-  
-  
-  
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-</section>
-
-          
-        
-          
-            <section class='p2 mb2 clearfix bg-white minishadow'>
-
-  
-  <div class='clearfix'>
-    
-    <h3 class='fl m0' id='eventemitterfactory'>
-      EventEmitterFactory
-    </h3>
-    
-    
-  </div>
-  
-
-  <p>Create or get an event Emitter for a specific environment.</p>
-
-
-  <div class='pre p1 fill-light mt0'>new EventEmitterFactory(environment: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>): EventEmitter</div>
-  
-  
-
-  
-  
-  
-  
-  
-  
-
-  
-    <div class='py1 quiet mt1 prose-big'>Parameters</div>
-    <div class='prose'>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>environment</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>
-            = <code>&#39;live&#39;</code>)</code>
-	    environment string to create emitter for
-
-          </div>
-          
-        </div>
-      
-    </div>
-  
-
-  
-
-  
-    
-      <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code>EventEmitter</code>:
-        EventEmitter bound to the specific environment
-
-      
-    
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-</section>
-
           
         
       </div>
