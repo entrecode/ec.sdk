@@ -2,8 +2,8 @@ import Resource from '../Resource';
 import { fileNegotiate } from '../../helper';
 import { environment } from '../../Core';
 
-const resourceSymbol = Symbol.for('resource');
-const resolvedSymbol = Symbol('resolved');
+const resourceSymbol: any = Symbol.for('resource');
+const resolvedSymbol: any = Symbol('resolved');
 
 interface PublicAssetResource extends Resource {
   assetID: string;

@@ -2,11 +2,11 @@ import Resource from '../Resource';
 import DMStatsResource from './DMStatsResource';
 import { environment } from '../../Core';
 
-const resourceSymbol = Symbol.for('resource');
-const environmentSymbol = Symbol.for('environment');
-const nameSymbol = Symbol('name');
-const listClassSymbol = Symbol('listClass');
-const itemClassSymbol = Symbol('itemClass');
+const resourceSymbol: any = Symbol.for('resource');
+const environmentSymbol: any = Symbol.for('environment');
+const nameSymbol: any = Symbol('name');
+const listClassSymbol: any = Symbol('listClass');
+const itemClassSymbol: any = Symbol('itemClass');
 
 /**
  * DMStats list class

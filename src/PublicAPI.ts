@@ -33,20 +33,20 @@ import DataManager from './DataManager';
 import Problem from './Problem';
 import HistoryEvents from './resources/publicAPI/HistoryEvents';
 
-const resourceSymbol = Symbol.for('resource');
-const tokenStoreSymbol = Symbol.for('tokenStore');
-const traversalSymbol = Symbol.for('traversal');
-const eventsSymbol = Symbol.for('events');
-const environmentSymbol = Symbol.for('environment');
-const cookieModifierSymbol = Symbol.for('cookieModifier');
-const relationsSymbol = Symbol.for('relations');
+const resourceSymbol: any = Symbol.for('resource');
+const tokenStoreSymbol: any = Symbol.for('tokenStore');
+const traversalSymbol: any = Symbol.for('traversal');
+const eventsSymbol: any = Symbol.for('events');
+const environmentSymbol: any = Symbol.for('environment');
+const cookieModifierSymbol: any = Symbol.for('cookieModifier');
+const relationsSymbol: any = Symbol.for('relations');
 
-const shortIDSymbol = Symbol('_shortID');
-const modelCacheSymbol = Symbol('_modelCache');
-const permissionsSymbol = Symbol('_permissionsSymbol');
-const permissionsLoadedTimeSymbol = Symbol('_permissionsLoadedTimeSymbol');
-const assetBaseURLSymbol = Symbol('assetBaseURL');
-const requestCacheSymbol = Symbol('requestCache');
+const shortIDSymbol: any = Symbol('_shortID');
+const modelCacheSymbol: any = Symbol('_modelCache');
+const permissionsSymbol: any = Symbol('_permissionsSymbol');
+const permissionsLoadedTimeSymbol: any = Symbol('_permissionsLoadedTimeSymbol');
+const assetBaseURLSymbol: any = Symbol('assetBaseURL');
+const requestCacheSymbol: any = Symbol('requestCache');
 
 validator.setLoggingFunction(() => {
 });
@@ -106,7 +106,7 @@ const urls = {
  * @prop {string} title title of the connected Data Manager
  *
  * @param {string} idOrURL shortID of the desired DataManager or url in old sdk like syntax.
- * @param {environment?} environment the environment to connect to, ignored when url is passed to
+ * @param {environment|envOptions?} environment the environment to connect to, ignored when url is passed to
  *   idOrUrl.
  * @param {boolean?} ecUser if you are an ecUser it is best to set this to true
  */
@@ -133,6 +133,10 @@ export default class PublicAPI extends Core {
 
     if (!env.environment) {
       env.environment = 'live';
+    }
+
+    if (env.ecUser) {
+      ecUser = env.ecUser;
     }
 
     let id;

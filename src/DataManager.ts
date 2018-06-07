@@ -19,8 +19,8 @@ declare const EventSource: any;
 validator.setLoggingFunction(() => {
 });
 
-const environmentSymbol = Symbol.for('environment');
-const relationsSymbol = Symbol.for('relations');
+const environmentSymbol: any = Symbol.for('environment');
+const relationsSymbol: any = Symbol.for('relations');
 
 const urls = {
   live: 'https://datamanager.entrecode.de/',

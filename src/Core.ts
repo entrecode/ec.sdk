@@ -13,13 +13,13 @@ import Resource from './resources/Resource';
 import ListResource, { filterOptions } from './resources/ListResource';
 import Problem from './Problem';
 
-const resourceSymbol = Symbol.for('resource');
-const tokenStoreSymbol = Symbol.for('tokenStore');
-const traversalSymbol = Symbol.for('traversal');
-const eventsSymbol = Symbol.for('events');
-const environmentSymbol = Symbol.for('environment');
-const relationsSymbol = Symbol.for('relations');
-const cookieModifierSymbol = Symbol.for('cookieModifier');
+const resourceSymbol: any = Symbol.for('resource');
+const tokenStoreSymbol: any = Symbol.for('tokenStore');
+const traversalSymbol: any = Symbol.for('traversal');
+const eventsSymbol: any = Symbol.for('events');
+const environmentSymbol: any = Symbol.for('environment');
+const relationsSymbol: any = Symbol.for('relations');
+const cookieModifierSymbol: any = Symbol.for('cookieModifier');
 
 traverson['registerMediaType'](HalAdapter.mediaType, HalAdapter);
 
@@ -484,7 +484,7 @@ export default class Core {
 
 export type environment = 'live' | 'stage' | 'nightly' | 'develop';
 
-export type options = { environment: environment, noCookie: boolean, cookieModifier: string }
+export type options = { environment: environment, noCookie: boolean, cookieModifier: string, ecUser: boolean }
 
 /**
  * You can define which API should be used with the environment parameter. Internally this is also
@@ -505,3 +505,32 @@ export type options = { environment: environment, noCookie: boolean, cookieModif
  * @typedef { 'live' | 'stage' | 'nightly' | 'develop'} environment
  */
 
+/**
+ * In node context it is advised to configure token handling more specifically. Normally ec.sdk will share
+ * a given token with other API Connectors (see {@link Core}), in most cases this is not desired in node
+ * scripts. By providing an options object instead of an {@link environment} string when creating the API
+ * Conenctor you can overwrite the handling.
+ * 
+ * @example
+ * // will not share any token with other API connectors (token name is appended with a generated shortID)
+ * new PublicAPI('beefbeef', { noCookie: true });
+ * 
+ * // will share token with all `userA` PublicAPI Connectors for 'beefbeef'
+ * new PublicAPI('beefbeef', { cookieModifier: 'userA' });
+ * 
+ * // will share token with all `userA` API Connectors, even DataManager and so on
+ * new PublicAPI('beefbeef', { cookieModifier: 'userA', ecUser: true });
+ * // same
+ * new PublicAPI('beefbeef', { cookieModifier: 'userA' }, true);
+ *
+ * // will share token with all PublicAPI Connectors for 'beefbeef'
+ * new PublicAPI('beefbeef')
+ * 
+ * // will share token with all API connectors
+ * new PublicAPI('beefbeef', { ecUser: true });
+ * // same
+ * new PublicAPI('beefbeef', 'live', true);
+ *
+ * 
+ * @typedef {{ environment: environment, noCookie: boolean, cookieModifier: string, ecUser: boolean}} options
+ */

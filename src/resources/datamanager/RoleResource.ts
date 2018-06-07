@@ -3,8 +3,8 @@ import { environment } from '../../Core';
 import DMAccountResource from './DMAccountResource';
 import LiteDMAccountResource from '../publicAPI/LiteDMAccountResource';
 
-const environmentSymbol = Symbol.for('environment');
-const resourceSymbol = Symbol.for('resource');
+const environmentSymbol: any = Symbol.for('environment');
+const resourceSymbol: any = Symbol.for('resource');
 
 interface RoleResource {
   accounts: Array<LiteDMAccountResource>,

@@ -134,14 +134,16 @@ export class EventEmitter {
 /**
  * Global event emitter. All received errors will be emitted as an error event here.
  * You can access this emitter with {@link Core#on}.
+ *
+ * @access private
  */
-// export default new EventEmitter();
-
 const emitterMap = new Map();
 
 /**
  * Create or get an event Emitter for a specific environment.
- * 
+ *
+ * @access private
+ *
  * @param {string} environment environment string to create emitter for
  * @returns {EventEmitter} EventEmitter bound to the specific environment
  */

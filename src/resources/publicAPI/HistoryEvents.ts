@@ -1,8 +1,8 @@
 import { environment } from '../../Core';
 import HistoryEvent from './HistoryEvent';
 
-const environmentSymbol = Symbol.for('environment');
-const resourceSymbol = Symbol.for('resource');
+const environmentSymbol: any = Symbol.for('environment');
+const resourceSymbol: any = Symbol.for('resource');
 
 interface HistoryEvents {
   events: Array<HistoryEvent>;

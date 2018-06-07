@@ -22,9 +22,9 @@ import AssetGroupResource from './AssetGroupResource';
 import AssetGroupList from './AssetGroupList';
 import HistoryEvents from '../publicAPI/HistoryEvents';
 
-const environmentSymbol = Symbol.for('environment');
-const apiSymbol = Symbol('api');
-const relationsSymbol = Symbol.for('relations');
+const environmentSymbol: any = Symbol.for('environment');
+const apiSymbol: any = Symbol('api');
+const relationsSymbol: any = Symbol.for('relations');
 
 interface DataManagerResource {
   config: any,

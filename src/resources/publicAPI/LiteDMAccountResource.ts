@@ -6,7 +6,7 @@ import { get } from '../../helper';
 import { environment } from '../../Core';
 import DMAccountResource from '../datamanager/DMAccountResource';
 
-const environmentSymbol = Symbol.for('environment');
+const environmentSymbol: any = Symbol.for('environment');
 
 interface LiteDMAccountResource {
   title: string;

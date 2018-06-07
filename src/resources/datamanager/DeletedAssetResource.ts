@@ -2,7 +2,7 @@ import Resource from '../Resource';
 import { del, fileNegotiate } from '../../helper';
 import { environment } from '../../Core';
 
-const environmentSymbol = Symbol.for('environment');
+const environmentSymbol: any = Symbol.for('environment');
 
 interface DeletedAssetResource {
   assetID: string,
@@ -52,7 +52,7 @@ class DeletedAssetResource extends Resource {
       },
       tags: {
         enumerable: true,
-        get: () => <Array<string>> this.getProperty('tags'),
+        get: () => <Array<string>>this.getProperty('tags'),
       },
       title: {
         enumerable: true,

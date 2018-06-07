@@ -5,7 +5,7 @@ import TokenList from './TokenList';
 import { get } from '../../helper';
 import { environment } from '../../Core';
 
-const environmentSymbol = Symbol.for('environment');
+const environmentSymbol: any = Symbol.for('environment');
 
 interface AccountResource {
   accountID: string;

@@ -9,9 +9,9 @@ import TagResource from './TagResource';
 import { getUrl, superagentGetPiped } from '../../helper';
 import { environment } from '../../Core';
 
-const environmentSymbol = Symbol.for('environment');
-const dataManagerIDSymbol = Symbol('dataManagerID');
-const relationsSymbol = Symbol.for('relations');
+const environmentSymbol: any = Symbol.for('environment');
+const dataManagerIDSymbol: any = Symbol('dataManagerID');
+const relationsSymbol: any = Symbol.for('relations');
 
 /**
  * Asset list class

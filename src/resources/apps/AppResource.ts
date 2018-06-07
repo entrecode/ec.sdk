@@ -10,7 +10,7 @@ import TargetResource from './TargetResource';
 import { filterOptions } from '../ListResource';
 import { environment } from '../../Core';
 
-const relationsSymbol = Symbol.for('relations');
+const relationsSymbol: any = Symbol.for('relations');
 
 interface AppResource {
   appID: string,

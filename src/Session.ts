@@ -2,12 +2,12 @@ import Core, { environment, options } from './Core';
 import { get, post } from './helper';
 import AccountResource from './resources/accounts/AccountResource';
 
-const tokenStoreSymbol = Symbol.for('tokenStore');
-const eventsSymbol = Symbol.for('events');
-const environmentSymbol = Symbol.for('environment');
-const meLoadedTimeSymbol = Symbol.for('meLoadedTime');
-const meSymbol = Symbol('_me');
-const requestCacheSymbol = Symbol('requestCache');
+const tokenStoreSymbol: any = Symbol.for('tokenStore');
+const eventsSymbol: any = Symbol.for('events');
+const environmentSymbol: any = Symbol.for('environment');
+const meLoadedTimeSymbol: any = Symbol.for('meLoadedTime');
+const meSymbol: any = Symbol('_me');
+const requestCacheSymbol: any = Symbol('requestCache');
 
 const urls = {
   live: 'https://accounts.entrecode.de/',

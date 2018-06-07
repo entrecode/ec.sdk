@@ -5,7 +5,7 @@ import { get, del, post, optionsToQuery, getHistory } from '../../helper';
 import { filterOptions } from '../ListResource';
 import HistoryEvents from '../publicAPI/HistoryEvents';
 
-const environmentSymbol = Symbol.for('environment');
+const environmentSymbol: any = Symbol.for('environment');
 
 interface ModelResource {
   created: Date,

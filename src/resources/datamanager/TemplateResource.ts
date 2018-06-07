@@ -8,10 +8,10 @@ import Problem from '../../Problem';
 
 const { convertValidationError } = require('ec.errors')();
 
-const environmentSymbol = Symbol.for('environment');
-const resourceSymbol = Symbol.for('resource');
-const traversalSymbol = Symbol.for('traversal');
-const resolvedSymbol = Symbol.for('resolved');
+const environmentSymbol: any = Symbol.for('environment');
+const resourceSymbol: any = Symbol.for('resource');
+const traversalSymbol: any = Symbol.for('traversal');
+const resolvedSymbol: any = Symbol.for('resolved');
 
 validator.setLoggingFunction(() => {
 });
