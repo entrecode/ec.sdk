@@ -7,8 +7,8 @@ import TypesResource from './resources/apps/TypesResource';
 import { filterOptions } from './resources/ListResource';
 import { get } from './helper';
 
-const environmentSymbol = Symbol.for('environment');
-const relationsSymbol = Symbol.for('relations');
+const environmentSymbol: any = Symbol.for('environment');
+const relationsSymbol: any = Symbol.for('relations');
 
 
 const urls = {

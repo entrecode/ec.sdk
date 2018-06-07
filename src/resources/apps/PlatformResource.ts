@@ -15,9 +15,9 @@ import TargetResource from './TargetResource';
 import { environment } from '../../Core';
 import { filterOptions } from '../ListResource';
 
-const resourceSymbol = Symbol.for('resource');
-const environmentSymbol = Symbol.for('environment');
-const relationsSymbol = Symbol.for('relations');
+const resourceSymbol: any = Symbol.for('resource');
+const environmentSymbol: any = Symbol.for('environment');
+const relationsSymbol: any = Symbol.for('relations');
 
 traverson.registerMediaType(traversonHal.mediaType, traversonHal);
 

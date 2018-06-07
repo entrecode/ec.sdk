@@ -13,13 +13,13 @@ import Resource from './resources/Resource';
 import ListResource, { filterOptions } from './resources/ListResource';
 import Problem from './Problem';
 
-const resourceSymbol = Symbol.for('resource');
-const tokenStoreSymbol = Symbol.for('tokenStore');
-const traversalSymbol = Symbol.for('traversal');
-const eventsSymbol = Symbol.for('events');
-const environmentSymbol = Symbol.for('environment');
-const relationsSymbol = Symbol.for('relations');
-const cookieModifierSymbol = Symbol.for('cookieModifier');
+const resourceSymbol: any = Symbol.for('resource');
+const tokenStoreSymbol: any = Symbol.for('tokenStore');
+const traversalSymbol: any = Symbol.for('traversal');
+const eventsSymbol: any = Symbol.for('events');
+const environmentSymbol: any = Symbol.for('environment');
+const relationsSymbol: any = Symbol.for('relations');
+const cookieModifierSymbol: any = Symbol.for('cookieModifier');
 
 traverson['registerMediaType'](HalAdapter.mediaType, HalAdapter);
 

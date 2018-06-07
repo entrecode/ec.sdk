@@ -5,7 +5,7 @@ import Resource from '../Resource';
 import { superagentGet } from '../../helper';
 import { environment } from '../../Core';
 
-const environmentSymbol = Symbol.for('environment');
+const environmentSymbol: any = Symbol.for('environment');
 
 interface LiteEntryResource {
   _entryTitle: string;

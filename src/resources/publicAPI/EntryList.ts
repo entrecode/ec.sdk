@@ -5,10 +5,10 @@ import ListResource from '../ListResource';
 import { getSchema } from '../../helper';
 import { environment } from '../../Core';
 
-const resourceSymbol = Symbol.for('resource');
-const itemSchemaSymbol = Symbol.for('itemSchema');
-const nameSymbol = Symbol.for('name');
-const environmentSymbol = Symbol.for('environment');
+const resourceSymbol: any = Symbol.for('resource');
+const itemSchemaSymbol: any = Symbol.for('itemSchema');
+const nameSymbol: any = Symbol.for('name');
+const environmentSymbol: any = Symbol.for('environment');
 
 /**
  * Entry list class

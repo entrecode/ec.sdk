@@ -2,7 +2,7 @@ import Resource from '../Resource';
 import { environment } from '../../Core';
 import { get } from '../../helper';
 
-const environmentSymbol = Symbol.for('environment');
+const environmentSymbol: any = Symbol.for('environment');
 
 function dateGetter(property) {
   const date = this.getProperty(property);

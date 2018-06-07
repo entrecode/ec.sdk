@@ -4,7 +4,7 @@ import DMAssetList from '../publicAPI/DMAssetList';
 import { filterOptions } from '../ListResource';
 import DMAssetResource from '../publicAPI/DMAssetResource';
 
-const relationsSymbol = Symbol.for('relations');
+const relationsSymbol: any = Symbol.for('relations');
 
 interface AssetGroupResource {
   assetGroupID: string,

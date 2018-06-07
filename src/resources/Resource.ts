@@ -11,11 +11,11 @@ import ListResource, { filterOptions } from './ListResource';
 import { del, get, optionsToQuery, post, put, locale } from '../helper';
 import Problem from '../Problem';
 
-const environmentSymbol = Symbol.for('environment');
-const resourceSymbol = Symbol.for('resource');
-const traversalSymbol = Symbol.for('traversal');
-const resourcePropertiesSymbol = Symbol.for('resourceProperties');
-const relationsSymbol = Symbol.for('relations');
+const environmentSymbol: any = Symbol.for('environment');
+const resourceSymbol: any = Symbol.for('resource');
+const traversalSymbol: any = Symbol.for('traversal');
+const resourcePropertiesSymbol: any = Symbol.for('resourceProperties');
+const relationsSymbol: any = Symbol.for('relations');
 
 traverson.registerMediaType(HalAdapter.mediaType, HalAdapter);
 validator.setLoggingFunction(() => {

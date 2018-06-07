@@ -10,9 +10,9 @@ import GroupResource from './resources/accounts/GroupResource';
 import { filterOptions } from './resources/ListResource';
 import { get, getEmpty, getUrl, post, postEmpty, superagentFormPost } from './helper';
 
-const tokenStoreSymbol = Symbol.for('tokenStore');
-const environmentSymbol = Symbol.for('environment');
-const relationsSymbol = Symbol.for('relations');
+const tokenStoreSymbol: any = Symbol.for('tokenStore');
+const environmentSymbol: any = Symbol.for('environment');
+const relationsSymbol: any = Symbol.for('relations');
 
 const urls = {
   live: 'https://accounts.entrecode.de/',

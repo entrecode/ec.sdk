@@ -33,20 +33,20 @@ import DataManager from './DataManager';
 import Problem from './Problem';
 import HistoryEvents from './resources/publicAPI/HistoryEvents';
 
-const resourceSymbol = Symbol.for('resource');
-const tokenStoreSymbol = Symbol.for('tokenStore');
-const traversalSymbol = Symbol.for('traversal');
-const eventsSymbol = Symbol.for('events');
-const environmentSymbol = Symbol.for('environment');
-const cookieModifierSymbol = Symbol.for('cookieModifier');
-const relationsSymbol = Symbol.for('relations');
+const resourceSymbol: any = Symbol.for('resource');
+const tokenStoreSymbol: any = Symbol.for('tokenStore');
+const traversalSymbol: any = Symbol.for('traversal');
+const eventsSymbol: any = Symbol.for('events');
+const environmentSymbol: any = Symbol.for('environment');
+const cookieModifierSymbol: any = Symbol.for('cookieModifier');
+const relationsSymbol: any = Symbol.for('relations');
 
-const shortIDSymbol = Symbol('_shortID');
-const modelCacheSymbol = Symbol('_modelCache');
-const permissionsSymbol = Symbol('_permissionsSymbol');
-const permissionsLoadedTimeSymbol = Symbol('_permissionsLoadedTimeSymbol');
-const assetBaseURLSymbol = Symbol('assetBaseURL');
-const requestCacheSymbol = Symbol('requestCache');
+const shortIDSymbol: any = Symbol('_shortID');
+const modelCacheSymbol: any = Symbol('_modelCache');
+const permissionsSymbol: any = Symbol('_permissionsSymbol');
+const permissionsLoadedTimeSymbol: any = Symbol('_permissionsLoadedTimeSymbol');
+const assetBaseURLSymbol: any = Symbol('assetBaseURL');
+const requestCacheSymbol: any = Symbol('requestCache');
 
 validator.setLoggingFunction(() => {
 });

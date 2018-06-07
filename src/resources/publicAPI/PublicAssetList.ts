@@ -5,8 +5,8 @@ import PublicTagResource from './PublicTagResource';
 import { get, optionsToQuery } from '../../helper';
 import { environment } from '../../Core';
 
-const environmentSymbol = Symbol.for('environment');
-const dataManagerIDSymbol = Symbol('_dataManagerID');
+const environmentSymbol: any = Symbol.for('environment');
+const dataManagerIDSymbol: any = Symbol('_dataManagerID');
 
 /**
  * PublicAsset list class

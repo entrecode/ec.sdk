@@ -7,7 +7,7 @@ import { environment } from '../../Core';
 import DMAccountResource from '../datamanager/DMAccountResource';
 import RoleResource from '../datamanager/RoleResource';
 
-const environmentSymbol = Symbol.for('environment');
+const environmentSymbol: any = Symbol.for('environment');
 
 interface LiteRoleResource {
   roleID: string;
