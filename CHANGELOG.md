@@ -1,3 +1,12 @@
+## <small>0.16.10 (2018-06-07)</small>
+
+* release version 0.16.10 ([fb78a4e](https://github.com/entrecode/ec.sdk/commit/fb78a4e))
+* doc: more doc for cookie handling ([1380f2a](https://github.com/entrecode/ec.sdk/commit/1380f2a))
+* chore: updated package and package-lock ([2f09fe7](https://github.com/entrecode/ec.sdk/commit/2f09fe7))
+* fix: compatibility with typescript 2.9.x SDK-75 ([24c8824](https://github.com/entrecode/ec.sdk/commit/24c8824))
+
+
+
 ## <small>0.16.9 (2018-06-04)</small>
 
 * release version 0.16.9 ([dd42b00](https://github.com/entrecode/ec.sdk/commit/dd42b00))
