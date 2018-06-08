@@ -1,3 +1,10 @@
+## <small>0.16.11 (2018-06-08)</small>
+
+* release version 0.16.11 ([4dee7c0](https://github.com/entrecode/ec.sdk/commit/4dee7c0))
+* fix: history in entries linkt not found SDK-61 ([a8f6f60](https://github.com/entrecode/ec.sdk/commit/a8f6f60))
+
+
+
 ## <small>0.16.10 (2018-06-07)</small>
 
 * release version 0.16.10 ([fb78a4e](https://github.com/entrecode/ec.sdk/commit/fb78a4e))
