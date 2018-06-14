@@ -1,6 +1,6 @@
 {
   "name": "ec.sdk",
-  "version": "0.16.11",
+  "version": "0.16.12",
   "description": "SDK for ec.api",
   "repository": "entrecode/ec.sdk",
   "author": "Simon Scherzinger <scherzinger@entrecode.de>",
@@ -62,7 +62,7 @@
     "mocha": "^5.2.0",
     "mocha-bamboo-reporter": "^1.1.1",
     "nock": "^9.3.1",
-    "sinon": "^5.1.0",
+    "sinon": "^6.0.0",
     "sinon-chai": "^3.1.0",
     "ts-loader": "^4.3.1",
     "typescript": "^2.9.1",
