@@ -876,7 +876,7 @@ describe('optionsToQuery', () => {
   });
   it('should have all filter', () => {
     const obj = { property: { all: ['value1', 'value2'] } };
-    helper.optionsToQuery(obj).should.have.property('property', 'value1+value2');
+    helper.optionsToQuery(obj).should.have.property('property', 'value1 value2');
   });
   it('should throw on all filter not an array', () => {
     const throws = () => {

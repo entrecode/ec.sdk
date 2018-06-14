@@ -489,7 +489,7 @@ const modifier = {
   from: 'From',
   to: 'To',
   any: ',',
-  all: '+',
+  all: ' ',
 };
 
 /**
