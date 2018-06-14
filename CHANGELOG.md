@@ -1,3 +1,12 @@
+## <small>0.16.12 (2018-06-14)</small>
+
+* release version 0.16.12 ([3358558](https://github.com/entrecode/ec.sdk/commit/3358558))
+* fix: all filter with space instead of + ([67b5746](https://github.com/entrecode/ec.sdk/commit/67b5746))
+* chore: updated package-lock ([1957474](https://github.com/entrecode/ec.sdk/commit/1957474))
+* chore(package): update sinon to version 6.0.0 ([c5dadfb](https://github.com/entrecode/ec.sdk/commit/c5dadfb))
+
+
+
 ## <small>0.16.11 (2018-06-08)</small>
 
 * release version 0.16.11 ([4dee7c0](https://github.com/entrecode/ec.sdk/commit/4dee7c0))
