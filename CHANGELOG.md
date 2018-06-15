@@ -1,3 +1,10 @@
+## <small>0.16.13 (2018-06-15)</small>
+
+* release version 0.16.13 ([c85eef4](https://github.com/entrecode/ec.sdk/commit/c85eef4))
+* fix: remove additional properties from toOriginal, in validate now ([cd84a4a](https://github.com/entrecode/ec.sdk/commit/cd84a4a))
+
+
+
 ## <small>0.16.12 (2018-06-14)</small>
 
 * release version 0.16.12 ([3358558](https://github.com/entrecode/ec.sdk/commit/3358558))
