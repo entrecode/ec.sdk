@@ -445,29 +445,26 @@ class Resource {
   save(safePut: boolean = false, overwriteSchemaUrl?: string): Promise<Resource> {
     return Promise.resolve()
       .then(() => {
+        return this.validate(overwriteSchemaUrl);
+      })
+      .then(() => {
         const out = this.toOriginal();
-        return validator.validate(out, overwriteSchemaUrl || this.getLink('self').profile)
-          .catch((e) => {
-            throw new Problem(convertValidationError(e), locale);
-          })
-          .then(() => {
-            const request = this.newRequest().follow('self');
+        const request = this.newRequest().follow('self');
 
-            if (safePut) {
-              if (!('_modified' in out)) {
-                throw new Error('safe put without _modified date');
-              }
+        if (safePut) {
+          if (!('_modified' in out)) {
+            throw new Error('safe put without _modified date');
+          }
 
-              const date = new Date(out._modified);
-              request.addRequestOptions({
-                headers: {
-                  'If-Modified-Since': date.toUTCString(),
-                }
-              });
+          const date = new Date(out._modified);
+          request.addRequestOptions({
+            headers: {
+              'If-Modified-Since': date.toUTCString(),
             }
-
-            return put(this[environmentSymbol], request, out)
           });
+        }
+
+        return put(this[environmentSymbol], request, out)
       })
       .then(([res, traversal]) => {
         if (res) {
@@ -516,27 +513,33 @@ class Resource {
   toOriginal(): any {
     const out = {};
 
-    const keys = Object.keys(this);
-    if (this[resourcePropertiesSymbol].length !== keys.length) {
-      throw new Error(`Additional properties found: ${keys.filter(k => !this[resourcePropertiesSymbol].includes(k)).join(', ')}`);
-    }
-
     Object.keys(this[resourceSymbol].original()).forEach((key) => {
       out[key] = this[resourceSymbol][key];
     });
+
     return out;
   }
 
   /**
    * Validates this {@link Resource} against its schema (found in _links.self.profile)
    *
+   * @param {string?} overwriteSchemaUrl Other schema url to overwrite the one in
+   * `_link.self.profile`. Mainly for internal use.
    * @returns {Promise<boolean>} Promise will resolve true when Resource is valid, rejects
    *   otherwise.
    */
-  validate(): Promise<boolean> {
-    return validator.validate(this.toOriginal(), this.getLink('self').profile)
-      .catch((e) => {
-        throw new Problem(convertValidationError(e), locale);
+  validate(overwriteSchemaUrl?: string): Promise<boolean> {
+    return Promise.resolve()
+      .then(() => {
+        const keys = Object.keys(this);
+        if (this[resourcePropertiesSymbol].length !== keys.length) {
+          throw new Error(`Additional properties found: ${keys.filter(k => !this[resourcePropertiesSymbol].includes(k)).join(', ')}`);
+        }
+
+        return validator.validate(this.toOriginal(), overwriteSchemaUrl || this.getLink('self').profile)
+          .catch((e) => {
+            throw new Problem(convertValidationError(e), locale);
+          });
       })
       .then(() => true);
   }

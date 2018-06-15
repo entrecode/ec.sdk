@@ -679,10 +679,6 @@ class EntryResource extends LiteEntryResource {
   toOriginal(): any {
     const out = {};
 
-    const keys = Object.keys(this);
-    if (this[resourcePropertiesSymbol].length !== keys.length) {
-      throw new Error(`Additional properties found: ${keys.filter(k => !this[resourcePropertiesSymbol].includes(k)).join(', ')}`);
-    }
     Object.keys(this[resourceSymbol].original()).forEach((key) => {
       const type = this.getFieldType(key);
       const val = this[resourceSymbol][key];
