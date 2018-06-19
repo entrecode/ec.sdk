@@ -1,5 +1,7 @@
 import * as halfred from 'halfred';
 import * as validator from 'json-schema-remote';
+import * as traverson from 'traverson';
+import * as qs from 'querystring';
 
 const { convertValidationError } = require('ec.errors')();
 
@@ -7,7 +9,7 @@ import LiteEntryResource from './LiteEntryResource';
 import LiteDMAccountResource from './LiteDMAccountResource';
 import LiteRoleResource from './LiteRoleResource';
 import PublicAssetResource from './PublicAssetResource';
-import { get, fileNegotiate, getSchema, optionsToQuery, getHistory, locale } from '../../helper';
+import { get, fileNegotiate, getSchema, optionsToQuery, getHistory, locale, getUrl } from '../../helper';
 import { environment } from '../../Core';
 import DMAssetResource from './DMAssetResource';
 import { filterOptions } from '../ListResource';
@@ -23,6 +25,7 @@ validator.setLoggingFunction(() => {
 const resourcePropertiesSymbol: any = Symbol.for('resourceProperties');
 const schemaSymbol: any = Symbol('_schema');
 const shortIDSymbol: any = Symbol('_shortID');
+const traversalSymbol: any = Symbol.for('traversal');
 
 const datetimeRegex = /^(?:[1-9]\d{3}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1\d|2[0-8])|(?:0[13-9]|1[0-2])-(?:29|30)|(?:0[13578]|1[02])-31)|(?:[1-9]\d(?:0[48]|[2468][048]|[13579][26])|(?:[2468][048]|[13579][26])00)-02-29)T(?:[01]\d|2[0-3]):[0-5]\d:[0-5]\d(?:\.\d{3})?(?:Z|[+-][01]\d:[0-5]\d)$/;
 
@@ -749,6 +752,38 @@ class EntryResource extends LiteEntryResource {
       }
     });
     return out;
+  }
+
+  /**
+  * Reloads this {@link EntryResource}. Can be used when this resource was loaded from {@link
+  * EntryList} from _embedded.
+  *
+  * @param {number} levels if you want to reload this EntryResource with levels 
+  * @returns {Promise<Resource>} this resource
+  */
+  resolve(levels?: number): Promise<EntryResource> {
+    return Promise.resolve()
+      .then(() => {
+        if (!levels) {
+          return get(this[environmentSymbol], this.newRequest().follow('self'));
+        }
+
+        if (levels < 1 || levels > 5) {
+          throw new Error('levels must be between 1 and 5');
+        }
+
+        return getUrl(this[environmentSymbol], this.newRequest().follow('self'))
+          .then(([url]) => {
+            const queryStrings = qs.parse(url.substr(url.indexOf('?') + 1));
+            Object.assign(queryStrings, { _levels: levels });
+            return get(this[environmentSymbol], traverson.from(`${url.substr(0, url.indexOf('?') + 1)}${qs.stringify(queryStrings)}`).jsonHal())
+          });
+      })
+      .then(([res, traversal]) => {
+        this[resourceSymbol] = halfred.parse(res);
+        this[traversalSymbol] = traversal;
+        return this;
+      });
   }
 }
 

@@ -1,3 +1,10 @@
+## <small>0.16.14 (2018-06-19)</small>
+
+* release version 0.16.14 ([89e486e](https://github.com/entrecode/ec.sdk/commit/89e486e))
+* feat: entry reload with levels support ([cf03985](https://github.com/entrecode/ec.sdk/commit/cf03985))
+
+
+
 ## <small>0.16.13 (2018-06-15)</small>
 
 * release version 0.16.13 ([c85eef4](https://github.com/entrecode/ec.sdk/commit/c85eef4))

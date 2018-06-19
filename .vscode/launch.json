@@ -19,7 +19,7 @@
         "test/**/*.js"
       ],
       "cwd": "${workspaceRoot}",
-      "preLaunchTask": "build",
+      "preLaunchTask": "npm: pretest",
       "env": {
         "NODE_ENV": "testing"
       },

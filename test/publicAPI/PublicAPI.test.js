@@ -661,8 +661,8 @@ describe('PublicAPI', () => {
     return api.createEntry('allFields', {}, 0)
       .should.be.rejectedWith('levels must be between 1 and 5');
   });
-  it('should throw on levels 5', () => {
-    return api.createEntry('allFields', {}, 5)
+  it('should throw on levels above 5', () => {
+    return api.createEntry('allFields', {}, 6)
       .should.be.rejectedWith('levels must be between 1 and 5');
   });
 
