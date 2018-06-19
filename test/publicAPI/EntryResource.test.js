@@ -507,6 +507,23 @@ describe('Entry Resource', () => {
     resource.text = 1;
     return resource.validateField('text').should.be.rejectedWith('Invalid format for property in JSON body');
   });
+  it('should resolve with levels', () => {
+    const getUrlStub = sinon.stub(helper, 'getUrl');
+    getUrlStub.returns(Promise.resolve(['https://datamanager.entrecode.de/api/beefbeef/allFields?_id=B17u3r5lx-']));
+    const getStub = sinon.stub(helper, 'get');
+    getStub.returns(resolver('public-entry-nested.json'));
+
+    return resource.resolve(2)
+      .then(() => {
+        getUrlStub.restore();
+        getStub.restore();
+      })
+      .catch((err) => {
+        getUrlStub.restore();
+        getStub.restore();
+        throw err;
+      });
+  });
 });
 
 describe('Entry Resource with nested', () => {

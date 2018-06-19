@@ -628,7 +628,7 @@ export default class PublicAPI extends Core {
           e = entry;
         }
 
-        if (levels < 1 || levels >= 5) {
+        if (levels < 1 || levels > 5) {
           throw new Error('levels must be between 1 and 5');
         }
 
