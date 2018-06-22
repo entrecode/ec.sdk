@@ -1,3 +1,10 @@
+## <small>0.16.16 (2018-06-22)</small>
+
+* release version 0.16.16 ([cfcee62](https://github.com/entrecode/ec.sdk/commit/cfcee62))
+* fix: token response handling in signup ([017b881](https://github.com/entrecode/ec.sdk/commit/017b881))
+
+
+
 ## <small>0.16.15 (2018-06-22)</small>
 
 * release version 0.16.15 ([03bd576](https://github.com/entrecode/ec.sdk/commit/03bd576))

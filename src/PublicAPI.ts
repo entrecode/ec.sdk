@@ -1336,7 +1336,7 @@ export default class PublicAPI extends Core {
         });
         return post(this[environmentSymbol], request, { email, password });
       })
-      .then((token) => {
+      .then(([token]) => {
         this[tokenStoreSymbol].setToken(token.token);
         return Promise.resolve(token.token);
       });
