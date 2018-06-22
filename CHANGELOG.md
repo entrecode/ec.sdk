@@ -1,3 +1,10 @@
+## <small>0.16.15 (2018-06-22)</small>
+
+* release version 0.16.15 ([03bd576](https://github.com/entrecode/ec.sdk/commit/03bd576))
+* fix: signup with clientID rest should use json posts ([7e31b5d](https://github.com/entrecode/ec.sdk/commit/7e31b5d))
+
+
+
 ## <small>0.16.14 (2018-06-19)</small>
 
 * release version 0.16.14 ([89e486e](https://github.com/entrecode/ec.sdk/commit/89e486e))
