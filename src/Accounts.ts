@@ -8,7 +8,7 @@ import InvitesResource from './resources/accounts/InvitesResource';
 import GroupList from './resources/accounts/GroupList';
 import GroupResource from './resources/accounts/GroupResource';
 import { filterOptions } from './resources/ListResource';
-import { get, getEmpty, getUrl, post, postEmpty, superagentFormPost } from './helper';
+import { get, getEmpty, post, postEmpty } from './helper';
 
 const tokenStoreSymbol: any = Symbol.for('tokenStore');
 const environmentSymbol: any = Symbol.for('environment');
@@ -444,9 +444,8 @@ export default class Accounts extends Core {
           clientID: this[tokenStoreSymbol].getClientID(),
           invite,
         });
-        return getUrl(this[environmentSymbol], request);
+        return post(this[environmentSymbol], request, { email, password });
       })
-      .then(url => superagentFormPost(this[environmentSymbol], url, { email, password }))
       .then((token) => {
         this[tokenStoreSymbol].setToken(token.token);
         return Promise.resolve(token.token);
