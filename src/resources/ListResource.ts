@@ -7,7 +7,7 @@ const nameSymbol: any = Symbol.for('name');
 const itemClassSymbol: any = Symbol('_itemClass');
 const listClassSymbol: any = Symbol('_listClass');
 
-function map(list: ListResource, iterator: (resource: Resource) => Promise<any> | any, results: Array<Resource> = []) {
+function map(list: ListResource, iterator: (resource: Resource) => Promise<any> | any, results: Array<Resource> = []): Promise<Array<any>> {
   return list.getAllItems()
     .map(entry =>
       res => Promise.resolve()
@@ -26,7 +26,7 @@ function map(list: ListResource, iterator: (resource: Resource) => Promise<any> 
     });
 }
 
-function filter(list: ListResource, iterator: (resource: Resource) => Promise<boolean> | boolean, results: Array<Resource> = []) {
+function filter(list: ListResource, iterator: (resource: Resource) => Promise<boolean> | boolean, results: Array<Resource> = []): Promise<Array<Resource>> {
   return list.getAllItems()
     .map(entry =>
       res => Promise.resolve()
@@ -38,7 +38,7 @@ function filter(list: ListResource, iterator: (resource: Resource) => Promise<bo
           return res;
         }))
     .reduce((current, next) => current.then(next), Promise.resolve(results))
-    .then((res: Array<Resource>) => {
+    .then((res) => {
       if (!list.hasNextLink()) {
         return res;
       }
@@ -47,7 +47,7 @@ function filter(list: ListResource, iterator: (resource: Resource) => Promise<bo
     });
 }
 
-function find(list: ListResource, iterator: (resource: Resource) => Promise<boolean> | boolean) {
+function find(list: ListResource, iterator: (resource: Resource) => Promise<boolean> | boolean): Promise<Resource> {
   return list.getAllItems()
     .map(entry =>
       () => Promise.resolve()
@@ -64,7 +64,7 @@ function find(list: ListResource, iterator: (resource: Resource) => Promise<bool
       }
       return found;
     }), Promise.resolve(false))
-    .then((res: Resource | boolean) => {
+    .then((res) => {
       if (res) {
         return res;
       }
