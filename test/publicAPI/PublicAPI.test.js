@@ -1136,6 +1136,41 @@ describe('PublicAPI', () => {
     return api.dmAsset().should.be.rejectedWith('assetGroupID must be defined');
   });
 
+  it('should load fieldConfig - single model', () => {
+    const stub = sinon.stub(helper, 'get');
+    stub.onFirstCall().returns(resolver('public-dm-root.json'));
+    stub.onSecondCall().returns(resolver('fieldConfig.json'));
+
+    return api.getFieldConfig('child')
+      .then((fieldConfig) => {
+        fieldConfig.should.have.property('title');
+        stub.restore();
+      })
+      .catch((err) => {
+        stub.restore();
+        throw err;
+      });
+  });
+  it('should load fieldConfig - multiple model', () => {
+    const stub = sinon.stub(helper, 'get');
+    stub.onFirstCall().returns(resolver('public-dm-root.json'));
+    stub.onSecondCall().returns(resolver('fieldConfig.json'));
+
+    return api.getFieldConfig(['child', 'parent'])
+      .then((fieldConfig) => {
+        fieldConfig.should.have.property('child');
+        fieldConfig.should.have.property('parent');
+        stub.restore();
+      })
+      .catch((err) => {
+        stub.restore();
+        throw err;
+      });
+  });
+  it('should throw on fieldConfig without modelTitle', () => {
+    return api.getFieldConfig().should.be.rejectedWith('modelTitle must be defined');
+  });
+
   describe('dmAssets', () => {
     it('should create dmAssets, path #1', () => {
       mock.reset();

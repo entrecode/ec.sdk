@@ -1,0 +1,58 @@
+{
+  "child": {
+    "title": {
+      "config": {
+        "columns": 2
+      },
+      "type": "text",
+      "title": "title",
+      "unique": false,
+      "default": null,
+      "mutable": true,
+      "readOnly": false,
+      "required": false,
+      "validation": "",
+      "description": "",
+      "localizable": false
+    }
+  },
+  "parent": {
+    "title": {
+      "config": {},
+      "type": "text",
+      "title": "title",
+      "unique": false,
+      "default": null,
+      "mutable": true,
+      "readOnly": false,
+      "required": false,
+      "validation": "",
+      "description": "",
+      "localizable": false
+    },
+    "child": {
+      "config": {},
+      "type": "entry",
+      "title": "child",
+      "unique": false,
+      "default": null,
+      "mutable": true,
+      "readOnly": false,
+      "required": false,
+      "validation": "child",
+      "description": "",
+      "localizable": false
+    }
+  },
+  "_links": {
+    "self": {
+      "profile": "https://entrecode.de/schema/fieldConfig",
+      "name": "Field configs for Data Manager Simi Testing",
+      "href": "https://datamanager.cachena.entrecode.de/api/deb02a44/_fieldConfig?modelTitle=parent,child"
+    },
+    "ec:api": {
+      "name": "Public API root",
+      "href": "https://datamanager.cachena.entrecode.de/api/deb02a44"
+    }
+  }
+}

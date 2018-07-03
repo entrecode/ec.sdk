@@ -920,6 +920,39 @@ export default class PublicAPI extends Core {
   }
 
   /**
+   * Load fieldConfig for one or many models. Can be used to configure and style forms etc.
+   * 
+   * @param {string|Array<string>} modelTitle The model title or array of model titles to load the field config for.
+   * @returns {Promise<object>} Returns either a Object with single model field config, or an object with multiple field configs
+   */
+  getFieldConfig(modelTitle: string | Array<string>): Promise<any> {
+    return Promise.resolve()
+      .then(() => {
+        if (!modelTitle) {
+          throw new Error('modelTitle must be defined');
+        }
+        return this.follow(`${this[shortIDSymbol]}:_fieldConfig`);
+      })
+      .then((request) => {
+        let titles: Array<string>;
+        if (!Array.isArray(modelTitle)) {
+          titles = [modelTitle];
+        } else {
+          titles = modelTitle;
+        }
+        request.withTemplateParameters({ modelTitle: titles.join(',') });
+        return get(this[environmentSymbol], request);
+      })
+      .then(([res]) => {
+        if (!Array.isArray(modelTitle)) {
+          return res[modelTitle];
+        }
+
+        return res;
+      });
+  }
+
+  /**
    * Best file helper for image thumbnails.
    *
    * @param {string} assetID - the assetID
