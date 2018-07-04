@@ -1,3 +1,10 @@
+## <small>0.16.18 (2018-07-04)</small>
+
+* release version 0.16.18 ([b457c25](https://github.com/entrecode/ec.sdk/commit/b457c25))
+* fix: create resolved entry with levels with schemas ([79bb10c](https://github.com/entrecode/ec.sdk/commit/79bb10c))
+
+
+
 ## <small>0.16.17 (2018-07-04)</small>
 
 * release version 0.16.17 ([ce78bc7](https://github.com/entrecode/ec.sdk/commit/ce78bc7))
