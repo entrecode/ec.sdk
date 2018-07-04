@@ -509,7 +509,7 @@ describe('Entry Resource', () => {
   });
   it('should resolve with levels', () => {
     const getUrlStub = sinon.stub(helper, 'getUrl');
-    getUrlStub.returns(Promise.resolve(['https://datamanager.entrecode.de/api/beefbeef/allFields?_id=B17u3r5lx-']));
+    getUrlStub.returns(Promise.resolve('https://datamanager.entrecode.de/api/beefbeef/allFields?_id=B17u3r5lx-'));
     const getStub = sinon.stub(helper, 'get');
     getStub.returns(resolver('public-entry-nested.json'));
 

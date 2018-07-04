@@ -1,3 +1,12 @@
+## <small>0.16.17 (2018-07-04)</small>
+
+* release version 0.16.17 ([ce78bc7](https://github.com/entrecode/ec.sdk/commit/ce78bc7))
+* fix: level reload of EntryResources ([1fe4a46](https://github.com/entrecode/ec.sdk/commit/1fe4a46))
+* fix: typings for list map, find, filter ([c9e94b0](https://github.com/entrecode/ec.sdk/commit/c9e94b0))
+* feat: fieldConfig in PublicAPI SDK-77 ([28e42db](https://github.com/entrecode/ec.sdk/commit/28e42db))
+
+
+
 ## <small>0.16.16 (2018-06-22)</small>
 
 * release version 0.16.16 ([cfcee62](https://github.com/entrecode/ec.sdk/commit/cfcee62))
