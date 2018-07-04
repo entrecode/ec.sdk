@@ -773,7 +773,7 @@ class EntryResource extends LiteEntryResource {
         }
 
         return getUrl(this[environmentSymbol], this.newRequest().follow('self'))
-          .then(([url]) => {
+          .then((url) => {
             const queryStrings = qs.parse(url.substr(url.indexOf('?') + 1));
             Object.assign(queryStrings, { _levels: levels });
             return get(this[environmentSymbol], traverson.from(`${url.substr(0, url.indexOf('?') + 1)}${qs.stringify(queryStrings)}`).jsonHal())
