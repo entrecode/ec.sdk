@@ -65,8 +65,7 @@ function loadSchemaForResource(resource: any): any {
   return getSchema(res.link('self').profile)
     .then(schema =>
       Object.keys(schema.allOf[1].properties).map((property) => {
-        if (['entry', 'entries'].indexOf(getFieldType(schema, property)) !== -1
-        ) {
+        if (['entry', 'entries'].indexOf(getFieldType(schema, property)) !== -1) {
           const field = res[property];
           if (Array.isArray(field)) {
             return field[0] && typeof field[0] === 'object' ? field : undefined;
@@ -779,11 +778,7 @@ class EntryResource extends LiteEntryResource {
             return get(this[environmentSymbol], traverson.from(`${url.substr(0, url.indexOf('?') + 1)}${qs.stringify(queryStrings)}`).jsonHal())
           });
       })
-      .then(([res, traversal]) => {
-        this[resourceSymbol] = halfred.parse(res);
-        this[traversalSymbol] = traversal;
-        return this;
-      });
+      .then(([res, traversal]) => createEntry(res, this[environmentSymbol], traversal));
   }
 }
 
