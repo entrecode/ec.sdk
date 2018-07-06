@@ -4,10 +4,11 @@ import ClientList from './resources/accounts/ClientList';
 import ClientResource from './resources/accounts/ClientResource';
 import Core, { environment, options } from './Core';
 import InvalidPermissionsResource from './resources/accounts/InvalidPermissionsResource';
-import InvitesResource from './resources/accounts/InvitesResource';
+import InviteResource from './resources/accounts/InviteResource';
+import InviteList from './resources/accounts/InviteList';
 import GroupList from './resources/accounts/GroupList';
 import GroupResource from './resources/accounts/GroupResource';
-import { filterOptions } from './resources/ListResource';
+import { filterOptions, filter } from './resources/ListResource';
 import { get, getEmpty, post, postEmpty } from './helper';
 
 const tokenStoreSymbol: any = Symbol.for('tokenStore');
@@ -56,6 +57,14 @@ export default class Accounts extends Core {
         id: 'accountid',
         ResourceClass: AccountResource,
         ListClass: AccountList,
+      },
+      invite: {
+        relation: 'ec:invites/options',
+        createRelation: 'ec:invites',
+        createTemplateModifier: '-template-post',
+        id: 'invite',
+        ResourceClass: InviteResource,
+        ListClass: InviteList,
       },
       client: {
         relation: 'ec:acc/clients/options',
@@ -206,30 +215,13 @@ export default class Accounts extends Core {
   }
 
   /**
-   * Create new invites. Specify number of invites to create with count.
+   * Create new invites. Specify number of invites to create with `options.count`, permissions with `options.permissions` or `options.groups[]`.
    *
-   * @example
-   * return accounts.createInvites(5)
-   * .then((invites) => {
-   *   return Promise.all(invites.invites
-   *   .forEach((invite, index) => sendInvite(invite, emails[index]);
-   * })
-   * .then(() => console.log('Invites send.');
-   *
-   * @param {number} count the number of invites to create
-   * @returns {Promise<InvitesResource>} Promise resolving to the invites resource
+   * @param {{count: number, pesmissions: Array<string>, groups: Array<{groupID: string, name: string}>}}} options object describing the invites to create
+   * @returns {Promise<InviteList>} Promise resolving to the InviteList
    */
-  createInvites(count?: number): Promise<InvitesResource> {
-    return Promise.resolve()
-      .then(() => {
-        if (count && typeof count !== 'number') {
-          throw new Error('count must be a number');
-        }
-
-        return this.follow('ec:invites');
-      })
-      .then(request => post(this[environmentSymbol], request, { count: count || 1 }))
-      .then(([invites, traversal]) => new InvitesResource(invites, this[environmentSymbol], traversal));
+  createInvites(options: inviteCreateObject): Promise<InviteList> {
+    return <Promise<InviteList>>this.create('invite', options);
   }
 
   /**
@@ -324,26 +316,23 @@ export default class Accounts extends Core {
   }
 
   /**
-   * Load the {@link InvitesResource} with unused invites.
-   *
-   * @example
-   * return accounts.invites()
-   * .then((invites) => {
-   *   if (invites.invites.length < 5){
-   *     return Promise.resolve(invites.invites);
-   *   }
-   *   return accounts.createInvites(5 - invites.invites.length);
-   * })
-   * .then((invites) => Promise.all(
-   *   invites.invites.forEach((invite, index) => sendInvite(invite, emails[index]))
-   * .then(() => console.log('Invites send.');
-   *
-   * @returns {Promise<InvitesResource>} Promise resolving to the invites resource
+   * Load a single {@link InviteResource}. Only unused invites are returned.
+   * 
+   * @param {string} invite invite uuid to request
+   * @returns {Promise<InviteResource>} the requested {@link InviteResource}
    */
-  invites(): Promise<InvitesResource> {
-    return this.follow('ec:invites')
-      .then(request => get(this[environmentSymbol], request))
-      .then(([invites, traversal]) => new InvitesResource(invites, this[environmentSymbol], traversal));
+  invite(invite: string): Promise<InviteResource> {
+    return <Promise<InviteResource>>this.resource('invite', invite);
+  }
+
+  /**
+   * Load the list of {@link InviteResource}s. Only unused invites are in the list.
+   * 
+   * @param {filterOptions} options filter options you want to have applied
+   * @returns {Promise<InviteList>} the requested {@link InviteList}.
+   */
+  inviteList(options?: filterOptions): Promise<InviteList> {
+    return <Promise<InviteList>>this.resourceList('invite', options);
   }
 
   /**
@@ -458,4 +447,15 @@ export type tokenResponse = {
   accountID: string;
   iat: number;
   exp: number
+}
+
+export type inviteCreateObject = {
+  count: number,
+  permissions: Array<string>,
+  groups: Array<inviteCreateGroupObject>,
+}
+
+export type inviteCreateGroupObject = {
+  groupID: string,
+  name: string,
 }

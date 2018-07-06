@@ -1,3 +1,10 @@
+## <small>0.16.19 (2018-07-06)</small>
+
+* release version 0.16.19 ([509d3b6](https://github.com/entrecode/ec.sdk/commit/509d3b6))
+* feat: invites as proper resources SDK-79 ([9c2f97b](https://github.com/entrecode/ec.sdk/commit/9c2f97b))
+
+
+
 ## <small>0.16.18 (2018-07-04)</small>
 
 * release version 0.16.18 ([b457c25](https://github.com/entrecode/ec.sdk/commit/b457c25))

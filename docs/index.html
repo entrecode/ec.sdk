@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset='utf-8' />
-  <title>ec.sdk 0.16.18 | Documentation</title>
+  <title>ec.sdk 0.16.19 | Documentation</title>
   <meta name='viewport' content='width=device-width,initial-scale=1'>
   <link href='assets/bass.css' type='text/css' rel='stylesheet' />
   <link href='assets/style.css' type='text/css' rel='stylesheet' />
@@ -14,7 +14,7 @@
       <div id='split-left' class='overflow-auto fs0 height-viewport-100'>
         <div class='py1 px2'>
           <h3 class='mb0 no-anchor'>ec.sdk</h3>
-          <div class='mb1'><code>0.16.18</code></div>
+          <div class='mb1'><code>0.16.19</code></div>
           <input
             placeholder='Filter'
             id='filter-input'
@@ -288,9 +288,15 @@
                       </a></li>
                       
                       <li><a
-                        href='#accountsinvites'
+                        href='#accountsinvite'
                         class='regular pre-open'>
-                        #invites
+                        #invite
+                      </a></li>
+                      
+                      <li><a
+                        href='#accountsinvitelist'
+                        class='regular pre-open'>
+                        #inviteList
                       </a></li>
                       
                       <li><a
@@ -1252,16 +1258,6 @@
                   href='#grouplist'
                   class="">
                   GroupList
-                  
-                </a>
-                
-                </li>
-              
-                
-                <li><a
-                  href='#invitesresource'
-                  class="">
-                  InvitesResource
                   
                 </a>
                 
@@ -2861,6 +2857,26 @@
                 
                 </li>
               
+                
+                <li><a
+                  href='#inviteresource'
+                  class="">
+                  InviteResource
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#invitelist'
+                  class="">
+                  InviteList
+                  
+                </a>
+                
+                </li>
+              
             </ul>
           </div>
           <div class='mt1 h6 quiet'>
@@ -4071,7 +4087,7 @@ options parameter.</p>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>create(relation, resource)</span>
+            <span class='code strong strong truncate'>create(relation, resource, returnList)</span>
         </div>
       </div>
       <div class="clearfix display-none toggle-target">
@@ -4082,7 +4098,7 @@ options parameter.</p>
   <p>Create a new Resource. Note: Not all relations will support this.</p>
 
 
-  <div class='pre p1 fill-light mt0'>create(relation: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, resource: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#resource">Resource</a>></div>
+  <div class='pre p1 fill-light mt0'>create(relation: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, resource: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, returnList: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#resource">Resource</a>></div>
   
   
 
@@ -4110,6 +4126,16 @@ options parameter.</p>
           <div>
             <span class='code bold'>resource</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
 	    object representing the resource
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>returnList</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>
+            = <code>false</code>)</code>
+	    override Resource creation with List creation.
 
           </div>
           
@@ -5211,7 +5237,7 @@ token response.
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>createInvites(count)</span>
+            <span class='code strong strong truncate'>createInvites(options, null)</span>
         </div>
       </div>
       <div class="clearfix display-none toggle-target">
@@ -5219,10 +5245,10 @@ token response.
 
   
 
-  <p>Create new invites. Specify number of invites to create with count.</p>
+  <p>Create new invites. Specify number of invites to create with <code>options.count</code>, permissions with <code>options.permissions</code> or <code>options.groups[]</code>.</p>
 
 
-  <div class='pre p1 fill-light mt0'>createInvites(count: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#invitesresource">InvitesResource</a>></div>
+  <div class='pre p1 fill-light mt0'>createInvites(options: any, null: {count: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>, pesmissions: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>>, groups: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;{groupID: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, name: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>}>}): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#invitelist">InviteList</a>></div>
   
   
 
@@ -5239,8 +5265,16 @@ token response.
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>count</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>)</code>
-	    the number of invites to create
+            <span class='code bold'>options</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>null</span> <code class='quiet'>({count: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>, pesmissions: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>>, groups: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;{groupID: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, name: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>}>})</code>
+	    } options object describing the invites to create
 
           </div>
           
@@ -5254,8 +5288,8 @@ token response.
   
     
       <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#invitesresource">InvitesResource</a>></code>:
-        Promise resolving to the invites resource
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#invitelist">InviteList</a>></code>:
+        Promise resolving to the InviteList
 
       
     
@@ -5263,17 +5297,6 @@ token response.
 
   
 
-  
-    <div class='py1 quiet mt1 prose-big'>Example</div>
-    
-      
-      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">return</span> accounts.createInvites(<span class="hljs-number">5</span>)
-.then(<span class="hljs-function">(<span class="hljs-params">invites</span>) =&gt;</span> {
-  <span class="hljs-keyword">return</span> <span class="hljs-built_in">Promise</span>.all(invites.invites
-  .forEach(<span class="hljs-function">(<span class="hljs-params">invite, index</span>) =&gt;</span> sendInvite(invite, emails[index]);
-})
-.then(<span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'Invites send.'</span>);</pre>
-    
   
 
   
@@ -5593,11 +5616,11 @@ token response.
       </div>
     </div>
   
-    <div class='border-bottom' id='accountsinvites'>
+    <div class='border-bottom' id='accountsinvite'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>invites()</span>
+            <span class='code strong strong truncate'>invite(invite)</span>
         </div>
       </div>
       <div class="clearfix display-none toggle-target">
@@ -5605,20 +5628,34 @@ token response.
 
   
 
-  <p>Load the <a href="#invitesresource">InvitesResource</a> with unused invites.</p>
+  <p>Load a single <a href="#inviteresource">InviteResource</a>. Only unused invites are returned.</p>
 
 
-  <div class='pre p1 fill-light mt0'>invites(): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#invitesresource">InvitesResource</a>></div>
-  
-  
-
-  
-  
-  
-  
+  <div class='pre p1 fill-light mt0'>invite(invite: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#inviteresource">InviteResource</a>></div>
   
   
 
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>invite</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    invite uuid to request
+
+          </div>
+          
+        </div>
+      
+    </div>
   
 
   
@@ -5626,8 +5663,9 @@ token response.
   
     
       <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#invitesresource">InvitesResource</a>></code>:
-        Promise resolving to the invites resource
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#inviteresource">InviteResource</a>></code>:
+        the requested 
+<a href="#inviteresource">InviteResource</a>
 
       
     
@@ -5636,20 +5674,75 @@ token response.
   
 
   
-    <div class='py1 quiet mt1 prose-big'>Example</div>
-    
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='accountsinvitelist'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>inviteList(options)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Load the list of <a href="#inviteresource">InviteResource</a>s. Only unused invites are in the list.</p>
+
+
+  <div class='pre p1 fill-light mt0'>inviteList(options: <a href="#filteroptions">filterOptions</a>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#invitelist">InviteList</a>></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
       
-      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">return</span> accounts.invites()
-.then(<span class="hljs-function">(<span class="hljs-params">invites</span>) =&gt;</span> {
-  <span class="hljs-keyword">if</span> (invites.invites.length &lt; <span class="hljs-number">5</span>){
-    <span class="hljs-keyword">return</span> <span class="hljs-built_in">Promise</span>.resolve(invites.invites);
-  }
-  <span class="hljs-keyword">return</span> accounts.createInvites(<span class="hljs-number">5</span> - invites.invites.length);
-})
-.then(<span class="hljs-function">(<span class="hljs-params">invites</span>) =&gt;</span> <span class="hljs-built_in">Promise</span>.all(
-  invites.invites.forEach(<span class="hljs-function">(<span class="hljs-params">invite, index</span>) =&gt;</span> sendInvite(invite, emails[index]))
-.then(<span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'Invites send.'</span>);</pre>
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>options</span> <code class='quiet'>(<a href="#filteroptions">filterOptions</a>)</code>
+	    filter options you want to have applied
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
     
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#invitelist">InviteList</a>></code>:
+        the requested 
+<a href="#invitelist">InviteList</a>
+.
+
+      
+    
+  
+
+  
+
   
 
   
@@ -15086,104 +15179,6 @@ permissions and all group permissions.</p>
     </div>
   
 
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-</section>
-
-          
-        
-          
-            <section class='p2 mb2 clearfix bg-white minishadow'>
-
-  
-  <div class='clearfix'>
-    
-    <h3 class='fl m0' id='invitesresource'>
-      InvitesResource
-    </h3>
-    
-    
-  </div>
-  
-
-  <p>Invites Resource. Will contain an <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a> containing all unused invites.</p>
-
-
-  <div class='pre p1 fill-light mt0'>new InvitesResource(resource: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, environment: <a href="#environment">environment</a>, traversal: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</div>
-  
-  
-    <p>
-      Extends
-      
-        Resource_1.default
-      
-    </p>
-  
-
-  
-  
-  
-  
-  
-  
-
-  
-    <div class='py1 quiet mt1 prose-big'>Parameters</div>
-    <div class='prose'>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>resource</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
-	    resource loaded from the API.
-
-          </div>
-          
-        </div>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>environment</span> <code class='quiet'>(<a href="#environment">environment</a>)</code>
-	    the environment this resource is associated to.
-
-          </div>
-          
-        </div>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>traversal</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</code>
-	    traversal from which traverson can continue.
-
-          </div>
-          
-        </div>
-      
-    </div>
-  
-
-  
-    <div class='py1 quiet mt1 prose-big'>Properties</div>
-    <div>
-      
-        <div class='space-bottom0'>
-          <span class='code bold'>invites</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>>)</code>
-          : Array of unused invites
-
-          
-        </div>
-      
-    </div>
   
 
   
@@ -29891,7 +29886,12 @@ be the same object but with refreshed data.
   </h2>
 
   
-    <h2><small>0.16.18 (2018-07-04)</small></h2>
+    <h2><small>0.16.19 (2018-07-06)</small></h2>
+<ul>
+<li>release version 0.16.19 (<a href="https://github.com/entrecode/ec.sdk/commit/509d3b6">509d3b6</a>)</li>
+<li>feat: invites as proper resources SDK-79 (<a href="https://github.com/entrecode/ec.sdk/commit/9c2f97b">9c2f97b</a>)</li>
+</ul>
+<h2><small>0.16.18 (2018-07-04)</small></h2>
 <ul>
 <li>release version 0.16.18 (<a href="https://github.com/entrecode/ec.sdk/commit/b457c25">b457c25</a>)</li>
 <li>fix: create resolved entry with levels with schemas (<a href="https://github.com/entrecode/ec.sdk/commit/79bb10c">79bb10c</a>)</li>
@@ -31150,6 +31150,236 @@ accounts.account(…);</pre>
   
 </section>
 </div>
+          
+        
+          
+            <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='inviteresource'>
+      InviteResource
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>InviteResource class</p>
+
+
+  <div class='pre p1 fill-light mt0'>new InviteResource(resource: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, environment: <a href="#environment">environment</a>, traversal: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</div>
+  
+  
+    <p>
+      Extends
+      
+        Resource_1.default
+      
+    </p>
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>resource</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    resource loaded from the API.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>environment</span> <code class='quiet'>(<a href="#environment">environment</a>)</code>
+	    the environment this resource is associated to.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>traversal</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</code>
+	    traversal from which traverson can continue.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Properties</div>
+    <div>
+      
+        <div class='space-bottom0'>
+          <span class='code bold'>tokenID</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+          : The id of this token
+
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <span class='code bold'>device</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+          : Object containing device information
+
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <span class='code bold'>ipAddress</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+          : The IP address
+
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <span class='code bold'>ipAddressLocation</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+          : The location of the IP
+
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <span class='code bold'>isCurrent</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>)</code>
+          : True if this is the current token
+
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <span class='code bold'>issued</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Date">Date</a>)</code>
+          : The 
+<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Date">Date</a>
+ on which this token was issued
+
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <span class='code bold'>validUntil</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Date">Date</a>)</code>
+          : The 
+<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Date">Date</a>
+ this token is valid until
+
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+            <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='invitelist'>
+      InviteList
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Invite list class</p>
+
+
+  <div class='pre p1 fill-light mt0'>new InviteList(resource: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, environment: <a href="#environment">environment</a>, traversal: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</div>
+  
+  
+    <p>
+      Extends
+      
+        ListResource_1.default
+      
+    </p>
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>resource</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    resource loaded from the API.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>environment</span> <code class='quiet'>(<a href="#environment">environment</a>)</code>
+	    the environment this resource is associated to.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>traversal</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</code>
+	    traversal from which traverson can continue.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
           
         
       </div>

@@ -202,7 +202,7 @@ describe('Accounts class', () => {
     };
     return reject().should.be.rejectedWith('not logged in');
   });
-  it('should create invites', () => {
+  it.skip('should create invites', () => {
     const accounts = new Accounts();
     const stub = sinon.stub(helper, 'post');
     stub.returns(resolver('invites.json'), accounts.traversal);
@@ -217,7 +217,7 @@ describe('Accounts class', () => {
       throw err;
     });
   });
-  it('should create invite', () => {
+  it.skip('should create invite', () => {
     const accounts = new Accounts();
     const stub = sinon.stub(helper, 'post');
     stub.returns(resolver('invites.json'), accounts.traversal);
@@ -232,9 +232,9 @@ describe('Accounts class', () => {
       throw err;
     });
   });
-  it('should be rejected in count not a number', () => new Accounts().createInvites('notANumber')
+  it.skip('should be rejected in count not a number', () => new Accounts().createInvites('notANumber')
   .should.be.rejectedWith('count must be a number'));
-  it('should load invites', () => {
+  it.skip('should load invites', () => {
     const accounts = new Accounts();
     const stub = sinon.stub(helper, 'get');
     stub.returns(resolver('invites.json'), accounts.traversal);

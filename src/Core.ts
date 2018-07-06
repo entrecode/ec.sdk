@@ -444,9 +444,10 @@ export default class Core {
    *
    * @param {string} relation The shortened relation name
    * @param {object} resource object representing the resource
+   * @param {boolean} returnList override Resource creation with List creation.
    * @returns {Promise<Resource>} the newly created Resource
    */
-  create(relation: string, resource: any): Promise<Resource> {
+  create(relation: string, resource: any, returnList = false): Promise<Resource> {
     return Promise.resolve()
       .then(() => {
         if (!relation) {
@@ -477,8 +478,15 @@ export default class Core {
         }
         return post(this[environmentSymbol], request, resource)
       })
-      .then(([c, traversal]) =>
-        <Resource>new this[relationsSymbol][relation].ResourceClass(c, this[environmentSymbol], traversal));
+      .then(([c, traversal]) => {
+        let ResourceConstructor;
+        if (returnList) {
+          ResourceConstructor = this[relationsSymbol][relation].ListClass
+        } else {
+          ResourceConstructor = this[relationsSymbol][relation].ResourceClass
+        }
+        return <Resource>new ResourceConstructor(c, this[environmentSymbol], traversal);
+      });
   }
 }
 
