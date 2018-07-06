@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset='utf-8' />
-  <title>ec.sdk 0.16.19 | Documentation</title>
+  <title>ec.sdk 0.16.20 | Documentation</title>
   <meta name='viewport' content='width=device-width,initial-scale=1'>
   <link href='assets/bass.css' type='text/css' rel='stylesheet' />
   <link href='assets/style.css' type='text/css' rel='stylesheet' />
@@ -14,7 +14,7 @@
       <div id='split-left' class='overflow-auto fs0 height-viewport-100'>
         <div class='py1 px2'>
           <h3 class='mb0 no-anchor'>ec.sdk</h3>
-          <div class='mb1'><code>0.16.19</code></div>
+          <div class='mb1'><code>0.16.20</code></div>
           <input
             placeholder='Filter'
             id='filter-input'
@@ -5237,7 +5237,7 @@ token response.
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>createInvites(options, null)</span>
+            <span class='code strong strong truncate'>createInvites(options)</span>
         </div>
       </div>
       <div class="clearfix display-none toggle-target">
@@ -5248,7 +5248,7 @@ token response.
   <p>Create new invites. Specify number of invites to create with <code>options.count</code>, permissions with <code>options.permissions</code> or <code>options.groups[]</code>.</p>
 
 
-  <div class='pre p1 fill-light mt0'>createInvites(options: any, null: {count: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>, pesmissions: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>>, groups: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;{groupID: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, name: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>}>}): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#invitelist">InviteList</a>></div>
+  <div class='pre p1 fill-light mt0'>createInvites(options: {count: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>, pesmissions: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>>, groups: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;{groupID: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, name: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>}>}): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#invitelist">InviteList</a>></div>
   
   
 
@@ -5265,16 +5265,8 @@ token response.
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>options</span> <code class='quiet'>(any)</code>
-	    
-          </div>
-          
-        </div>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>null</span> <code class='quiet'>({count: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>, pesmissions: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>>, groups: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;{groupID: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, name: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>}>})</code>
-	    } options object describing the invites to create
+            <span class='code bold'>options</span> <code class='quiet'>({count: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>, pesmissions: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>>, groups: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;{groupID: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, name: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>}>})</code>
+	    object describing the invites to create
 
           </div>
           
@@ -29886,7 +29878,12 @@ be the same object but with refreshed data.
   </h2>
 
   
-    <h2><small>0.16.19 (2018-07-06)</small></h2>
+    <h2><small>0.16.20 (2018-07-06)</small></h2>
+<ul>
+<li>release version 0.16.20 (<a href="https://github.com/entrecode/ec.sdk/commit/5497ab6">5497ab6</a>)</li>
+<li>fix: invite creation (<a href="https://github.com/entrecode/ec.sdk/commit/d5202bb">d5202bb</a>)</li>
+</ul>
+<h2><small>0.16.19 (2018-07-06)</small></h2>
 <ul>
 <li>release version 0.16.19 (<a href="https://github.com/entrecode/ec.sdk/commit/509d3b6">509d3b6</a>)</li>
 <li>feat: invites as proper resources SDK-79 (<a href="https://github.com/entrecode/ec.sdk/commit/9c2f97b">9c2f97b</a>)</li>
