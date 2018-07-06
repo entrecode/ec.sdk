@@ -217,11 +217,11 @@ export default class Accounts extends Core {
   /**
    * Create new invites. Specify number of invites to create with `options.count`, permissions with `options.permissions` or `options.groups[]`.
    *
-   * @param {{count: number, pesmissions: Array<string>, groups: Array<{groupID: string, name: string}>}}} options object describing the invites to create
+   * @param {{count: number, pesmissions: Array<string>, groups: Array<{groupID: string, name: string}>}} options object describing the invites to create
    * @returns {Promise<InviteList>} Promise resolving to the InviteList
    */
   createInvites(options: inviteCreateObject): Promise<InviteList> {
-    return <Promise<InviteList>>this.create('invite', options);
+    return <Promise<InviteList>>this.create('invite', options, true);
   }
 
   /**
