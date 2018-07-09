@@ -1,0 +1,259 @@
+{
+  "count": 10,
+  "total": 10,
+  "_links": {
+    "self": {
+      "profile": "https://entrecode.de/schema/invites",
+      "href": "https://accounts.entrecode.de/invites"
+    },
+    "ec:auth": {
+      "href": "https://accounts.entrecode.de"
+    },
+    "curies": {
+      "href": "https://doc.entrecode.de/account_server/#relation-{rel}",
+      "templated": true
+    },
+    "ec:invites/options": {
+      "href": "https://accounts.entrecode.de/invite{?invite,invite~,page,size,sort}",
+      "templated": true
+    },
+    "ec:invites/by-id": {
+      "profile": "https://entrecode.de/schema/invite",
+      "href": "https://accounts.entrecode.de/invite?invite={invite}",
+      "templated": true
+    }
+  },
+  "_embedded": {
+    "ec:invite": [
+      {
+        "invite": "3ec09d47-4557-4ede-bb2e-f492c33d5e93",
+        "permissions": [],
+        "groups": [
+          {
+            "groupID": "3ec09d47-4557-4ede-bb2e-f492c33d5e93",
+            "name": "Vita Club TNG"
+          }
+        ],
+        "_links": {
+          "self": {
+            "profile": "https://entrecode.de/schema/invite",
+            "href": "https://accounts.entrecode.de/invite?invite=3ec09d47-4557-4ede-bb2e-f492c33d5e93"
+          },
+          "curies": {
+            "href": "https://doc.entrecode.de/account_server/#relation-{rel}",
+            "templated": true
+          },
+          "ec:auth": {
+            "href": "https://accounts.entrecode.de"
+          },
+          "collection": {
+            "profile": "https://entrecode.de/schema/invite",
+            "href": "https://accounts.entrecode.de/invite"
+          }
+        }
+      },
+      {
+        "invite": "3ec09d47-4557-4ede-bb2e-f492c33d5e93",
+        "permissions": [
+          "invalid"
+        ],
+        "groups": [],
+        "_links": {
+          "self": {
+            "profile": "https://entrecode.de/schema/invite",
+            "href": "https://accounts.entrecode.de/invite?invite=3ec09d47-4557-4ede-bb2e-f492c33d5e93"
+          },
+          "curies": {
+            "href": "https://doc.entrecode.de/account_server/#relation-{rel}",
+            "templated": true
+          },
+          "ec:auth": {
+            "href": "https://accounts.entrecode.de"
+          },
+          "collection": {
+            "profile": "https://entrecode.de/schema/invite",
+            "href": "https://accounts.entrecode.de/invite"
+          }
+        }
+      },
+      {
+        "invite": "3ec09d47-4557-4ede-bb2e-f492c33d5e93",
+        "permissions": [],
+        "groups": [],
+        "_links": {
+          "self": {
+            "profile": "https://entrecode.de/schema/invite",
+            "href": "https://accounts.entrecode.de/invite?invite=3ec09d47-4557-4ede-bb2e-f492c33d5e93"
+          },
+          "curies": {
+            "href": "https://doc.entrecode.de/account_server/#relation-{rel}",
+            "templated": true
+          },
+          "ec:auth": {
+            "href": "https://accounts.entrecode.de"
+          },
+          "collection": {
+            "profile": "https://entrecode.de/schema/invite",
+            "href": "https://accounts.entrecode.de/invite"
+          }
+        }
+      },
+      {
+        "invite": "3ec09d47-4557-4ede-bb2e-f492c33d5e93",
+        "permissions": [],
+        "groups": [],
+        "_links": {
+          "self": {
+            "profile": "https://entrecode.de/schema/invite",
+            "href": "https://accounts.entrecode.de/invite?invite=3ec09d47-4557-4ede-bb2e-f492c33d5e93"
+          },
+          "curies": {
+            "href": "https://doc.entrecode.de/account_server/#relation-{rel}",
+            "templated": true
+          },
+          "ec:auth": {
+            "href": "https://accounts.entrecode.de"
+          },
+          "collection": {
+            "profile": "https://entrecode.de/schema/invite",
+            "href": "https://accounts.entrecode.de/invite"
+          }
+        }
+      },
+      {
+        "invite": "3ec09d47-4557-4ede-bb2e-f492c33d5e93",
+        "permissions": [],
+        "groups": [],
+        "_links": {
+          "self": {
+            "profile": "https://entrecode.de/schema/invite",
+            "href": "https://accounts.entrecode.de/invite?invite=3ec09d47-4557-4ede-bb2e-f492c33d5e93"
+          },
+          "curies": {
+            "href": "https://doc.entrecode.de/account_server/#relation-{rel}",
+            "templated": true
+          },
+          "ec:auth": {
+            "href": "https://accounts.entrecode.de"
+          },
+          "collection": {
+            "profile": "https://entrecode.de/schema/invite",
+            "href": "https://accounts.entrecode.de/invite"
+          }
+        }
+      },
+      {
+        "invite": "3ec09d47-4557-4ede-bb2e-f492c33d5e93",
+        "permissions": [],
+        "groups": [],
+        "_links": {
+          "self": {
+            "profile": "https://entrecode.de/schema/invite",
+            "href": "https://accounts.entrecode.de/invite?invite=3ec09d47-4557-4ede-bb2e-f492c33d5e93"
+          },
+          "curies": {
+            "href": "https://doc.entrecode.de/account_server/#relation-{rel}",
+            "templated": true
+          },
+          "ec:auth": {
+            "href": "https://accounts.entrecode.de"
+          },
+          "collection": {
+            "profile": "https://entrecode.de/schema/invite",
+            "href": "https://accounts.entrecode.de/invite"
+          }
+        }
+      },
+      {
+        "invite": "3ec09d47-4557-4ede-bb2e-f492c33d5e93",
+        "permissions": [],
+        "groups": [],
+        "_links": {
+          "self": {
+            "profile": "https://entrecode.de/schema/invite",
+            "href": "https://accounts.entrecode.de/invite?invite=3ec09d47-4557-4ede-bb2e-f492c33d5e93"
+          },
+          "curies": {
+            "href": "https://doc.entrecode.de/account_server/#relation-{rel}",
+            "templated": true
+          },
+          "ec:auth": {
+            "href": "https://accounts.entrecode.de"
+          },
+          "collection": {
+            "profile": "https://entrecode.de/schema/invite",
+            "href": "https://accounts.entrecode.de/invite"
+          }
+        }
+      },
+      {
+        "invite": "3ec09d47-4557-4ede-bb2e-f492c33d5e93",
+        "permissions": [],
+        "groups": [],
+        "_links": {
+          "self": {
+            "profile": "https://entrecode.de/schema/invite",
+            "href": "https://accounts.entrecode.de/invite?invite=3ec09d47-4557-4ede-bb2e-f492c33d5e93"
+          },
+          "curies": {
+            "href": "https://doc.entrecode.de/account_server/#relation-{rel}",
+            "templated": true
+          },
+          "ec:auth": {
+            "href": "https://accounts.entrecode.de"
+          },
+          "collection": {
+            "profile": "https://entrecode.de/schema/invite",
+            "href": "https://accounts.entrecode.de/invite"
+          }
+        }
+      },
+      {
+        "invite": "3ec09d47-4557-4ede-bb2e-f492c33d5e93",
+        "permissions": [
+          "invalid"
+        ],
+        "groups": [],
+        "_links": {
+          "self": {
+            "profile": "https://entrecode.de/schema/invite",
+            "href": "https://accounts.entrecode.de/invite?invite=3ec09d47-4557-4ede-bb2e-f492c33d5e93"
+          },
+          "curies": {
+            "href": "https://doc.entrecode.de/account_server/#relation-{rel}",
+            "templated": true
+          },
+          "ec:auth": {
+            "href": "https://accounts.entrecode.de"
+          },
+          "collection": {
+            "profile": "https://entrecode.de/schema/invite",
+            "href": "https://accounts.entrecode.de/invite"
+          }
+        }
+      },
+      {
+        "invite": "3ec09d47-4557-4ede-bb2e-f492c33d5e93",
+        "permissions": [],
+        "groups": [],
+        "_links": {
+          "self": {
+            "profile": "https://entrecode.de/schema/invite",
+            "href": "https://accounts.entrecode.de/invite?invite=3ec09d47-4557-4ede-bb2e-f492c33d5e93"
+          },
+          "curies": {
+            "href": "https://doc.entrecode.de/account_server/#relation-{rel}",
+            "templated": true
+          },
+          "ec:auth": {
+            "href": "https://accounts.entrecode.de"
+          },
+          "collection": {
+            "profile": "https://entrecode.de/schema/invite",
+            "href": "https://accounts.entrecode.de/invite"
+          }
+        }
+      }
+    ]
+  }
+}
