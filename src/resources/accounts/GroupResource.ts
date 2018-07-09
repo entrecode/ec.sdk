@@ -1,6 +1,8 @@
 import Resource from '../Resource';
 import { environment } from '../../Core';
 
+const resourceSymbol: any = Symbol.for('resource');
+
 interface GroupResource {
   groupID: string,
   name: string,
@@ -40,7 +42,7 @@ class GroupResource extends Resource {
       },
       permissions: {
         enumerable: true,
-        get: () => <Array<string>> this.getProperty('permissions'),
+        get: () => <Array<string>>this.getProperty('permissions'),
         set: (value: Array<string>) => this.setProperty('permissions', value),
       },
     });
@@ -58,10 +60,7 @@ class GroupResource extends Resource {
       throw new Error('permission must be defined');
     }
 
-    const current = this.permissions;
-    current.push(value);
-    this.permissions = current;
-    return this;
+    return this.addPermissions([value]);
   }
 
   /**
@@ -81,7 +80,91 @@ class GroupResource extends Resource {
     return this;
   }
 
-  // TODO remove permission
+  /**
+   * Remove a single permission from this group.
+   * 
+   * @param {string} value the permission to remove
+   * @returns {GroupResource} returns this group resource
+   */
+  removePermission(value: string): GroupResource {
+    if (!value) {
+      throw new Error('permission must be defined');
+    }
+
+    return this.removePermissions([value]);
+  }
+
+  /**
+   * Remove multiple permissions from this group.
+   * 
+   * @param {Array<string>} value the permissions to remove
+   * @returns {GroupResource} returns this group resource
+   */
+  removePermissions(value: Array<string>) {
+    if (!value || !Array.isArray(value)) {
+      throw new Error('permission must be defined and an array');
+    }
+
+    let current = this.permissions;
+    current = current.filter(permission => value.indexOf(permission) !== -1);
+    this.permissions = current;
+    return this;
+  }
+
+  getAccounts(): Array<any> {
+    return this[resourceSymbol].embeddedArray('ec:account') || [];
+  }
+
+  /**
+   * Add an account to this group.
+   * 
+   * @param {string|{accountID: string}} account Account which should be added
+   * @returns {GroupResource} returns this group resource
+   */
+  addAccount(account: string | { accountID: string }): GroupResource {
+    if (!account) {
+      throw new Error('account must be defined');
+    }
+
+    if (typeof account === 'string') {
+      account = { accountID: account };
+    } else if (typeof account !== 'object' || !('accountID' in account)) {
+      throw new Error('account must either be string or account like object');
+    }
+
+    let accounts = this.getAccounts();
+    accounts.push(account);
+    this[resourceSymbol]._embedded['ec:account'] = accounts;
+
+    return this;
+  }
+
+  /**
+   * Remove an account from this group.
+   * 
+   * @param {string|{accountID: string}} account Account which should be removed
+   * @returns {GroupResource} returns this group resource
+   */
+  removeAccount(account: string | { accountID: string }): GroupResource {
+    if (!account) {
+      throw new Error('account must be defined');
+    }
+
+    let remove;
+    if (typeof account === 'string') {
+      remove = { accountID: account };
+    } else if (typeof account !== 'object' || !('accountID' in account)) {
+      throw new Error('account must either be string or account like object');
+    } else {
+      remove = account;
+    }
+
+    let accounts = this.getAccounts();
+    accounts = accounts.filter(acc => acc.accountID !== remove.accountID);
+    this[resourceSymbol]._embedded['ec:account'] = accounts;
+
+    return this;
+  }
 }
 
 export default GroupResource;

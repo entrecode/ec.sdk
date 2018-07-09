@@ -25,9 +25,9 @@ describe('Group ListResource', () => {
         return resolve(JSON.parse(res));
       });
     })
-    .then((json) => {
-      listJson = json;
-    });
+      .then((json) => {
+        listJson = json;
+      });
   });
   beforeEach(() => {
     list = new GroupList(listJson);
@@ -58,9 +58,9 @@ describe('Group Resource', () => {
         return resolve(JSON.parse(res));
       });
     })
-    .then((json) => {
-      resourceJson = json;
-    });
+      .then((json) => {
+        resourceJson = json;
+      });
   });
   beforeEach(() => {
     resource = new GroupResource(resourceJson);
@@ -96,6 +96,66 @@ describe('Group Resource', () => {
     const throws = () => resource.addPermissions('string');
     throws.should.throw(Error);
   });
+  it('should remove single permission', () => {
+    resource.permissions.should.have.property('length', 2);
+    resource.removePermission('app-create');
+    resource.permissions.should.have.property('length', 1);
+  });
+  it('should throw on undefined permission', () => {
+    const throws = () => resource.removePermission();
+    throws.should.throw(Error);
+  });
+  it('should remove multiple permissions', () => {
+    resource.permissions.should.have.property('length', 2);
+    resource.removePermission(['app-create', 'app:codesource,datasource,target,platform']);
+    resource.permissions.should.have.property('length', 0);
+  });
+  it('should throw on undefined permissions', () => {
+    const throws = () => resource.removePermission();
+    throws.should.throw(Error);
+  });
+  it('should throw on permissions not an array', () => {
+    const throws = () => resource.removePermissions('string');
+    throws.should.throw(Error);
+  });
+
+  it('should add account, string', () => {
+    resource.getAccounts().should.have.property('length', 2);
+    resource.addAccount('uuid');
+    resource.getAccounts().should.have.property('length', 3);
+  });
+  it('should add account, object', () => {
+    resource.getAccounts().should.have.property('length', 2);
+    resource.addAccount({ accountID: 'uuid' });
+    resource.getAccounts().should.have.property('length', 3);
+  });
+  it('should throw on undefined account', () => {
+    const throws = () => resource.addAccount();
+    throws.should.throw(Error);
+  });
+  it('should throw on account not account - like', () => {
+    const throws = () => resource.addAccount({ hehe: 'no account' });
+    throws.should.throw(Error);
+  });
+  it('should remove account, string', () => {
+    resource.getAccounts().should.have.property('length', 2);
+    resource.removeAccount('a9ad32fd-c1e3-44ca-a995-a7bf366793cc');
+    resource.getAccounts().should.have.property('length', 1);
+  });
+  it('should remove account, object', () => {
+    resource.getAccounts().should.have.property('length', 2);
+    resource.removeAccount({ accountID: 'a9ad32fd-c1e3-44ca-a995-a7bf366793cc' });
+    resource.getAccounts().should.have.property('length', 1);
+  });
+  it('should throw on undefined account', () => {
+    const throws = () => resource.removeAccount();
+    throws.should.throw(Error);
+  });
+  it('should throw on account not account - like', () => {
+    const throws = () => resource.removeAccount({ hehe: 'no account' });
+    throws.should.throw(Error);
+  });
+
 
   const getter = [
     'groupID', 'name', 'permissions',
