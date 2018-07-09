@@ -1,0 +1,27 @@
+{
+  "invite": "3ec09d47-4557-4ede-bb2e-f492c33d5e93",
+  "permissions": [],
+  "groups": [
+    {
+      "groupID": "3ec09d47-4557-4ede-bb2e-f492c33d5e93",
+      "name": "Vita Club TNG"
+    }
+  ],
+  "_links": {
+    "self": {
+      "profile": "https://entrecode.de/schema/invite",
+      "href": "https://accounts.entrecode.de/invite?invite=3ec09d47-4557-4ede-bb2e-f492c33d5e93"
+    },
+    "curies": {
+      "href": "https://doc.entrecode.de/account_server/#relation-{rel}",
+      "templated": true
+    },
+    "ec:auth": {
+      "href": "https://accounts.entrecode.de"
+    },
+    "collection": {
+      "profile": "https://entrecode.de/schema/invite",
+      "href": "https://accounts.entrecode.de/invite"
+    }
+  }
+}

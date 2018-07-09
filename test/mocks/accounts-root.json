@@ -84,7 +84,11 @@
     },
     "ec:invites": {
       "profile": "https://entrecode.de/schema/invites",
-      "href": "https://accounts.entrecode.de/invites"
+      "href": "https://accounts.entrecode.de/invite"
+    },
+    "ec:invites/options": {
+      "href": "https://accounts.entrecode.de/invite{?invite,invite~,page,size,sort}",
+      "templated": true
     },
     "ec:invalid-permissions": {
       "href": "https://accounts.entrecode.de/internal/invalid-permissions"

@@ -36,7 +36,8 @@ toc:
   - ClientList
   - GroupResource
   - GroupList
-  - InvitesResource
+  - InviteList
+  - InviteResource
   - InvalidPermissionsResource
   - name: AppManager Resources
     file: ./src/doc/6-appmanager-resources.md

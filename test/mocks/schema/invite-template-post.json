@@ -1,0 +1,35 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "https://entrecode.de/schema/invites-template-post",
+  "type": "object",
+  "properties": {
+    "count": {
+      "type": "number",
+      "minimum": 1
+    },
+    "permissions": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[a-zA-Z0-9_\\-:*,]+$"
+      }
+    },
+    "groups": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "groupID": {
+            "$ref": "https://entrecode.de/schema/group#groupID"
+          },
+          "name": {
+            "$ref": "https://entrecode.de/schema/group#name"
+          }
+        },
+        "required": [
+          "groupID"
+        ]
+      }
+    }
+  }
+}

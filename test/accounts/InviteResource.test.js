@@ -1,48 +1,108 @@
-/* eslint no-unused-expressions: "off" */
+/* eslint no-unused-expressions:0 */
 
 const chai = require('chai');
+const sinon = require('sinon');
+const sinonChai = require('sinon-chai');
 const fs = require('fs');
 
-const Resource = require('../../lib/resources/Resource');
-const InvitesResource = require('../../lib/resources/accounts/InvitesResource').default;
+const InviteResource = require('../../lib/resources/accounts/InviteResource').default;
+const InviteList = require('../../lib/resources/accounts/InviteList').default;
+const Resource = require('../../lib/resources/Resource').default;
+const ListResource = require('../../lib/resources/ListResource').default;
 
-const environmentSymbol = Symbol.for('environment');
-const traversalSymbol = Symbol.for('traversal');
+chai.should();
+chai.use(sinonChai);
 
-const should = chai.should();
-
-describe('InvitesResource', () => {
-  let resourceJson;
-  let resource;
-  before((done) => {
-    fs.readFile(`${__dirname}/../mocks/invites.json`, 'utf-8', (err, res) => {
-      if (err) {
-        return done(err);
-      }
-      resourceJson = JSON.parse(res);
-      return done();
+describe('Invite ListResource', () => {
+  let listJson;
+  let list;
+  before(() => {
+    return new Promise((resolve, reject) => {
+      fs.readFile(`${__dirname}/../mocks/invite-list.json`, 'utf-8', (err, res) => {
+        if (err) {
+          return reject(err);
+        }
+        return resolve(JSON.parse(res));
+      });
+    })
+    .then((json) => {
+      listJson = json;
     });
   });
   beforeEach(() => {
-    resource = new InvitesResource(resourceJson);
+    list = new InviteList(listJson);
+  });
+  afterEach(() => {
+    list = null;
+  });
+  it('should be instance of ListResource', () => {
+    list.should.be.instanceOf(ListResource);
+  });
+  it('should be instance of InviteList', () => {
+    list.should.be.instanceOf(InviteList);
+  });
+  it('should have InviteResource items', () => {
+    list.getAllItems().forEach(item => item.should.be.instanceOf(InviteResource));
+  });
+});
+
+describe('Invite Resource', () => {
+  let resourceJson;
+  let resource;
+  before(() => {
+    return new Promise((resolve, reject) => {
+      fs.readFile(`${__dirname}/../mocks/invite-single.json`, 'utf-8', (err, res) => {
+        if (err) {
+          return reject(err);
+        }
+        return resolve(JSON.parse(res));
+      });
+    })
+    .then((json) => {
+      resourceJson = json;
+    });
+  });
+  beforeEach(() => {
+    resource = new InviteResource(resourceJson);
   });
   afterEach(() => {
     resource = null;
   });
   it('should be instance of Resource', () => {
-    resource.should.be.instanceOf(Resource.default);
+    resource.should.be.instanceOf(Resource);
   });
-  it('should be instance of InvitesResource', () => {
-    resource.should.be.instanceOf(InvitesResource);
+  it('should be instance of InviteResource', () => {
+    resource.should.be.instanceOf(InviteResource);
   });
-  it('should instantiate with traversal and environment', () => {
-    const res = new Resource.default(resourceJson, 'stage', {});
-    res[environmentSymbol].should.be.equal('stage');
-    should.exist(res[traversalSymbol]);
+
+  const getter = [
+    'invite', 'permissions', 'groups',
+  ];
+  getter.forEach((name) => {
+    it(`should call resource.getProperty with ${name}`, () => {
+      const spy = sinon.spy(resource, 'getProperty');
+
+      const property = resource[name];
+      spy.should.have.been.calledOnce;
+      spy.should.have.been.calledWith(name);
+      property.should.be.equal(resource.getProperty(name));
+
+      spy.restore();
+    });
   });
-  it('should get invites', () => {
-    const invites = resource.invites;
-    invites.should.be.instanceOf(Array);
-    invites.forEach(invite => (typeof invite).should.be.equal('string'));
+
+  const setter = [
+    'permissions', 'groups',
+  ];
+  setter.forEach((name) => {
+    it(`should call resource.setProperty with ${name}`, () => {
+      const spy = sinon.spy(resource, 'setProperty');
+
+      resource[name] = resource.getProperty(name);
+      spy.should.have.been.calledOnce;
+      spy.should.have.been.calledWith(name, resource.getProperty(name));
+
+      spy.restore();
+    });
   });
 });
