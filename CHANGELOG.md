@@ -1,3 +1,13 @@
+## <small>0.16.21 (2018-07-09)</small>
+
+* release version 0.16.21 ([33e9e9e](https://github.com/entrecode/ec.sdk/commit/33e9e9e))
+* feat: add/remove Accounts and removePermission(s) from Group SDK-78 ([a0846f4](https://github.com/entrecode/ec.sdk/commit/a0846f4))
+* feat: create invites without options ([65205bd](https://github.com/entrecode/ec.sdk/commit/65205bd))
+* test: tests for proper invite resource ([1d2f366](https://github.com/entrecode/ec.sdk/commit/1d2f366))
+* doc: sorting of invites resources ([1ac55b5](https://github.com/entrecode/ec.sdk/commit/1ac55b5))
+
+
+
 ## <small>0.16.20 (2018-07-06)</small>
 
 * release version 0.16.20 ([5497ab6](https://github.com/entrecode/ec.sdk/commit/5497ab6))
