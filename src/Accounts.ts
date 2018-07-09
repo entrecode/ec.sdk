@@ -220,7 +220,7 @@ export default class Accounts extends Core {
    * @param {{count: number, pesmissions: Array<string>, groups: Array<{groupID: string, name: string}>}} options object describing the invites to create
    * @returns {Promise<InviteList>} Promise resolving to the InviteList
    */
-  createInvites(options: inviteCreateObject): Promise<InviteList> {
+  createInvites(options: inviteCreateObject = { count: 1 }): Promise<InviteList> {
     return <Promise<InviteList>>this.create('invite', options, true);
   }
 
@@ -451,8 +451,8 @@ export type tokenResponse = {
 
 export type inviteCreateObject = {
   count: number,
-  permissions: Array<string>,
-  groups: Array<inviteCreateGroupObject>,
+  permissions?: Array<string>,
+  groups?: Array<inviteCreateGroupObject>,
 }
 
 export type inviteCreateGroupObject = {
