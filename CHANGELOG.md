@@ -1,3 +1,10 @@
+## <small>0.16.22 (2018-07-13)</small>
+
+* release version 0.16.22 ([2563116](https://github.com/entrecode/ec.sdk/commit/2563116))
+* feat: uri encode publicAPI query strings SDK-81 ([2006fb2](https://github.com/entrecode/ec.sdk/commit/2006fb2))
+
+
+
 ## <small>0.16.21 (2018-07-09)</small>
 
 * release version 0.16.21 ([33e9e9e](https://github.com/entrecode/ec.sdk/commit/33e9e9e))
