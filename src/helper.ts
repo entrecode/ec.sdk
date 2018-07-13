@@ -500,9 +500,10 @@ const modifier = {
  *
  * @param {filterOptions} options filter options
  * @param {string?} templateURL optional templateURL for validating inputs
+ * @param {boolean?} encode if true it will encode the parameter values (eg. to support text filter with ',' or '+')
  * @returns {object} translated querystring object
  */
-export function optionsToQuery(options: filterOptions, templateURL?: string): any {
+export function optionsToQuery(options: filterOptions, templateURL?: string, encode: boolean = false): any {
   const out: any = {};
 
   if (options) {
@@ -540,7 +541,9 @@ export function optionsToQuery(options: filterOptions, templateURL?: string): an
           throw new Error('_fields array must contain only strings');
         }
         out[key] = (<Array<string>>options[key]).join(',');
-      } else if (typeof options[key] === 'string' || typeof options[key] === 'number' || typeof options[key] === 'boolean') {
+      } else if (typeof options[key] === 'string') {
+        out[key] = encode ? encodeURIComponent(<string>options[key]) : options[key];
+      } else if (typeof options[key] === 'number' || typeof options[key] === 'boolean') {
         out[key] = options[key];
       } else if (options[key] instanceof Date) {
         out[key] = (<Date>options[key]).toISOString();
@@ -556,6 +559,8 @@ export function optionsToQuery(options: filterOptions, templateURL?: string): an
               }
               if (options[key][searchKey] instanceof Date) {
                 out[`${key}${modifier[searchKey]}`] = options[key][searchKey].toISOString();
+              } else if (typeof options[key][searchKey] === 'string') {
+                out[`${key}${modifier[searchKey]}`] = encode ? encodeURIComponent(options[key][searchKey]) : options[key][searchKey];
               } else {
                 out[`${key}${modifier[searchKey]}`] = options[key][searchKey];
               }
@@ -569,7 +574,8 @@ export function optionsToQuery(options: filterOptions, templateURL?: string): an
               if (invalid.length > 0) {
                 throw new Error(`${key}.${searchKey} array must contain only strings or numbers`);
               }
-              out[key] = options[key][searchKey].join(modifier[searchKey]);
+              const array = options[key][searchKey].map(value => encode ? encodeURIComponent(value) : value);
+              out[key] = array.join(modifier[searchKey]);
               break;
             default:
               throw new Error(`No handling of ${key}.${searchKey} filter supported.`);
