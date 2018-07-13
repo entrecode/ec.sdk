@@ -836,9 +836,13 @@ describe('optionsToQuery', () => {
     helper.optionsToQuery(obj).should.have.property('property', 'value');
   });
   it('should have exact filter with date', () => {
-    const date = new Date()
+    const date = new Date();
     const obj = { property: { exact: date } };
     helper.optionsToQuery(obj).should.have.property('property', date.toISOString());
+  });
+  it('should have exact filter with number', () => {
+    const obj = { property: { exact: 0 } };
+    helper.optionsToQuery(obj).should.have.property('property', 0);
   });
   it('should throw on array exact filter', () => {
     const throws = () => {
@@ -904,6 +908,18 @@ describe('optionsToQuery', () => {
       helper.optionsToQuery({ property: { unknown: '1' } });
     };
     throws.should.throw(Error);
+  });
+  it('should encode \',\'', () => {
+    const obj = { property: 'hallo, michi' };
+    helper.optionsToQuery(obj, null, true).should.have.property('property', 'hallo%2C%20michi');
+  });
+  it('should encode \',\', exact filter', () => {
+    const obj = { property: { exact: 'hallo, michi' } };
+    helper.optionsToQuery(obj, null, true).should.have.property('property', 'hallo%2C%20michi');
+  });
+  it('should encode \',\', any filter', () => {
+    const obj = { property: { any: ['hallo, michi', 'hallo, berni'] } };
+    helper.optionsToQuery(obj, null, true).should.have.property('property', 'hallo%2C%20michi,hallo%2C%20berni');
   });
   describe('template validation', () => {
     it('valid, all types', () => {

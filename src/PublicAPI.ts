@@ -845,7 +845,7 @@ export default class PublicAPI extends Core {
         return this.follow(`${this[shortIDSymbol]}:${model}`);
       })
       .then((request) => {
-        request.withTemplateParameters(optionsToQuery(options, this.getLink(`${this[shortIDSymbol]}:${model}`).href));
+        request.withTemplateParameters(optionsToQuery(options, this.getLink(`${this[shortIDSymbol]}:${model}`).href, true));
         return get(this[environmentSymbol], request);
       })
       .then(([res, traversal]) => createList(res, this[environmentSymbol], traversal, `${this[shortIDSymbol]}:${model}`));
