@@ -3,14 +3,14 @@ node_js:
 - '10'
 - '8'
 - '6'
-script: "npm run testTravis"
+script: npm run testTravis
 deploy:
   provider: npm
   email: info@entrecode.de
   api_key:
-    secure: "Be81+6aZ/PZz+gHnoHAiD6r+dbwDZA0xIYS4KIOW1Z+Dl+cFbDiQKFzRgB66sLl6nN01NjvoPUTttgmkCe1tTp/j+gNuria0PyDo4R5eS4W2d8Xy4XJjVtZI/L0AyW3Mpg3pldHAYj1OSGbPSODEl0bkc6ku096XoFtFPJXLjwfPfPMdVagqmI5iB61o3RcfLRpvo0SRs8EkO03nhsiRFdxd0ktF0qNIB7XIhhGO2eplWg2zTY6fTGYEiHDcPI+AKX3R+XQ20U4XckGjZIFCtzDhLPaxaCQB3p8yYnNUNkhkLVcgkU3ZJa0kUg0Be7iiyxRxGmHgJ1ZJ3xySm5S3LRB3T+Opl4qg/VXmDfcMuMmeu6SkSd2NlnCriZPLOa8L6+fSk5zi7ZCwSLLBP6wwMAl2OEgeY0pfscDKWFyFR/sv+DbeCMy12kSe2gTZ1JC7KT80aNWDavCTD8c8ZQy8aiUEM1eCDAWEvrbLAjWwz7o2o/SjPKFHFikVlsjHxtPINbMmX2DQ6ZG5xKSzfQKfcGsqZvq0f4z/nMQrjMKPuU3LXJVAZDr679y5O8hYccqFZ1qqk6JWX1WQqwmRQfIjTVQotGOKKDPMlibAHUXZy8AUiqoIYBGtafruTSFj/lTCC+5YLQwKl3EzMuEG9CpyeGfzxPatf9ZHBxckirRJSLc="
+    secure: PKCbI62pw8Ny32sxTsrhKTvffXAcEqcAbY+/Me0zrxZFZW0BD1T1u/diS0PP3+uzk9l0X4J7HFWaEfezH9cq47z3dwE9RlwTCwN8kFMYIbaAWrvDJQnIcRwmBng5M47xxwzydGgVsCdoz3PSVNZJlJL43Ku2vOCnRQdBY32E6Rl0YyOBVCaO6foK2Wl/WsfMDFC7C7iEI/fdJ68nQznagAgw+na1nqb5T6k6RFfNOL/ttKcDmCnsL116t4ASsMNH9L4mhBaWB/ZZP8vb2cF/nEr9igSdUmAJJnFIrt2kk00DIGhr2GVVK1Dm0VtH8Nw8ezZOwDke3g+H1WvmwYG0dQkfkmBb+XI7drnRRNyhAKJ7kQfoS75pbpu+cp1YWLN57aweMIVAr6+eNMxICIS7S6mm3YkNUm9C/ELZE/PpekBjm2M26VMIRylVBdc25y8FDcrQed+/pENI1J2pPOgNajRjwC8JnuSEfPHZLFxEyv913xqxJtn/ilqS1fSfVRp61eLJOlQjl6J0tO2aAJTWNP4U0zjg410gr4bnH83IcfQC+Nl/MyUTcboknG7qHFgoEqf3l40lTI84GfRPtH5nQCmk+6XeC1w9nemgsO1CP9rTwiYCsOoVP0bAz6WnT2dMixZRut2gIpYlF3EgfA2B+Rv0cDK1BuoUR7/yCjom5SA=
   on:
     tags: true
     onBranch: master
   skip_cleanup: true
-after_script: "npm run coveralls"
+after_script: npm run coveralls
