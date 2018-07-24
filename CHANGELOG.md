@@ -1,3 +1,11 @@
+## <small>0.16.23 (2018-07-24)</small>
+
+* release version 0.16.23 ([6937973](https://github.com/entrecode/ec.sdk/commit/6937973))
+* feat: deduplicate flag in DMAsset upload ([c8de97d](https://github.com/entrecode/ec.sdk/commit/c8de97d))
+* chore: adds new npm token token to travis deploy ([ef52f68](https://github.com/entrecode/ec.sdk/commit/ef52f68))
+
+
+
 ## <small>0.16.22 (2018-07-13)</small>
 
 * release version 0.16.22 ([2563116](https://github.com/entrecode/ec.sdk/commit/2563116))
