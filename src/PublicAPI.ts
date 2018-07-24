@@ -545,8 +545,7 @@ export default class PublicAPI extends Core {
       .then((request) => getUrl(this[environmentSymbol], request))
       .then((url) => {
         const request = superagent.post(url);
-        const isFormData = typeof FormData === 'function' && input instanceof FormData; // eslint-disable-line
-        // no-undef
+        const isFormData = typeof FormData === 'function' && input instanceof FormData; // eslint-disable-line no-undef
         if (isFormData) {
           request.send(input);
         } else {
@@ -577,6 +576,10 @@ export default class PublicAPI extends Core {
               throw new Error('Cannot handle input.')
             }
           });
+
+          if ('deduplicate' in options) {
+            request.field('deduplicate', `${options.deduplicate}`);
+          }
 
           if ('preserveFilenames' in options) {
             request.field('preserveFilenames', `${options.preserveFilenames}`);
