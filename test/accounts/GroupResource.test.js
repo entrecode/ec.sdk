@@ -119,6 +119,38 @@ describe('Group Resource', () => {
     throws.should.throw(Error);
   });
 
+  it('should add accounts, string', () => {
+    resource.getAccounts().should.have.property('length', 2);
+    resource.setAccounts(['asdf']);
+    resource.getAccounts().should.have.property('length', 1);
+  });
+  it('should add accounts, object', () => {
+    resource.getAccounts().should.have.property('length', 2);
+    resource.setAccounts([{ accountID: 'asdf' }]);
+    resource.getAccounts().should.have.property('length', 1);
+  });
+  it('should add accounts, mixed', () => {
+    resource.getAccounts().should.have.property('length', 2);
+    resource.setAccounts([{ accountID: 'asdf' }, 'asdf', 'asdf']);
+    resource.getAccounts().should.have.property('length', 3);
+  });
+  it('should throw on undefined accounts', () => {
+    const throws = () => resource.setAccounts();
+    throws.should.throw(Error);
+  });
+  it('should throw on accounts not an array', () => {
+    const throws = () => resource.setAccounts('asdf');
+    throws.should.throw(Error);
+  });
+  it('should throw on account items number', () => {
+    const throws = () => resource.setAccounts([123]);
+    throws.should.throw(Error);
+  });
+  it('should throw on account items object not account like', () => {
+    const throws = () => resource.setAccounts([{}]);
+    throws.should.throw(Error);
+  });
+
   it('should add account, string', () => {
     resource.getAccounts().should.have.property('length', 2);
     resource.addAccount('uuid');
