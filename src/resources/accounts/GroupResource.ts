@@ -111,6 +111,11 @@ class GroupResource extends Resource {
     return this;
   }
 
+  /**
+   * Get the embedded account objects. Will be no account resources, but object containing only accountID and email.
+   * 
+   * @returns {Array<object>} An array of account like objects
+   */
   getAccounts(): Array<any> {
     return this[resourceSymbol].embeddedArray('ec:account') || [];
   }
@@ -136,6 +141,31 @@ class GroupResource extends Resource {
     accounts.push(account);
     this[resourceSymbol]._embedded['ec:account'] = accounts;
 
+    return this;
+  }
+
+  /**
+   * Replace all accounts in this GroupResource with a new array.
+   * 
+   * @param accounts The array of accounts you want to contain in this group.
+   */
+  setAccounts(accounts: Array<string | any>): GroupResource {
+    if (!accounts) {
+      throw new Error('accounts must be defined');
+    }
+
+    if (!Array.isArray(accounts)) {
+      throw new Error('accounts must be an array')
+    }
+
+    accounts.forEach(a => {
+      if (typeof a !== 'string' && !(typeof a === 'object' && 'accountID' in a)) {
+        throw new Error('account items must be string or account like object')
+      }
+    });
+
+    this[resourceSymbol]._embedded['ec:account'] = accounts.map(a => typeof a === 'string' ? { accountID: a } : a);
+   
     return this;
   }
 
