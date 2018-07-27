@@ -1,3 +1,10 @@
+## <small>0.16.24 (2018-07-27)</small>
+
+* release version 0.16.24 ([a074176](https://github.com/entrecode/ec.sdk/commit/a074176))
+* feat: setAccounts in GroupResource to replace all accounts SDK-83 ([0d59faa](https://github.com/entrecode/ec.sdk/commit/0d59faa))
+
+
+
 ## <small>0.16.23 (2018-07-24)</small>
 
 * release version 0.16.23 ([6937973](https://github.com/entrecode/ec.sdk/commit/6937973))
