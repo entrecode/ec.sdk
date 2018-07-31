@@ -1,3 +1,10 @@
+## <small>0.16.25 (2018-07-31)</small>
+
+* release version 0.16.25 ([29e6e96](https://github.com/entrecode/ec.sdk/commit/29e6e96))
+* fix: use templated schema in invite resource ([2a22622](https://github.com/entrecode/ec.sdk/commit/2a22622))
+
+
+
 ## <small>0.16.24 (2018-07-27)</small>
 
 * release version 0.16.24 ([a074176](https://github.com/entrecode/ec.sdk/commit/a074176))
