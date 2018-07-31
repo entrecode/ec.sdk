@@ -51,6 +51,16 @@ class InviteResource extends Resource {
     });
     this.countProperties();
   }
+
+  /**
+   * Saves this {@link InviteResource}.
+   *
+   * @returns {Promise<InviteResource>} Promise will resolve to the saved InviteResource. Will
+   *   be the same object but with refreshed data.
+   */
+  save(): Promise<InviteResource> {
+    return <Promise<InviteResource>>super.save(false, `${this.getLink('self').profile}-template-put`);
+  }
 }
 
 export default InviteResource;
