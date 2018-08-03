@@ -1,3 +1,10 @@
+## <small>0.16.26 (2018-08-03)</small>
+
+* release version 0.16.26 ([4b1493c](https://github.com/entrecode/ec.sdk/commit/4b1493c))
+* fix: safe put header names ([c119745](https://github.com/entrecode/ec.sdk/commit/c119745))
+
+
+
 ## <small>0.16.25 (2018-07-31)</small>
 
 * release version 0.16.25 ([29e6e96](https://github.com/entrecode/ec.sdk/commit/29e6e96))
