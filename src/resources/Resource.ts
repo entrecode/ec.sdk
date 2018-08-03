@@ -459,7 +459,7 @@ class Resource {
           const date = new Date(out._modified);
           request.addRequestOptions({
             headers: {
-              'If-Modified-Since': date.toUTCString(),
+              'If-Unmodified-Since': date.toUTCString(),
             }
           });
         }

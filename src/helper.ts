@@ -128,7 +128,7 @@ function traversonWrapper(func: string, environment: environment, t: any, body?:
       return resolve(res);
     };
 
-    t.withRequestOptions({ headers: { Accept: 'application/hal+json' } });
+    t.addRequestOptions({ headers: { Accept: 'application/hal+json' } });
 
     const store = TokenStoreFactory(environment);
     let secondStore: TokenStore;
