@@ -95,7 +95,7 @@ interface ListResource {
  * @class
  *
  * @prop {number} count - the number of embedded items in this list
- * @prop {number} size - the number of total items in this list
+ * @prop {number} total - the number of total items in this list
  */
 class ListResource extends Resource {
   private index: number = 0;

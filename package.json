@@ -1,6 +1,6 @@
 {
   "name": "ec.sdk",
-  "version": "0.16.26",
+  "version": "0.16.27",
   "description": "SDK for ec.api",
   "repository": "entrecode/ec.sdk",
   "author": "Simon Scherzinger <scherzinger@entrecode.de>",
@@ -56,7 +56,7 @@
     "chai-as-promised": "^7.1.1",
     "conventional-changelog-cli": "^2.0.1",
     "coveralls": "^3.0.1",
-    "documentation": "^8.0.0",
+    "documentation": "^8.1.1",
     "ec.cookie-mock": "^1.0.1",
     "istanbul": "^0.4.5",
     "mocha": "^5.2.0",

@@ -11,6 +11,7 @@ toc:
   - PublicAPI
   - environment
   - options
+  - fileOptions
   - name: Events and Errors
     file: ./src/doc/3-events-errors.md
   - Problem

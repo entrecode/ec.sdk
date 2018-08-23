@@ -519,11 +519,11 @@ export default class PublicAPI extends Core {
    * @param {string} assetGroupID the asset group in which the asset should be created.
    * @param {object|array<object|string>|string} input representing the asset, either an array of
    *   paths, a FormData object, a array of readStreams, an array containing buffers, or a string.
-   * @param {object} options options for creating an asset.
+   * @param {fileOptions} options options for creating an asset.
    * @returns {Promise<function<Promise<DMAssetList>>>}  Promise resolving to a Promise
    *   factory which then resolves to the newly created assets as DMAssetList
    */
-  createDMAssets(assetGroupID: string, input: any, options: any = {}): Promise<DMAssetList | void> {
+  createDMAssets(assetGroupID: string, input: any, options: fileOptions = {}): Promise<DMAssetList | void> {
     return Promise.resolve()
       .then(() => {
         if (!assetGroupID) {
@@ -587,6 +587,10 @@ export default class PublicAPI extends Core {
 
           if ('ignoreDuplicates' in options) {
             request.field('ignoreDuplicates', `${options.ignoreDuplicates}`);
+          }
+
+          if ('deduplicate' in options) {
+            request.field('deduplicate', `${options.deduplicate}`);
           }
 
           if ('includeAssetIDInPath' in options) {
@@ -1379,11 +1383,19 @@ export default class PublicAPI extends Core {
   }
 }
 
+export type fileOptions = {
+  fileName?: string | Array<string>;
+  preserveFilenames?: boolean;
+  ignoreDuplicates?: boolean;
+  includeAssetIDInPath?: boolean;
+  deduplicate?: boolean;
+}
+
 export type jwtResponse = {
   jwt: string;
   accountID: string;
   iat: number;
-  exp: number
+  exp: number;
 }
 
 export type assetOptions = {
@@ -1391,3 +1403,15 @@ export type assetOptions = {
   title?: string,
   tags?: Array<string>
 }
+
+/**
+ * When creating Assets neue you can provide some options like fileName and
+ * others. These are directly mapped to DataManager options in create Asset
+ * route of Asset neue.
+ * 
+ * @example
+ * const assetList = await api.createDMAsset('myFiles', filePath, { deduplicate: true });
+ * 
+ * @typedef {{fileName?: string|Array<string>, preserveFilenames?: boolean, ignoreDuplicates?: boolean,
+ *   includeASsetIDInPath?: boolean, deduplicate?: boolean}} fileOptions
+ */
