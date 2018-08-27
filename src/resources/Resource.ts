@@ -3,7 +3,7 @@ import * as halfred from 'halfred';
 import * as traverson from 'traverson';
 import * as validator from 'json-schema-remote';
 import * as isEqual from 'lodash.isequal';
-import * as assert from 'assert';
+import * as equal from 'deep-equal';
 
 const { convertValidationError } = require('ec.errors')();
 
@@ -68,21 +68,13 @@ class Resource {
       isDirty: {
         enumerable: false,
         get: () => {
-          try {
-            const original = this[resourceSymbol].original();
-            const current = this.toOriginal();
-            delete original._links;
-            delete current._links;
-            delete original._embedded;
-            delete current._embedded;
-            assert.deepEqual(current, original);
-            return false;
-          } catch (err) {
-            if (err.name && err.name.indexOf('AssertionError') !== -1) {
-              return true;
-            }
-            throw err;
-          }
+          const original = this[resourceSymbol].original();
+          const current = this.toOriginal();
+          delete original._links;
+          delete current._links;
+          delete original._embedded;
+          delete current._embedded;
+          return !equal(current, original)
         },
       },
     });

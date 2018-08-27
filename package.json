@@ -31,6 +31,7 @@
     "@types/traverson": "^2.0.28",
     "@types/validator": "^9.4.1",
     "browser-cookies": "^1.2.0",
+    "deep-equal": "^1.0.1",
     "ec.errors": "^0.2.2",
     "eventsource": "^1.0.5",
     "halfred": "^1.0.0",
