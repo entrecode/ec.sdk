@@ -1,3 +1,11 @@
+## <small>0.16.28 (2018-08-27)</small>
+
+* release version 0.16.28 ([99f72ea](https://github.com/entrecode/ec.sdk/commit/99f72ea))
+* fix: do not use assert from node, use deep-equal instead ([3772680](https://github.com/entrecode/ec.sdk/commit/3772680))
+* chore: updated npm access key in travis ([8000fcd](https://github.com/entrecode/ec.sdk/commit/8000fcd))
+
+
+
 ## <small>0.16.26 (2018-08-03)</small>
 
 * release version 0.16.26 ([4b1493c](https://github.com/entrecode/ec.sdk/commit/4b1493c))
