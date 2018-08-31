@@ -54,6 +54,17 @@
                 
                 <div class='toggle-target display-none'>
                   
+                  <ul class='list-reset py1-ul pl1'>
+                    <li class='h5'><span>Static members</span></li>
+                    
+                      <li><a
+                        href='#coreenablehistoryevents'
+                        class='regular pre-open'>
+                        .enableHistoryEvents
+                      </a></li>
+                    
+                    </ul>
+                  
                   
                     <ul class='list-reset py1-ul pl1'>
                       <li class='h5'><span>Instance members</span></li>
@@ -3381,6 +3392,84 @@ directly. Use one of the other API connectors instead.</p>
 <span class="hljs-keyword">const</span> dmStandAlone = <span class="hljs-keyword">new</span> DataManager({ <span class="hljs-attr">environment</span>: <span class="hljs-string">'live'</span>, <span class="hljs-attr">noCookie</span>: <span class="hljs-literal">true</span> });</pre>
     
   
+
+  
+    <div class='py1 quiet mt1 prose-big'>Static Members</div>
+    <div class="clearfix">
+  
+    <div class='border-bottom' id='coreenablehistoryevents'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>enableHistoryEvents(eventstoreLib)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Static function to globally enable history events. If you want to use history events please
+provide 'eventsource/lib/eventsource-polyfill' within your project.</p>
+
+ 
+  
+    <div class='pre p1 fill-light mt0'>enableHistoryEvents(eventstoreLib: any)</div>
+   
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>eventstoreLib</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">import</span> { PublicAPI } <span class="hljs-keyword">from</span> <span class="hljs-string">'ec.sdk'</span>;
+<span class="hljs-keyword">import</span> * <span class="hljs-keyword">as</span> EventSource <span class="hljs-keyword">from</span> <span class="hljs-string">'eventsource/lib/eventsource-polyfill'</span>;
+
+PublicAPI.enableHistoryEvents(EventSource);
+…</pre>
+    
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+</div>
 
   
 
