@@ -8,7 +8,7 @@ const { convertValidationError } = require('ec.errors')();
 
 import { EventEmitterFactory } from './EventEmitter';
 import TokenStoreFactory from './TokenStore';
-import { locale, setLocale, get, getSchema, optionsToQuery, post } from './helper';
+import { locale, setLocale, get, getSchema, optionsToQuery, post, enableHistoryEvents } from './helper';
 import Resource from './resources/Resource';
 import ListResource, { filterOptions } from './resources/ListResource';
 import Problem from './Problem';
@@ -83,6 +83,23 @@ export default class Core {
     this[tokenStoreSymbol] = TokenStoreFactory(environment + cookieModifier);
     this[traversalSymbol] = traverson.from(urls[environment]).jsonHal();
     this[relationsSymbol] = {};
+  }
+
+  /**
+   * Static function to globally enable history events. If you want to use history events please
+   * provide 'eventsource/lib/eventsource-polyfill' within your project.
+   * 
+   * @example
+   * import { PublicAPI } from 'ec.sdk';
+   * import * as EventSource from 'eventsource/lib/eventsource-polyfill';
+   * 
+   * PublicAPI.enableHistoryEvents(EventSource);
+   * …
+   *
+   * @param eventstoreLib
+   */
+  static enableHistoryEvents(eventstoreLib: any): void {
+    enableHistoryEvents(eventstoreLib);
   }
 
   /**

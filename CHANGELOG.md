@@ -1,3 +1,39 @@
+## 0.17.0 (2018-08-31)
+
+* release version 0.17.0 ([a7d8df8](https://github.com/entrecode/ec.sdk/commit/a7d8df8))
+* fix: removed eventsource dependency to support react ([a68dff8](https://github.com/entrecode/ec.sdk/commit/a68dff8))
+* doc: fixed typo ([91aba46](https://github.com/entrecode/ec.sdk/commit/91aba46))
+
+
+### BREAKING CHANGE
+
+* This change will break usage when using HistoryEvents. You will need to
+inject 'eventsource/lib/eventsource-polyfill' manually in you project.
+
+before:
+```js
+import { DataManager } from 'ec.sdk';
+
+const dmApi = new DataManager();
+
+const dm = await dmApi.dataManager(dmID);
+const history = await dm.newHistory();
+```
+
+after:
+```js
+import { DataManager } from 'ec.sdk';
+import * as EventSource from  'eventsource/lib/eventsource-polyfill';
+
+DataManager.enableHistoryEvents(EventSource);
+
+const dmApi = new DataManager();
+
+const dm = await dmApi.dataManager(dmID);
+const history = await dm.newHistory();
+```
+
+
 ## <small>0.16.28 (2018-08-27)</small>
 
 * release version 0.16.28 ([99f72ea](https://github.com/entrecode/ec.sdk/commit/99f72ea))

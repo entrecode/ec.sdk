@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset='utf-8' />
-  <title>ec.sdk 0.16.28 | Documentation</title>
+  <title>ec.sdk 0.17.0 | Documentation</title>
   <meta name='viewport' content='width=device-width,initial-scale=1'>
   <link href='assets/bass.css' type='text/css' rel='stylesheet' />
   <link href='assets/style.css' type='text/css' rel='stylesheet' />
@@ -15,7 +15,7 @@
       <div id='split-left' class='overflow-auto fs0 height-viewport-100'>
         <div class='py1 px2'>
           <h3 class='mb0 no-anchor'>ec.sdk</h3>
-          <div class='mb1'><code>0.16.28</code></div>
+          <div class='mb1'><code>0.17.0</code></div>
           <input
             placeholder='Filter'
             id='filter-input'
@@ -53,6 +53,17 @@
                 </a>
                 
                 <div class='toggle-target display-none'>
+                  
+                  <ul class='list-reset py1-ul pl1'>
+                    <li class='h5'><span>Static members</span></li>
+                    
+                      <li><a
+                        href='#coreenablehistoryevents'
+                        class='regular pre-open'>
+                        .enableHistoryEvents
+                      </a></li>
+                    
+                    </ul>
                   
                   
                     <ul class='list-reset py1-ul pl1'>
@@ -3381,6 +3392,84 @@ directly. Use one of the other API connectors instead.</p>
 <span class="hljs-keyword">const</span> dmStandAlone = <span class="hljs-keyword">new</span> DataManager({ <span class="hljs-attr">environment</span>: <span class="hljs-string">'live'</span>, <span class="hljs-attr">noCookie</span>: <span class="hljs-literal">true</span> });</pre>
     
   
+
+  
+    <div class='py1 quiet mt1 prose-big'>Static Members</div>
+    <div class="clearfix">
+  
+    <div class='border-bottom' id='coreenablehistoryevents'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>enableHistoryEvents(eventstoreLib)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Static function to globally enable history events. If you want to use history events please
+provide 'eventsource/lib/eventsource-polyfill' within your project.</p>
+
+ 
+  
+    <div class='pre p1 fill-light mt0'>enableHistoryEvents(eventstoreLib: any)</div>
+   
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>eventstoreLib</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">import</span> { PublicAPI } <span class="hljs-keyword">from</span> <span class="hljs-string">'ec.sdk'</span>;
+<span class="hljs-keyword">import</span> * <span class="hljs-keyword">as</span> EventSource <span class="hljs-keyword">from</span> <span class="hljs-string">'eventsource/lib/eventsource-polyfill'</span>;
+
+PublicAPI.enableHistoryEvents(EventSource);
+…</pre>
+    
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+</div>
 
   
 
@@ -23909,7 +23998,7 @@ be the same object but with refreshed data.
   
 
   <p>Object describing all properties of fields.</p>
-<p><a href="https://doc.entrecode.de/en/latest/data_manager/#field-data-types">Filed Documentation</a></p>
+<p><a href="https://doc.entrecode.de/en/latest/data_manager/#field-data-types">Field Documentation</a></p>
 
  
   
@@ -31708,7 +31797,35 @@ be the same object but with refreshed data.
     </h2>
 
     
-      <h2><small>0.16.28 (2018-08-27)</small></h2>
+      <h2>0.17.0 (2018-08-31)</h2>
+<ul>
+<li>release version 0.17.0 (<a href="https://github.com/entrecode/ec.sdk/commit/a7d8df8">a7d8df8</a>)</li>
+<li>fix: removed eventsource dependency to support react (<a href="https://github.com/entrecode/ec.sdk/commit/a68dff8">a68dff8</a>)</li>
+<li>doc: fixed typo (<a href="https://github.com/entrecode/ec.sdk/commit/91aba46">91aba46</a>)</li>
+</ul>
+<h3>BREAKING CHANGE</h3>
+<ul>
+<li>This change will break usage when using HistoryEvents. You will need to
+inject 'eventsource/lib/eventsource-polyfill' manually in you project.</li>
+</ul>
+<p>before:</p>
+<pre class='hljs'><span class="hljs-keyword">import</span> { DataManager } <span class="hljs-keyword">from</span> <span class="hljs-string">'ec.sdk'</span>;
+
+<span class="hljs-keyword">const</span> dmApi = <span class="hljs-keyword">new</span> DataManager();
+
+<span class="hljs-keyword">const</span> dm = <span class="hljs-keyword">await</span> dmApi.dataManager(dmID);
+<span class="hljs-keyword">const</span> history = <span class="hljs-keyword">await</span> dm.newHistory();</pre>
+<p>after:</p>
+<pre class='hljs'><span class="hljs-keyword">import</span> { DataManager } <span class="hljs-keyword">from</span> <span class="hljs-string">'ec.sdk'</span>;
+<span class="hljs-keyword">import</span> * <span class="hljs-keyword">as</span> EventSource <span class="hljs-keyword">from</span>  <span class="hljs-string">'eventsource/lib/eventsource-polyfill'</span>;
+
+DataManager.enableHistoryEvents(EventSource);
+
+<span class="hljs-keyword">const</span> dmApi = <span class="hljs-keyword">new</span> DataManager();
+
+<span class="hljs-keyword">const</span> dm = <span class="hljs-keyword">await</span> dmApi.dataManager(dmID);
+<span class="hljs-keyword">const</span> history = <span class="hljs-keyword">await</span> dm.newHistory();</pre>
+<h2><small>0.16.28 (2018-08-27)</small></h2>
 <ul>
 <li>release version 0.16.28 (<a href="https://github.com/entrecode/ec.sdk/commit/99f72ea">99f72ea</a>)</li>
 <li>fix: do not use assert from node, use deep-equal instead (<a href="https://github.com/entrecode/ec.sdk/commit/3772680">3772680</a>)</li>
@@ -33016,7 +33133,35 @@ accounts.account(…);</pre>
   </div>
   
 
-  <h2><small>0.16.28 (2018-08-27)</small></h2>
+  <h2>0.17.0 (2018-08-31)</h2>
+<ul>
+<li>release version 0.17.0 (<a href="https://github.com/entrecode/ec.sdk/commit/a7d8df8">a7d8df8</a>)</li>
+<li>fix: removed eventsource dependency to support react (<a href="https://github.com/entrecode/ec.sdk/commit/a68dff8">a68dff8</a>)</li>
+<li>doc: fixed typo (<a href="https://github.com/entrecode/ec.sdk/commit/91aba46">91aba46</a>)</li>
+</ul>
+<h3>BREAKING CHANGE</h3>
+<ul>
+<li>This change will break usage when using HistoryEvents. You will need to
+inject 'eventsource/lib/eventsource-polyfill' manually in you project.</li>
+</ul>
+<p>before:</p>
+<pre class='hljs'><span class="hljs-keyword">import</span> { DataManager } <span class="hljs-keyword">from</span> <span class="hljs-string">'ec.sdk'</span>;
+
+<span class="hljs-keyword">const</span> dmApi = <span class="hljs-keyword">new</span> DataManager();
+
+<span class="hljs-keyword">const</span> dm = <span class="hljs-keyword">await</span> dmApi.dataManager(dmID);
+<span class="hljs-keyword">const</span> history = <span class="hljs-keyword">await</span> dm.newHistory();</pre>
+<p>after:</p>
+<pre class='hljs'><span class="hljs-keyword">import</span> { DataManager } <span class="hljs-keyword">from</span> <span class="hljs-string">'ec.sdk'</span>;
+<span class="hljs-keyword">import</span> * <span class="hljs-keyword">as</span> EventSource <span class="hljs-keyword">from</span>  <span class="hljs-string">'eventsource/lib/eventsource-polyfill'</span>;
+
+DataManager.enableHistoryEvents(EventSource);
+
+<span class="hljs-keyword">const</span> dmApi = <span class="hljs-keyword">new</span> DataManager();
+
+<span class="hljs-keyword">const</span> dm = <span class="hljs-keyword">await</span> dmApi.dataManager(dmID);
+<span class="hljs-keyword">const</span> history = <span class="hljs-keyword">await</span> dm.newHistory();</pre>
+<h2><small>0.16.28 (2018-08-27)</small></h2>
 <ul>
 <li>release version 0.16.28 (<a href="https://github.com/entrecode/ec.sdk/commit/99f72ea">99f72ea</a>)</li>
 <li>fix: do not use assert from node, use deep-equal instead (<a href="https://github.com/entrecode/ec.sdk/commit/3772680">3772680</a>)</li>

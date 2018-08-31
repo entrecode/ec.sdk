@@ -1,5 +1,4 @@
 import * as localeLib from 'locale';
-import * as EventSource from 'eventsource/lib/eventsource-polyfill';
 import * as superagent from 'superagent';
 import * as validator from 'json-schema-remote';
 
@@ -18,6 +17,8 @@ const { newError } = require('ec.errors')();
 const packageJson: any = require('../package.json');
 
 const historyMap = new Map();
+
+let EventSource: boolean | any = false;
 
 validator.setLoggingFunction(() => {
 });
@@ -247,7 +248,14 @@ export function getUrl(environment: environment, t: any): Promise<string> {
   return traversonWrapper('getUrl', environment, t);
 }
 
+export function enableHistoryEvents(eventSourceLib) {
+  EventSource = eventSourceLib;
+}
+
 export function getHistory(environment: environment, t: any): Promise<EventSource> {
+  if (!EventSource) {
+    throw new Error('EventSource not enabled. Please inject \'eventsource/lib/eventsource-polyfill\'');
+  }
   return getUrl(environment, t)
     .then((url) => {
       const store = TokenStoreFactory(environment);
