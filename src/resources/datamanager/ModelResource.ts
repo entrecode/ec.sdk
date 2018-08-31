@@ -252,7 +252,7 @@ export default ModelResource;
 /**
  * Object describing all properties of fields.
  *
- * {@link https://doc.entrecode.de/en/latest/data_manager/#field-data-types Filed Documentation}
+ * {@link https://doc.entrecode.de/en/latest/data_manager/#field-data-types Field Documentation}
  *
  * @example
  * {
