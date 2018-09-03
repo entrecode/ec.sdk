@@ -1,3 +1,11 @@
+## <small>0.17.1 (2018-09-03)</small>
+
+* release version 0.17.1 ([b305810](https://github.com/entrecode/ec.sdk/commit/b305810))
+* fix: adds Symbol polyfill for react ([a82a03b](https://github.com/entrecode/ec.sdk/commit/a82a03b))
+* fix: use new version of traverson without nextTick ([d14351a](https://github.com/entrecode/ec.sdk/commit/d14351a))
+
+
+
 ## 0.17.0 (2018-08-31)
 
 * release version 0.17.0 ([a7d8df8](https://github.com/entrecode/ec.sdk/commit/a7d8df8))
