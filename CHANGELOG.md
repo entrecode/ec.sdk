@@ -1,3 +1,13 @@
+## <small>0.17.2 (2018-09-03)</small>
+
+* release version 0.17.2 ([de7a6d5](https://github.com/entrecode/ec.sdk/commit/de7a6d5))
+* fix: handling of DMAsset and PublicAsset Resources ([9fac177](https://github.com/entrecode/ec.sdk/commit/9fac177))
+* chore: adds npm i to release script ([d3e38ed](https://github.com/entrecode/ec.sdk/commit/d3e38ed))
+* chore: move npm to correct location ([f77ae0e](https://github.com/entrecode/ec.sdk/commit/f77ae0e))
+* chore: updated package-lock ([f650051](https://github.com/entrecode/ec.sdk/commit/f650051))
+
+
+
 ## <small>0.17.1 (2018-09-03)</small>
 
 * release version 0.17.1 ([b305810](https://github.com/entrecode/ec.sdk/commit/b305810))
