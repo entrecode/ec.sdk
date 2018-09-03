@@ -4,6 +4,7 @@ set -e
 
 git diff-index --quiet HEAD --
 git checkout develop
+npm i
 npm test
 git checkout -b release/$1
 npm version --no-git-tag-version $1
