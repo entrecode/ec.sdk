@@ -315,7 +315,6 @@ class EntryResource extends LiteEntryResource {
                 } else {
                   this[resourceSymbol][key] = new PublicAssetResource(asset, environment);
                 }
-                this[resourceSymbol][key] = new PublicAssetResource(asset, environment);
               } else if (typeof asset !== 'object') {
                 const embedded = this[resourceSymbol].embeddedResource(`${this[shortIDSymbol]}:${this.getModelTitle()}/${key}/asset`);
                 if (embedded) {
