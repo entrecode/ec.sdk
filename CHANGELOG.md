@@ -1,3 +1,10 @@
+## <small>0.17.3 (2018-09-06)</small>
+
+* release version 0.17.3 ([6afb9ee](https://github.com/entrecode/ec.sdk/commit/6afb9ee))
+* fix: also import Symbol polyfill in Resources ([d36067f](https://github.com/entrecode/ec.sdk/commit/d36067f))
+
+
+
 ## <small>0.17.2 (2018-09-03)</small>
 
 * release version 0.17.2 ([de7a6d5](https://github.com/entrecode/ec.sdk/commit/de7a6d5))
