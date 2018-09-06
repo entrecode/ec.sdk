@@ -1,3 +1,4 @@
+import 'es6-symbol/implement';
 import * as HalAdapter from 'traverson-hal';
 import * as halfred from 'halfred';
 import * as traverson from 'traverson';
