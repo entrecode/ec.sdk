@@ -1,3 +1,10 @@
+## <small>0.17.4 (2018-09-10)</small>
+
+* release version 0.17.4 ([249944a](https://github.com/entrecode/ec.sdk/commit/249944a))
+* fix: typescript strict option fixes ([873be28](https://github.com/entrecode/ec.sdk/commit/873be28))
+
+
+
 ## <small>0.17.3 (2018-09-06)</small>
 
 * release version 0.17.3 ([6afb9ee](https://github.com/entrecode/ec.sdk/commit/6afb9ee))
