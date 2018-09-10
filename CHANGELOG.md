@@ -1,3 +1,10 @@
+## <small>0.17.5 (2018-09-10)</small>
+
+* release version 0.17.5 ([2511de3](https://github.com/entrecode/ec.sdk/commit/2511de3))
+* chore: use babelify@8 ([4f15d8a](https://github.com/entrecode/ec.sdk/commit/4f15d8a))
+
+
+
 ## <small>0.17.4 (2018-09-10)</small>
 
 * release version 0.17.4 ([249944a](https://github.com/entrecode/ec.sdk/commit/249944a))
