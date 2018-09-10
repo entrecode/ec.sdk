@@ -55,7 +55,10 @@ export class EventEmitter {
     if (!this.listeners.has(label)) {
       this.listeners.set(label, []);
     }
-    this.listeners.get(label).push(callback);
+    const listener = this.listeners.get(label);
+    if (listener) {
+      listener.push(callback);
+    }
   }
 
   /**

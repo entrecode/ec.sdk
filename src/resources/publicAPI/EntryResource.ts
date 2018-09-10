@@ -57,15 +57,17 @@ function getFieldType(schema, property) {
 function getShortID(resource) {
   const link = resource.link('collection').href;
   const result = new RegExp(`/api/([0-9a-f]{8})/${resource._modelTitle}`).exec(link);
-  return result[1];
+  if (result) {
+    return result[1];
+  }
 }
 
 function loadSchemaForResource(resource: any): any {
   const res = halfred.parse(resource);
-  return getSchema(res.link('self').profile)
+  return getSchema(res.link('self').profile as string)
     .then(schema =>
       Object.keys(schema.allOf[1].properties).map((property) => {
-        if (['entry', 'entries'].indexOf(getFieldType(schema, property)) !== -1) {
+        if (['entry', 'entries'].indexOf(getFieldType(schema, property) as string) !== -1) {
           const field = res[property];
           if (Array.isArray(field)) {
             return field[0] && typeof field[0] === 'object' ? field : undefined;
@@ -468,9 +470,9 @@ class EntryResource extends LiteEntryResource {
    * Get the field type for a given property in this {@link EntryResource}
    *
    * @param {string} field field name
-   * @returns {string} type of the field
+   * @returns {string|undefined} type of the field
    */
-  getFieldType(field: string): string {
+  getFieldType(field: string): string | undefined {
     return getFieldType(this[schemaSymbol], field);
   }
 
@@ -481,7 +483,7 @@ class EntryResource extends LiteEntryResource {
    * @param {string?} locale - the locale
    * @returns {string} URL to the file
    */
-  getFileUrl(field: string, locale: string): string | Array<string> {
+  getFileUrl(field: string, locale: string): string | Array<string> | undefined {
     const assets = this[resourceSymbol].embeddedArray(`${this[shortIDSymbol]}:${this.getModelTitle()}/${field}/asset`);
     const isAssets = this.getFieldType(field) === 'assets';
 
@@ -508,7 +510,7 @@ class EntryResource extends LiteEntryResource {
    * @param {string?} locale - the locale
    * @returns {string} URL to the file
    */
-  getImageThumbUrl(field: string, size: number, locale: string): string | Array<string> {
+  getImageThumbUrl(field: string, size: number, locale: string): string | Array<string> | undefined {
     const assets = this[resourceSymbol].embeddedArray(`${this[shortIDSymbol]}:${this.getModelTitle()}/${field}/asset`);
     const isAssets = this.getFieldType(field) === 'assets';
 
@@ -535,7 +537,7 @@ class EntryResource extends LiteEntryResource {
    * @param {string?} locale - the locale
    * @returns {string} URL to the file
    */
-  getImageUrl(field: string, size: number, locale: string): string | Array<string> {
+  getImageUrl(field: string, size: number, locale: string): string | Array<string> | undefined {
     const assets = this[resourceSymbol].embeddedArray(`${this[shortIDSymbol]}:${this.getModelTitle()}/${field}/asset`);
     const isAssets = this.getFieldType(field) === 'assets';
 
@@ -595,7 +597,7 @@ class EntryResource extends LiteEntryResource {
    *   the entry title.
    * @returns {string} title The title of either the element or the entry.
    */
-  getTitle(field: string): string | Array<string> {
+  getTitle(field: string): string | Array<string> | undefined {
     if (!field) {
       return <string>this.getProperty('_entryTitle');
     }
@@ -606,7 +608,7 @@ class EntryResource extends LiteEntryResource {
       return undefined;
     }
 
-    if (['entries', 'assets'].indexOf(this.getFieldType(field)) !== -1) {
+    if (['entries', 'assets'].indexOf(this.getFieldType(field) as string) !== -1) {
       return links.map(l => l.title);
     }
 

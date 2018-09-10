@@ -66,7 +66,7 @@ class Problem extends Error {
    * @returns {array<Problem>} array of all problems.
    */
   public getAsArray(): Array<Problem> {
-    return [].concat(this, this.subErrors).filter(x => !!x);
+    return [this, ...this.subErrors].filter(x => !!x);
   }
 
   /**

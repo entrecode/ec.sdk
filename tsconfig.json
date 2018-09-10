@@ -6,7 +6,9 @@
     "declaration": true,
     "outDir": "lib",
     "moduleResolution": "node",
-    "removeComments": false
+    "removeComments": false,
+    "strict": true,
+    "noImplicitAny": false
   },
   "include": [
     "src/**/*.ts"

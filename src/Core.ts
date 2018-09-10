@@ -341,11 +341,19 @@ export default class Core {
         return this.newRequest();
       })
       .then((request) => get(this[environmentSymbol], request))
-      .then(([res, traversal]) => {
+      .then(([res]) => {
         let link = halfred.parse(res).link(this[relationsSymbol][relation].relation);
-        return link.href.match(/{[^}]*}/g)
-          .map(result => /^{[?&]([^}]+)}$/.exec(result)[1].split(','))
-          .reduce((a, b) => a.concat(b), [])
+        const matchResults = link.href.match(/{[^}]*}/g);
+        if (matchResults) {
+          return matchResults.map(result => {
+            const res = /^{[?&]([^}]+)}$/.exec(result);
+            if (res) {
+              return res[1].split(',');
+            }
+            return [];
+          })
+            .reduce((a, b) => a.concat(b), [])
+        }
       });
   }
 

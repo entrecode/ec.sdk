@@ -553,7 +553,7 @@ export default class PublicAPI extends Core {
           if (!Array.isArray(input)) {
             assets = [input];
             if ('fileName' in options && !Array.isArray(options.fileName)) {
-              options.fileName = [options.fileName];
+              Object.assign(options, { fileName: [options.fileName] });
             }
           } else {
             assets = input;
@@ -634,7 +634,7 @@ export default class PublicAPI extends Core {
           e = entry;
         }
 
-        if (levels < 1 || levels > 5) {
+        if (levels !== undefined && (levels < 1 || levels > 5)) {
           throw new Error('levels must be between 1 and 5');
         }
 
@@ -652,11 +652,11 @@ export default class PublicAPI extends Core {
         }
         return post(this[environmentSymbol], request, e)
       })
-      .then(([res, traversal]) => {
+      .then(([res, traversal]): any => {
         if (!res || Object.keys(res).length === 0) {
           return undefined;
         }
-        return createEntry(res, this[environmentSymbol], traversal)
+        return createEntry(res, this[environmentSymbol], traversal);
       });
   }
 
@@ -989,7 +989,7 @@ export default class PublicAPI extends Core {
    * @param {string} method the method for which the JSON Schema should be loaded
    * @returns {Promise<object>} the loaded JSON Schema
    */
-  getSchema(model: string, method: string = 'get') {
+  getSchema(model: string, method: string = 'get'): any {
     return Promise.resolve()
       .then(() => {
         if (!model) {
@@ -1003,7 +1003,7 @@ export default class PublicAPI extends Core {
         if (!this[resourceSymbol]) {
           return this.resolve();
         }
-        return undefined;
+        return this;
       })
       .then(() => {
         const link = this.getLink(`${this[shortIDSymbol]}:${model}`);

@@ -91,7 +91,7 @@ export function createList(resource: any, environment: environment, traversal: a
   return Promise.resolve()
     .then(() => {
       const res = halfred.parse(resource);
-      return getSchema(res.link('self').profile);
+      return getSchema(res.link('self').profile as string);
     })
     .then(schema => new EntryList(resource, environment, traversal, name, schema));
 }

@@ -19,10 +19,10 @@ export const stores: Map<string, TokenStore> = new Map();
  * @class
  */
 export class TokenStore {
-  protected agent: string;
-  protected clientID: string;
+  protected agent: string | undefined;
+  protected clientID: string | undefined;
   protected environment: string;
-  protected token: string;
+  protected token: string | undefined;
 
   /**
    * Creates a new {@link TokenStore} for the specified environment.
@@ -56,7 +56,7 @@ export class TokenStore {
    * @returns {string} the clientID
    */
   getClientID(): string {
-    return this.clientID;
+    return this.clientID as string;
   }
 
   /**
@@ -66,10 +66,10 @@ export class TokenStore {
    */
   getToken(): string {
     if (!this.token && typeof document !== 'undefined') {
-      this.token = cookie.get(`${this.environment}Token`);
+      this.token = cookie.get(`${this.environment}Token`) as string;
     }
 
-    return this.token;
+    return this.token as string;
   }
 
   /**
@@ -78,7 +78,7 @@ export class TokenStore {
    * @returns {string} the user agent
    */
   getUserAgent(): string {
-    return this.agent;
+    return this.agent as string;
   }
 
   /**
@@ -97,7 +97,7 @@ export class TokenStore {
    */
   hasToken(): boolean {
     if (!this.token && typeof document !== 'undefined') {
-      this.token = cookie.get(`${this.environment}Token`);
+      this.token = cookie.get(`${this.environment}Token`) as string;
     }
 
     return !!this.token;
@@ -139,7 +139,7 @@ export class TokenStore {
       throw new Error('Token cannot be undefined');
     }
 
-    let decoded;
+    let decoded: any;
 
     try {
       decoded = jwtDecode(token);
@@ -193,5 +193,5 @@ export default function TokenStoreFactory(environment: environment | string = 'l
   if (!stores.has(environment)) {
     stores.set(environment, new TokenStore(environment));
   }
-  return stores.get(environment);
+  return stores.get(environment) as TokenStore;
 }
