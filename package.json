@@ -1,6 +1,6 @@
 {
   "name": "ec.sdk",
-  "version": "0.17.4",
+  "version": "0.17.5",
   "description": "SDK for ec.api",
   "repository": "entrecode/ec.sdk",
   "author": "Simon Scherzinger <scherzinger@entrecode.de>",
@@ -54,7 +54,7 @@
     "babel-cli": "^6.26.0",
     "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2",
     "babel-preset-es2015": "^6.24.1",
-    "babelify": "^10.0.0",
+    "babelify": "^8.0.0",
     "browserify": "^16.2.2",
     "chai": "^4.1.2",
     "chai-as-promised": "^7.1.1",
