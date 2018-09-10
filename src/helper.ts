@@ -132,7 +132,7 @@ function traversonWrapper(func: string, environment: environment, t: any, body?:
     t.addRequestOptions({ headers: { Accept: 'application/hal+json' } });
 
     const store = TokenStoreFactory(environment);
-    let secondStore: TokenStore;
+    let secondStore: TokenStore | undefined;
     if (!store.hasToken()) {
       // when no token is present see if we have a public environment (with shortID)
       // if so look in second store
@@ -259,7 +259,7 @@ export function getHistory(environment: environment, t: any): Promise<EventSourc
   return getUrl(environment, t)
     .then((url) => {
       const store = TokenStoreFactory(environment);
-      let secondStore: TokenStore;
+      let secondStore: TokenStore | undefined;
       if (!store.hasToken()) {
         // when no token is present see if we have a public environment (with shortID)
         // if so look in second store
@@ -392,7 +392,7 @@ export function superagentGet(url: string, headers?: any, environment?: environm
     request.set(headers);
   }
 
-  addHeaderToSuperagent(request, environment);
+  addHeaderToSuperagent(request, environment as environment);
 
   return request
     .then(res => res.body ? res.body : {})
@@ -458,7 +458,7 @@ export function superagentPost(environment: environment, request: any): Promise<
 function addHeaderToSuperagent(request: any, environment: environment) {
   if (environment) {
     const store = TokenStoreFactory(environment);
-    let secondStore: TokenStore;
+    let secondStore: TokenStore | undefined;
     if (!store.hasToken()) {
       // when no token is present see if we have a public environment (with shortID)
       // if so look in second store
@@ -520,88 +520,100 @@ export function optionsToQuery(options: filterOptions, templateURL?: string, enc
     }
 
     Object.keys(options).forEach((key) => {
-      if (['size', 'page'].indexOf(key) !== -1) { // TODO was array.includes
-        if (!Number.isInteger(<number>options[key])) {
-          throw new Error(`${key} must be integer, is ${typeof options[key]}: ${options[key]}`);
-        }
-        out[key] = options[key];
-      } else if (key === 'sort') {
-        if (Array.isArray(options.sort)) {
-          out.sort = options.sort.join(',');
-        } else if (typeof options.sort === 'string') {
-          out.sort = options.sort;
-        } else {
-          throw new Error(`sort must be either Array or String, is ${typeof options.sort}`);
-        }
-      } else if (key === '_levels') {
-        if (!Number.isInteger(<number>options[key])) {
-          throw new Error('_levels must be integer, is ' + typeof options[key]);
-        }
-        if (options[key] > 1 && options[key] <= 5) {
-          out[key] = options[key];
-        }
-      } else if (key === '_fields') {
-        if (!Array.isArray(options[key])) {
-          throw new Error('_fields must be an array');
-        }
-        const invalid = (<Array<string>>options[key]).filter(val => typeof val !== 'string');
-        if (invalid.length > 0) {
-          throw new Error('_fields array must contain only strings');
-        }
-        out[key] = (<Array<string>>options[key]).join(',');
-      } else if (typeof options[key] === 'string') {
-        out[key] = encode ? encodeURIComponent(<string>options[key]) : options[key];
-      } else if (typeof options[key] === 'number' || typeof options[key] === 'boolean') {
-        out[key] = options[key];
-      } else if (options[key] instanceof Date) {
-        out[key] = (<Date>options[key]).toISOString();
-      } else if (typeof options[key] === 'object') {
-        Object.keys(options[key]).forEach((searchKey) => {
-          switch (searchKey) {
-            case 'exact':
-            case 'search':
-            case 'from':
-            case 'to':
-              if (Array.isArray(options[key][searchKey])) {
-                throw new Error(`${key}.${searchKey} must not be of type Array`)
-              }
-              if (options[key][searchKey] instanceof Date) {
-                out[`${key}${modifier[searchKey]}`] = options[key][searchKey].toISOString();
-              } else if (typeof options[key][searchKey] === 'string') {
-                out[`${key}${modifier[searchKey]}`] = encode ? encodeURIComponent(options[key][searchKey]) : options[key][searchKey];
-              } else {
-                out[`${key}${modifier[searchKey]}`] = options[key][searchKey];
-              }
-              break;
-            case 'any':
-            case 'all':
-              if (!Array.isArray(options[key][searchKey])) {
-                throw new Error(`${key}.${searchKey} must be an Array.`);
-              }
-              const invalid = options[key][searchKey].filter((val) => !(typeof val === 'string' || typeof val === 'number'));
-              if (invalid.length > 0) {
-                throw new Error(`${key}.${searchKey} array must contain only strings or numbers`);
-              }
-              const array = options[key][searchKey].map(value => encode ? encodeURIComponent(value) : value);
-              out[key] = array.join(modifier[searchKey]);
-              break;
-            default:
-              throw new Error(`No handling of ${key}.${searchKey} filter supported.`);
+      const value = options[key];
+      if (value !== undefined) {
+        if (['size', 'page'].indexOf(key) !== -1) { // TODO was array.includes
+          if (!Number.isInteger(<number>value)) {
+            throw new Error(`${key} must be integer, is ${typeof value}: ${value}`);
           }
-        });
-      } else {
-        throw new Error(`${key} must be either Object or String.`);
+          out[key] = value;
+        } else if (key === 'sort') {
+          if (Array.isArray(options.sort)) {
+            out.sort = options.sort.join(',');
+          } else if (typeof options.sort === 'string') {
+            out.sort = options.sort;
+          } else {
+            throw new Error(`sort must be either Array or String, is ${typeof options.sort}`);
+          }
+        } else if (key === '_levels') {
+          if (!Number.isInteger(<number>value)) {
+            throw new Error('_levels must be integer, is ' + typeof value);
+          }
+          if (value > 1 && value <= 5) {
+            out[key] = value;
+          }
+        } else if (key === '_fields') {
+          if (!Array.isArray(value)) {
+            throw new Error('_fields must be an array');
+          }
+          const invalid = (<Array<string>>value).filter(val => typeof val !== 'string');
+          if (invalid.length > 0) {
+            throw new Error('_fields array must contain only strings');
+          }
+          out[key] = (<Array<string>>value).join(',');
+        } else if (typeof value === 'string') {
+          out[key] = encode ? encodeURIComponent(<string>value) : value;
+        } else if (typeof value === 'number' || typeof value === 'boolean') {
+          out[key] = value;
+        } else if (value instanceof Date) {
+          out[key] = (<Date>value).toISOString();
+        } else if (typeof value === 'object') {
+          Object.keys(value).forEach((searchKey) => {
+            switch (searchKey) {
+              case 'exact':
+              case 'search':
+              case 'from':
+              case 'to':
+                if (Array.isArray(value[searchKey])) {
+                  throw new Error(`${key}.${searchKey} must not be of type Array`)
+                }
+                if (value[searchKey] instanceof Date) {
+                  out[`${key}${modifier[searchKey]}`] = value[searchKey].toISOString();
+                } else if (typeof value[searchKey] === 'string') {
+                  out[`${key}${modifier[searchKey]}`] = encode ? encodeURIComponent(value[searchKey]) : value[searchKey];
+                } else {
+                  out[`${key}${modifier[searchKey]}`] = value[searchKey];
+                }
+                break;
+              case 'any':
+              case 'all':
+                if (!Array.isArray(value[searchKey])) {
+                  throw new Error(`${key}.${searchKey} must be an Array.`);
+                }
+                const invalid = value[searchKey].filter((val) => !(typeof val === 'string' || typeof val === 'number'));
+                if (invalid.length > 0) {
+                  throw new Error(`${key}.${searchKey} array must contain only strings or numbers`);
+                }
+                const array = value[searchKey].map(value => encode ? encodeURIComponent(value) : value);
+                out[key] = array.join(modifier[searchKey]);
+                break;
+              default:
+                throw new Error(`No handling of ${key}.${searchKey} filter supported.`);
+            }
+          });
+        } else {
+          throw new Error(`${key} must be either Object or String.`);
+        }
       }
     });
   }
 
   if (templateURL) {
-    const results = templateURL.match(/{[^}]*}/g)
-      .map(result => /^{[?&]([^}]+)}$/.exec(result)[1].split(','))
-      .reduce((a, b) => a.concat(b), []);
+    let missings: string[] = [];
+    const matchRes = templateURL.match(/{[^}]*}/g)
+    if (matchRes) {
+      const results = matchRes
+        .map(result => {
+          const res = /^{[?&]([^}]+)}$/.exec(result)
+          if (res) {
+            return res[1].split(',');
+          }
+          return [];
+        })
+        .reduce((a, b) => a.concat(b), []);
 
-    const missings = Object.keys(out).filter(k => results.indexOf(k) === -1); // TODO was
-    // array.includes
+      missings = Object.keys(out).filter(k => results.indexOf(k) === -1);
+    }
 
     if (missings.length > 0) {
       const err: any = new Error('Invalid filter options. Check error#subErrors for details.');
@@ -648,7 +660,10 @@ export function fileNegotiate(asset: AssetResource | DeletedAssetResource | Publ
       Array.from(new Set(f.map(e => e.locale))) // unique
         .filter(a => !!a));// remove falsy values
     let bestLocale = (new localeLib['Locales'](requestedLocale)).best(supportedLocales).toString();
-    bestLocale = /^([^.]+)/.exec(bestLocale)[1]; // remove charset
+    const res = /^([^.]+)/.exec(bestLocale);
+    if (res) {
+      bestLocale = res[1]; // remove charset
+    }
     const filesWithLocale = f.filter(file => file.locale === bestLocale);
     if (filesWithLocale && filesWithLocale.length > 0) {
       f = filesWithLocale;

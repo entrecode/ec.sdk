@@ -4,14 +4,6 @@ import { get } from '../../helper';
 
 const environmentSymbol: any = Symbol.for('environment');
 
-function dateGetter(property) {
-  const date = this.getProperty(property);
-  if (!date) {
-    return date;
-  }
-  return new Date(date);
-}
-
 interface DMAssetResource {
   assetID: string,
   caption: string,
@@ -79,7 +71,13 @@ class DMAssetResource extends Resource {
       },
       created: {
         enumerable: true,
-        get: () => dateGetter.call(this, 'created'),
+        get: () => {
+          const date = this.getProperty('created');
+          if (!date) {
+            return date;
+          }
+          return new Date(date);
+        },
       },
       creator: {
         enumerable: true,
@@ -111,7 +109,13 @@ class DMAssetResource extends Resource {
       },
       modified: {
         enumerable: true,
-        get: () => dateGetter.call(this, 'modified'),
+        get: () => {
+          const date = this.getProperty('modified');
+          if (!date) {
+            return date;
+          }
+          return new Date(date);
+        },
       },
       tags: {
         enumerable: true,

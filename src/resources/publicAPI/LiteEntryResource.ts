@@ -69,7 +69,7 @@ class LiteEntryResource extends Resource {
    * @prop {string?} field - Will throw if provided. Only for consistency.
    * @returns {string} title The title of the entry.
    */
-  getTitle(field: string): string | Array<string> {
+  getTitle(field: string): string | Array<string> | undefined {
     if (field) {
       throw new Error('getTitle with field argument not supported by LiteEntryResource');
     }

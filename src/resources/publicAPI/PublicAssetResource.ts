@@ -92,7 +92,7 @@ class PublicAssetResource extends Resource {
    * @returns {string} URL to the file
    */
   getFileUrl(locale: string): string {
-    return fileNegotiate(this, false, false, null, locale);
+    return fileNegotiate(this, false, false, 0, locale);
   }
 
   /**

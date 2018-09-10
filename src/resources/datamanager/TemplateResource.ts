@@ -78,7 +78,7 @@ class TemplateResource extends Resource {
     return Promise.resolve()
       .then(() => {
         if (this[resolvedSymbol]) {
-          return undefined;
+          return this;
         }
         return this.resolve();
       })

@@ -193,7 +193,7 @@ class PlatformResource extends Resource {
         if (!link) {
           throw Error('No latest build found');
         }
-        const buildID = querystring.parse(link.href.split('?')[1]).buildID;
+        const buildID = querystring.parse(link.href.split('?')[1]).buildID as string;
 
         return this.createDeployment(targetIDs, buildID);
       });
