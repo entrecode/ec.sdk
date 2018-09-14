@@ -43,7 +43,7 @@
     "shortid": "^2.2.8",
     "stream": "^0.0.2",
     "superagent": "^3.8.3",
-    "traverson": "github:entrecode/traverson#cc858b729f1ee1bf4244809a40af52603e2232e0",
+    "traverson": "6.1.1",
     "traverson-hal": "^6.1.0",
     "validator": "^10.3.0"
   },
@@ -67,11 +67,11 @@
     "mocha": "^5.2.0",
     "mocha-bamboo-reporter": "^1.1.1",
     "nock": "^9.3.1",
-    "sinon": "^6.2.0",
+    "sinon": "^6.3.2",
     "sinon-chai": "^3.1.0",
     "ts-loader": "^5.1.0",
     "typescript": "^3.0.3",
     "uglify-js": "^3.4.0",
-    "webpack": "^4.17.2"
+    "webpack": "^4.19.0"
   }
 }
