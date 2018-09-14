@@ -1,3 +1,10 @@
+## <small>0.17.6 (2018-09-14)</small>
+
+* release version 0.17.6 ([810bfa6](https://github.com/entrecode/ec.sdk/commit/810bfa6))
+* chore: updated traverson with react support ([69ff5c3](https://github.com/entrecode/ec.sdk/commit/69ff5c3))
+
+
+
 ## <small>0.17.5 (2018-09-10)</small>
 
 * release version 0.17.5 ([2511de3](https://github.com/entrecode/ec.sdk/commit/2511de3))
