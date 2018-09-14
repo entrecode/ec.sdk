@@ -66,7 +66,7 @@
     "istanbul": "^0.4.5",
     "mocha": "^5.2.0",
     "mocha-bamboo-reporter": "^1.1.1",
-    "nock": "^9.3.1",
+    "nock": "^10.0.0",
     "sinon": "^6.3.2",
     "sinon-chai": "^3.1.0",
     "ts-loader": "^5.1.0",
