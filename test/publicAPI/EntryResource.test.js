@@ -500,6 +500,14 @@ describe('Entry Resource', () => {
     resource.getImageThumbUrl('emptyAssets').should.have.property('length', 0);
   });
 
+  it('should be clean', () => {
+    resource.isDirty.should.be.false;
+  });
+  it('should be dirty on json field change', () => {
+    resource.json.hello = 'testing';
+    resource.isDirty.should.be.true;
+  });
+
   it('should validate', () => {
     return resource.validateField('text').should.eventually.equal(true);
   });

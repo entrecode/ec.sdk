@@ -17,6 +17,7 @@ const resourceSymbol: any = Symbol.for('resource');
 const traversalSymbol: any = Symbol.for('traversal');
 const resourcePropertiesSymbol: any = Symbol.for('resourceProperties');
 const relationsSymbol: any = Symbol.for('relations');
+const originalSymbol: any = Symbol.for('original');
 
 traverson.registerMediaType(HalAdapter.mediaType, HalAdapter);
 validator.setLoggingFunction(() => {
@@ -53,6 +54,7 @@ class Resource {
     } else {
       r = resource;
     }
+    this[originalSymbol] = JSON.parse(JSON.stringify(r));
     this[resourceSymbol] = halfred.parse(JSON.parse(JSON.stringify(r)));
 
     if (typeof this[environmentSymbol] !== 'string') {
@@ -69,13 +71,13 @@ class Resource {
       isDirty: {
         enumerable: false,
         get: () => {
-          const original = this[resourceSymbol].original();
+          const original = this[originalSymbol];
           const current = this.toOriginal();
           delete original._links;
           delete current._links;
           delete original._embedded;
           delete current._embedded;
-          return !equal(current, original)
+          return !equal(current, original);
         },
       },
     });
@@ -514,7 +516,7 @@ class Resource {
   toOriginal(): any {
     const out = {};
 
-    Object.keys(this[resourceSymbol].original()).forEach((key) => {
+    Object.keys(this[originalSymbol]).forEach((key) => {
       out[key] = this[resourceSymbol][key];
     });
 
