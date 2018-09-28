@@ -1,3 +1,11 @@
+## <small>0.17.7 (2018-09-28)</small>
+
+* release version 0.17.7 ([735e981](https://github.com/entrecode/ec.sdk/commit/735e981))
+* fix: dirty detection on JSON fields SDK-92 ([646fa72](https://github.com/entrecode/ec.sdk/commit/646fa72))
+* chore: patchday ([cb81cd1](https://github.com/entrecode/ec.sdk/commit/cb81cd1))
+
+
+
 ## <small>0.17.6 (2018-09-14)</small>
 
 * release version 0.17.6 ([810bfa6](https://github.com/entrecode/ec.sdk/commit/810bfa6))
