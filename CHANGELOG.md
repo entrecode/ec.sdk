@@ -1,3 +1,10 @@
+## <small>0.17.8 (2018-10-05)</small>
+
+* release version 0.17.8 ([1028d0a](https://github.com/entrecode/ec.sdk/commit/1028d0a))
+* SDK-93 locale optional in PublicAssetResource ([db77ce9](https://github.com/entrecode/ec.sdk/commit/db77ce9))
+
+
+
 ## <small>0.17.7 (2018-09-28)</small>
 
 * release version 0.17.7 ([735e981](https://github.com/entrecode/ec.sdk/commit/735e981))
