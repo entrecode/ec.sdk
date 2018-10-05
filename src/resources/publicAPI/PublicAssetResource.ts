@@ -91,7 +91,7 @@ class PublicAssetResource extends Resource {
    * @param {string?} locale - the locale
    * @returns {string} URL to the file
    */
-  getFileUrl(locale: string): string {
+  getFileUrl(locale?: string): string {
     return fileNegotiate(this, false, false, 0, locale);
   }
 
@@ -102,7 +102,7 @@ class PublicAssetResource extends Resource {
    * @param {string?} locale - the locale
    * @returns {string} URL to the file
    */
-  getImageThumbUrl(size: number, locale: string) {
+  getImageThumbUrl(size: number, locale?: string) {
     return fileNegotiate(this, true, true, size, locale);
   }
 
@@ -113,7 +113,7 @@ class PublicAssetResource extends Resource {
    * @param {string?} locale - the locale
    * @returns {string} URL to the file
    */
-  getImageUrl(size: number, locale: string): string {
+  getImageUrl(size: number, locale?: string): string {
     return fileNegotiate(this, true, false, size, locale);
   }
 

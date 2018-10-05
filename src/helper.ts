@@ -652,7 +652,7 @@ export function optionsToQuery(options: filterOptions, templateURL?: string, enc
  * @param {string?} requestedLocale - locale to request.
  * @returns {string} url for the requested asset.
  */
-export function fileNegotiate(asset: AssetResource | DeletedAssetResource | PublicAssetResource, image: boolean, thumb: boolean, size: number, requestedLocale: string): string {
+export function fileNegotiate(asset: AssetResource | DeletedAssetResource | PublicAssetResource, image: boolean, thumb: boolean, size: number, requestedLocale?: string): string {
   let f = JSON.parse(JSON.stringify(asset.files));
 
   if (requestedLocale) {
