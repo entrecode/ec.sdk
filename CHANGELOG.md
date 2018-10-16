@@ -1,3 +1,12 @@
+## <small>0.17.9 (2018-10-16)</small>
+
+* release version 0.17.9 ([7dbbfd6](https://github.com/entrecode/ec.sdk/commit/7dbbfd6))
+* chore: fix doc build with highlight.js ([2e2d2f1](https://github.com/entrecode/ec.sdk/commit/2e2d2f1))
+* chore: updated dependencies ([4f7e0cc](https://github.com/entrecode/ec.sdk/commit/4f7e0cc))
+* chore: updates json-schema-remote ([64046dc](https://github.com/entrecode/ec.sdk/commit/64046dc))
+
+
+
 ## <small>0.17.8 (2018-10-05)</small>
 
 * release version 0.17.8 ([1028d0a](https://github.com/entrecode/ec.sdk/commit/1028d0a))
