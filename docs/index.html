@@ -9389,7 +9389,10 @@ levels directly request
       <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">return</span> api.entry(<span class="hljs-string">'myModel'</span>, <span class="hljs-string">'1234567'</span>)
 .then(<span class="hljs-function"><span class="hljs-params">entry</span> =&gt;</span> {
   <span class="hljs-keyword">return</span> show(entry);
-});</pre>
+});
+<span class="hljs-comment">// since 0.17.10</span>
+<span class="hljs-keyword">const</span> entry = <span class="hljs-keyword">await</span> api.entry(<span class="hljs-string">'myModel'</span>, { <span class="hljs-attr">urltitle</span>: <span class="hljs-string">'this-is-unique'</span> });
+<span class="hljs-keyword">await</span> show(entry);</pre>
     
   
 

@@ -813,7 +813,7 @@ export default class PublicAPI extends Core {
         return get(this[environmentSymbol], request);
       })
       .then(([res, traversal]) => {
-         if ('count' in res && 'total' in res && !('_entryTitle' in res)) { // does look like a list
+        if ('count' in res && 'total' in res && !('_entryTitle' in res)) { // does look like a list
           if (res.total !== 1) {
             throw new Error(`Invalid number of results for single entry request: ${res.total}`);
           }
@@ -943,7 +943,7 @@ export default class PublicAPI extends Core {
    * @param {string|Array<string>} modelTitle The model title or array of model titles to load the field config for.
    * @returns {Promise<object>} Returns either a Object with single model field config, or an object with multiple field configs
    */
-  getFieldConfig(modelTitle: string | Array<string>): Promise<any> {
+  getFieldConfig(modelTitle: string | Array<string>): Promise<Array<fieldDefinition>> {
     return Promise.resolve()
       .then(() => {
         if (!modelTitle) {
@@ -1394,6 +1394,20 @@ export default class PublicAPI extends Core {
   }
 }
 
+export type fieldDefinition = {
+  title: string;
+  description: string;
+  type: string;
+  readOnly: boolean;
+  required: boolean;
+  unique: boolean;
+  localizable: boolean;
+  mutable: boolean;
+  validation: any;
+  default: any;
+  config: any;
+}
+
 export type fileOptions = {
   fileName?: string | Array<string>;
   preserveFilenames?: boolean;
@@ -1426,3 +1440,19 @@ export type assetOptions = {
  * @typedef {{fileName?: string|Array<string>, preserveFilenames?: boolean, ignoreDuplicates?: boolean,
  *   includeASsetIDInPath?: boolean, deduplicate?: boolean}} fileOptions
  */
+
+ /**
+  * A field definitions is the public version of model field config with field specific configs used in ec.forms.
+  * 
+  * @typedef {{title: string,
+  *   description: string,
+  *   type: string,
+  *   readOnly: boolean,
+  *   required: boolean,
+  *   unique: boolean,
+  *   localizable: boolean,
+  *   mutable: boolean,
+  *   validation: any,
+  *   default: any,
+  *   config: any}} fieldDefinition
+  */
