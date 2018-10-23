@@ -773,6 +773,9 @@ export default class PublicAPI extends Core {
    * .then(entry => {
    *   return show(entry);
    * });
+   * // since 0.17.10
+   * const entry = await api.entry('myModel', { urltitle: 'this-is-unique' });
+   * await show(entry);
    *
    * @param {string} model name of the model for which the list should be loaded
    * @param {string} id the entry id
@@ -780,7 +783,7 @@ export default class PublicAPI extends Core {
    *   levels directly request
    * @returns {Promise<EntryResource>} Promise resolving to EntryResource
    */
-  entry(model: string, id: string, options: number | any = {}): Promise<EntryResource> {
+  entry(model: string, id: string | filterOptions, options: number | any = {}): Promise<EntryResource> {
     return Promise.resolve()
       .then(() => {
         if (!model) {
@@ -795,26 +798,32 @@ export default class PublicAPI extends Core {
           options = { _levels: options };
         }
 
-        if ('_levels' in options && !Number.isInteger(options._levels)) {
-          throw new Error('_levels must be integer');
-        }
-
-        if ('_fields' in options && !Array.isArray(options._fields)) {
-          throw new Error('_fields must be Array<string>');
-        }
-
-        if ('_fields' in options) {
-          options._fields = options._fields.join(',');
+        if (typeof id === 'object') {
+          Object.assign(options, id);
+        } else if (typeof id === 'string') {
+          options._id = id;
+        } else {
+          throw new Error('invalid format for id');
         }
 
         return this.follow(`${this[shortIDSymbol]}:${model}`);
       })
       .then((request) => {
-        options._id = id;
-        request.withTemplateParameters(options);
+        request.withTemplateParameters(optionsToQuery(options, this.getLink(`${this[shortIDSymbol]}:${model}`).href, true));
         return get(this[environmentSymbol], request);
       })
-      .then(([res, traversal]) => createEntry(res, this[environmentSymbol], traversal));
+      .then(([res, traversal]) => {
+         if ('count' in res && 'total' in res && !('_entryTitle' in res)) { // does look like a list
+          if (res.total !== 1) {
+            throw new Error(`Invalid number of results for single entry request: ${res.total}`);
+          }
+
+          return createList(res, this[environmentSymbol], traversal, `${this[shortIDSymbol]}:${model}`)
+            .then(list => list.getFirstItem());
+        }
+
+        return createEntry(res, this[environmentSymbol], traversal);
+      });
   }
 
   /**
@@ -855,7 +864,9 @@ export default class PublicAPI extends Core {
         request.withTemplateParameters(optionsToQuery(options, this.getLink(`${this[shortIDSymbol]}:${model}`).href, true));
         return get(this[environmentSymbol], request);
       })
-      .then(([res, traversal]) => createList(res, this[environmentSymbol], traversal, `${this[shortIDSymbol]}:${model}`));
+      .then(([res, traversal]) => {
+        return createList(res, this[environmentSymbol], traversal, `${this[shortIDSymbol]}:${model}`)
+      });
   }
 
   /**

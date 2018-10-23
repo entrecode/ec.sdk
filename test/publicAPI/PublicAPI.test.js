@@ -498,6 +498,21 @@ describe('PublicAPI', () => {
         throw err;
       });
   });
+  it('should resolve on entry with filter', () => {
+    const stub = sinon.stub(helper, 'get');
+    stub.onFirstCall().returns(resolver('public-dm-root.json'));
+    stub.onSecondCall().returns(resolver('public-entry-list.json'));
+
+    return api.entry('allFields', { text: 'asdf' })
+      .then((entry) => {
+        entry.should.be.instanceof(EntryResource);
+        stub.restore();
+      })
+      .catch((err) => {
+        stub.restore();
+        throw err;
+      });
+  });
   it('should resolve on entry, level ', () => {
     const stub = sinon.stub(helper, 'get');
     stub.onFirstCall().returns(resolver('public-dm-root.json'));
@@ -521,13 +536,17 @@ describe('PublicAPI', () => {
     return api.entry('allFields')
       .should.be.rejectedWith('id must be defined');
   });
+  it('should throw on invalid id', () => {
+    return api.entry('allFields', 5)
+      .should.be.rejectedWith('invalid format for id');
+  });
   it('should throw on invalid _levels', () => {
     return api.entry('allFields', '1234567', { _levels: 'string' })
       .should.be.rejectedWith('_levels must be integer');
   });
   it('should throw on invalid _fields', () => {
     return api.entry('allFields', '1234567', { _fields: 'string' })
-      .should.be.rejectedWith('_fields must be Array<string>');
+      .should.be.rejectedWith('_fields must be an array');
   });
 
   it('should create entry', () => {
