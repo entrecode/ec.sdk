@@ -24,6 +24,7 @@ import {
   superagentPost,
   getHistory,
   locale,
+  put,
 } from './helper';
 import DMAssetResource from './resources/publicAPI/DMAssetResource';
 import DMAssetList from './resources/publicAPI/DMAssetList';
@@ -1392,6 +1393,120 @@ export default class PublicAPI extends Core {
         return Promise.resolve(token.token);
       });
   }
+
+  /**
+   * Programatically signup a user, mostly used for special register flows using legacy users or magic link login.
+   * 
+   * @param {{email: string, password?: stirng, invite?: stirng, pendin?: boolean, sendWelcomMail?: boolean, anonymousToken?: string }} body Request body containing configuration options.
+   */
+  async configurableSignup(body: {
+    email: string,
+    password?: string,
+    invite?: string,
+    pending?: boolean,
+    sendWelcomeMail?: boolean,
+    anonymousToken?: string
+  }): Promise<{
+    accountID: string,
+    email: string,
+    hasPassword: boolean,
+    pending: boolean,
+  }> {
+    if (!body || typeof body !== 'object') {
+      throw new Error('body must be defined');
+    }
+    if (!('email' in body)) {
+      throw new Error('email must be defined in body');
+    }
+
+    const request = await this.follow(`${this[shortIDSymbol]}:_auth/api/signup`);
+    const [response] = await post(this[environmentSymbol], request, body);
+    return response;
+  }
+
+  /**
+   * Programatically complete a signup with a single use validationToken, mostly used for special register flows using legacy users or magic link login.
+   * 
+   * @param {{validationToken: string, useragent?: string ip?: string, password?: string, pending?: string}} body Request body containing configuration options.
+   */
+  async configurableSignupEdit(body: {
+    validationToken: string,
+    useragent?: string
+    ip?: string,
+    password?: string,
+    pending?: string,
+  }): Promise<string> {
+    if (!body || typeof body !== 'object') {
+      throw new Error('body must be defined');
+    }
+    if (!('validationToken' in body)) {
+      throw new Error('validationToken must be defined in body');
+    }
+
+    const request = await this.follow(`${this[shortIDSymbol]}:_auth/api/signup`);
+    const [response] = await put(this[environmentSymbol], request, body);
+
+    return response.token;
+  }
+
+  /**
+   * Create a single-use validation token for a user. The token should then be send to the user via mail and MUST NOT be displayed to her.
+   * 
+   * @param {stirng} email The users email.
+   */
+  async getValidationToken(email: string): Promise<string> {
+    if (!email) {
+      throw new Error('email must be defined');
+    }
+
+    const request = await this.follow(`${this[shortIDSymbol]}:_auth/api/validation-token`);
+    request.withTemplateParameters({ email });
+    const [response] = await get(this[environmentSymbol], request);
+    return response.validationToken;
+  }
+
+  /**
+   * Validates a single-use token from a user. Checks if the token is valid and responds with user information.
+   * 
+   * @param {string} validationToken Single-use token.
+   */
+  async validateValidationToken(validationToken: string): Promise<{
+    accountID: string,
+    email: string,
+    hasPassword: boolean,
+    pending: boolean,
+  }> {
+    if (!validationToken) {
+      throw new Error('validationToken must be defined');
+    }
+
+    const request = await this.follow(`${this[shortIDSymbol]}:_auth/api/validate-token`);
+    request.withTemplateParameters({ validationToken });
+    const [response] = await get(this[environmentSymbol], request);
+    return response;
+  }
+
+  /**
+   * 
+   * @param {{validationToken: string, useragent: stirng, ip: string}} body Login request body.
+   */
+  async loginWithToken(body: {
+    validationToken: string,
+    userAgent?: string,
+    ip?: string,
+  }): Promise<string> {
+    if (!body || typeof body !== 'object') {
+      throw new Error('body must be defined');
+    }
+    if (!('validationToken' in body)) {
+      throw new Error('validationToken must be defined in body');
+    }
+
+    const request = await this.follow(`${this[shortIDSymbol]}:_auth/api/login-token`);
+    const [response] = await post(this[environmentSymbol], request, body);
+
+    return response.token;
+  }
 }
 
 export type fieldDefinition = {
@@ -1437,22 +1552,11 @@ export type assetOptions = {
  * @example
  * const assetList = await api.createDMAsset('myFiles', filePath, { deduplicate: true });
  * 
- * @typedef {{fileName?: string|Array<string>, preserveFilenames?: boolean, ignoreDuplicates?: boolean,
- *   includeASsetIDInPath?: boolean, deduplicate?: boolean}} fileOptions
+ * @typedef {{fileName?: string|Array<string>, preserveFilenames?: boolean, ignoreDuplicates?: boolean, includeASsetIDInPath?: boolean, deduplicate?: boolean}} fileOptions
  */
 
- /**
-  * A field definitions is the public version of model field config with field specific configs used in ec.forms.
-  * 
-  * @typedef {{title: string,
-  *   description: string,
-  *   type: string,
-  *   readOnly: boolean,
-  *   required: boolean,
-  *   unique: boolean,
-  *   localizable: boolean,
-  *   mutable: boolean,
-  *   validation: any,
-  *   default: any,
-  *   config: any}} fieldDefinition
-  */
+/**
+ * A field definitions is the public version of model field config with field specific configs used in ec.forms.
+ * 
+ * @typedef {{title: string, description: string, type: string, readOnly: boolean, required: boolean, unique: boolean, localizable: boolean, mutable: boolean, validation: any, default: any, config: any}} fieldDefinition
+ */

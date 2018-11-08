@@ -233,6 +233,26 @@
     "beefbeef:_auth/change-email": {
       "name": "Change email address",
       "href": "https://datamanager.entrecode.de/api/beefbeef/_auth/change-email"
+    },
+    "beefbeef:_auth/api/signup": {
+      "name": "Configurable Signup of user (POST) or update of account with validation Token and login (PUT)",
+      "href": "https://datamanager.cachena.entrecode.de/api/beefbeef/_auth/api/account{?_token}",
+      "templated": true
+    },
+    "beefbeef:_auth/api/validation-token": {
+      "name": "Get a validation token for a given email address",
+      "href": "https://datamanager.cachena.entrecode.de/api/beefbeef/_auth/api/validation-token?email={email}{&_token}",
+      "templated": true
+    },
+    "beefbeef:_auth/api/validate-token": {
+      "name": "Validate a validation token",
+      "href": "https://datamanager.cachena.entrecode.de/api/beefbeef/_auth/api/validate-token?validationToken={validationToken}{&_token}",
+      "templated": true
+    },
+    "beefbeef:_auth/api/login-token": {
+      "name": "Get an Auth Token for a validation token",
+      "href": "https://datamanager.cachena.entrecode.de/api/beefbeef/_auth/api/login-token?validationToken={validationToken}{&_token}",
+      "templated": true
     }
   }
 }
