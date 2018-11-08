@@ -25,7 +25,7 @@
   "dependencies": {
     "@types/halfred": "^1.0.2",
     "@types/jwt-decode": "^2.2.1",
-    "@types/node": "^10.12.0",
+    "@types/node": "^10.12.3",
     "@types/shortid": "^0.0.29",
     "@types/superagent": "^3.8.4",
     "@types/traverson": "^2.0.28",
@@ -45,7 +45,7 @@
     "superagent": "^3.8.3",
     "traverson": "6.1.1",
     "traverson-hal": "^6.1.0",
-    "validator": "^10.8.0"
+    "validator": "^10.9.0"
   },
   "peerDependencies": {
     "eventsource": "^1.0.7"
@@ -58,7 +58,7 @@
     "browserify": "^16.2.3",
     "chai": "^4.2.0",
     "chai-as-promised": "^7.1.1",
-    "conventional-changelog-cli": "^2.0.5",
+    "conventional-changelog-cli": "^2.0.11",
     "coveralls": "^3.0.2",
     "documentation": "^8.1.2",
     "highlight.js": "9.12.0",
@@ -73,6 +73,6 @@
     "ts-loader": "^5.2.1",
     "typescript": "^3.1.1",
     "uglify-js": "^3.4.9",
-    "webpack": "^4.20.2"
+    "webpack": "^4.25.1"
   }
 }
