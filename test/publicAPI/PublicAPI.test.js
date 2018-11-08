@@ -62,22 +62,22 @@ describe('PublicAPI', () => {
     const throws = () => new Api.default('notvalid'); // eslint-disable-line new-cap
     throws.should.throw(Error);
   });
-  it('should create instance live', function () {
+  it('should create instance live', () => {
     const a = new Api.default('https://datamanager.entrecode.de/api/beefbeef', null, true);
     a.shortID.should.be.equal('beefbeef');
     a[environmentSymbol].should.be.equal('live');
   });
-  it('should create instance stage', function () {
+  it('should create instance stage', () => {
     const a = new Api.default('https://datamanager.cachena.entrecode.de/api/beefbeef/', null, true);
     a.shortID.should.be.equal('beefbeef');
     a[environmentSymbol].should.be.equal('stage');
   });
-  it('should create instance nightly', function () {
+  it('should create instance nightly', () => {
     const a = new Api.default('https://datamanager.buffalo.entrecode.de/api/beefbeef', null, true);
     a.shortID.should.be.equal('beefbeef');
     a[environmentSymbol].should.be.equal('nightly');
   });
-  it('should create instance develop', function () {
+  it('should create instance develop', () => {
     const a = new Api.default('http://localhost:7471/api/beefbeef', null, true);
     a.shortID.should.be.equal('beefbeef');
     a[environmentSymbol].should.be.equal('develop');
@@ -498,6 +498,21 @@ describe('PublicAPI', () => {
         throw err;
       });
   });
+  it('should resolve on entry with filter', () => {
+    const stub = sinon.stub(helper, 'get');
+    stub.onFirstCall().returns(resolver('public-dm-root.json'));
+    stub.onSecondCall().returns(resolver('public-entry-list.json'));
+
+    return api.entry('allFields', { text: 'asdf' })
+      .then((entry) => {
+        entry.should.be.instanceof(EntryResource);
+        stub.restore();
+      })
+      .catch((err) => {
+        stub.restore();
+        throw err;
+      });
+  });
   it('should resolve on entry, level ', () => {
     const stub = sinon.stub(helper, 'get');
     stub.onFirstCall().returns(resolver('public-dm-root.json'));
@@ -521,13 +536,17 @@ describe('PublicAPI', () => {
     return api.entry('allFields')
       .should.be.rejectedWith('id must be defined');
   });
+  it('should throw on invalid id', () => {
+    return api.entry('allFields', 5)
+      .should.be.rejectedWith('invalid format for id');
+  });
   it('should throw on invalid _levels', () => {
     return api.entry('allFields', '1234567', { _levels: 'string' })
       .should.be.rejectedWith('_levels must be integer');
   });
   it('should throw on invalid _fields', () => {
     return api.entry('allFields', '1234567', { _fields: 'string' })
-      .should.be.rejectedWith('_fields must be Array<string>');
+      .should.be.rejectedWith('_fields must be an array');
   });
 
   it('should create entry', () => {
@@ -1373,6 +1392,114 @@ describe('PublicAPI', () => {
       stubGetUrl.returns(Promise.resolve('https://datamanager.entrecode.de/asset/beefbeef'));
       return api.createDMAssets('test1', [[]]).should.be.rejectedWith('Cannot handle input.')
         .notify(() => stubGetUrl.restore());
+    });
+  });
+
+  describe('auth api', () => {
+    it('should be rejected on configurableSignup no body', () => {
+      return api.configurableSignup().should.be.rejectedWith('body must be defined');
+    });
+    it('should be rejected on configurableSignup no email', () => {
+      return api.configurableSignup({}).should.be.rejectedWith('email must be defined in body');
+    });
+    it('should call configurableSignup', () => {
+      const stub = sinon.stub(helper, 'post');
+      stub.returns(resolver('configurable-signup.json'));
+
+      return api.configurableSignup({ email: 'andre@entrecode.de' })
+        .then((res) => {
+          res.should.have.property('email', 'andre@entrecode.de');
+          stub.restore();
+        })
+        .catch((err) => {
+          stub.restore();
+          throw err;
+        });
+    });
+
+    it('should be rejected on configurableSignupEdit no body', () => {
+      return api.configurableSignupEdit().should.be.rejectedWith('body must be defined');
+    });
+    it('should be rejected on configurableSignupEdit no validationToken', () => {
+      return api.configurableSignupEdit({}).should.be.rejectedWith('validationToken must be defined in body');
+    });
+    it('should call configurableSignupEdit', () => {
+      const stub = sinon.stub(helper, 'put');
+      stub.returns(resolver('configurable-signup-edit.json'));
+
+      return api.configurableSignupEdit({
+        validationToken: 'asdf',
+        pending: false,
+      })
+        .then((res) => {
+          res.should.be.equal('accessToken');
+          stub.restore();
+        })
+        .catch((err) => {
+          stub.restore();
+          throw err;
+        });
+    });
+
+    it('should be rejected on getValidationToken no email', () => {
+      return api.getValidationToken().should.be.rejectedWith('email must be defined');
+    });
+    it('should call getValidationToken', () => {
+      const stub = sinon.stub(helper, 'get');
+      stub.onFirstCall().returns(resolver('public-dm-root.json'));
+      stub.onSecondCall().returns(resolver('get-validation-token.json'));
+
+      return api.getValidationToken({
+        email: 'andre@entrecode.de',
+      })
+        .then((res) => {
+          res.should.be.equal('validationToken');
+          stub.restore();
+        })
+        .catch((err) => {
+          stub.restore();
+          throw err;
+        });
+    });
+
+    it('should be rejected on validateValidationToken no validationToken', () => {
+      return api.validateValidationToken().should.be.rejectedWith('validationToken must be defined');
+    });
+    it('should call validateValidationToken', () => {
+      const stub = sinon.stub(helper, 'get');
+      stub.onFirstCall().returns(resolver('public-dm-root.json'));
+      stub.onSecondCall().returns(resolver('validate-validation-token.json'));
+
+      return api.validateValidationToken('validationToken')
+        .then((res) => {
+          res.should.have.property('email', 'andre@entrecode.de');
+          stub.restore();
+        })
+        .catch((err) => {
+          stub.restore();
+          throw err;
+        });
+    });
+
+    it('should be rejected on loginWithToken no body', () => {
+      return api.loginWithToken().should.be.rejectedWith('body must be defined');
+    });
+    it('should be rejected on loginWithToken no validationToken', () => {
+      return api.loginWithToken({}).should.be.rejectedWith('validationToken must be defined in body');
+    });
+    it('should call loginWithToken', () => {
+      const stub = sinon.stub(helper, 'post');
+      stub.returns(resolver('email-login-token.json'));
+
+      return api.loginWithToken({ validationToken: 'validationToken' })
+        .then((res) => {
+          res.should.be.equal('accessToken');
+          stub.restore();
+        })
+        .catch((err) => {
+          stub.restore();
+          throw err;
+        });
     });
   });
 });

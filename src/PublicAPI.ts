@@ -24,6 +24,7 @@ import {
   superagentPost,
   getHistory,
   locale,
+  put,
 } from './helper';
 import DMAssetResource from './resources/publicAPI/DMAssetResource';
 import DMAssetList from './resources/publicAPI/DMAssetList';
@@ -773,6 +774,9 @@ export default class PublicAPI extends Core {
    * .then(entry => {
    *   return show(entry);
    * });
+   * // since 0.17.10
+   * const entry = await api.entry('myModel', { urltitle: 'this-is-unique' });
+   * await show(entry);
    *
    * @param {string} model name of the model for which the list should be loaded
    * @param {string} id the entry id
@@ -780,7 +784,7 @@ export default class PublicAPI extends Core {
    *   levels directly request
    * @returns {Promise<EntryResource>} Promise resolving to EntryResource
    */
-  entry(model: string, id: string, options: number | any = {}): Promise<EntryResource> {
+  entry(model: string, id: string | filterOptions, options: number | any = {}): Promise<EntryResource> {
     return Promise.resolve()
       .then(() => {
         if (!model) {
@@ -795,26 +799,32 @@ export default class PublicAPI extends Core {
           options = { _levels: options };
         }
 
-        if ('_levels' in options && !Number.isInteger(options._levels)) {
-          throw new Error('_levels must be integer');
-        }
-
-        if ('_fields' in options && !Array.isArray(options._fields)) {
-          throw new Error('_fields must be Array<string>');
-        }
-
-        if ('_fields' in options) {
-          options._fields = options._fields.join(',');
+        if (typeof id === 'object') {
+          Object.assign(options, id);
+        } else if (typeof id === 'string') {
+          options._id = id;
+        } else {
+          throw new Error('invalid format for id');
         }
 
         return this.follow(`${this[shortIDSymbol]}:${model}`);
       })
       .then((request) => {
-        options._id = id;
-        request.withTemplateParameters(options);
+        request.withTemplateParameters(optionsToQuery(options, this.getLink(`${this[shortIDSymbol]}:${model}`).href, true));
         return get(this[environmentSymbol], request);
       })
-      .then(([res, traversal]) => createEntry(res, this[environmentSymbol], traversal));
+      .then(([res, traversal]) => {
+        if ('count' in res && 'total' in res && !('_entryTitle' in res)) { // does look like a list
+          if (res.total !== 1) {
+            throw new Error(`Invalid number of results for single entry request: ${res.total}`);
+          }
+
+          return createList(res, this[environmentSymbol], traversal, `${this[shortIDSymbol]}:${model}`)
+            .then(list => list.getFirstItem());
+        }
+
+        return createEntry(res, this[environmentSymbol], traversal);
+      });
   }
 
   /**
@@ -855,7 +865,9 @@ export default class PublicAPI extends Core {
         request.withTemplateParameters(optionsToQuery(options, this.getLink(`${this[shortIDSymbol]}:${model}`).href, true));
         return get(this[environmentSymbol], request);
       })
-      .then(([res, traversal]) => createList(res, this[environmentSymbol], traversal, `${this[shortIDSymbol]}:${model}`));
+      .then(([res, traversal]) => {
+        return createList(res, this[environmentSymbol], traversal, `${this[shortIDSymbol]}:${model}`)
+      });
   }
 
   /**
@@ -932,7 +944,7 @@ export default class PublicAPI extends Core {
    * @param {string|Array<string>} modelTitle The model title or array of model titles to load the field config for.
    * @returns {Promise<object>} Returns either a Object with single model field config, or an object with multiple field configs
    */
-  getFieldConfig(modelTitle: string | Array<string>): Promise<any> {
+  getFieldConfig(modelTitle: string | Array<string>): Promise<Array<fieldDefinition>> {
     return Promise.resolve()
       .then(() => {
         if (!modelTitle) {
@@ -1381,6 +1393,134 @@ export default class PublicAPI extends Core {
         return Promise.resolve(token.token);
       });
   }
+
+  /**
+   * Programatically signup a user, mostly used for special register flows using legacy users or magic link login.
+   * 
+   * @param {{email: string, password?: stirng, invite?: stirng, pendin?: boolean, sendWelcomMail?: boolean, anonymousToken?: string }} body Request body containing configuration options.
+   */
+  async configurableSignup(body: {
+    email: string,
+    password?: string,
+    invite?: string,
+    pending?: boolean,
+    sendWelcomeMail?: boolean,
+    anonymousToken?: string
+  }): Promise<{
+    accountID: string,
+    email: string,
+    hasPassword: boolean,
+    pending: boolean,
+  }> {
+    if (!body || typeof body !== 'object') {
+      throw new Error('body must be defined');
+    }
+    if (!('email' in body)) {
+      throw new Error('email must be defined in body');
+    }
+
+    const request = await this.follow(`${this[shortIDSymbol]}:_auth/api/signup`);
+    const [response] = await post(this[environmentSymbol], request, body);
+    return response;
+  }
+
+  /**
+   * Programatically complete a signup with a single use validationToken, mostly used for special register flows using legacy users or magic link login.
+   * 
+   * @param {{validationToken: string, useragent?: string ip?: string, password?: string, pending?: string}} body Request body containing configuration options.
+   */
+  async configurableSignupEdit(body: {
+    validationToken: string,
+    useragent?: string
+    ip?: string,
+    password?: string,
+    pending?: string,
+  }): Promise<string> {
+    if (!body || typeof body !== 'object') {
+      throw new Error('body must be defined');
+    }
+    if (!('validationToken' in body)) {
+      throw new Error('validationToken must be defined in body');
+    }
+
+    const request = await this.follow(`${this[shortIDSymbol]}:_auth/api/signup`);
+    const [response] = await put(this[environmentSymbol], request, body);
+
+    return response.token;
+  }
+
+  /**
+   * Create a single-use validation token for a user. The token should then be send to the user via mail and MUST NOT be displayed to her.
+   * 
+   * @param {stirng} email The users email.
+   */
+  async getValidationToken(email: string): Promise<string> {
+    if (!email) {
+      throw new Error('email must be defined');
+    }
+
+    const request = await this.follow(`${this[shortIDSymbol]}:_auth/api/validation-token`);
+    request.withTemplateParameters({ email });
+    const [response] = await get(this[environmentSymbol], request);
+    return response.validationToken;
+  }
+
+  /**
+   * Validates a single-use token from a user. Checks if the token is valid and responds with user information.
+   * 
+   * @param {string} validationToken Single-use token.
+   */
+  async validateValidationToken(validationToken: string): Promise<{
+    accountID: string,
+    email: string,
+    hasPassword: boolean,
+    pending: boolean,
+  }> {
+    if (!validationToken) {
+      throw new Error('validationToken must be defined');
+    }
+
+    const request = await this.follow(`${this[shortIDSymbol]}:_auth/api/validate-token`);
+    request.withTemplateParameters({ validationToken });
+    const [response] = await get(this[environmentSymbol], request);
+    return response;
+  }
+
+  /**
+   * 
+   * @param {{validationToken: string, useragent: stirng, ip: string}} body Login request body.
+   */
+  async loginWithToken(body: {
+    validationToken: string,
+    userAgent?: string,
+    ip?: string,
+  }): Promise<string> {
+    if (!body || typeof body !== 'object') {
+      throw new Error('body must be defined');
+    }
+    if (!('validationToken' in body)) {
+      throw new Error('validationToken must be defined in body');
+    }
+
+    const request = await this.follow(`${this[shortIDSymbol]}:_auth/api/login-token`);
+    const [response] = await post(this[environmentSymbol], request, body);
+
+    return response.token;
+  }
+}
+
+export type fieldDefinition = {
+  title: string;
+  description: string;
+  type: string;
+  readOnly: boolean;
+  required: boolean;
+  unique: boolean;
+  localizable: boolean;
+  mutable: boolean;
+  validation: any;
+  default: any;
+  config: any;
 }
 
 export type fileOptions = {
@@ -1412,6 +1552,11 @@ export type assetOptions = {
  * @example
  * const assetList = await api.createDMAsset('myFiles', filePath, { deduplicate: true });
  * 
- * @typedef {{fileName?: string|Array<string>, preserveFilenames?: boolean, ignoreDuplicates?: boolean,
- *   includeASsetIDInPath?: boolean, deduplicate?: boolean}} fileOptions
+ * @typedef {{fileName?: string|Array<string>, preserveFilenames?: boolean, ignoreDuplicates?: boolean, includeASsetIDInPath?: boolean, deduplicate?: boolean}} fileOptions
+ */
+
+/**
+ * A field definitions is the public version of model field config with field specific configs used in ec.forms.
+ * 
+ * @typedef {{title: string, description: string, type: string, readOnly: boolean, required: boolean, unique: boolean, localizable: boolean, mutable: boolean, validation: any, default: any, config: any}} fieldDefinition
  */

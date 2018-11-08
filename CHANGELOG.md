@@ -1,3 +1,12 @@
+## <small>0.17.10 (2018-11-08)</small>
+
+* release version 0.17.10 ([92281e2](https://github.com/entrecode/ec.sdk/commit/92281e2))
+* feakt: support for auth api aka. magic link login DEAL-441 ([e5e4a05](https://github.com/entrecode/ec.sdk/commit/e5e4a05))
+* feat: SDK-95 typings for field definition ([2bde2f8](https://github.com/entrecode/ec.sdk/commit/2bde2f8))
+* feat: SDK-97 get single entry with filter ([0220234](https://github.com/entrecode/ec.sdk/commit/0220234))
+
+
+
 ## <small>0.17.9 (2018-10-16)</small>
 
 * release version 0.17.9 ([7dbbfd6](https://github.com/entrecode/ec.sdk/commit/7dbbfd6))
