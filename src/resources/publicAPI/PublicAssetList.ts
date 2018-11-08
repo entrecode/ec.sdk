@@ -6,7 +6,6 @@ import { get, optionsToQuery } from '../../helper';
 import { environment } from '../../Core';
 
 const environmentSymbol: any = Symbol.for('environment');
-const dataManagerIDSymbol: any = Symbol('_dataManagerID');
 
 /**
  * PublicAsset list class
@@ -45,7 +44,7 @@ export default class PublicAssetList extends ListResource {
         }
         const request = this.newRequest()
           .follow('ec:api/tags')
-          .withTemplateParameters({ dataManagerID: this[dataManagerIDSymbol], tag });
+          .withTemplateParameters({ tag });
         return get(this[environmentSymbol], request);
       })
       .then(([res, traversal]) => new PublicTagResource(res, this[environmentSymbol], traversal));

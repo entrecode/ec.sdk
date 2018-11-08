@@ -32,6 +32,8 @@ import DataManagerResource from './resources/datamanager/DataManagerResource';
 import DataManager from './DataManager';
 import Problem from './Problem';
 import HistoryEvents from './resources/publicAPI/HistoryEvents';
+import PublicTagList from './resources/publicAPI/PublicTagList';
+import PublicTagResource from './resources/publicAPI/PublicTagResource';
 
 const resourceSymbol: any = Symbol.for('resource');
 const tokenStoreSymbol: any = Symbol.for('tokenStore');
@@ -1392,6 +1394,79 @@ export default class PublicAPI extends Core {
         this[tokenStoreSymbol].setToken(token.token);
         return Promise.resolve(token.token);
       });
+  }
+
+  /**
+ * Load a single {@link PublicTagResource}.
+ *
+ * @example
+ * return assetList.tag('thisOne')
+ * .then(tag => {
+ *   return show(tag);
+ * });
+ *
+ * @param {string} tag the tag
+ * @returns {Promise<PublicTagResource>} Promise resolving to PublicTagResource
+ */
+  tag(tag: string): Promise<PublicTagResource> {
+    return Promise.resolve()
+      .then(() => {
+        if (!tag) {
+          throw new Error('tag must be defined');
+        }
+
+        return this.follow('ec:api/tags');
+      })
+      .then((request) => {
+        request.withTemplateParameters({ tag });
+        return get(this[environmentSymbol], request);
+      })
+      .then(([res, traversal]) => new PublicTagResource(res, this[environmentSymbol], traversal));
+  }
+
+  /**
+   * Load the {@link PublicTagList}.
+   *
+   * @example
+   * return assetList.tagList()
+   * .then(tags => {
+   *   return tags.getAllItems().filter(tags => tag.tag === 'thisOne');
+   * })
+   * .then(tagsArray => {
+   *   return show(tagsArray[0]);
+   * });
+   *
+   * // This would actually be better:
+   * return dm.tagList({
+   *   filter: {
+   *     assetID: 'thisOne',
+   *   },
+   * })
+   * .then(tags => {
+   *   return show(tags.getFirstItem());
+   * });
+   *
+   * @param {filterOptions?} options filter options
+   * @returns {Promise<PublicTagList>} Promise resolving to PublicTagList
+   */
+  tagList(options?: filterOptions | any): Promise<PublicTagList> { // TODO remove any
+    return Promise.resolve()
+      .then(() => {
+        if (
+          options &&
+          Object.keys(options).length === 1 && 'tag' in options
+          && (typeof options.tag === 'string' || (!('any' in options.tag) && !('all' in options.tag)))
+        ) {
+          throw new Error('Cannot filter tagList only by tag. Use PublicAPI#tag() instead');
+        }
+
+        return this.follow('ec:api/tags');
+      })
+      .then((request) => {
+        request.withTemplateParameters(optionsToQuery(options, this.getLink('ec:api/tags').href));
+        return get(this[environmentSymbol], request);
+      })
+      .then(([res, traversal]) => new PublicTagList(res, this[environmentSymbol], traversal));
   }
 
   /**

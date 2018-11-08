@@ -1,4 +1,4 @@
-/*eslint no-unused-expressions:0*/
+/* eslint no-unused-expressions:0 */
 
 const chai = require('chai');
 const chaiAsPromised = require('chai-as-promised');
@@ -22,6 +22,8 @@ const PublicAssetList = require('../../lib/resources/publicAPI/PublicAssetList')
 const PublicAssetResource = require('../../lib/resources/publicAPI/PublicAssetResource').default;
 const DMAssetList = require('../../lib/resources/publicAPI/DMAssetList').default;
 const DMAssetResource = require('../../lib/resources/publicAPI/DMAssetResource').default;
+const PublicTagList = require('../../lib/resources/publicAPI/PublicTagList').default;
+const PublicTagResource = require('../../lib/resources/publicAPI/PublicTagResource').default;
 
 const environmentSymbol = Symbol.for('environment');
 const resourceSymbol = Symbol.for('resource');
@@ -1500,6 +1502,46 @@ describe('PublicAPI', () => {
           stub.restore();
           throw err;
         });
+    });
+  });
+
+  describe('tags', () => {
+    it('should load tag list', () => {
+      const stub = sinon.stub(helper, 'get');
+      stub.onFirstCall().returns(resolver('public-dm-root.json'));
+      stub.onSecondCall().returns(resolver('public-tag-list.json'));
+
+      return api.tagList()
+        .then((l) => {
+          l.should.be.instanceof(PublicTagList);
+          stub.restore();
+        })
+        .catch((err) => {
+          stub.restore();
+          throw err;
+        });
+    });
+    it('should throw on tag list filtered with tag', () => {
+      return api.tagList({ tag: 'id' })
+        .should.be.rejectedWith('Cannot filter tagList only by tag. Use PublicAPI#tag() instead');
+    });
+    it('should load tag resource', () => {
+      const stub = sinon.stub(helper, 'get');
+      stub.onFirstCall().returns(resolver('public-dm-root.json'));
+      stub.onSecondCall().returns(resolver('asset-single.json'));
+
+      return api.tag('id')
+        .then((model) => {
+          model.should.be.instanceof(PublicTagResource);
+          stub.restore();
+        })
+        .catch((err) => {
+          stub.restore();
+          throw err;
+        });
+    });
+    it('should be rejected on undefined tag', () => {
+      return api.tag().should.be.rejectedWith('tag must be defined');
     });
   });
 });
