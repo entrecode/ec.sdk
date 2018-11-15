@@ -184,6 +184,11 @@
       "href": "https://datamanager.entrecode.de/asset/beefbeef{?assetID,created,createdFrom,createdTo,created~,creator,dataManagerID,deleted,deletedFrom,deletedTo,deleted~,page,size,sort,tag,title,title~,type,type~}",
       "templated": true
     },
+    "ec:api/tags": {
+      "profile": "https://entrecode.de/schema/tags",
+      "href": "https://datamanager.cachena.entrecode.de/tag/beefbeef{?dataManagerID,page,size,sort,tag,tag~}",
+      "templated": true
+    },
     "ec:dm-asset/file": {
       "href": "https://datamanager.entrecode.de/f/beefbeef/{assetID}/{size?}",
       "templated": true
