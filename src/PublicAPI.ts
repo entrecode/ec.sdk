@@ -1283,7 +1283,15 @@ export default class PublicAPI extends Core {
             id: 'assetID',
             ResourceClass: PublicAssetResource,
             ListClass: PublicAssetList,
-          }
+          },
+          tags: {
+            relation: 'ec:api/tags',
+            createRelation: false,
+            createTemplateModifier: '',
+            id: 'tag',
+            ResourceClass: PublicTagResource,
+            ListClass: PublicTagList,
+          },
         };
         assetGroups.forEach((relation) => {
           const relationName = `dmAsset.${relation.substr(13)}`;
