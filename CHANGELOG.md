@@ -1,3 +1,13 @@
+## <small>0.17.11 (2018-11-15)</small>
+
+* adds tags to available resources in public api ([583b416](https://github.com/entrecode/ec.sdk/commit/583b416))
+* release version 0.17.11 ([bf5d853](https://github.com/entrecode/ec.sdk/commit/bf5d853))
+* chore: updates dependencies ([0adbd66](https://github.com/entrecode/ec.sdk/commit/0adbd66))
+* chore: use npm install not npm ci in travis builds ([671ff15](https://github.com/entrecode/ec.sdk/commit/671ff15))
+* feat: tag and tag list on PublicAPI SDK-98 ([d1580fe](https://github.com/entrecode/ec.sdk/commit/d1580fe))
+
+
+
 ## <small>0.17.10 (2018-11-08)</small>
 
 * release version 0.17.10 ([92281e2](https://github.com/entrecode/ec.sdk/commit/92281e2))
