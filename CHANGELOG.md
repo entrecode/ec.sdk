@@ -1,3 +1,10 @@
+## <small>0.17.12 (2018-11-15)</small>
+
+* release version 0.17.12 ([f8dc626](https://github.com/entrecode/ec.sdk/commit/f8dc626))
+* chore: updated package-lock ([8425fda](https://github.com/entrecode/ec.sdk/commit/8425fda))
+
+
+
 ## <small>0.17.11 (2018-11-15)</small>
 
 * adds tags to available resources in public api ([583b416](https://github.com/entrecode/ec.sdk/commit/583b416))
