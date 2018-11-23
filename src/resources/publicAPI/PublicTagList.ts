@@ -16,6 +16,6 @@ export default class PublicTagList extends ListResource {
    * @param {?object} traversal traversal from which traverson can continue.
    */
   constructor(resource: any, environment: environment, traversal?: any) {
-    super(resource, environment, traversal, 'ec:api/tag', undefined, PublicTagList, PublicTagResource);
+    super(resource, environment, traversal, 'ec:tag', undefined, PublicTagList, PublicTagResource);
   }
 }

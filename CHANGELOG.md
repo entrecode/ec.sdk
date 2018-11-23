@@ -1,3 +1,10 @@
+## <small>0.17.14 (2018-11-23)</small>
+
+* changed hard coded publicTagList relation ([d55a082](https://github.com/entrecode/ec.sdk/commit/d55a082))
+* release version 0.17.14 ([73ea530](https://github.com/entrecode/ec.sdk/commit/73ea530))
+
+
+
 ## <small>0.17.13 (2018-11-23)</small>
 
 * fixed tag list relation (ec:api/tags -> ec:tag) ([51d0f43](https://github.com/entrecode/ec.sdk/commit/51d0f43))
