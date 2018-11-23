@@ -20,7 +20,7 @@
     }
   },
   "_embedded": {
-    "ec:api/tag": [
+    "ec:tag": [
       {
         "count": 1,
         "tag": "one",
