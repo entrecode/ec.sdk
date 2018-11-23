@@ -1,3 +1,10 @@
+## <small>0.17.13 (2018-11-23)</small>
+
+* fixed tag list relation (ec:api/tags -> ec:tag) ([51d0f43](https://github.com/entrecode/ec.sdk/commit/51d0f43))
+* release version 0.17.13 ([d97b5f2](https://github.com/entrecode/ec.sdk/commit/d97b5f2))
+
+
+
 ## <small>0.17.12 (2018-11-15)</small>
 
 * release version 0.17.12 ([f8dc626](https://github.com/entrecode/ec.sdk/commit/f8dc626))
