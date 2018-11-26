@@ -428,7 +428,7 @@ export default class Core {
         const id = this[relationsSymbol][relation].id;
         if (
           options && Object.keys(options).length === 1 && id in options
-          && (typeof options[id] === 'string' || (!('any' in options[id] && !('all' in options[id]))))
+          && (typeof options[id] === 'string' || 'exact' in options[id])
         ) {
           throw new Error('Providing only an id in ResourceList filter will result in single resource response.');
         }
