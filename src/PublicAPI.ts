@@ -1285,7 +1285,7 @@ export default class PublicAPI extends Core {
             ListClass: PublicAssetList,
           },
           tags: {
-            relation: 'ec:tag',
+            relation: 'ec:api/tags',
             createRelation: false,
             createTemplateModifier: '',
             id: 'tag',
