@@ -1,3 +1,11 @@
+## <small>0.17.15 (2018-11-26)</small>
+
+* release version 0.17.15 ([016bfc8](https://github.com/entrecode/ec.sdk/commit/016bfc8))
+* refactor: optimized bugfix of fex and ruben ([84c848e](https://github.com/entrecode/ec.sdk/commit/84c848e))
+* fix: resourceList filter with id.search SDK-102 ([c2098ad](https://github.com/entrecode/ec.sdk/commit/c2098ad))
+
+
+
 ## <small>0.17.14 (2018-11-23)</small>
 
 * changed hard coded publicTagList relation ([d55a082](https://github.com/entrecode/ec.sdk/commit/d55a082))
