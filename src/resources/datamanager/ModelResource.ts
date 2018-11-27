@@ -206,33 +206,28 @@ export default ModelResource;
  *
  * {@link https://doc.entrecode.de/en/latest/data_manager/#hooks Hook Documentation}
  *
- * @typedef {{
- *  hookID: string,
- *  hook: string,
- *  type: string,
- *  description: string,
- *  methods: Array<string>,
- *  config: object
- * }} hook
+ * @typedef {Object} hook
+ * @property {string} hookID
+ * @property {string} hook
+ * @property {string} type
+ * @property {string} description
+ * @property {Array<string>} methods
+ * @property {Object} config
  */
 
 /**
  * Single condition object.
  *
- * @typedef {{
- *  field: string,
- *  operator: string,
- *  variable: string
- * }} condition
+ * @typedef {Object} condition
+ * @property {string} field
+ * @property {string} operator
+ * @property {string} variable
  */
 
 /**
  * Multiple conditions can be used by putting them into an array.
  *
- * @typedef {(
- *  condition |
- *  Array<(conditions|condition|and|or)>
- * )} conditions
+ * @typedef {condition|Array<condition|conditions|string>} conditions String can be 'and' or 'or'.
  */
 
 /**
@@ -240,13 +235,12 @@ export default ModelResource;
  *
  * {@link https://doc.entrecode.de/en/latest/data_manager/#permission-policies Policy Documentation}
  *
- * @typedef {{
- *  method: string,
- *  restrictToFields: Array<string>,
- *  public: boolean,
- *  roles: Array<string>,
- *  conditions: Array<conditions>
- * }} policy
+ * @typedef {Object} policy
+ * @property {string} method
+ * @property {Array<string>} restrictToFields
+ * @property {boolean} public
+ * @property {Array<string>} roles
+ * @property {Array<conditions>} conditions
  */
 
 /**
@@ -275,15 +269,14 @@ export default ModelResource;
  *   ]
  * }
  *
- * @typedef {{
- *  title: string,
- *  description: string,
- *  type: string,
- *  readOnly: boolean,
- *  required: boolean,
- *  unique: boolean,
- *  localizable: boolean,
- *  mutable: boolean,
- *  validation: (string|object)
- * }} field
+ * @typedef {Object} field
+ * @property {string} title
+ * @property {string} description
+ * @property {string} type
+ * @property {boolean} readOnly
+ * @property {boolean} required
+ * @property {boolean} unique
+ * @property {boolean} localizable
+ * @property {boolean} mutable
+ * @property {string|object} validation
  */

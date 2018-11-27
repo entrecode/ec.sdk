@@ -564,7 +564,10 @@ export type options = { environment: environment, noCookie: boolean, cookieModif
  * new PublicAPI('beefbeef', { ecUser: true });
  * // same
  * new PublicAPI('beefbeef', 'live', true);
- *
  * 
- * @typedef {{ environment: environment, noCookie: boolean, cookieModifier: string, ecUser: boolean}} options
+ * @typedef {Object} options
+ * @property {environment} environment The environment for the API Connector
+ * @property {boolean} noCookie True if you want to token-handling disabled (will overwrite Tokenstore name with random string)
+ * @property {string} cookieModifier Define a string for sharing multiple tokens.
+ * @property {boolean} ecUser True if the user is a ecUser. PublicAPI API Connectors will share across all shortIDs.
  */

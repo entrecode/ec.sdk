@@ -1635,11 +1635,28 @@ export type assetOptions = {
  * @example
  * const assetList = await api.createDMAsset('myFiles', filePath, { deduplicate: true });
  * 
- * @typedef {{fileName?: string|Array<string>, preserveFilenames?: boolean, ignoreDuplicates?: boolean, includeASsetIDInPath?: boolean, deduplicate?: boolean}} fileOptions
+ * @typedef {Object} fileOptions
+ * @property {string | Array<string>} fileName
+ * @property {boolean} preserveFilenames
+ * @property {boolean} ignoreDuplicates
+ * @property {boolean} includeAssetIDInPath
+ * @property {boolean} deduplicate
+ * 
  */
 
 /**
  * A field definitions is the public version of model field config with field specific configs used in ec.forms.
  * 
- * @typedef {{title: string, description: string, type: string, readOnly: boolean, required: boolean, unique: boolean, localizable: boolean, mutable: boolean, validation: any, default: any, config: any}} fieldDefinition
+ * @typedef {Object} fieldDefinition
+ * @property {string} title
+ * @property {string} description
+ * @property {string} type
+ * @property {boolean} readOnly
+ * @property {boolean} required
+ * @property {boolean} unique
+ * @property {boolean} localizable
+ * @property {boolean} mutable
+ * @property {any} validation
+ * @property {any} default
+ * @property {object} config
  */

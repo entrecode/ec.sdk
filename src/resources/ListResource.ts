@@ -355,8 +355,13 @@ export type filterType = Array<string> | number | string | filter | undefined;
  * });
  * // for filter see below
  *
- * @typedef {{size: number, page: number, sort: array<string>, _levels: number, _fields:
- *   Array<string>, property: filter}} filterOptions
+ * @typedef {Object} filterOptions
+ * @property {number} size
+ * @property {number} page
+ * @property {Array<string} sort
+ * @property {number} _levels
+ * @property {Array<string>} _fields
+ * @property {filter} property This could be any field name of a model
  */
 
 /**
@@ -384,6 +389,16 @@ export type filterType = Array<string> | number | string | filter | undefined;
  *   },
  * });
  *
- * @typedef {{propertyName: (string|{exact: string, search: string, from: string, to: string, any:
- *   array<string>, all: array<string>})}} filter
+ * @typedef {Object} filter
+ * @property {string|filterObject} property
  */
+
+ /**
+  * @typedef {Object} filterObject
+  * @property {string} exact
+  * @property {string} search
+  * @property {string} from
+  * @property {string} to
+  * @property {Array<string>} any
+  * @property {Array<string>} all
+  */

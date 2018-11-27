@@ -26,6 +26,7 @@ toc:
   - ListResource
   - filterOptions
   - filter
+  - filterObject
   - HistoryEvents
   - HistoryEvent
   - name: Accounts Resources
@@ -35,6 +36,7 @@ toc:
   - TokenResource
   - TokenList
   - ClientResource
+  - clientConfig
   - ClientList
   - GroupResource
   - GroupList
