@@ -781,7 +781,7 @@ export default class PublicAPI extends Core {
    * await show(entry);
    *
    * @param {string} model name of the model for which the list should be loaded
-   * @param {string} id the entry id
+   * @param {string | filterOptions} id the entry id
    * @param {number|object?} options options for this entry. can be _levels, _fields or number for
    *   levels directly request
    * @returns {Promise<EntryResource>} Promise resolving to EntryResource
