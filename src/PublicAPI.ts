@@ -946,7 +946,7 @@ export default class PublicAPI extends Core {
    * @param {string|Array<string>} modelTitle The model title or array of model titles to load the field config for.
    * @returns {Promise<object>} Returns either a Object with single model field config, or an object with multiple field configs
    */
-  getFieldConfig(modelTitle: string | Array<string>): Promise<Array<fieldDefinition>> {
+  getFieldConfig(modelTitle: string | Array<string>): Promise<models|fields> {
     return Promise.resolve()
       .then(() => {
         if (!modelTitle) {
@@ -1592,6 +1592,14 @@ export default class PublicAPI extends Core {
   }
 }
 
+export type models = {
+  [key: string]: fields;
+}
+
+export type fields = {
+  [key: string]: fieldDefinition;
+}
+
 export type fieldDefinition = {
   title: string;
   description: string;
@@ -1642,6 +1650,20 @@ export type assetOptions = {
  * @property {boolean} includeAssetIDInPath
  * @property {boolean} deduplicate
  * 
+ */
+
+ /**
+  * Collection of all models and their fields
+  * 
+  * @typedef {Object} models
+  * @property {field} modelName
+  */
+
+/**
+ * Collection of all fields and their fieldDefinition
+ * 
+ * @typedef {Object} fields
+ * @property {fieldDefinition} fieldName
  */
 
 /**
