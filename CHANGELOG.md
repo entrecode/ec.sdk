@@ -1,3 +1,12 @@
+## <small>0.17.16 (2018-11-27)</small>
+
+* release version 0.17.16 ([cfb25fc](https://github.com/entrecode/ec.sdk/commit/cfb25fc))
+* fix: typings of getFieldConfig fixed SDK-101 ([6dc914d](https://github.com/entrecode/ec.sdk/commit/6dc914d))
+* doc: optimized type docs, SDK-90 and CMS-3153 ([343f59e](https://github.com/entrecode/ec.sdk/commit/343f59e))
+* docs: adds missing type to PublicAPI#entry ([92d4833](https://github.com/entrecode/ec.sdk/commit/92d4833))
+
+
+
 ## <small>0.17.15 (2018-11-26)</small>
 
 * release version 0.17.15 ([016bfc8](https://github.com/entrecode/ec.sdk/commit/016bfc8))
