@@ -1,24 +1,15 @@
 import Resource from '../Resource';
 import { environment } from '../../Core';
 
-/**
- * Configuration of a client
- *
- * @typedef {{
- *  tokenMethod: (query|cookie|body),
- *  disableStrategies: Array<'facebook'|'google'|'password'>
- * }} config
- */
-
-export type config = {
-  tokenMethod: 'query' | 'cookie' | 'body',
-  disableStrategies: Array<'facebook' | 'google' | 'password'>,
-}
+export type clientConfig = {
+  tokenMethod: 'query' | 'cookie' | 'body';
+  disableStrategies: Array<'facebook' | 'google' | 'password'>;
+};
 
 interface ClientResource {
   callbackURL: string,
   clientID: string,
-  config: config,
+  config: clientConfig,
 }
 
 /**
@@ -28,7 +19,7 @@ interface ClientResource {
  *
  * @prop {string} clientID      - The id of the client
  * @prop {string} callbackURL   - callback URL
- * @prop {config} config        - The config
+ * @prop {clientConfig} config  - The config
  */
 class ClientResource extends Resource {
   /**
@@ -54,8 +45,8 @@ class ClientResource extends Resource {
       },
       config: {
         enumerable: true,
-        get: () => <config>this.getProperty('config'),
-        set: (value: config) => this.setProperty('config', value),
+        get: () => <clientConfig>this.getProperty('config'),
+        set: (value: clientConfig) => this.setProperty('config', value),
       },
     });
     this.countProperties();
@@ -63,3 +54,11 @@ class ClientResource extends Resource {
 }
 
 export default ClientResource;
+
+/**
+ * Configuration of a client
+ *
+ * @typedef {Object} clientConfig
+ * @property {string} tokenMethod Enum('query'|'cookie'|'body')
+ * @property {Array<string>} disableStrategies Array<Enum('facebook'|'google'|'password')>
+ */

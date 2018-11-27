@@ -12,6 +12,8 @@ toc:
   - environment
   - options
   - fileOptions
+  - models
+  - field
   - fieldDefinition
   - name: Events and Errors
     file: ./src/doc/3-events-errors.md
@@ -26,6 +28,7 @@ toc:
   - ListResource
   - filterOptions
   - filter
+  - filterObject
   - HistoryEvents
   - HistoryEvent
   - name: Accounts Resources
@@ -35,6 +38,7 @@ toc:
   - TokenResource
   - TokenList
   - ClientResource
+  - clientConfig
   - ClientList
   - GroupResource
   - GroupList

@@ -1,6 +1,6 @@
 {
   "name": "ec.sdk",
-  "version": "0.17.15",
+  "version": "0.17.16",
   "description": "SDK for ec.api",
   "repository": "entrecode/ec.sdk",
   "author": "Simon Scherzinger <scherzinger@entrecode.de>",
@@ -15,7 +15,7 @@
     "changelog": "conventional-changelog -i CHANGELOG.md -s",
     "coveralls": "npm run buildNode && istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R dot --exit --recursive && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js",
     "coverage": "npm run buildNode && istanbul cover ./node_modules/mocha/bin/_mocha -- --exit -R dot --recursive && open ./coverage/lcov-report/index.html",
-    "docs": "documentation build lib/*.js -c documentation.yml -f html -o docs",
+    "docs": "npm run buildNode && documentation build lib/*.js -c documentation.yml -f html -o docs",
     "pretest": "npm run buildNode",
     "test": "mocha -R dot --recursive --exit",
     "pretestTravis": "npm run build",

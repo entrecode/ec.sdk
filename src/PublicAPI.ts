@@ -781,7 +781,7 @@ export default class PublicAPI extends Core {
    * await show(entry);
    *
    * @param {string} model name of the model for which the list should be loaded
-   * @param {string} id the entry id
+   * @param {string | filterOptions} id the entry id
    * @param {number|object?} options options for this entry. can be _levels, _fields or number for
    *   levels directly request
    * @returns {Promise<EntryResource>} Promise resolving to EntryResource
@@ -946,7 +946,7 @@ export default class PublicAPI extends Core {
    * @param {string|Array<string>} modelTitle The model title or array of model titles to load the field config for.
    * @returns {Promise<object>} Returns either a Object with single model field config, or an object with multiple field configs
    */
-  getFieldConfig(modelTitle: string | Array<string>): Promise<Array<fieldDefinition>> {
+  getFieldConfig(modelTitle: string | Array<string>): Promise<models|fields> {
     return Promise.resolve()
       .then(() => {
         if (!modelTitle) {
@@ -1592,6 +1592,14 @@ export default class PublicAPI extends Core {
   }
 }
 
+export type models = {
+  [key: string]: fields;
+}
+
+export type fields = {
+  [key: string]: fieldDefinition;
+}
+
 export type fieldDefinition = {
   title: string;
   description: string;
@@ -1635,11 +1643,42 @@ export type assetOptions = {
  * @example
  * const assetList = await api.createDMAsset('myFiles', filePath, { deduplicate: true });
  * 
- * @typedef {{fileName?: string|Array<string>, preserveFilenames?: boolean, ignoreDuplicates?: boolean, includeASsetIDInPath?: boolean, deduplicate?: boolean}} fileOptions
+ * @typedef {Object} fileOptions
+ * @property {string | Array<string>} fileName
+ * @property {boolean} preserveFilenames
+ * @property {boolean} ignoreDuplicates
+ * @property {boolean} includeAssetIDInPath
+ * @property {boolean} deduplicate
+ * 
+ */
+
+ /**
+  * Collection of all models and their fields
+  * 
+  * @typedef {Object} models
+  * @property {field} modelName
+  */
+
+/**
+ * Collection of all fields and their fieldDefinition
+ * 
+ * @typedef {Object} fields
+ * @property {fieldDefinition} fieldName
  */
 
 /**
  * A field definitions is the public version of model field config with field specific configs used in ec.forms.
  * 
- * @typedef {{title: string, description: string, type: string, readOnly: boolean, required: boolean, unique: boolean, localizable: boolean, mutable: boolean, validation: any, default: any, config: any}} fieldDefinition
+ * @typedef {Object} fieldDefinition
+ * @property {string} title
+ * @property {string} description
+ * @property {string} type
+ * @property {boolean} readOnly
+ * @property {boolean} required
+ * @property {boolean} unique
+ * @property {boolean} localizable
+ * @property {boolean} mutable
+ * @property {any} validation
+ * @property {any} default
+ * @property {object} config
  */
