@@ -7,12 +7,12 @@ const environmentSymbol: any = Symbol.for('environment');
 const resourceSymbol: any = Symbol.for('resource');
 
 interface RoleResource {
-  accounts: Array<LiteDMAccountResource>,
-  addRegistered: boolean,
-  addUnregistered: boolean,
-  label: string,
-  name: string,
-  roleID: string,
+  accounts: Array<LiteDMAccountResource>;
+  addRegistered: boolean;
+  addUnregistered: boolean;
+  label: string;
+  name: string;
+  roleID: string;
 }
 
 /**
@@ -50,18 +50,23 @@ class RoleResource extends Resource {
 
           const liteResources = this.getLinks('ec:dm-account');
           if (liteResources) {
-            this[resourceSymbol].accounts = liteResources.map(liteResource => new LiteDMAccountResource(liteResource, this[environmentSymbol]));
+            this[resourceSymbol].accounts = liteResources.map(
+              (liteResource) => new LiteDMAccountResource(liteResource, this[environmentSymbol]),
+            );
           }
 
           return this.getProperty('accounts');
         },
         set: (value: Array<string | LiteDMAccountResource | DMAccountResource>) => {
-          this.setProperty('accounts', value.map((res) => {
-            if (typeof res === 'string') {
-              return res;
-            }
-            return res.accountID;
-          }));
+          this.setProperty(
+            'accounts',
+            value.map((res) => {
+              if (typeof res === 'string') {
+                return res;
+              }
+              return res.accountID;
+            }),
+          );
           return this;
         },
       },
@@ -88,7 +93,7 @@ class RoleResource extends Resource {
       roleID: {
         enumerable: true,
         get: () => <string>this.getProperty('roleID'),
-      }
+      },
     });
     this.countProperties();
   }

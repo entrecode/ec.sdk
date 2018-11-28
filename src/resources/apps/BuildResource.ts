@@ -2,12 +2,12 @@ import Resource from '../Resource';
 import { environment } from '../../Core';
 
 interface BuildResource {
-  buildID: string,
-  buildLocation: any,
-  events: Array<any>,
-  finished: Date,
-  started: Date,
-  successful: 'success' | 'running' | 'error',
+  buildID: string;
+  buildLocation: any;
+  events: Array<any>;
+  finished: Date;
+  started: Date;
+  successful: 'success' | 'running' | 'error';
 }
 
 /**

@@ -2,22 +2,22 @@ import Resource from '../Resource';
 import { environment } from '../../Core';
 
 interface DMStatsResource {
-  assetCount: number,
-  config: any,
-  dataManagerID: string,
-  entryCount: number,
-  fileCount: number,
-  fileSize: number,
-  modelCount: number,
-  monthlyHooks: Array<any>,
-  monthlyRequests: Array<any>,
-  numberAccounts: number,
-  numberHookRequests: Array<any>,
-  numberRequests: number,
-  templateVersion: string,
-  templateID: string,
-  templateName: string,
-  title: string,
+  assetCount: number;
+  config: any;
+  dataManagerID: string;
+  entryCount: number;
+  fileCount: number;
+  fileSize: number;
+  modelCount: number;
+  monthlyHooks: Array<any>;
+  monthlyRequests: Array<any>;
+  numberAccounts: number;
+  numberHookRequests: Array<any>;
+  numberRequests: number;
+  templateVersion: string;
+  templateID: string;
+  templateName: string;
+  title: string;
 }
 
 /**

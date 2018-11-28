@@ -5,22 +5,22 @@ import { get } from '../../helper';
 const environmentSymbol: any = Symbol.for('environment');
 
 interface DMAssetResource {
-  assetID: string,
-  caption: string,
-  created: Date,
-  creator: string,
-  creatorType: string,
-  duplicates: number,
-  file: any,
-  fileVariants: Array<any>,
-  isUsed: boolean,
-  mimetype: string,
-  modified: Date,
-  tags: Array<string>,
-  thumbnails: Array<any>,
-  title: string,
-  type: string,
-  assetGroupID: string,
+  assetID: string;
+  caption: string;
+  created: Date;
+  creator: string;
+  creatorType: string;
+  duplicates: number;
+  file: any;
+  fileVariants: Array<any>;
+  isUsed: boolean;
+  mimetype: string;
+  modified: Date;
+  tags: Array<string>;
+  thumbnails: Array<any>;
+  title: string;
+  type: string;
+  assetGroupID: string;
 }
 
 /**
@@ -142,8 +142,8 @@ class DMAssetResource extends Resource {
           if (result) {
             return <string>result[1];
           }
-        }
-      }
+        },
+      },
     });
     this.countProperties();
   }
@@ -165,38 +165,36 @@ class DMAssetResource extends Resource {
    * @returns {Promise<string>} the url string of the requested image
    */
   getFileVariant(size?: number, thumb: boolean = false): Promise<string> {
-    return Promise.resolve()
-      .then(() => {
-        if (!size && !thumb) {
-          return this.file.url;
-        }
+    return Promise.resolve().then(() => {
+      if (!size && !thumb) {
+        return this.file.url;
+      }
 
-        let file;
-        if (thumb) {
-          file = this.thumbnails.find(t => t.dimension === size);
-        } else {
-          file = this.fileVariants.find(v => Math.max(v.resolution.width, v.resolution.height) === size);
-        }
-        if (file) {
-          return file.url;
-        }
+      let file;
+      if (thumb) {
+        file = this.thumbnails.find((t) => t.dimension === size);
+      } else {
+        file = this.fileVariants.find((v) => Math.max(v.resolution.width, v.resolution.height) === size);
+      }
+      if (file) {
+        return file.url;
+      }
 
-        const request = this.newRequest();
-        if (thumb) {
-          request.follow('ec:dm-asset/thumbnail');
-        } else {
-          request.follow('ec:dm-asset/file-variant');
-        }
-        const templateParams: any = {};
-        if (size) {
-          templateParams.size = size;
-        }
-        request.withTemplateParameters(templateParams);
-        return get(this[environmentSymbol], request)
-          .then(([res]) => {
-            return res.url;
-          });
+      const request = this.newRequest();
+      if (thumb) {
+        request.follow('ec:dm-asset/thumbnail');
+      } else {
+        request.follow('ec:dm-asset/file-variant');
+      }
+      const templateParams: any = {};
+      if (size) {
+        templateParams.size = size;
+      }
+      request.withTemplateParameters(templateParams);
+      return get(this[environmentSymbol], request).then(([res]) => {
+        return res.url;
       });
+    });
   }
 
   /**

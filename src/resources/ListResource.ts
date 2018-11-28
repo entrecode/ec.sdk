@@ -7,71 +7,86 @@ const nameSymbol: any = Symbol.for('name');
 const itemClassSymbol: any = Symbol('_itemClass');
 const listClassSymbol: any = Symbol('_listClass');
 
-function map(list: ListResource, iterator: (resource: Resource) => Promise<any> | any, results: Array<Resource> = []): Promise<Array<any>> {
-  return list.getAllItems()
-    .map(entry =>
-      res => Promise.resolve()
+function map(
+  list: ListResource,
+  iterator: (resource: Resource) => Promise<any> | any,
+  results: Array<Resource> = [],
+): Promise<Array<any>> {
+  return list
+    .getAllItems()
+    .map((entry) => (res) =>
+      Promise.resolve()
         .then(() => iterator(entry))
         .then((result) => {
           res.push(result);
           return res;
-        }))
+        }),
+    )
     .reduce((current, next) => current.then(next), Promise.resolve(results))
     .then((res: Array<Resource>) => {
       if (!list.hasNextLink()) {
         return res;
       }
-      return list.followNextLink()
-        .then(next => map(next, iterator, res));
+      return list.followNextLink().then((next) => map(next, iterator, res));
     });
 }
 
-function filter(list: ListResource, iterator: (resource: Resource) => Promise<boolean> | boolean, results: Array<Resource> = []): Promise<Array<Resource>> {
-  return list.getAllItems()
-    .map(entry =>
-      res => Promise.resolve()
+function filter(
+  list: ListResource,
+  iterator: (resource: Resource) => Promise<boolean> | boolean,
+  results: Array<Resource> = [],
+): Promise<Array<Resource>> {
+  return list
+    .getAllItems()
+    .map((entry) => (res) =>
+      Promise.resolve()
         .then(() => iterator(entry))
         .then((add) => {
           if (add) {
             res.push(entry);
           }
           return res;
-        }))
+        }),
+    )
     .reduce((current, next) => current.then(next), Promise.resolve(results))
     .then((res) => {
       if (!list.hasNextLink()) {
         return res;
       }
-      return list.followNextLink()
-        .then(next => filter(next, iterator, res));
+      return list.followNextLink().then((next) => filter(next, iterator, res));
     });
 }
 
 function find(list: ListResource, iterator: (resource: Resource) => Promise<boolean> | boolean): Promise<Resource> {
-  return list.getAllItems()
-    .map(entry =>
-      () => Promise.resolve()
+  return list
+    .getAllItems()
+    .map((entry) => () =>
+      Promise.resolve()
         .then(() => iterator(entry))
         .then((found) => {
           if (!found) {
             return false;
           }
           return entry;
-        }))
-    .reduce((current, next) => current.then((found) => {
-      if (!found) {
-        return next();
-      }
-      return found;
-    }), Promise.resolve(false))
+        }),
+    )
+    .reduce(
+      (current, next) =>
+        current.then((found) => {
+          if (!found) {
+            return next();
+          }
+          return found;
+        }),
+      Promise.resolve(false),
+    )
     .then((res) => {
       if (res) {
         return res;
       }
 
       if (list.hasNextLink()) {
-        return list.followNextLink()
-          .then(next => find(next, iterator));
+        return list.followNextLink().then((next) => find(next, iterator));
       }
 
       return undefined;
@@ -86,7 +101,7 @@ interface ListResource {
 
 /**
  * Generic list resource class. Represents {@link
-  * https://tools.ietf.org/html/draft-kelly-json-hal-08 HAL resources} with added support for
+ * https://tools.ietf.org/html/draft-kelly-json-hal-08 HAL resources} with added support for
  * lists.
  *
  * Since version 0.8.1 ListResources are iterable, so you can use spread operator or for … of loops
@@ -113,7 +128,15 @@ class ListResource extends Resource {
    * @param {ListResource} ListClass Class constructor for list types
    * @param {Resource} ItemClass Class constructor for item types
    */
-  constructor(resource: any, environment: string, traversal: any, name: string, itemSchema: any, ListClass = ListResource, ItemClass = Resource) {
+  constructor(
+    resource: any,
+    environment: string,
+    traversal: any,
+    name: string,
+    itemSchema: any,
+    ListClass = ListResource,
+    ItemClass = Resource,
+  ) {
     super(resource, environment, traversal);
 
     if (!('count' in resource) && !('total' in resource)) {
@@ -149,9 +172,9 @@ class ListResource extends Resource {
           this.index = 0;
           return { done: true };
         }
-      }
-    }
-  };
+      },
+    };
+  }
 
   /**
    * The filter() method creates a new array with all elements that pass the test implemented by
@@ -188,7 +211,9 @@ class ListResource extends Resource {
    * @returns {Promise<ListResource|ResourceClass>} the resource identified by the link.
    */
   followFirstLink(): Promise<ListResource> {
-    return <Promise<ListResource>>this.followLink('first', this[listClassSymbol], this[nameSymbol], this[itemSchemaSymbol]);
+    return <Promise<ListResource>>(
+      this.followLink('first', this[listClassSymbol], this[nameSymbol], this[itemSchemaSymbol])
+    );
   }
 
   /**
@@ -198,7 +223,9 @@ class ListResource extends Resource {
    * @returns {Promise<ListResource|ResourceClass>} the resource identified by the link.
    */
   followNextLink(): Promise<ListResource> {
-    return <Promise<ListResource>>this.followLink('next', this[listClassSymbol], this[nameSymbol], this[itemSchemaSymbol]);
+    return <Promise<ListResource>>(
+      this.followLink('next', this[listClassSymbol], this[nameSymbol], this[itemSchemaSymbol])
+    );
   }
 
   /**
@@ -208,7 +235,9 @@ class ListResource extends Resource {
    * @returns {Promise<ListResource|ResourceClass>} the resource identified by the link.
    */
   followPrevLink(): Promise<ListResource> {
-    return <Promise<ListResource>>this.followLink('prev', this[listClassSymbol], this[nameSymbol], this[itemSchemaSymbol]);
+    return <Promise<ListResource>>(
+      this.followLink('prev', this[listClassSymbol], this[nameSymbol], this[itemSchemaSymbol])
+    );
   }
 
   /**
@@ -245,12 +274,13 @@ class ListResource extends Resource {
    * @returns {Resource|ResourceClass} the requested item.
    */
   getItem(n: number): Resource {
-    if (n === undefined) { // undefined check
+    if (n === undefined) {
+      // undefined check
       throw new Error('Index must be defined.');
     }
     const array = this[resourceSymbol].embeddedArray(this[nameSymbol]);
     if (!array || array.length === 0) {
-      throw new Error('Cannot get n\'th item of empty list.');
+      throw new Error("Cannot get n'th item of empty list.");
     }
     if (array.length <= n) {
       throw new Error(`Cannot get ${n}'th item of list with length ${array.length}`);
@@ -264,8 +294,8 @@ class ListResource extends Resource {
 
   /**
    * Checks if this {@link Resource} has at least one {@link
-    * https://tools.ietf.org/html/draft-kelly-json-hal-08#section-5
-     * link}  with the name 'first'.
+   * https://tools.ietf.org/html/draft-kelly-json-hal-08#section-5
+   * link}  with the name 'first'.
    *
    * @returns {boolean} whether or not a link with the name 'first' was found.
    */
@@ -275,8 +305,8 @@ class ListResource extends Resource {
 
   /**
    * Checks if this {@link Resource} has at least one {@link
-    * https://tools.ietf.org/html/draft-kelly-json-hal-08#section-5
-     * link}  with the name 'next'.
+   * https://tools.ietf.org/html/draft-kelly-json-hal-08#section-5
+   * link}  with the name 'next'.
    *
    * @returns {boolean} whether or not a link with the name 'next' was found.
    */
@@ -286,8 +316,8 @@ class ListResource extends Resource {
 
   /**
    * Checks if this {@link Resource} has at least one {@link
-    * https://tools.ietf.org/html/draft-kelly-json-hal-08#section-5
-     * link}  with the name 'prev'.
+   * https://tools.ietf.org/html/draft-kelly-json-hal-08#section-5
+   * link}  with the name 'prev'.
    *
    * @returns {boolean} whether or not a link with the name 'prev' was found.
    */
@@ -320,23 +350,23 @@ class ListResource extends Resource {
  */
 
 export type filterOptions = {
-  size?: number,
-  page?: number,
-  sort?: Array<string>,
-  _levels?: number,
-  _fields?: Array<string>,
+  size?: number;
+  page?: number;
+  sort?: Array<string>;
+  _levels?: number;
+  _fields?: Array<string>;
 
-  [key: string]: filterType
-}
+  [key: string]: filterType;
+};
 
 export type filter = {
-  exact?: string,
-  search?: string,
-  from?: any,
-  to?: any,
-  any?: Array<string>,
-  all?: Array<string>
-}
+  exact?: string;
+  search?: string;
+  from?: any;
+  to?: any;
+  any?: Array<string>;
+  all?: Array<string>;
+};
 
 export default ListResource;
 
@@ -393,12 +423,12 @@ export type filterType = Array<string> | number | string | filter | undefined;
  * @property {string|filterObject} property
  */
 
- /**
-  * @typedef {Object} filterObject
-  * @property {string} exact
-  * @property {string} search
-  * @property {string} from
-  * @property {string} to
-  * @property {Array<string>} any
-  * @property {Array<string>} all
-  */
+/**
+ * @typedef {Object} filterObject
+ * @property {string} exact
+ * @property {string} search
+ * @property {string} from
+ * @property {string} to
+ * @property {Array<string>} any
+ * @property {Array<string>} all
+ */

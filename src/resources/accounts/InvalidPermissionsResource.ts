@@ -2,8 +2,8 @@ import Resource from '../Resource';
 import { environment } from '../../Core';
 
 interface InvalidPermissionsResource {
-  invalidAccountPermissions: any,
-  invalidGroupPermissions: any,
+  invalidAccountPermissions: any;
+  invalidGroupPermissions: any;
 }
 
 /**

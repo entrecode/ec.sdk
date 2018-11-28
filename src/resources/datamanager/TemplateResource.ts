@@ -13,15 +13,14 @@ const resourceSymbol: any = Symbol.for('resource');
 const traversalSymbol: any = Symbol.for('traversal');
 const resolvedSymbol: any = Symbol.for('resolved');
 
-validator.setLoggingFunction(() => {
-});
+validator.setLoggingFunction(() => {});
 
 interface TemplateResource {
-  collection: any,
-  dataSchema: any,
-  name: string,
-  templateID: string,
-  version: string,
+  collection: any;
+  dataSchema: any;
+  name: string;
+  templateID: string;
+  version: string;
 }
 
 /**
@@ -83,10 +82,10 @@ class TemplateResource extends Resource {
         return this.resolve();
       })
       .then(() =>
-        validator.validate(body || {}, this.dataSchema)
-          .catch((e) => {
-            throw new Problem(convertValidationError(e), locale);
-          }))
+        validator.validate(body || {}, this.dataSchema).catch((e) => {
+          throw new Problem(convertValidationError(e), locale);
+        }),
+      )
       .then(() => {
         const request = this.newRequest().follow('ec:datamanagers/new-from-template');
         return post(this[environmentSymbol], request, body || {});
@@ -97,8 +96,7 @@ class TemplateResource extends Resource {
   resolve(): Promise<TemplateResource> {
     return Promise.resolve()
       .then(() => {
-        const request = this.newRequest()
-          .follow('self');
+        const request = this.newRequest().follow('self');
         return get(this[environmentSymbol], request);
       })
       .then(([res, traversal]) => {
@@ -123,8 +121,9 @@ class TemplateResource extends Resource {
     const request = this.newRequest()
       .follow('ec:datamanager/update-from-template')
       .withTemplateParameters({ dataManagerID });
-    return put(this[environmentSymbol], request, {})
-      .then(([res, traversal]) => new DataManagerResource(res, this[environmentSymbol], traversal));
+    return put(this[environmentSymbol], request, {}).then(
+      ([res, traversal]) => new DataManagerResource(res, this[environmentSymbol], traversal),
+    );
   }
 }
 

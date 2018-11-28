@@ -2,9 +2,9 @@ import Resource from '../Resource';
 import { environment } from '../../Core';
 
 interface TargetResource {
-  config: any,
-  targetID: string,
-  targetType: string,
+  config: any;
+  targetID: string;
+  targetType: string;
 }
 
 /**

@@ -2,13 +2,13 @@ import Resource from '../Resource';
 import { environment } from '../../Core';
 
 interface TokenResource {
-  accessTokenID: string,
-  device: any,
-  ipAddress: string,
-  ipAddressLocation: string,
-  isCurrent: boolean,
-  issued: Date,
-  validUntil: Date,
+  accessTokenID: string;
+  device: any;
+  ipAddress: string;
+  ipAddressLocation: string;
+  isCurrent: boolean;
+  issued: Date;
+  validUntil: Date;
 }
 
 /**

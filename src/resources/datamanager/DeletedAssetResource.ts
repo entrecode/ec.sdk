@@ -5,12 +5,12 @@ import { environment } from '../../Core';
 const environmentSymbol: any = Symbol.for('environment');
 
 interface DeletedAssetResource {
-  assetID: string,
-  created: Date,
-  files: Array<any>,
-  tags: Array<string>,
-  title: string,
-  type: string,
+  assetID: string;
+  created: Date;
+  files: Array<any>;
+  tags: Array<string>;
+  title: string;
+  type: string;
 }
 
 /**
@@ -104,7 +104,12 @@ class DeletedAssetResource extends Resource {
    * @returns {Promise<void>} Promise resolving on successful purging.
    */
   purge(): Promise<void> {
-    return del(this[environmentSymbol], this.newRequest().follow('self').withTemplateParameters({ destroy: 'destroy' }));
+    return del(
+      this[environmentSymbol],
+      this.newRequest()
+        .follow('self')
+        .withTemplateParameters({ destroy: 'destroy' }),
+    );
   }
 
   /**

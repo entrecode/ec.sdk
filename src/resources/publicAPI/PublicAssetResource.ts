@@ -128,12 +128,13 @@ class PublicAssetResource extends Resource {
       return this.files[0];
     }
 
-    const files = this.files.filter(f => !!f.resolution);
+    const files = this.files.filter((f) => !!f.resolution);
     if (files.length === 0) {
       return this.files[0];
     }
 
-    files.sort((l, r) => { // sort by size descending
+    files.sort((l, r) => {
+      // sort by size descending
       const leftMax = Math.max(l.resolution.height, l.resolution.width);
       const rightMax = Math.max(r.resolution.height, r.resolution.width);
       if (leftMax < rightMax) {
@@ -155,7 +156,7 @@ class PublicAssetResource extends Resource {
    * @returns {Promise<PublicAssetResource>} Promise resolving to {@link PublicAssetResource}.
    */
   resolve(): Promise<PublicAssetResource> {
-    return <Promise<PublicAssetResource>>super.resolve()
+    return <Promise<PublicAssetResource>>super.resolve();
   }
 
   /**
@@ -167,13 +168,12 @@ class PublicAssetResource extends Resource {
    *   be the same object but with refreshed data.
    */
   save(safePut: boolean = false, overwriteSchemaUrl?: string): Promise<PublicAssetResource> {
-    return Promise.resolve()
-      .then(() => {
-        if (!this['isResolved']) {
-          throw new Error('Cannot save not resolved PublicAssetResource');
-        }
-        return <Promise<PublicAssetResource>>super.save(false, overwriteSchemaUrl);
-      });
+    return Promise.resolve().then(() => {
+      if (!this['isResolved']) {
+        throw new Error('Cannot save not resolved PublicAssetResource');
+      }
+      return <Promise<PublicAssetResource>>super.save(false, overwriteSchemaUrl);
+    });
   }
 }
 

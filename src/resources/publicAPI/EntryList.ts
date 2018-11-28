@@ -37,8 +37,7 @@ export default class EntryList extends ListResource {
    */
   getAllItems(): Array<any> {
     const array = this[resourceSymbol].embeddedArray(this[nameSymbol]) || [];
-    return array.map((resource) =>
-      new EntryResource(resource, this[environmentSymbol], this[itemSchemaSymbol]));
+    return array.map((resource) => new EntryResource(resource, this[environmentSymbol], this[itemSchemaSymbol]));
   }
 
   /**
@@ -59,12 +58,13 @@ export default class EntryList extends ListResource {
    * @returns {EntryResource} the requested item.
    */
   getItem(n: number): EntryResource {
-    if (n === undefined) { // undefined check
+    if (n === undefined) {
+      // undefined check
       throw new Error('Index must be defined.');
     }
     const array = this[resourceSymbol].embeddedArray(this[nameSymbol]);
     if (!array || array.length === 0) {
-      throw new Error('Cannot get n\'th item of empty list.');
+      throw new Error("Cannot get n'th item of empty list.");
     }
     if (array.length <= n) {
       throw new Error(`Cannot get ${n}'th item of list with length ${array.length}`);
@@ -85,7 +85,7 @@ export default class EntryList extends ListResource {
  * @param {object?} traversal traversal for continuing
  * @param {string} name name of the embedded items
  * @returns {Promise<EntryResource>} {@link Promise} resolving to the newly created {@link
-  *   EntryResource}
+ *   EntryResource}
  */
 export function createList(resource: any, environment: environment, traversal: any, name: string): Promise<EntryList> {
   return Promise.resolve()
@@ -93,5 +93,5 @@ export function createList(resource: any, environment: environment, traversal: a
       const res = halfred.parse(resource);
       return getSchema(res.link('self').profile as string);
     })
-    .then(schema => new EntryList(resource, environment, traversal, name, schema));
+    .then((schema) => new EntryList(resource, environment, traversal, name, schema));
 }

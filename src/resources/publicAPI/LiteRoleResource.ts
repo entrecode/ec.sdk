@@ -31,17 +31,14 @@ class LiteRoleResource extends Resource {
           self: {
             profile: liteResource.profile,
             href: liteResource.href,
-          }
+          },
         },
         name: liteResource.title,
         dataManagerID: qs.dataManagerID,
       };
     }
     super(liteResource, environment, traversal);
-    [
-      'roleID',
-      'name',
-    ].forEach((key) => {
+    ['roleID', 'name'].forEach((key) => {
       Object.defineProperty(this, key, {
         enumerable: true,
         get: () => <string>this.getProperty(key),
@@ -62,8 +59,9 @@ class LiteRoleResource extends Resource {
    */
   resolve(): Promise<RoleResource> {
     const request = traverson.from(this.getLink('self').href).jsonHal();
-    return get(this[environmentSymbol], request)
-      .then(([res, traversal]) => new RoleResource(res, this[environmentSymbol], traversal));
+    return get(this[environmentSymbol], request).then(
+      ([res, traversal]) => new RoleResource(res, this[environmentSymbol], traversal),
+    );
   }
 
   /**
@@ -80,7 +78,7 @@ class LiteRoleResource extends Resource {
       throw new Error('LiteRoleResource cannot be saved');
     }
     return <Promise<RoleResource>>super.save(safePut, overwriteSchemaUrl);
-  };
+  }
 }
 
 export default LiteRoleResource;

@@ -29,7 +29,7 @@ interface AccountResource {
  * @prop {string}         accountID         - The id of the Account
  * @prop {Date}           created           - The {@link Date} on which this account was created
  * @prop {string}         email             - The current email. Can be changed with {@link
-  *   Accounts#changeEmail}
+ *   Accounts#changeEmail}
  * @prop {Array<object>}  groups            - Array of groups this account is member of
  * @prop {boolean}        hasPassword       - Whether or not this account has a password
  * @prop {boolean}        hasPendingEmail   - Whether or not this account has a pending email
@@ -180,7 +180,7 @@ class AccountResource extends Resource {
    */
   getAllPermissions(): Array<string> {
     return (this.groups ? this.groups : [{ permissions: [] }])
-      .map(g => g.permissions)
+      .map((g) => g.permissions)
       .reduce((all, current) => all.concat(current), this.permissions);
   }
 
@@ -194,7 +194,7 @@ class AccountResource extends Resource {
       .then(() => {
         const request = this.newRequest().follow('ec:account/tokens');
 
-        return get(this[environmentSymbol], request)
+        return get(this[environmentSymbol], request);
       })
       .then(([tokenList, traversal]) => new TokenList(tokenList, this[environmentSymbol], traversal));
   }

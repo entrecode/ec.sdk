@@ -19,8 +19,7 @@ import HistoryEvents from './HistoryEvents';
 const environmentSymbol: any = Symbol.for('environment');
 const resourceSymbol: any = Symbol.for('resource');
 
-validator.setLoggingFunction(() => {
-});
+validator.setLoggingFunction(() => {});
 
 const resourcePropertiesSymbol: any = Symbol.for('resourceProperties');
 const schemaSymbol: any = Symbol('_schema');
@@ -29,12 +28,7 @@ const traversalSymbol: any = Symbol.for('traversal');
 
 const datetimeRegex = /^(?:[1-9]\d{3}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1\d|2[0-8])|(?:0[13-9]|1[0-2])-(?:29|30)|(?:0[13578]|1[02])-31)|(?:[1-9]\d(?:0[48]|[2468][048]|[13579][26])|(?:[2468][048]|[13579][26])00)-02-29)T(?:[01]\d|2[0-3]):[0-5]\d:[0-5]\d(?:\.\d{3})?(?:Z|[+-][01]\d:[0-5]\d)$/;
 
-const skip = [
-  'id',
-  '_id',
-  '_entryTitle',
-  '_modelTitle',
-];
+const skip = ['id', '_id', '_entryTitle', '_modelTitle'];
 
 function getFieldType(schema, property) {
   if (!property) {
@@ -64,9 +58,9 @@ function getShortID(resource) {
 
 function loadSchemaForResource(resource: any): any {
   const res = halfred.parse(resource);
-  return getSchema(res.link('self').profile as string)
-    .then(schema =>
-      Object.keys(schema.allOf[1].properties).map((property) => {
+  return getSchema(res.link('self').profile as string).then((schema) =>
+    Object.keys(schema.allOf[1].properties)
+      .map((property) => {
         if (['entry', 'entries'].indexOf(getFieldType(schema, property) as string) !== -1) {
           const field = res[property];
           if (Array.isArray(field)) {
@@ -76,13 +70,13 @@ function loadSchemaForResource(resource: any): any {
           }
         }
       })
-        .reduce((r, p) => r.concat(p), [])
-        .filter(x => !!x) // filter undefined
-        .filter((x, i, a) => a.findIndex(t => t.id === x.id) === i) // filter duplicates
-        .map(r => () => loadSchemaForResource(r)) // eslint-disable-line comma-dangle
-        .reduce((r, p) => r.then(p), Promise.resolve())
-        .then(() => schema)
-    );
+      .reduce((r, p) => r.concat(p), [])
+      .filter((x) => !!x) // filter undefined
+      .filter((x, i, a) => a.findIndex((t) => t.id === x.id) === i) // filter duplicates
+      .map((r) => () => loadSchemaForResource(r)) // eslint-disable-line comma-dangle
+      .reduce((r, p) => r.then(p), Promise.resolve())
+      .then(() => schema),
+  );
 }
 
 function negotiater(asset, image, thumb, size, locale) {
@@ -96,12 +90,12 @@ function negotiater(asset, image, thumb, size, locale) {
 
   let file;
   if (thumb) {
-    file = asset.thumbnails.find(t => t.dimension === size);
+    file = asset.thumbnails.find((t) => t.dimension === size);
     if (!file) {
       file = asset.thumbnails[0];
     }
   } else {
-    file = asset.fileVariants.find(v => Math.max(v.resolution.width, v.resolution.height) === size);
+    file = asset.fileVariants.find((v) => Math.max(v.resolution.width, v.resolution.height) === size);
   }
   if (file) {
     return file.url;
@@ -211,9 +205,11 @@ class EntryResource extends LiteEntryResource {
               if (!entry) {
                 return entry;
               }
-              if (typeof entry === 'object'
-                && !(entry instanceof EntryResource)
-                && !(entry instanceof LiteEntryResource)) {
+              if (
+                typeof entry === 'object' &&
+                !(entry instanceof EntryResource) &&
+                !(entry instanceof LiteEntryResource)
+              ) {
                 // if it is an object but not one of the Resource types it was loaded nested
                 // so convert to EntryResource
                 let link = entry._links.self;
@@ -222,9 +218,10 @@ class EntryResource extends LiteEntryResource {
                 }
                 const entrySchema = validator.getSchema(link.profile);
                 this[resourceSymbol][key] = new EntryResource(entry, environment, entrySchema);
-              } else if (typeof entry === 'object' && (
-                entry instanceof LiteEntryResource || entry instanceof EntryResource
-              )) {
+              } else if (
+                typeof entry === 'object' &&
+                (entry instanceof LiteEntryResource || entry instanceof EntryResource)
+              ) {
                 // if it is an object and of type LiteEntryResource its one of the resource types
                 // so just return it
                 return entry;
@@ -259,8 +256,7 @@ class EntryResource extends LiteEntryResource {
               const entries = this.getProperty(key) || [];
               this[resourceSymbol][key] = entries.map((entry) => {
                 if (typeof entry === 'object') {
-                  if (entry instanceof EntryResource
-                    || entry instanceof LiteEntryResource) {
+                  if (entry instanceof EntryResource || entry instanceof LiteEntryResource) {
                     return entry;
                   }
 
@@ -311,14 +307,19 @@ class EntryResource extends LiteEntryResource {
               if (!asset) {
                 return asset;
               }
-              if (typeof asset === 'object' && !(asset instanceof PublicAssetResource || asset instanceof DMAssetResource)) {
+              if (
+                typeof asset === 'object' &&
+                !(asset instanceof PublicAssetResource || asset instanceof DMAssetResource)
+              ) {
                 if (/^[a-zA-Z0-9\-_]{22}$/.test(asset.assetID)) {
                   this[resourceSymbol][key] = new DMAssetResource(asset, environment);
                 } else {
                   this[resourceSymbol][key] = new PublicAssetResource(asset, environment);
                 }
               } else if (typeof asset !== 'object') {
-                const embedded = this[resourceSymbol].embeddedResource(`${this[shortIDSymbol]}:${this.getModelTitle()}/${key}/asset`);
+                const embedded = this[resourceSymbol].embeddedResource(
+                  `${this[shortIDSymbol]}:${this.getModelTitle()}/${key}/asset`,
+                );
                 if (embedded) {
                   if (/^[a-zA-Z0-9\-_]{22}$/.test(embedded.assetID)) {
                     this[resourceSymbol][key] = new DMAssetResource(embedded, environment);
@@ -360,9 +361,11 @@ class EntryResource extends LiteEntryResource {
 
                   return new PublicAssetResource(asset, environment);
                 } else {
-                  const embeds = this[resourceSymbol].embeddedArray(`${this[shortIDSymbol]}:${this.getModelTitle()}/${key}/asset`);
+                  const embeds = this[resourceSymbol].embeddedArray(
+                    `${this[shortIDSymbol]}:${this.getModelTitle()}/${key}/asset`,
+                  );
                   if (embeds) {
-                    const embed = embeds.find(embed => embed.assetID === asset);
+                    const embed = embeds.find((embed) => embed.assetID === asset);
                     if (embed) {
                       if (/^[a-zA-Z0-9\-_]{22}$/.test(embed.assetID)) {
                         return new DMAssetResource(embed, environment);
@@ -494,7 +497,7 @@ class EntryResource extends LiteEntryResource {
       return undefined;
     }
 
-    const results = assets.map(asset => negotiater(asset, false, false, null, locale));
+    const results = assets.map((asset) => negotiater(asset, false, false, null, locale));
 
     if (!isAssets) {
       return results[0];
@@ -521,7 +524,7 @@ class EntryResource extends LiteEntryResource {
       return undefined;
     }
 
-    const results = assets.map(asset => negotiater(asset, true, true, size, locale));
+    const results = assets.map((asset) => negotiater(asset, true, true, size, locale));
 
     if (!isAssets) {
       return results[0];
@@ -548,7 +551,7 @@ class EntryResource extends LiteEntryResource {
       return undefined;
     }
 
-    const results = assets.map(asset => negotiater(asset, true, false, size, locale));
+    const results = assets.map((asset) => negotiater(asset, true, false, size, locale));
 
     if (!isAssets) {
       return results[0];
@@ -568,7 +571,7 @@ class EntryResource extends LiteEntryResource {
       return 1;
     }
 
-    return Number.parseInt(link.substr(link.indexOf('_levels') + '_levels'.length + 1))
+    return Number.parseInt(link.substr(link.indexOf('_levels') + '_levels'.length + 1));
   }
 
   /**
@@ -609,7 +612,7 @@ class EntryResource extends LiteEntryResource {
     }
 
     if (['entries', 'assets'].indexOf(this.getFieldType(field) as string) !== -1) {
-      return links.map(l => l.title);
+      return links.map((l) => l.title);
     }
 
     return links[0].title;
@@ -624,18 +627,18 @@ class EntryResource extends LiteEntryResource {
   newHistory(options?: filterOptions): Promise<any> {
     return Promise.resolve()
       .then(() => this.newRequest().follow('ec:entry/dm-entryHistory'))
-      .then(request => {
+      .then((request) => {
         if (options) {
           request.withTemplateParameters(optionsToQuery(options));
         }
 
-        return getHistory(this[environmentSymbol], request)
+        return getHistory(this[environmentSymbol], request);
       });
   }
 
   /**
    * Creates a new HistoryEventsResource with past events.
-   * 
+   *
    * @param {filterOptions?} options The filter options.
    * @returns {Promise<HistoryEventsResource} Event list of past events.
    */
@@ -647,7 +650,7 @@ class EntryResource extends LiteEntryResource {
           request.withTemplateParameters(optionsToQuery(options));
         }
 
-        return get(this[environmentSymbol], request)
+        return get(this[environmentSymbol], request);
       })
       .then(([res]) => new HistoryEvents(res, this[environmentSymbol]));
   }
@@ -669,14 +672,12 @@ class EntryResource extends LiteEntryResource {
    *   otherwise.
    */
   validateField(field: string): Promise<boolean> {
-    return Promise.resolve()
-      .then(() => {
-        const schema = this[schemaSymbol].allOf[1].properties[field];
-        return validator.validate(this[field], schema)
-          .catch((e) => {
-            throw new Problem(convertValidationError(e), locale);
-          });
+    return Promise.resolve().then(() => {
+      const schema = this[schemaSymbol].allOf[1].properties[field];
+      return validator.validate(this[field], schema).catch((e) => {
+        throw new Problem(convertValidationError(e), locale);
       });
+    });
   }
 
   toOriginal(): any {
@@ -734,14 +735,14 @@ class EntryResource extends LiteEntryResource {
           break;
         case 'account':
           if (typeof val === 'object') {
-            out[key] = val.accountID
+            out[key] = val.accountID;
           } else {
             out[key] = val;
           }
           break;
         case 'role':
           if (typeof val === 'object') {
-            out[key] = val.roleID
+            out[key] = val.roleID;
           } else {
             out[key] = val;
           }
@@ -755,12 +756,12 @@ class EntryResource extends LiteEntryResource {
   }
 
   /**
-  * Reloads this {@link EntryResource}. Can be used when this resource was loaded from {@link
-  * EntryList} from _embedded.
-  *
-  * @param {number} levels if you want to reload this EntryResource with levels 
-  * @returns {Promise<Resource>} this resource
-  */
+   * Reloads this {@link EntryResource}. Can be used when this resource was loaded from {@link
+   * EntryList} from _embedded.
+   *
+   * @param {number} levels if you want to reload this EntryResource with levels
+   * @returns {Promise<Resource>} this resource
+   */
   resolve(levels?: number): Promise<EntryResource> {
     return Promise.resolve()
       .then(() => {
@@ -772,12 +773,14 @@ class EntryResource extends LiteEntryResource {
           throw new Error('levels must be between 1 and 5');
         }
 
-        return getUrl(this[environmentSymbol], this.newRequest().follow('self'))
-          .then((url) => {
-            const queryStrings = qs.parse(url.substr(url.indexOf('?') + 1));
-            Object.assign(queryStrings, { _levels: levels });
-            return get(this[environmentSymbol], traverson.from(`${url.substr(0, url.indexOf('?') + 1)}${qs.stringify(queryStrings)}`).jsonHal())
-          });
+        return getUrl(this[environmentSymbol], this.newRequest().follow('self')).then((url) => {
+          const queryStrings = qs.parse(url.substr(url.indexOf('?') + 1));
+          Object.assign(queryStrings, { _levels: levels });
+          return get(
+            this[environmentSymbol],
+            traverson.from(`${url.substr(0, url.indexOf('?') + 1)}${qs.stringify(queryStrings)}`).jsonHal(),
+          );
+        });
       })
       .then(([res, traversal]) => createEntry(res, this[environmentSymbol], traversal));
   }
@@ -795,10 +798,10 @@ export default EntryResource;
  * @param {environment} environment the environment of this resource
  * @param {object?} traversal traversal for continuing
  * @returns {Promise<EntryResource>} {@link Promise} resolving to the newly created {@link
-  *   EntryResource}
+ *   EntryResource}
  */
 export function createEntry(resource: any, environment: environment, traversal?: any): Promise<EntryResource> {
   return Promise.resolve()
     .then(() => loadSchemaForResource(resource))
-    .then(schema => new EntryResource(resource, environment, schema, traversal));
+    .then((schema) => new EntryResource(resource, environment, schema, traversal));
 }

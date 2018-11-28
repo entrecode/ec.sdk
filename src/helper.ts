@@ -20,8 +20,7 @@ const historyMap = new Map();
 
 let EventSource: boolean | any = false;
 
-validator.setLoggingFunction(() => {
-});
+validator.setLoggingFunction(() => {});
 
 /**
  * Creates a callback which wraps a traverson repsonse from `get`, `post`, `put`, `delete` and
@@ -41,7 +40,8 @@ function jsonHandler(callback) {
     }
 
     if (res.statusCode >= 200 && res.statusCode < 300) {
-      if (res.statusCode === 204 || res.statusCode === 202) { // no content or accepted
+      if (res.statusCode === 204 || res.statusCode === 202) {
+        // no content or accepted
         return callback(null, []);
       }
 
@@ -62,7 +62,9 @@ function jsonHandler(callback) {
             code = '000';
             break;
         }
-        return callback(new Problem(newError(code, `ec.sdk: empty body on unsuccessful status: ${res.statusCode}`), locale));
+        return callback(
+          new Problem(newError(code, `ec.sdk: empty body on unsuccessful status: ${res.statusCode}`), locale),
+        );
       }
 
       return callback(new Problem(JSON.parse(res.body), locale));
@@ -116,8 +118,11 @@ function traversonWrapper(func: string, environment: environment, t: any, body?:
   return new Promise((resolve, reject) => {
     const cb = (err, res) => {
       if (err) {
-        if (TokenStoreFactory(environment) && err instanceof Problem &&
-          (err.code % 1000 === 401 || err.code % 1000 === 402)) {
+        if (
+          TokenStoreFactory(environment) &&
+          err instanceof Problem &&
+          (err.code % 1000 === 401 || err.code % 1000 === 402)
+        ) {
           TokenStoreFactory(environment).deleteToken();
           EventEmitterFactory(environment).emit('logout', err);
         }
@@ -151,7 +156,9 @@ function traversonWrapper(func: string, environment: environment, t: any, body?:
     if (store.hasUserAgent()) {
       t.addRequestOptions({ headers: { 'X-User-Agent': `${store.getUserAgent()} ec.sdk/${packageJson.version}` } });
     } else if (secondStore && secondStore.hasUserAgent()) {
-      t.addRequestOptions({ headers: { 'X-User-Agent': `${secondStore.getUserAgent()} ec.sdk/${packageJson.version}` } });
+      t.addRequestOptions({
+        headers: { 'X-User-Agent': `${secondStore.getUserAgent()} ec.sdk/${packageJson.version}` },
+      });
     } else {
       t.addRequestOptions({ headers: { 'X-User-Agent': `ec.sdk/${packageJson.version}` } });
     }
@@ -173,10 +180,10 @@ function traversonWrapper(func: string, environment: environment, t: any, body?:
 
 /**
  * Wraps a {@link
-  * https://github.com/basti1302/traverson traverson} get request with a {@link Promise}
+ * https://github.com/basti1302/traverson traverson} get request with a {@link Promise}
  * Parameter t must be a {@link
-  * https://github.com/basti1302/traverson/blob/master/api.markdown#request-builder
-     * traverson request builder}.
+ * https://github.com/basti1302/traverson/blob/master/api.markdown#request-builder
+ * traverson request builder}.
  * Only http status codes >200 <=299 will resolve, all others will
  * reject.
  *
@@ -192,10 +199,10 @@ export function get(environment: environment, t: any): Promise<any> {
 
 /**
  * Wraps a {@link
-  * https://github.com/basti1302/traverson traverson} get request with a {@link Promise}
+ * https://github.com/basti1302/traverson traverson} get request with a {@link Promise}
  * Parameter t must be a {@link
-  * https://github.com/basti1302/traverson/blob/master/api.markdown#request-builder
-     * traverson request builder}.
+ * https://github.com/basti1302/traverson/blob/master/api.markdown#request-builder
+ * traverson request builder}.
  * Only http status codes >200 <=299 will resolve, all others will
  * reject.
  *
@@ -206,16 +213,15 @@ export function get(environment: environment, t: any): Promise<any> {
  * @returns {Promise} resolves to undefined.
  */
 export function getEmpty(environment: environment, t: any): Promise<void> {
-  return traversonWrapper('getEmpty', environment, t)
-    .then(() => Promise.resolve());
+  return traversonWrapper('getEmpty', environment, t).then(() => Promise.resolve());
 }
 
 /**
  * Wraps a {@link
-  * https://github.com/basti1302/traverson traverson} get request with a {@link Promise}
+ * https://github.com/basti1302/traverson traverson} get request with a {@link Promise}
  * Parameter t must be a {@link
-  * https://github.com/basti1302/traverson/blob/master/api.markdown#request-builder
-     * traverson request builder}.
+ * https://github.com/basti1302/traverson/blob/master/api.markdown#request-builder
+ * traverson request builder}.
  * Only http status codes >200 <=299 will resolve, all others will
  * reject.
  *
@@ -227,16 +233,15 @@ export function getEmpty(environment: environment, t: any): Promise<void> {
  * @returns {Promise} resolves to undefined.
  */
 export function postEmpty(environment: environment, t: any, body: any): Promise<void> {
-  return traversonWrapper('postEmpty', environment, t, body)
-    .then(() => Promise.resolve());
+  return traversonWrapper('postEmpty', environment, t, body).then(() => Promise.resolve());
 }
 
 /**
  * Wraps a {@link
-  * https://github.com/basti1302/traverson traverson} getUrl request with a {@link Promise}
+ * https://github.com/basti1302/traverson traverson} getUrl request with a {@link Promise}
  * Parameter t must be a {@link
-  * https://github.com/basti1302/traverson/blob/master/api.markdown#request-builder
-     * traverson request builder}.
+ * https://github.com/basti1302/traverson/blob/master/api.markdown#request-builder
+ * traverson request builder}.
  *
  * @access private
  *
@@ -254,50 +259,49 @@ export function enableHistoryEvents(eventSourceLib) {
 
 export function getHistory(environment: environment, t: any): Promise<EventSource> {
   if (!EventSource) {
-    throw new Error('EventSource not enabled. Please inject \'eventsource/lib/eventsource-polyfill\'');
+    throw new Error("EventSource not enabled. Please inject 'eventsource/lib/eventsource-polyfill'");
   }
-  return getUrl(environment, t)
-    .then((url) => {
-      const store = TokenStoreFactory(environment);
-      let secondStore: TokenStore | undefined;
-      if (!store.hasToken()) {
-        // when no token is present see if we have a public environment (with shortID)
-        // if so look in second store
-        const result = /^(live|stage|nightly|develop|test)[A-Fa-f0-9]{8}$/.exec(environment);
-        if (result) {
-          secondStore = TokenStoreFactory(<environment>result[1]);
-        }
+  return getUrl(environment, t).then((url) => {
+    const store = TokenStoreFactory(environment);
+    let secondStore: TokenStore | undefined;
+    if (!store.hasToken()) {
+      // when no token is present see if we have a public environment (with shortID)
+      // if so look in second store
+      const result = /^(live|stage|nightly|develop|test)[A-Fa-f0-9]{8}$/.exec(environment);
+      if (result) {
+        secondStore = TokenStoreFactory(<environment>result[1]);
       }
+    }
 
-      let token;
-      if (store.hasToken()) {
-        token = store.getToken();
-      } else if (secondStore && secondStore.hasToken()) {
-        token = secondStore.getToken();
+    let token;
+    if (store.hasToken()) {
+      token = store.getToken();
+    } else if (secondStore && secondStore.hasToken()) {
+      token = secondStore.getToken();
+    }
+
+    if (token) {
+      if (url.indexOf('?') === -1) {
+        url = `${url}?_token=${token}`;
+      } else {
+        url = `${url}&_token=${token}`;
       }
+    }
 
-      if (token) {
-        if (url.indexOf('?') === -1) {
-          url = `${url}?_token=${token}`;
-        } else {
-          url = `${url}&_token=${token}`;
-        }
-      }
+    if (!historyMap.has(url)) {
+      historyMap.set(url, new EventSource(url));
+    }
 
-      if (!historyMap.has(url)) {
-        historyMap.set(url, new EventSource(url));
-      }
-
-      return historyMap.get(url);
-    });
+    return historyMap.get(url);
+  });
 }
 
 /**
  * Wraps a {@link
-  * https://github.com/basti1302/traverson traverson} post request with a {@link Promise}
+ * https://github.com/basti1302/traverson traverson} post request with a {@link Promise}
  * Parameter t must be a {@link
-  * https://github.com/basti1302/traverson/blob/master/api.markdown#request-builder
-     * traverson request builder}.
+ * https://github.com/basti1302/traverson/blob/master/api.markdown#request-builder
+ * traverson request builder}.
  * Only http status codes >200 <=299 will resolve, all others will
  * reject.
  *
@@ -314,10 +318,10 @@ export function post(environment: environment, t: any, body?: any): Promise<any>
 
 /**
  * Wraps a {@link
-  * https://github.com/basti1302/traverson traverson} put request with a {@link Promise}
+ * https://github.com/basti1302/traverson traverson} put request with a {@link Promise}
  * Parameter t must be a {@link
-  * https://github.com/basti1302/traverson/blob/master/api.markdown#request-builder
-     * traverson request builder}.
+ * https://github.com/basti1302/traverson/blob/master/api.markdown#request-builder
+ * traverson request builder}.
  * Only http status codes >200 <=299 will resolve, all others will
  * reject.
  *
@@ -334,10 +338,10 @@ export function put(environment: environment, t: any, body: any): Promise<any> {
 
 /**
  * Wraps a {@link
-  * https://github.com/basti1302/traverson traverson} delete request with a {@link Promise}
+ * https://github.com/basti1302/traverson traverson} delete request with a {@link Promise}
  * Parameter t must be a {@link
-  * https://github.com/basti1302/traverson/blob/master/api.markdown#request-builder
-     * traverson request builder}.
+ * https://github.com/basti1302/traverson/blob/master/api.markdown#request-builder
+ * traverson request builder}.
  * Only http status codes >200 <=299 will resolve, all others will
  * reject.
  *
@@ -364,7 +368,7 @@ export function superagentFormPost(environment: environment, url: string, form: 
   return superagent['post'](url)
     .type('form')
     .send(form)
-    .then(res => Promise.resolve(res.body ? res.body : {}))
+    .then((res) => Promise.resolve(res.body ? res.body : {}))
     .catch((err) => {
       let problem;
       if (err.status && err.response && 'body' in err.response) {
@@ -395,7 +399,7 @@ export function superagentGet(url: string, headers?: any, environment?: environm
   addHeaderToSuperagent(request, environment as environment);
 
   return request
-    .then(res => res.body ? res.body : {})
+    .then((res) => (res.body ? res.body : {}))
     .catch((err) => {
       let problem;
       if (err.status && err.response && 'body' in err.response) {
@@ -437,11 +441,12 @@ export function superagentPost(environment: environment, request: any): Promise<
   request.set('Accept', 'application/hal+json');
 
   addHeaderToSuperagent(request, environment);
-  return request.then(res => Promise.resolve(res.body ? res.body : {}))
+  return request
+    .then((res) => Promise.resolve(res.body ? res.body : {}))
     .catch((err) => {
       let problem;
       if (err.status && err.response && 'body' in err.response) {
-        problem = new Problem(err.response.body), locale;
+        (problem = new Problem(err.response.body)), locale;
       }
       EventEmitterFactory(environment).emit('error', problem || err);
       throw problem || err;
@@ -502,7 +507,7 @@ const modifier = {
 
 /**
  * Translates {@link filter} objects into querystring objects used by {@link
-  * https://github.com/basti1302/traverson traverson}.
+ * https://github.com/basti1302/traverson traverson}.
  *
  * @access private
  *
@@ -522,7 +527,8 @@ export function optionsToQuery(options: filterOptions, templateURL?: string, enc
     Object.keys(options).forEach((key) => {
       const value = options[key];
       if (value !== undefined) {
-        if (['size', 'page'].indexOf(key) !== -1) { // TODO was array.includes
+        if (['size', 'page'].indexOf(key) !== -1) {
+          // TODO was array.includes
           if (!Number.isInteger(<number>value)) {
             throw new Error(`${key} must be integer, is ${typeof value}: ${value}`);
           }
@@ -546,7 +552,7 @@ export function optionsToQuery(options: filterOptions, templateURL?: string, enc
           if (!Array.isArray(value)) {
             throw new Error('_fields must be an array');
           }
-          const invalid = (<Array<string>>value).filter(val => typeof val !== 'string');
+          const invalid = (<Array<string>>value).filter((val) => typeof val !== 'string');
           if (invalid.length > 0) {
             throw new Error('_fields array must contain only strings');
           }
@@ -565,12 +571,14 @@ export function optionsToQuery(options: filterOptions, templateURL?: string, enc
               case 'from':
               case 'to':
                 if (Array.isArray(value[searchKey])) {
-                  throw new Error(`${key}.${searchKey} must not be of type Array`)
+                  throw new Error(`${key}.${searchKey} must not be of type Array`);
                 }
                 if (value[searchKey] instanceof Date) {
                   out[`${key}${modifier[searchKey]}`] = value[searchKey].toISOString();
                 } else if (typeof value[searchKey] === 'string') {
-                  out[`${key}${modifier[searchKey]}`] = encode ? encodeURIComponent(value[searchKey]) : value[searchKey];
+                  out[`${key}${modifier[searchKey]}`] = encode
+                    ? encodeURIComponent(value[searchKey])
+                    : value[searchKey];
                 } else {
                   out[`${key}${modifier[searchKey]}`] = value[searchKey];
                 }
@@ -584,7 +592,7 @@ export function optionsToQuery(options: filterOptions, templateURL?: string, enc
                 if (invalid.length > 0) {
                   throw new Error(`${key}.${searchKey} array must contain only strings or numbers`);
                 }
-                const array = value[searchKey].map(value => encode ? encodeURIComponent(value) : value);
+                const array = value[searchKey].map((value) => (encode ? encodeURIComponent(value) : value));
                 out[key] = array.join(modifier[searchKey]);
                 break;
               default:
@@ -600,11 +608,11 @@ export function optionsToQuery(options: filterOptions, templateURL?: string, enc
 
   if (templateURL) {
     let missings: string[] = [];
-    const matchRes = templateURL.match(/{[^}]*}/g)
+    const matchRes = templateURL.match(/{[^}]*}/g);
     if (matchRes) {
       const results = matchRes
-        .map(result => {
-          const res = /^{[?&]([^}]+)}$/.exec(result)
+        .map((result) => {
+          const res = /^{[?&]([^}]+)}$/.exec(result);
           if (res) {
             return res[1].split(',');
           }
@@ -612,7 +620,7 @@ export function optionsToQuery(options: filterOptions, templateURL?: string, enc
         })
         .reduce((a, b) => a.concat(b), []);
 
-      missings = Object.keys(out).filter(k => results.indexOf(k) === -1);
+      missings = Object.keys(out).filter((k) => results.indexOf(k) === -1);
     }
 
     if (missings.length > 0) {
@@ -620,12 +628,25 @@ export function optionsToQuery(options: filterOptions, templateURL?: string, enc
       err.subErrors = missings.map((missing) => {
         let error;
         if (missing.indexOf('~') !== -1) {
-          error = newError(212, `Cannot apply 'search' filter to '${missing.substr(0, missing.indexOf('~'))}'`, missing.substr(0, missing.indexOf('~')));
+          error = newError(
+            212,
+            `Cannot apply 'search' filter to '${missing.substr(0, missing.indexOf('~'))}'`,
+            missing.substr(0, missing.indexOf('~')),
+          );
         } else if (missing.indexOf('From') !== -1) {
-          error = newError(212, `Cannot apply 'from' filter to '${missing.substr(0, missing.indexOf('From'))}'`, missing.substr(0, missing.indexOf('From')));
+          error = newError(
+            212,
+            `Cannot apply 'from' filter to '${missing.substr(0, missing.indexOf('From'))}'`,
+            missing.substr(0, missing.indexOf('From')),
+          );
         } else if (missing.indexOf('To') !== -1) {
-          error = newError(212, `Cannot apply 'to' filter to '${missing.substr(0, missing.indexOf('To'))}'`, missing.substr(0, missing.indexOf('To')));
-        } else if (['page', 'size', 'sort'].indexOf(missing) !== -1) { // TODO was array.includes
+          error = newError(
+            212,
+            `Cannot apply 'to' filter to '${missing.substr(0, missing.indexOf('To'))}'`,
+            missing.substr(0, missing.indexOf('To')),
+          );
+        } else if (['page', 'size', 'sort'].indexOf(missing) !== -1) {
+          // TODO was array.includes
           error = newError(212, `Cannot apply ${missing} option`, missing);
         } else {
           error = newError(212, `Cannot apply 'exact' filter to '${missing}'`, missing);
@@ -652,34 +673,44 @@ export function optionsToQuery(options: filterOptions, templateURL?: string, enc
  * @param {string?} requestedLocale - locale to request.
  * @returns {string} url for the requested asset.
  */
-export function fileNegotiate(asset: AssetResource | DeletedAssetResource | PublicAssetResource, image: boolean, thumb: boolean, size: number, requestedLocale?: string): string {
+export function fileNegotiate(
+  asset: AssetResource | DeletedAssetResource | PublicAssetResource,
+  image: boolean,
+  thumb: boolean,
+  size: number,
+  requestedLocale?: string,
+): string {
   let f = JSON.parse(JSON.stringify(asset.files));
 
   if (requestedLocale) {
     const supportedLocales = new localeLib['Locales'](
-      Array.from(new Set(f.map(e => e.locale))) // unique
-        .filter(a => !!a));// remove falsy values
-    let bestLocale = (new localeLib['Locales'](requestedLocale)).best(supportedLocales).toString();
+      Array.from(new Set(f.map((e) => e.locale))) // unique
+        .filter((a) => !!a),
+    ); // remove falsy values
+    let bestLocale = new localeLib['Locales'](requestedLocale).best(supportedLocales).toString();
     const res = /^([^.]+)/.exec(bestLocale);
     if (res) {
       bestLocale = res[1]; // remove charset
     }
-    const filesWithLocale = f.filter(file => file.locale === bestLocale);
+    const filesWithLocale = f.filter((file) => file.locale === bestLocale);
     if (filesWithLocale && filesWithLocale.length > 0) {
       f = filesWithLocale;
     }
   }
-  if (!image && !thumb && asset.type !== 'image') { // for getFileUrl pic fist file and return - not for images
+  if (!image && !thumb && asset.type !== 'image') {
+    // for getFileUrl pic fist file and return - not for images
     return f[0].url;
   }
 
   const first = f[0];
   // remove image files we have no resolution for (image/svg+xml; fix for CMS-1091)
-  f = f.filter(file => file.resolution);
-  if (f.length === 0) { // if no file is left pick first of original data
+  f = f.filter((file) => file.resolution);
+  if (f.length === 0) {
+    // if no file is left pick first of original data
     return first.url;
   }
-  f.sort((left, right) => { // sort by size descending
+  f.sort((left, right) => {
+    // sort by size descending
     const leftMax = Math.max(left.resolution.height, left.resolution.width);
     const rightMax = Math.max(right.resolution.height, right.resolution.width);
     if (leftMax < rightMax) {
@@ -703,12 +734,13 @@ export function fileNegotiate(asset: AssetResource | DeletedAssetResource | Publ
   if (size) {
     // remove all image resolutions that are too small
     imageFiles = imageFiles
-      .filter(file => file.resolution.height >= size || file.resolution.width >= size)
+      .filter((file) => file.resolution.height >= size || file.resolution.width >= size)
       // choose smallest image of all that are greater than size parameter
       .slice(-1);
   }
 
-  if (imageFiles.length > 0) { // if all is good, we have an image now
+  if (imageFiles.length > 0) {
+    // if all is good, we have an image now
     return imageFiles[0].url;
   }
   // if the requested size is larger than the original image, we take the largest possible one
@@ -723,19 +755,17 @@ export function fileNegotiate(asset: AssetResource | DeletedAssetResource | Publ
  * @returns {any} the loaded schema
  */
 export function getSchema(link: string): any {
-  return Promise.resolve()
-    .then(() => {
-      const schema = validator.getSchema(link);
-      if (schema) {
-        return schema;
-      }
+  return Promise.resolve().then(() => {
+    const schema = validator.getSchema(link);
+    if (schema) {
+      return schema;
+    }
 
-      return superagentGet(link)
-        .then((loadedSchema) => {
-          validator['preload'](link, loadedSchema);
-          return loadedSchema;
-        });
+    return superagentGet(link).then((loadedSchema) => {
+      validator['preload'](link, loadedSchema);
+      return loadedSchema;
     });
+  });
 }
 
 export let locale = 'en';

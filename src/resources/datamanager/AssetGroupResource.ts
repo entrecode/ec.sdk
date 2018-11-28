@@ -7,10 +7,10 @@ import DMAssetResource from '../publicAPI/DMAssetResource';
 const relationsSymbol: any = Symbol.for('relations');
 
 interface AssetGroupResource {
-  assetGroupID: string,
-  policies: any,
-  public: boolean,
-  settings: any,
+  assetGroupID: string;
+  policies: any;
+  public: boolean;
+  settings: any;
 }
 
 /**

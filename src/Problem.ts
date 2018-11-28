@@ -15,15 +15,15 @@ interface Problem extends Error {
 
 /**
  * Class representing Errors sent by all entrecode APIs. Complies to {@link
-  * https://tools.ietf.org/html/draft-nottingham-http-problem-07 Problem Details for HTTP APIs}.
+ * https://tools.ietf.org/html/draft-nottingham-http-problem-07 Problem Details for HTTP APIs}.
  * Problems also comply to {@link https://tools.ietf.org/html/draft-kelly-json-hal-08 HAL
-  * resources} but this class won't include any special hal implementation (like getEmbedded or
+ * resources} but this class won't include any special hal implementation (like getEmbedded or
  * getLinks).
  */
 class Problem extends Error {
   /**
    * Creates a new {@link Problem} with the given error object. May contain embedded {@link
-    * Problem}s.
+   * Problem}s.
    *
    * @param {object} error the error received from any entrecode API.
    */
@@ -52,9 +52,9 @@ class Problem extends Error {
       if (!Array.isArray(subErrors)) {
         subErrors = [subErrors];
       }
-      this.subErrors = subErrors.map(e => new Problem(e, locale));
+      this.subErrors = subErrors.map((e) => new Problem(e, locale));
     } else if ('subErrors' in error) {
-      this.subErrors = error.subErrors.map(e => new Problem(e, locale));
+      this.subErrors = error.subErrors.map((e) => new Problem(e, locale));
     } else {
       this.subErrors = [];
     }
@@ -66,7 +66,7 @@ class Problem extends Error {
    * @returns {array<Problem>} array of all problems.
    */
   public getAsArray(): Array<Problem> {
-    return [this, ...this.subErrors].filter(x => !!x);
+    return [this, ...this.subErrors].filter((x) => !!x);
   }
 
   /**
@@ -118,7 +118,10 @@ ${this.detail}${this.verbose ? ` - ${this.verbose}` : ''}${this.requestID ? ` ($
   private sub(): string {
     let out = '\nSubErrors:\n';
     this.subErrors.forEach((e) => {
-      out += `  ${e.short().split('\n').join('  \n')}\n`;
+      out += `  ${e
+        .short()
+        .split('\n')
+        .join('  \n')}\n`;
     });
     return out;
   }

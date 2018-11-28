@@ -52,13 +52,14 @@ export default class Session extends Core {
           throw new Error('permission must be defined');
         }
 
-        if (this[meSymbol] && new Date().getTime() - this[meLoadedTimeSymbol] <= 300000) { // 5 Minutes
+        if (this[meSymbol] && new Date().getTime() - this[meLoadedTimeSymbol] <= 300000) {
+          // 5 Minutes
           return undefined;
         }
 
         if (!this[requestCacheSymbol]) {
           this[requestCacheSymbol] = this.follow('ec:account')
-            .then(request => get(this[environmentSymbol], request))
+            .then((request) => get(this[environmentSymbol], request))
             .then(([res, traversal]) => {
               this[requestCacheSymbol] = undefined;
               this[meSymbol] = new AccountResource(res, this[environmentSymbol], traversal);
@@ -124,14 +125,13 @@ export default class Session extends Core {
           throw new Error('clientID must be set with Session#setClientID(clientID: string)');
         }
 
-        return this.follow('ec:auth/logout')
-          .then((request) => {
-            request.withTemplateParameters({
-              clientID: this[tokenStoreSymbol].getClientID(),
-              token: this[tokenStoreSymbol].getToken(),
-            });
-            return post(this[environmentSymbol], request);
+        return this.follow('ec:auth/logout').then((request) => {
+          request.withTemplateParameters({
+            clientID: this[tokenStoreSymbol].getClientID(),
+            token: this[tokenStoreSymbol].getToken(),
           });
+          return post(this[environmentSymbol], request);
+        });
       })
       .then(() => {
         this[eventsSymbol].emit('logout');

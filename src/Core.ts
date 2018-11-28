@@ -24,8 +24,7 @@ const cookieModifierSymbol: any = Symbol.for('cookieModifier');
 
 traverson['registerMediaType'](HalAdapter.mediaType, HalAdapter);
 
-validator.setLoggingFunction(() => {
-});
+validator.setLoggingFunction(() => {});
 
 /**
  * Each API connector Class inherits directly from Core class. You cannot instantiate Core
@@ -63,7 +62,7 @@ export default class Core {
     } else {
       environment = envOrOptions.environment || 'live';
       if (envOrOptions.cookieModifier) {
-        cookieModifier += envOrOptions.cookieModifier
+        cookieModifier += envOrOptions.cookieModifier;
       }
       if (envOrOptions.noCookie) {
         cookieModifier += shortID.generate();
@@ -89,11 +88,11 @@ export default class Core {
   /**
    * Static function to globally enable history events. If you want to use history events please
    * provide 'eventsource/lib/eventsource-polyfill' within your project.
-   * 
+   *
    * @example
    * import { PublicAPI } from 'ec.sdk';
    * import * as EventSource from 'eventsource/lib/eventsource-polyfill';
-   * 
+   *
    * PublicAPI.enableHistoryEvents(EventSource);
    * …
    *
@@ -114,7 +113,7 @@ export default class Core {
       out[rel] = {
         id: this[relationsSymbol][rel].id,
         createable: !!this[relationsSymbol][rel].createRelation,
-      }
+      };
     });
     return out;
   }
@@ -128,24 +127,22 @@ export default class Core {
    * @returns {Promise<any>} Promise resolving to traverson request builder
    */
   follow(link: string): Promise<any> {
-    return Promise.resolve()
-      .then(() => {
-        if (this[resourceSymbol] && this[traversalSymbol] && this.getLink(link) !== null) {
-          return this.newRequest().follow(link);
+    return Promise.resolve().then(() => {
+      if (this[resourceSymbol] && this[traversalSymbol] && this.getLink(link) !== null) {
+        return this.newRequest().follow(link);
+      }
+
+      return get(this[environmentSymbol], this.newRequest().follow('self')).then(([res, traversal]) => {
+        this[resourceSymbol] = halfred.parse(res);
+        this[traversalSymbol] = traversal;
+
+        if (this[resourceSymbol].link(link) === null) {
+          throw new Error(`Could not follow ${link}. Link not present in root response.`);
         }
 
-        return get(this[environmentSymbol], this.newRequest().follow('self'))
-          .then(([res, traversal]) => {
-            this[resourceSymbol] = halfred.parse(res);
-            this[traversalSymbol] = traversal;
-
-            if (this[resourceSymbol].link(link) === null) {
-              throw new Error(`Could not follow ${link}. Link not present in root response.`);
-            }
-
-            return this.newRequest().follow(link);
-          });
+        return this.newRequest().follow(link);
       });
+    });
   }
 
   /**
@@ -170,30 +167,28 @@ export default class Core {
   }
 
   link(link: string): Promise<any> {
-    return Promise.resolve()
-      .then(() => {
-        if (this[resourceSymbol] && this[traversalSymbol] && this[resourceSymbol].link(link) !== null) {
-          return this[resourceSymbol].link(link);
+    return Promise.resolve().then(() => {
+      if (this[resourceSymbol] && this[traversalSymbol] && this[resourceSymbol].link(link) !== null) {
+        return this[resourceSymbol].link(link);
+      }
+
+      return get(this[environmentSymbol], this.newRequest()).then(([res, traversal]) => {
+        this[resourceSymbol] = halfred.parse(res);
+        this[traversalSymbol] = traversal;
+
+        if (this[resourceSymbol].link(link) === null) {
+          throw new Error(`Could not get ${link}. Link not present in root response.`);
         }
 
-        return get(this[environmentSymbol], this.newRequest())
-          .then(([res, traversal]) => {
-            this[resourceSymbol] = halfred.parse(res);
-            this[traversalSymbol] = traversal;
-
-            if (this[resourceSymbol].link(link) === null) {
-              throw new Error(`Could not get ${link}. Link not present in root response.`);
-            }
-
-            return this[resourceSymbol].link(link);
-          });
+        return this[resourceSymbol].link(link);
       });
+    });
   }
 
   /**
    * Creates a new {@link
-    * https://github.com/basti1302/traverson/blob/master/api.markdown#request-builder
-     * traverson request builder}
+   * https://github.com/basti1302/traverson/blob/master/api.markdown#request-builder
+   * traverson request builder}
    *  which can be used for a new request to the API.
    *
    * @access private
@@ -246,7 +241,8 @@ export default class Core {
           schemas = <Array<string>>[schemas];
         }
 
-        return (<Array<string>>schemas).map(schema => getSchema(schema))
+        return (<Array<string>>schemas)
+          .map((schema) => getSchema(schema))
           .reduce((a, b) => a.then(b), Promise.resolve());
       })
       .then(() => Promise.resolve());
@@ -325,7 +321,7 @@ export default class Core {
 
   /**
    * Get a list of all avaliable filter options for a given relation.
-   * 
+   *
    * @param {string} relation The shortened relation name
    * @returns {Promise<Array<string>>} resolves to an array of avaliable filter options (query string notation).
    */
@@ -336,7 +332,7 @@ export default class Core {
           throw new Error('relation must be defined');
         }
         if (!this[relationsSymbol][relation]) {
-          throw new Error(`unknown relation, use one of ${Object.keys(this[relationsSymbol]).join(', ')}`)
+          throw new Error(`unknown relation, use one of ${Object.keys(this[relationsSymbol]).join(', ')}`);
         }
         return this.newRequest();
       })
@@ -345,14 +341,15 @@ export default class Core {
         let link = halfred.parse(res).link(this[relationsSymbol][relation].relation);
         const matchResults = link.href.match(/{[^}]*}/g);
         if (matchResults) {
-          return matchResults.map(result => {
-            const res = /^{[?&]([^}]+)}$/.exec(result);
-            if (res) {
-              return res[1].split(',');
-            }
-            return [];
-          })
-            .reduce((a, b) => a.concat(b), [])
+          return matchResults
+            .map((result) => {
+              const res = /^{[?&]([^}]+)}$/.exec(result);
+              if (res) {
+                return res[1].split(',');
+              }
+              return [];
+            })
+            .reduce((a, b) => a.concat(b), []);
         }
       });
   }
@@ -375,16 +372,18 @@ export default class Core {
           throw new Error('relation must be defined');
         }
         if (!this[relationsSymbol][relation]) {
-          throw new Error(`unknown relation, use one of ${Object.keys(this[relationsSymbol]).join(', ')}`)
+          throw new Error(`unknown relation, use one of ${Object.keys(this[relationsSymbol]).join(', ')}`);
         }
         if (!resourceID) {
           throw new Error('resourceID must be defined');
         }
 
-        return this.follow(this[relationsSymbol][relation].relation)
+        return this.follow(this[relationsSymbol][relation].relation);
       })
       .then((request) => {
-        const params = Object.assign({}, additionalTemplateParams, { [this[relationsSymbol][relation].id]: resourceID });
+        const params = Object.assign({}, additionalTemplateParams, {
+          [this[relationsSymbol][relation].id]: resourceID,
+        });
         request.withTemplateParameters(params);
         return get(this[environmentSymbol], request);
       })
@@ -393,7 +392,7 @@ export default class Core {
           return this[relationsSymbol][relation].resourceFunction(res, this[environmentSymbol], traversal);
         }
 
-        return new this[relationsSymbol][relation].ResourceClass(res, this[environmentSymbol], traversal)
+        return new this[relationsSymbol][relation].ResourceClass(res, this[environmentSymbol], traversal);
       });
   }
 
@@ -422,13 +421,15 @@ export default class Core {
           throw new Error('relation must be defined');
         }
         if (!this[relationsSymbol][relation]) {
-          throw new Error(`unknown relation, use one of ${Object.keys(this[relationsSymbol]).join(', ')}`)
+          throw new Error(`unknown relation, use one of ${Object.keys(this[relationsSymbol]).join(', ')}`);
         }
 
         const id = this[relationsSymbol][relation].id;
         if (
-          options && Object.keys(options).length === 1 && id in options
-          && (typeof options[id] === 'string' || 'exact' in options[id])
+          options &&
+          Object.keys(options).length === 1 &&
+          id in options &&
+          (typeof options[id] === 'string' || 'exact' in options[id])
         ) {
           throw new Error('Providing only an id in ResourceList filter will result in single resource response.');
         }
@@ -442,7 +443,8 @@ export default class Core {
       .then((request) => {
         if (options) {
           request.withTemplateParameters(
-            optionsToQuery(options, this.getLink(this[relationsSymbol][relation].relation).href));
+            optionsToQuery(options, this.getLink(this[relationsSymbol][relation].relation).href),
+          );
         }
         return get(this[environmentSymbol], request);
       })
@@ -451,7 +453,7 @@ export default class Core {
           return this[relationsSymbol][relation].listFunction(res, this[environmentSymbol], traversal);
         }
 
-        return new this[relationsSymbol][relation].ListClass(res, this[environmentSymbol], traversal)
+        return new this[relationsSymbol][relation].ListClass(res, this[environmentSymbol], traversal);
       });
   }
 
@@ -480,7 +482,7 @@ export default class Core {
           throw new Error('relation must be defined');
         }
         if (!this[relationsSymbol][relation]) {
-          throw new Error(`unknown relation, use one of ${Object.keys(this[relationsSymbol]).join(', ')}`)
+          throw new Error(`unknown relation, use one of ${Object.keys(this[relationsSymbol]).join(', ')}`);
         }
         if (!this[relationsSymbol][relation].createRelation) {
           throw new Error('Resource has no createRelation');
@@ -490,26 +492,32 @@ export default class Core {
         }
         return this.link(this[relationsSymbol][relation].createRelation);
       })
-      .then(link =>
-        validator.validate(resource, `${link.profile}${this[relationsSymbol][relation].createTemplateModifier}`)
+      .then((link) =>
+        validator
+          .validate(resource, `${link.profile}${this[relationsSymbol][relation].createTemplateModifier}`)
           .catch((e) => {
             throw new Problem(convertValidationError(e), locale);
-          }))
+          }),
+      )
       .then(() => this.follow(this[relationsSymbol][relation].relation))
-      .then(request => {
+      .then((request) => {
         if (this[relationsSymbol][relation].additionalTemplateParam) {
-          request.withTemplateParameters(optionsToQuery({
-            [this[relationsSymbol][relation].additionalTemplateParam]: this[this[relationsSymbol][relation].additionalTemplateParam],
-          }));
+          request.withTemplateParameters(
+            optionsToQuery({
+              [this[relationsSymbol][relation].additionalTemplateParam]: this[
+                this[relationsSymbol][relation].additionalTemplateParam
+              ],
+            }),
+          );
         }
-        return post(this[environmentSymbol], request, resource)
+        return post(this[environmentSymbol], request, resource);
       })
       .then(([c, traversal]) => {
         let ResourceConstructor;
         if (returnList) {
-          ResourceConstructor = this[relationsSymbol][relation].ListClass
+          ResourceConstructor = this[relationsSymbol][relation].ListClass;
         } else {
-          ResourceConstructor = this[relationsSymbol][relation].ResourceClass
+          ResourceConstructor = this[relationsSymbol][relation].ResourceClass;
         }
         return <Resource>new ResourceConstructor(c, this[environmentSymbol], traversal);
       });
@@ -518,7 +526,7 @@ export default class Core {
 
 export type environment = 'live' | 'stage' | 'nightly' | 'develop';
 
-export type options = { environment: environment, noCookie: boolean, cookieModifier: string, ecUser: boolean }
+export type options = { environment: environment; noCookie: boolean; cookieModifier: string; ecUser: boolean };
 
 /**
  * You can define which API should be used with the environment parameter. Internally this is also
@@ -544,14 +552,14 @@ export type options = { environment: environment, noCookie: boolean, cookieModif
  * a given token with other API Connectors (see {@link Core}), in most cases this is not desired in node
  * scripts. By providing an options object instead of an {@link environment} string when creating the API
  * Conenctor you can overwrite the handling.
- * 
+ *
  * @example
  * // will not share any token with other API connectors (token name is appended with a generated shortID)
  * new PublicAPI('beefbeef', { noCookie: true });
- * 
+ *
  * // will share token with all `userA` PublicAPI Connectors for 'beefbeef'
  * new PublicAPI('beefbeef', { cookieModifier: 'userA' });
- * 
+ *
  * // will share token with all `userA` API Connectors, even DataManager and so on
  * new PublicAPI('beefbeef', { cookieModifier: 'userA', ecUser: true });
  * // same
@@ -559,12 +567,12 @@ export type options = { environment: environment, noCookie: boolean, cookieModif
  *
  * // will share token with all PublicAPI Connectors for 'beefbeef'
  * new PublicAPI('beefbeef')
- * 
+ *
  * // will share token with all API connectors
  * new PublicAPI('beefbeef', { ecUser: true });
  * // same
  * new PublicAPI('beefbeef', 'live', true);
- * 
+ *
  * @typedef {Object} options
  * @property {environment} environment The environment for the API Connector
  * @property {boolean} noCookie True if you want to token-handling disabled (will overwrite Tokenstore name with random string)

@@ -2,9 +2,9 @@ import Resource from '../Resource';
 import { environment } from '../../Core';
 
 interface DataSourceResource {
-  config: any,
-  dataSourceID: string,
-  dataSourceType: string,
+  config: any;
+  dataSourceID: string;
+  dataSourceType: string;
 }
 
 /**
