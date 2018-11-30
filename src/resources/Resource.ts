@@ -377,16 +377,27 @@ class Resource {
         return this.newRequest().follow(this[relationsSymbol][relation].relation);
       })
       .then((request) => {
+        if (
+          this[relationsSymbol][relation].additionalTemplateParam &&
+          !(this[relationsSymbol][relation].additionalTemplateParam in additionalTemplateParams)
+        ) {
+          additionalTemplateParams[this[relationsSymbol][relation].additionalTemplateParam] = this[
+            this[relationsSymbol][relation].additionalTemplateParam
+          ];
+        }
         const params = Object.assign({}, additionalTemplateParams, {
           [this[relationsSymbol][relation].id]: resourceID,
         });
         request.withTemplateParameters(params);
         return get(this[environmentSymbol], request);
       })
-      .then(
-        ([res, traversal]) =>
-          new this[relationsSymbol][relation].ResourceClass(res, this[environmentSymbol], traversal),
-      );
+      .then(([res, traversal]) => {
+        if (this[relationsSymbol][relation].resourceFunction) {
+          return this[relationsSymbol][relation].resourceFunction(res, this[environmentSymbol], traversal);
+        }
+
+        return new this[relationsSymbol][relation].ResourceClass(res, this[environmentSymbol], traversal);
+      });
   }
 
   /**
@@ -405,11 +416,12 @@ class Resource {
    *
    * @param {string} relation The shortened relation name
    * @param {filterOptions?} options the filter options
+   * @param {object} additionalTemplateParams additional template parameters to apply
    * @returns {Promise<ListResource>} resolves to resource list with applied filters
    */
   resourceList(
     relation: string,
-    options?: filterOptions | any,
+    options: filterOptions | any = {},
     additionalTemplateParams: any = {},
   ): Promise<ListResource> {
     return Promise.resolve()
@@ -452,9 +464,13 @@ class Resource {
         );
         return get(this[environmentSymbol], request);
       })
-      .then(
-        ([res, traversal]) => new this[relationsSymbol][relation].ListClass(res, this[environmentSymbol], traversal),
-      );
+      .then(([res, traversal]) => {
+        if (this[relationsSymbol][relation].listFunction) {
+          return this[relationsSymbol][relation].listFunction(res, this[environmentSymbol], traversal);
+        }
+
+        return new this[relationsSymbol][relation].ListClass(res, this[environmentSymbol], traversal);
+      });
   }
 
   /**

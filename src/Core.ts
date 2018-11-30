@@ -381,6 +381,14 @@ export default class Core {
         return this.follow(this[relationsSymbol][relation].relation);
       })
       .then((request) => {
+        if (
+          this[relationsSymbol][relation].additionalTemplateParam &&
+          !(this[relationsSymbol][relation].additionalTemplateParam in additionalTemplateParams)
+        ) {
+          additionalTemplateParams[this[relationsSymbol][relation].additionalTemplateParam] = this[
+            this[relationsSymbol][relation].additionalTemplateParam
+          ];
+        }
         const params = Object.assign({}, additionalTemplateParams, {
           [this[relationsSymbol][relation].id]: resourceID,
         });
@@ -412,9 +420,14 @@ export default class Core {
    *
    * @param {string} relation The shortened relation name
    * @param {filterOptions?} options the filter options
+   * @param {object} additionalTemplateParams additional template parameters to apply
    * @returns {Promise<ListResource>} resolves to resource list with applied filters
    */
-  resourceList(relation: string, options?: filterOptions | any): Promise<ListResource> {
+  resourceList(
+    relation: string,
+    options: filterOptions | any = {},
+    additionalTemplateParams: any = {},
+  ): Promise<ListResource> {
     return Promise.resolve()
       .then(() => {
         if (!relation) {
@@ -441,11 +454,18 @@ export default class Core {
         return this.follow(this[relationsSymbol][relation].relation);
       })
       .then((request) => {
-        if (options) {
-          request.withTemplateParameters(
-            optionsToQuery(options, this.getLink(this[relationsSymbol][relation].relation).href),
-          );
+        if (
+          this[relationsSymbol][relation].additionalTemplateParam &&
+          !(this[relationsSymbol][relation].additionalTemplateParam in additionalTemplateParams)
+        ) {
+          additionalTemplateParams[this[relationsSymbol][relation].additionalTemplateParam] = this[
+            this[relationsSymbol][relation].additionalTemplateParam
+          ];
         }
+        const params = Object.assign({}, additionalTemplateParams, options);
+        request.withTemplateParameters(
+          optionsToQuery(params, this.getLink(this[relationsSymbol][relation].relation).href),
+        );
         return get(this[environmentSymbol], request);
       })
       .then(([res, traversal]) => {
