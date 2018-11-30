@@ -1617,6 +1617,7 @@ export type fieldDefinition = {
   validation: any;
   default: any;
   config: any;
+  [key: string]: any;
 };
 
 export type fileOptions = {
