@@ -20,8 +20,7 @@ const relationsSymbol: any = Symbol.for('relations');
 const originalSymbol: any = Symbol.for('original');
 
 traverson.registerMediaType(HalAdapter.mediaType, HalAdapter);
-validator.setLoggingFunction(() => {
-});
+validator.setLoggingFunction(() => {});
 
 interface Resource {
   [key: string]: any;
@@ -97,7 +96,7 @@ class Resource {
       out[rel] = {
         id: this[relationsSymbol][rel].id,
         createable: !!this[relationsSymbol][rel].createRelation,
-      }
+      };
     });
     return out;
   }
@@ -140,7 +139,7 @@ class Resource {
           throw new Error('relation must be defined');
         }
         if (!this[relationsSymbol][relation]) {
-          throw new Error(`unknown relation, use one of ${Object.keys(this[relationsSymbol]).join(', ')}`)
+          throw new Error(`unknown relation, use one of ${Object.keys(this[relationsSymbol]).join(', ')}`);
         }
         if (!this[relationsSymbol][relation].createRelation) {
           throw new Error('Resource has no createRelation');
@@ -150,22 +149,29 @@ class Resource {
         }
         return this.getLink(this[relationsSymbol][relation].createRelation);
       })
-      .then(link =>
-        validator.validate(resource, `${link.profile}${this[relationsSymbol][relation].createTemplateModifier}`)
+      .then((link) =>
+        validator
+          .validate(resource, `${link.profile}${this[relationsSymbol][relation].createTemplateModifier}`)
           .catch((e) => {
             throw new Problem(convertValidationError(e), locale);
-          }))
+          }),
+      )
       .then(() => this.newRequest().follow(this[relationsSymbol][relation].relation))
-      .then(request => {
+      .then((request) => {
         if (this[relationsSymbol][relation].additionalTemplateParam) {
-          request.withTemplateParameters(optionsToQuery({
-            [this[relationsSymbol][relation].additionalTemplateParam]: this[this[relationsSymbol][relation].additionalTemplateParam],
-          }));
+          request.withTemplateParameters(
+            optionsToQuery({
+              [this[relationsSymbol][relation].additionalTemplateParam]: this[
+                this[relationsSymbol][relation].additionalTemplateParam
+              ],
+            }),
+          );
         }
-        return post(this[environmentSymbol], request, resource)
+        return post(this[environmentSymbol], request, resource);
       })
-      .then(([c, traversal]) =>
-        new this[relationsSymbol][relation].ResourceClass(c, this[environmentSymbol], traversal));
+      .then(
+        ([c, traversal]) => new this[relationsSymbol][relation].ResourceClass(c, this[environmentSymbol], traversal),
+      );
   }
 
   /**
@@ -195,10 +201,9 @@ class Resource {
    * @returns {Promise<Resource|ResourceClass>} the resource identified by the link.
    */
   followLink(link: string, ResourceClass = Resource, name: string, schema: any): Promise<Resource> {
-    return get(this[environmentSymbol], this.newRequest().follow(link))
-      .then(([res, traversal]) => {
-        return new ResourceClass(res, this[environmentSymbol], traversal, name, schema);
-      });
+    return get(this[environmentSymbol], this.newRequest().follow(link)).then(([res, traversal]) => {
+      return new ResourceClass(res, this[environmentSymbol], traversal, name, schema);
+    });
   }
 
   /**
@@ -257,8 +262,8 @@ class Resource {
 
   /**
    * Checks if this {@link Resource} has at least one {@link
-    * https://tools.ietf.org/html/draft-kelly-json-hal-08#section-5
-     * link}  with the given name.
+   * https://tools.ietf.org/html/draft-kelly-json-hal-08#section-5
+   * link}  with the given name.
    *
    * @param {string} link the link name.
    * @returns {boolean} whether or not a link with the given name was found.
@@ -269,8 +274,8 @@ class Resource {
 
   /**
    * Creates a new {@link
-    * https://github.com/basti1302/traverson/blob/master/api.markdown#request-builder
-     * traverson request builder}
+   * https://github.com/basti1302/traverson/blob/master/api.markdown#request-builder
+   * traverson request builder}
    *  which can be used for a new request to the API.
    *
    * @access private
@@ -303,47 +308,46 @@ class Resource {
 
   /**
    * Reloads this {@link Resource}. Can be used when this resource was loaded from any {@link
-    * ListResource} from _embedded.
+   * ListResource} from _embedded.
    *
    * @returns {Promise<Resource>} this resource
    */
   resolve(): Promise<Resource> {
-    return get(this[environmentSymbol], this.newRequest().follow('self'))
-      .then(([res, traversal]) => {
-        this[resourceSymbol] = halfred.parse(res);
-        this[traversalSymbol] = traversal;
-        return this;
-      });
+    return get(this[environmentSymbol], this.newRequest().follow('self')).then(([res, traversal]) => {
+      this[resourceSymbol] = halfred.parse(res);
+      this[traversalSymbol] = traversal;
+      return this;
+    });
   }
 
   /**
    * Get a list of all avaliable filter options for a given relation.
-   * 
+   *
    * @param {string} relation The shortened relation name
    * @returns {Promise<Array<string>>} resolves to an array of avaliable filter options (query string notation).
    */
   getFilterOptions(relation: string): Promise<any> {
-    return Promise.resolve()
-      .then(() => {
-        if (!relation) {
-          throw new Error('relation must be defined');
-        }
-        if (!this[relationsSymbol][relation]) {
-          throw new Error(`unknown relation, use one of ${Object.keys(this[relationsSymbol]).join(', ')}`)
-        }
-        let link = this.getLink(this[relationsSymbol][relation].relation);
-        const matchResults = link.href.match(/{[^}]*}/g);
-        if (matchResults) {
-          return matchResults.map(result => {
+    return Promise.resolve().then(() => {
+      if (!relation) {
+        throw new Error('relation must be defined');
+      }
+      if (!this[relationsSymbol][relation]) {
+        throw new Error(`unknown relation, use one of ${Object.keys(this[relationsSymbol]).join(', ')}`);
+      }
+      let link = this.getLink(this[relationsSymbol][relation].relation);
+      const matchResults = link.href.match(/{[^}]*}/g);
+      if (matchResults) {
+        return matchResults
+          .map((result) => {
             const res = /^{[?&]([^}]+)}$/.exec(result);
             if (res) {
               return res[1].split(',');
             }
             return [];
           })
-            .reduce((a, b) => a.concat(b), [])
-        }
-      });
+          .reduce((a, b) => a.concat(b), []);
+      }
+    });
   }
 
   /**
@@ -364,21 +368,25 @@ class Resource {
           throw new Error('relation must be defined');
         }
         if (!this[relationsSymbol][relation]) {
-          throw new Error(`unknown relation, use one of ${Object.keys(this[relationsSymbol]).join(', ')}`)
+          throw new Error(`unknown relation, use one of ${Object.keys(this[relationsSymbol]).join(', ')}`);
         }
         if (!resourceID) {
           throw new Error('resourceID must be defined');
         }
 
-        return this.newRequest().follow(this[relationsSymbol][relation].relation)
+        return this.newRequest().follow(this[relationsSymbol][relation].relation);
       })
       .then((request) => {
-        const params = Object.assign({}, additionalTemplateParams, { [this[relationsSymbol][relation].id]: resourceID });
+        const params = Object.assign({}, additionalTemplateParams, {
+          [this[relationsSymbol][relation].id]: resourceID,
+        });
         request.withTemplateParameters(params);
         return get(this[environmentSymbol], request);
       })
-      .then(([res, traversal]) =>
-        new this[relationsSymbol][relation].ResourceClass(res, this[environmentSymbol], traversal));
+      .then(
+        ([res, traversal]) =>
+          new this[relationsSymbol][relation].ResourceClass(res, this[environmentSymbol], traversal),
+      );
   }
 
   /**
@@ -399,20 +407,26 @@ class Resource {
    * @param {filterOptions?} options the filter options
    * @returns {Promise<ListResource>} resolves to resource list with applied filters
    */
-  resourceList(relation: string, options?: filterOptions | any, additionalTemplateParams: any = {}): Promise<ListResource> {
+  resourceList(
+    relation: string,
+    options?: filterOptions | any,
+    additionalTemplateParams: any = {},
+  ): Promise<ListResource> {
     return Promise.resolve()
       .then(() => {
         if (!relation) {
           throw new Error('relation must be defined');
         }
         if (!this[relationsSymbol][relation]) {
-          throw new Error(`unknown relation, use one of ${Object.keys(this[relationsSymbol]).join(', ')}`)
+          throw new Error(`unknown relation, use one of ${Object.keys(this[relationsSymbol]).join(', ')}`);
         }
 
         const id = this[relationsSymbol][relation].id;
         if (
-          options && Object.keys(options).length === 1 && id in options
-          && (typeof options[id] === 'string' || 'exact' in options[id])
+          options &&
+          Object.keys(options).length === 1 &&
+          id in options &&
+          (typeof options[id] === 'string' || 'exact' in options[id])
         ) {
           throw new Error('Providing only an id in ResourceList filter will result in single resource response.');
         }
@@ -424,16 +438,23 @@ class Resource {
         return this.newRequest().follow(this[relationsSymbol][relation].relation);
       })
       .then((request) => {
-        if (this[relationsSymbol][relation].additionalTemplateParam && !(this[relationsSymbol][relation].additionalTemplateParam in additionalTemplateParams)) {
-          additionalTemplateParams[this[relationsSymbol][relation].additionalTemplateParam] = this[this[relationsSymbol][relation].additionalTemplateParam]
+        if (
+          this[relationsSymbol][relation].additionalTemplateParam &&
+          !(this[relationsSymbol][relation].additionalTemplateParam in additionalTemplateParams)
+        ) {
+          additionalTemplateParams[this[relationsSymbol][relation].additionalTemplateParam] = this[
+            this[relationsSymbol][relation].additionalTemplateParam
+          ];
         }
         const params = Object.assign({}, additionalTemplateParams, options);
         request.withTemplateParameters(
-          optionsToQuery(params, this.getLink(this[relationsSymbol][relation].relation).href));
+          optionsToQuery(params, this.getLink(this[relationsSymbol][relation].relation).href),
+        );
         return get(this[environmentSymbol], request);
       })
-      .then(([res, traversal]) =>
-        new this[relationsSymbol][relation].ListClass(res, this[environmentSymbol], traversal));
+      .then(
+        ([res, traversal]) => new this[relationsSymbol][relation].ListClass(res, this[environmentSymbol], traversal),
+      );
   }
 
   /**
@@ -463,11 +484,11 @@ class Resource {
           request.addRequestOptions({
             headers: {
               'If-Unmodified-Since': date.toUTCString(),
-            }
+            },
           });
         }
 
-        return put(this[environmentSymbol], request, out)
+        return put(this[environmentSymbol], request, out);
       })
       .then(([res, traversal]) => {
         if (res) {
@@ -536,13 +557,16 @@ class Resource {
       .then(() => {
         const keys = Object.keys(this);
         if (this[resourcePropertiesSymbol].length !== keys.length) {
-          throw new Error(`Additional properties found: ${keys.filter(k => !this[resourcePropertiesSymbol].includes(k)).join(', ')}`);
+          throw new Error(
+            `Additional properties found: ${keys
+              .filter((k) => !this[resourcePropertiesSymbol].includes(k))
+              .join(', ')}`,
+          );
         }
 
-        return validator.validate(this.toOriginal(), overwriteSchemaUrl || this.getLink('self').profile)
-          .catch((e) => {
-            throw new Problem(convertValidationError(e), locale);
-          });
+        return validator.validate(this.toOriginal(), overwriteSchemaUrl || this.getLink('self').profile).catch((e) => {
+          throw new Problem(convertValidationError(e), locale);
+        });
       })
       .then(() => true);
   }

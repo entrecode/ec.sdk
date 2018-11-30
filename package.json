@@ -1,6 +1,6 @@
 {
   "name": "ec.sdk",
-  "version": "0.17.16",
+  "version": "0.17.17",
   "description": "SDK for ec.api",
   "repository": "entrecode/ec.sdk",
   "author": "Simon Scherzinger <scherzinger@entrecode.de>",
@@ -25,7 +25,7 @@
   "dependencies": {
     "@types/halfred": "^1.0.2",
     "@types/jwt-decode": "^2.2.1",
-    "@types/node": "^10.12.3",
+    "@types/node": "^10.12.10",
     "@types/shortid": "^0.0.29",
     "@types/superagent": "^3.8.4",
     "@types/traverson": "^2.0.28",
@@ -42,7 +42,7 @@
     "shiro-trie": "^0.4.8",
     "shortid": "^2.2.13",
     "stream": "^0.0.2",
-    "superagent": "^3.8.3",
+    "superagent": "^4.0.0",
     "traverson": "6.1.1",
     "traverson-hal": "^6.1.0",
     "validator": "^10.9.0"

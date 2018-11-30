@@ -2,9 +2,9 @@ import Resource from '../Resource';
 import { environment } from '../../Core';
 
 interface CodeSourceResource {
-  config: any,
-  codeSourceID: string,
-  codeSourceType: string,
+  config: any;
+  codeSourceID: string;
+  codeSourceType: string;
 }
 
 /**

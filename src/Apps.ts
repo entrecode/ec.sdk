@@ -10,7 +10,6 @@ import { get } from './helper';
 const environmentSymbol: any = Symbol.for('environment');
 const relationsSymbol: any = Symbol.for('relations');
 
-
 const urls = {
   live: 'https://appserver.entrecode.de/',
   stage: 'https://appserver.cachena.entrecode.de/',
@@ -135,7 +134,7 @@ export default class Apps extends Core {
   types(): Promise<TypesResource> {
     return Promise.resolve()
       .then(() => this.follow('ec:apps/types'))
-      .then(request => get(this[environmentSymbol], request))
+      .then((request) => get(this[environmentSymbol], request))
       .then(([res, traversal]) => new TypesResource(res, this[environmentSymbol], traversal));
   }
 }

@@ -14,15 +14,15 @@ interface HistoryEvent {
   dataManagerID: string;
   shortID: string;
   user: {
-    accountID: string,
-    userType: string, // TODO enum?
+    accountID: string;
+    userType: string; // TODO enum?
   };
   data: Array<any>;
 }
 
 /**
  * HistoryEvent resource class
- * 
+ *
  * https://stash.entrecode.de/projects/CMS/repos/ec.dm-history/browse/data-transform.js?at=develop#33
  *
  * @class
@@ -58,12 +58,22 @@ class HistoryEvent {
           this[resourceSymbol].timestamp = new Date(this[resourceSymbol].timestamp);
         }
         return this[resourceSymbol].timestamp;
-      }
+      },
     });
-    ['eventNumber', 'eventId', 'eventType', 'entryID', 'modelID', 'modelTitle', 'dataManagerID', 'shortID', 'user', 'data']
-      .forEach((prop) => {
-        Object.defineProperty(this, prop, { enumerable: true, get: () => this[resourceSymbol][prop] })
-      });
+    [
+      'eventNumber',
+      'eventId',
+      'eventType',
+      'entryID',
+      'modelID',
+      'modelTitle',
+      'dataManagerID',
+      'shortID',
+      'user',
+      'data',
+    ].forEach((prop) => {
+      Object.defineProperty(this, prop, { enumerable: true, get: () => this[resourceSymbol][prop] });
+    });
   }
 }
 

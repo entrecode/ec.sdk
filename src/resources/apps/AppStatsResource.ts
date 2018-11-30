@@ -2,17 +2,17 @@ import Resource from '../Resource';
 import { environment } from '../../Core';
 
 interface AppStatsResource {
-  appID: string,
-  monthlyBuilds: Array<any>,
-  monthlyDeployments: Array<any>,
-  title: string,
-  totalBuildSize: number,
-  totalBuilds: number,
-  totalDeployments: number,
-  usedCodeSources: Array<string>,
-  usedDataSources: Array<string>,
-  usedPlatforms: Array<string>,
-  usedTargets: Array<string>,
+  appID: string;
+  monthlyBuilds: Array<any>;
+  monthlyDeployments: Array<any>;
+  title: string;
+  totalBuildSize: number;
+  totalBuilds: number;
+  totalDeployments: number;
+  usedCodeSources: Array<string>;
+  usedDataSources: Array<string>;
+  usedPlatforms: Array<string>;
+  usedTargets: Array<string>;
 }
 
 /**

@@ -2,8 +2,8 @@ import Resource from '../Resource';
 import { environment } from '../../Core';
 
 interface TagResource {
-  count: number,
-  tag: string,
+  count: number;
+  tag: string;
 }
 
 /**
@@ -41,4 +41,4 @@ class TagResource extends Resource {
   }
 }
 
-export default TagResource
+export default TagResource;

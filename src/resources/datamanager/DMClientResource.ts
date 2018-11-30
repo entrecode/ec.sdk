@@ -2,11 +2,11 @@ import Resource from '../Resource';
 import { environment } from '../../Core';
 
 interface DMClientResource {
-  callbackURL: string,
-  clientID: string,
-  tokenMethod: Array<string>,
-  disableStrategies: Array<string>,
-  hexColor: string,
+  callbackURL: string;
+  clientID: string;
+  tokenMethod: Array<string>;
+  disableStrategies: Array<string>;
+  hexColor: string;
 }
 
 /**

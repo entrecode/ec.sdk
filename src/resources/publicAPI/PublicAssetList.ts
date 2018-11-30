@@ -75,13 +75,15 @@ export default class PublicAssetList extends ListResource {
    * @param {filterOptions?} options filter options
    * @returns {Promise<PublicTagList>} Promise resolving to PublicTagList
    */
-  tagList(options?: filterOptions | any): Promise<PublicTagList> { // TODO remove any
+  tagList(options?: filterOptions | any): Promise<PublicTagList> {
+    // TODO remove any
     return Promise.resolve()
       .then(() => {
         if (
           options &&
-          Object.keys(options).length === 1 && 'tag' in options
-          && (typeof options.tag === 'string' || (!('any' in options.tag) && !('all' in options.tag)))
+          Object.keys(options).length === 1 &&
+          'tag' in options &&
+          (typeof options.tag === 'string' || (!('any' in options.tag) && !('all' in options.tag)))
         ) {
           throw new Error('Cannot filter tagList only by tag. Use PublicAssetList#tag() instead');
         }

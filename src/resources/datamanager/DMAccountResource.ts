@@ -2,14 +2,14 @@ import Resource from '../Resource';
 import { environment } from '../../Core';
 
 interface DMAccountResource {
-  title: string,
-  accountID: string,
-  email: string,
-  hasPassword: boolean,
-  oauth: Array<any>,
-  pending: boolean,
-  pendingUpdated: Date,
-  created: Date,
+  title: string;
+  accountID: string;
+  email: string;
+  hasPassword: boolean;
+  oauth: Array<any>;
+  pending: boolean;
+  pendingUpdated: Date;
+  created: Date;
 }
 
 /**

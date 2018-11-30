@@ -81,7 +81,7 @@ export default class Accounts extends Core {
         id: 'groupid',
         ResourceClass: GroupResource,
         ListClass: GroupList,
-      }
+      },
     };
   }
 
@@ -143,7 +143,7 @@ export default class Accounts extends Core {
 
         return this.follow('ec:auth/change-email');
       })
-      .then(request => postEmpty(this[environmentSymbol], request, { email }));
+      .then((request) => postEmpty(this[environmentSymbol], request, { email }));
   }
 
   /**
@@ -188,9 +188,10 @@ export default class Accounts extends Core {
    * @returns {Promise<{jwt: string, accountID: string, iat: number, exp: number}>} the created api
    *   token response.
    */
-  createApiToken(): Promise<tokenResponse> { // TODO advanced type
+  createApiToken(): Promise<tokenResponse> {
+    // TODO advanced type
     return this.follow('ec:auth/create-anonymous')
-      .then(request => post(this[environmentSymbol], request, {}))
+      .then((request) => post(this[environmentSymbol], request, {}))
       .then(([tokenResponse]) => tokenResponse);
   }
 
@@ -292,7 +293,8 @@ export default class Accounts extends Core {
    * @param {filterOptions?} options filter options
    * @returns {Promise<GroupList>} Promise resolving group list
    */
-  groupList(options?: filterOptions | any): Promise<GroupList> { // TODO remove any
+  groupList(options?: filterOptions | any): Promise<GroupList> {
+    // TODO remove any
     return <Promise<GroupList>>this.resourceList('group', options);
   }
 
@@ -310,14 +312,13 @@ export default class Accounts extends Core {
    */
   invalidPermissions(): Promise<InvalidPermissionsResource> {
     return this.follow('ec:invalid-permissions')
-      .then(request => get(this[environmentSymbol], request))
-      .then(([resource, traversal]) =>
-        new InvalidPermissionsResource(resource, this[environmentSymbol], traversal));
+      .then((request) => get(this[environmentSymbol], request))
+      .then(([resource, traversal]) => new InvalidPermissionsResource(resource, this[environmentSymbol], traversal));
   }
 
   /**
    * Load a single {@link InviteResource}. Only unused invites are returned.
-   * 
+   *
    * @param {string} invite invite uuid to request
    * @returns {Promise<InviteResource>} the requested {@link InviteResource}
    */
@@ -327,7 +328,7 @@ export default class Accounts extends Core {
 
   /**
    * Load the list of {@link InviteResource}s. Only unused invites are in the list.
-   * 
+   *
    * @param {filterOptions} options filter options you want to have applied
    * @returns {Promise<InviteList>} the requested {@link InviteList}.
    */
@@ -349,7 +350,7 @@ export default class Accounts extends Core {
   me(): Promise<AccountResource> {
     return Promise.resolve()
       .then(() => this.follow('ec:account'))
-      .then(request => get(this[environmentSymbol], request))
+      .then((request) => get(this[environmentSymbol], request))
       .then(([res, traversal]) => new AccountResource(res, this[environmentSymbol], traversal));
   }
 
@@ -374,7 +375,8 @@ export default class Accounts extends Core {
         }
 
         return this.follow('ec:auth/password-reset');
-      }).then((request) => {
+      })
+      .then((request) => {
         request.withTemplateParameters({
           clientID: this[tokenStoreSymbol].getClientID(),
           email,
@@ -446,16 +448,16 @@ export type tokenResponse = {
   token: string;
   accountID: string;
   iat: number;
-  exp: number
-}
+  exp: number;
+};
 
 export type inviteCreateObject = {
-  count: number,
-  permissions?: Array<string>,
-  groups?: Array<inviteCreateGroupObject>,
-}
+  count: number;
+  permissions?: Array<string>;
+  groups?: Array<inviteCreateGroupObject>;
+};
 
 export type inviteCreateGroupObject = {
-  groupID: string,
-  name: string,
-}
+  groupID: string;
+  name: string;
+};

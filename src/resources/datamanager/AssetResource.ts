@@ -3,12 +3,12 @@ import { fileNegotiate } from '../../helper';
 import { environment } from '../../Core';
 
 interface AssetResource {
-  assetID: string,
-  created: Date,
-  files: Array<any>,
-  tags: Array<string>,
-  title: string,
-  type: string,
+  assetID: string;
+  created: Date;
+  files: Array<any>;
+  tags: Array<string>;
+  title: string;
+  type: string;
 }
 
 /**
@@ -109,12 +109,13 @@ class AssetResource extends Resource {
       return this.files[0];
     }
 
-    const files = this.files.filter(f => !!f.resolution);
+    const files = this.files.filter((f) => !!f.resolution);
     if (files.length === 0) {
       return this.files[0];
     }
 
-    files.sort((l, r) => { // sort by size descending
+    files.sort((l, r) => {
+      // sort by size descending
       const leftMax = Math.max(l.resolution.height, l.resolution.width);
       const rightMax = Math.max(r.resolution.height, r.resolution.width);
       if (leftMax < rightMax) {

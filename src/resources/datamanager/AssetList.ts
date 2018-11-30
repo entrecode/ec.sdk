@@ -49,7 +49,9 @@ export default class AssetList extends ListResource {
     };
 
     /* eslint no-underscore-dangle:0 */
-    this[dataManagerIDSymbol] = resource._links.self.href.substr(resource._links.self.href.indexOf('dataManagerID') + 14);
+    this[dataManagerIDSymbol] = resource._links.self.href.substr(
+      resource._links.self.href.indexOf('dataManagerID') + 14,
+    );
     /* eslint no-underscore-dangle:1 */
   }
 
@@ -112,14 +114,13 @@ export default class AssetList extends ListResource {
       return Promise.reject(new Error('writeStream must be instance of stream.Writable.'));
     }
 
-    return getUrl(this[environmentSymbol], this.newRequest().follow('ec:assets/download'))
-      .then((url) => {
-        if (writeStream) {
-          return superagentGetPiped(url, writeStream);
-        }
+    return getUrl(this[environmentSymbol], this.newRequest().follow('ec:assets/download')).then((url) => {
+      if (writeStream) {
+        return superagentGetPiped(url, writeStream);
+      }
 
-        return Promise.resolve(url);
-      });
+      return Promise.resolve(url);
+    });
   }
 
   /**

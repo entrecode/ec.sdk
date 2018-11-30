@@ -4,9 +4,9 @@ import { environment } from '../../Core';
 const resourceSymbol: any = Symbol.for('resource');
 
 interface GroupResource {
-  groupID: string,
-  name: string,
-  permissions: Array<string>,
+  groupID: string;
+  name: string;
+  permissions: Array<string>;
 }
 
 /**
@@ -82,7 +82,7 @@ class GroupResource extends Resource {
 
   /**
    * Remove a single permission from this group.
-   * 
+   *
    * @param {string} value the permission to remove
    * @returns {GroupResource} returns this group resource
    */
@@ -96,7 +96,7 @@ class GroupResource extends Resource {
 
   /**
    * Remove multiple permissions from this group.
-   * 
+   *
    * @param {Array<string>} value the permissions to remove
    * @returns {GroupResource} returns this group resource
    */
@@ -106,14 +106,14 @@ class GroupResource extends Resource {
     }
 
     let current = this.permissions;
-    current = current.filter(permission => value.indexOf(permission) !== -1);
+    current = current.filter((permission) => value.indexOf(permission) !== -1);
     this.permissions = current;
     return this;
   }
 
   /**
    * Get the embedded account objects. Will be no account resources, but object containing only accountID and email.
-   * 
+   *
    * @returns {Array<object>} An array of account like objects
    */
   getAccounts(): Array<any> {
@@ -122,7 +122,7 @@ class GroupResource extends Resource {
 
   /**
    * Add an account to this group.
-   * 
+   *
    * @param {string|{accountID: string}} account Account which should be added
    * @returns {GroupResource} returns this group resource
    */
@@ -146,7 +146,7 @@ class GroupResource extends Resource {
 
   /**
    * Replace all accounts in this GroupResource with a new array.
-   * 
+   *
    * @param accounts The array of accounts you want to contain in this group.
    */
   setAccounts(accounts: Array<string | any>): GroupResource {
@@ -155,23 +155,23 @@ class GroupResource extends Resource {
     }
 
     if (!Array.isArray(accounts)) {
-      throw new Error('accounts must be an array')
+      throw new Error('accounts must be an array');
     }
 
-    accounts.forEach(a => {
+    accounts.forEach((a) => {
       if (typeof a !== 'string' && !(typeof a === 'object' && 'accountID' in a)) {
-        throw new Error('account items must be string or account like object')
+        throw new Error('account items must be string or account like object');
       }
     });
 
-    this[resourceSymbol]._embedded['ec:account'] = accounts.map(a => typeof a === 'string' ? { accountID: a } : a);
-   
+    this[resourceSymbol]._embedded['ec:account'] = accounts.map((a) => (typeof a === 'string' ? { accountID: a } : a));
+
     return this;
   }
 
   /**
    * Remove an account from this group.
-   * 
+   *
    * @param {string|{accountID: string}} account Account which should be removed
    * @returns {GroupResource} returns this group resource
    */
@@ -190,7 +190,7 @@ class GroupResource extends Resource {
     }
 
     let accounts = this.getAccounts();
-    accounts = accounts.filter(acc => acc.accountID !== remove.accountID);
+    accounts = accounts.filter((acc) => acc.accountID !== remove.accountID);
     this[resourceSymbol]._embedded['ec:account'] = accounts;
 
     return this;

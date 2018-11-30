@@ -27,17 +27,17 @@ const apiSymbol: any = Symbol('api');
 const relationsSymbol: any = Symbol.for('relations');
 
 interface DataManagerResource {
-  config: any,
-  created: any,
-  dataManagerID: string,
-  description: string,
-  hexColor: string,
-  locales: Array<string>,
-  shortID: string,
-  title: string,
-  defaultLocale: string,
-  publicAssetRights: Array<string>,
-  rights: Array<string>,
+  config: any;
+  created: any;
+  dataManagerID: string;
+  description: string;
+  hexColor: string;
+  locales: Array<string>;
+  shortID: string;
+  title: string;
+  defaultLocale: string;
+  publicAssetRights: Array<string>;
+  rights: Array<string>;
 }
 
 /**
@@ -177,7 +177,7 @@ class DataManagerResource extends Resource {
         enumerable: true,
         get: () => <Array<string>>this.getProperty('rights'),
         set: (value: Array<string>) => this.setProperty('rights', value),
-      }
+      },
     });
     this.countProperties();
   }
@@ -267,10 +267,9 @@ class DataManagerResource extends Resource {
    * @returns {Promise<AssetGroupList>} Promise resolving to AssetGroupList
    */
   assetGroupList(options: filterOptions | any = {}): Promise<AssetGroupList> {
-    return Promise.resolve()
-      .then(() => {
-        return <Promise<AssetGroupList>>this.resourceList('assetGroup', options);
-      });
+    return Promise.resolve().then(() => {
+      return <Promise<AssetGroupList>>this.resourceList('assetGroup', options);
+    });
   }
 
   /**
@@ -441,9 +440,7 @@ class DataManagerResource extends Resource {
             if (typeof file === 'string') {
               superagentRequest.attach('file', file);
             } else if (Buffer.isBuffer(file)) {
-              if (!('fileName' in options)
-                || !Array.isArray(options.fileName)
-                || !options.fileName[index]) {
+              if (!('fileName' in options) || !Array.isArray(options.fileName) || !options.fileName[index]) {
                 throw new Error('When using buffer file input you must provide options.fileName.');
               }
               superagentRequest.attach('file', file, options.fileName[index]);
@@ -517,11 +514,11 @@ class DataManagerResource extends Resource {
    *
    * @returns {Promise<object>} The exported datamanager with collection and dataSchema.
    */
-  export(): Promise<any> { // TODO advanced return type
+  export(): Promise<any> {
+    // TODO advanced return type
     return Promise.resolve()
       .then(() => {
-        const request = this.newRequest()
-          .follow('ec:datamanager/export');
+        const request = this.newRequest().follow('ec:datamanager/export');
         return get(this[environmentSymbol], request);
       })
       .then(([res]) => res);
@@ -570,18 +567,18 @@ class DataManagerResource extends Resource {
   newHistory(options?: filterOptions): Promise<any> {
     return Promise.resolve()
       .then(() => this.newRequest().follow('ec:datamanager/dm-entryHistory'))
-      .then(request => {
+      .then((request) => {
         if (options) {
           request.withTemplateParameters(optionsToQuery(options));
         }
 
-        return getHistory(this[environmentSymbol], request)
+        return getHistory(this[environmentSymbol], request);
       });
   }
 
   /**
    * Creates a new HistoryEventsResource with past events.
-   * 
+   *
    * @param {filterOptions?} options The filter options.
    * @returns {Promise<HistoryEventsResource} Event list of past events.
    */
@@ -593,7 +590,7 @@ class DataManagerResource extends Resource {
           request.withTemplateParameters(optionsToQuery(options));
         }
 
-        return get(this[environmentSymbol], request)
+        return get(this[environmentSymbol], request);
       })
       .then(([res]) => new HistoryEvents(res, this[environmentSymbol]));
   }
@@ -645,14 +642,13 @@ class DataManagerResource extends Resource {
 
   /**
    * Invoke this to recreate public api documentation for this datamangager. DataManager will respond with 202 Accepted upon successful request so this simply resolves undefined.
-   * 
+   *
    * @returns {undefined} returns undefined.
    */
   rebuildDoc(): Promise<void> {
     return Promise.resolve()
       .then(() => {
-        const request = this.newRequest()
-          .follow('ec:api-doc/build');
+        const request = this.newRequest().follow('ec:api-doc/build');
         return get(this[environmentSymbol], request);
       })
       .then(([res]) => undefined);
@@ -672,8 +668,7 @@ class DataManagerResource extends Resource {
   stats(): Promise<DMStatsResource> {
     return Promise.resolve()
       .then(() => {
-        const request = this.newRequest()
-          .follow('ec:dm-stats');
+        const request = this.newRequest().follow('ec:dm-stats');
         return get(this[environmentSymbol], request);
       })
       .then(([res]) => new DMStatsList(res, this[environmentSymbol]).getFirstItem());
@@ -683,7 +678,7 @@ class DataManagerResource extends Resource {
 export default DataManagerResource;
 
 export type assetOptions = {
-  fileName?: string | Array<string>,
-  title?: string,
-  tags?: Array<string>
-}
+  fileName?: string | Array<string>;
+  title?: string;
+  tags?: Array<string>;
+};

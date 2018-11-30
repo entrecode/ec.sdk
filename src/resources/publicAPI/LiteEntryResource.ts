@@ -33,19 +33,14 @@ class LiteEntryResource extends Resource {
           self: {
             profile: liteResource.profile,
             href: liteResource.href,
-          }
+          },
         },
         _modelTitle: liteResource.name,
         _entryTitle: liteResource.title,
       };
     }
     super(liteResource, environment, traversal);
-    [
-      '_entryTitle',
-      '_id',
-      '_modelTitle',
-      'id',
-    ].forEach((key) => {
+    ['_entryTitle', '_id', '_modelTitle', 'id'].forEach((key) => {
       Object.defineProperty(this, key, {
         enumerable: true,
         get: () => <string>this.getProperty(key),
@@ -60,7 +55,7 @@ class LiteEntryResource extends Resource {
    */
   getModelTitle(): string {
     return this.getProperty('_modelTitle');
-  };
+  }
 
   /**
    * Get the title from this {@link EntryResource}. Note: field argument only works with proper
@@ -74,7 +69,7 @@ class LiteEntryResource extends Resource {
       throw new Error('getTitle with field argument not supported by LiteEntryResource');
     }
     return this.getProperty('_entryTitle');
-  };
+  }
 
   /**
    * In order to resolve this {@link LiteEntryResource} to a proper {@link EntryResource} call this
@@ -84,8 +79,9 @@ class LiteEntryResource extends Resource {
    */
   resolve(): Promise<EntryResource> {
     // TODO switch to traverson loading (traverson.from(self))
-    return superagentGet(this.getLink('self').href, { Accept: 'application/json' }, this[environmentSymbol])
-      .then(resource => createEntry(resource, this[environmentSymbol]));
+    return superagentGet(this.getLink('self').href, { Accept: 'application/json' }, this[environmentSymbol]).then(
+      (resource) => createEntry(resource, this[environmentSymbol]),
+    );
   }
 
   /**
@@ -102,7 +98,7 @@ class LiteEntryResource extends Resource {
       throw new Error('LiteEntryResource cannot be saved');
     }
     return <Promise<EntryResource>>super.save(safePut, overwriteSchemaUrl);
-  };
+  }
 }
 
 export default LiteEntryResource;

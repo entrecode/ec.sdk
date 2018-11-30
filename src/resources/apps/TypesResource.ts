@@ -2,10 +2,10 @@ import Resource from '../Resource';
 import { environment } from '../../Core';
 
 interface TypesResource {
-  codeSourceTypes: Array<string>,
-  dataSourceTypes: Array<string>,
-  platformTypes: Array<string>,
-  targetTypes: Array<string>,
+  codeSourceTypes: Array<string>;
+  dataSourceTypes: Array<string>;
+  platformTypes: Array<string>;
+  targetTypes: Array<string>;
 }
 
 /**
@@ -93,7 +93,7 @@ class TypesResource extends Resource {
     if (!this[`${pluginName}Types`]) {
       return [];
     }
-    return this[`${pluginName}Types`].map(p => p.type);
+    return this[`${pluginName}Types`].map((p) => p.type);
   }
 
   /**
@@ -167,7 +167,7 @@ class TypesResource extends Resource {
     if (!this[`${pluginName}Types`]) {
       return undefined;
     }
-    return this[`${pluginName}Types`].find(p => p.type === type);
+    return this[`${pluginName}Types`].find((p) => p.type === type);
   }
 
   /**

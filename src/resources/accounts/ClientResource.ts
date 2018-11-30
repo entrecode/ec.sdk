@@ -7,9 +7,9 @@ export type clientConfig = {
 };
 
 interface ClientResource {
-  callbackURL: string,
-  clientID: string,
-  config: clientConfig,
+  callbackURL: string;
+  clientID: string;
+  config: clientConfig;
 }
 
 /**

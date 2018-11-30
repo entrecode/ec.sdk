@@ -2,7 +2,7 @@ import Resource from '../Resource';
 import { environment } from '../../Core';
 
 interface InviteResource {
-  invite: string,
+  invite: string;
   permissions: Array<any>;
   groups: Array<any>;
 }

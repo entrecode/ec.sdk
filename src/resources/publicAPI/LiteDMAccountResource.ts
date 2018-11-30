@@ -31,17 +31,14 @@ class LiteDMAccountResource extends Resource {
           self: {
             profile: liteResource.profile,
             href: liteResource.href,
-          }
+          },
         },
         email: liteResource.title || liteResource.name,
         dataManagerID: qs.dataManagerID,
       };
     }
     super(liteResource, environment, traversal);
-    [
-      'accountID',
-      'email',
-    ].forEach((key) => {
+    ['accountID', 'email'].forEach((key) => {
       Object.defineProperty(this, key, {
         enumerable: true,
         get: () => <string>this.getProperty(key),
@@ -66,8 +63,9 @@ class LiteDMAccountResource extends Resource {
    */
   resolve(): Promise<DMAccountResource> {
     const request = traverson.from(this.getLink('self').href).jsonHal();
-    return get(this[environmentSymbol], request)
-      .then(([res, traversal]) => new DMAccountResource(res, this[environmentSymbol], traversal));
+    return get(this[environmentSymbol], request).then(
+      ([res, traversal]) => new DMAccountResource(res, this[environmentSymbol], traversal),
+    );
   }
 
   /**
@@ -84,7 +82,7 @@ class LiteDMAccountResource extends Resource {
       throw new Error('LiteDMAccountResource cannot be saved');
     }
     return <Promise<DMAccountResource>>super.save(safePut, overwriteSchemaUrl);
-  };
+  }
 }
 
 export default LiteDMAccountResource;

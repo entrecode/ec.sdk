@@ -2,15 +2,15 @@ import Resource from '../Resource';
 import { environment } from '../../Core';
 
 interface DeploymentResource {
-  buildID: string,
-  deploymentID: string,
-  events: Array<any>,
-  finished: Date,
-  platformID: string,
-  results: Array<any>,
-  started: Date,
-  successful: 'success' | 'running' | 'error',
-  targetIDs: Array<string>,
+  buildID: string;
+  deploymentID: string;
+  events: Array<any>;
+  finished: Date;
+  platformID: string;
+  results: Array<any>;
+  started: Date;
+  successful: 'success' | 'running' | 'error';
+  targetIDs: Array<string>;
 }
 
 /**

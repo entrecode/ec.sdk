@@ -10,7 +10,7 @@ interface HistoryEvents {
 
 /**
  * HistoryEvents resource class
- * 
+ *
  * https://stash.entrecode.de/projects/CMS/repos/ec.dm-history/browse/data-transform.js?at=develop#33
  *
  * @class
@@ -32,12 +32,12 @@ class HistoryEvents {
     Object.defineProperty(this, 'events', {
       get: () => {
         if (this[resourceSymbol].length !== 0 && !(this[resourceSymbol][0] instanceof HistoryEvent)) {
-          this[resourceSymbol] = this[resourceSymbol].map(event => new HistoryEvent(event, this[environmentSymbol]));
+          this[resourceSymbol] = this[resourceSymbol].map((event) => new HistoryEvent(event, this[environmentSymbol]));
         }
 
         return this[resourceSymbol];
       },
-    })
+    });
   }
 }
 

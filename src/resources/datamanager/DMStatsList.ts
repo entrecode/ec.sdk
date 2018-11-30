@@ -36,7 +36,7 @@ export default class DMStatsList extends Resource {
    */
   getAllItems(): Array<DMStatsResource> {
     const array = this[resourceSymbol][this[nameSymbol]] || [];
-    return array.map(resource => new this[itemClassSymbol](resource, this[environmentSymbol]));
+    return array.map((resource) => new this[itemClassSymbol](resource, this[environmentSymbol]));
   }
 
   /**
@@ -57,12 +57,13 @@ export default class DMStatsList extends Resource {
    * @returns {Resource|ResourceClass} the requested item.
    */
   getItem(n: number): DMStatsResource {
-    if (n === undefined) { // undefined check
+    if (n === undefined) {
+      // undefined check
       throw new Error('Index must be defined.');
     }
     const array = this[resourceSymbol][this[nameSymbol]] || [];
     if (!array || array.length === 0) {
-      throw new Error('Cannot get n\'th item of empty list.');
+      throw new Error("Cannot get n'th item of empty list.");
     }
     return new this[itemClassSymbol](array[n], this[environmentSymbol]);
   }

@@ -8,19 +8,19 @@ import HistoryEvents from '../publicAPI/HistoryEvents';
 const environmentSymbol: any = Symbol.for('environment');
 
 interface ModelResource {
-  created: Date,
-  description: string,
-  fields: Array<any>,
-  hasEntries: boolean,
-  hexColor: string,
-  hooks: Array<any>,
-  locales: Array<string>,
-  modelID: string,
-  modified: Date,
-  policies: Array<any>,
-  title: string,
-  titleField: string,
-  config: any,
+  created: Date;
+  description: string;
+  fields: Array<any>;
+  hasEntries: boolean;
+  hexColor: string;
+  hooks: Array<any>;
+  locales: Array<string>;
+  modelID: string;
+  modified: Date;
+  policies: Array<any>;
+  title: string;
+  titleField: string;
+  config: any;
 }
 
 /**
@@ -67,7 +67,7 @@ class ModelResource extends Resource {
       fields: {
         enumerable: true,
         get: () => <Array<any>>this.getProperty('fields'),
-        set: (value: Array<any>) => this.setProperty('fields', value)
+        set: (value: Array<any>) => this.setProperty('fields', value),
       },
       hasEntries: {
         enumerable: true,
@@ -115,7 +115,7 @@ class ModelResource extends Resource {
         enumerable: true,
         get: () => this.getProperty('config'),
         set: (value: any) => this.setProperty('config', value),
-      }
+      },
     });
     this.countProperties();
   }
@@ -129,18 +129,18 @@ class ModelResource extends Resource {
   newHistory(options?: filterOptions): Promise<any> {
     return Promise.resolve()
       .then(() => this.newRequest().follow('ec:model/dm-entryHistory'))
-      .then(request => {
+      .then((request) => {
         if (options) {
           request.withTemplateParameters(optionsToQuery(options));
         }
 
-        return getHistory(this[environmentSymbol], request)
+        return getHistory(this[environmentSymbol], request);
       });
   }
 
   /**
    * Creates a new HistoryEventsResource with past events.
-   * 
+   *
    * @param {filterOptions?} options The filter options.
    * @returns {Promise<HistoryEventsResource} Event list of past events.
    */
@@ -152,26 +152,25 @@ class ModelResource extends Resource {
           request.withTemplateParameters(optionsToQuery(options));
         }
 
-        return get(this[environmentSymbol], request)
+        return get(this[environmentSymbol], request);
       })
       .then(([res]) => new HistoryEvents(res, this[environmentSymbol]));
   }
 
   /**
-  * Saves this {@link Resource}.
-  *
-  * @param {boolean} safePut true when safe put functionality is required.
-  * @param {string?} overwriteSchemaUrl Other schema url to overwrite the one in
-  *   `_link.self.profile`. Mainly for internal use.
-  * @returns {Promise<Resource>} Promise will resolve to the saved Resource. Will
-  *   be the same object but with refreshed data.
-  */
+   * Saves this {@link Resource}.
+   *
+   * @param {boolean} safePut true when safe put functionality is required.
+   * @param {string?} overwriteSchemaUrl Other schema url to overwrite the one in
+   *   `_link.self.profile`. Mainly for internal use.
+   * @returns {Promise<Resource>} Promise will resolve to the saved Resource. Will
+   *   be the same object but with refreshed data.
+   */
   save(safePut: boolean = false, overwriteSchemaUrl?: string): Promise<Resource> {
-    return Promise.resolve()
-      .then(() => {
-        validator.dropSchemas();
-        return super.save(safePut, overwriteSchemaUrl);
-      });
+    return Promise.resolve().then(() => {
+      validator.dropSchemas();
+      return super.save(safePut, overwriteSchemaUrl);
+    });
   }
 
   /**
@@ -182,7 +181,7 @@ class ModelResource extends Resource {
   purge() {
     return Promise.resolve()
       .then(() => this.newRequest().follow('ec:model/purge'))
-      .then(request => del(this[environmentSymbol], request))
+      .then((request) => del(this[environmentSymbol], request))
       .then(() => undefined);
   }
 
@@ -194,7 +193,7 @@ class ModelResource extends Resource {
   sync() {
     return Promise.resolve()
       .then(() => this.newRequest().follow('ec:model/sync'))
-      .then(request => post(this[environmentSymbol], request))
+      .then((request) => post(this[environmentSymbol], request))
       .then(([res]) => res);
   }
 }

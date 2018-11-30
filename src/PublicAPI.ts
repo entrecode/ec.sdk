@@ -50,8 +50,7 @@ const permissionsLoadedTimeSymbol: any = Symbol('_permissionsLoadedTimeSymbol');
 const assetBaseURLSymbol: any = Symbol('assetBaseURL');
 const requestCacheSymbol: any = Symbol('requestCache');
 
-validator.setLoggingFunction(() => {
-});
+validator.setLoggingFunction(() => {});
 
 const urls = {
   live: 'https://datamanager.entrecode.de/api',
@@ -75,7 +74,7 @@ const urls = {
  * const { PublicAPI } = require('ec.sdk');
  * const api = new PublicAPI('beefbeef', { environment: 'live', noCookie: true }, true); // for ec user
  * api.setToken(config.accessToken);
- * 
+ *
  * // frontend usage with session:
  * const session new Session();
  * let api = new PublicAPI('beefbeef', 'live', true);
@@ -128,7 +127,7 @@ export default class PublicAPI extends Core {
     if (typeof envOrOptions === 'string') {
       env = {
         environment: envOrOptions,
-      }
+      };
     } else {
       env = envOrOptions;
     }
@@ -146,7 +145,9 @@ export default class PublicAPI extends Core {
     if (/^[a-f0-9]{8}$/i.test(idOrURL)) {
       id = idOrURL;
     } else {
-      const result = /^https?:\/\/(datamanager\.(?:(?:cachena|buffalo)\.)?entrecode\.de|localhost:7471)\/api\/([a-f0-9]{8})\/?$/.exec(idOrURL);
+      const result = /^https?:\/\/(datamanager\.(?:(?:cachena|buffalo)\.)?entrecode\.de|localhost:7471)\/api\/([a-f0-9]{8})\/?$/.exec(
+        idOrURL,
+      );
       if (!result) {
         throw new Error('could not parse idOrURL');
       }
@@ -263,9 +264,10 @@ export default class PublicAPI extends Core {
     return Promise.resolve()
       .then(() => {
         if (
-          options
-          && Object.keys(options).length === 1 && 'assetID' in options
-          && (typeof options.assetID === 'string' || (!('any' in options.assetID) && !('all' in options.assetID)))
+          options &&
+          Object.keys(options).length === 1 &&
+          'assetID' in options &&
+          (typeof options.assetID === 'string' || (!('any' in options.assetID) && !('all' in options.assetID)))
         ) {
           throw new Error('Cannot filter assetList only by assetID. Use PublicAPI#asset() instead');
         }
@@ -290,16 +292,14 @@ export default class PublicAPI extends Core {
    * @returns {Promise<undefined>} Promise resolving on success.
    */
   changeEmail(email: string): Promise<void> {
-    return Promise.resolve()
-      .then(() => {
-        if (!email) {
-          throw new Error('email must be defined');
-        }
-        return this.follow(`${this[shortIDSymbol]}:_auth/change-email`)
-          .then((request) => {
-            return postEmpty(this[environmentSymbol], request, { email });
-          });
+    return Promise.resolve().then(() => {
+      if (!email) {
+        throw new Error('email must be defined');
+      }
+      return this.follow(`${this[shortIDSymbol]}:_auth/change-email`).then((request) => {
+        return postEmpty(this[environmentSymbol], request, { email });
       });
+    });
   }
 
   /**
@@ -317,13 +317,14 @@ export default class PublicAPI extends Core {
           throw new Error('permission must be defined');
         }
 
-        if (!refresh && this[permissionsSymbol] && new Date().getTime() - this[permissionsLoadedTimeSymbol] <= 300000) { // 5 Minutes
+        if (!refresh && this[permissionsSymbol] && new Date().getTime() - this[permissionsLoadedTimeSymbol] <= 300000) {
+          // 5 Minutes
           return undefined;
         }
 
         if (!this[requestCacheSymbol]) {
           this[requestCacheSymbol] = this.follow('_permissions')
-            .then(request => get(this[environmentSymbol], request))
+            .then((request) => get(this[environmentSymbol], request))
             .then(([response]) => {
               this[requestCacheSymbol] = undefined;
               this[permissionsSymbol] = ShiroTrie.newTrie();
@@ -465,9 +466,7 @@ export default class PublicAPI extends Core {
             if (typeof file === 'string') {
               superagentRequest.attach('file', file);
             } else if (Buffer.isBuffer(file)) {
-              if (!('fileName' in options)
-                || !Array.isArray(options.fileName)
-                || !options.fileName[index]) {
+              if (!('fileName' in options) || !Array.isArray(options.fileName) || !options.fileName[index]) {
                 throw new Error('When using buffer file input you must provide options.fileName.');
               }
               superagentRequest.attach('file', file, options.fileName[index]);
@@ -516,7 +515,7 @@ export default class PublicAPI extends Core {
    * For frontend usage you must provide a
    * {@link https://developer.mozilla.org/de/docs/Web/API/FormData|FormData} object containing the
    * multiple files in a field with the name 'file'.
-   * 
+   *
    * In both cases you can add a string representing an url. DataManager will then create the assets from this url.
    *
    * @param {string} assetGroupID the asset group in which the asset should be created.
@@ -541,7 +540,7 @@ export default class PublicAPI extends Core {
       })
       .catch((error) => {
         if (error.message.indexOf('Link not present in root response.') !== -1) {
-          throw new Error('assetGroup not found')
+          throw new Error('assetGroup not found');
         }
         throw error;
       })
@@ -569,14 +568,12 @@ export default class PublicAPI extends Core {
                 request.attach('file', file);
               }
             } else if (Buffer.isBuffer(file)) {
-              if (!('fileName' in options)
-                || !Array.isArray(options.fileName)
-                || !options.fileName[index]) {
+              if (!('fileName' in options) || !Array.isArray(options.fileName) || !options.fileName[index]) {
                 throw new Error('When using buffer file input you must provide options.fileName.');
               }
               request.attach('file', file, options.fileName[index]);
             } else {
-              throw new Error('Cannot handle input.')
+              throw new Error('Cannot handle input.');
             }
           });
 
@@ -643,24 +640,26 @@ export default class PublicAPI extends Core {
 
         return this.link(`${this[shortIDSymbol]}:${model}`);
       })
-      .then(link =>
-        validator.validate(e, `${link.profile}?template=post`)
-          .catch((e) => {
-            throw new Problem(convertValidationError(e), locale);
-          }))
+      .then((link) =>
+        validator.validate(e, `${link.profile}?template=post`).catch((e) => {
+          throw new Problem(convertValidationError(e), locale);
+        }),
+      )
       .then(() => this.follow(`${this[shortIDSymbol]}:${model}`))
-      .then(request => {
+      .then((request) => {
         if (levels) {
           request.withTemplateParameters({ _levels: levels });
         }
-        return post(this[environmentSymbol], request, e)
+        return post(this[environmentSymbol], request, e);
       })
-      .then(([res, traversal]): any => {
-        if (!res || Object.keys(res).length === 0) {
-          return undefined;
-        }
-        return createEntry(res, this[environmentSymbol], traversal);
-      });
+      .then(
+        ([res, traversal]): any => {
+          if (!res || Object.keys(res).length === 0) {
+            return undefined;
+          }
+          return createEntry(res, this[environmentSymbol], traversal);
+        },
+      );
   }
 
   /**
@@ -713,9 +712,10 @@ export default class PublicAPI extends Core {
         }
 
         if (
-          options
-          && Object.keys(options).length === 1 && 'assetID' in options
-          && (typeof options.assetID === 'string' || (!('any' in options.assetID) && !('all' in options.assetID)))
+          options &&
+          Object.keys(options).length === 1 &&
+          'assetID' in options &&
+          (typeof options.assetID === 'string' || (!('any' in options.assetID) && !('all' in options.assetID)))
         ) {
           throw new Error('Cannot filter assetList only by assetID. Use PublicAPI#dmAsset() instead');
         }
@@ -724,7 +724,7 @@ export default class PublicAPI extends Core {
       })
       .catch((error) => {
         if (error.message.indexOf('Link not present in root response.') !== -1) {
-          throw new Error('assetGroup not found')
+          throw new Error('assetGroup not found');
         }
 
         throw error;
@@ -812,17 +812,21 @@ export default class PublicAPI extends Core {
         return this.follow(`${this[shortIDSymbol]}:${model}`);
       })
       .then((request) => {
-        request.withTemplateParameters(optionsToQuery(options, this.getLink(`${this[shortIDSymbol]}:${model}`).href, true));
+        request.withTemplateParameters(
+          optionsToQuery(options, this.getLink(`${this[shortIDSymbol]}:${model}`).href, true),
+        );
         return get(this[environmentSymbol], request);
       })
       .then(([res, traversal]) => {
-        if ('count' in res && 'total' in res && !('_entryTitle' in res)) { // does look like a list
+        if ('count' in res && 'total' in res && !('_entryTitle' in res)) {
+          // does look like a list
           if (res.total !== 1) {
             throw new Error(`Invalid number of results for single entry request: ${res.total}`);
           }
 
-          return createList(res, this[environmentSymbol], traversal, `${this[shortIDSymbol]}:${model}`)
-            .then(list => list.getFirstItem());
+          return createList(res, this[environmentSymbol], traversal, `${this[shortIDSymbol]}:${model}`).then((list) =>
+            list.getFirstItem(),
+          );
         }
 
         return createEntry(res, this[environmentSymbol], traversal);
@@ -845,7 +849,8 @@ export default class PublicAPI extends Core {
    * @param {filterOptions?} options filter options
    * @returns {Promise<EntryList>} Promise resolving to EntryList
    */
-  entryList(model: string, options?: filterOptions | any): Promise<EntryList> { // remove any
+  entryList(model: string, options?: filterOptions | any): Promise<EntryList> {
+    // remove any
     return Promise.resolve()
       .then(() => {
         if (!model) {
@@ -853,22 +858,26 @@ export default class PublicAPI extends Core {
         }
 
         if (
-          options && Object.keys(options).length === 1
-          && ((options.id && (typeof options.id === 'string' || (!('any' in options.id) && !('all' in options.id))))
-            ||
+          options &&
+          Object.keys(options).length === 1 &&
+          ((options.id && (typeof options.id === 'string' || (!('any' in options.id) && !('all' in options.id)))) ||
             (options._id && (typeof options._id === 'string' || (!('any' in options._id) && !('all' in options._id)))))
         ) {
-          throw new Error('Providing only an id/_id in entryList filter will result in single resource response. Please use PublicAPI#entry');
+          throw new Error(
+            'Providing only an id/_id in entryList filter will result in single resource response. Please use PublicAPI#entry',
+          );
         }
 
         return this.follow(`${this[shortIDSymbol]}:${model}`);
       })
       .then((request) => {
-        request.withTemplateParameters(optionsToQuery(options, this.getLink(`${this[shortIDSymbol]}:${model}`).href, true));
+        request.withTemplateParameters(
+          optionsToQuery(options, this.getLink(`${this[shortIDSymbol]}:${model}`).href, true),
+        );
         return get(this[environmentSymbol], request);
       })
       .then(([res, traversal]) => {
-        return createList(res, this[environmentSymbol], traversal, `${this[shortIDSymbol]}:${model}`)
+        return createList(res, this[environmentSymbol], traversal, `${this[shortIDSymbol]}:${model}`);
       });
   }
 
@@ -880,12 +889,12 @@ export default class PublicAPI extends Core {
    * @param {object?} templateParameter Optional template parameters
    * @returns {Promise<string>}
    */
-  getAuthLink(name: string, templateParameter: any = {}): Promise<string> { // todo clientID?
-    return this.follow(`${this.shortID}:_auth/${name}`)
-      .then(request => {
-        request.withTemplateParameters(templateParameter);
-        return getUrl(this[environmentSymbol], request);
-      });
+  getAuthLink(name: string, templateParameter: any = {}): Promise<string> {
+    // todo clientID?
+    return this.follow(`${this.shortID}:_auth/${name}`).then((request) => {
+      request.withTemplateParameters(templateParameter);
+      return getUrl(this[environmentSymbol], request);
+    });
   }
 
   /**
@@ -931,22 +940,21 @@ export default class PublicAPI extends Core {
           relation = 'ec:dm-asset/file';
         }
 
-        return this.follow(relation)
-          .then((request) => {
-            request.withTemplateParameters(params);
-            return get(this[environmentSymbol], request);
-          });
+        return this.follow(relation).then((request) => {
+          request.withTemplateParameters(params);
+          return get(this[environmentSymbol], request);
+        });
       })
       .then(([res]) => res.url);
   }
 
   /**
    * Load fieldConfig for one or many models. Can be used to configure and style forms etc.
-   * 
+   *
    * @param {string|Array<string>} modelTitle The model title or array of model titles to load the field config for.
    * @returns {Promise<object>} Returns either a Object with single model field config, or an object with multiple field configs
    */
-  getFieldConfig(modelTitle: string | Array<string>): Promise<models|fields> {
+  getFieldConfig(modelTitle: string | Array<string>): Promise<models | fields> {
     return Promise.resolve()
       .then(() => {
         if (!modelTitle) {
@@ -1026,19 +1034,18 @@ export default class PublicAPI extends Core {
           return link;
         }
 
-        return get(this[environmentSymbol], this.newRequest().follow('self'))
-          .then(([res, traversal]) => {
-            this[resourceSymbol] = halfred.parse(res);
-            this[traversalSymbol] = traversal;
+        return get(this[environmentSymbol], this.newRequest().follow('self')).then(([res, traversal]) => {
+          this[resourceSymbol] = halfred.parse(res);
+          this[traversalSymbol] = traversal;
 
-            const link = this.getLink(`${this[shortIDSymbol]}:${model}`);
+          const link = this.getLink(`${this[shortIDSymbol]}:${model}`);
 
-            if (!link) {
-              throw new Error(`Model ${model} not found.`);
-            }
+          if (!link) {
+            throw new Error(`Model ${model} not found.`);
+          }
 
-            return link;
-          });
+          return link;
+        });
       })
       .then((link) => {
         link = link.profile;
@@ -1113,14 +1120,13 @@ export default class PublicAPI extends Core {
           throw new Error('clientID must be set with PublicAPI#setClientID(clientID: string)');
         }
 
-        return this.follow(`${this[shortIDSymbol]}:_auth/logout`)
-          .then((request) => {
-            request.withTemplateParameters({
-              clientID: this[tokenStoreSymbol].getClientID(),
-              token: this[tokenStoreSymbol].getToken(),
-            });
-            return post(this[environmentSymbol], request);
+        return this.follow(`${this[shortIDSymbol]}:_auth/logout`).then((request) => {
+          request.withTemplateParameters({
+            clientID: this[tokenStoreSymbol].getClientID(),
+            token: this[tokenStoreSymbol].getToken(),
           });
+          return post(this[environmentSymbol], request);
+        });
       })
       .then(() => {
         this[eventsSymbol].emit('logout');
@@ -1135,20 +1141,19 @@ export default class PublicAPI extends Core {
    * @param {boolean?} reload whether or not to force reload, default true
    * @returns {Promise<any>} Object account info
    */
-  me(reload: boolean = true): Promise<any> { //TODO advanced type
-    return Promise.resolve()
-      .then(() => {
-        if (this[resourceSymbol] && this.account) {
-          return this.account;
-        }
+  me(reload: boolean = true): Promise<any> {
+    //TODO advanced type
+    return Promise.resolve().then(() => {
+      if (this[resourceSymbol] && this.account) {
+        return this.account;
+      }
 
-        if (!this[tokenStoreSymbol].hasToken()) {
-          throw new Error('No token stored. PublicAPI#me() unable to run.');
-        }
+      if (!this[tokenStoreSymbol].hasToken()) {
+        throw new Error('No token stored. PublicAPI#me() unable to run.');
+      }
 
-        return this.resolve(reload)
-          .then(() => this.account);
-      });
+      return this.resolve(reload).then(() => this.account);
+    });
   }
 
   /**
@@ -1159,15 +1164,14 @@ export default class PublicAPI extends Core {
    * @returns {Promise<any>} Object with models
    */
   modelList(reload: boolean = false): Promise<any> {
-    return this.resolve(reload)
-      .then(() => {
-        const out = {};
-        this.models.forEach((model) => {
-          out[model.title] = model;
-        });
-        this[modelCacheSymbol] = out; // TODO is this needed?
-        return out;
+    return this.resolve(reload).then(() => {
+      const out = {};
+      this.models.forEach((model) => {
+        out[model.title] = model;
       });
+      this[modelCacheSymbol] = out; // TODO is this needed?
+      return out;
+    });
   }
 
   /**
@@ -1177,8 +1181,8 @@ export default class PublicAPI extends Core {
    * @returns {Promise<Array<string>>} Resolves to an array with all available asssetGroupIDs
    */
   assetGroupList(reload: boolean = false): Promise<any> {
-    return this.resolve(reload)
-      .then(() => Object.keys(this[resourceSymbol].allLinks())
+    return this.resolve(reload).then(() =>
+      Object.keys(this[resourceSymbol].allLinks())
         .map((key) => {
           const result = /^ec:dm-assets\/(.*)$/.exec(key);
           if (!result) {
@@ -1187,7 +1191,8 @@ export default class PublicAPI extends Core {
 
           return result[1];
         })
-        .filter(x => !!x));
+        .filter((x) => !!x),
+    );
   }
 
   /**
@@ -1204,13 +1209,13 @@ export default class PublicAPI extends Core {
           request.withTemplateParameters(optionsToQuery(options));
         }
 
-        return getHistory(this[environmentSymbol], request)
+        return getHistory(this[environmentSymbol], request);
       });
   }
 
   /**
    * Creates a new HistoryEventsResource with past events.
-   * 
+   *
    * @param {filterOptions?} options The filter options.
    * @returns {Promise<HistoryEventsResource} Event list of past events.
    */
@@ -1222,7 +1227,7 @@ export default class PublicAPI extends Core {
           request.withTemplateParameters(optionsToQuery(options));
         }
 
-        return get(this[environmentSymbol], request)
+        return get(this[environmentSymbol], request);
       })
       .then(([res]) => new HistoryEvents(res, this[environmentSymbol]));
   }
@@ -1248,7 +1253,8 @@ export default class PublicAPI extends Core {
         }
 
         return this.follow(`${this[shortIDSymbol]}:_auth/password-reset`);
-      }).then((request) => {
+      })
+      .then((request) => {
         request.withTemplateParameters({
           clientID: this[tokenStoreSymbol].getClientID(),
           email,
@@ -1268,57 +1274,56 @@ export default class PublicAPI extends Core {
       return Promise.resolve(this);
     }
 
-    return get(this[environmentSymbol], this.newRequest().follow('self'))
-      .then(([res, traversal]) => {
-        this[resourceSymbol] = halfred.parse(res);
-        this[traversalSymbol] = traversal;
+    return get(this[environmentSymbol], this.newRequest().follow('self')).then(([res, traversal]) => {
+      this[resourceSymbol] = halfred.parse(res);
+      this[traversalSymbol] = traversal;
 
-        const assetGroups = Object.keys(this[resourceSymbol].allLinks()).filter(x => x.indexOf(`ec:dm-assets/`) !== -1);
+      const assetGroups = Object.keys(this[resourceSymbol].allLinks()).filter((x) => x.indexOf(`ec:dm-assets/`) !== -1);
 
-        const relations = {
-          legacyAsset: {
-            relation: 'ec:api/assets',
-            createRelation: false,
-            createTemplateModifier: '',
-            id: 'assetID',
-            ResourceClass: PublicAssetResource,
-            ListClass: PublicAssetList,
-          },
-          tags: {
-            relation: 'ec:api/tags',
-            createRelation: false,
-            createTemplateModifier: '',
-            id: 'tag',
-            ResourceClass: PublicTagResource,
-            ListClass: PublicTagList,
-          },
+      const relations = {
+        legacyAsset: {
+          relation: 'ec:api/assets',
+          createRelation: false,
+          createTemplateModifier: '',
+          id: 'assetID',
+          ResourceClass: PublicAssetResource,
+          ListClass: PublicAssetList,
+        },
+        tags: {
+          relation: 'ec:api/tags',
+          createRelation: false,
+          createTemplateModifier: '',
+          id: 'tag',
+          ResourceClass: PublicTagResource,
+          ListClass: PublicTagList,
+        },
+      };
+      assetGroups.forEach((relation) => {
+        const relationName = `dmAsset.${relation.substr(13)}`;
+        relations[relationName] = {
+          relation: relation,
+          createRelation: false,
+          createTemplateModifier: '',
+          id: 'assetID',
+          ResourceClass: DMAssetResource,
+          ListClass: DMAssetList,
         };
-        assetGroups.forEach((relation) => {
-          const relationName = `dmAsset.${relation.substr(13)}`;
-          relations[relationName] = {
-            relation: relation,
-            createRelation: false,
-            createTemplateModifier: '',
-            id: 'assetID',
-            ResourceClass: DMAssetResource,
-            ListClass: DMAssetList,
-          }
-        });
-        this[resourceSymbol].models.forEach((model) => {
-          relations[`model.${model.title}`] = {
-            relation: `${this[shortIDSymbol]}:${model.title}`,
-            createRelation: false, // TODO
-            createTemplateModifier: '',
-            id: '_id',
-            resourceFunction: createEntry,
-            listFunction: createList,
-          }
-        });
-
-        this[relationsSymbol] = relations;
-
-        return this;
       });
+      this[resourceSymbol].models.forEach((model) => {
+        relations[`model.${model.title}`] = {
+          relation: `${this[shortIDSymbol]}:${model.title}`,
+          createRelation: false, // TODO
+          createTemplateModifier: '',
+          id: '_id',
+          resourceFunction: createEntry,
+          listFunction: createList,
+        };
+      });
+
+      this[relationsSymbol] = relations;
+
+      return this;
+    });
   }
 
   /**
@@ -1331,7 +1336,7 @@ export default class PublicAPI extends Core {
     const options: any = {};
 
     if (this[cookieModifierSymbol].length === 0) {
-      options.environment = this[environmentSymbol]
+      options.environment = this[environmentSymbol];
     } else {
       options.environment = this[environmentSymbol];
       options.cookieModifier = this[cookieModifierSymbol];
@@ -1354,7 +1359,7 @@ export default class PublicAPI extends Core {
     }
 
     if (clientID !== 'rest') {
-      throw new Error('ec.sdk currently only supports client \'rest\'');
+      throw new Error("ec.sdk currently only supports client 'rest'");
     }
 
     this[tokenStoreSymbol].setClientID(clientID);
@@ -1405,17 +1410,17 @@ export default class PublicAPI extends Core {
   }
 
   /**
- * Load a single {@link PublicTagResource}.
- *
- * @example
- * return assetList.tag('thisOne')
- * .then(tag => {
- *   return show(tag);
- * });
- *
- * @param {string} tag the tag
- * @returns {Promise<PublicTagResource>} Promise resolving to PublicTagResource
- */
+   * Load a single {@link PublicTagResource}.
+   *
+   * @example
+   * return assetList.tag('thisOne')
+   * .then(tag => {
+   *   return show(tag);
+   * });
+   *
+   * @param {string} tag the tag
+   * @returns {Promise<PublicTagResource>} Promise resolving to PublicTagResource
+   */
   tag(tag: string): Promise<PublicTagResource> {
     return Promise.resolve()
       .then(() => {
@@ -1457,13 +1462,15 @@ export default class PublicAPI extends Core {
    * @param {filterOptions?} options filter options
    * @returns {Promise<PublicTagList>} Promise resolving to PublicTagList
    */
-  tagList(options?: filterOptions | any): Promise<PublicTagList> { // TODO remove any
+  tagList(options?: filterOptions | any): Promise<PublicTagList> {
+    // TODO remove any
     return Promise.resolve()
       .then(() => {
         if (
           options &&
-          Object.keys(options).length === 1 && 'tag' in options
-          && (typeof options.tag === 'string' || (!('any' in options.tag) && !('all' in options.tag)))
+          Object.keys(options).length === 1 &&
+          'tag' in options &&
+          (typeof options.tag === 'string' || (!('any' in options.tag) && !('all' in options.tag)))
         ) {
           throw new Error('Cannot filter tagList only by tag. Use PublicAPI#tag() instead');
         }
@@ -1479,21 +1486,21 @@ export default class PublicAPI extends Core {
 
   /**
    * Programatically signup a user, mostly used for special register flows using legacy users or magic link login.
-   * 
+   *
    * @param {{email: string, password?: stirng, invite?: stirng, pendin?: boolean, sendWelcomMail?: boolean, anonymousToken?: string }} body Request body containing configuration options.
    */
   async configurableSignup(body: {
-    email: string,
-    password?: string,
-    invite?: string,
-    pending?: boolean,
-    sendWelcomeMail?: boolean,
-    anonymousToken?: string
+    email: string;
+    password?: string;
+    invite?: string;
+    pending?: boolean;
+    sendWelcomeMail?: boolean;
+    anonymousToken?: string;
   }): Promise<{
-    accountID: string,
-    email: string,
-    hasPassword: boolean,
-    pending: boolean,
+    accountID: string;
+    email: string;
+    hasPassword: boolean;
+    pending: boolean;
   }> {
     if (!body || typeof body !== 'object') {
       throw new Error('body must be defined');
@@ -1509,15 +1516,15 @@ export default class PublicAPI extends Core {
 
   /**
    * Programatically complete a signup with a single use validationToken, mostly used for special register flows using legacy users or magic link login.
-   * 
+   *
    * @param {{validationToken: string, useragent?: string ip?: string, password?: string, pending?: string}} body Request body containing configuration options.
    */
   async configurableSignupEdit(body: {
-    validationToken: string,
-    useragent?: string
-    ip?: string,
-    password?: string,
-    pending?: string,
+    validationToken: string;
+    useragent?: string;
+    ip?: string;
+    password?: string;
+    pending?: string;
   }): Promise<string> {
     if (!body || typeof body !== 'object') {
       throw new Error('body must be defined');
@@ -1534,7 +1541,7 @@ export default class PublicAPI extends Core {
 
   /**
    * Create a single-use validation token for a user. The token should then be send to the user via mail and MUST NOT be displayed to her.
-   * 
+   *
    * @param {stirng} email The users email.
    */
   async getValidationToken(email: string): Promise<string> {
@@ -1550,14 +1557,16 @@ export default class PublicAPI extends Core {
 
   /**
    * Validates a single-use token from a user. Checks if the token is valid and responds with user information.
-   * 
+   *
    * @param {string} validationToken Single-use token.
    */
-  async validateValidationToken(validationToken: string): Promise<{
-    accountID: string,
-    email: string,
-    hasPassword: boolean,
-    pending: boolean,
+  async validateValidationToken(
+    validationToken: string,
+  ): Promise<{
+    accountID: string;
+    email: string;
+    hasPassword: boolean;
+    pending: boolean;
   }> {
     if (!validationToken) {
       throw new Error('validationToken must be defined');
@@ -1570,14 +1579,10 @@ export default class PublicAPI extends Core {
   }
 
   /**
-   * 
+   *
    * @param {{validationToken: string, useragent: stirng, ip: string}} body Login request body.
    */
-  async loginWithToken(body: {
-    validationToken: string,
-    userAgent?: string,
-    ip?: string,
-  }): Promise<string> {
+  async loginWithToken(body: { validationToken: string; userAgent?: string; ip?: string }): Promise<string> {
     if (!body || typeof body !== 'object') {
       throw new Error('body must be defined');
     }
@@ -1594,11 +1599,11 @@ export default class PublicAPI extends Core {
 
 export type models = {
   [key: string]: fields;
-}
+};
 
 export type fields = {
   [key: string]: fieldDefinition;
-}
+};
 
 export type fieldDefinition = {
   title: string;
@@ -1612,7 +1617,8 @@ export type fieldDefinition = {
   validation: any;
   default: any;
   config: any;
-}
+  [key: string]: any;
+};
 
 export type fileOptions = {
   fileName?: string | Array<string>;
@@ -1620,55 +1626,55 @@ export type fileOptions = {
   ignoreDuplicates?: boolean;
   includeAssetIDInPath?: boolean;
   deduplicate?: boolean;
-}
+};
 
 export type jwtResponse = {
   jwt: string;
   accountID: string;
   iat: number;
   exp: number;
-}
+};
 
 export type assetOptions = {
-  fileName?: string | Array<string>,
-  title?: string,
-  tags?: Array<string>
-}
+  fileName?: string | Array<string>;
+  title?: string;
+  tags?: Array<string>;
+};
 
 /**
  * When creating Assets neue you can provide some options like fileName and
  * others. These are directly mapped to DataManager options in create Asset
  * route of Asset neue.
- * 
+ *
  * @example
  * const assetList = await api.createDMAsset('myFiles', filePath, { deduplicate: true });
- * 
+ *
  * @typedef {Object} fileOptions
  * @property {string | Array<string>} fileName
  * @property {boolean} preserveFilenames
  * @property {boolean} ignoreDuplicates
  * @property {boolean} includeAssetIDInPath
  * @property {boolean} deduplicate
- * 
+ *
  */
 
- /**
-  * Collection of all models and their fields
-  * 
-  * @typedef {Object} models
-  * @property {field} modelName
-  */
+/**
+ * Collection of all models and their fields
+ *
+ * @typedef {Object} models
+ * @property {field} modelName
+ */
 
 /**
  * Collection of all fields and their fieldDefinition
- * 
+ *
  * @typedef {Object} fields
  * @property {fieldDefinition} fieldName
  */
 
 /**
  * A field definitions is the public version of model field config with field specific configs used in ec.forms.
- * 
+ *
  * @typedef {Object} fieldDefinition
  * @property {string} title
  * @property {string} description
