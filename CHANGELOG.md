@@ -1,3 +1,10 @@
+## <small>0.17.18 (2018-11-30)</small>
+
+* release version 0.17.18 ([063f9c7](https://github.com/entrecode/ec.sdk/commit/063f9c7))
+* fix: resource loading with additional params ([deb68de](https://github.com/entrecode/ec.sdk/commit/deb68de))
+
+
+
 ## <small>0.17.17 (2018-11-30)</small>
 
 * release version 0.17.17 ([a2dfcdc](https://github.com/entrecode/ec.sdk/commit/a2dfcdc))
