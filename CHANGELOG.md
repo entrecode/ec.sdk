@@ -1,3 +1,15 @@
+## <small>0.17.17 (2018-11-30)</small>
+
+* release version 0.17.17 ([a2dfcdc](https://github.com/entrecode/ec.sdk/commit/a2dfcdc))
+* fix: adds wildcard type to fieldDefinition ([4befdb8](https://github.com/entrecode/ec.sdk/commit/4befdb8))
+* fix(package): update superagent to version 4.0.0 ([782af85](https://github.com/entrecode/ec.sdk/commit/782af85))
+* chore: switched to prettier code formatting ([0befe8d](https://github.com/entrecode/ec.sdk/commit/0befe8d))
+* chore(package): update @types/node to version 10.12.10 ([3fc6da9](https://github.com/entrecode/ec.sdk/commit/3fc6da9))
+* chore(package): update lockfile package-lock.json ([b623dd4](https://github.com/entrecode/ec.sdk/commit/b623dd4))
+* chore(package): update lockfile package-lock.json ([250bc0c](https://github.com/entrecode/ec.sdk/commit/250bc0c))
+
+
+
 ## <small>0.17.16 (2018-11-27)</small>
 
 * release version 0.17.16 ([cfb25fc](https://github.com/entrecode/ec.sdk/commit/cfb25fc))
