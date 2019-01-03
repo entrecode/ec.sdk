@@ -36,6 +36,16 @@
               
                 
                 <li><a
+                  href='#public-api-cheatsheet'
+                  class="h5 bold black caps">
+                  Public API Cheatsheet
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
                   href='#api-connectors'
                   class="h5 bold black caps">
                   API connectors
@@ -3293,6 +3303,146 @@ dataManager.dataManagerList()
     .then(<span class="hljs-function"><span class="hljs-params">list</span> =&gt;</span> doSomthingWith(list))
     .catch(<span class="hljs-built_in">console</span>.log);
 </span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></pre>
+
+ 
+   
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+        
+          
+            <div class='keyline-top-not py2'>
+  <section class='py2 clearfix'>
+
+    <h2 id='public-api-cheatsheet' class='mt0'>
+      Public API Cheatsheet
+    </h2>
+
+    
+      <p>This is a quick cheatsheet with the most needed snippets to get started with the <a href="#publicapi">PublicAPI</a>.</p>
+<h3>Setup</h3>
+<p>NodeJS / ec-user-token:</p>
+<pre class='hljs'><span class="hljs-keyword">const</span> { PublicAPI } = <span class="hljs-built_in">require</span>(<span class="hljs-string">'ec.sdk'</span>);
+<span class="hljs-keyword">const</span> api = <span class="hljs-keyword">new</span> PublicAPI(<span class="hljs-string">'beefbeef'</span>, { <span class="hljs-attr">environment</span>: <span class="hljs-string">'live'</span>, <span class="hljs-attr">noCookie</span>: <span class="hljs-literal">true</span> }, <span class="hljs-literal">true</span>); <span class="hljs-comment">// for ec user</span>
+api.setToken(config.accessToken);</pre>
+<p>Frontend / public:</p>
+<pre class='hljs'><span class="hljs-keyword">import</span> { PublicAPI } <span class="hljs-keyword">from</span> <span class="hljs-string">'ec.sdk'</span>;
+<span class="hljs-keyword">const</span> api = <span class="hljs-keyword">new</span> PublicAPI(<span class="hljs-string">'beefbeef'</span>, { <span class="hljs-attr">environment</span>: <span class="hljs-string">'live'</span> });</pre>
+<h3>entryList</h3>
+<pre class='hljs'><span class="hljs-keyword">const</span> list = <span class="hljs-keyword">await</span> api.entryList(<span class="hljs-string">'modelTitle'</span>, {
+  <span class="hljs-attr">size</span>: <span class="hljs-number">10</span>,
+  <span class="hljs-attr">page</span>: <span class="hljs-number">1</span>,
+  <span class="hljs-attr">sort</span>: [<span class="hljs-string">'-_created'</span>],
+  <span class="hljs-attr">_levels</span>: <span class="hljs-number">1</span>, <span class="hljs-comment">// only for single entry requests</span>
+  _fields: [<span class="hljs-string">'id'</span>, <span class="hljs-string">'title'</span>],
+  <span class="hljs-attr">myproperty</span>: <span class="hljs-string">'exactValue'</span>,
+  <span class="hljs-attr">email</span>: { <span class="hljs-attr">search</span>: <span class="hljs-string">'andre'</span> },
+  <span class="hljs-attr">prop</span>: { <span class="hljs-attr">any</span>: [<span class="hljs-string">'id1'</span>, <span class="hljs-string">'id2'</span>] },
+});</pre>
+<p>Always recommended: <code>size</code> and <code>_fields</code>.</p>
+<p>Properties:</p>
+<pre class='hljs'>list.count <span class="hljs-comment">// results in this response</span>
+list.total <span class="hljs-comment">// total</span>
+list.getFirstItem() <span class="hljs-comment">// not really needed anymore:</span></pre>
+<p>Get single entry:</p>
+<pre class='hljs'><span class="hljs-keyword">const</span> entry = <span class="hljs-keyword">await</span> api.entry(<span class="hljs-string">'modelTitle'</span>, { <span class="hljs-attr">uniqueField</span>: <span class="hljs-string">'uniqueValue'</span> });</pre>
+<p>Async Iterator Functions:</p>
+<p><em>Keep in mind that you should sort the entryList after something that does not change, like <code>created</code></em></p>
+<pre class='hljs'><span class="hljs-keyword">await</span> list.map();
+<span class="hljs-keyword">await</span> list.filter();
+<span class="hljs-keyword">await</span> list.find();</pre>
+<h3>liteEntry</h3>
+<pre class='hljs'>liteEntry._entryTitle;
+<span class="hljs-keyword">await</span> liteEntry.resolve();</pre>
+<h3>entry</h3>
+<p>Properties:</p>
+<pre class='hljs'>entry.isDirty; <span class="hljs-comment">// boolean</span></pre>
+<p>Saving/Deleting:</p>
+<pre class='hljs'><span class="hljs-keyword">await</span> entry.del();
+<span class="hljs-keyword">await</span> entry.save(<span class="hljs-literal">true</span>); <span class="hljs-comment">// save PUT</span></pre>
+
+    
+  </section>
+</div>
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='public-api-cheatsheet'>
+      Public API Cheatsheet
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>This is a quick cheatsheet with the most needed snippets to get started with the <a href="#publicapi">PublicAPI</a>.</p>
+<h3>Setup</h3>
+<p>NodeJS / ec-user-token:</p>
+<pre class='hljs'><span class="hljs-keyword">const</span> { PublicAPI } = <span class="hljs-built_in">require</span>(<span class="hljs-string">'ec.sdk'</span>);
+<span class="hljs-keyword">const</span> api = <span class="hljs-keyword">new</span> PublicAPI(<span class="hljs-string">'beefbeef'</span>, { <span class="hljs-attr">environment</span>: <span class="hljs-string">'live'</span>, <span class="hljs-attr">noCookie</span>: <span class="hljs-literal">true</span> }, <span class="hljs-literal">true</span>); <span class="hljs-comment">// for ec user</span>
+api.setToken(config.accessToken);</pre>
+<p>Frontend / public:</p>
+<pre class='hljs'><span class="hljs-keyword">import</span> { PublicAPI } <span class="hljs-keyword">from</span> <span class="hljs-string">'ec.sdk'</span>;
+<span class="hljs-keyword">const</span> api = <span class="hljs-keyword">new</span> PublicAPI(<span class="hljs-string">'beefbeef'</span>, { <span class="hljs-attr">environment</span>: <span class="hljs-string">'live'</span> });</pre>
+<h3>entryList</h3>
+<pre class='hljs'><span class="hljs-keyword">const</span> list = <span class="hljs-keyword">await</span> api.entryList(<span class="hljs-string">'modelTitle'</span>, {
+  <span class="hljs-attr">size</span>: <span class="hljs-number">10</span>,
+  <span class="hljs-attr">page</span>: <span class="hljs-number">1</span>,
+  <span class="hljs-attr">sort</span>: [<span class="hljs-string">'-_created'</span>],
+  <span class="hljs-attr">_levels</span>: <span class="hljs-number">1</span>, <span class="hljs-comment">// only for single entry requests</span>
+  _fields: [<span class="hljs-string">'id'</span>, <span class="hljs-string">'title'</span>],
+  <span class="hljs-attr">myproperty</span>: <span class="hljs-string">'exactValue'</span>,
+  <span class="hljs-attr">email</span>: { <span class="hljs-attr">search</span>: <span class="hljs-string">'andre'</span> },
+  <span class="hljs-attr">prop</span>: { <span class="hljs-attr">any</span>: [<span class="hljs-string">'id1'</span>, <span class="hljs-string">'id2'</span>] },
+});</pre>
+<p>Always recommended: <code>size</code> and <code>_fields</code>.</p>
+<p>Properties:</p>
+<pre class='hljs'>list.count <span class="hljs-comment">// results in this response</span>
+list.total <span class="hljs-comment">// total</span>
+list.getFirstItem() <span class="hljs-comment">// not really needed anymore:</span></pre>
+<p>Get single entry:</p>
+<pre class='hljs'><span class="hljs-keyword">const</span> entry = <span class="hljs-keyword">await</span> api.entry(<span class="hljs-string">'modelTitle'</span>, { <span class="hljs-attr">uniqueField</span>: <span class="hljs-string">'uniqueValue'</span> });</pre>
+<p>Async Iterator Functions:</p>
+<p><em>Keep in mind that you should sort the entryList after something that does not change, like <code>created</code></em></p>
+<pre class='hljs'><span class="hljs-keyword">await</span> list.map();
+<span class="hljs-keyword">await</span> list.filter();
+<span class="hljs-keyword">await</span> list.find();</pre>
+<h3>liteEntry</h3>
+<pre class='hljs'>liteEntry._entryTitle;
+<span class="hljs-keyword">await</span> liteEntry.resolve();</pre>
+<h3>entry</h3>
+<p>Properties:</p>
+<pre class='hljs'>entry.isDirty; <span class="hljs-comment">// boolean</span></pre>
+<p>Saving/Deleting:</p>
+<pre class='hljs'><span class="hljs-keyword">await</span> entry.del();
+<span class="hljs-keyword">await</span> entry.save(<span class="hljs-literal">true</span>); <span class="hljs-comment">// save PUT</span></pre>
 
  
    
