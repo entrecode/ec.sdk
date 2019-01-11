@@ -1,6 +1,8 @@
 toc:
   - name: Getting Started
     file: ./README.md
+  - name: Public API Cheatsheet
+    file: ./src/doc/1-cheatsheet.md
   - name: API connectors
     file: ./src/doc/2-api-connector.md
   - Core
