@@ -94,6 +94,11 @@ class PlatformResource extends Resource {
     this.countProperties();
   }
 
+  /**
+   * Use this helper function to add a single target.
+   *
+   * @param {string| TargetResource} target The target you want to add.
+   */
   addTarget(target: string | TargetResource): void {
     let link = target instanceof TargetResource ? target.getLink('self') : undefined;
 
@@ -226,21 +231,42 @@ class PlatformResource extends Resource {
     return <Promise<DeploymentList>>this.resourceList('deployment', options);
   }
 
+  /**
+   * Get the codeSourceID.
+   *
+   * @returns {string} The codeSourceID
+   */
   getCodeSource(): string {
     const link = this.getLink('ec:app/codesource');
     return <string>querystring.parse(link.href.split('?')[1]).codeSourceID;
   }
 
+  /**
+   * Get the dataSourceID.
+   *
+   * @returns {string} The dataSourceID
+   */
   getDataSource(): string {
     const link = this.getLink('ec:app/datasource');
     return <string>querystring.parse(link.href.split('?')[1]).dataSourceID;
   }
 
+  /**
+   * Get the targetIDs.
+   *
+   * @returns {Array<string>} The targetIDs
+   */
   getTargets(): Array<string> {
     const links = this.getLinks('ec:app/target');
     return <Array<string>>links.map((link: any) => querystring.parse(link.href.split('?')[1]).targetID);
   }
 
+  /**
+   * Check if a given target is part of this platform.
+   *
+   * @param {string | TargetResource} target Target you want to check.
+   * @returns {boolean} Wether or not the target is contained in this platform.
+   */
   hasTarget(target: string | TargetResource): boolean {
     const targetID = target instanceof TargetResource ? target.targetID : target;
 
@@ -322,6 +348,11 @@ class PlatformResource extends Resource {
       .then(([res, traversal]) => new TargetList(res, this[environmentSymbol], traversal));
   }
 
+  /**
+   * Use this helper function to remove a single target.
+   *
+   * @param {string| TargetResource} target The target you want to remove.
+   */
   removeTarget(target: string | TargetResource): void {
     const targetID = target instanceof TargetResource ? target.targetID : target;
 
@@ -330,6 +361,11 @@ class PlatformResource extends Resource {
       .filter((link) => link.href.indexOf(targetID) === -1);
   }
 
+  /**
+   * Get the codeSource for this platform.
+   *
+   * @returns {string | CodeSourceResource} The codeSource or codeSourceID
+   */
   setCodeSource(codeSource: string | CodeSourceResource) {
     let link = codeSource instanceof CodeSourceResource ? codeSource.getLink('self') : undefined;
 
@@ -343,6 +379,11 @@ class PlatformResource extends Resource {
     return codeSource;
   }
 
+  /**
+   * Get the dataSource for this platform.
+   *
+   * @returns {string | DataSourceResource} The dataSource or dataSourceID
+   */
   setDataSource(dataSource: string | DataSourceResource) {
     let link = dataSource instanceof DataSourceResource ? dataSource.getLink('self') : undefined;
 
@@ -356,6 +397,11 @@ class PlatformResource extends Resource {
     return dataSource;
   }
 
+  /**
+   * Set the targets for this platofrm.
+   *
+   * @returns {Array<string | TargetResource>} The targetIDs or targets
+   */
   setTargets(targets: Array<string | TargetResource>) {
     const links = targets.map((target) => {
       const link = target instanceof TargetResource ? target.getLink('self') : undefined;
