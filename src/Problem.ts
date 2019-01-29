@@ -11,6 +11,8 @@ interface Problem extends Error {
   subErrors: Problem | any;
   title: string;
   verbose: string;
+  method: string,
+  url: string,
 }
 
 /**
