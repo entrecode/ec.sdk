@@ -1,3 +1,16 @@
+## <small>0.17.19 (2019-01-29)</small>
+
+* added cheatsheet ([9ff3a6e](https://github.com/entrecode/ec.sdk/commit/9ff3a6e))
+* CMS-3178: adds method and url to Problem ([dcbac06](https://github.com/entrecode/ec.sdk/commit/dcbac06))
+* release version 0.17.19 ([4131a19](https://github.com/entrecode/ec.sdk/commit/4131a19))
+* SDK-104 add original stack to Problem ([8bac352](https://github.com/entrecode/ec.sdk/commit/8bac352))
+* SDK-105 add doc for setter in platform resource ([699ec78](https://github.com/entrecode/ec.sdk/commit/699ec78))
+* fix: fix ListResource#find type errors ([a784a33](https://github.com/entrecode/ec.sdk/commit/a784a33))
+* fix: typings on PublicAPI#entry ([24c8270](https://github.com/entrecode/ec.sdk/commit/24c8270))
+* chore: update dependencies ([ae89328](https://github.com/entrecode/ec.sdk/commit/ae89328))
+
+
+
 ## <small>0.17.18 (2018-11-30)</small>
 
 * release version 0.17.18 ([063f9c7](https://github.com/entrecode/ec.sdk/commit/063f9c7))

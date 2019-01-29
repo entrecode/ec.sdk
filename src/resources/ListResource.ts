@@ -57,7 +57,10 @@ function filter(
     });
 }
 
-function find(list: ListResource, iterator: (resource: Resource) => Promise<boolean> | boolean): Promise<Resource> {
+function find(
+  list: ListResource,
+  iterator: (resource: Resource) => Promise<boolean> | boolean,
+): Promise<Resource | undefined> {
   return list
     .getAllItems()
     .map((entry) => () =>
@@ -65,7 +68,7 @@ function find(list: ListResource, iterator: (resource: Resource) => Promise<bool
         .then(() => iterator(entry))
         .then((found) => {
           if (!found) {
-            return false;
+            return undefined;
           }
           return entry;
         }),
@@ -78,7 +81,7 @@ function find(list: ListResource, iterator: (resource: Resource) => Promise<bool
           }
           return found;
         }),
-      Promise.resolve(false),
+      Promise.resolve(undefined),
     )
     .then((res) => {
       if (res) {

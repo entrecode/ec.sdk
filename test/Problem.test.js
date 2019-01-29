@@ -75,7 +75,7 @@ describe('Problem', () => {
     error.should.have.property('verbose', 'verbose');
   });
   it('should have remote stack', () => {
-    error.should.have.property('remoteStack', 'Error: title\n    at newError (/path/file.js:7:7)');
+    error.should.have.property('stack', 'Error: title\n    at newError (/path/file.js:7:7)');
   });
   it('should have short pretty string representation', () => {
     error.short().should.be

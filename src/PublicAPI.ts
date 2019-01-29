@@ -12,7 +12,7 @@ import EntryList, { createList } from './resources/publicAPI/EntryList';
 import EntryResource, { createEntry } from './resources/publicAPI/EntryResource';
 import PublicAssetList from './resources/publicAPI/PublicAssetList';
 import PublicAssetResource from './resources/publicAPI/PublicAssetResource';
-import { filterOptions } from './resources/ListResource';
+import { filterOptions, filterType } from './resources/ListResource';
 import {
   get,
   getEmpty,
@@ -786,7 +786,7 @@ export default class PublicAPI extends Core {
    *   levels directly request
    * @returns {Promise<EntryResource>} Promise resolving to EntryResource
    */
-  entry(model: string, id: string | filterOptions, options: number | any = {}): Promise<EntryResource> {
+  entry(model: string, id: string | filterOptions, options: number | filterOptions = {}): Promise<EntryResource> {
     return Promise.resolve()
       .then(() => {
         if (!model) {
@@ -797,14 +797,14 @@ export default class PublicAPI extends Core {
           throw new Error('id must be defined');
         }
 
-        if (Number.isInteger(options)) {
-          options = { _levels: options };
+        if (Number.isInteger(options as number)) {
+          options = { _levels: options } as filterOptions;
         }
 
         if (typeof id === 'object') {
           Object.assign(options, id);
         } else if (typeof id === 'string') {
-          options._id = id;
+          (options as filterOptions)._id = id;
         } else {
           throw new Error('invalid format for id');
         }
@@ -813,7 +813,7 @@ export default class PublicAPI extends Core {
       })
       .then((request) => {
         request.withTemplateParameters(
-          optionsToQuery(options, this.getLink(`${this[shortIDSymbol]}:${model}`).href, true),
+          optionsToQuery(options as filterOptions, this.getLink(`${this[shortIDSymbol]}:${model}`).href, true),
         );
         return get(this[environmentSymbol], request);
       })

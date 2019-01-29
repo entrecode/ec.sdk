@@ -11,6 +11,8 @@ interface Problem extends Error {
   subErrors: Problem | any;
   title: string;
   verbose: string;
+  method: string,
+  url: string,
 }
 
 /**
@@ -44,7 +46,7 @@ class Problem extends Error {
     }
 
     if ('stack' in error) {
-      this.remoteStack = error.stack;
+      this.stack = error.stack;
     }
 
     if ('_embedded' in error && 'error' in error._embedded) {
