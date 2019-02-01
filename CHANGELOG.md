@@ -1,3 +1,12 @@
+## <small>0.17.20 (2019-02-01)</small>
+
+* release version 0.17.20 ([6e23487](https://github.com/entrecode/ec.sdk/commit/6e23487))
+* chore: remove direct highlight dependency ([6e15f0d](https://github.com/entrecode/ec.sdk/commit/6e15f0d))
+* feat: add token list to resources in AccountResource SDK-111 ([e3d2e43](https://github.com/entrecode/ec.sdk/commit/e3d2e43))
+* feat: getter and setter for GroupResource#account ([560cbf8](https://github.com/entrecode/ec.sdk/commit/560cbf8))
+
+
+
 ## <small>0.17.19 (2019-01-29)</small>
 
 * added cheatsheet ([9ff3a6e](https://github.com/entrecode/ec.sdk/commit/9ff3a6e))

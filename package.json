@@ -1,6 +1,6 @@
 {
   "name": "ec.sdk",
-  "version": "0.17.19",
+  "version": "0.17.20",
   "description": "SDK for ec.api",
   "repository": "entrecode/ec.sdk",
   "author": "Simon Scherzinger <scherzinger@entrecode.de>",
@@ -61,7 +61,6 @@
     "conventional-changelog-cli": "^2.0.11",
     "coveralls": "^3.0.2",
     "documentation": "^9.1.0",
-    "highlight.js": "9.12.0",
     "ec.cookie-mock": "^1.0.1",
     "eventsource": "^1.0.7",
     "istanbul": "^0.4.5",

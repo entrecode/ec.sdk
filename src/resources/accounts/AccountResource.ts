@@ -4,8 +4,10 @@ import Resource from '../Resource';
 import TokenList from './TokenList';
 import { get } from '../../helper';
 import { environment } from '../../Core';
+import TokenResource from './TokenResource';
 
 const environmentSymbol: any = Symbol.for('environment');
+const relationsSymbol: any = Symbol.for('relations');
 
 interface AccountResource {
   accountID: string;
@@ -51,6 +53,18 @@ class AccountResource extends Resource {
    */
   constructor(resource: any, environment: environment, traversal?: any) {
     super(resource, environment, traversal);
+
+    this[relationsSymbol] = {
+      token: {
+        relation: 'ec:account/tokens',
+        createRelation: false,
+        createTemplateModifier: '',
+        id: 'accessTokenID',
+        ResourceClass: TokenResource,
+        ListClass: TokenList,
+      },
+    };
+
     Object.defineProperties(this, {
       accountID: {
         enumerable: true,
@@ -190,13 +204,7 @@ class AccountResource extends Resource {
    * @returns {Promise<TokenList>} Promise resolving the token list
    */
   tokenList(): Promise<TokenList> {
-    return Promise.resolve()
-      .then(() => {
-        const request = this.newRequest().follow('ec:account/tokens');
-
-        return get(this[environmentSymbol], request);
-      })
-      .then(([tokenList, traversal]) => new TokenList(tokenList, this[environmentSymbol], traversal));
+    return <Promise<TokenList>>this.resourceList('token');
   }
 
   // TODO remove permission

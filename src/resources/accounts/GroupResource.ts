@@ -7,6 +7,7 @@ interface GroupResource {
   groupID: string;
   name: string;
   permissions: Array<string>;
+  accounts: Array<string | any>;
 }
 
 /**
@@ -44,6 +45,16 @@ class GroupResource extends Resource {
         enumerable: true,
         get: () => <Array<string>>this.getProperty('permissions'),
         set: (value: Array<string>) => this.setProperty('permissions', value),
+      },
+      accounts: {
+        enumerable: true,
+        get: (): Array<any> => {
+          return this.getAccounts();
+        },
+        set: (accounts: Array<string | any>): Array<string | any> => {
+          this.setAccounts(accounts);
+          return accounts;
+        },
       },
     });
     this.countProperties();
