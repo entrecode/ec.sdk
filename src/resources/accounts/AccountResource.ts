@@ -56,10 +56,11 @@ class AccountResource extends Resource {
 
     this[relationsSymbol] = {
       token: {
-        relation: 'ec:account/tokens',
+        relation: 'ec:account/tokens/options',
         createRelation: false,
         createTemplateModifier: '',
         id: 'accessTokenID',
+        additionalTemplateParam: 'accountID',
         ResourceClass: TokenResource,
         ListClass: TokenList,
       },
@@ -80,7 +81,7 @@ class AccountResource extends Resource {
         get: () => this.getProperty('email'),
       },
       groups: {
-        enumerable: true,
+        enumerable: false,
         get: () => this.getProperty('groups'),
       },
       hasPassword: {

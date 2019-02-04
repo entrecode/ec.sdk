@@ -1,3 +1,14 @@
+## <small>0.17.21 (2019-02-04)</small>
+
+* release version 0.17.21 ([f29fb66](https://github.com/entrecode/ec.sdk/commit/f29fb66))
+* fix: TokenList in AccountResource with filter ([3e9a0ad](https://github.com/entrecode/ec.sdk/commit/3e9a0ad))
+* fix(package): update @types/validator to version 10.9.0 ([414d1eb](https://github.com/entrecode/ec.sdk/commit/414d1eb))
+* chore(package): update lockfile package-lock.json ([cb8567c](https://github.com/entrecode/ec.sdk/commit/cb8567c))
+* chore(package): update lockfile package-lock.json ([030f6b4](https://github.com/entrecode/ec.sdk/commit/030f6b4))
+* chore(package): update sinon to version 7.2.3 ([74049b5](https://github.com/entrecode/ec.sdk/commit/74049b5))
+
+
+
 ## <small>0.17.20 (2019-02-01)</small>
 
 * release version 0.17.20 ([6e23487](https://github.com/entrecode/ec.sdk/commit/6e23487))
