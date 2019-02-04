@@ -516,7 +516,7 @@ const modifier = {
  * @param {boolean?} encode if true it will encode the parameter values (eg. to support text filter with ',' or '+')
  * @returns {object} translated querystring object
  */
-export function optionsToQuery(options: filterOptions, templateURL?: string, encode: boolean = false): any {
+export function optionsToQuery(options: filterOptions, templateURL?: string, encode: boolean = false, retry: boolean = false): any {
   const out: any = {};
 
   if (options) {
@@ -621,6 +621,24 @@ export function optionsToQuery(options: filterOptions, templateURL?: string, enc
         .reduce((a, b) => a.concat(b), []);
 
       missings = Object.keys(out).filter((k) => results.indexOf(k) === -1);
+    }
+
+    if (missings.length > 0 && !retry) {
+      // sometimes "missing" means the template parameter is lower cased. try it that way
+      try {
+        const lowerCaseOptions = {};
+        Object.keys(options).forEach((key) => {
+          if (missings.indexOf(key) !== -1) {
+            lowerCaseOptions[key.toLocaleLowerCase()] = options[key];
+          } else {
+            lowerCaseOptions[key] = options[key];
+          }
+        });
+        const outLowerCase = optionsToQuery(lowerCaseOptions, templateURL, encode, true);
+        return outLowerCase;
+      } catch (err) {
+        // do nothing and proceed with original missing array...
+      }
     }
 
     if (missings.length > 0) {
