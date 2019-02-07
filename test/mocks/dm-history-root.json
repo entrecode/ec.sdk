@@ -1,12 +1,16 @@
 {
-    "_links": {
-        "ec:dm-entries-history": {
-            "href": "https://dm-history.entrecode.de/api/model?dataManagerID={dataManagerID}{&modelID,entryID,_size}",
-            "templated": true
-        },
-        "ec:entry-history": {
-            "href": "https://dm-history.entrecode.de/entryhistory{?dataManagerID,shortID,modelID,entryID,_size}",
-            "templated": true
-        }
+  "_links": {
+    "ec:dm-entries-history": {
+      "href": "https://dm-history.entrecode.de/api/model?dataManagerID={dataManagerID}{&modelID,entryID,_size}",
+      "templated": true
+    },
+    "ec:entry-history": {
+      "href": "https://dm-history.entrecode.de/entryhistory{?dataManagerID,shortID,modelID,entryID,_size}",
+      "templated": true
+    },
+    "ec:entries-history": {
+      "href": "https://dm-history.entrecode.de/entries{?dataManagerID,shortID,modelID,entryID,size,fromEventNumber,fromDate,toDate}",
+      "templated": true
     }
+  }
 }

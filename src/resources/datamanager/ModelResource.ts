@@ -1,7 +1,7 @@
 import * as validator from 'json-schema-remote';
 import Resource from '../Resource';
 import { environment } from '../../Core';
-import { get, del, post, optionsToQuery, getHistory } from '../../helper';
+import { get, del, post, optionsToQuery } from '../../helper';
 import { filterOptions } from '../ListResource';
 import HistoryEvents from '../publicAPI/HistoryEvents';
 
@@ -121,11 +121,34 @@ class ModelResource extends Resource {
   }
 
   /**
+   * Load the HistoryEvents for this Model from v3 API.
+   *
+   * @param {filterOptions | any} options The filter options
+   * @returns {Promise<HistoryEvents} The filtered HistoryEvents
+   */
+  getEvents(options?: filterOptions): Promise<any> {
+    return Promise.resolve()
+      .then(() => this.newRequest().follow('ec:model/history'))
+      .then((request) => {
+        if (options) {
+          request.withTemplateParameters(optionsToQuery(options));
+        }
+
+        return get(this[environmentSymbol], request);
+      })
+      .then(([res]) => new HistoryEvents(res, this[environmentSymbol]));
+  }
+
+  /*
+  /**
    * Creates a new History EventSource with the given filter options.
    *
+   * @deprecated
+   * 
    * @param {filterOptions | any} options The filter options
    * @return {Promise<EventSource>} The created EventSource.
    */
+  /*
   newHistory(options?: filterOptions): Promise<any> {
     return Promise.resolve()
       .then(() => this.newRequest().follow('ec:model/dm-entryHistory'))
@@ -141,9 +164,12 @@ class ModelResource extends Resource {
   /**
    * Creates a new HistoryEventsResource with past events.
    *
+   * @deprecated
+   * 
    * @param {filterOptions?} options The filter options.
    * @returns {Promise<HistoryEventsResource} Event list of past events.
    */
+  /*
   getPastEvents(options?: filterOptions): Promise<any> {
     return Promise.resolve()
       .then(() => this.newRequest().follow('ec:model/dm-entryHistory'))
@@ -156,6 +182,7 @@ class ModelResource extends Resource {
       })
       .then(([res]) => new HistoryEvents(res, this[environmentSymbol]));
   }
+  */
 
   /**
    * Saves this {@link Resource}.

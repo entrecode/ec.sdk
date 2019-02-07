@@ -321,12 +321,12 @@ describe('DataManager class', () => {
     getStub.onFirstCall().returns(resolver('dm-list.json'));
     getStub.onSecondCall().returns(resolver('dm-history-response.json'));
 
-    return dm.getPastEvents()
+    return dm.getEvents()
       .then((history) => {
         history.should.be.instanceOf(HistoryEvents);
-        history.events.should.be.an('array');
-        history.events[0].timestamp.should.be.instanceOf(Date);
-        history.events[0].eventId.should.be.equal('46239727-2703-5247-aa2f-f4ea978b3100');
+        history.items.should.be.an('array');
+        history.items[0].timestamp.should.be.instanceOf(Date);
+        history.items[0].modelID.should.be.equal('027f0bac-771f-42f4-98ee-f30bc645f5db');
         getStub.restore();
       })
       .catch((e) => {

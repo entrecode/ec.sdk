@@ -185,11 +185,35 @@ export default class DataManager extends Core {
   }
 
   /**
+   * Load the HistoryEvents for this DataManager from v3 API. 
+   * Note: This Request only has pagination when you load a single modelID.
+   *
+   * @param {filterOptions | any} options The filter options
+   * @returns {Promise<HistoryEvents} The filtered HistoryEvents
+   */
+  getEvents(options?: filterOptions): Promise<any> {
+    return Promise.resolve()
+      .then(() => this.follow('ec:history'))
+      .then((request) => {
+        request.follow('ec:entries-history');
+        
+        if (options) {
+          request.withTemplateParameters(optionsToQuery(options));
+        }
+
+        return get(this[environmentSymbol], request);
+      })
+      .then(([res]) => new HistoryEvents(res, this[environmentSymbol]));
+  }
+
+  /*
+  /**
    * Creates a new History EventSource with the given filter options.
    *
    * @param {filterOptions | any} options The filter options
    * @return {Promise<EventSource>} The created EventSource.
    */
+  /*
   newHistory(options?: filterOptions): Promise<any> {
     return Promise.resolve()
       .then(() => this.follow('ec:history'))
@@ -210,6 +234,7 @@ export default class DataManager extends Core {
    * @param {filterOptions?} options The filter options.
    * @returns {Promise<HistoryEventsResource} Event list of past events.
    */
+  /*
   getPastEvents(options?: filterOptions): Promise<any> {
     return Promise.resolve()
       .then(() => this.follow('ec:history'))
@@ -224,6 +249,7 @@ export default class DataManager extends Core {
       })
       .then(([res]) => new HistoryEvents(res, this[environmentSymbol]));
   }
+  */
 
   /**
    * Load a single {@link DMStatsResource}.
