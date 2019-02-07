@@ -47,10 +47,6 @@ class LiteRoleResource extends Resource {
     this.countProperties();
   }
 
-  private get dataManagerID() {
-    return this.getProperty('dataManagerID');
-  }
-
   /**
    * In order to resolve this {@link LiteRoleResource} to a proper {@link RoleResource} call this
    * function. A promise is returned which resolves to the {@link RoleResource}.

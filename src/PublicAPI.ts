@@ -12,7 +12,7 @@ import EntryList, { createList } from './resources/publicAPI/EntryList';
 import EntryResource, { createEntry } from './resources/publicAPI/EntryResource';
 import PublicAssetList from './resources/publicAPI/PublicAssetList';
 import PublicAssetResource from './resources/publicAPI/PublicAssetResource';
-import { filterOptions, filterType } from './resources/ListResource';
+import { filterOptions } from './resources/ListResource';
 import {
   get,
   getEmpty,
@@ -22,7 +22,6 @@ import {
   post,
   postEmpty,
   superagentPost,
-  getHistory,
   locale,
   put,
 } from './helper';
@@ -1196,11 +1195,35 @@ export default class PublicAPI extends Core {
   }
 
   /**
+   * Load the HistoryEvents for this DataManager from v3 API. 
+   * Note: This Request only has pagination when you load a single modelID.
+   *
+   * @param {filterOptions | any} options The filter options
+   * @returns {Promise<HistoryEvents} The filtered HistoryEvents
+   */
+  getEvents(options?: filterOptions): Promise<any> {
+    return Promise.resolve()
+      .then(() => this.follow('ec:api/history'))
+      .then((request) => {
+        if (options) {
+          request.withTemplateParameters(optionsToQuery(options));
+        }
+
+        return get(this[environmentSymbol], request);
+      })
+      .then(([res]) => new HistoryEvents(res, this[environmentSymbol]));
+  }
+
+  /*
+  /**
    * Creates a new History EventSource with the given filter options.
    *
+   * @deprecated
+   * 
    * @param {filterOptions | any} options The filter options
    * @return {Promise<EventSource>} The created EventSource.
    */
+  /*
   newHistory(options?: filterOptions): Promise<any> {
     return Promise.resolve()
       .then(() => this.follow('ec:api/dm-entryHistory'))
@@ -1216,9 +1239,12 @@ export default class PublicAPI extends Core {
   /**
    * Creates a new HistoryEventsResource with past events.
    *
+   * @deprecated
+   *
    * @param {filterOptions?} options The filter options.
    * @returns {Promise<HistoryEventsResource} Event list of past events.
    */
+  /*
   getPastEvents(options?: filterOptions): Promise<any> {
     return Promise.resolve()
       .then(() => this.follow('ec:api/dm-entryHistory'))
@@ -1231,6 +1257,7 @@ export default class PublicAPI extends Core {
       })
       .then(([res]) => new HistoryEvents(res, this[environmentSymbol]));
   }
+  */
 
   /**
    * Start a password reset.

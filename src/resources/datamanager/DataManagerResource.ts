@@ -15,7 +15,7 @@ import Resource from '../Resource';
 import RoleList from './RoleList';
 import RoleResource from './RoleResource';
 import { filterOptions } from '../ListResource';
-import { get, getUrl, superagentPost, optionsToQuery, getHistory } from '../../helper';
+import { get, getUrl, superagentPost, optionsToQuery } from '../../helper';
 import { environment } from '../../Core';
 import PublicAPI from '../../PublicAPI';
 import AssetGroupResource from './AssetGroupResource';
@@ -559,11 +559,35 @@ class DataManagerResource extends Resource {
   }
 
   /**
+   * Load the HistoryEvents for this DataManager from v3 API.
+   * Note: This Request only has pagination when you load a single modelID.
+   *
+   * @param {filterOptions | any} options The filter options
+   * @returns {Promise<HistoryEvents} The filtered HistoryEvents
+   */
+  getEvents(options?: filterOptions): Promise<any> {
+    return Promise.resolve()
+      .then(() => this.newRequest().follow('ec:datamanager/history'))
+      .then((request) => {
+        if (options) {
+          request.withTemplateParameters(optionsToQuery(options));
+        }
+
+        return get(this[environmentSymbol], request);
+      })
+      .then(([res]) => new HistoryEvents(res, this[environmentSymbol]));
+  }
+
+  /*
+  /**
    * Creates a new History EventSource with the given filter options.
    *
+   * @deprecated
+   * 
    * @param {filterOptions | any} options The filter options
    * @return {Promise<EventSource>} The created EventSource.
    */
+  /*
   newHistory(options?: filterOptions): Promise<any> {
     return Promise.resolve()
       .then(() => this.newRequest().follow('ec:datamanager/dm-entryHistory'))
@@ -579,9 +603,12 @@ class DataManagerResource extends Resource {
   /**
    * Creates a new HistoryEventsResource with past events.
    *
+   * @deprecated
+   * 
    * @param {filterOptions?} options The filter options.
    * @returns {Promise<HistoryEventsResource} Event list of past events.
    */
+  /*
   getPastEvents(options?: filterOptions): Promise<any> {
     return Promise.resolve()
       .then(() => this.newRequest().follow('ec:datamanager/dm-entryHistory'))
@@ -594,6 +621,7 @@ class DataManagerResource extends Resource {
       })
       .then(([res]) => new HistoryEvents(res, this[environmentSymbol]));
   }
+  */
 
   /**
    * Load a single {@link RoleResource}.

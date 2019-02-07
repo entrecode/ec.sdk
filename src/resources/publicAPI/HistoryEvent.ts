@@ -4,20 +4,18 @@ const environmentSymbol: any = Symbol.for('environment');
 const resourceSymbol: any = Symbol.for('resource');
 
 interface HistoryEvent {
-  eventNumber: number;
-  eventId: string;
-  eventType: string; // TODO enum?
-  timestamp: Date;
-  entryID: string;
   modelID: string;
-  modelTitle: string;
-  dataManagerID: string;
   shortID: string;
+  timestamp: Date;
+  'timestamp#entryID#randomNumber': string;
+  data: any;
+  oldEntryData: any;
   user: {
     accountID: string;
     userType: string; // TODO enum?
   };
-  data: Array<any>;
+  entryID: string;
+  type: string; // TODO enum?
 }
 
 /**
@@ -27,17 +25,15 @@ interface HistoryEvent {
  *
  * @class
  *
- * @prop {number} eventNumber number of the event
- * @prop {string} eventId id of the event
- * @prop {string} eventType type defining what happened
- * @prop {Date} timestamp time this event happened
- * @prop {string} entryID the entry this event belongs to
  * @prop {string} modelID the model this event belongs to
- * @prop {string} modelTitle model name this event belongs to
- * @prop {string} dataManagerID data manager this event belongs to
  * @prop {string} shortID data manager short id
- * @prop {object} user the user responsible for this event
+ * @prop {Date} timestamp time this event happened
+ * @prop {string} 'timestamp#entryID#randomNumber' the unique key from dynamodb
  * @prop {object} data data describing the event
+ * @prop {object} oldEntryData old data describing the event
+ * @prop {object} user the user responsible for this event
+ * @prop {string} entryID the entry this event belongs to
+ * @prop {string} type type defining what happened
  */
 class HistoryEvent {
   /**
@@ -60,20 +56,11 @@ class HistoryEvent {
         return this[resourceSymbol].timestamp;
       },
     });
-    [
-      'eventNumber',
-      'eventId',
-      'eventType',
-      'entryID',
-      'modelID',
-      'modelTitle',
-      'dataManagerID',
-      'shortID',
-      'user',
-      'data',
-    ].forEach((prop) => {
-      Object.defineProperty(this, prop, { enumerable: true, get: () => this[resourceSymbol][prop] });
-    });
+    ['modelID', 'shortID', 'timestamp#entryID#randomNumber', 'data', 'oldEntryData', 'user', 'entryID', 'type'].forEach(
+      (prop) => {
+        Object.defineProperty(this, prop, { enumerable: true, get: () => this[resourceSymbol][prop] });
+      },
+    );
   }
 }
 

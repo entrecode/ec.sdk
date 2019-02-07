@@ -5,11 +5,14 @@ const fs = require('fs');
 const sinon = require('sinon');
 const sinonChai = require('sinon-chai');
 
+const resolver = require('./../mocks/resolver');
+const helper = require('../../lib/helper');
+
 const ListResource = require('../../lib/resources/ListResource').default;
 const RoleList = require('../../lib/resources/datamanager/RoleList').default;
 const RoleResource = require('../../lib/resources/datamanager/RoleResource').default;
 const Resource = require('../../lib/resources/Resource').default;
-const LiteDMAccountResource = require('../../lib/resources/publicAPI/LiteDMAccountResource').default;
+const DMAccountList = require('../../lib/resources/datamanager/DMAccountList').default;
 
 chai.should();
 chai.use(sinonChai);
@@ -72,7 +75,7 @@ describe('Role Resource', () => {
   it('should be instance of Resource', () => {
     resource.should.be.instanceOf(Resource);
   });
-  it('should be instance of AccountResource', () => {
+  it('should be instance of RoleResource', () => {
     resource.should.be.instanceOf(RoleResource);
   });
 
@@ -103,28 +106,18 @@ describe('Role Resource', () => {
     });
   });
 
-  it('should get accounts as Lite', () => {
-    const { accounts } = resource;
-    accounts.should.have.property('length', 2);
-    accounts.forEach((account) => {
-      account.should.be.instanceOf(LiteDMAccountResource);
-    });
-  });
-  it('should set accounts with Lite', () => {
-    const spy = sinon.spy(resource, 'setProperty');
+  it('should load account list', () => {
+    const stub = sinon.stub(helper, 'get');
+    stub.returns(resolver('dm-account-list.json'));
 
-    const accounts = [
-      new LiteDMAccountResource({
-        profile: 'https://entrecode.de/schema/dm-account',
-        name: 'andre+t56@gmail.com',
-        href: 'https://datamanager.entrecode.de/account?dataManagerID=f7bfb69a-56a2-4475-b4ea-58b976eb7618&accountID=7b174a98-e062-464c-ab43-eb33b10f3271',
-      }),
-      'f3c3aaa4-dd4a-4561-9a75-ed8180444425',
-    ];
-    resource.accounts = accounts;
-    spy.should.have.been.calledOnce;
-    spy.should.have.been.calledWith('accounts', ['7b174a98-e062-464c-ab43-eb33b10f3271', 'f3c3aaa4-dd4a-4561-9a75-ed8180444425']);
-
-    spy.restore();
+    return resource.accountList()
+      .then((list) => {
+        list.should.be.instanceof(DMAccountList);
+        stub.restore();
+      })
+      .catch((err) => {
+        stub.restore();
+        throw err;
+      });
   });
 });

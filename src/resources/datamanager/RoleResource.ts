@@ -1,10 +1,11 @@
 import Resource from '../Resource';
 import { environment } from '../../Core';
 import DMAccountResource from './DMAccountResource';
+import DMAccountList from './DMAccountList';
 import LiteDMAccountResource from '../publicAPI/LiteDMAccountResource';
+import { filterOptions } from '../ListResource';
 
-const environmentSymbol: any = Symbol.for('environment');
-const resourceSymbol: any = Symbol.for('resource');
+const relationsSymbol: any = Symbol.for('relations');
 
 interface RoleResource {
   accounts: Array<LiteDMAccountResource>;
@@ -39,37 +40,20 @@ class RoleResource extends Resource {
    */
   constructor(resource: any, environment: environment, traversal?: any) {
     super(resource, environment, traversal);
-    Object.defineProperties(this, {
-      accounts: {
-        enumerable: true,
-        get: () => {
-          const accounts = this.getProperty('accounts');
-          if (accounts.length === 0 || typeof accounts[0] === 'object') {
-            return accounts;
-          }
 
-          const liteResources = this.getLinks('ec:dm-account');
-          if (liteResources) {
-            this[resourceSymbol].accounts = liteResources.map(
-              (liteResource) => new LiteDMAccountResource(liteResource, this[environmentSymbol]),
-            );
-          }
-
-          return this.getProperty('accounts');
-        },
-        set: (value: Array<string | LiteDMAccountResource | DMAccountResource>) => {
-          this.setProperty(
-            'accounts',
-            value.map((res) => {
-              if (typeof res === 'string') {
-                return res;
-              }
-              return res.accountID;
-            }),
-          );
-          return this;
-        },
+    this[relationsSymbol] = {
+      dmAccount: {
+        relation: 'ec:dm-accounts',
+        createRelation: false,
+        createTemplateModifier: '',
+        id: 'accountID',
+        additionalTemplateParam: false,
+        ResourceClass: DMAccountResource,
+        ListClass: DMAccountList,
       },
+    };
+
+    Object.defineProperties(this, {
       addRegistered: {
         enumerable: true,
         get: () => <boolean>this.getProperty('addRegistered'),
@@ -97,6 +81,26 @@ class RoleResource extends Resource {
     });
     this.countProperties();
   }
+
+  /**
+   * Load the {@link DMAccountList} of {@link DMAccountResource} for this role.
+   *
+   * @example
+   * return role.accountList({
+    *   created: {
+    *     from: new Date(new Date.getTime() - 600000).toISOString()),
+    *   },
+    * })
+    * .then((list) => {
+    *   return show(list);
+    * })
+    *
+    * @param {filterOptions?} options the filter options.
+    * @returns {Promise<DMAccountList>} resolves to account list with applied filters.
+    */
+   accountList(options?: filterOptions): Promise<DMAccountList> {
+     return <Promise<DMAccountList>>this.resourceList('dmAccount', options);
+   }
 }
 
 export default RoleResource;

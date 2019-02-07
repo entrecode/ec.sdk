@@ -1,3 +1,50 @@
+## 0.18.0 (2019-02-07)
+
+* release version 0.18.0 ([84ae43f](https://github.com/entrecode/ec.sdk/commit/84ae43f))
+* feat: Edit role membership in DMAccountResource SDK-113 ([fd0b3fb](https://github.com/entrecode/ec.sdk/commit/fd0b3fb))
+* feat: implement History v3 SDK-114 ([da188c2](https://github.com/entrecode/ec.sdk/commit/da188c2))
+* feat: RoleResource using DMAccountList now. Accounts are not embedded anymore. ([9e09e7d](https://github.com/entrecode/ec.sdk/commit/9e09e7d))
+* style: formatting of mock jsons ([f6dd6c6](https://github.com/entrecode/ec.sdk/commit/f6dd6c6))
+* refactor: remove unused code in AccountResource ([40baf3a](https://github.com/entrecode/ec.sdk/commit/40baf3a))
+
+
+### BREAKING CHANGE
+
+* History API v2 Support will be removed with this release.
+
+You will need to use #getEvents() instead of #getPastEvents(). The signature of HistoryEvents and HistoryEvent has changed! Support for EventSource is currently disabled.
+
+Before:
+
+```js
+const history = await dataManager.getPastEvents();
+history.map(console.log);
+```
+
+After:
+
+```js
+const history = await dataManager.getEvents();
+history.items.map(console.log);
+```
+* RoleResource does not have a account property anymore. Must use RoleResource#accountList() or roleResource#resourceList('dmAccount', options).
+
+Before:
+
+```js
+const role = await dm.role(id);
+role.accounts.map(console.log);
+```
+
+After:
+
+```js
+const role = await dm.role(id);
+const accounts = await role.accountList();
+accounts.map(console.log) // Note: This is ListResource#map() not Array#map()
+```
+
+
 ## <small>0.17.21 (2019-02-04)</small>
 
 * release version 0.17.21 ([f29fb66](https://github.com/entrecode/ec.sdk/commit/f29fb66))

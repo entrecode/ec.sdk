@@ -9,7 +9,7 @@ import LiteEntryResource from './LiteEntryResource';
 import LiteDMAccountResource from './LiteDMAccountResource';
 import LiteRoleResource from './LiteRoleResource';
 import PublicAssetResource from './PublicAssetResource';
-import { get, fileNegotiate, getSchema, optionsToQuery, getHistory, locale, getUrl } from '../../helper';
+import { get, fileNegotiate, getSchema, optionsToQuery, locale, getUrl } from '../../helper';
 import { environment } from '../../Core';
 import DMAssetResource from './DMAssetResource';
 import { filterOptions } from '../ListResource';
@@ -21,7 +21,6 @@ const resourceSymbol: any = Symbol.for('resource');
 
 validator.setLoggingFunction(() => {});
 
-const resourcePropertiesSymbol: any = Symbol.for('resourceProperties');
 const schemaSymbol: any = Symbol('_schema');
 const shortIDSymbol: any = Symbol('_shortID');
 const traversalSymbol: any = Symbol.for('traversal');
@@ -619,11 +618,34 @@ class EntryResource extends LiteEntryResource {
   }
 
   /**
+   * Load the HistoryEvents for this Entry from v3 API.
+   *
+   * @param {filterOptions | any} options The filter options
+   * @returns {Promise<HistoryEvents} The filtered HistoryEvents
+   */
+  getEvents(options?: filterOptions): Promise<any> {
+    return Promise.resolve()
+      .then(() => this.newRequest().follow('ec:entry/history'))
+      .then((request) => {
+        if (options) {
+          request.withTemplateParameters(optionsToQuery(options));
+        }
+
+        return get(this[environmentSymbol], request);
+      })
+      .then(([res]) => new HistoryEvents(res, this[environmentSymbol]));
+  }
+
+  /*
+  /**
    * Creates a new History EventSource with the given filter options.
    *
+   * @deprecated
+   * 
    * @param {filterOptions | any} options The filter options
    * @return {Promise<EventSource>} The created EventSource.
    */
+  /*
   newHistory(options?: filterOptions): Promise<any> {
     return Promise.resolve()
       .then(() => this.newRequest().follow('ec:entry/dm-entryHistory'))
@@ -639,9 +661,12 @@ class EntryResource extends LiteEntryResource {
   /**
    * Creates a new HistoryEventsResource with past events.
    *
+   * @deprecated
+   * 
    * @param {filterOptions?} options The filter options.
    * @returns {Promise<HistoryEventsResource} Event list of past events.
    */
+  /*
   getPastEvents(options?: filterOptions): Promise<any> {
     return Promise.resolve()
       .then(() => this.newRequest().follow('ec:entry/dm-entryHistory'))
@@ -654,6 +679,7 @@ class EntryResource extends LiteEntryResource {
       })
       .then(([res]) => new HistoryEvents(res, this[environmentSymbol]));
   }
+  */
 
   /**
    * Saves this {@link EntryResource}.
