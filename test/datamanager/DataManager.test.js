@@ -694,7 +694,6 @@ describe('DataManager Resource', () => {
           label: res.label,
           addUnregistered: res.addUnregistered,
           addRegistered: res.addRegistered,
-          accounts: res.accounts,
         });
         return resource.createRole(create);
       })
