@@ -6,22 +6,22 @@
   "addRegistered": true,
   "accountsCount": 6,
   "_links": {
-      "ec:dm-accounts": {
-          "profile": "https://entrecode.de/schema/dm-accounts",
-          "href": "https://datamanager.entrecode.de/account?dataManagerID=fce10016-b486-4738-9f8a-7204095d1f6e&roles=8a811877-8c44-45a2-a806-d8ef5ec28d9e{&size,sort,page}",
-          "templated": true
-      },
-      "self": {
-          "profile": "https://entrecode.de/schema/dm-role",
-          "href": "https://datamanager.entrecode.de/role?dataManagerID=fce10016-b486-4738-9f8a-7204095d1f6e&roleID=8a811877-8c44-45a2-a806-d8ef5ec28d9e"
-      },
-      "collection": {
-          "profile": "https://entrecode.de/schema/dm-roles",
-          "href": "https://datamanager.entrecode.de/role?dataManagerID=fce10016-b486-4738-9f8a-7204095d1f6e"
-      },
-      "ec:datamanager": {
-          "profile": "https://entrecode.de/schema/datamanager",
-          "href": "https://datamanager.entrecode.de/?dataManagerID=fce10016-b486-4738-9f8a-7204095d1f6e"
-      }
+    "ec:dm-accounts": {
+      "profile": "https://entrecode.de/schema/dm-accounts",
+      "href": "https://datamanager.entrecode.de/account?dataManagerID=fce10016-b486-4738-9f8a-7204095d1f6e&roles=8a811877-8c44-45a2-a806-d8ef5ec28d9e{&size,sort,page}",
+      "templated": true
+    },
+    "self": {
+      "profile": "https://entrecode.de/schema/dm-role",
+      "href": "https://datamanager.entrecode.de/role?dataManagerID=fce10016-b486-4738-9f8a-7204095d1f6e&roleID=8a811877-8c44-45a2-a806-d8ef5ec28d9e"
+    },
+    "collection": {
+      "profile": "https://entrecode.de/schema/dm-roles",
+      "href": "https://datamanager.entrecode.de/role?dataManagerID=fce10016-b486-4738-9f8a-7204095d1f6e"
+    },
+    "ec:datamanager": {
+      "profile": "https://entrecode.de/schema/datamanager",
+      "href": "https://datamanager.entrecode.de/?dataManagerID=fce10016-b486-4738-9f8a-7204095d1f6e"
+    }
   }
 }
