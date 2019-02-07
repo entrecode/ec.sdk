@@ -2,11 +2,10 @@
 
 const chai = require('chai');
 const fs = require('fs');
-const resolver = require('./../mocks/resolver');
 const sinon = require('sinon');
 const sinonChai = require('sinon-chai');
 
-const helper = require('../../lib/helper');
+const LiteRoleResource = require('../../lib/resources/publicAPI/LiteRoleResource').default;
 const ListResource = require('../../lib/resources/ListResource').default;
 const DMAccountList = require('../../lib/resources/datamanager/DMAccountList').default;
 const DMAccountResource = require('../../lib/resources/datamanager/DMAccountResource').default;
@@ -26,8 +25,7 @@ describe('DMAccount ListResource', () => {
         }
         return resolve(JSON.parse(res));
       });
-    })
-    .then((json) => {
+    }).then((json) => {
       listJson = json;
     });
   });
@@ -44,7 +42,7 @@ describe('DMAccount ListResource', () => {
     list.should.be.instanceOf(DMAccountList);
   });
   it('should have AccountResource items', () => {
-    list.getAllItems().forEach(item => item.should.be.instanceOf(DMAccountResource));
+    list.getAllItems().forEach((item) => item.should.be.instanceOf(DMAccountResource));
   });
 });
 
@@ -59,8 +57,7 @@ describe('DMAccount Resource', () => {
         }
         return resolve(JSON.parse(res));
       });
-    })
-    .then((json) => {
+    }).then((json) => {
       resourceJson = json;
     });
   });
@@ -116,5 +113,18 @@ describe('DMAccount Resource', () => {
     property.should.be.equal(resource.getProperty('email'));
 
     spy.restore();
+  });
+  it('should have roles property', () => {
+    const roles = resource.roles;
+    roles.length.should.be.gt(0);
+    roles.map((role) => {
+      role.should.be.instanceOf(LiteRoleResource);
+    });
+  });
+  it('should replace roles', () => {
+    const roles = resource.roles;
+    roles.push(roles[0]);
+    resource.roles = roles;
+    resource.roles.length.should.be.equal(2);
   });
 });
