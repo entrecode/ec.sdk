@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset='utf-8' />
-  <title>ec.sdk 0.17.21 | Documentation</title>
+  <title>ec.sdk 0.18.0 | Documentation</title>
   <meta name='viewport' content='width=device-width,initial-scale=1'>
   <link href='assets/bass.css' type='text/css' rel='stylesheet' />
   <link href='assets/style.css' type='text/css' rel='stylesheet' />
@@ -15,7 +15,7 @@
       <div id='split-left' class='overflow-auto fs0 height-viewport-100'>
         <div class='py1 px2'>
           <h3 class='mb0 no-anchor'>ec.sdk</h3>
-          <div class='mb1'><code>0.17.21</code></div>
+          <div class='mb1'><code>0.18.0</code></div>
           <input
             placeholder='Filter'
             id='filter-input'
@@ -468,15 +468,9 @@
                       </a></li>
                       
                       <li><a
-                        href='#datamanagernewhistory'
+                        href='#datamanagergetevents'
                         class='regular pre-open'>
-                        #newHistory
-                      </a></li>
-                      
-                      <li><a
-                        href='#datamanagergetpastevents'
-                        class='regular pre-open'>
-                        #getPastEvents
+                        #getEvents
                       </a></li>
                       
                       <li><a
@@ -682,15 +676,9 @@
                       </a></li>
                       
                       <li><a
-                        href='#publicapinewhistory'
+                        href='#publicapigetevents'
                         class='regular pre-open'>
-                        #newHistory
-                      </a></li>
-                      
-                      <li><a
-                        href='#publicapigetpastevents'
-                        class='regular pre-open'>
-                        #getPastEvents
+                        #getEvents
                       </a></li>
                       
                       <li><a
@@ -1194,10 +1182,28 @@
                 
                 <li><a
                   href='#historyevents'
-                  class="">
+                  class=" toggle-sibling">
                   HistoryEvents
-                  
+                  <span class='icon'>▸</span>
                 </a>
+                
+                <div class='toggle-target display-none'>
+                  
+                  
+                    <ul class='list-reset py1-ul pl1'>
+                      <li class='h5'><span>Instance members</span></li>
+                      
+                      <li><a
+                        href='#historyeventsnext'
+                        class='regular pre-open'>
+                        #next
+                      </a></li>
+                      
+                    </ul>
+                  
+                  
+                  
+                </div>
                 
                 </li>
               
@@ -2098,15 +2104,9 @@
                       </a></li>
                       
                       <li><a
-                        href='#datamanagerresourcenewhistory'
+                        href='#datamanagerresourcegetevents'
                         class='regular pre-open'>
-                        #newHistory
-                      </a></li>
-                      
-                      <li><a
-                        href='#datamanagerresourcegetpastevents'
-                        class='regular pre-open'>
-                        #getPastEvents
+                        #getEvents
                       </a></li>
                       
                       <li><a
@@ -2166,15 +2166,9 @@
                       <li class='h5'><span>Instance members</span></li>
                       
                       <li><a
-                        href='#modelresourcenewhistory'
+                        href='#modelresourcegetevents'
                         class='regular pre-open'>
-                        #newHistory
-                      </a></li>
-                      
-                      <li><a
-                        href='#modelresourcegetpastevents'
-                        class='regular pre-open'>
-                        #getPastEvents
+                        #getEvents
                       </a></li>
                       
                       <li><a
@@ -2306,10 +2300,28 @@
                 
                 <li><a
                   href='#roleresource'
-                  class="">
+                  class=" toggle-sibling">
                   RoleResource
-                  
+                  <span class='icon'>▸</span>
                 </a>
+                
+                <div class='toggle-target display-none'>
+                  
+                  
+                    <ul class='list-reset py1-ul pl1'>
+                      <li class='h5'><span>Instance members</span></li>
+                      
+                      <li><a
+                        href='#roleresourceaccountlist'
+                        class='regular pre-open'>
+                        #accountList
+                      </a></li>
+                      
+                    </ul>
+                  
+                  
+                  
+                </div>
                 
                 </li>
               
@@ -2760,15 +2772,9 @@
                       </a></li>
                       
                       <li><a
-                        href='#entryresourcenewhistory'
+                        href='#entryresourcegetevents'
                         class='regular pre-open'>
-                        #newHistory
-                      </a></li>
-                      
-                      <li><a
-                        href='#entryresourcegetpastevents'
-                        class='regular pre-open'>
-                        #getPastEvents
+                        #getEvents
                       </a></li>
                       
                       <li><a
@@ -7952,11 +7958,11 @@ by the options parameter.</p>
       </div>
     </div>
   
-    <div class='border-bottom' id='datamanagernewhistory'>
+    <div class='border-bottom' id='datamanagergetevents'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>newHistory(options)</span>
+            <span class='code strong strong truncate'>getEvents(options)</span>
         </div>
       </div>
       <div class="clearfix display-none toggle-target">
@@ -7964,11 +7970,12 @@ by the options parameter.</p>
 
   
 
-  <p>Creates a new History EventSource with the given filter options.</p>
+  <p>Load the HistoryEvents for this DataManager from v3 API.
+Note: This Request only has pagination when you load a single modelID.</p>
 
  
   
-    <div class='pre p1 fill-light mt0'>newHistory(options: (<a href="#filteroptions">filterOptions</a> | any)): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;EventSource></div>
+    <div class='pre p1 fill-light mt0'>getEvents(options: (<a href="#filteroptions">filterOptions</a> | any))</div>
    
   
   
@@ -7988,76 +7995,6 @@ by the options parameter.</p>
           <div>
             <span class='code bold'>options</span> <code class='quiet'>((<a href="#filteroptions">filterOptions</a> | any))</code>
 	    The filter options
-
-          </div>
-          
-        </div>
-      
-    </div>
-  
-
-  
-
-  
-    
-      <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;EventSource></code>:
-        The created EventSource.
-
-      
-    
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-</section>
-
-      </div>
-    </div>
-  
-    <div class='border-bottom' id='datamanagergetpastevents'>
-      <div class="clearfix small pointer toggle-sibling">
-        <div class="py1 contain">
-            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>getPastEvents(options)</span>
-        </div>
-      </div>
-      <div class="clearfix display-none toggle-target">
-        <section class='p2 mb2 clearfix bg-white minishadow'>
-
-  
-
-  <p>Creates a new HistoryEventsResource with past events.</p>
-
- 
-  
-    <div class='pre p1 fill-light mt0'>getPastEvents(options: <a href="#filteroptions">filterOptions</a>?)</div>
-   
-  
-  
-
-  
-  
-  
-  
-  
-  
-
-  
-    <div class='py1 quiet mt1 prose-big'>Parameters</div>
-    <div class='prose'>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>options</span> <code class='quiet'>(<a href="#filteroptions">filterOptions</a>?)</code>
-	    The filter options.
 
           </div>
           
@@ -10705,11 +10642,11 @@ value.</p>
       </div>
     </div>
   
-    <div class='border-bottom' id='publicapinewhistory'>
+    <div class='border-bottom' id='publicapigetevents'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>newHistory(options)</span>
+            <span class='code strong strong truncate'>getEvents(options)</span>
         </div>
       </div>
       <div class="clearfix display-none toggle-target">
@@ -10717,11 +10654,12 @@ value.</p>
 
   
 
-  <p>Creates a new History EventSource with the given filter options.</p>
+  <p>Load the HistoryEvents for this DataManager from v3 API.
+Note: This Request only has pagination when you load a single modelID.</p>
 
  
   
-    <div class='pre p1 fill-light mt0'>newHistory(options: (<a href="#filteroptions">filterOptions</a> | any)): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;EventSource></div>
+    <div class='pre p1 fill-light mt0'>getEvents(options: (<a href="#filteroptions">filterOptions</a> | any))</div>
    
   
   
@@ -10741,76 +10679,6 @@ value.</p>
           <div>
             <span class='code bold'>options</span> <code class='quiet'>((<a href="#filteroptions">filterOptions</a> | any))</code>
 	    The filter options
-
-          </div>
-          
-        </div>
-      
-    </div>
-  
-
-  
-
-  
-    
-      <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;EventSource></code>:
-        The created EventSource.
-
-      
-    
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-</section>
-
-      </div>
-    </div>
-  
-    <div class='border-bottom' id='publicapigetpastevents'>
-      <div class="clearfix small pointer toggle-sibling">
-        <div class="py1 contain">
-            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>getPastEvents(options)</span>
-        </div>
-      </div>
-      <div class="clearfix display-none toggle-target">
-        <section class='p2 mb2 clearfix bg-white minishadow'>
-
-  
-
-  <p>Creates a new HistoryEventsResource with past events.</p>
-
- 
-  
-    <div class='pre p1 fill-light mt0'>getPastEvents(options: <a href="#filteroptions">filterOptions</a>?)</div>
-   
-  
-  
-
-  
-  
-  
-  
-  
-  
-
-  
-    <div class='py1 quiet mt1 prose-big'>Parameters</div>
-    <div class='prose'>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>options</span> <code class='quiet'>(<a href="#filteroptions">filterOptions</a>?)</code>
-	    The filter options.
 
           </div>
           
@@ -15621,8 +15489,22 @@ object will be applied when loading a <a href="#listresource">ListResource</a>.<
     <div>
       
         <div class='space-bottom0'>
-          <span class='code bold'>events</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="#historyevent">HistoryEvent</a>>)</code>
-          : Event list for this Resource
+          <span class='code bold'>count</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>)</code>
+          : Event count in this list
+
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <span class='code bold'>scannedCount</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>)</code>
+          : Count of scanned objects
+
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <span class='code bold'>items</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="#historyevent">HistoryEvent</a>>)</code>
+          : array of HistoryEvent objects
 
           
         </div>
@@ -15637,6 +15519,68 @@ object will be applied when loading a <a href="#listresource">ListResource</a>.<
   
 
   
+
+  
+    <div class='py1 quiet mt1 prose-big'>Instance Members</div>
+    <div class="clearfix">
+  
+    <div class='border-bottom' id='historyeventsnext'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>next()</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Load the next page.</p>
+
+ 
+  
+    <div class='pre p1 fill-light mt0'>next(): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#historyevents">HistoryEvents</a>></div>
+   
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#historyevents">HistoryEvents</a>></code>:
+        Next page of HistoryEvents
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+</div>
 
   
 
@@ -15705,57 +15649,8 @@ object will be applied when loading a <a href="#listresource">ListResource</a>.<
     <div>
       
         <div class='space-bottom0'>
-          <span class='code bold'>eventNumber</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>)</code>
-          : number of the event
-
-          
-        </div>
-      
-        <div class='space-bottom0'>
-          <span class='code bold'>eventId</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
-          : id of the event
-
-          
-        </div>
-      
-        <div class='space-bottom0'>
-          <span class='code bold'>eventType</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
-          : type defining what happened
-
-          
-        </div>
-      
-        <div class='space-bottom0'>
-          <span class='code bold'>timestamp</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Date">Date</a>)</code>
-          : time this event happened
-
-          
-        </div>
-      
-        <div class='space-bottom0'>
-          <span class='code bold'>entryID</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
-          : the entry this event belongs to
-
-          
-        </div>
-      
-        <div class='space-bottom0'>
           <span class='code bold'>modelID</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
           : the model this event belongs to
-
-          
-        </div>
-      
-        <div class='space-bottom0'>
-          <span class='code bold'>modelTitle</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
-          : model name this event belongs to
-
-          
-        </div>
-      
-        <div class='space-bottom0'>
-          <span class='code bold'>dataManagerID</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
-          : data manager this event belongs to
 
           
         </div>
@@ -15768,8 +15663,15 @@ object will be applied when loading a <a href="#listresource">ListResource</a>.<
         </div>
       
         <div class='space-bottom0'>
-          <span class='code bold'>user</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
-          : the user responsible for this event
+          <span class='code bold'>timestamp</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Date">Date</a>)</code>
+          : time this event happened
+
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <span class='code bold'>null</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+          : 'timestamp#entryID#randomNumber' the unique key from dynamodb
 
           
         </div>
@@ -15777,6 +15679,34 @@ object will be applied when loading a <a href="#listresource">ListResource</a>.<
         <div class='space-bottom0'>
           <span class='code bold'>data</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
           : data describing the event
+
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <span class='code bold'>oldEntryData</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+          : old data describing the event
+
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <span class='code bold'>user</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+          : the user responsible for this event
+
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <span class='code bold'>entryID</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+          : the entry this event belongs to
+
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <span class='code bold'>type</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+          : type defining what happened
 
           
         </div>
@@ -24748,11 +24678,11 @@ filter options.
       </div>
     </div>
   
-    <div class='border-bottom' id='datamanagerresourcenewhistory'>
+    <div class='border-bottom' id='datamanagerresourcegetevents'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>newHistory(options)</span>
+            <span class='code strong strong truncate'>getEvents(options)</span>
         </div>
       </div>
       <div class="clearfix display-none toggle-target">
@@ -24760,11 +24690,12 @@ filter options.
 
   
 
-  <p>Creates a new History EventSource with the given filter options.</p>
+  <p>Load the HistoryEvents for this DataManager from v3 API.
+Note: This Request only has pagination when you load a single modelID.</p>
 
  
   
-    <div class='pre p1 fill-light mt0'>newHistory(options: (<a href="#filteroptions">filterOptions</a> | any)): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;EventSource></div>
+    <div class='pre p1 fill-light mt0'>getEvents(options: (<a href="#filteroptions">filterOptions</a> | any))</div>
    
   
   
@@ -24784,76 +24715,6 @@ filter options.
           <div>
             <span class='code bold'>options</span> <code class='quiet'>((<a href="#filteroptions">filterOptions</a> | any))</code>
 	    The filter options
-
-          </div>
-          
-        </div>
-      
-    </div>
-  
-
-  
-
-  
-    
-      <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;EventSource></code>:
-        The created EventSource.
-
-      
-    
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-</section>
-
-      </div>
-    </div>
-  
-    <div class='border-bottom' id='datamanagerresourcegetpastevents'>
-      <div class="clearfix small pointer toggle-sibling">
-        <div class="py1 contain">
-            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>getPastEvents(options)</span>
-        </div>
-      </div>
-      <div class="clearfix display-none toggle-target">
-        <section class='p2 mb2 clearfix bg-white minishadow'>
-
-  
-
-  <p>Creates a new HistoryEventsResource with past events.</p>
-
- 
-  
-    <div class='pre p1 fill-light mt0'>getPastEvents(options: <a href="#filteroptions">filterOptions</a>?)</div>
-   
-  
-  
-
-  
-  
-  
-  
-  
-  
-
-  
-    <div class='py1 quiet mt1 prose-big'>Parameters</div>
-    <div class='prose'>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>options</span> <code class='quiet'>(<a href="#filteroptions">filterOptions</a>?)</code>
-	    The filter options.
 
           </div>
           
@@ -25448,11 +25309,11 @@ filter options.
     <div class='py1 quiet mt1 prose-big'>Instance Members</div>
     <div class="clearfix">
   
-    <div class='border-bottom' id='modelresourcenewhistory'>
+    <div class='border-bottom' id='modelresourcegetevents'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>newHistory(options)</span>
+            <span class='code strong strong truncate'>getEvents(options)</span>
         </div>
       </div>
       <div class="clearfix display-none toggle-target">
@@ -25460,11 +25321,11 @@ filter options.
 
   
 
-  <p>Creates a new History EventSource with the given filter options.</p>
+  <p>Load the HistoryEvents for this Model from v3 API.</p>
 
  
   
-    <div class='pre p1 fill-light mt0'>newHistory(options: (<a href="#filteroptions">filterOptions</a> | any)): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;EventSource></div>
+    <div class='pre p1 fill-light mt0'>getEvents(options: (<a href="#filteroptions">filterOptions</a> | any))</div>
    
   
   
@@ -25484,76 +25345,6 @@ filter options.
           <div>
             <span class='code bold'>options</span> <code class='quiet'>((<a href="#filteroptions">filterOptions</a> | any))</code>
 	    The filter options
-
-          </div>
-          
-        </div>
-      
-    </div>
-  
-
-  
-
-  
-    
-      <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;EventSource></code>:
-        The created EventSource.
-
-      
-    
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-</section>
-
-      </div>
-    </div>
-  
-    <div class='border-bottom' id='modelresourcegetpastevents'>
-      <div class="clearfix small pointer toggle-sibling">
-        <div class="py1 contain">
-            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>getPastEvents(options)</span>
-        </div>
-      </div>
-      <div class="clearfix display-none toggle-target">
-        <section class='p2 mb2 clearfix bg-white minishadow'>
-
-  
-
-  <p>Creates a new HistoryEventsResource with past events.</p>
-
- 
-  
-    <div class='pre p1 fill-light mt0'>getPastEvents(options: <a href="#filteroptions">filterOptions</a>?)</div>
-   
-  
-  
-
-  
-  
-  
-  
-  
-  
-
-  
-    <div class='py1 quiet mt1 prose-big'>Parameters</div>
-    <div class='prose'>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>options</span> <code class='quiet'>(<a href="#filteroptions">filterOptions</a>?)</code>
-	    The filter options.
 
           </div>
           
@@ -26445,6 +26236,13 @@ be the same object but with refreshed data.
           
         </div>
       
+        <div class='space-bottom0'>
+          <span class='code bold'>roles</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="#literoleresource">LiteRoleResource</a>>)</code>
+          : Roles this account is member of
+
+          
+        </div>
+      
     </div>
   
 
@@ -26890,6 +26688,95 @@ be the same object but with refreshed data.
   
 
   
+
+  
+    <div class='py1 quiet mt1 prose-big'>Instance Members</div>
+    <div class="clearfix">
+  
+    <div class='border-bottom' id='roleresourceaccountlist'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>accountList(options)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Load the <a href="#dmaccountlist">DMAccountList</a> of <a href="#dmaccountresource">DMAccountResource</a> for this role.</p>
+
+ 
+  
+    <div class='pre p1 fill-light mt0'>accountList(options: <a href="#filteroptions">filterOptions</a>?): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#dmaccountlist">DMAccountList</a>></div>
+   
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>options</span> <code class='quiet'>(<a href="#filteroptions">filterOptions</a>?)</code>
+	    the filter options.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#dmaccountlist">DMAccountList</a>></code>:
+        resolves to account list with applied filters.
+
+      
+    
+  
+
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">return</span> role.accountList({
+  <span class="hljs-attr">created</span>: {
+    <span class="hljs-attr">from</span>: <span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>(<span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>.getTime() - <span class="hljs-number">600000</span>).toISOString()),
+  },
+})
+.then(<span class="hljs-function">(<span class="hljs-params">list</span>) =&gt;</span> {
+  <span class="hljs-keyword">return</span> show(list);
+})</pre>
+    
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+</div>
 
   
 
@@ -31020,11 +30907,11 @@ the entry title.
       </div>
     </div>
   
-    <div class='border-bottom' id='entryresourcenewhistory'>
+    <div class='border-bottom' id='entryresourcegetevents'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>newHistory(options)</span>
+            <span class='code strong strong truncate'>getEvents(options)</span>
         </div>
       </div>
       <div class="clearfix display-none toggle-target">
@@ -31032,11 +30919,11 @@ the entry title.
 
   
 
-  <p>Creates a new History EventSource with the given filter options.</p>
+  <p>Load the HistoryEvents for this Entry from v3 API.</p>
 
  
   
-    <div class='pre p1 fill-light mt0'>newHistory(options: (<a href="#filteroptions">filterOptions</a> | any)): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;EventSource></div>
+    <div class='pre p1 fill-light mt0'>getEvents(options: (<a href="#filteroptions">filterOptions</a> | any))</div>
    
   
   
@@ -31056,76 +30943,6 @@ the entry title.
           <div>
             <span class='code bold'>options</span> <code class='quiet'>((<a href="#filteroptions">filterOptions</a> | any))</code>
 	    The filter options
-
-          </div>
-          
-        </div>
-      
-    </div>
-  
-
-  
-
-  
-    
-      <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;EventSource></code>:
-        The created EventSource.
-
-      
-    
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-</section>
-
-      </div>
-    </div>
-  
-    <div class='border-bottom' id='entryresourcegetpastevents'>
-      <div class="clearfix small pointer toggle-sibling">
-        <div class="py1 contain">
-            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>getPastEvents(options)</span>
-        </div>
-      </div>
-      <div class="clearfix display-none toggle-target">
-        <section class='p2 mb2 clearfix bg-white minishadow'>
-
-  
-
-  <p>Creates a new HistoryEventsResource with past events.</p>
-
- 
-  
-    <div class='pre p1 fill-light mt0'>getPastEvents(options: <a href="#filteroptions">filterOptions</a>?)</div>
-   
-  
-  
-
-  
-  
-  
-  
-  
-  
-
-  
-    <div class='py1 quiet mt1 prose-big'>Parameters</div>
-    <div class='prose'>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>options</span> <code class='quiet'>(<a href="#filteroptions">filterOptions</a>?)</code>
-	    The filter options.
 
           </div>
           
