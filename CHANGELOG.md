@@ -1,3 +1,10 @@
+## <small>0.18.1 (2019-02-15)</small>
+
+* release version 0.18.1 ([bcecb68](https://github.com/entrecode/ec.sdk/commit/bcecb68))
+* fix: name of LiteRoleResource ([0cf9403](https://github.com/entrecode/ec.sdk/commit/0cf9403))
+
+
+
 ## 0.18.0 (2019-02-07)
 
 * release version 0.18.0 ([84ae43f](https://github.com/entrecode/ec.sdk/commit/84ae43f))
