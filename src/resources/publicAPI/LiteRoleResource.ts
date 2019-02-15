@@ -33,7 +33,7 @@ class LiteRoleResource extends Resource {
             href: liteResource.href,
           },
         },
-        name: liteResource.title,
+        name: liteResource.name,
         dataManagerID: qs.dataManagerID,
       };
     }
