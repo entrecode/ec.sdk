@@ -79,7 +79,7 @@ describe('Role Resource', () => {
     resource.should.be.instanceOf(RoleResource);
   });
 
-  const getter = ['roleID', 'name', 'label', 'addUnregistered', 'addRegistered'];
+  const getter = ['roleID', 'accountsCount', 'name', 'label', 'addUnregistered', 'addRegistered'];
   getter.forEach((name) => {
     it(`should call resource.getProperty with ${name}`, () => {
       const spy = sinon.spy(resource, 'getProperty');

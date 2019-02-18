@@ -1,3 +1,10 @@
+## <small>0.18.2 (2019-02-18)</small>
+
+* release version 0.18.2 ([80cd2de](https://github.com/entrecode/ec.sdk/commit/80cd2de))
+* fix: adds missing property accountsCount to RoleResource ([95840f6](https://github.com/entrecode/ec.sdk/commit/95840f6))
+
+
+
 ## <small>0.18.1 (2019-02-15)</small>
 
 * release version 0.18.1 ([bcecb68](https://github.com/entrecode/ec.sdk/commit/bcecb68))

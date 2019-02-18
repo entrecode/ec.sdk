@@ -8,6 +8,7 @@ import { filterOptions } from '../ListResource';
 const relationsSymbol: any = Symbol.for('relations');
 
 interface RoleResource {
+  accountsCount: number;
   accounts: Array<LiteDMAccountResource>;
   addRegistered: boolean;
   addUnregistered: boolean;
@@ -24,6 +25,7 @@ interface RoleResource {
  * @prop {string} roleID - The id of the role
  * @prop {string} name - The name of the role
  * @prop {string} label - A label for the role
+ * @prop {number} accountsCount - Number of accounts in this role
  * @prop {boolean} addUnregistered - Whether or not to add unregistered users to this role
  * @prop {boolean} addRegistered - Whether or not to add registered users to this role
  * @prop {array<LiteDMAccountResource>} accounts - array of accountIDs associated to this role
@@ -54,6 +56,10 @@ class RoleResource extends Resource {
     };
 
     Object.defineProperties(this, {
+      accountsCount: {
+        enumerable: true,
+        get: () => <number>this.getProperty('accountsCount'),
+      },
       addRegistered: {
         enumerable: true,
         get: () => <boolean>this.getProperty('addRegistered'),
