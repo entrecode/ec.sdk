@@ -27,7 +27,7 @@
     "@types/jwt-decode": "^2.2.1",
     "@types/node": "^10.12.15",
     "@types/shortid": "^0.0.29",
-    "@types/superagent": "^3.8.5",
+    "@types/superagent": "^4.1.0",
     "@types/traverson": "^2.0.28",
     "@types/validator": "^10.9.0",
     "browser-cookies": "^1.2.0",
