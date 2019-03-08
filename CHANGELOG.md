@@ -1,3 +1,12 @@
+## <small>0.18.3 (2019-03-08)</small>
+
+* release version 0.18.3 ([8a75281](https://github.com/entrecode/ec.sdk/commit/8a75281))
+* feat: SDK-115 adds name to group mock ([5d359dc](https://github.com/entrecode/ec.sdk/commit/5d359dc))
+* feat: SDK-117 support blocked in dm accounts ([c042e78](https://github.com/entrecode/ec.sdk/commit/c042e78))
+* test: SDK-115 adds tests to group for name property ([33bc0d7](https://github.com/entrecode/ec.sdk/commit/33bc0d7))
+
+
+
 ## <small>0.18.2 (2019-02-18)</small>
 
 * release version 0.18.2 ([80cd2de](https://github.com/entrecode/ec.sdk/commit/80cd2de))
