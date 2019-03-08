@@ -43,6 +43,7 @@ describe('Group ListResource', () => {
   });
   it('should have TokenResource items', () => {
     list.getAllItems().forEach(item => item.should.be.instanceOf(GroupResource));
+    list.getItem(0).accounts[1].name.should.be.equal('Reiner');
   });
 });
 
