@@ -47,6 +47,7 @@
             {
               "accountID": "a9ad32fd-c1e3-44ca-a995-a7bf366793cc",
               "email": "reiner@hohn.de",
+              "name": "Reiner",
               "_links": {
                 "self": {
                   "profile": "https://entrecode.de/schema/account",
@@ -89,6 +90,7 @@
             {
               "accountID": "a9ad32fd-c1e3-44ca-a995-a7bf366793cc",
               "email": "reiner@hohn.de",
+              "name": "Reiner",
               "_links": {
                 "self": {
                   "profile": "https://entrecode.de/schema/account",

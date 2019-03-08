@@ -3,6 +3,7 @@
   "created": "2018-07-27T14:20:28.595Z",
   "email": "asdfasdsfd@test.com",
   "pending": true,
+  "blocked": false,
   "pendingUpdated": "1970-01-01T00:00:00.000Z",
   "hasPassword": true,
   "oauth": [],

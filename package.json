@@ -1,6 +1,6 @@
 {
   "name": "ec.sdk",
-  "version": "0.18.2",
+  "version": "0.18.3",
   "description": "SDK for ec.api",
   "repository": "entrecode/ec.sdk",
   "author": "Simon Scherzinger <scherzinger@entrecode.de>",
@@ -25,9 +25,9 @@
   "dependencies": {
     "@types/halfred": "^1.0.2",
     "@types/jwt-decode": "^2.2.1",
-    "@types/node": "^10.12.15",
+    "@types/node": "^11.9.0",
     "@types/shortid": "^0.0.29",
-    "@types/superagent": "^3.8.5",
+    "@types/superagent": "^4.1.0",
     "@types/traverson": "^2.0.28",
     "@types/validator": "^10.9.0",
     "browser-cookies": "^1.2.0",
@@ -64,7 +64,7 @@
     "ec.cookie-mock": "^1.0.1",
     "eventsource": "^1.0.7",
     "istanbul": "^0.4.5",
-    "mocha": "^5.2.0",
+    "mocha": "^6.0.2",
     "mocha-bamboo-reporter": "^1.1.2",
     "nock": "^10.0.4",
     "sinon": "^7.2.3",
