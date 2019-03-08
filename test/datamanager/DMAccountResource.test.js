@@ -91,7 +91,7 @@ describe('DMAccount Resource', () => {
     });
   });
 
-  const getter = ['accountID', 'email', 'oauth', 'pending'];
+  const getter = ['accountID', 'email', 'oauth', 'pending', 'blocked'];
   getter.forEach((name) => {
     it(`should call resource.getProperty with ${name}`, () => {
       const spy = sinon.spy(resource, 'getProperty');

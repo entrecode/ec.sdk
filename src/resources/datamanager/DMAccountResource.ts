@@ -15,6 +15,7 @@ interface DMAccountResource {
   hasPassword: boolean;
   oauth: Array<any>;
   pending: boolean;
+  blocked: boolean;
   pendingUpdated: Date;
   created: Date;
   roles: Array<LiteRoleResource>;
@@ -30,6 +31,7 @@ interface DMAccountResource {
  * @prop {boolean} hasPassword Whether or not this account has a password
  * @prop {Array<string>} oauth Array of connected oauth accounts
  * @prop {boolean} pending wheter or not this account is in pending state
+ * @prop {boolean} blocked wheter or not this account is blocked
  * @prop {Date} pendingUpdated Date on which pending state got updated
  * @prop {Date} created Date on which this account was created
  * @prop {Array<LiteRoleResource>} roles Roles this account is member of
@@ -64,6 +66,10 @@ class DMAccountResource extends Resource {
       pending: {
         enumerable: true,
         get: () => <boolean>this.getProperty('pending'),
+      },
+      blocked: {
+        enumerable: true,
+        get: () => <boolean>this.getProperty('blocked'),
       },
       pendingUpdated: {
         enumerable: true,
