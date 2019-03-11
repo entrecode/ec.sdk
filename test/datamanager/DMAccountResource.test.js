@@ -104,6 +104,19 @@ describe('DMAccount Resource', () => {
       spy.restore();
     });
   });
+  
+  const setter = ['blocked'];
+  setter.forEach((name) => {
+    it(`should call resource.setProperty with ${name}`, () => {
+      const spy = sinon.spy(resource, 'setProperty');
+
+      resource[name] = resource.getProperty(name);
+      spy.should.have.been.calledOnce;
+      spy.should.have.been.calledWith(name, resource.getProperty(name));
+
+      spy.restore();
+    });
+  });
   it('should have title property', () => {
     const spy = sinon.spy(resource, 'getProperty');
 
