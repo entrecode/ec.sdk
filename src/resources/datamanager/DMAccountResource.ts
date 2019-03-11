@@ -70,6 +70,10 @@ class DMAccountResource extends Resource {
       blocked: {
         enumerable: true,
         get: () => <boolean>this.getProperty('blocked'),
+        set: (blocked: boolean) => {
+          this.setProperty('blocked', blocked);
+          return blocked;
+        },
       },
       pendingUpdated: {
         enumerable: true,
@@ -116,7 +120,7 @@ class DMAccountResource extends Resource {
 
           this[resourceSymbol]._links['ec:dm-role'] = links;
 
-          return this;
+          return roles;
         },
       },
     });
