@@ -1,3 +1,11 @@
+## <small>0.18.4 (2019-03-11)</small>
+
+* release version 0.18.4 ([bb20e49](https://github.com/entrecode/ec.sdk/commit/bb20e49))
+* feat: edit of blocked state in DMAccountResource ([647c62b](https://github.com/entrecode/ec.sdk/commit/647c62b))
+* chore: fix changelog ([d95a498](https://github.com/entrecode/ec.sdk/commit/d95a498))
+
+
+
 ## <small>0.18.3 (2019-03-08)</small>
 
 * release version 0.18.3 ([8a75281](https://github.com/entrecode/ec.sdk/commit/8a75281))
