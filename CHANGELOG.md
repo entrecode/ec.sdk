@@ -1,3 +1,10 @@
+## <small>0.18.5 (2019-03-14)</small>
+
+* release version 0.18.5 ([c51f376](https://github.com/entrecode/ec.sdk/commit/c51f376))
+* fix: EDITOR-285 roles should use title in lite resource ([9697829](https://github.com/entrecode/ec.sdk/commit/9697829))
+
+
+
 ## <small>0.18.4 (2019-03-11)</small>
 
 * release version 0.18.4 ([bb20e49](https://github.com/entrecode/ec.sdk/commit/bb20e49))
