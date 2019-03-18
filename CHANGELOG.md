@@ -1,3 +1,12 @@
+## <small>0.18.6 (2019-03-18)</small>
+
+* release version 0.18.6 ([6adc2f9](https://github.com/entrecode/ec.sdk/commit/6adc2f9))
+* feat: adds pagination for HistoryEvents SDK-116 ([93ad07d](https://github.com/entrecode/ec.sdk/commit/93ad07d))
+* feat: create PublicAPI from uuid SDK-107 ([010c89c](https://github.com/entrecode/ec.sdk/commit/010c89c))
+* feat: getFieldConfig caching SDK-94 ([3d0dd39](https://github.com/entrecode/ec.sdk/commit/3d0dd39))
+
+
+
 ## <small>0.18.5 (2019-03-14)</small>
 
 * release version 0.18.5 ([c51f376](https://github.com/entrecode/ec.sdk/commit/c51f376))
