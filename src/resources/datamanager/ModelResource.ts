@@ -136,7 +136,7 @@ class ModelResource extends Resource {
 
         return get(this[environmentSymbol], request);
       })
-      .then(([res]) => new HistoryEvents(res, this[environmentSymbol]));
+      .then(([res, traversal]) => new HistoryEvents(res, this[environmentSymbol], traversal));
   }
 
   /*

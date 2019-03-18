@@ -185,7 +185,7 @@ export default class DataManager extends Core {
   }
 
   /**
-   * Load the HistoryEvents for this DataManager from v3 API. 
+   * Load the HistoryEvents for this DataManager from v3 API.
    * Note: This Request only has pagination when you load a single modelID.
    *
    * @param {filterOptions | any} options The filter options
@@ -196,14 +196,14 @@ export default class DataManager extends Core {
       .then(() => this.follow('ec:history'))
       .then((request) => {
         request.follow('ec:entries-history');
-        
+
         if (options) {
           request.withTemplateParameters(optionsToQuery(options));
         }
 
         return get(this[environmentSymbol], request);
       })
-      .then(([res]) => new HistoryEvents(res, this[environmentSymbol]));
+      .then(([res, traversal]) => new HistoryEvents(res, this[environmentSymbol], traversal));
   }
 
   /*
