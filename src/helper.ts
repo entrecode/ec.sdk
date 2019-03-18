@@ -516,7 +516,12 @@ const modifier = {
  * @param {boolean?} encode if true it will encode the parameter values (eg. to support text filter with ',' or '+')
  * @returns {object} translated querystring object
  */
-export function optionsToQuery(options: filterOptions, templateURL?: string, encode: boolean = false, retry: boolean = false): any {
+export function optionsToQuery(
+  options: filterOptions,
+  templateURL?: string,
+  encode: boolean = false,
+  retry: boolean = false,
+): any {
   const out: any = {};
 
   if (options) {
@@ -677,6 +682,57 @@ export function optionsToQuery(options: filterOptions, templateURL?: string, enc
   }
 
   return out;
+}
+
+/**
+ * shortenUUID(uuid[, factor])
+ *
+ * shortens a UUID by XORing the the top half with the bottom half
+ * The default shortening factor is 1, maximum is 5 (just one character returned).
+ *
+ * @param {string} uuid A UUID v4 (including dashes)
+ * @param {number} factor A int 1-5, default is 1 (16 characters returned). Recommended is 2 (8
+ *   characters returned).
+ * @returns {string} 1-16 character hex string
+ */
+export function shortenUUID(uuid: string, factor: number) {
+  let shortUUID;
+  let validatedFactor;
+  if (
+    !/^[0-9A-F]{8}-[0-9A-F]{4}-4[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i.test(uuid) ||
+    (factor && typeof factor !== 'number')
+  ) {
+    throw new Error('invalid parameter format');
+  }
+  if (!factor || factor < 1 || factor > 5) {
+    // set factor to 1 as default
+    validatedFactor = 1;
+  } else {
+    validatedFactor = factor;
+  }
+  shortUUID = uuid.replace(/-/g, ''); // strip the dashes out of the UUID
+  shortUUID = shortUUID.split(''); // turn into Array
+  shortUUID = shortUUID.map((
+    element, // parse Integer value out of hex value
+  ) => parseInt(element, 16));
+  let j;
+  let l;
+
+  function xor(val, index) {
+    return val ^ shortUUID[l / 2 + index]; // XOR the given value of the first half with the
+    // corresponding of the second half
+  }
+
+  for (j = 0; j < validatedFactor; j++) {
+    // factor times XORing
+    l = shortUUID.length;
+    shortUUID = shortUUID.slice(0, l / 2).map(xor);
+  }
+  shortUUID = shortUUID.map((
+    element, // turn back into hex value
+  ) => element.toString(16));
+  shortUUID = shortUUID.join(''); // make array to string
+  return shortUUID;
 }
 
 /**

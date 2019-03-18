@@ -24,6 +24,7 @@ import {
   superagentPost,
   locale,
   put,
+  shortenUUID,
 } from './helper';
 import DMAssetResource from './resources/publicAPI/DMAssetResource';
 import DMAssetList from './resources/publicAPI/DMAssetList';
@@ -72,6 +73,8 @@ const urls = {
  * // node usage:
  * const { PublicAPI } = require('ec.sdk');
  * const api = new PublicAPI('beefbeef', { environment: 'live', noCookie: true }, true); // for ec user
+ * // or
+ * const api = new PublicAPI('9062c09a-c2a2-40dd-b1cf-332f497f9bde'); // with UUID as well
  * api.setToken(config.accessToken);
  *
  * // frontend usage with session:
@@ -105,7 +108,7 @@ const urls = {
  * @prop {string} shortID shortened dataManagerID
  * @prop {string} title title of the connected Data Manager
  *
- * @param {string} idOrURL shortID of the desired DataManager or url in old sdk like syntax.
+ * @param {string} idOrURL shortID or dataManagerID of the desired DataManager or url in old sdk like syntax.
  * @param {environment|envOptions?} environment the environment to connect to, ignored when url is passed to
  *   idOrUrl.
  * @param {boolean?} ecUser if you are an ecUser it is best to set this to true
@@ -143,6 +146,8 @@ export default class PublicAPI extends Core {
 
     if (/^[a-f0-9]{8}$/i.test(idOrURL)) {
       id = idOrURL;
+    } else if (/[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$/.test(idOrURL)) {
+      id = shortenUUID(idOrURL, 2);
     } else {
       const result = /^https?:\/\/(datamanager\.(?:(?:cachena|buffalo)\.)?entrecode\.de|localhost:7471)\/api\/([a-f0-9]{8})\/?$/.exec(
         idOrURL,
@@ -1195,7 +1200,7 @@ export default class PublicAPI extends Core {
   }
 
   /**
-   * Load the HistoryEvents for this DataManager from v3 API. 
+   * Load the HistoryEvents for this DataManager from v3 API.
    * Note: This Request only has pagination when you load a single modelID.
    *
    * @param {filterOptions | any} options The filter options
