@@ -1,5 +1,6 @@
 import { environment } from '../../Core';
 import HistoryEvent from './HistoryEvent';
+import Resource from '../Resource';
 
 const environmentSymbol: any = Symbol.for('environment');
 const resourceSymbol: any = Symbol.for('resource');
@@ -21,7 +22,7 @@ interface HistoryEvents {
  * @prop {number} scannedCount Count of scanned objects
  * @prop {Array<HistoryEvent>} items array of HistoryEvent objects
  */
-class HistoryEvents {
+class HistoryEvents extends Resource {
   /**
    * Creates a new {@link HistoryEvents}.
    *
@@ -30,9 +31,9 @@ class HistoryEvents {
    * @param {object} resource resource loaded from the API.
    * @param {string} environment the environment this resource is associated to.
    */
-  constructor(resource: any, environment: environment) {
-    this[environmentSymbol] = environment;
-    this[resourceSymbol] = JSON.parse(JSON.stringify(resource));
+  constructor(resource: any, environment: environment, traversal) {
+    super(resource, environment, traversal);
+
     Object.defineProperties(this, {
       count: {
         enumerable: true,
@@ -59,11 +60,20 @@ class HistoryEvents {
 
   /**
    * Load the next page.
-   * 
+   *
    * @returns {Promise<HistoryEvents>} Next page of HistoryEvents
    */
   next(): Promise<HistoryEvents> {
-    throw new Error('not implemented yet');
+    return <Promise<HistoryEvents>>this.followLink('next', HistoryEvents);
+  }
+
+  /**
+   * Check if there are more events available
+   *
+   * @returns {boolean} True if there are more links available.
+   */
+  hasNextLink(): boolean {
+    return this.hasLink('next');
   }
 }
 

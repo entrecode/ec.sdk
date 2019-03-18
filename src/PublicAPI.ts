@@ -4,6 +4,7 @@ import * as ShiroTrie from 'shiro-trie';
 import * as superagent from 'superagent';
 import * as validator from 'json-schema-remote';
 import * as validate from 'validator';
+import * as cacheManager from 'cache-manager';
 
 const { convertValidationError } = require('ec.errors')();
 
@@ -24,6 +25,7 @@ import {
   superagentPost,
   locale,
   put,
+  shortenUUID,
 } from './helper';
 import DMAssetResource from './resources/publicAPI/DMAssetResource';
 import DMAssetList from './resources/publicAPI/DMAssetList';
@@ -48,6 +50,7 @@ const permissionsSymbol: any = Symbol('_permissionsSymbol');
 const permissionsLoadedTimeSymbol: any = Symbol('_permissionsLoadedTimeSymbol');
 const assetBaseURLSymbol: any = Symbol('assetBaseURL');
 const requestCacheSymbol: any = Symbol('requestCache');
+const cacheSymbol: any = Symbol('cache');
 
 validator.setLoggingFunction(() => {});
 
@@ -72,6 +75,8 @@ const urls = {
  * // node usage:
  * const { PublicAPI } = require('ec.sdk');
  * const api = new PublicAPI('beefbeef', { environment: 'live', noCookie: true }, true); // for ec user
+ * // or
+ * const api = new PublicAPI('9062c09a-c2a2-40dd-b1cf-332f497f9bde'); // with UUID as well
  * api.setToken(config.accessToken);
  *
  * // frontend usage with session:
@@ -105,7 +110,7 @@ const urls = {
  * @prop {string} shortID shortened dataManagerID
  * @prop {string} title title of the connected Data Manager
  *
- * @param {string} idOrURL shortID of the desired DataManager or url in old sdk like syntax.
+ * @param {string} idOrURL shortID or dataManagerID of the desired DataManager or url in old sdk like syntax.
  * @param {environment|envOptions?} environment the environment to connect to, ignored when url is passed to
  *   idOrUrl.
  * @param {boolean?} ecUser if you are an ecUser it is best to set this to true
@@ -143,6 +148,8 @@ export default class PublicAPI extends Core {
 
     if (/^[a-f0-9]{8}$/i.test(idOrURL)) {
       id = idOrURL;
+    } else if (/[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$/.test(idOrURL)) {
+      id = shortenUUID(idOrURL, 2);
     } else {
       const result = /^https?:\/\/(datamanager\.(?:(?:cachena|buffalo)\.)?entrecode\.de|localhost:7471)\/api\/([a-f0-9]{8})\/?$/.exec(
         idOrURL,
@@ -186,6 +193,7 @@ export default class PublicAPI extends Core {
     this[shortIDSymbol] = id;
     this[assetBaseURLSymbol] = urls[env];
     this[requestCacheSymbol] = undefined;
+    this[cacheSymbol] = cacheManager.caching({ store: 'memory', max: 50, ttl: 600 /*seconds*/ });
   }
 
   get account() {
@@ -954,30 +962,34 @@ export default class PublicAPI extends Core {
    * @returns {Promise<object>} Returns either a Object with single model field config, or an object with multiple field configs
    */
   getFieldConfig(modelTitle: string | Array<string>): Promise<models | fields> {
-    return Promise.resolve()
-      .then(() => {
-        if (!modelTitle) {
-          throw new Error('modelTitle must be defined');
-        }
-        return this.follow(`${this[shortIDSymbol]}:_fieldConfig`);
-      })
-      .then((request) => {
-        let titles: Array<string>;
-        if (!Array.isArray(modelTitle)) {
-          titles = [modelTitle];
-        } else {
-          titles = modelTitle;
-        }
-        request.withTemplateParameters({ modelTitle: titles.join(',') });
-        return get(this[environmentSymbol], request);
-      })
-      .then(([res]) => {
-        if (!Array.isArray(modelTitle)) {
-          return res[modelTitle];
-        }
+    return this[cacheSymbol].wrap(
+      `${this[environmentSymbol]}/${Array.isArray(modelTitle) ? modelTitle.join('|') : modelTitle}`,
+      () =>
+        Promise.resolve()
+          .then(() => {
+            if (!modelTitle) {
+              throw new Error('modelTitle must be defined');
+            }
+            return this.follow(`${this[shortIDSymbol]}:_fieldConfig`);
+          })
+          .then((request) => {
+            let titles: Array<string>;
+            if (!Array.isArray(modelTitle)) {
+              titles = [modelTitle];
+            } else {
+              titles = modelTitle;
+            }
+            request.withTemplateParameters({ modelTitle: titles.join(',') });
+            return get(this[environmentSymbol], request);
+          })
+          .then(([res]) => {
+            if (!Array.isArray(modelTitle)) {
+              return res[modelTitle];
+            }
 
-        return res;
-      });
+            return res;
+          }),
+    );
   }
 
   /**
@@ -1195,7 +1207,7 @@ export default class PublicAPI extends Core {
   }
 
   /**
-   * Load the HistoryEvents for this DataManager from v3 API. 
+   * Load the HistoryEvents for this DataManager from v3 API.
    * Note: This Request only has pagination when you load a single modelID.
    *
    * @param {filterOptions | any} options The filter options
@@ -1211,7 +1223,7 @@ export default class PublicAPI extends Core {
 
         return get(this[environmentSymbol], request);
       })
-      .then(([res]) => new HistoryEvents(res, this[environmentSymbol]));
+      .then(([res, traversal]) => new HistoryEvents(res, this[environmentSymbol], traversal));
   }
 
   /*

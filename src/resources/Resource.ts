@@ -200,7 +200,7 @@ class Resource {
    * @param {object?} schema schema for {@link EntryResource}s
    * @returns {Promise<Resource|ResourceClass>} the resource identified by the link.
    */
-  followLink(link: string, ResourceClass = Resource, name: string, schema: any): Promise<Resource> {
+  followLink(link: string, ResourceClass = Resource, name?: string, schema?: any): Promise<Resource> {
     return get(this[environmentSymbol], this.newRequest().follow(link)).then(([res, traversal]) => {
       return new ResourceClass(res, this[environmentSymbol], traversal, name, schema);
     });

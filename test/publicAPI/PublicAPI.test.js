@@ -53,6 +53,11 @@ describe('PublicAPI', () => {
     api.should.be.instanceOf(Api.default);
     api[environmentSymbol].should.be.equal('stage');
   });
+  it('should be instance of PublicAPI with UUID', () => {
+    api = new Api.default('328ab31f-30a5-44d8-a65f-3e70a6dc38bb');
+    api.should.be.instanceOf(Api.default);
+    api.shortID.should.equal('02acf10c');
+  });
   it('should get auth link', () => {
     api.getAuthLink('anonymous').should.eventually.be.fulfilled;
   });
