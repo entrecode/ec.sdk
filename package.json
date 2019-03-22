@@ -1,6 +1,6 @@
 {
   "name": "ec.sdk",
-  "version": "0.18.6",
+  "version": "0.18.7",
   "description": "SDK for ec.api",
   "repository": "entrecode/ec.sdk",
   "author": "Simon Scherzinger <scherzinger@entrecode.de>",
@@ -31,7 +31,6 @@
     "@types/traverson": "^2.0.28",
     "@types/validator": "^10.9.0",
     "browser-cookies": "^1.2.0",
-    "cache-manager": "^2.9.0",
     "deep-equal": "^1.0.1",
     "ec.errors": "^0.2.2",
     "es6-symbol": "^3.1.1",

@@ -4,7 +4,6 @@ import * as ShiroTrie from 'shiro-trie';
 import * as superagent from 'superagent';
 import * as validator from 'json-schema-remote';
 import * as validate from 'validator';
-import * as cacheManager from 'cache-manager';
 
 const { convertValidationError } = require('ec.errors')();
 
@@ -50,7 +49,6 @@ const permissionsSymbol: any = Symbol('_permissionsSymbol');
 const permissionsLoadedTimeSymbol: any = Symbol('_permissionsLoadedTimeSymbol');
 const assetBaseURLSymbol: any = Symbol('assetBaseURL');
 const requestCacheSymbol: any = Symbol('requestCache');
-const cacheSymbol: any = Symbol('cache');
 
 validator.setLoggingFunction(() => {});
 
@@ -193,7 +191,6 @@ export default class PublicAPI extends Core {
     this[shortIDSymbol] = id;
     this[assetBaseURLSymbol] = urls[env];
     this[requestCacheSymbol] = undefined;
-    this[cacheSymbol] = cacheManager.caching({ store: 'memory', max: 50, ttl: 600 /*seconds*/ });
   }
 
   get account() {
@@ -962,34 +959,30 @@ export default class PublicAPI extends Core {
    * @returns {Promise<object>} Returns either a Object with single model field config, or an object with multiple field configs
    */
   getFieldConfig(modelTitle: string | Array<string>): Promise<models | fields> {
-    return this[cacheSymbol].wrap(
-      `${this[environmentSymbol]}/${Array.isArray(modelTitle) ? modelTitle.join('|') : modelTitle}`,
-      () =>
-        Promise.resolve()
-          .then(() => {
-            if (!modelTitle) {
-              throw new Error('modelTitle must be defined');
-            }
-            return this.follow(`${this[shortIDSymbol]}:_fieldConfig`);
-          })
-          .then((request) => {
-            let titles: Array<string>;
-            if (!Array.isArray(modelTitle)) {
-              titles = [modelTitle];
-            } else {
-              titles = modelTitle;
-            }
-            request.withTemplateParameters({ modelTitle: titles.join(',') });
-            return get(this[environmentSymbol], request);
-          })
-          .then(([res]) => {
-            if (!Array.isArray(modelTitle)) {
-              return res[modelTitle];
-            }
+    return Promise.resolve()
+      .then(() => {
+        if (!modelTitle) {
+          throw new Error('modelTitle must be defined');
+        }
+        return this.follow(`${this[shortIDSymbol]}:_fieldConfig`);
+      })
+      .then((request) => {
+        let titles: Array<string>;
+        if (!Array.isArray(modelTitle)) {
+          titles = [modelTitle];
+        } else {
+          titles = modelTitle;
+        }
+        request.withTemplateParameters({ modelTitle: titles.join(',') });
+        return get(this[environmentSymbol], request);
+      })
+      .then(([res]) => {
+        if (!Array.isArray(modelTitle)) {
+          return res[modelTitle];
+        }
 
-            return res;
-          }),
-    );
+        return res;
+      });
   }
 
   /**

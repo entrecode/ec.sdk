@@ -1,3 +1,10 @@
+## <small>0.18.7 (2019-03-22)</small>
+
+* release version 0.18.7 ([8e86e91](https://github.com/entrecode/ec.sdk/commit/8e86e91))
+* Revert "feat: getFieldConfig caching SDK-94" ([a445e84](https://github.com/entrecode/ec.sdk/commit/a445e84))
+
+
+
 ## <small>0.18.6 (2019-03-18)</small>
 
 * release version 0.18.6 ([6adc2f9](https://github.com/entrecode/ec.sdk/commit/6adc2f9))
