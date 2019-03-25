@@ -1,3 +1,17 @@
+## 0.19.0 (2019-03-25)
+
+* release version 0.19.0 ([83e89e7](https://github.com/entrecode/ec.sdk/commit/83e89e7))
+* SDK-118 add _count to filter options ([08f13a0](https://github.com/entrecode/ec.sdk/commit/08f13a0))
+* feat: send _list with all entryList requests SDK-117 ([ab5e19a](https://github.com/entrecode/ec.sdk/commit/ab5e19a))
+
+
+### BREAKING CHANGE
+
+* PublicAPI#entryList will send `_list=true` with all requests.
+
+This will only work with DataManager `^0.20.0`. There is no change in your code needed, but this will fail on DataMAnager `<0.20.0`.
+
+
 ## <small>0.18.7 (2019-03-22)</small>
 
 * release version 0.18.7 ([8e86e91](https://github.com/entrecode/ec.sdk/commit/8e86e91))
