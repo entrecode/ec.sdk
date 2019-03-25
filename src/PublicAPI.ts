@@ -49,6 +49,7 @@ const permissionsSymbol: any = Symbol('_permissionsSymbol');
 const permissionsLoadedTimeSymbol: any = Symbol('_permissionsLoadedTimeSymbol');
 const assetBaseURLSymbol: any = Symbol('assetBaseURL');
 const requestCacheSymbol: any = Symbol('requestCache');
+const fieldConfigCacheSymbol: any = Symbol('fieldConfigCache');
 
 validator.setLoggingFunction(() => {});
 
@@ -191,6 +192,7 @@ export default class PublicAPI extends Core {
     this[shortIDSymbol] = id;
     this[assetBaseURLSymbol] = urls[env];
     this[requestCacheSymbol] = undefined;
+    this[fieldConfigCacheSymbol] = new Map();
   }
 
   get account() {
@@ -958,30 +960,49 @@ export default class PublicAPI extends Core {
    * @returns {Promise<object>} Returns either a Object with single model field config, or an object with multiple field configs
    */
   getFieldConfig(modelTitle: string | Array<string>): Promise<models | fields> {
-    return Promise.resolve()
-      .then(() => {
-        if (!modelTitle) {
-          throw new Error('modelTitle must be defined');
-        }
-        return this.follow(`${this[shortIDSymbol]}:_fieldConfig`);
-      })
-      .then((request) => {
-        let titles: Array<string>;
-        if (!Array.isArray(modelTitle)) {
-          titles = [modelTitle];
-        } else {
-          titles = modelTitle;
-        }
-        request.withTemplateParameters({ modelTitle: titles.join(',') });
-        return get(this[environmentSymbol], request);
-      })
-      .then(([res]) => {
-        if (!Array.isArray(modelTitle)) {
-          return res[modelTitle];
-        }
+    return Promise.resolve().then(() => {
+      if (!modelTitle) {
+        throw new Error('modelTitle must be defined');
+      }
 
-        return res;
-      });
+      const cacheKey = `${this[environmentSymbol]}/${Array.isArray(modelTitle) ? modelTitle.join('|') : modelTitle}`;
+
+      if (this[fieldConfigCacheSymbol].has(cacheKey)) {
+        const cachedResult = this[fieldConfigCacheSymbol].get(cacheKey);
+        if (cachedResult.timestamp > new Date().getTime() - 1000 * 60 * 5) {
+          return cachedResult.result;
+        } else {
+          this[fieldConfigCacheSymbol].delete(cacheKey);
+        }
+      }
+
+      return this.follow(`${this[shortIDSymbol]}:_fieldConfig`)
+        .then((request) => {
+          let titles: Array<string>;
+          if (!Array.isArray(modelTitle)) {
+            titles = [modelTitle];
+          } else {
+            titles = modelTitle;
+          }
+          request.withTemplateParameters({ modelTitle: titles.join(',') });
+          return get(this[environmentSymbol], request);
+        })
+        .then(([res]) => {
+          let result;
+          if (!Array.isArray(modelTitle)) {
+            result = res[modelTitle];
+          } else {
+            result = res;
+          }
+
+          this[fieldConfigCacheSymbol].set(cacheKey, {
+            result,
+            timestamp: new Date(),
+          });
+
+          return result;
+        });
+    });
   }
 
   /**
