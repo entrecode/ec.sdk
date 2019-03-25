@@ -1,3 +1,10 @@
+## <small>0.19.1 (2019-03-25)</small>
+
+* release version 0.19.1 ([27de743](https://github.com/entrecode/ec.sdk/commit/27de743))
+* feat: memory only fieldConfig cache SDK-96 ([ee955df](https://github.com/entrecode/ec.sdk/commit/ee955df))
+
+
+
 ## 0.19.0 (2019-03-25)
 
 * release version 0.19.0 ([83e89e7](https://github.com/entrecode/ec.sdk/commit/83e89e7))
