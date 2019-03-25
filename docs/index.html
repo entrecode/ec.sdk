@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset='utf-8' />
-  <title>ec.sdk 0.18.7 | Documentation</title>
+  <title>ec.sdk 0.19.0 | Documentation</title>
   <meta name='description' content='SDK for ec.api'>
   <meta name='viewport' content='width=device-width,initial-scale=1'>
   <link href='assets/bass.css' rel='stylesheet' />
@@ -15,7 +15,7 @@
       <div id='split-left' class='overflow-auto fs0 height-viewport-100'>
         <div class='py1 px2'>
           <h3 class='mb0 no-anchor'>ec.sdk</h3>
-          <div class='mb1'><code>0.18.7</code></div>
+          <div class='mb1'><code>0.19.0</code></div>
           <input
             placeholder='Filter'
             id='filter-input'
@@ -32936,7 +32936,18 @@ be the same object but with refreshed data.
     </h2>
 
     
-      <h2><small>0.18.7 (2019-03-22)</small></h2>
+      <h2>0.19.0 (2019-03-25)</h2>
+<ul>
+<li>release version 0.19.0 (<a href="https://github.com/entrecode/ec.sdk/commit/83e89e7">83e89e7</a>)</li>
+<li>SDK-118 add _count to filter options (<a href="https://github.com/entrecode/ec.sdk/commit/08f13a0">08f13a0</a>)</li>
+<li>feat: send _list with all entryList requests SDK-117 (<a href="https://github.com/entrecode/ec.sdk/commit/ab5e19a">ab5e19a</a>)</li>
+</ul>
+<h3>BREAKING CHANGE</h3>
+<ul>
+<li>PublicAPI#entryList will send <code>_list=true</code> with all requests.</li>
+</ul>
+<p>This will only work with DataManager <code>^0.20.0</code>. There is no change in your code needed, but this will fail on DataMAnager <code>&#x3C;0.20.0</code>.</p>
+<h2><small>0.18.7 (2019-03-22)</small></h2>
 <ul>
 <li>release version 0.18.7 (<a href="https://github.com/entrecode/ec.sdk/commit/8e86e91">8e86e91</a>)</li>
 <li>Revert "feat: getFieldConfig caching SDK-94" (<a href="https://github.com/entrecode/ec.sdk/commit/a445e84">a445e84</a>)</li>
