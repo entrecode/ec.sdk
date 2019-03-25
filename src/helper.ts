@@ -532,8 +532,7 @@ export function optionsToQuery(
     Object.keys(options).forEach((key) => {
       const value = options[key];
       if (value !== undefined) {
-        if (['size', 'page'].indexOf(key) !== -1) {
-          // TODO was array.includes
+        if (['size', 'page', '_count'].indexOf(key) !== -1) {
           if (!Number.isInteger(<number>value)) {
             throw new Error(`${key} must be integer, is ${typeof value}: ${value}`);
           }

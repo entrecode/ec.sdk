@@ -867,6 +867,10 @@ export default class PublicAPI extends Core {
 
         options._list = true;
 
+        if ('size' in options) {
+          console.warn('ec.sdk: Size is deprecated – plase use _count instead.');
+        }
+
         return this.follow(`${this[shortIDSymbol]}:${model}`);
       })
       .then((request) => {
