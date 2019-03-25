@@ -481,14 +481,6 @@ describe('PublicAPI', () => {
     return api.entryList()
       .should.be.rejectedWith('model must be defined');
   });
-  it('should throw on filter only id', () => {
-    return api.entryList('allFields', { id: '1234567' })
-      .should.be.rejectedWith('Providing only an id/_id in entryList filter will result in single resource response. Please use PublicAPI#entry');
-  });
-  it('should throw on filter only _id', () => {
-    return api.entryList('allFields', { _id: '1234567' })
-      .should.be.rejectedWith('Providing only an id/_id in entryList filter will result in single resource response. Please use PublicAPI#entry');
-  });
 
   it('should resolve on entry', () => {
     const stub = sinon.stub(helper, 'get');

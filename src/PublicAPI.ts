@@ -861,16 +861,11 @@ export default class PublicAPI extends Core {
           throw new Error('model must be defined');
         }
 
-        if (
-          options &&
-          Object.keys(options).length === 1 &&
-          ((options.id && (typeof options.id === 'string' || (!('any' in options.id) && !('all' in options.id)))) ||
-            (options._id && (typeof options._id === 'string' || (!('any' in options._id) && !('all' in options._id)))))
-        ) {
-          throw new Error(
-            'Providing only an id/_id in entryList filter will result in single resource response. Please use PublicAPI#entry',
-          );
+        if (!options) {
+          options = {};
         }
+
+        options._list = true;
 
         return this.follow(`${this[shortIDSymbol]}:${model}`);
       })
