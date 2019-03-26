@@ -23,8 +23,7 @@ describe('Build ListResource', () => {
         }
         return resolve(JSON.parse(res));
       });
-    })
-    .then((json) => {
+    }).then((json) => {
       listJson = json;
     });
   });
@@ -41,7 +40,7 @@ describe('Build ListResource', () => {
     list.should.be.instanceOf(BuildList);
   });
   it('should have BuildResource items', () => {
-    list.getAllItems().forEach(item => item.should.be.instanceOf(BuildResource));
+    list.getAllItems().forEach((item) => item.should.be.instanceOf(BuildResource));
   });
 });
 
@@ -56,8 +55,7 @@ describe('Build Resource', () => {
         }
         return resolve(JSON.parse(res));
       });
-    })
-    .then((json) => {
+    }).then((json) => {
       resourceJson = json;
     });
   });

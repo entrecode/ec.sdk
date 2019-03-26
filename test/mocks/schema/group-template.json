@@ -13,9 +13,6 @@
       }
     }
   },
-  "required": [
-    "name",
-    "permissions"
-  ],
+  "required": ["name", "permissions"],
   "$schema": "http://json-schema.org/draft-04/schema#"
 }

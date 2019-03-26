@@ -12,7 +12,8 @@ const should = chai.should();
 chai.use(sinonChai);
 
 describe('Token handling', () => {
-  const token = 'eyJhbGciOiJSUzUxMiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNjaGVyemluZ2VyQGVudHJlY29kZS5kZSIsImp0aSI6IjEwODRlMGRmLTg1NzktNGRmMC1hNjc4LTk5M2QwMDNkY2QyNSIsImlhdCI6MTQ4MjUwNTcxMywiZXhwIjoxNDg1MDk3NzEzLCJpc3MiOiJlbnRyZWNvZGUiLCJzdWIiOiJkZGQyOWZkMS03NDE3LTQ4OTQtYTU0Ni01YzEyYjExYzAxODYifQ.Z2UA2EkFUMPvj5AZX5Ox5-pHiQsfw1Jjvq7sqXDT4OfdOFdGMHvKDLsJm1aVWWga5PMLSpKPucYYk_MrDTjYFp1HJhn97B1VwO62psP-Z6BMFgIPpQNB0f-_Mgth4OGucpLajoGgw9PemmHGWvyStC1Gzg9QBdKCch4VNjKvgg33puyZ5DA9YvldjUTQVhl02rHQspf4dfAz7DQHCJJN_tFhXXLpYzg_pQOu6L-yowsEFlLhl9SZoidz9v8T4PMio04g9wauilu0-ZXGRMRHKk2RYqlRaSc4QLSRZnyefdjp1_Xk7q9dG0Fn71YWxClXYlf2hycuzO2bg1-JBElxzQ';
+  const token =
+    'eyJhbGciOiJSUzUxMiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNjaGVyemluZ2VyQGVudHJlY29kZS5kZSIsImp0aSI6IjEwODRlMGRmLTg1NzktNGRmMC1hNjc4LTk5M2QwMDNkY2QyNSIsImlhdCI6MTQ4MjUwNTcxMywiZXhwIjoxNDg1MDk3NzEzLCJpc3MiOiJlbnRyZWNvZGUiLCJzdWIiOiJkZGQyOWZkMS03NDE3LTQ4OTQtYTU0Ni01YzEyYjExYzAxODYifQ.Z2UA2EkFUMPvj5AZX5Ox5-pHiQsfw1Jjvq7sqXDT4OfdOFdGMHvKDLsJm1aVWWga5PMLSpKPucYYk_MrDTjYFp1HJhn97B1VwO62psP-Z6BMFgIPpQNB0f-_Mgth4OGucpLajoGgw9PemmHGWvyStC1Gzg9QBdKCch4VNjKvgg33puyZ5DA9YvldjUTQVhl02rHQspf4dfAz7DQHCJJN_tFhXXLpYzg_pQOu6L-yowsEFlLhl9SZoidz9v8T4PMio04g9wauilu0-ZXGRMRHKk2RYqlRaSc4QLSRZnyefdjp1_Xk7q9dG0Fn71YWxClXYlf2hycuzO2bg1-JBElxzQ';
   let store;
   beforeEach(() => {
     store = TokenStore.default('test');
@@ -114,7 +115,8 @@ describe('Token handling', () => {
 });
 
 describe('Token handling with cookie store', () => {
-  const token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJlbnRyZWNvZGVUZXN0IiwiaWF0IjoxNDg1NzgzNTg4LCJleHAiOjQ2NDE0NTcxODgsImF1ZCI6IlRlc3QiLCJzdWIiOiJ0ZXN0QGVudHJlY29kZS5kZSJ9.Vhrq5GR2hNz-RoAhdlnIIWHelPciBPCemEa74s7cXn8';
+  const token =
+    'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJlbnRyZWNvZGVUZXN0IiwiaWF0IjoxNDg1NzgzNTg4LCJleHAiOjQ2NDE0NTcxODgsImF1ZCI6IlRlc3QiLCJzdWIiOiJ0ZXN0QGVudHJlY29kZS5kZSJ9.Vhrq5GR2hNz-RoAhdlnIIWHelPciBPCemEa74s7cXn8';
   let store;
   before(() => {
     document = new CookieMock(); // eslint-disable-line no-undef
@@ -146,9 +148,13 @@ describe('Token handling with cookie store', () => {
   });
   it('should warn on outdated token', () => {
     const stub = sinon.stub(console, 'warn');
-    store.setToken('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJlbnRyZWNvZGVUZXN0IiwiaWF0Ijo0ODU3ODM1ODgsImV4cCI6NjQxNDU3MTg4LCJhdWQiOiJUZXN0Iiwic3ViIjoidGVzdEBlbnRyZWNvZGUuZGUifQ.3oazgwQUfdwP4cCgke7eVWLcMo_xkqHhlUBdyL60Vp0');
+    store.setToken(
+      'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJlbnRyZWNvZGVUZXN0IiwiaWF0Ijo0ODU3ODM1ODgsImV4cCI6NjQxNDU3MTg4LCJhdWQiOiJUZXN0Iiwic3ViIjoidGVzdEBlbnRyZWNvZGUuZGUifQ.3oazgwQUfdwP4cCgke7eVWLcMo_xkqHhlUBdyL60Vp0',
+    );
     should.equal(cookie.get('testToken'), null);
-    store.token.should.be.equal('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJlbnRyZWNvZGVUZXN0IiwiaWF0Ijo0ODU3ODM1ODgsImV4cCI6NjQxNDU3MTg4LCJhdWQiOiJUZXN0Iiwic3ViIjoidGVzdEBlbnRyZWNvZGUuZGUifQ.3oazgwQUfdwP4cCgke7eVWLcMo_xkqHhlUBdyL60Vp0');
+    store.token.should.be.equal(
+      'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJlbnRyZWNvZGVUZXN0IiwiaWF0Ijo0ODU3ODM1ODgsImV4cCI6NjQxNDU3MTg4LCJhdWQiOiJUZXN0Iiwic3ViIjoidGVzdEBlbnRyZWNvZGUuZGUifQ.3oazgwQUfdwP4cCgke7eVWLcMo_xkqHhlUBdyL60Vp0',
+    );
     stub.should.have.callCount(1);
     stub.restore();
   });

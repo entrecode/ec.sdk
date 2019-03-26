@@ -24,8 +24,7 @@ describe('Tag ListResource', () => {
         }
         return resolve(JSON.parse(res));
       });
-    })
-    .then((json) => {
+    }).then((json) => {
       listJson = json;
     });
   });
@@ -42,7 +41,7 @@ describe('Tag ListResource', () => {
     list.should.be.instanceOf(TagList);
   });
   it('should have TagResource items', () => {
-    list.getAllItems().forEach(item => item.should.be.instanceOf(TagResource));
+    list.getAllItems().forEach((item) => item.should.be.instanceOf(TagResource));
   });
 });
 
@@ -57,8 +56,7 @@ describe('Tag Resource', () => {
         }
         return resolve(JSON.parse(res));
       });
-    })
-    .then((json) => {
+    }).then((json) => {
       resourceJson = json;
     });
   });

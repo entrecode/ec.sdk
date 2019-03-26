@@ -452,9 +452,7 @@
             "assetID": "5ded1488-3c85-4aa7-b274-150c3503cc35"
           }
         ],
-        "tags": [
-          "two"
-        ],
+        "tags": ["two"],
         "title": "RoomSketcher Level Image",
         "type": "image",
         "_links": {

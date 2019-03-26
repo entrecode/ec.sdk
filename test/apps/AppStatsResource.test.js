@@ -23,8 +23,7 @@ describe('AppStats ListResource', () => {
         }
         return resolve(JSON.parse(res));
       });
-    })
-    .then((json) => {
+    }).then((json) => {
       listJson = json;
     });
   });
@@ -41,7 +40,7 @@ describe('AppStats ListResource', () => {
     list.should.be.instanceOf(AppStatsList);
   });
   it('should have AppStatsResource items', () => {
-    list.getAllItems().forEach(item => item.should.be.instanceOf(AppStatsResource));
+    list.getAllItems().forEach((item) => item.should.be.instanceOf(AppStatsResource));
   });
 });
 
@@ -56,8 +55,7 @@ describe('AppStats Resource', () => {
         }
         return resolve(JSON.parse(res));
       });
-    })
-    .then((json) => {
+    }).then((json) => {
       resourceJson = json;
     });
   });
@@ -75,8 +73,17 @@ describe('AppStats Resource', () => {
   });
 
   const getter = [
-    'appID', 'title', 'totalBuilds', 'totalBuildSize', 'monthlyBuilds', 'totalDeployments',
-    'monthlyDeployments', 'usedCodeSources', 'usedDataSources', 'usedTargets', 'usedPlatforms'
+    'appID',
+    'title',
+    'totalBuilds',
+    'totalBuildSize',
+    'monthlyBuilds',
+    'totalDeployments',
+    'monthlyDeployments',
+    'usedCodeSources',
+    'usedDataSources',
+    'usedTargets',
+    'usedPlatforms',
   ];
   getter.forEach((name) => {
     it(`should call resource.getProperty with ${name}`, () => {

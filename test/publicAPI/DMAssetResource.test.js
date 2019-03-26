@@ -26,10 +26,9 @@ describe('DMAsset ListResource', () => {
         }
         return resolve(JSON.parse(res));
       });
-    })
-      .then((json) => {
-        listJson = json;
-      });
+    }).then((json) => {
+      listJson = json;
+    });
   });
   beforeEach(() => {
     list = new DMAssetList(listJson);
@@ -44,7 +43,7 @@ describe('DMAsset ListResource', () => {
     list.should.be.instanceOf(DMAssetList);
   });
   it('should have DMAssetResource items', () => {
-    list.getAllItems().forEach(item => item.should.be.instanceOf(DMAssetResource));
+    list.getAllItems().forEach((item) => item.should.be.instanceOf(DMAssetResource));
   });
 });
 
@@ -59,10 +58,9 @@ describe('DMAsset Resource', () => {
         }
         return resolve(JSON.parse(res));
       });
-    })
-      .then((json) => {
-        resourceJson = json;
-      });
+    }).then((json) => {
+      resourceJson = json;
+    });
   });
   beforeEach(() => {
     resource = new DMAssetResource(resourceJson);
@@ -92,21 +90,24 @@ describe('DMAsset Resource', () => {
   it('should get image variant', () => {
     const stub = sinon.stub(helper, 'get');
     stub.returns(resolver('dm-asset-bestfile.json'));
-    return resource.getImageUrl(500)
+    return resource
+      .getImageUrl(500)
       .should.eventually.equal('https://cdn1.buffalo.entrecode.de/ab5047fc/test1/7mGEhlUXvdxuoCf0vQWtLNQW.jpg')
       .notify(() => {
         stub.restore();
       });
   });
   it('should get image variant, local match', () => {
-    return resource.getImageUrl(700)
+    return resource
+      .getImageUrl(700)
       .should.eventually.equal('https://cdn1.entrecode.de/beefbeef/test1/7mGEhlUXvdxuoCf0vQWtLNQW_700.jpg');
   });
   it('should get thumbnail', () => {
     const stub = sinon.stub(helper, 'get');
     stub.returns(resolver('dm-asset-bestfile.json'));
 
-    return resource.getImageThumbUrl(50)
+    return resource
+      .getImageThumbUrl(50)
       .should.eventually.equal('https://cdn1.buffalo.entrecode.de/ab5047fc/test1/7mGEhlUXvdxuoCf0vQWtLNQW.jpg')
       .notify(() => {
         stub.restore();
@@ -134,8 +135,22 @@ describe('DMAsset Resource', () => {
     });
   });
 
-  const getter = ['assetID', 'title', 'caption', 'tags', 'type', 'file', 'mimetype', 'caption',
-    'creator', 'creatorType', 'fileVariants', 'thumbnails', 'isUsed', 'duplicates'];
+  const getter = [
+    'assetID',
+    'title',
+    'caption',
+    'tags',
+    'type',
+    'file',
+    'mimetype',
+    'caption',
+    'creator',
+    'creatorType',
+    'fileVariants',
+    'thumbnails',
+    'isUsed',
+    'duplicates',
+  ];
   getter.forEach((name) => {
     it(`should call resource.getProperty with ${name}`, () => {
       const spy = sinon.spy(resource, 'getProperty');

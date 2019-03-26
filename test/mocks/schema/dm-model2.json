@@ -44,18 +44,12 @@
           "description": "Timestamp of the creation of this entry."
         },
         "_creator": {
-          "type": [
-            "string",
-            "null"
-          ],
+          "type": ["string", "null"],
           "title": "account",
           "description": "Creator of this entry."
         },
         "creator": {
-          "type": [
-            "string",
-            "null"
-          ],
+          "type": ["string", "null"],
           "title": "account",
           "description": "Creator of this entry."
         },
@@ -114,15 +108,7 @@
           "default": "asd"
         }
       },
-      "required": [
-        "_id",
-        "_created",
-        "_modified",
-        "_modelTitleField",
-        "_modelTitle",
-        "_entryTitle",
-        "ad"
-      ]
+      "required": ["_id", "_created", "_modified", "_modelTitleField", "_modelTitle", "_entryTitle", "ad"]
     }
   ]
 }

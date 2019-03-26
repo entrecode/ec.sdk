@@ -62,10 +62,7 @@
         "hexColor": "#9B2FAE",
         "locales": [],
         "rights": [],
-        "publicAssetRights": [
-          "get",
-          "getTags"
-        ],
+        "publicAssetRights": ["get", "getTags"],
         "shortID": "aa3b242e",
         "title": "ec.datamanager-sdk-tests-3",
         "_links": {
@@ -154,10 +151,7 @@
         "hexColor": "#9B2FAE",
         "locales": [],
         "rights": [],
-        "publicAssetRights": [
-          "get",
-          "getTags"
-        ],
+        "publicAssetRights": ["get", "getTags"],
         "shortID": "3d52509f",
         "title": "ec.datamanager-sdk-tests-2",
         "_links": {

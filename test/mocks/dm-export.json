@@ -166,10 +166,7 @@
   "dataSchema": {
     "$schema": "http://json-schema.org/draft-04/schema#",
     "type": "object",
-    "required": [
-      "accessToken",
-      "datamanager"
-    ],
+    "required": ["accessToken", "datamanager"],
     "properties": {
       "datamanager": {
         "type": "string",

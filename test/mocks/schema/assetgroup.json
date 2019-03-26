@@ -26,10 +26,7 @@
           "properties": {
             "urlExpiration": {
               "description": "ISO 8601 duration determining how long URLs will be valid, if this assetgroup is non-public. Overwrites global setting from Data Manager.",
-              "type": [
-                "string",
-                "null"
-              ],
+              "type": ["string", "null"],
               "pattern": "^P(?!$)(\\d+Y)?(\\d+M)?(\\d+W)?(\\d+D)?(T(?=\\d)(\\d+H)?(\\d+M)?(\\d+S)?)?$"
             },
             "disabledTypes": {
@@ -39,19 +36,11 @@
                 "oneOf": [
                   {
                     "type": "string",
-                    "enum": [
-                      "image",
-                      "video",
-                      "audio",
-                      "plain",
-                      "document",
-                      "spreadsheet",
-                      "other"
-                    ]
+                    "enum": ["image", "video", "audio", "plain", "document", "spreadsheet", "other"]
                   },
                   {
                     "type": "string",
-                    "pattern": "^(image|video|audio|text|application)\/[a-z0-9\\.+-]+$"
+                    "pattern": "^(image|video|audio|text|application)/[a-z0-9\\.+-]+$"
                   }
                 ]
               }
@@ -89,37 +78,21 @@
               "user": {
                 "description": "Either not authenticated (public) or a dm user (publicUser)",
                 "type": "string",
-                "enum": [
-                  "public",
-                  "publicUser"
-                ]
+                "enum": ["public", "publicUser"]
               },
               "conditions": {
                 "$ref": "#/definitions/condition"
               }
             },
             "additionalProperties": false,
-            "required": [
-              "method",
-              "user"
-            ]
+            "required": ["method", "user"]
           }
         },
         "_links": {
-          "required": [
-            "self",
-            "collection",
-            "ec:datamanager",
-            "ec:dm-assets"
-          ]
+          "required": ["self", "collection", "ec:datamanager", "ec:dm-assets"]
         }
       },
-      "required": [
-        "assetGroupID",
-        "public",
-        "settings",
-        "policies"
-      ]
+      "required": ["assetGroupID", "public", "settings", "policies"]
     }
   ],
   "definitions": {
@@ -146,43 +119,19 @@
               ]
             },
             "operator": {
-              "enum": [
-                "=",
-                "!=",
-                "<",
-                "<=",
-                ">",
-                ">=",
-                "contains",
-                "containsNot",
-                "hasRole",
-                "hasNotRole"
-              ]
+              "enum": ["=", "!=", "<", "<=", ">", ">=", "contains", "containsNot", "hasRole", "hasNotRole"]
             },
             "variable": {
-              "enum": [
-                "accountID",
-                "roles",
-                "now"
-              ]
+              "enum": ["accountID", "roles", "now"]
             },
-            "constant": {
-            }
+            "constant": {}
           },
           "oneOf": [
             {
-              "required": [
-                "field",
-                "operator",
-                "variable"
-              ]
+              "required": ["field", "operator", "variable"]
             },
             {
-              "required": [
-                "field",
-                "operator",
-                "constant"
-              ]
+              "required": ["field", "operator", "constant"]
             }
           ],
           "additionalProperties": false

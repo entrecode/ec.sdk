@@ -57,18 +57,10 @@
           "2016-06": 26,
           "2016-11": 11
         },
-        "usedCodeSources": [
-          "remoteGit"
-        ],
-        "usedDataSources": [
-          "ownDataManager"
-        ],
-        "usedTargets": [
-          "entrecodeS3"
-        ],
-        "usedPlatforms": [
-          "staticWebsite"
-        ],
+        "usedCodeSources": ["remoteGit"],
+        "usedDataSources": ["ownDataManager"],
+        "usedTargets": ["entrecodeS3"],
+        "usedPlatforms": ["staticWebsite"],
         "_links": {
           "self": {
             "href": "https://appserver.entrecode.de/stats?appID=7e44a03e-ff5b-4c1a-b0bb-e8a10ee028da"
@@ -96,19 +88,10 @@
           "2016-06": 6,
           "2016-08": 1
         },
-        "usedCodeSources": [
-          "stub"
-        ],
-        "usedDataSources": [
-          "singleEntry"
-        ],
-        "usedTargets": [
-          "entrecodeS3",
-          "entrecodeS3Testing"
-        ],
-        "usedPlatforms": [
-          "website"
-        ],
+        "usedCodeSources": ["stub"],
+        "usedDataSources": ["singleEntry"],
+        "usedTargets": ["entrecodeS3", "entrecodeS3Testing"],
+        "usedPlatforms": ["website"],
         "_links": {
           "self": {
             "href": "https://appserver.entrecode.de/stats?appID=95c77f27-9ab2-429f-bbee-777a41d477b0"
@@ -161,23 +144,10 @@
           "2017-04": 134,
           "2017-05": 7
         },
-        "usedCodeSources": [
-          "remoteGit",
-          "stub"
-        ],
-        "usedDataSources": [
-          "singleEntry",
-          "stub"
-        ],
-        "usedTargets": [
-          "zipDownload",
-          "entrecodeS3Testing",
-          "entrecodeS3"
-        ],
-        "usedPlatforms": [
-          "website",
-          "ionic-simple"
-        ],
+        "usedCodeSources": ["remoteGit", "stub"],
+        "usedDataSources": ["singleEntry", "stub"],
+        "usedTargets": ["zipDownload", "entrecodeS3Testing", "entrecodeS3"],
+        "usedPlatforms": ["website", "ionic-simple"],
         "_links": {
           "self": {
             "href": "https://appserver.entrecode.de/stats?appID=5e01bbcb-e8f3-4266-ac6e-a86988a7b1b9"
@@ -201,18 +171,10 @@
         "monthlyDeployments": {
           "2015-09": 1
         },
-        "usedCodeSources": [
-          "remoteGit"
-        ],
-        "usedDataSources": [
-          "ownDataManager"
-        ],
-        "usedTargets": [
-          "entrecodeS3"
-        ],
-        "usedPlatforms": [
-          "staticWebsite"
-        ],
+        "usedCodeSources": ["remoteGit"],
+        "usedDataSources": ["ownDataManager"],
+        "usedTargets": ["entrecodeS3"],
+        "usedPlatforms": ["staticWebsite"],
         "_links": {
           "self": {
             "href": "https://appserver.entrecode.de/stats?appID=0d7c43be-6392-4fca-a962-3424383cd7a8"
@@ -253,19 +215,10 @@
           "2016-08": 2,
           "2017-01": 6
         },
-        "usedCodeSources": [
-          "stub"
-        ],
-        "usedDataSources": [
-          "singleEntry"
-        ],
-        "usedTargets": [
-          "entrecodeS3Testing",
-          "entrecodeS3"
-        ],
-        "usedPlatforms": [
-          "website"
-        ],
+        "usedCodeSources": ["stub"],
+        "usedDataSources": ["singleEntry"],
+        "usedTargets": ["entrecodeS3Testing", "entrecodeS3"],
+        "usedPlatforms": ["website"],
         "_links": {
           "self": {
             "href": "https://appserver.entrecode.de/stats?appID=9dff83ff-d3df-4ef5-ab17-9bd8347945dd"
@@ -366,18 +319,10 @@
           "2016-03": 1,
           "2015-10": 1
         },
-        "usedCodeSources": [
-          "remoteGit"
-        ],
-        "usedDataSources": [
-          "ownDataManager"
-        ],
-        "usedTargets": [
-          "entrecodeS3"
-        ],
-        "usedPlatforms": [
-          "staticWebsite"
-        ],
+        "usedCodeSources": ["remoteGit"],
+        "usedDataSources": ["ownDataManager"],
+        "usedTargets": ["entrecodeS3"],
+        "usedPlatforms": ["staticWebsite"],
         "_links": {
           "self": {
             "href": "https://appserver.entrecode.de/stats?appID=28844aa1-2be5-4a8f-ae9d-4340cfd600e1"

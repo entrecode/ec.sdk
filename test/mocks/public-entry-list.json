@@ -45,13 +45,9 @@
       "phone": "+49 5555 5521",
       "json": {},
       "entry": "EJlJtSrkgl",
-      "entries": [
-        "EJlJtSrkgl"
-      ],
+      "entries": ["EJlJtSrkgl"],
       "asset": "2bf325a9-c8f9-4e7d-b244-faa1090a479d",
-      "assets": [
-        "2bf325a9-c8f9-4e7d-b244-faa1090a479d"
-      ],
+      "assets": ["2bf325a9-c8f9-4e7d-b244-faa1090a479d"],
       "account": null,
       "role": null,
       "_links": {

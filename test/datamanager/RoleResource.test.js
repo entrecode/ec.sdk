@@ -28,10 +28,9 @@ describe('Role ListResource', () => {
         }
         return resolve(JSON.parse(res));
       });
-    })
-      .then((json) => {
-        listJson = json;
-      });
+    }).then((json) => {
+      listJson = json;
+    });
   });
   beforeEach(() => {
     list = new RoleList(listJson);
@@ -46,7 +45,7 @@ describe('Role ListResource', () => {
     list.should.be.instanceOf(RoleList);
   });
   it('should have AccountResource items', () => {
-    list.getAllItems().forEach(item => item.should.be.instanceOf(RoleResource));
+    list.getAllItems().forEach((item) => item.should.be.instanceOf(RoleResource));
   });
 });
 
@@ -61,10 +60,9 @@ describe('Role Resource', () => {
         }
         return resolve(JSON.parse(res));
       });
-    })
-      .then((json) => {
-        resourceJson = json;
-      });
+    }).then((json) => {
+      resourceJson = json;
+    });
   });
   beforeEach(() => {
     resource = new RoleResource(resourceJson);
@@ -110,7 +108,8 @@ describe('Role Resource', () => {
     const stub = sinon.stub(helper, 'get');
     stub.returns(resolver('dm-account-list.json'));
 
-    return resource.accountList()
+    return resource
+      .accountList()
       .then((list) => {
         list.should.be.instanceof(DMAccountList);
         stub.restore();

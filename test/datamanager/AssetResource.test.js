@@ -30,8 +30,7 @@ describe('Asset ListResource', () => {
         }
         return resolve(JSON.parse(res));
       });
-    })
-    .then((json) => {
+    }).then((json) => {
       listJson = json;
     });
   });
@@ -48,40 +47,43 @@ describe('Asset ListResource', () => {
     list.should.be.instanceOf(AssetList);
   });
   it('should have TokenResource items', () => {
-    list.getAllItems().forEach(item => item.should.be.instanceOf(AssetResource));
+    list.getAllItems().forEach((item) => item.should.be.instanceOf(AssetResource));
   });
 
   it('should load asset list', () => {
     const stub = sinon.stub(helper, 'get');
     stub.returns(resolver('asset-list.json'));
 
-    return list.deletedAssetList()
-    .then((l) => {
-      l.should.be.instanceof(DeletedAssetList);
-      stub.restore();
-    })
-    .catch((err) => {
-      stub.restore();
-      throw err;
-    });
+    return list
+      .deletedAssetList()
+      .then((l) => {
+        l.should.be.instanceof(DeletedAssetList);
+        stub.restore();
+      })
+      .catch((err) => {
+        stub.restore();
+        throw err;
+      });
   });
   it('should throw on asset list filtered with assetID', () => {
-    return list.deletedAssetList({ assetID: 'id' })
-    .should.be.rejectedWith('Providing only an id in ResourceList filter will result in single resource response.');
+    return list
+      .deletedAssetList({ assetID: 'id' })
+      .should.be.rejectedWith('Providing only an id in ResourceList filter will result in single resource response.');
   });
   it('should load asset resource', () => {
     const stub = sinon.stub(helper, 'get');
     stub.returns(resolver('asset-single.json'));
 
-    return list.deletedAsset('id')
-    .then((model) => {
-      model.should.be.instanceof(DeletedAssetResource);
-      stub.restore();
-    })
-    .catch((err) => {
-      stub.restore();
-      throw err;
-    });
+    return list
+      .deletedAsset('id')
+      .then((model) => {
+        model.should.be.instanceof(DeletedAssetResource);
+        stub.restore();
+      })
+      .catch((err) => {
+        stub.restore();
+        throw err;
+      });
   });
   it('should be rejected on undefined assetID', () => {
     return list.deletedAsset().should.be.rejectedWith('resourceID must be defined');
@@ -91,33 +93,36 @@ describe('Asset ListResource', () => {
     const stub = sinon.stub(helper, 'get');
     stub.returns(resolver('tag-list.json'));
 
-    return list.tagList()
-    .then((l) => {
-      l.should.be.instanceof(TagList);
-      stub.restore();
-    })
-    .catch((err) => {
-      stub.restore();
-      throw err;
-    });
+    return list
+      .tagList()
+      .then((l) => {
+        l.should.be.instanceof(TagList);
+        stub.restore();
+      })
+      .catch((err) => {
+        stub.restore();
+        throw err;
+      });
   });
   it('should throw on tag list filtered with tag', () => {
-    return list.tagList({ tag: 'id' })
-    .should.be.rejectedWith('Providing only an id in ResourceList filter will result in single resource response.');
+    return list
+      .tagList({ tag: 'id' })
+      .should.be.rejectedWith('Providing only an id in ResourceList filter will result in single resource response.');
   });
   it('should load tag resource', () => {
     const stub = sinon.stub(helper, 'get');
     stub.returns(resolver('asset-single.json'));
 
-    return list.tag('id')
-    .then((model) => {
-      model.should.be.instanceof(TagResource);
-      stub.restore();
-    })
-    .catch((err) => {
-      stub.restore();
-      throw err;
-    });
+    return list
+      .tag('id')
+      .then((model) => {
+        model.should.be.instanceof(TagResource);
+        stub.restore();
+      })
+      .catch((err) => {
+        stub.restore();
+        throw err;
+      });
   });
   it('should be rejected on undefined tag', () => {
     return list.tag().should.be.rejectedWith('resourceID must be defined');
@@ -127,12 +132,13 @@ describe('Asset ListResource', () => {
     const stub = sinon.stub(helper, 'getUrl');
     stub.returns(Promise.resolve('https://datamanager.entrecode.de/assets/download'));
 
-    return list.download()
-    .then(() => stub.restore())
-    .catch((err) => {
-      stub.restore();
-      throw err;
-    });
+    return list
+      .download()
+      .then(() => stub.restore())
+      .catch((err) => {
+        stub.restore();
+        throw err;
+      });
   });
   it('should resolve on download with writable stream', () => {
     const stubGetUrl = sinon.stub(helper, 'getUrl');
@@ -140,20 +146,22 @@ describe('Asset ListResource', () => {
     const stubSuperagentGetPiped = sinon.stub(helper, 'superagentGetPiped');
     stubSuperagentGetPiped.returns(Promise.resolve());
 
-    return list.download(fs.createWriteStream('/dev/null'))
-    .then(() => {
-      stubGetUrl.restore();
-      stubSuperagentGetPiped.restore();
-    })
-    .catch((err) => {
-      stubGetUrl.restore();
-      stubSuperagentGetPiped.restore();
-      throw err;
-    });
+    return list
+      .download(fs.createWriteStream('/dev/null'))
+      .then(() => {
+        stubGetUrl.restore();
+        stubSuperagentGetPiped.restore();
+      })
+      .catch((err) => {
+        stubGetUrl.restore();
+        stubSuperagentGetPiped.restore();
+        throw err;
+      });
   });
   it('should be rejected on stream not writable', () => {
-    return list.download(fs.createReadStream('/dev/null'))
-    .should.be.rejectedWith('writeStream must be instance of stream.Writable.');
+    return list
+      .download(fs.createReadStream('/dev/null'))
+      .should.be.rejectedWith('writeStream must be instance of stream.Writable.');
   });
 });
 
@@ -168,8 +176,7 @@ describe('Asset Resource', () => {
         }
         return resolve(JSON.parse(res));
       });
-    })
-    .then((json) => {
+    }).then((json) => {
       resourceJson = json;
     });
   });
@@ -186,7 +193,9 @@ describe('Asset Resource', () => {
     resource.should.be.instanceOf(AssetResource);
   });
   it('should get original file', () => {
-    resource.getOriginalFile().should.have.property('url', 'https://cdn2.entrecode.de/files/01bd8e08/J2DJfjfEVby3KcxGNrJyFdEz.png');
+    resource
+      .getOriginalFile()
+      .should.have.property('url', 'https://cdn2.entrecode.de/files/01bd8e08/J2DJfjfEVby3KcxGNrJyFdEz.png');
   });
   it('should get original from non image', () => {
     return new Promise((resolve, reject) => {
@@ -196,10 +205,11 @@ describe('Asset Resource', () => {
         }
         return resolve(JSON.parse(res));
       });
-    })
-    .then((file) => {
+    }).then((file) => {
       const res = new AssetResource(file);
-      res.getOriginalFile().should.have.property('url', 'https://cdn2.entrecode.de/files/01bd8e08/J2DJfjfEVby3KcxGNrJyFdEz_1024.png');
+      res
+        .getOriginalFile()
+        .should.have.property('url', 'https://cdn2.entrecode.de/files/01bd8e08/J2DJfjfEVby3KcxGNrJyFdEz_1024.png');
     });
   });
   it('should get file from non resolution images', () => {
@@ -210,29 +220,40 @@ describe('Asset Resource', () => {
         }
         return resolve(JSON.parse(res));
       });
-    })
-    .then((file) => {
+    }).then((file) => {
       const res = new AssetResource(file);
-      res.getOriginalFile().should.have.property('url', 'https://cdn2.entrecode.de/files/01bd8e08/J2DJfjfEVby3KcxGNrJyFdEz_1024.png');
+      res
+        .getOriginalFile()
+        .should.have.property('url', 'https://cdn2.entrecode.de/files/01bd8e08/J2DJfjfEVby3KcxGNrJyFdEz_1024.png');
     });
   });
   it('should get file url', () => {
     resource.getFileUrl().should.be.equal('https://cdn2.entrecode.de/files/01bd8e08/J2DJfjfEVby3KcxGNrJyFdEz.png');
   });
   it('should get image url', () => {
-    resource.getImageUrl(1000).should.be.equal('https://cdn2.entrecode.de/files/01bd8e08/J2DJfjfEVby3KcxGNrJyFdEz_1024.png');
+    resource
+      .getImageUrl(1000)
+      .should.be.equal('https://cdn2.entrecode.de/files/01bd8e08/J2DJfjfEVby3KcxGNrJyFdEz_1024.png');
   });
   it('should get image thumb url', () => {
-    resource.getImageThumbUrl(500).should.be.equal('https://cdn2.entrecode.de/files/01bd8e08/J2DJfjfEVby3KcxGNrJyFdEz_400_thumb.png');
+    resource
+      .getImageThumbUrl(500)
+      .should.be.equal('https://cdn2.entrecode.de/files/01bd8e08/J2DJfjfEVby3KcxGNrJyFdEz_400_thumb.png');
   });
   it('should get file url', () => {
-    resource.getFileUrl('de-DE').should.be.equal('https://cdn2.entrecode.de/files/01bd8e08/J2DJfjfEVby3KcxGNrJyFdEz.png');
+    resource
+      .getFileUrl('de-DE')
+      .should.be.equal('https://cdn2.entrecode.de/files/01bd8e08/J2DJfjfEVby3KcxGNrJyFdEz.png');
   });
   it('should get image url', () => {
-    resource.getImageUrl(1000, 'de-DE').should.be.equal('https://cdn2.entrecode.de/files/01bd8e08/J2DJfjfEVby3KcxGNrJyFdEz_1024.png');
+    resource
+      .getImageUrl(1000, 'de-DE')
+      .should.be.equal('https://cdn2.entrecode.de/files/01bd8e08/J2DJfjfEVby3KcxGNrJyFdEz_1024.png');
   });
   it('should get image thumb url', () => {
-    resource.getImageThumbUrl(100, 'de-DE').should.be.equal('https://cdn2.entrecode.de/files/01bd8e08/J2DJfjfEVby3KcxGNrJyFdEz_100_thumb.png');
+    resource
+      .getImageThumbUrl(100, 'de-DE')
+      .should.be.equal('https://cdn2.entrecode.de/files/01bd8e08/J2DJfjfEVby3KcxGNrJyFdEz_100_thumb.png');
   });
   it('should get on svg image with resolution', () => {
     return new Promise((resolve, reject) => {
@@ -244,10 +265,10 @@ describe('Asset Resource', () => {
         return resolve(JSON.parse(res));
       });
     })
-    .then(data => new AssetResource(data))
-    .then((asset) => {
-      asset.getImageUrl(200).should.be.equal('https://cdn2.entrecode.de/files/01bd8e08/q-reMdqANeX4zuRGdK1OwhrR.svg');
-    });
+      .then((data) => new AssetResource(data))
+      .then((asset) => {
+        asset.getImageUrl(200).should.be.equal('https://cdn2.entrecode.de/files/01bd8e08/q-reMdqANeX4zuRGdK1OwhrR.svg');
+      });
   });
   it('should get on image without thumbs', () => {
     return new Promise((resolve, reject) => {
@@ -259,10 +280,12 @@ describe('Asset Resource', () => {
         return resolve(JSON.parse(res));
       });
     })
-    .then(data => new AssetResource(data))
-    .then((asset) => {
-      asset.getImageThumbUrl(200).should.be.equal('https://cdn2.entrecode.de/files/01bd8e08/J2DJfjfEVby3KcxGNrJyFdEz_256.png');
-    });
+      .then((data) => new AssetResource(data))
+      .then((asset) => {
+        asset
+          .getImageThumbUrl(200)
+          .should.be.equal('https://cdn2.entrecode.de/files/01bd8e08/J2DJfjfEVby3KcxGNrJyFdEz_256.png');
+      });
   });
   it('should get on non image file', () => {
     return new Promise((resolve, reject) => {
@@ -274,10 +297,10 @@ describe('Asset Resource', () => {
         return resolve(JSON.parse(res));
       });
     })
-    .then(data => new AssetResource(data))
-    .then((asset) => {
-      asset.getFileUrl().should.be.equal('https://cdn2.entrecode.de/files/01bd8e08/1-mt7_kX_DnyNbTQaSP4meVk.txt');
-    });
+      .then((data) => new AssetResource(data))
+      .then((asset) => {
+        asset.getFileUrl().should.be.equal('https://cdn2.entrecode.de/files/01bd8e08/1-mt7_kX_DnyNbTQaSP4meVk.txt');
+      });
   });
   it('should get with locale on no locale', () => {
     return new Promise((resolve, reject) => {
@@ -289,10 +312,12 @@ describe('Asset Resource', () => {
         return resolve(JSON.parse(res));
       });
     })
-    .then(data => new AssetResource(data))
-    .then((asset) => {
-      asset.getFileUrl('de-DE').should.be.equal('https://cdn2.entrecode.de/files/01bd8e08/1-mt7_kX_DnyNbTQaSP4meVk.txt');
-    });
+      .then((data) => new AssetResource(data))
+      .then((asset) => {
+        asset
+          .getFileUrl('de-DE')
+          .should.be.equal('https://cdn2.entrecode.de/files/01bd8e08/1-mt7_kX_DnyNbTQaSP4meVk.txt');
+      });
   });
 
   const dateGetter = ['created'];

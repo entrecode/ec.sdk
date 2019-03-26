@@ -48,20 +48,24 @@ function jsonHandler(callback) {
       return callback(null, [res.body ? JSON.parse(res.body) : {}, traversal]);
     }
 
+    let code;
     try {
+      switch (res.statusCode) {
+        case 404:
+          code = '100';
+          break;
+        case 503:
+          code = '003';
+          break;
+        case 502:
+          code = '002';
+          break;
+        default:
+          code = '000';
+          break;
+      }
+
       if (!res.body || res.body.length === 0) {
-        let code;
-        switch (res.statusCode) {
-          case 404:
-            code = '100';
-            break;
-          case 502:
-            code = '103';
-            break;
-          default:
-            code = '000';
-            break;
-        }
         return callback(
           new Problem(newError(code, `ec.sdk: empty body on unsuccessful status: ${res.statusCode}`), locale),
         );
@@ -69,7 +73,16 @@ function jsonHandler(callback) {
 
       return callback(new Problem(JSON.parse(res.body), locale));
     } catch (e) {
-      return callback(new Problem(newError('000', `ec.sdk: unable to parse body: ${res.body}`)), locale);
+      let additional = '';
+
+      if (res.request) {
+        additional = `for request ${res.request.method} ${res.request.path}`;
+      }
+
+      return callback(
+        new Problem(newError(code || '000', `ec.sdk: unable to parse body ${additional}: ${res.body}`)),
+        locale,
+      );
     }
   };
 }

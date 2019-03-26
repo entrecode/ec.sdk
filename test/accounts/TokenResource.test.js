@@ -24,8 +24,7 @@ describe('Token ListResource', () => {
         }
         return resolve(JSON.parse(res));
       });
-    })
-    .then((json) => {
+    }).then((json) => {
       listJson = json;
     });
   });
@@ -42,7 +41,7 @@ describe('Token ListResource', () => {
     list.should.be.instanceOf(TokenList);
   });
   it('should have TokenResource items', () => {
-    list.getAllItems().forEach(item => item.should.be.instanceOf(TokenResource));
+    list.getAllItems().forEach((item) => item.should.be.instanceOf(TokenResource));
   });
 });
 
@@ -57,8 +56,7 @@ describe('Token Resource', () => {
         }
         return resolve(JSON.parse(res));
       });
-    })
-    .then((json) => {
+    }).then((json) => {
       resourceJson = json;
     });
   });
@@ -78,9 +76,7 @@ describe('Token Resource', () => {
     resource.isCurrent.should.be.false;
   });
 
-  const dateGetter = [
-    'issued', 'validUntil',
-  ];
+  const dateGetter = ['issued', 'validUntil'];
   dateGetter.forEach((name) => {
     it(`should call resource.getProperty with ${name}`, () => {
       const spy = sinon.spy(resource, 'getProperty');
@@ -94,10 +90,7 @@ describe('Token Resource', () => {
     });
   });
 
-  const getter = [
-    'ipAddress', 'ipAddressLocation',
-    'accessTokenID', 'device',
-  ];
+  const getter = ['ipAddress', 'ipAddressLocation', 'accessTokenID', 'device'];
   getter.forEach((name) => {
     it(`should call resource.getProperty with ${name}`, () => {
       const spy = sinon.spy(resource, 'getProperty');

@@ -2,21 +2,14 @@
   "$schema": "http://json-schema.org/draft-04/schema#",
   "id": "https://entrecode.de/schema/model-template",
   "type": "object",
-  "required": [
-    "title",
-    "locales",
-    "fields"
-  ],
+  "required": ["title", "locales", "fields"],
   "properties": {
     "title": {
       "type": "string",
       "pattern": "^[a-zA-Z0-9\\-][a-zA-Z0-9_\\-]{0,255}$"
     },
     "description": {
-      "type": [
-        "string",
-        "null"
-      ]
+      "type": ["string", "null"]
     },
     "titleField": {
       "type": "string",
@@ -28,13 +21,7 @@
     },
     "rights": {
       "type": "object",
-      "required": [
-        "get",
-        "put",
-        "postPublic",
-        "postPrivate",
-        "delete"
-      ],
+      "required": ["get", "put", "postPublic", "postPrivate", "delete"],
       "properties": {
         "get": {
           "type": "boolean"
@@ -103,10 +90,7 @@
             "pattern": "^[a-zA-Z0-9_\\-]{1,256}$"
           },
           "description": {
-            "type": [
-              "string",
-              "null"
-            ]
+            "type": ["string", "null"]
           },
           "type": {
             "enum": [
@@ -146,14 +130,9 @@
             "type": "boolean"
           },
           "validation": {
-            "type": [
-              "string",
-              "object",
-              "null"
-            ]
+            "type": ["string", "object", "null"]
           },
-          "default": {
-          }
+          "default": {}
         }
       }
     },

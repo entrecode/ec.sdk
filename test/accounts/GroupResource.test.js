@@ -24,10 +24,9 @@ describe('Group ListResource', () => {
         }
         return resolve(JSON.parse(res));
       });
-    })
-      .then((json) => {
-        listJson = json;
-      });
+    }).then((json) => {
+      listJson = json;
+    });
   });
   beforeEach(() => {
     list = new GroupList(listJson);
@@ -42,7 +41,7 @@ describe('Group ListResource', () => {
     list.should.be.instanceOf(GroupList);
   });
   it('should have TokenResource items', () => {
-    list.getAllItems().forEach(item => item.should.be.instanceOf(GroupResource));
+    list.getAllItems().forEach((item) => item.should.be.instanceOf(GroupResource));
     list.getItem(0).accounts[1].name.should.be.equal('Reiner');
   });
 });
@@ -58,10 +57,9 @@ describe('Group Resource', () => {
         }
         return resolve(JSON.parse(res));
       });
-    })
-      .then((json) => {
-        resourceJson = json;
-      });
+    }).then((json) => {
+      resourceJson = json;
+    });
   });
   beforeEach(() => {
     resource = new GroupResource(resourceJson);
@@ -189,10 +187,7 @@ describe('Group Resource', () => {
     throws.should.throw(Error);
   });
 
-
-  const getter = [
-    'groupID', 'name', 'permissions',
-  ];
+  const getter = ['groupID', 'name', 'permissions'];
   getter.forEach((name) => {
     it(`should call resource.getProperty with ${name}`, () => {
       const spy = sinon.spy(resource, 'getProperty');

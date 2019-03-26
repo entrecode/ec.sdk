@@ -20,8 +20,5 @@
       }
     }
   },
-  "required": [
-    "name",
-    "collection"
-  ]
+  "required": ["name", "collection"]
 }

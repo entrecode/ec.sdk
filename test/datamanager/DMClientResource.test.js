@@ -24,10 +24,9 @@ describe('DMClient ListResource', () => {
         }
         return resolve(JSON.parse(res));
       });
-    })
-      .then((json) => {
-        listJson = json;
-      });
+    }).then((json) => {
+      listJson = json;
+    });
   });
   beforeEach(() => {
     list = new DMClientList(listJson);
@@ -42,7 +41,7 @@ describe('DMClient ListResource', () => {
     list.should.be.instanceOf(DMClientList);
   });
   it('should have ClientResource items', () => {
-    list.getAllItems().forEach(item => item.should.be.instanceOf(DMClientResource));
+    list.getAllItems().forEach((item) => item.should.be.instanceOf(DMClientResource));
   });
 });
 
@@ -57,10 +56,9 @@ describe('DMClient Resource', () => {
         }
         return resolve(JSON.parse(res));
       });
-    })
-      .then((json) => {
-        resourceJson = json;
-      });
+    }).then((json) => {
+      resourceJson = json;
+    });
   });
   beforeEach(() => {
     resource = new DMClientResource(resourceJson);

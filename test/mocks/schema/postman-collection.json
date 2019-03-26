@@ -49,12 +49,7 @@
       }
     }
   },
-  "required": [
-    "id",
-    "name",
-    "order",
-    "requests"
-  ],
+  "required": ["id", "name", "order", "requests"],
   "definitions": {
     "folder": {
       "$schema": "http://json-schema.org/draft-04/schema#",
@@ -92,12 +87,7 @@
           "description": "Postman folders are always a part of a collection. That collection's unique ID (which is a [UUID](https://en.wikipedia.org/wiki/Globally_unique_identifier)) is stored in this field."
         }
       },
-      "required": [
-        "id",
-        "name",
-        "description",
-        "order"
-      ]
+      "required": ["id", "name", "description", "order"]
     },
     "request": {
       "$schema": "http://json-schema.org/draft-04/schema#",
@@ -127,12 +117,7 @@
         },
         "dataMode": {
           "type": "string",
-          "enum": [
-            "raw",
-            "urlencoded",
-            "params",
-            "binary"
-          ],
+          "enum": ["raw", "urlencoded", "params", "binary"],
           "description": "A request can have a specific data mode, and Postman supports these."
         },
         "data": {
@@ -153,10 +138,7 @@
                     "type": "boolean"
                   },
                   "type": {
-                    "enum": [
-                      "file",
-                      "text"
-                    ]
+                    "enum": ["file", "text"]
                   }
                 }
               }
@@ -170,10 +152,7 @@
           "oneOf": [
             {
               "type": "string",
-              "enum": [
-                "html",
-                "markdown"
-              ]
+              "enum": ["html", "markdown"]
             },
             {
               "type": "null"
@@ -232,9 +211,7 @@
               "properties": {
                 "id": {
                   "type": "string",
-                  "enum": [
-                    "awsSigV4"
-                  ],
+                  "enum": ["awsSigV4"],
                   "description": "This field contains the type of the helper. In this case, it is ``awsSigV4``"
                 },
                 "accessKey": {
@@ -254,9 +231,7 @@
                   "description": "The AWS Service endpoint. Refer to the [AWS Documentation](http://docs.aws.amazon.com/general/latest/gr/rande.html) for possible values."
                 }
               },
-              "required": [
-                "id"
-              ]
+              "required": ["id"]
             },
             {
               "type": "object",
@@ -265,9 +240,7 @@
               "properties": {
                 "id": {
                   "type": "string",
-                  "enum": [
-                    "digest"
-                  ],
+                  "enum": ["digest"],
                   "description": "This field contains the type of the helper. In this case, it is ``digest``"
                 },
                 "algorithm": {
@@ -307,9 +280,7 @@
                   "description": "A string of data, specified by the server, which should be returned by the client unchanged."
                 }
               },
-              "required": [
-                "id"
-              ]
+              "required": ["id"]
             },
             {
               "type": "object",
@@ -318,9 +289,7 @@
               "properties": {
                 "id": {
                   "type": "string",
-                  "enum": [
-                    "hawk"
-                  ],
+                  "enum": ["hawk"],
                   "description": "This field contains the type of the Postman helper. In this case, it is ``hawk``"
                 },
                 "hawk_id": {
@@ -360,9 +329,7 @@
                   "description": "Contains the timestamp used when signing the request."
                 }
               },
-              "required": [
-                "id"
-              ]
+              "required": ["id"]
             },
             {
               "type": "object",
@@ -371,9 +338,7 @@
               "properties": {
                 "id": {
                   "type": "string",
-                  "enum": [
-                    "basic"
-                  ],
+                  "enum": ["basic"],
                   "description": "This field contains the type of the helper. In this case, it is ``basic``"
                 },
                 "username": {
@@ -385,9 +350,7 @@
                   "description": "The password to be used for digest Authentication is stored in this field."
                 }
               },
-              "required": [
-                "id"
-              ]
+              "required": ["id"]
             },
             {
               "type": "object",
@@ -396,9 +359,7 @@
               "properties": {
                 "id": {
                   "type": "string",
-                  "enum": [
-                    "oAuth1"
-                  ],
+                  "enum": ["oAuth1"],
                   "description": "This field contains the type of the helper. In this case, it is ``oAuth1``"
                 },
                 "consumerKey": {
@@ -446,9 +407,7 @@
                   "description": "If you would like to include empty parameters in the request, set this to 'true', else set it to 'false'"
                 }
               },
-              "required": [
-                "id"
-              ]
+              "required": ["id"]
             },
             {
               "type": "null"
@@ -558,10 +517,7 @@
                     "description": "Detailed explanation of the response code."
                   }
                 },
-                "required": [
-                  "code",
-                  "name"
-                ]
+                "required": ["code", "name"]
               },
               "time": {
                 "oneOf": [
@@ -597,11 +553,7 @@
                       "description": "An optional description about the header."
                     }
                   },
-                  "required": [
-                    "name",
-                    "key",
-                    "value"
-                  ]
+                  "required": ["name", "key", "value"]
                 }
               },
               "cookies": {
@@ -680,12 +632,7 @@
               },
               "language": {
                 "type": "string",
-                "enum": [
-                  "html",
-                  "javascript",
-                  "xml",
-                  "Text"
-                ],
+                "enum": ["html", "javascript", "xml", "Text"],
                 "description": "The language associated with the response."
               },
               "rawDataType": {
@@ -693,11 +640,7 @@
                 "description": "The data type of the raw response."
               }
             },
-            "required": [
-              "id",
-              "responseCode",
-              "request"
-            ]
+            "required": ["id", "responseCode", "request"]
           }
         },
         "rawModeData": {
@@ -725,24 +668,10 @@
       },
       "anyOf": [
         {
-          "required": [
-            "id",
-            "method",
-            "url",
-            "headers",
-            "name",
-            "collectionId"
-          ]
+          "required": ["id", "method", "url", "headers", "name", "collectionId"]
         },
         {
-          "required": [
-            "id",
-            "method",
-            "url",
-            "headers",
-            "name",
-            "collection"
-          ]
+          "required": ["id", "method", "url", "headers", "name", "collection"]
         }
       ]
     }

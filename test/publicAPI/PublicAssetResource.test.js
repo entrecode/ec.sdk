@@ -28,8 +28,7 @@ describe('Asset ListResource', () => {
         }
         return resolve(JSON.parse(res));
       });
-    })
-    .then((json) => {
+    }).then((json) => {
       listJson = json;
     });
   });
@@ -46,40 +45,43 @@ describe('Asset ListResource', () => {
     list.should.be.instanceOf(PublicAssetList);
   });
   it('should have TokenResource items', () => {
-    list.getAllItems().forEach(item => item.should.be.instanceOf(PublicAssetResource));
+    list.getAllItems().forEach((item) => item.should.be.instanceOf(PublicAssetResource));
   });
 
   it('should load tag list', () => {
     const stub = sinon.stub(helper, 'get');
     stub.returns(resolver('public-tag-list.json'));
 
-    return list.tagList()
-    .then((l) => {
-      l.should.be.instanceof(PublicTagList);
-      stub.restore();
-    })
-    .catch((err) => {
-      stub.restore();
-      throw err;
-    });
+    return list
+      .tagList()
+      .then((l) => {
+        l.should.be.instanceof(PublicTagList);
+        stub.restore();
+      })
+      .catch((err) => {
+        stub.restore();
+        throw err;
+      });
   });
   it('should throw on tag list filtered with tag', () => {
-    return list.tagList({ tag: 'id' })
-    .should.be.rejectedWith('Cannot filter tagList only by tag. Use PublicAssetList#tag() instead');
+    return list
+      .tagList({ tag: 'id' })
+      .should.be.rejectedWith('Cannot filter tagList only by tag. Use PublicAssetList#tag() instead');
   });
   it('should load tag resource', () => {
     const stub = sinon.stub(helper, 'get');
     stub.returns(resolver('asset-single.json'));
 
-    return list.tag('id')
-    .then((model) => {
-      model.should.be.instanceof(PublicTagResource);
-      stub.restore();
-    })
-    .catch((err) => {
-      stub.restore();
-      throw err;
-    });
+    return list
+      .tag('id')
+      .then((model) => {
+        model.should.be.instanceof(PublicTagResource);
+        stub.restore();
+      })
+      .catch((err) => {
+        stub.restore();
+        throw err;
+      });
   });
   it('should be rejected on undefined tag', () => {
     return list.tag().should.be.rejectedWith('tag must be defined');
@@ -97,8 +99,7 @@ describe('Asset Resource', () => {
         }
         return resolve(JSON.parse(res));
       });
-    })
-    .then((json) => {
+    }).then((json) => {
       resourceJson = json;
     });
   });
@@ -115,19 +116,27 @@ describe('Asset Resource', () => {
     resource.should.be.instanceOf(PublicAssetResource);
   });
   it('should get original file', () => {
-    resource.getOriginalFile().should.have.property('url', 'https://cdn2.entrecode.de/files/01bd8e08/wFG3Al80jXjH06NIw3UWM2x0.png');
+    resource
+      .getOriginalFile()
+      .should.have.property('url', 'https://cdn2.entrecode.de/files/01bd8e08/wFG3Al80jXjH06NIw3UWM2x0.png');
   });
   it('should get file url', () => {
     resource.getFileUrl().should.be.equal('https://cdn2.entrecode.de/files/01bd8e08/wFG3Al80jXjH06NIw3UWM2x0.png');
   });
   it('should get image url', () => {
-    resource.getImageUrl(1000).should.be.equal('https://cdn2.entrecode.de/files/01bd8e08/wFG3Al80jXjH06NIw3UWM2x0_1024.png');
+    resource
+      .getImageUrl(1000)
+      .should.be.equal('https://cdn2.entrecode.de/files/01bd8e08/wFG3Al80jXjH06NIw3UWM2x0_1024.png');
   });
   it('should get image thumb url', () => {
-    resource.getImageThumbUrl(500).should.be.equal('https://cdn2.entrecode.de/files/01bd8e08/wFG3Al80jXjH06NIw3UWM2x0_400_thumb.png');
+    resource
+      .getImageThumbUrl(500)
+      .should.be.equal('https://cdn2.entrecode.de/files/01bd8e08/wFG3Al80jXjH06NIw3UWM2x0_400_thumb.png');
   });
   it('should get original file', () => {
-    resource.getOriginalFile().should.have.property('url', 'https://cdn2.entrecode.de/files/01bd8e08/wFG3Al80jXjH06NIw3UWM2x0.png');
+    resource
+      .getOriginalFile()
+      .should.have.property('url', 'https://cdn2.entrecode.de/files/01bd8e08/wFG3Al80jXjH06NIw3UWM2x0.png');
   });
   it('should get original file on text', () => {
     return new Promise((resolve, reject) => {
@@ -139,10 +148,12 @@ describe('Asset Resource', () => {
         return resolve(JSON.parse(res));
       });
     })
-    .then(data => new PublicAssetResource(data))
-    .then((asset) => {
-      asset.getOriginalFile().should.have.property('url', 'https://cdn2.entrecode.de/files/01bd8e08/wFG3Al80jXjH06NIw3UWM2x0.png');
-    });
+      .then((data) => new PublicAssetResource(data))
+      .then((asset) => {
+        asset
+          .getOriginalFile()
+          .should.have.property('url', 'https://cdn2.entrecode.de/files/01bd8e08/wFG3Al80jXjH06NIw3UWM2x0.png');
+      });
   });
   it('should get original file no resolution', () => {
     return new Promise((resolve, reject) => {
@@ -154,19 +165,25 @@ describe('Asset Resource', () => {
         return resolve(JSON.parse(res));
       });
     })
-    .then(data => new PublicAssetResource(data))
-    .then((asset) => {
-      asset.getOriginalFile().should.have.property('url', 'https://cdn2.entrecode.de/files/01bd8e08/wFG3Al80jXjH06NIw3UWM2x0.png');
-    });
+      .then((data) => new PublicAssetResource(data))
+      .then((asset) => {
+        asset
+          .getOriginalFile()
+          .should.have.property('url', 'https://cdn2.entrecode.de/files/01bd8e08/wFG3Al80jXjH06NIw3UWM2x0.png');
+      });
   });
   it('should get file url', () => {
     resource.getFileUrl().should.be.equal('https://cdn2.entrecode.de/files/01bd8e08/wFG3Al80jXjH06NIw3UWM2x0.png');
   });
   it('should get image url', () => {
-    resource.getImageUrl(1000).should.be.equal('https://cdn2.entrecode.de/files/01bd8e08/wFG3Al80jXjH06NIw3UWM2x0_1024.png');
+    resource
+      .getImageUrl(1000)
+      .should.be.equal('https://cdn2.entrecode.de/files/01bd8e08/wFG3Al80jXjH06NIw3UWM2x0_1024.png');
   });
   it('should get image thumb url', () => {
-    resource.getImageThumbUrl(100).should.be.equal('https://cdn2.entrecode.de/files/01bd8e08/wFG3Al80jXjH06NIw3UWM2x0_100_thumb.png');
+    resource
+      .getImageThumbUrl(100)
+      .should.be.equal('https://cdn2.entrecode.de/files/01bd8e08/wFG3Al80jXjH06NIw3UWM2x0_100_thumb.png');
   });
   it('should get on svg image with resolution', () => {
     return new Promise((resolve, reject) => {
@@ -178,10 +195,10 @@ describe('Asset Resource', () => {
         return resolve(JSON.parse(res));
       });
     })
-    .then(data => new PublicAssetResource(data))
-    .then((asset) => {
-      asset.getImageUrl(200).should.be.equal('https://cdn2.entrecode.de/files/01bd8e08/q-reMdqANeX4zuRGdK1OwhrR.svg');
-    });
+      .then((data) => new PublicAssetResource(data))
+      .then((asset) => {
+        asset.getImageUrl(200).should.be.equal('https://cdn2.entrecode.de/files/01bd8e08/q-reMdqANeX4zuRGdK1OwhrR.svg');
+      });
   });
   it('should get on image without thumbs', () => {
     return new Promise((resolve, reject) => {
@@ -193,10 +210,12 @@ describe('Asset Resource', () => {
         return resolve(JSON.parse(res));
       });
     })
-    .then(data => new PublicAssetResource(data))
-    .then((asset) => {
-      asset.getImageThumbUrl(200).should.be.equal('https://cdn2.entrecode.de/files/01bd8e08/J2DJfjfEVby3KcxGNrJyFdEz_256.png');
-    });
+      .then((data) => new PublicAssetResource(data))
+      .then((asset) => {
+        asset
+          .getImageThumbUrl(200)
+          .should.be.equal('https://cdn2.entrecode.de/files/01bd8e08/J2DJfjfEVby3KcxGNrJyFdEz_256.png');
+      });
   });
   it('should get on non image file', () => {
     return new Promise((resolve, reject) => {
@@ -208,10 +227,10 @@ describe('Asset Resource', () => {
         return resolve(JSON.parse(res));
       });
     })
-    .then(data => new PublicAssetResource(data))
-    .then((asset) => {
-      asset.getFileUrl().should.be.equal('https://cdn2.entrecode.de/files/01bd8e08/1-mt7_kX_DnyNbTQaSP4meVk.txt');
-    });
+      .then((data) => new PublicAssetResource(data))
+      .then((asset) => {
+        asset.getFileUrl().should.be.equal('https://cdn2.entrecode.de/files/01bd8e08/1-mt7_kX_DnyNbTQaSP4meVk.txt');
+      });
   });
   it('should get with locale on no locale', () => {
     return new Promise((resolve, reject) => {
@@ -223,10 +242,10 @@ describe('Asset Resource', () => {
         return resolve(JSON.parse(res));
       });
     })
-    .then(data => new PublicAssetResource(data))
-    .then((asset) => {
-      asset.getFileUrl().should.be.equal('https://cdn2.entrecode.de/files/01bd8e08/1-mt7_kX_DnyNbTQaSP4meVk.txt');
-    });
+      .then((data) => new PublicAssetResource(data))
+      .then((asset) => {
+        asset.getFileUrl().should.be.equal('https://cdn2.entrecode.de/files/01bd8e08/1-mt7_kX_DnyNbTQaSP4meVk.txt');
+      });
   });
   it('should be resolved', () => {
     resource.isResolved.should.be.equal(true);
@@ -234,8 +253,7 @@ describe('Asset Resource', () => {
   it('should save', () => {
     const stub = sinon.stub(PublicAssetResource.prototype.__proto__, 'save');
     stub.returns(Promise.resolve());
-    return resource.save()
-    .then(() => {
+    return resource.save().then(() => {
       stub.should.have.been.calledOnce;
       stub.restore();
     });
@@ -294,8 +312,7 @@ describe('Lite Asset Resource', () => {
         }
         return resolve(JSON.parse(res));
       });
-    })
-    .then((json) => {
+    }).then((json) => {
       resourceJson = json;
     });
   });
@@ -315,40 +332,41 @@ describe('Lite Asset Resource', () => {
     const stub = sinon.stub(helper, 'get');
     stub.returns(resolver('public-asset.json'));
 
-    return resource.resolve()
-    .then((res) => {
-      res.should.be.instanceof(PublicAssetResource);
-      res.tags.should.have.property('length', 0);
-      stub.restore();
-    })
-    .catch((err) => {
-      stub.restore();
-      throw err;
-    });
+    return resource
+      .resolve()
+      .then((res) => {
+        res.should.be.instanceof(PublicAssetResource);
+        res.tags.should.have.property('length', 0);
+        stub.restore();
+      })
+      .catch((err) => {
+        stub.restore();
+        throw err;
+      });
   });
   it('should be able to set tags on resolved', () => {
     const stub = sinon.stub(helper, 'get');
     stub.returns(resolver('public-asset.json'));
 
-    return resource.resolve()
-    .then((res) => {
-      res.should.be.instanceof(PublicAssetResource);
-      res.tags.should.have.property('length', 0);
-      res.tags = ['hehe'];
-      res.tags.should.have.property('length', 1);
-      stub.restore();
-    })
-    .catch((err) => {
-      stub.restore();
-      throw err;
-    });
+    return resource
+      .resolve()
+      .then((res) => {
+        res.should.be.instanceof(PublicAssetResource);
+        res.tags.should.have.property('length', 0);
+        res.tags = ['hehe'];
+        res.tags.should.have.property('length', 1);
+        stub.restore();
+      })
+      .catch((err) => {
+        stub.restore();
+        throw err;
+      });
   });
   it('should be unresolved', () => {
     resource.isResolved.should.be.equal(false);
   });
   it('should be rejected on save', () => {
-    return resource.save()
-    .should.be.rejectedWith('Cannot save not resolved PublicAssetResource');
+    return resource.save().should.be.rejectedWith('Cannot save not resolved PublicAssetResource');
   });
 
   const dateGetter = ['created'];

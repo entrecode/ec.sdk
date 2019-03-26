@@ -85,7 +85,9 @@ describe('Core', () => {
     stub.onFirstCall().returns(resolver('dm-list.json'));
     stub.onSecondCall().throws(new Error('not in tests my friend'));
 
-    return core.follow('ec:dm-stats').should.eventually.be.instanceOf(TraversonMock)
+    return core
+      .follow('ec:dm-stats')
+      .should.eventually.be.instanceOf(TraversonMock)
       .notify(() => stub.restore());
   });
   it('should return traverson Builder follow cached', () => {
@@ -93,10 +95,12 @@ describe('Core', () => {
     stub.onFirstCall().returns(resolver('dm-list.json'));
     stub.onSecondCall().throws(new Error('not in tests my friend'));
 
-    return core.follow('ec:dm-stats')
-      .then(() => core.follow('ec:dm-stats')
+    return core.follow('ec:dm-stats').then(() =>
+      core
+        .follow('ec:dm-stats')
         .should.eventually.be.instanceOf(TraversonMock)
-        .notify(() => stub.restore()));
+        .notify(() => stub.restore()),
+    );
   });
   it('should reject on follow missing link', () => {
     const stub = sinon.stub(helper, 'get');
@@ -104,26 +108,36 @@ describe('Core', () => {
     stub.onSecondCall().returns(resolver('dm-list.json'));
     stub.onThirdCall().throws(new Error('not in tests my friend'));
 
-    return core.follow('ec:dm-stats')
-      .then(() => core.follow('missing')
+    return core.follow('ec:dm-stats').then(() =>
+      core
+        .follow('missing')
         .should.be.rejectedWith('Could not follow missing. Link not present in root response.')
-        .notify(() => stub.restore()));
+        .notify(() => stub.restore()),
+    );
   });
   it('should return link', () => {
     core.environment = 'live';
-    return core.link('ec:dm-stats').should.eventually
-      .have.property('href', 'https://datamanager.entrecode.de/stats{?dataManagerID}');
+    return core
+      .link('ec:dm-stats')
+      .should.eventually.have.property('href', 'https://datamanager.entrecode.de/stats{?dataManagerID}');
   });
   it('should return link cached', () => {
     core.environment = 'live';
-    return core.link('ec:dm-stats')
-      .then(() => core.link('ec:dm-stats').should.eventually
-        .have.property('href', 'https://datamanager.entrecode.de/stats{?dataManagerID}'));
+    return core
+      .link('ec:dm-stats')
+      .then(() =>
+        core
+          .link('ec:dm-stats')
+          .should.eventually.have.property('href', 'https://datamanager.entrecode.de/stats{?dataManagerID}'),
+      );
   });
   it('should reject on link missing link', () => {
     core.environment = 'live';
-    return core.link('ec:dm-stats')
-      .then(() => core.link('missing').should.be.rejectedWith('Could not get missing. Link not present in root response.'));
+    return core
+      .link('ec:dm-stats')
+      .then(() =>
+        core.link('missing').should.be.rejectedWith('Could not get missing. Link not present in root response.'),
+      );
   });
   it('should throw on undefined traversal', () => {
     const throws = () => {
@@ -162,10 +176,8 @@ describe('Core', () => {
         id: 'https://entrecode.de/schema/error',
       });
 
-    return core.preloadSchemas([
-      'https://entrecode.de/schema/error',
-      'https://entrecode.de/schema/error',
-    ]).should.be.fulfilled;
+    return core.preloadSchemas(['https://entrecode.de/schema/error', 'https://entrecode.de/schema/error']).should.be
+      .fulfilled;
   });
   it('resource called without relation', () => {
     return core.resource().should.be.rejectedWith('relation must be defined');
@@ -181,8 +193,7 @@ describe('Core', () => {
   });
   it('resourceList called with levels param', () => {
     core[relationsSymbol] = { dummy: {} };
-    return core.resourceList('dummy', { _levels: 2 })
-      .should.be.rejectedWith('_levels on list resources not supported');
+    return core.resourceList('dummy', { _levels: 2 }).should.be.rejectedWith('_levels on list resources not supported');
   });
   it('create called without relation', () => {
     return core.create().should.be.rejectedWith('relation must be defined');
@@ -237,35 +248,39 @@ describe('Network Helper', () => {
   describe('get', () => {
     it('should be resolved', () => {
       nock('https://entrecode.de')
-        .get('/').replyWithFile(200, `${__dirname}/mocks/dm-list.json`);
+        .get('/')
+        .replyWithFile(200, `${__dirname}/mocks/dm-list.json`);
 
       return helper.get('live', traversal).should.be.eventually.fulfilled;
     });
     it('should be resolved with token', () => {
       nock('https://entrecode.de')
-        .get('/').replyWithFile(200, `${__dirname}/mocks/dm-list.json`);
-      const token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJlbnRyZWNvZGVUZXN0IiwiaWF0IjoxNDg1NzgzNTg4LCJleHAiOjQ2NDE0NTcxODgsImF1ZCI6IlRlc3QiLCJzdWIiOiJ0ZXN0QGVudHJlY29kZS5kZSJ9.Vhrq5GR2hNz-RoAhdlnIIWHelPciBPCemEa74s7cXn8';
+        .get('/')
+        .replyWithFile(200, `${__dirname}/mocks/dm-list.json`);
+      const token =
+        'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJlbnRyZWNvZGVUZXN0IiwiaWF0IjoxNDg1NzgzNTg4LCJleHAiOjQ2NDE0NTcxODgsImF1ZCI6IlRlc3QiLCJzdWIiOiJ0ZXN0QGVudHJlY29kZS5kZSJ9.Vhrq5GR2hNz-RoAhdlnIIWHelPciBPCemEa74s7cXn8';
       store.setToken(token);
 
-      return helper.get('test', traversal)
-        .then(() => {
-          traversal.should.have.nested.property('requestOptions.headers.Authorization', `Bearer ${token}`);
-        });
+      return helper.get('test', traversal).then(() => {
+        traversal.should.have.nested.property('requestOptions.headers.Authorization', `Bearer ${token}`);
+      });
     });
     it('should be resolved with token, first load from publicToken store', () => {
       nock('https://entrecode.de')
-        .get('/').replyWithFile(200, `${__dirname}/mocks/dm-list.json`);
-      const token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJlbnRyZWNvZGVUZXN0IiwiaWF0IjoxNDg1NzgzNTg4LCJleHAiOjQ2NDE0NTcxODgsImF1ZCI6IlRlc3QiLCJzdWIiOiJ0ZXN0QGVudHJlY29kZS5kZSJ9.Vhrq5GR2hNz-RoAhdlnIIWHelPciBPCemEa74s7cXn8';
+        .get('/')
+        .replyWithFile(200, `${__dirname}/mocks/dm-list.json`);
+      const token =
+        'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJlbnRyZWNvZGVUZXN0IiwiaWF0IjoxNDg1NzgzNTg4LCJleHAiOjQ2NDE0NTcxODgsImF1ZCI6IlRlc3QiLCJzdWIiOiJ0ZXN0QGVudHJlY29kZS5kZSJ9.Vhrq5GR2hNz-RoAhdlnIIWHelPciBPCemEa74s7cXn8';
       store.setToken(token);
 
-      return helper.get('testbeefbeef', traversal)
-        .then(() => {
-          traversal.should.have.nested.property('requestOptions.headers.Authorization', `Bearer ${token}`);
-        });
+      return helper.get('testbeefbeef', traversal).then(() => {
+        traversal.should.have.nested.property('requestOptions.headers.Authorization', `Bearer ${token}`);
+      });
     });
     it('should be rejected', () => {
       nock('https://entrecode.de')
-        .get('/').reply(404, {
+        .get('/')
+        .reply(404, {
           title: 'not found',
           code: 2102,
           status: 404,
@@ -276,15 +291,18 @@ describe('Network Helper', () => {
     });
     it('should be rejected, response no json', () => {
       nock('https://entrecode.de')
-        .get('/').reply(500, 'gateway timeout ladida');
+        .get('/')
+        .reply(500, 'gateway timeout ladida');
 
       return helper.get('live', traversal).should.be.rejectedWith(Error);
     });
     it('should be rejected network error', () => {
       nock('https://entrecode.de')
-        .get('/').replyWithError('mocked error');
+        .get('/')
+        .replyWithError('mocked error');
 
-      return helper.get('live', traversal)
+      return helper
+        .get('live', traversal)
         .then(() => {
           throw new Error('unexpectedly resolved');
         })
@@ -304,9 +322,11 @@ describe('Network Helper', () => {
     });
     it('should fire error event', () => {
       nock('https://entrecode.de')
-        .get('/').replyWithError('mocked error');
+        .get('/')
+        .replyWithError('mocked error');
 
-      return helper.get('live', traversal)
+      return helper
+        .get('live', traversal)
         .then(() => {
           throw new Error('unexpectedly resolved');
         })
@@ -317,13 +337,15 @@ describe('Network Helper', () => {
     });
     it('should fire loggedOut event on ec.402 error', () => {
       nock('https://entrecode.de')
-        .get('/').reply(401, {
+        .get('/')
+        .reply(401, {
           title: 'Outdated Access Token',
           code: 2402,
           status: 401,
         });
 
-      return helper.get('live', traversal)
+      return helper
+        .get('live', traversal)
         .then(() => {
           throw new Error('unexpectedly resolved');
         })
@@ -335,13 +357,15 @@ describe('Network Helper', () => {
     it('should fire loggedOut event on ec.401 error', () => {
       TokenStore.default();
       nock('https://entrecode.de')
-        .get('/').reply(401, {
+        .get('/')
+        .reply(401, {
           title: 'Invalid Access Token',
           code: 2401,
           status: 401,
         });
 
-      return helper.get('live', traversal)
+      return helper
+        .get('live', traversal)
         .then(() => {
           throw new Error('unexpectedly resolved');
         })
@@ -352,48 +376,57 @@ describe('Network Helper', () => {
     });
     it('should add user agent', () => {
       nock('https://entrecode.de')
-        .get('/').replyWithFile(200, `${__dirname}/mocks/dm-list.json`);
+        .get('/')
+        .replyWithFile(200, `${__dirname}/mocks/dm-list.json`);
 
-      return helper.get('test', traversal)
-        .then(() => {
-          traversal.should.have.nested.property('requestOptions.headers.X-User-Agent', `ec.sdk/${packageJson.version}`);
-        });
+      return helper.get('test', traversal).then(() => {
+        traversal.should.have.nested.property('requestOptions.headers.X-User-Agent', `ec.sdk/${packageJson.version}`);
+      });
     });
     it('should add custom user agent', () => {
       nock('https://entrecode.de')
-        .get('/').replyWithFile(200, `${__dirname}/mocks/dm-list.json`);
+        .get('/')
+        .replyWithFile(200, `${__dirname}/mocks/dm-list.json`);
 
       store.agent = 'test/0.0.1';
 
-      return helper.get('test', traversal)
-        .then(() => {
-          traversal.should.have.nested.property('requestOptions.headers.X-User-Agent', `test/0.0.1 ec.sdk/${packageJson.version}`);
-        });
+      return helper.get('test', traversal).then(() => {
+        traversal.should.have.nested.property(
+          'requestOptions.headers.X-User-Agent',
+          `test/0.0.1 ec.sdk/${packageJson.version}`,
+        );
+      });
     });
     it('should add custom user agent, from secondStore', () => {
       nock('https://entrecode.de')
-        .get('/').replyWithFile(200, `${__dirname}/mocks/dm-list.json`);
+        .get('/')
+        .replyWithFile(200, `${__dirname}/mocks/dm-list.json`);
 
       store.agent = 'test/0.0.1';
 
-      return helper.get('testbeefbeef', traversal)
-        .then(() => {
-          traversal.should.have.nested.property('requestOptions.headers.X-User-Agent', `test/0.0.1 ec.sdk/${packageJson.version}`);
-        });
+      return helper.get('testbeefbeef', traversal).then(() => {
+        traversal.should.have.nested.property(
+          'requestOptions.headers.X-User-Agent',
+          `test/0.0.1 ec.sdk/${packageJson.version}`,
+        );
+      });
     });
   });
   describe('getUrl', () => {
     it('should be resolved', () => {
       nock('https://entrecode.de')
-        .get('/').replyWithFile(200, `${__dirname}/mocks/dm-list.json`);
+        .get('/')
+        .replyWithFile(200, `${__dirname}/mocks/dm-list.json`);
 
       return helper.getUrl('live', traversal.follow('ec:dm-stats')).should.be.eventually.be.fulfilled;
     });
     it('should be rejected', () => {
       nock('https://entrecode.de')
-        .get('/').replyWithError('mocked error');
+        .get('/')
+        .replyWithError('mocked error');
 
-      return helper.getUrl('live', traversal.follow('ec:dm-stats'))
+      return helper
+        .getUrl('live', traversal.follow('ec:dm-stats'))
         .then(() => {
           throw new Error('unexpectedly resolved');
         })
@@ -403,9 +436,11 @@ describe('Network Helper', () => {
     });
     it('should fire error event', () => {
       nock('https://entrecode.de')
-        .get('/').replyWithError('mocked error');
+        .get('/')
+        .replyWithError('mocked error');
 
-      return helper.getUrl('live', traversal.follow('ec:dm-stats'))
+      return helper
+        .getUrl('live', traversal.follow('ec:dm-stats'))
         .then(() => {
           throw new Error('unexpectedly resolved');
         })
@@ -418,15 +453,18 @@ describe('Network Helper', () => {
   describe('getEmpty', () => {
     it('should be resolved', () => {
       nock('https://entrecode.de')
-        .get('/').reply(204);
+        .get('/')
+        .reply(204);
 
       return helper.getEmpty('live', traversal).should.be.eventually.be.fulfilled;
     });
     it('should be rejected', () => {
       nock('https://entrecode.de')
-        .get('/').reply(404, 'mocked error');
+        .get('/')
+        .reply(404, 'mocked error');
 
-      return helper.getEmpty('live', traversal)
+      return helper
+        .getEmpty('live', traversal)
         .then(() => {
           throw new Error('unexpectedly resolved');
         })
@@ -436,9 +474,11 @@ describe('Network Helper', () => {
     });
     it('should fire error event', () => {
       nock('https://entrecode.de')
-        .get('/').replyWithError('mocked error');
+        .get('/')
+        .replyWithError('mocked error');
 
-      return helper.getEmpty('live', traversal)
+      return helper
+        .getEmpty('live', traversal)
         .then(() => {
           throw new Error('unexpectedly resolved');
         })
@@ -451,15 +491,18 @@ describe('Network Helper', () => {
   describe('postEmpty', () => {
     it('should be resolved', () => {
       nock('https://entrecode.de')
-        .post('/').reply(204);
+        .post('/')
+        .reply(204);
 
       return helper.postEmpty('live', traversal, {}).should.be.eventually.be.fulfilled;
     });
     it('should be rejected', () => {
       nock('https://entrecode.de')
-        .post('/').reply(404, 'mocked error');
+        .post('/')
+        .reply(404, 'mocked error');
 
-      return helper.postEmpty('live', traversal, {})
+      return helper
+        .postEmpty('live', traversal, {})
         .then(() => {
           throw new Error('unexpectedly resolved');
         })
@@ -469,9 +512,11 @@ describe('Network Helper', () => {
     });
     it('should fire error event', () => {
       nock('https://entrecode.de')
-        .post('/').replyWithError('mocked error');
+        .post('/')
+        .replyWithError('mocked error');
 
-      return helper.postEmpty('live', traversal)
+      return helper
+        .postEmpty('live', traversal)
         .then(() => {
           throw new Error('unexpectedly resolved');
         })
@@ -484,19 +529,22 @@ describe('Network Helper', () => {
   describe('post', () => {
     it('should be resolved', () => {
       nock('https://entrecode.de')
-        .post('/').replyWithFile(200, `${__dirname}/mocks/dm-list.json`);
+        .post('/')
+        .replyWithFile(200, `${__dirname}/mocks/dm-list.json`);
 
       return helper.post('live', traversal).should.be.eventually.be.fulfilled;
     });
     it('should be resolved, 204', () => {
       nock('https://entrecode.de')
-        .post('/').reply(204);
+        .post('/')
+        .reply(204);
 
       return helper.post('live', traversal).should.be.eventually.be.fulfilled;
     });
     it('should be rejected', () => {
       nock('https://entrecode.de')
-        .post('/').reply(404, {
+        .post('/')
+        .reply(404, {
           title: 'not found',
           code: 2102,
           status: 404,
@@ -506,9 +554,11 @@ describe('Network Helper', () => {
     });
     it('should fire error event', () => {
       nock('https://entrecode.de')
-        .post('/').replyWithError('mocked error');
+        .post('/')
+        .replyWithError('mocked error');
 
-      return helper.post('live', traversal)
+      return helper
+        .post('live', traversal)
         .then(() => {
           throw new Error('unexpectedly resolved');
         })
@@ -521,13 +571,15 @@ describe('Network Helper', () => {
   describe('put', () => {
     it('should be resolved', () => {
       nock('https://entrecode.de')
-        .put('/').replyWithFile(200, `${__dirname}/mocks/dm-list.json`);
+        .put('/')
+        .replyWithFile(200, `${__dirname}/mocks/dm-list.json`);
 
       return helper.put('live', traversal).should.be.eventually.be.fulfilled;
     });
     it('should be rejected', () => {
       nock('https://entrecode.de')
-        .put('/').reply(404, {
+        .put('/')
+        .reply(404, {
           title: 'not found',
           code: 2102,
           status: 404,
@@ -538,9 +590,11 @@ describe('Network Helper', () => {
     });
     it('should fire error event', () => {
       nock('https://entrecode.de')
-        .put('/').replyWithError('mocked error');
+        .put('/')
+        .replyWithError('mocked error');
 
-      return helper.put('live', traversal)
+      return helper
+        .put('live', traversal)
         .then(() => {
           throw new Error('unexpectedly resolved');
         })
@@ -553,13 +607,15 @@ describe('Network Helper', () => {
   describe('delete', () => {
     it('should be resolved', () => {
       nock('https://entrecode.de')
-        .delete('/').reply(204);
+        .delete('/')
+        .reply(204);
 
       return helper.del('live', traversal).should.be.eventually.be.fulfilled;
     });
     it('should be rejected', () => {
       nock('https://entrecode.de')
-        .delete('/').reply(404, {
+        .delete('/')
+        .reply(404, {
           title: 'not found',
           code: 2102,
           status: 404,
@@ -570,9 +626,11 @@ describe('Network Helper', () => {
     });
     it('should fire error event', () => {
       nock('https://entrecode.de')
-        .delete('/').replyWithError('mocked error');
+        .delete('/')
+        .replyWithError('mocked error');
 
-      return helper.del('live', traversal)
+      return helper
+        .del('live', traversal)
         .then(() => {
           throw new Error('unexpectedly resolved');
         })
@@ -585,13 +643,15 @@ describe('Network Helper', () => {
   describe('superagentFormPost', () => {
     it('should be resolved', () => {
       nock('https://entrecode.de')
-        .post('/').reply(200, { token: 'token' });
+        .post('/')
+        .reply(200, { token: 'token' });
 
       return helper.superagentFormPost('live', 'https://entrecode.de', {}).should.be.eventually.fulfilled;
     });
     it('should be rejected', () => {
       nock('https://entrecode.de')
-        .post('/').reply(404, {
+        .post('/')
+        .reply(404, {
           title: 'not found',
           code: 2102,
           status: 404,
@@ -602,9 +662,11 @@ describe('Network Helper', () => {
     });
     it('should fire error event', () => {
       nock('https://entrecode.de')
-        .post('/').replyWithError('mocked error');
+        .post('/')
+        .replyWithError('mocked error');
 
-      return helper.superagentFormPost('live', 'https://entrecode.de', {})
+      return helper
+        .superagentFormPost('live', 'https://entrecode.de', {})
         .then(() => {
           throw new Error('unexpectedly resolved');
         })
@@ -617,32 +679,41 @@ describe('Network Helper', () => {
   describe('superagentGet', () => {
     it('should be resolved', () => {
       nock('https://entrecode.de')
-        .get('/').reply(200, { url: 'http://example.com' });
+        .get('/')
+        .reply(200, { url: 'http://example.com' });
 
       return helper.superagentGet('https://entrecode.de').should.be.eventually.fulfilled;
     });
     it('should be resolved with headers', () => {
       nock('https://entrecode.de')
-        .get('/').reply(200, { url: 'http://example.com' });
+        .get('/')
+        .reply(200, { url: 'http://example.com' });
 
       return helper.superagentGet('https://entrecode.de', {}).should.be.eventually.fulfilled;
     });
     it('should be rejected', () => {
       nock('https://entrecode.de')
-        .get('/').reply(404, {
-          title: 'not found',
-          code: 2102,
-          status: 404,
-          detail: 'title',
-        }, { 'Content-Type': 'application/json' });
+        .get('/')
+        .reply(
+          404,
+          {
+            title: 'not found',
+            code: 2102,
+            status: 404,
+            detail: 'title',
+          },
+          { 'Content-Type': 'application/json' },
+        );
 
       return helper.superagentGet('https://entrecode.de', {}).should.be.rejectedWith(Problem);
     });
     it('should fire error event', () => {
       nock('https://entrecode.de')
-        .get('/').replyWithError('mocked error');
+        .get('/')
+        .replyWithError('mocked error');
 
-      return helper.superagentGet('https://entrecode.de', {})
+      return helper
+        .superagentGet('https://entrecode.de', {})
         .then(() => {
           throw new Error('unexpectedly resolved');
         })
@@ -655,39 +726,43 @@ describe('Network Helper', () => {
   describe('superagentPost', () => {
     it('should be resolved', () => {
       nock('https://entrecode.de')
-        .post('/').reply(200, {});
+        .post('/')
+        .reply(200, {});
 
-      return helper.superagentPost('live', superagent.post('https://entrecode.de'))
-        .should.be.eventually.be.fulfilled;
+      return helper.superagentPost('live', superagent.post('https://entrecode.de')).should.be.eventually.be.fulfilled;
     });
     it('should be resolved with token and user agent', () => {
       nock('https://entrecode.de')
-        .post('/').reply(200, {});
+        .post('/')
+        .reply(200, {});
 
       const liveStore = TokenStore.default('live');
-      liveStore.setToken('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ');
+      liveStore.setToken(
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ',
+      );
       liveStore.setUserAgent('agent/1.0.0');
 
-      return helper.superagentPost('live', superagent.post('https://entrecode.de'))
-        .should.be.eventually.be.fulfilled;
+      return helper.superagentPost('live', superagent.post('https://entrecode.de')).should.be.eventually.be.fulfilled;
     });
     it('should be rejected', () => {
       nock('https://entrecode.de')
-        .post('/').reply(404, {
+        .post('/')
+        .reply(404, {
           title: 'not found',
           code: 2102,
           status: 404,
           detail: 'title',
         });
 
-      return helper.superagentPost('live', superagent.post('https://entrecode.de'))
-        .should.be.rejectedWith(Problem);
+      return helper.superagentPost('live', superagent.post('https://entrecode.de')).should.be.rejectedWith(Problem);
     });
     it('should fire error event', () => {
       nock('https://entrecode.de')
-        .post('/').replyWithError('mocked error');
+        .post('/')
+        .replyWithError('mocked error');
 
-      return helper.superagentPost('live', superagent.post('https://entrecode.de'))
+      return helper
+        .superagentPost('live', superagent.post('https://entrecode.de'))
         .then(() => {
           throw new Error('unexpectedly resolved');
         })
@@ -703,15 +778,16 @@ describe('Network Helper', () => {
         .get('/asset/download')
         .reply(200, () => fs.createReadStream(`${__dirname}/mocks/test.png`));
 
-      return helper.superagentGetPiped('https://entrecode.de/asset/download', fs.createWriteStream('/dev/null'))
-        .should.eventually.be.be.fulfilled;
+      return helper.superagentGetPiped('https://entrecode.de/asset/download', fs.createWriteStream('/dev/null')).should
+        .eventually.be.be.fulfilled;
     });
     it('should be rejected', () => {
       nock('https://entrecode.de')
         .get('/asset/download')
         .replyWithError('mocked error');
 
-      return helper.superagentGetPiped('https://entrecode.de/asset/download', fs.createWriteStream('/dev/null'))
+      return helper
+        .superagentGetPiped('https://entrecode.de/asset/download', fs.createWriteStream('/dev/null'))
         .should.eventually.be.rejectedWith('mocked error');
     });
   });
@@ -897,8 +973,7 @@ describe('optionsToQuery', () => {
   it('should throw on invalid filter property value', () => {
     const throws = () => {
       helper.optionsToQuery({
-        property: () => {
-        }
+        property: () => {},
       });
     };
     throws.should.throw(Error);
@@ -909,15 +984,15 @@ describe('optionsToQuery', () => {
     };
     throws.should.throw(Error);
   });
-  it('should encode \',\'', () => {
+  it("should encode ','", () => {
     const obj = { property: 'hallo, michi' };
     helper.optionsToQuery(obj, null, true).should.have.property('property', 'hallo%2C%20michi');
   });
-  it('should encode \',\', exact filter', () => {
+  it("should encode ',', exact filter", () => {
     const obj = { property: { exact: 'hallo, michi' } };
     helper.optionsToQuery(obj, null, true).should.have.property('property', 'hallo%2C%20michi');
   });
-  it('should encode \',\', any filter', () => {
+  it("should encode ',', any filter", () => {
     const obj = { property: { any: ['hallo, michi', 'hallo, berni'] } };
     helper.optionsToQuery(obj, null, true).should.have.property('property', 'hallo%2C%20michi,hallo%2C%20berni');
   });
@@ -934,8 +1009,7 @@ describe('optionsToQuery', () => {
           search: 'search',
         },
       };
-      (() => helper.optionsToQuery(obj, '{?size,page,sort,field,fieldTo,fieldFrom,field~}'))
-        .should.not.throw();
+      (() => helper.optionsToQuery(obj, '{?size,page,sort,field,fieldTo,fieldFrom,field~}')).should.not.throw();
     });
     it('invalid, all types', () => {
       const obj = {

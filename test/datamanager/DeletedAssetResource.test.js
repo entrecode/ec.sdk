@@ -25,8 +25,7 @@ describe('DeletedAsset ListResource', () => {
         }
         return resolve(JSON.parse(res));
       });
-    })
-    .then((json) => {
+    }).then((json) => {
       listJson = json;
     });
   });
@@ -43,7 +42,7 @@ describe('DeletedAsset ListResource', () => {
     list.should.be.instanceOf(DeletedAssetList);
   });
   it('should have TokenResource items', () => {
-    list.getAllItems().forEach(item => item.should.be.instanceOf(DeletedAssetResource));
+    list.getAllItems().forEach((item) => item.should.be.instanceOf(DeletedAssetResource));
   });
 });
 
@@ -58,8 +57,7 @@ describe('DeletedAsset Resource', () => {
         }
         return resolve(JSON.parse(res));
       });
-    })
-    .then((json) => {
+    }).then((json) => {
       resourceJson = json;
     });
   });
@@ -79,19 +77,29 @@ describe('DeletedAsset Resource', () => {
     resource.getFileUrl().should.be.equal('https://cdn2.entrecode.de/files/01bd8e08/lGft2gVDPmDt5NfA0HF2IlPg.png');
   });
   it('should get image url', () => {
-    resource.getImageUrl(500).should.be.equal('https://cdn2.entrecode.de/files/01bd8e08/lGft2gVDPmDt5NfA0HF2IlPg_512.png');
+    resource
+      .getImageUrl(500)
+      .should.be.equal('https://cdn2.entrecode.de/files/01bd8e08/lGft2gVDPmDt5NfA0HF2IlPg_512.png');
   });
   it('should get image thumb url', () => {
-    resource.getImageThumbUrl(500).should.be.equal('https://cdn2.entrecode.de/files/01bd8e08/lGft2gVDPmDt5NfA0HF2IlPg_400_thumb.png');
+    resource
+      .getImageThumbUrl(500)
+      .should.be.equal('https://cdn2.entrecode.de/files/01bd8e08/lGft2gVDPmDt5NfA0HF2IlPg_400_thumb.png');
   });
   it('should get file url', () => {
-    resource.getFileUrl('de-DE').should.be.equal('https://cdn2.entrecode.de/files/01bd8e08/lGft2gVDPmDt5NfA0HF2IlPg.png');
+    resource
+      .getFileUrl('de-DE')
+      .should.be.equal('https://cdn2.entrecode.de/files/01bd8e08/lGft2gVDPmDt5NfA0HF2IlPg.png');
   });
   it('should get image url', () => {
-    resource.getImageUrl(500, 'de-DE').should.be.equal('https://cdn2.entrecode.de/files/01bd8e08/lGft2gVDPmDt5NfA0HF2IlPg_512.png');
+    resource
+      .getImageUrl(500, 'de-DE')
+      .should.be.equal('https://cdn2.entrecode.de/files/01bd8e08/lGft2gVDPmDt5NfA0HF2IlPg_512.png');
   });
   it('should get image thumb url', () => {
-    resource.getImageThumbUrl(100, 'de-DE').should.be.equal('https://cdn2.entrecode.de/files/01bd8e08/lGft2gVDPmDt5NfA0HF2IlPg_100_thumb.png');
+    resource
+      .getImageThumbUrl(100, 'de-DE')
+      .should.be.equal('https://cdn2.entrecode.de/files/01bd8e08/lGft2gVDPmDt5NfA0HF2IlPg_100_thumb.png');
   });
   it('should get on svg image with resolution', () => {
     return new Promise((resolve, reject) => {
@@ -103,10 +111,10 @@ describe('DeletedAsset Resource', () => {
         return resolve(JSON.parse(res));
       });
     })
-    .then(data => new DeletedAssetResource(data))
-    .then((asset) => {
-      asset.getImageUrl(200).should.be.equal('https://cdn2.entrecode.de/files/01bd8e08/q-reMdqANeX4zuRGdK1OwhrR.svg');
-    });
+      .then((data) => new DeletedAssetResource(data))
+      .then((asset) => {
+        asset.getImageUrl(200).should.be.equal('https://cdn2.entrecode.de/files/01bd8e08/q-reMdqANeX4zuRGdK1OwhrR.svg');
+      });
   });
   it('should get on image without thumbs', () => {
     return new Promise((resolve, reject) => {
@@ -118,10 +126,12 @@ describe('DeletedAsset Resource', () => {
         return resolve(JSON.parse(res));
       });
     })
-    .then(data => new DeletedAssetResource(data))
-    .then((asset) => {
-      asset.getImageThumbUrl(200).should.be.equal('https://cdn2.entrecode.de/files/01bd8e08/J2DJfjfEVby3KcxGNrJyFdEz_256.png');
-    });
+      .then((data) => new DeletedAssetResource(data))
+      .then((asset) => {
+        asset
+          .getImageThumbUrl(200)
+          .should.be.equal('https://cdn2.entrecode.de/files/01bd8e08/J2DJfjfEVby3KcxGNrJyFdEz_256.png');
+      });
   });
   it('should get on non image file', () => {
     return new Promise((resolve, reject) => {
@@ -133,10 +143,10 @@ describe('DeletedAsset Resource', () => {
         return resolve(JSON.parse(res));
       });
     })
-    .then(data => new DeletedAssetResource(data))
-    .then((asset) => {
-      asset.getFileUrl().should.be.equal('https://cdn2.entrecode.de/files/01bd8e08/1-mt7_kX_DnyNbTQaSP4meVk.txt');
-    });
+      .then((data) => new DeletedAssetResource(data))
+      .then((asset) => {
+        asset.getFileUrl().should.be.equal('https://cdn2.entrecode.de/files/01bd8e08/1-mt7_kX_DnyNbTQaSP4meVk.txt');
+      });
   });
   it('should get with locale on no locale', () => {
     return new Promise((resolve, reject) => {
@@ -148,32 +158,36 @@ describe('DeletedAsset Resource', () => {
         return resolve(JSON.parse(res));
       });
     })
-    .then(data => new DeletedAssetResource(data))
-    .then((asset) => {
-      asset.getFileUrl('de-DE').should.be.equal('https://cdn2.entrecode.de/files/01bd8e08/1-mt7_kX_DnyNbTQaSP4meVk.txt');
-    });
+      .then((data) => new DeletedAssetResource(data))
+      .then((asset) => {
+        asset
+          .getFileUrl('de-DE')
+          .should.be.equal('https://cdn2.entrecode.de/files/01bd8e08/1-mt7_kX_DnyNbTQaSP4meVk.txt');
+      });
   });
   it('should resolve on purge', () => {
     const stub = sinon.stub(helper, 'del');
     stub.returns(Promise.resolve());
 
-    return resource.purge()
-    .then(() => stub.restore())
-    .catch((err) => {
-      stub.restore();
-      throw err;
-    });
+    return resource
+      .purge()
+      .then(() => stub.restore())
+      .catch((err) => {
+        stub.restore();
+        throw err;
+      });
   });
   it('should resolve on restore', () => {
     const stub = sinon.stub(helper, 'del');
     stub.returns(Promise.resolve());
 
-    return resource.restore()
-    .then(() => stub.restore())
-    .catch((err) => {
-      stub.restore();
-      throw err;
-    });
+    return resource
+      .restore()
+      .then(() => stub.restore())
+      .catch((err) => {
+        stub.restore();
+        throw err;
+      });
   });
 
   const dateGetter = ['created'];

@@ -24,8 +24,7 @@ describe('Client ListResource', () => {
         }
         return resolve(JSON.parse(res));
       });
-    })
-    .then((json) => {
+    }).then((json) => {
       listJson = json;
     });
   });
@@ -42,7 +41,7 @@ describe('Client ListResource', () => {
     list.should.be.instanceOf(ClientList);
   });
   it('should have ClientResource items', () => {
-    list.getAllItems().forEach(item => item.should.be.instanceOf(ClientResource));
+    list.getAllItems().forEach((item) => item.should.be.instanceOf(ClientResource));
   });
 });
 
@@ -57,8 +56,7 @@ describe('Client Resource', () => {
         }
         return resolve(JSON.parse(res));
       });
-    })
-    .then((json) => {
+    }).then((json) => {
       resourceJson = json;
     });
   });
@@ -75,9 +73,7 @@ describe('Client Resource', () => {
     resource.should.be.instanceOf(ClientResource);
   });
 
-  const getter = [
-    'clientID', 'callbackURL', 'config',
-  ];
+  const getter = ['clientID', 'callbackURL', 'config'];
   getter.forEach((name) => {
     it(`should call resource.getProperty with ${name}`, () => {
       const spy = sinon.spy(resource, 'getProperty');
@@ -91,9 +87,7 @@ describe('Client Resource', () => {
     });
   });
 
-  const setter = [
-    'callbackURL', 'config',
-  ];
+  const setter = ['callbackURL', 'config'];
   setter.forEach((name) => {
     it(`should call resource.setProperty with ${name}`, () => {
       const spy = sinon.spy(resource, 'setProperty');

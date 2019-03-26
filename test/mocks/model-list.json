@@ -146,9 +146,7 @@
               },
               "subject": "finally {{data.subject}} "
             },
-            "methods": [
-              "post"
-            ],
+            "methods": ["post"],
             "description": "mailtest",
             "hookID": "af4d38bd-2482-48cf-8754-5c940e9dac12"
           }
@@ -303,9 +301,7 @@
                 "__jsonpath": "request.body.subject"
               }
             },
-            "methods": [
-              "post"
-            ],
+            "methods": ["post"],
             "description": "mailgun",
             "hookID": "e0c671f0-78a1-41b2-947f-f5d725538598"
           }
@@ -606,9 +602,7 @@
               "subject": "New ec.website contact form message from {{request.body.email}}",
               "h:reply-to": "{{request.body.name}} <{{request.body.email}}>"
             },
-            "methods": [
-              "post"
-            ],
+            "methods": ["post"],
             "description": "mailgun",
             "hookID": "bf9b068b-53e2-45e2-a4a2-02dadf6be17e"
           }

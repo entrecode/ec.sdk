@@ -6,9 +6,7 @@
         "id": "https://appserver.entrecode.de/schema/types/platform-type/ionic-android",
         "type": "object",
         "$schema": "http://json-schema.org/draft-04/schema#",
-        "required": [
-          "id"
-        ],
+        "required": ["id"],
         "properties": {
           "id": {
             "type": "string",
@@ -24,9 +22,7 @@
         "id": "https://appserver.entrecode.de/schema/types/platform-type/simplewebsite",
         "type": "object",
         "$schema": "http://json-schema.org/draft-04/schema#",
-        "required": [
-          "buildDir"
-        ],
+        "required": ["buildDir"],
         "properties": {
           "buildDir": {
             "type": "string"
@@ -41,9 +37,7 @@
         "id": "https://appserver.entrecode.de/schema/types/platform-type/website",
         "type": "object",
         "$schema": "http://json-schema.org/draft-04/schema#",
-        "required": [
-          "id"
-        ],
+        "required": ["id"],
         "properties": {
           "id": {
             "type": "string",
@@ -68,9 +62,7 @@
         "id": "https://appserver.entrecode.de/schema/types/platform-type/ionic-simple",
         "type": "object",
         "$schema": "http://json-schema.org/draft-04/schema#",
-        "required": [
-          "id"
-        ],
+        "required": ["id"],
         "properties": {
           "id": {
             "type": "string",
@@ -86,9 +78,7 @@
         "id": "https://appserver.entrecode.de/schema/types/platform-type/ionic-ios",
         "type": "object",
         "$schema": "http://json-schema.org/draft-04/schema#",
-        "required": [
-          "id"
-        ],
+        "required": ["id"],
         "properties": {
           "id": {
             "type": "string",
@@ -114,9 +104,7 @@
         "id": "https://appserver.entrecode.de/schema/types/platform-type/ionic",
         "type": "object",
         "$schema": "http://json-schema.org/draft-04/schema#",
-        "required": [
-          "id"
-        ],
+        "required": ["id"],
         "properties": {
           "id": {
             "type": "string",
@@ -134,9 +122,7 @@
         "id": "https://appserver.entrecode.de/schema/types/code-source/remoteGit",
         "type": "object",
         "$schema": "http://json-schema.org/draft-04/schema#",
-        "required": [
-          "giturl"
-        ],
+        "required": ["giturl"],
         "properties": {
           "giturl": {
             "type": "string"
@@ -152,10 +138,7 @@
         "id": "https://appserver.entrecode.de/schema/types/code-source/zipFileFromS3",
         "type": "object",
         "$schema": "http://json-schema.org/draft-04/schema#",
-        "required": [
-          "bucket",
-          "key"
-        ],
+        "required": ["bucket", "key"],
         "properties": {
           "key": {
             "type": "string"
@@ -183,18 +166,10 @@
         "type": "object",
         "oneOf": [
           {
-            "required": [
-              "entryID",
-              "model",
-              "id"
-            ]
+            "required": ["entryID", "model", "id"]
           },
           {
-            "required": [
-              "entryID",
-              "model",
-              "url"
-            ]
+            "required": ["entryID", "model", "url"]
           }
         ],
         "$schema": "http://json-schema.org/draft-04/schema#",
@@ -231,9 +206,7 @@
         "id": "https://appserver.entrecode.de/schema/types/data-source/own-data-manager",
         "type": "object",
         "$schema": "http://json-schema.org/draft-04/schema#",
-        "required": [
-          "url"
-        ],
+        "required": ["url"],
         "properties": {
           "url": {
             "type": "string",
@@ -273,9 +246,7 @@
         "id": "https://appserver.entrecode.de/schema/types/target-type/localWebServer",
         "type": "object",
         "$schema": "http://json-schema.org/draft-04/schema#",
-        "required": [
-          "path"
-        ],
+        "required": ["path"],
         "properties": {
           "path": {
             "type": "string"

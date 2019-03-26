@@ -12,10 +12,6 @@
       "type": "object"
     }
   },
-  "required": [
-    "platformType",
-    "title",
-    "config"
-  ],
+  "required": ["platformType", "title", "config"],
   "$schema": "http://json-schema.org/draft-04/schema#"
 }

@@ -4,13 +4,13 @@
     "baseResource": {
       "type": "object",
       "properties": {
-        "_links": {"type": "object"},
-        "_embedded": {"type": "object"}
+        "_links": { "type": "object" },
+        "_embedded": { "type": "object" }
       }
     },
     "halResource": {
       "allOf": [
-        {"$ref": "#/definitions/baseResource"},
+        { "$ref": "#/definitions/baseResource" },
         {
           "properties": {
             "_links": {
@@ -31,20 +31,21 @@
     },
     "linkOrLinkArray": {
       "oneOf": [
-        {"$ref": "#/definitions/link"},
+        { "$ref": "#/definitions/link" },
         {
           "type": "array",
-          "items": {"$ref": "#/definitions/link"}
+          "items": { "$ref": "#/definitions/link" }
         }
       ]
     },
     "halResourceOrHalResourceArray": {
       "oneOf": [
-        {"$ref": "#/definitions/halResource"},
+        { "$ref": "#/definitions/halResource" },
         {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/halResource"}
+            "$ref": "#/definitions/halResource"
+          }
         }
       ]
     },
@@ -54,7 +55,7 @@
         "type": {
           "type": "string",
           "title": "Media type indication of the target resource",
-          "pattern": "^(application|audio|example|image|message|model|multipart|text|video)\/[a-zA-Z0-9!#$&.+-^_]{1,127}$",
+          "pattern": "^(application|audio|example|image|message|model|multipart|text|video)/[a-zA-Z0-9!#$&.+-^_]{1,127}$",
           "description": "When present, used as a hint to indicate the media type expected when dereferencing the target resource."
         },
         "title": {

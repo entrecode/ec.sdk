@@ -29,16 +29,8 @@
       "assetGroupID": "test1",
       "public": true,
       "settings": {
-        "imageSizes": [
-          350,
-          700,
-          1020
-        ],
-        "thumbSizes": [
-          50,
-          70,
-          90
-        ]
+        "imageSizes": [350, 700, 1020],
+        "thumbSizes": [50, 70, 90]
       },
       "policies": [],
       "_links": {

@@ -1,3 +1,12 @@
+## <small>0.19.2 (2019-03-26)</small>
+
+* release version 0.19.2 ([a69caf6](https://github.com/entrecode/ec.sdk/commit/a69caf6))
+* feat: add method and path to non json errors ([b159ae5](https://github.com/entrecode/ec.sdk/commit/b159ae5))
+* feat: update ec.errors with new error 002 ([f077970](https://github.com/entrecode/ec.sdk/commit/f077970))
+* chore: prettier applied to all files ([788af11](https://github.com/entrecode/ec.sdk/commit/788af11))
+
+
+
 ## <small>0.19.1 (2019-03-25)</small>
 
 * release version 0.19.1 ([27de743](https://github.com/entrecode/ec.sdk/commit/27de743))

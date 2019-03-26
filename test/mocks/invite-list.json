@@ -54,9 +54,7 @@
       },
       {
         "invite": "3ec09d47-4557-4ede-bb2e-f492c33d5e93",
-        "permissions": [
-          "invalid"
-        ],
+        "permissions": ["invalid"],
         "groups": [],
         "_links": {
           "self": {
@@ -210,9 +208,7 @@
       },
       {
         "invite": "3ec09d47-4557-4ede-bb2e-f492c33d5e93",
-        "permissions": [
-          "invalid"
-        ],
+        "permissions": ["invalid"],
         "groups": [],
         "_links": {
           "self": {

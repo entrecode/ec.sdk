@@ -31,28 +31,16 @@
       "type": "object",
       "properties": {
         "users": {
-          "type": [
-            "null",
-            "object"
-          ],
+          "type": ["null", "object"],
           "properties": {
             "anonymous": {
-              "type": [
-                "null",
-                "boolean"
-              ]
+              "type": ["null", "boolean"]
             },
             "password": {
-              "type": [
-                "null",
-                "boolean"
-              ]
+              "type": ["null", "boolean"]
             },
             "google": {
-              "type": [
-                "null",
-                "object"
-              ],
+              "type": ["null", "object"],
               "properties": {
                 "clientID": {
                   "type": "string"
@@ -61,16 +49,10 @@
                   "type": "string"
                 }
               },
-              "required": [
-                "clientID",
-                "clientSecret"
-              ]
+              "required": ["clientID", "clientSecret"]
             },
             "facebook": {
-              "type": [
-                "null",
-                "object"
-              ],
+              "type": ["null", "object"],
               "properties": {
                 "clientID": {
                   "type": "string"
@@ -79,10 +61,7 @@
                   "type": "string"
                 }
               },
-              "required": [
-                "clientID",
-                "clientSecret"
-              ]
+              "required": ["clientID", "clientSecret"]
             }
           }
         },

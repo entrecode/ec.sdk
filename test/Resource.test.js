@@ -91,7 +91,8 @@ describe('Resource', () => {
     const stub = sinon.stub(helper, 'put');
     stub.returns(resolver('dm-single.json', resource._traversal));
 
-    return resource.save()
+    return resource
+      .save()
       .then(() => {
         stub.should.be.calledOnce;
         stub.restore();
@@ -116,10 +117,10 @@ describe('Resource', () => {
           return reject(err);
         }
         return resolve(JSON.parse(res));
-      })
+      });
     })
-      .then(json => EntryResource.createEntry(json, 'live'))
-      .then(res => res.save(true))
+      .then((json) => EntryResource.createEntry(json, 'live'))
+      .then((res) => res.save(true))
       .then((res) => {
         res[traversalSymbol];
         stub.should.be.calledOnce;
@@ -139,7 +140,8 @@ describe('Resource', () => {
     const stub = sinon.stub(helper, 'del');
     stub.returns(Promise.resolve({}, resource._traversal));
 
-    return resource.del()
+    return resource
+      .del()
       .then(() => {
         stub.should.be.calledOnce;
         stub.restore();
@@ -167,32 +169,32 @@ describe('Resource', () => {
     should.not.exist(resource.getLink('missing'));
   });
   it('should return links in getLinks', () => {
-    resource.getLinks('self').should.be.deep.equal([{
-      href: 'https://datamanager.entrecode.de/?dataManagerID=48e18a34-cf64-4f4a-bc47-45323a7f0e44',
-      profile: 'https://entrecode.de/schema/datamanager',
-      templated: false,
-      title: 'Test DM',
-    }]);
+    resource.getLinks('self').should.be.deep.equal([
+      {
+        href: 'https://datamanager.entrecode.de/?dataManagerID=48e18a34-cf64-4f4a-bc47-45323a7f0e44',
+        profile: 'https://entrecode.de/schema/datamanager',
+        templated: false,
+        title: 'Test DM',
+      },
+    ]);
   });
   it('should get object with all links', () => {
-    Object.keys(resource.allLinks()).should.have.property('length', 22)
+    Object.keys(resource.allLinks()).should.have.property('length', 22);
   });
   it('should call get on followLink', () => {
     const stub = sinon.stub(helper, 'get');
     stub.returns(resolver('dm-single.json'), resource._traversal);
 
-    return resource.followLink('self')
-      .then(() => {
-        stub.should.be.calledOnce;
-        stub.restore();
-      });
+    return resource.followLink('self').then(() => {
+      stub.should.be.calledOnce;
+      stub.restore();
+    });
   });
   it('should throw error on follow missing link', () => {
     const stub = sinon.stub(helper, 'get');
     stub.returns(Promise.reject(new Error('Traverson throws this')));
 
-    return resource.followLink('self').should.be.rejected
-      .and.notify(() => stub.restore());
+    return resource.followLink('self').should.be.rejected.and.notify(() => stub.restore());
   });
   it('should return resource on get', () => {
     const obj = resource.getAll();
@@ -223,10 +225,9 @@ describe('Resource', () => {
     resource.setAll(newResource);
 
     const obj = resource.getAll();
-    ['created', 'description', 'config', 'hexColor', 'locales', 'title']
-      .forEach((property) => {
-        obj.should.have.property(property, newResource[property]);
-      });
+    ['created', 'description', 'config', 'hexColor', 'locales', 'title'].forEach((property) => {
+      obj.should.have.property(property, newResource[property]);
+    });
   });
   it('should assign some values on set', () => {
     const newResource = {
@@ -237,10 +238,9 @@ describe('Resource', () => {
     resource.setAll(newResource);
 
     const obj = resource.getAll();
-    ['description', 'title']
-      .forEach((property) => {
-        obj.should.have.property(property, newResource[property]);
-      });
+    ['description', 'title'].forEach((property) => {
+      obj.should.have.property(property, newResource[property]);
+    });
   });
   it('should throw on undefined value', () => {
     const throws = () => {
@@ -268,11 +268,10 @@ describe('Resource', () => {
     const stub = sinon.stub(helper, 'get');
     stub.returns(resolver('dm-single.json', resource._traversal));
 
-    return resource.resolve()
-      .then(() => {
-        stub.should.be.calledOnce;
-        stub.restore();
-      });
+    return resource.resolve().then(() => {
+      stub.should.be.calledOnce;
+      stub.restore();
+    });
   });
   it('should throw on get unknown property', () => {
     resource.missing = 'yes its missing';
@@ -292,7 +291,8 @@ describe('Resource', () => {
   });
   it('resourceList called with levels param', () => {
     resource[relationsSymbol] = { dummy: {} };
-    return resource.resourceList('dummy', { _levels: 2 })
+    return resource
+      .resourceList('dummy', { _levels: 2 })
       .should.be.rejectedWith('_levels on list resources not supported');
   });
   it('create called without relation', () => {
