@@ -69,7 +69,13 @@ function jsonHandler(callback) {
 
       return callback(new Problem(JSON.parse(res.body), locale));
     } catch (e) {
-      return callback(new Problem(newError('000', `ec.sdk: unable to parse body: ${res.body}`)), locale);
+      let additional = '';
+
+      if (res.request) {
+        additional = `for request ${res.request.method} ${res.request.path}`;
+      }
+
+      return callback(new Problem(newError('000', `ec.sdk: unable to parse body ${additional}: ${res.body}`)), locale);
     }
   };
 }
