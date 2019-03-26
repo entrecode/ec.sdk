@@ -32,7 +32,7 @@
     "@types/validator": "^10.9.0",
     "browser-cookies": "^1.2.0",
     "deep-equal": "^1.0.1",
-    "ec.errors": "^0.2.2",
+    "ec.errors": "^0.2.4",
     "es6-symbol": "^3.1.1",
     "halfred": "^1.1.1",
     "json-schema-remote": "^1.4.0",
