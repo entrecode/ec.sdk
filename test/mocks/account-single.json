@@ -23,9 +23,7 @@
     }
   ],
   "state": "active",
-  "permissions": [
-    "acc:permissions:dm:5510a8f9-67ce-4d4d-b5a1-a9fe6b7d8d72"
-  ],
+  "permissions": ["acc:permissions:dm:5510a8f9-67ce-4d4d-b5a1-a9fe6b7d8d72"],
   "groups": [
     {
       "groupID": "260cb6b2-4fef-40e1-866a-659f2feb2500",

@@ -1,52 +1,52 @@
 {
-    "count": 2,
-    "scannedCount": 108,
-    "items": [
-      {
-        "modelID": "027f0bac-771f-42f4-98ee-f30bc645f5db",
-        "shortID": "38805f53",
-        "timestamp#entryID#randomNumber": "2019-02-07T13:29:15.425Z#mNbuhHpifx#508",
-        "data": {
-          "name": "Michael Locher",
-          "account": "acf518ef-623a-4efb-b0e3-c77b8231e923",
-          "bio": "hallo i bims…",
-          "profilePicture": "DHwmXQPPR1mbhB-66wS92A",
-          "status": "CL8EMwHRyKZ",
-          "credits": 30,
-          "lastActivity": "2019-02-07T13:29:14.464Z",
-          "legacyUserID": null,
-          "hasSetPassword": true,
-          "channel": null,
-          "creator": null
-        },
-        "timestamp": "2019-02-07T13:29:15.425Z",
-        "user": {
-          "accountID": "e11b6bd5-4d97-4237-8d2d-702416dfeaad",
-          "userType": "ecUser"
-        },
-        "oldEntryData": {
-          "credits": 25,
-          "lastActivity": "2019-01-22T07:03:47.616Z"
-        },
-        "entryID": "mNbuhHpifx",
-        "type": "entryUpdated"
+  "count": 2,
+  "scannedCount": 108,
+  "items": [
+    {
+      "modelID": "027f0bac-771f-42f4-98ee-f30bc645f5db",
+      "shortID": "38805f53",
+      "timestamp#entryID#randomNumber": "2019-02-07T13:29:15.425Z#mNbuhHpifx#508",
+      "data": {
+        "name": "Michael Locher",
+        "account": "acf518ef-623a-4efb-b0e3-c77b8231e923",
+        "bio": "hallo i bims…",
+        "profilePicture": "DHwmXQPPR1mbhB-66wS92A",
+        "status": "CL8EMwHRyKZ",
+        "credits": 30,
+        "lastActivity": "2019-02-07T13:29:14.464Z",
+        "legacyUserID": null,
+        "hasSetPassword": true,
+        "channel": null,
+        "creator": null
       },
-      {
-        "modelID": "0d922f2c-62a4-434d-8b1f-0133716791f8",
-        "shortID": "38805f53",
-        "timestamp#entryID#randomNumber": "2019-02-05T08:33:47.525Z#ZgLv8Msbd2#795",
-        "data": {
-          "channel": "S1Mma6hJGm",
-          "account": "d247d728-520c-4d93-81be-a4e18d5210aa",
-          "creator": null
-        },
-        "timestamp": "2019-02-05T08:33:47.525Z",
-        "user": {
-          "accountID": "e11b6bd5-4d97-4237-8d2d-702416dfeaad",
-          "userType": "ecUser"
-        },
-        "entryID": "ZgLv8Msbd2",
-        "type": "entryCreated"
-      }
-    ]
-  }
+      "timestamp": "2019-02-07T13:29:15.425Z",
+      "user": {
+        "accountID": "e11b6bd5-4d97-4237-8d2d-702416dfeaad",
+        "userType": "ecUser"
+      },
+      "oldEntryData": {
+        "credits": 25,
+        "lastActivity": "2019-01-22T07:03:47.616Z"
+      },
+      "entryID": "mNbuhHpifx",
+      "type": "entryUpdated"
+    },
+    {
+      "modelID": "0d922f2c-62a4-434d-8b1f-0133716791f8",
+      "shortID": "38805f53",
+      "timestamp#entryID#randomNumber": "2019-02-05T08:33:47.525Z#ZgLv8Msbd2#795",
+      "data": {
+        "channel": "S1Mma6hJGm",
+        "account": "d247d728-520c-4d93-81be-a4e18d5210aa",
+        "creator": null
+      },
+      "timestamp": "2019-02-05T08:33:47.525Z",
+      "user": {
+        "accountID": "e11b6bd5-4d97-4237-8d2d-702416dfeaad",
+        "userType": "ecUser"
+      },
+      "entryID": "ZgLv8Msbd2",
+      "type": "entryCreated"
+    }
+  ]
+}

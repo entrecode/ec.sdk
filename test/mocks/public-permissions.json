@@ -1,10 +1,5 @@
 {
-  "permissions": [
-    "model_with_underscore:get:*",
-    "contains_entries:get:*",
-    "allFields:get:*",
-    "entry:get:*"
-  ],
+  "permissions": ["model_with_underscore:get:*", "contains_entries:get:*", "allFields:get:*", "entry:get:*"],
   "_links": {
     "curies": {
       "name": "01bd8e08",

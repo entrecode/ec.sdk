@@ -1,13 +1,8 @@
 {
   "clientID": "example",
   "callbackURL": "https://example.com/login",
-  "tokenMethod": [
-    "query"
-  ],
-  "disableStrategies": [
-    "facebook",
-    "google"
-  ],
+  "tokenMethod": ["query"],
+  "disableStrategies": ["facebook", "google"],
   "hexColor": "#FD9727",
   "_links": {
     "self": {

@@ -48,7 +48,7 @@ describe('ListResource', () => {
   it('should return list of Resources on getAllItems', () => {
     const items = list.getAllItems();
     items.should.be.an('array');
-    items.map(item => item.should.be.instanceOf(Resource));
+    items.map((item) => item.should.be.instanceOf(Resource));
   });
   it('should be stringifyable', () => {
     const parsed = JSON.parse(JSON.stringify(list));
@@ -58,20 +58,20 @@ describe('ListResource', () => {
     parsed.should.have.property('items');
     parsed.items.should.have.property('length', 2);
   });
-  it('should return empty array on getAllItems', () => new Promise((resolve, reject) => {
-    fs.readFile(`${__dirname}/mocks/dm-list-empty.json`, 'utf-8', (err, res) => {
-      if (err) {
-        return reject(err);
-      }
-      return resolve(JSON.parse(res));
-    });
-  })
-  .then((emptyList) => {
-    list = new ListResource(emptyList);
-    const items = list.getAllItems();
-    items.should.be.an('array');
-    items.length.should.be.equal(0);
-  }));
+  it('should return empty array on getAllItems', () =>
+    new Promise((resolve, reject) => {
+      fs.readFile(`${__dirname}/mocks/dm-list-empty.json`, 'utf-8', (err, res) => {
+        if (err) {
+          return reject(err);
+        }
+        return resolve(JSON.parse(res));
+      });
+    }).then((emptyList) => {
+      list = new ListResource(emptyList);
+      const items = list.getAllItems();
+      items.should.be.an('array');
+      items.length.should.be.equal(0);
+    }));
   it('should return single Resource on getItem', () => {
     const resource = list.getItem(1);
     resource.should.be.instanceOf(Resource);
@@ -85,19 +85,19 @@ describe('ListResource', () => {
     const throws = () => list.getItem(1000);
     throws.should.throw(Error);
   });
-  it('should throw on getItem with empty list', () => new Promise((resolve, reject) => {
-    fs.readFile(`${__dirname}/mocks/dm-list-empty.json`, 'utf-8', (err, res) => {
-      if (err) {
-        return reject(err);
-      }
-      return resolve(JSON.parse(res));
-    });
-  })
-  .then((emptyList) => {
-    list = new ListResource(emptyList);
-    const throws = () => list.getItem(0);
-    throws.should.throw(Error);
-  }));
+  it('should throw on getItem with empty list', () =>
+    new Promise((resolve, reject) => {
+      fs.readFile(`${__dirname}/mocks/dm-list-empty.json`, 'utf-8', (err, res) => {
+        if (err) {
+          return reject(err);
+        }
+        return resolve(JSON.parse(res));
+      });
+    }).then((emptyList) => {
+      list = new ListResource(emptyList);
+      const throws = () => list.getItem(0);
+      throws.should.throw(Error);
+    }));
   it('should return first Resource on getFirtItem', () => {
     const resource = list.getFirstItem();
     resource.should.be.instanceOf(Resource);
@@ -116,8 +116,7 @@ describe('ListResource', () => {
     const stub = sinon.stub(helper, 'get');
     stub.returns(resolver('dm-list.json'), list._traversal);
 
-    return list.followFirstLink()
-    .then((l) => {
+    return list.followFirstLink().then((l) => {
       l.should.be.instanceOf(ListResource);
       stub.should.be.calledOnce;
       stub.restore();
@@ -127,8 +126,7 @@ describe('ListResource', () => {
     const stub = sinon.stub(helper, 'get');
     stub.returns(resolver('dm-list.json'), list._traversal);
 
-    return list.followNextLink()
-    .then(() => {
+    return list.followNextLink().then(() => {
       stub.should.be.calledOnce;
       stub.restore();
     });
@@ -137,16 +135,13 @@ describe('ListResource', () => {
     const stub = sinon.stub(helper, 'get');
     stub.returns(resolver('dm-list.json'), list._traversal);
 
-    return list.followPrevLink()
-    .then(() => {
+    return list.followPrevLink().then(() => {
       stub.should.be.calledOnce;
       stub.restore();
     });
   });
 
-  const getter = [
-    'count', 'total',
-  ];
+  const getter = ['count', 'total'];
   getter.forEach((name) => {
     it(`should call resource.getProperty with ${name}`, () => {
       const spy = sinon.spy(list, 'getProperty');
@@ -162,103 +157,114 @@ describe('ListResource', () => {
 
   it('should map over entries, sync iterator', () => {
     nock('https://datamanager.entrecode.de')
-    .get('/?title~=test&size=2')
-    .replyWithFile(200, `${__dirname}/mocks/dm-list.json`, { 'Content-Type': 'application/json' })
-    .get('/?title~=test&size=2&page=2')
-    .replyWithFile(200, `${__dirname}/mocks/dm-list-page.json`, { 'Content-Type': 'application/json' });
+      .get('/?title~=test&size=2')
+      .replyWithFile(200, `${__dirname}/mocks/dm-list.json`, { 'Content-Type': 'application/json' })
+      .get('/?title~=test&size=2&page=2')
+      .replyWithFile(200, `${__dirname}/mocks/dm-list-page.json`, { 'Content-Type': 'application/json' });
 
-    return list.map(dm => dm.getProperty('dataManagerID'))
-    .then((result) => {
-      result.should.be.an('array');
-      result.length.should.be.equal(4);
-    });
+    return list
+      .map((dm) => dm.getProperty('dataManagerID'))
+      .then((result) => {
+        result.should.be.an('array');
+        result.length.should.be.equal(4);
+      });
   });
   it('should map over entries, promise iterator', () => {
     nock('https://datamanager.entrecode.de')
-    .get('/?title~=test&size=2')
-    .replyWithFile(200, `${__dirname}/mocks/dm-list.json`, { 'Content-Type': 'application/json' })
-    .get('/?title~=test&size=2&page=2')
-    .replyWithFile(200, `${__dirname}/mocks/dm-list-page.json`, { 'Content-Type': 'application/json' });
+      .get('/?title~=test&size=2')
+      .replyWithFile(200, `${__dirname}/mocks/dm-list.json`, { 'Content-Type': 'application/json' })
+      .get('/?title~=test&size=2&page=2')
+      .replyWithFile(200, `${__dirname}/mocks/dm-list-page.json`, { 'Content-Type': 'application/json' });
 
-    return list.map(dm => Promise.resolve(dm.getProperty('dataManagerID')))
-    .then((result) => {
-      result.should.be.an('array');
-      result.length.should.be.equal(4);
-    });
+    return list
+      .map((dm) => Promise.resolve(dm.getProperty('dataManagerID')))
+      .then((result) => {
+        result.should.be.an('array');
+        result.length.should.be.equal(4);
+      });
   });
   it('should filter entries, sync iterator', () => {
     nock('https://datamanager.entrecode.de')
-    .get('/?title~=test&size=2')
-    .replyWithFile(200, `${__dirname}/mocks/dm-list.json`, { 'Content-Type': 'application/json' })
-    .get('/?title~=test&size=2&page=2')
-    .replyWithFile(200, `${__dirname}/mocks/dm-list-page.json`, { 'Content-Type': 'application/json' });
+      .get('/?title~=test&size=2')
+      .replyWithFile(200, `${__dirname}/mocks/dm-list.json`, { 'Content-Type': 'application/json' })
+      .get('/?title~=test&size=2&page=2')
+      .replyWithFile(200, `${__dirname}/mocks/dm-list-page.json`, { 'Content-Type': 'application/json' });
 
-    return list.filter(dm => [
-      '7e2fd960-b8ab-419f-8c8f-90da12b2a9d0',
-      '768823d9-e015-4452-b8f3-6061133c5775']
-    .includes(dm.getProperty('dataManagerID')))
-    .then((result) => {
-      result.should.be.an('array');
-      result.length.should.be.equal(2);
-      result[0].should.be.instanceOf(Resource);
-      result[1].should.be.instanceOf(Resource);
-    });
+    return list
+      .filter((dm) =>
+        ['7e2fd960-b8ab-419f-8c8f-90da12b2a9d0', '768823d9-e015-4452-b8f3-6061133c5775'].includes(
+          dm.getProperty('dataManagerID'),
+        ),
+      )
+      .then((result) => {
+        result.should.be.an('array');
+        result.length.should.be.equal(2);
+        result[0].should.be.instanceOf(Resource);
+        result[1].should.be.instanceOf(Resource);
+      });
   });
   it('should filter entries, promise iterator', () => {
     nock('https://datamanager.entrecode.de')
-    .get('/?title~=test&size=2')
-    .replyWithFile(200, `${__dirname}/mocks/dm-list.json`, { 'Content-Type': 'application/json' })
-    .get('/?title~=test&size=2&page=2')
-    .replyWithFile(200, `${__dirname}/mocks/dm-list-page.json`, { 'Content-Type': 'application/json' });
+      .get('/?title~=test&size=2')
+      .replyWithFile(200, `${__dirname}/mocks/dm-list.json`, { 'Content-Type': 'application/json' })
+      .get('/?title~=test&size=2&page=2')
+      .replyWithFile(200, `${__dirname}/mocks/dm-list-page.json`, { 'Content-Type': 'application/json' });
 
-    return list.filter(dm => Promise.resolve([
-      '7e2fd960-b8ab-419f-8c8f-90da12b2a9d0',
-      '768823d9-e015-4452-b8f3-6061133c5775']
-    .includes(dm.getProperty('dataManagerID'))))
-    .then((result) => {
-      result.should.be.an('array');
-      result.length.should.be.equal(2);
-      result[0].should.be.instanceOf(Resource);
-      result[1].should.be.instanceOf(Resource);
-    });
+    return list
+      .filter((dm) =>
+        Promise.resolve(
+          ['7e2fd960-b8ab-419f-8c8f-90da12b2a9d0', '768823d9-e015-4452-b8f3-6061133c5775'].includes(
+            dm.getProperty('dataManagerID'),
+          ),
+        ),
+      )
+      .then((result) => {
+        result.should.be.an('array');
+        result.length.should.be.equal(2);
+        result[0].should.be.instanceOf(Resource);
+        result[1].should.be.instanceOf(Resource);
+      });
   });
   it('should find entry, sync iterator', () => {
     nock('https://datamanager.entrecode.de')
-    .get('/?title~=test&size=2')
-    .replyWithFile(200, `${__dirname}/mocks/dm-list.json`, { 'Content-Type': 'application/json' })
-    .get('/?title~=test&size=2&page=2')
-    .replyWithFile(200, `${__dirname}/mocks/dm-list-page.json`, { 'Content-Type': 'application/json' });
+      .get('/?title~=test&size=2')
+      .replyWithFile(200, `${__dirname}/mocks/dm-list.json`, { 'Content-Type': 'application/json' })
+      .get('/?title~=test&size=2&page=2')
+      .replyWithFile(200, `${__dirname}/mocks/dm-list-page.json`, { 'Content-Type': 'application/json' });
 
-    return list.find(dm => dm.getProperty('shortID') === '58b9a1f5')
-    .then((result) => {
-      result.should.be.instanceOf(Resource);
-      result.getProperty('shortID').should.be.equal('58b9a1f5');
-    });
+    return list
+      .find((dm) => dm.getProperty('shortID') === '58b9a1f5')
+      .then((result) => {
+        result.should.be.instanceOf(Resource);
+        result.getProperty('shortID').should.be.equal('58b9a1f5');
+      });
   });
   it('should find entry, promise iterator', () => {
     nock('https://datamanager.entrecode.de')
-    .get('/?title~=test&size=2')
-    .replyWithFile(200, `${__dirname}/mocks/dm-list.json`, { 'Content-Type': 'application/json' })
-    .get('/?title~=test&size=2&page=2')
-    .replyWithFile(200, `${__dirname}/mocks/dm-list-page.json`, { 'Content-Type': 'application/json' });
+      .get('/?title~=test&size=2')
+      .replyWithFile(200, `${__dirname}/mocks/dm-list.json`, { 'Content-Type': 'application/json' })
+      .get('/?title~=test&size=2&page=2')
+      .replyWithFile(200, `${__dirname}/mocks/dm-list-page.json`, { 'Content-Type': 'application/json' });
 
-    return list.find(dm => Promise.resolve(dm.getProperty('shortID') === 'aa3b242e'))
-    .then((result) => {
-      result.should.be.instanceOf(Resource);
-      result.getProperty('shortID').should.be.equal('aa3b242e');
-    });
+    return list
+      .find((dm) => Promise.resolve(dm.getProperty('shortID') === 'aa3b242e'))
+      .then((result) => {
+        result.should.be.instanceOf(Resource);
+        result.getProperty('shortID').should.be.equal('aa3b242e');
+      });
   });
   it('should not find entry, promise iterator', () => {
     nock('https://datamanager.entrecode.de')
-    .get('/?title~=test&size=2')
-    .replyWithFile(200, `${__dirname}/mocks/dm-list.json`, { 'Content-Type': 'application/json' })
-    .get('/?title~=test&size=2&page=2')
-    .replyWithFile(200, `${__dirname}/mocks/dm-list-page.json`, { 'Content-Type': 'application/json' });
+      .get('/?title~=test&size=2')
+      .replyWithFile(200, `${__dirname}/mocks/dm-list.json`, { 'Content-Type': 'application/json' })
+      .get('/?title~=test&size=2&page=2')
+      .replyWithFile(200, `${__dirname}/mocks/dm-list-page.json`, { 'Content-Type': 'application/json' });
 
-    return list.find(dm => Promise.resolve(dm.getProperty('shortID') === 'NOOOOOOOO'))
-    .then((result) => {
-      should.equal(result, undefined);
-    });
+    return list
+      .find((dm) => Promise.resolve(dm.getProperty('shortID') === 'NOOOOOOOO'))
+      .then((result) => {
+        should.equal(result, undefined);
+      });
   });
   it('should implement iterator, spread operator', () => {
     const array = [...list];

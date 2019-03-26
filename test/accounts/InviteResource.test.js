@@ -24,8 +24,7 @@ describe('Invite ListResource', () => {
         }
         return resolve(JSON.parse(res));
       });
-    })
-    .then((json) => {
+    }).then((json) => {
       listJson = json;
     });
   });
@@ -42,7 +41,7 @@ describe('Invite ListResource', () => {
     list.should.be.instanceOf(InviteList);
   });
   it('should have InviteResource items', () => {
-    list.getAllItems().forEach(item => item.should.be.instanceOf(InviteResource));
+    list.getAllItems().forEach((item) => item.should.be.instanceOf(InviteResource));
   });
 });
 
@@ -57,8 +56,7 @@ describe('Invite Resource', () => {
         }
         return resolve(JSON.parse(res));
       });
-    })
-    .then((json) => {
+    }).then((json) => {
       resourceJson = json;
     });
   });
@@ -75,9 +73,7 @@ describe('Invite Resource', () => {
     resource.should.be.instanceOf(InviteResource);
   });
 
-  const getter = [
-    'invite', 'permissions', 'groups',
-  ];
+  const getter = ['invite', 'permissions', 'groups'];
   getter.forEach((name) => {
     it(`should call resource.getProperty with ${name}`, () => {
       const spy = sinon.spy(resource, 'getProperty');
@@ -91,9 +87,7 @@ describe('Invite Resource', () => {
     });
   });
 
-  const setter = [
-    'permissions', 'groups',
-  ];
+  const setter = ['permissions', 'groups'];
   setter.forEach((name) => {
     it(`should call resource.setProperty with ${name}`, () => {
       const spy = sinon.spy(resource, 'setProperty');

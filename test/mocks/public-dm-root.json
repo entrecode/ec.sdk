@@ -2,9 +2,7 @@
   "dataManagerID": "48e18a34-cf64-4f4a-bc47-45323a7f0e44",
   "title": "Test DM",
   "description": "hier kann alles getestet werden",
-  "locales": [
-    "de-DE"
-  ],
+  "locales": ["de-DE"],
   "defaultLocale": "de-DE",
   "models": [
     {

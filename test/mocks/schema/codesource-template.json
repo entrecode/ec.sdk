@@ -9,9 +9,6 @@
       "type": "object"
     }
   },
-  "required": [
-    "codeSourceType",
-    "config"
-  ],
+  "required": ["codeSourceType", "config"],
   "$schema": "http://json-schema.org/draft-04/schema#"
 }

@@ -31,15 +31,13 @@ describe('Entry List', () => {
         }
         return resolve(JSON.parse(res));
       });
-    })
-      .then((json) => {
-        listJson = json;
-      });
+    }).then((json) => {
+      listJson = json;
+    });
   });
   beforeEach(() => {
     mock.reset();
-    return EntryList.createList(listJson, 'live', undefined, 'beefbeef:allFields')
-      .then(l => list = l); // eslint-disable-line no-return-assign
+    return EntryList.createList(listJson, 'live', undefined, 'beefbeef:allFields').then((l) => (list = l)); // eslint-disable-line no-return-assign
   });
   afterEach(() => {
     list = null;
@@ -51,7 +49,7 @@ describe('Entry List', () => {
     list.should.be.instanceOf(EntryList.default);
   });
   it('should have EntryResource items', () => {
-    list.getAllItems().forEach(item => item.should.be.instanceOf(EntryResource.default));
+    list.getAllItems().forEach((item) => item.should.be.instanceOf(EntryResource.default));
   });
   it('should have EntryResource items', () => {
     list.getItem(0).should.be.instanceOf(EntryResource.default);
@@ -86,15 +84,15 @@ describe('Entry Resource', () => {
       })
       .then((json) => {
         asset = new PublicAssetResource(json);
-      }));
+      }),
+  );
   beforeEach(() => {
     mock.reset();
-    return EntryResource.createEntry(resourceJson)
-      .then((res) => {
-        resource = res;
-        getSpy = sinon.spy(resource, 'getProperty');
-        setSpy = sinon.spy(resource, 'setProperty');
-      });
+    return EntryResource.createEntry(resourceJson).then((res) => {
+      resource = res;
+      getSpy = sinon.spy(resource, 'getProperty');
+      setSpy = sinon.spy(resource, 'setProperty');
+    });
   });
   afterEach(() => {
     resource = null;
@@ -116,7 +114,8 @@ describe('Entry Resource', () => {
     const stub = sinon.stub(helper, 'put');
     stub.returns(resolver('public-entry.json', resource._traversal));
 
-    return resource.save()
+    return resource
+      .save()
       .then(() => {
         stub.should.be.calledOnce;
         stub.restore();
@@ -156,18 +155,17 @@ describe('Entry Resource', () => {
     delete strippedResourceJson.decimal;
     delete strippedResourceJson.email;
     delete strippedResourceJson.json;
-    return EntryResource.createEntry(strippedResourceJson)
-      .then((res) => {
-        res.should.have.property('boolean', true);
-        res.should.have.property('decimal', undefined);
-        res.should.have.property('email', undefined);
-        res.should.have.property('json', undefined);
-        const original = res.toOriginal();
-        original.should.have.property('boolean', true);
-        original.should.not.have.property('decimal');
-        original.should.not.have.property('email');
-        original.should.not.have.property('json');
-      });
+    return EntryResource.createEntry(strippedResourceJson).then((res) => {
+      res.should.have.property('boolean', true);
+      res.should.have.property('decimal', undefined);
+      res.should.have.property('email', undefined);
+      res.should.have.property('json', undefined);
+      const original = res.toOriginal();
+      original.should.have.property('boolean', true);
+      original.should.not.have.property('decimal');
+      original.should.not.have.property('email');
+      original.should.not.have.property('json');
+    });
   });
 
   it('should get _entryTitle', () => {
@@ -183,7 +181,8 @@ describe('Entry Resource', () => {
     should.not.exist(resource.getFieldType('nonexistent'));
   });
   it('should return undefined on non matching type', () => {
-    const res = new EntryResource.default(resourceJson, 'live', { // eslint-disable-line new-cap
+    const res = new EntryResource.default(resourceJson, 'live', {
+      // eslint-disable-line new-cap
       allOf: [
         null,
         {
@@ -394,7 +393,8 @@ describe('Entry Resource', () => {
   it('should set account field, LiteDMAccountResource', () => {
     const account = new LiteDMAccountResource({
       profile: 'https://entrecode.de/schema/dm-account',
-      href: 'https://datamanager.entrecode.de/account?dataManagerID=48e18a34-cf64-4f4a-bc47-45323a7f0e44&accountID=49518e7d-a8b0-444a-b829-7fe3c86810ab',
+      href:
+        'https://datamanager.entrecode.de/account?dataManagerID=48e18a34-cf64-4f4a-bc47-45323a7f0e44&accountID=49518e7d-a8b0-444a-b829-7fe3c86810ab',
       title: null,
     });
     resource.account = account;
@@ -427,7 +427,8 @@ describe('Entry Resource', () => {
   it('should set role field, LiteRoleResource', () => {
     const role = new LiteRoleResource({
       profile: 'https://entrecode.de/schema/dm-role',
-      href: 'https://datamanager.entrecode.de/role?dataManagerID=48e18a34-cf64-4f4a-bc47-45323a7f0e44&roleID=3779d1ee-ce4f-4081-b2a7-6245e8540b18',
+      href:
+        'https://datamanager.entrecode.de/role?dataManagerID=48e18a34-cf64-4f4a-bc47-45323a7f0e44&roleID=3779d1ee-ce4f-4081-b2a7-6245e8540b18',
       title: 'Registered Users',
     });
     resource.role = role;
@@ -464,37 +465,49 @@ describe('Entry Resource', () => {
   });
 
   it('should get file url, asset', () => {
-    resource.getFileUrl('asset').should.be.equal('https://cdn2.entrecode.de/files/beefbeef/wFG3Al80jXjH06NIw3UWM2x0.png');
+    resource
+      .getFileUrl('asset')
+      .should.be.equal('https://cdn2.entrecode.de/files/beefbeef/wFG3Al80jXjH06NIw3UWM2x0.png');
   });
   it('should be undefined, asset', () => {
     should.not.exist(resource.getFileUrl('nonono'));
   });
   it('should get file url, assets', () => {
-    resource.getFileUrl('assets').should.be.deep.equal(['https://cdn2.entrecode.de/files/beefbeef/wFG3Al80jXjH06NIw3UWM2x0.png']);
+    resource
+      .getFileUrl('assets')
+      .should.be.deep.equal(['https://cdn2.entrecode.de/files/beefbeef/wFG3Al80jXjH06NIw3UWM2x0.png']);
   });
   it('should be empty array, assets', () => {
     resource.getFileUrl('emptyAssets').should.have.property('length', 0);
   });
   it('should get image url, asset', () => {
-    resource.getImageUrl('asset', 500).should.be.equal('https://cdn2.entrecode.de/files/beefbeef/wFG3Al80jXjH06NIw3UWM2x0_512.png');
+    resource
+      .getImageUrl('asset', 500)
+      .should.be.equal('https://cdn2.entrecode.de/files/beefbeef/wFG3Al80jXjH06NIw3UWM2x0_512.png');
   });
   it('should be undefined, asset', () => {
     should.not.exist(resource.getImageUrl('nonono'));
   });
   it('should get image url, assets', () => {
-    resource.getImageUrl('assets', 500).should.be.deep.equal(['https://cdn2.entrecode.de/files/beefbeef/wFG3Al80jXjH06NIw3UWM2x0_512.png']);
+    resource
+      .getImageUrl('assets', 500)
+      .should.be.deep.equal(['https://cdn2.entrecode.de/files/beefbeef/wFG3Al80jXjH06NIw3UWM2x0_512.png']);
   });
   it('should be empty array, assets', () => {
     resource.getImageUrl('emptyAssets').should.have.property('length', 0);
   });
   it('should get thumb url, asset', () => {
-    resource.getImageThumbUrl('asset', 200).should.be.equal('https://cdn2.entrecode.de/files/beefbeef/wFG3Al80jXjH06NIw3UWM2x0_200_thumb.png');
+    resource
+      .getImageThumbUrl('asset', 200)
+      .should.be.equal('https://cdn2.entrecode.de/files/beefbeef/wFG3Al80jXjH06NIw3UWM2x0_200_thumb.png');
   });
   it('should be undefined, asset', () => {
     should.not.exist(resource.getImageThumbUrl('nonono'));
   });
   it('should get thumb url, assets', () => {
-    resource.getImageThumbUrl('assets', 200).should.be.deep.equal(['https://cdn2.entrecode.de/files/beefbeef/wFG3Al80jXjH06NIw3UWM2x0_200_thumb.png']);
+    resource
+      .getImageThumbUrl('assets', 200)
+      .should.be.deep.equal(['https://cdn2.entrecode.de/files/beefbeef/wFG3Al80jXjH06NIw3UWM2x0_200_thumb.png']);
   });
   it('should be empty array, assets', () => {
     resource.getImageThumbUrl('emptyAssets').should.have.property('length', 0);
@@ -521,7 +534,8 @@ describe('Entry Resource', () => {
     const getStub = sinon.stub(helper, 'get');
     getStub.returns(resolver('public-entry-nested.json'));
 
-    return resource.resolve(2)
+    return resource
+      .resolve(2)
       .then(() => {
         getUrlStub.restore();
         getStub.restore();
@@ -545,16 +559,15 @@ describe('Entry Resource with nested', () => {
         }
         return resolve(JSON.parse(json));
       });
-    })
-      .then((json) => {
-        resJson = json;
-      }));
+    }).then((json) => {
+      resJson = json;
+    }),
+  );
   beforeEach(() => {
     mock.reset();
-    return EntryResource.createEntry(resJson)
-      .then((r) => {
-        res = r;
-      });
+    return EntryResource.createEntry(resJson).then((r) => {
+      res = r;
+    });
   });
   afterEach(() => {
     res = null;
@@ -568,10 +581,9 @@ describe('Entry Resource with nested', () => {
   it('should get null on entry', () => {
     const nullJson = Object.assign({}, resJson);
     nullJson.entry = null;
-    return EntryResource.createEntry(nullJson)
-      .then((r) => {
-        should.equal(r.entry, null);
-      });
+    return EntryResource.createEntry(nullJson).then((r) => {
+      should.equal(r.entry, null);
+    });
   });
   it('should get nested entry, entries', () => {
     res.entries.forEach((entry) => {
@@ -584,11 +596,10 @@ describe('Entry Resource with nested', () => {
   it('should get empty array, entries', () => {
     const nullJson = Object.assign({}, resJson);
     nullJson.entries = null;
-    return EntryResource.createEntry(nullJson)
-      .then((r) => {
-        r.entries.should.be.an('array');
-        r.entries.should.have.property('length', 0);
-      });
+    return EntryResource.createEntry(nullJson).then((r) => {
+      r.entries.should.be.an('array');
+      r.entries.should.have.property('length', 0);
+    });
   });
   it('should get nested asset, asset', () => {
     res.asset.should.be.instanceOf(PublicAssetResource);
@@ -596,10 +607,9 @@ describe('Entry Resource with nested', () => {
   it('should get null on asset', () => {
     const nullJson = Object.assign({}, resJson);
     nullJson.asset = null;
-    return EntryResource.createEntry(nullJson)
-      .then((r) => {
-        should.equal(r.asset, null);
-      });
+    return EntryResource.createEntry(nullJson).then((r) => {
+      should.equal(r.asset, null);
+    });
   });
   it('should get nested asset, assets', () => {
     res.assets.forEach((asset) => {
@@ -612,11 +622,10 @@ describe('Entry Resource with nested', () => {
   it('should get empty array, assets', () => {
     const nullJson = Object.assign({}, resJson);
     nullJson.assets = null;
-    return EntryResource.createEntry(nullJson)
-      .then((r) => {
-        r.assets.should.be.an('array');
-        r.assets.should.have.property('length', 0);
-      });
+    return EntryResource.createEntry(nullJson).then((r) => {
+      r.assets.should.be.an('array');
+      r.assets.should.have.property('length', 0);
+    });
   });
 });
 
@@ -631,16 +640,15 @@ describe('Entry Resource with nested and array links', () => {
         }
         return resolve(JSON.parse(json));
       });
-    })
-      .then((json) => {
-        resJson = json;
-      }));
+    }).then((json) => {
+      resJson = json;
+    }),
+  );
   beforeEach(() => {
     mock.reset();
-    return EntryResource.createEntry(resJson)
-      .then((r) => {
-        res = r;
-      });
+    return EntryResource.createEntry(resJson).then((r) => {
+      res = r;
+    });
   });
   afterEach(() => {
     res = null;
@@ -695,7 +703,8 @@ describe('LiteEntry Resource', () => {
       })
       .then((json) => {
         asset = new PublicAssetResource(json);
-      }));
+      }),
+  );
   beforeEach(() => {
     mock.reset();
     resource = new LiteEntryResource.default(resourceJson);
@@ -719,9 +728,10 @@ describe('LiteEntry Resource', () => {
     const stub = sinon.stub(helper, 'superagentGet');
     stub.returns(resolver('public-entry.json', null, true));
 
-    return resource.resolve()
+    return resource
+      .resolve()
       .then((res) => {
-        res.should.be.instanceOf(EntryResource.default)
+        res.should.be.instanceOf(EntryResource.default);
         stub.restore();
       })
       .catch((err) => {

@@ -29,9 +29,7 @@
       {
         "clientID": "rest",
         "callbackURL": "http://",
-        "tokenMethod": [
-          "body"
-        ],
+        "tokenMethod": ["body"],
         "disableStrategies": [],
         "hexColor": "#CDDA49",
         "_links": {
@@ -52,13 +50,8 @@
       {
         "clientID": "example",
         "callbackURL": "https://example.com/login",
-        "tokenMethod": [
-          "query"
-        ],
-        "disableStrategies": [
-          "facebook",
-          "google"
-        ],
+        "tokenMethod": ["query"],
+        "disableStrategies": ["facebook", "google"],
         "hexColor": "#FD9727",
         "_links": {
           "self": {

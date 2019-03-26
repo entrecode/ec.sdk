@@ -28,8 +28,7 @@ describe('AssetGroup ListResource', () => {
         }
         return resolve(JSON.parse(res));
       });
-    })
-    .then((json) => {
+    }).then((json) => {
       listJson = json;
     });
   });
@@ -46,7 +45,7 @@ describe('AssetGroup ListResource', () => {
     list.should.be.instanceOf(AssetGroupList);
   });
   it('should have AssetGroupResource items', () => {
-    list.getAllItems().forEach(item => item.should.be.instanceOf(AssetGroupResource));
+    list.getAllItems().forEach((item) => item.should.be.instanceOf(AssetGroupResource));
   });
 });
 
@@ -61,8 +60,7 @@ describe('AssetGroup Resource', () => {
         }
         return resolve(JSON.parse(res));
       });
-    })
-    .then((json) => {
+    }).then((json) => {
       resourceJson = json;
     });
   });
@@ -110,29 +108,31 @@ describe('AssetGroup Resource', () => {
     const stub = sinon.stub(helper, 'get');
     stub.returns(resolver('dm-asset-list.json'));
 
-    return resource.assetList()
-    .then((list) => {
-      list.should.be.instanceof(DMAssetList);
-      stub.restore();
-    })
-    .catch((err) => {
-      stub.restore();
-      throw err;
-    });
+    return resource
+      .assetList()
+      .then((list) => {
+        list.should.be.instanceof(DMAssetList);
+        stub.restore();
+      })
+      .catch((err) => {
+        stub.restore();
+        throw err;
+      });
   });
   it('should load asset resource', () => {
     const stub = sinon.stub(helper, 'get');
     stub.returns(resolver('dm-asset-single.json'));
 
-    return resource.asset('id')
-    .then((model) => {
-      model.should.be.instanceof(DMAssetResource);
-      stub.restore();
-    })
-    .catch((err) => {
-      stub.restore();
-      throw err;
-    });
+    return resource
+      .asset('id')
+      .then((model) => {
+        model.should.be.instanceof(DMAssetResource);
+        stub.restore();
+      })
+      .catch((err) => {
+        stub.restore();
+        throw err;
+      });
   });
   it('should be rejected on undefined assetID', () => {
     return resource.asset().should.be.rejectedWith('resourceID must be defined');

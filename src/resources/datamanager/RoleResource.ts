@@ -93,20 +93,20 @@ class RoleResource extends Resource {
    *
    * @example
    * return role.accountList({
-    *   created: {
-    *     from: new Date(new Date.getTime() - 600000).toISOString()),
-    *   },
-    * })
-    * .then((list) => {
-    *   return show(list);
-    * })
-    *
-    * @param {filterOptions?} options the filter options.
-    * @returns {Promise<DMAccountList>} resolves to account list with applied filters.
-    */
-   accountList(options?: filterOptions): Promise<DMAccountList> {
-     return <Promise<DMAccountList>>this.resourceList('dmAccount', options);
-   }
+   *   created: {
+   *     from: new Date(new Date.getTime() - 600000).toISOString()),
+   *   },
+   * })
+   * .then((list) => {
+   *   return show(list);
+   * })
+   *
+   * @param {filterOptions?} options the filter options.
+   * @returns {Promise<DMAccountList>} resolves to account list with applied filters.
+   */
+  accountList(options?: filterOptions): Promise<DMAccountList> {
+    return <Promise<DMAccountList>>this.resourceList('dmAccount', options);
+  }
 }
 
 export default RoleResource;

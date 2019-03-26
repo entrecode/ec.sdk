@@ -54,38 +54,40 @@ describe('Apps class', () => {
     const stub = sinon.stub(helper, 'get');
     stub.returns(resolver('app-list.json'));
 
-    return apps.appList()
-    .then((list) => {
-      list.should.be.instanceof(AppList);
-      stub.restore();
-    })
-    .catch((err) => {
-      stub.restore();
-      throw err;
-    });
+    return apps
+      .appList()
+      .then((list) => {
+        list.should.be.instanceof(AppList);
+        stub.restore();
+      })
+      .catch((err) => {
+        stub.restore();
+        throw err;
+      });
   });
   it('should be rejected on list only with appID', () => {
-    return new Apps('live').appList({ appID: 'id' })
-    .should.be.rejectedWith('Providing only an id in ResourceList filter will result in single resource response.');
+    return new Apps('live')
+      .appList({ appID: 'id' })
+      .should.be.rejectedWith('Providing only an id in ResourceList filter will result in single resource response.');
   });
   it('should return resource on get', () => {
     const apps = new Apps('live');
     const stub = sinon.stub(helper, 'get');
     stub.returns(resolver('app-list.json'));
 
-    return apps.app('aID')
-    .then((list) => {
-      list.should.be.instanceof(AppResource);
-      stub.restore();
-    })
-    .catch((err) => {
-      stub.restore();
-      throw err;
-    });
+    return apps
+      .app('aID')
+      .then((list) => {
+        list.should.be.instanceof(AppResource);
+        stub.restore();
+      })
+      .catch((err) => {
+        stub.restore();
+        throw err;
+      });
   });
   it('should be rejected on app with undefined id', () => {
-    return new Apps('live').app()
-    .should.be.rejectedWith('resourceID must be defined');
+    return new Apps('live').app().should.be.rejectedWith('resourceID must be defined');
   });
   it('should call post on create', () => {
     const stub = sinon.stub(helper, 'post');
@@ -97,27 +99,29 @@ describe('Apps class', () => {
         return resolve(JSON.parse(res));
       });
     })
-    .then((resource) => {
-      const apps = new Apps('live');
-      stub.returns(Promise.resolve([resource, apps.traversal]));
-      const create = Object.assign({}, {
-        title: resource.title,
-        hexColor: resource.hexColor,
+      .then((resource) => {
+        const apps = new Apps('live');
+        stub.returns(Promise.resolve([resource, apps.traversal]));
+        const create = Object.assign(
+          {},
+          {
+            title: resource.title,
+            hexColor: resource.hexColor,
+          },
+        );
+        return apps.createApp(create);
+      })
+      .then(() => {
+        stub.should.be.calledOnce;
+        stub.restore();
+      })
+      .catch((err) => {
+        stub.restore();
+        throw err;
       });
-      return apps.createApp(create);
-    })
-    .then(() => {
-      stub.should.be.calledOnce;
-      stub.restore();
-    })
-    .catch((err) => {
-      stub.restore();
-      throw err;
-    });
   });
   it('should be rejected on create with undefined', () => {
-    return new Apps('live').createApp()
-    .should.be.rejectedWith('Cannot create resource with undefined object');
+    return new Apps('live').createApp().should.be.rejectedWith('Cannot create resource with undefined object');
   });
 
   it('should load types', () => {
@@ -126,33 +130,36 @@ describe('Apps class', () => {
     stub.onFirstCall().returns(resolver('app-list.json'));
     stub.onSecondCall().returns(resolver('app-types.json'));
 
-    return apps.types()
-    .then((res) => {
-      res.should.be.instanceof(TypesResource);
-      stub.restore();
-    })
-    .catch((err) => {
-      stub.restore();
-      throw err;
-    });
+    return apps
+      .types()
+      .then((res) => {
+        res.should.be.instanceof(TypesResource);
+        stub.restore();
+      })
+      .catch((err) => {
+        stub.restore();
+        throw err;
+      });
   });
 
-  it.skip('should load stats list', () => { // TODO fix SDK-103
+  it.skip('should load stats list', () => {
+    // TODO fix SDK-103
     const apps = new Apps('live');
     const stub = sinon.stub(helper, 'get');
     stub.returns(resolver('app-stats-list.json'));
     const follow = sinon.stub(apps, 'follow');
     follow.returns(Promise.resolve(apps.newRequest()));
 
-    return apps.statsList()
-    .then((list) => {
-      list.should.be.instanceof(AppStatsList);
-      stub.restore();
-    })
-    .catch((err) => {
-      stub.restore();
-      throw err;
-    });
+    return apps
+      .statsList()
+      .then((list) => {
+        list.should.be.instanceof(AppStatsList);
+        stub.restore();
+      })
+      .catch((err) => {
+        stub.restore();
+        throw err;
+      });
   });
   it('should load stats resource', () => {
     const apps = new Apps('live');
@@ -160,15 +167,16 @@ describe('Apps class', () => {
     stub.onFirstCall().returns(resolver('app-list.json'));
     stub.onSecondCall().returns(resolver('app-stats-single.json'));
 
-    return apps.stats('id')
-    .then((stat) => {
-      stat.should.be.instanceof(AppStatsResource);
-      stub.restore();
-    })
-    .catch((err) => {
-      stub.restore();
-      throw err;
-    });
+    return apps
+      .stats('id')
+      .then((stat) => {
+        stat.should.be.instanceof(AppStatsResource);
+        stub.restore();
+      })
+      .catch((err) => {
+        stub.restore();
+        throw err;
+      });
   });
   it('should be rejected on undefined appID', () => {
     const apps = new Apps('live');
@@ -187,8 +195,7 @@ describe('Apps ListResource', () => {
         }
         return resolve(JSON.parse(res));
       });
-    })
-    .then((json) => {
+    }).then((json) => {
       listJson = json;
     });
   });
@@ -205,7 +212,7 @@ describe('Apps ListResource', () => {
     list.should.be.instanceOf(AppList);
   });
   it('should have AppResource items', () => {
-    list.getAllItems().forEach(item => item.should.be.instanceOf(AppResource));
+    list.getAllItems().forEach((item) => item.should.be.instanceOf(AppResource));
   });
 });
 
@@ -220,8 +227,7 @@ describe('Apps Resource', () => {
         }
         return resolve(JSON.parse(res));
       });
-    })
-    .then((json) => {
+    }).then((json) => {
       resourceJson = json;
     });
   });
@@ -293,33 +299,36 @@ describe('Apps Resource', () => {
     const stub = sinon.stub(helper, 'get');
     stub.returns(resolver('platform-list.json'));
 
-    return resource.platformList()
-    .then((list) => {
-      list.should.be.instanceof(PlatformList);
-      stub.restore();
-    })
-    .catch((err) => {
-      stub.restore();
-      throw err;
-    });
+    return resource
+      .platformList()
+      .then((list) => {
+        list.should.be.instanceof(PlatformList);
+        stub.restore();
+      })
+      .catch((err) => {
+        stub.restore();
+        throw err;
+      });
   });
   it('should throw on platform list filtered with platformID', () => {
-    return resource.platformList({ platformID: 'id' })
-    .should.be.rejectedWith('Providing only an id in ResourceList filter will result in single resource response.');
+    return resource
+      .platformList({ platformID: 'id' })
+      .should.be.rejectedWith('Providing only an id in ResourceList filter will result in single resource response.');
   });
   it('should load platform resource', () => {
     const stub = sinon.stub(helper, 'get');
     stub.returns(resolver('platform-single.json'));
 
-    return resource.platform('id')
-    .then((model) => {
-      model.should.be.instanceof(PlatformResource);
-      stub.restore();
-    })
-    .catch((err) => {
-      stub.restore();
-      throw err;
-    });
+    return resource
+      .platform('id')
+      .then((model) => {
+        model.should.be.instanceof(PlatformResource);
+        stub.restore();
+      })
+      .catch((err) => {
+        stub.restore();
+        throw err;
+      });
   });
   it('should be rejected on undefined platformID', () => {
     return resource.platform().should.be.rejectedWith('resourceID must be defined');
@@ -334,24 +343,27 @@ describe('Apps Resource', () => {
         return resolve(JSON.parse(res));
       });
     })
-    .then((json) => {
-      stub.returns(Promise.resolve([json, resource.traversal]));
-      const create = Object.assign({}, {
-        title: json.title,
-        platformType: json.platformType,
-        config: json.config,
-        _links: json._links,
+      .then((json) => {
+        stub.returns(Promise.resolve([json, resource.traversal]));
+        const create = Object.assign(
+          {},
+          {
+            title: json.title,
+            platformType: json.platformType,
+            config: json.config,
+            _links: json._links,
+          },
+        );
+        return resource.createPlatform(create);
+      })
+      .then(() => {
+        stub.should.be.calledOnce;
+        stub.restore();
+      })
+      .catch((err) => {
+        stub.restore();
+        throw err;
       });
-      return resource.createPlatform(create);
-    })
-    .then(() => {
-      stub.should.be.calledOnce;
-      stub.restore();
-    })
-    .catch((err) => {
-      stub.restore();
-      throw err;
-    });
   });
   it('should create platform, 2', () => {
     const stub = sinon.stub(helper, 'post');
@@ -389,26 +401,29 @@ describe('Apps Resource', () => {
         });
       }),
     ])
-    .then(([json, cs, ds, t]) => {
-      stub.returns(Promise.resolve([json, resource.traversal]));
-      const create = Object.assign({}, {
-        title: json.title,
-        platformType: json.platformType,
-        config: json.config,
-        codeSource: cs,
-        dataSource: ds,
-        target: t,
+      .then(([json, cs, ds, t]) => {
+        stub.returns(Promise.resolve([json, resource.traversal]));
+        const create = Object.assign(
+          {},
+          {
+            title: json.title,
+            platformType: json.platformType,
+            config: json.config,
+            codeSource: cs,
+            dataSource: ds,
+            target: t,
+          },
+        );
+        return resource.createPlatform(create);
+      })
+      .then(() => {
+        stub.should.be.calledOnce;
+        stub.restore();
+      })
+      .catch((err) => {
+        stub.restore();
+        throw err;
       });
-      return resource.createPlatform(create);
-    })
-    .then(() => {
-      stub.should.be.calledOnce;
-      stub.restore();
-    })
-    .catch((err) => {
-      stub.restore();
-      throw err;
-    });
   });
   it('should create platform, 3', () => {
     const stub = sinon.stub(helper, 'post');
@@ -446,26 +461,29 @@ describe('Apps Resource', () => {
         });
       }),
     ])
-    .then(([json, cs, ds, t]) => {
-      stub.returns(Promise.resolve([json, resource.traversal]));
-      const create = Object.assign({}, {
-        title: json.title,
-        platformType: json.platformType,
-        config: json.config,
-        codeSource: cs,
-        dataSource: ds,
-        target: [t],
+      .then(([json, cs, ds, t]) => {
+        stub.returns(Promise.resolve([json, resource.traversal]));
+        const create = Object.assign(
+          {},
+          {
+            title: json.title,
+            platformType: json.platformType,
+            config: json.config,
+            codeSource: cs,
+            dataSource: ds,
+            target: [t],
+          },
+        );
+        return resource.createPlatform(create);
+      })
+      .then(() => {
+        stub.should.be.calledOnce;
+        stub.restore();
+      })
+      .catch((err) => {
+        stub.restore();
+        throw err;
       });
-      return resource.createPlatform(create);
-    })
-    .then(() => {
-      stub.should.be.calledOnce;
-      stub.restore();
-    })
-    .catch((err) => {
-      stub.restore();
-      throw err;
-    });
   });
   it('should be rejected on undefined platform', () => {
     return resource.createPlatform().should.be.rejectedWith('Cannot create resource with undefined object.');
@@ -475,33 +493,36 @@ describe('Apps Resource', () => {
     const stub = sinon.stub(helper, 'get');
     stub.returns(resolver('codesource-list.json'));
 
-    return resource.codeSourceList()
-    .then((list) => {
-      list.should.be.instanceof(CodeSourceList);
-      stub.restore();
-    })
-    .catch((err) => {
-      stub.restore();
-      throw err;
-    });
+    return resource
+      .codeSourceList()
+      .then((list) => {
+        list.should.be.instanceof(CodeSourceList);
+        stub.restore();
+      })
+      .catch((err) => {
+        stub.restore();
+        throw err;
+      });
   });
   it('should throw on codeSource list filtered with codeSourceID', () => {
-    return resource.codeSourceList({ codeSourceID: 'id' })
-    .should.be.rejectedWith('Providing only an id in ResourceList filter will result in single resource response.');
+    return resource
+      .codeSourceList({ codeSourceID: 'id' })
+      .should.be.rejectedWith('Providing only an id in ResourceList filter will result in single resource response.');
   });
   it('should load codeSource resource', () => {
     const stub = sinon.stub(helper, 'get');
     stub.returns(resolver('codesource-single.json'));
 
-    return resource.codeSource('id')
-    .then((model) => {
-      model.should.be.instanceof(CodeSourceResource);
-      stub.restore();
-    })
-    .catch((err) => {
-      stub.restore();
-      throw err;
-    });
+    return resource
+      .codeSource('id')
+      .then((model) => {
+        model.should.be.instanceof(CodeSourceResource);
+        stub.restore();
+      })
+      .catch((err) => {
+        stub.restore();
+        throw err;
+      });
   });
   it('should be rejected on undefined codeSourceID', () => {
     return resource.codeSource().should.be.rejectedWith('resourceID must be defined');
@@ -516,22 +537,25 @@ describe('Apps Resource', () => {
         return resolve(JSON.parse(res));
       });
     })
-    .then((json) => {
-      stub.returns(Promise.resolve([json, resource.traversal]));
-      const create = Object.assign({}, {
-        codeSourceType: json.codeSourceType,
-        config: json.config,
+      .then((json) => {
+        stub.returns(Promise.resolve([json, resource.traversal]));
+        const create = Object.assign(
+          {},
+          {
+            codeSourceType: json.codeSourceType,
+            config: json.config,
+          },
+        );
+        return resource.createCodeSource(create);
+      })
+      .then(() => {
+        stub.should.be.calledOnce;
+        stub.restore();
+      })
+      .catch((err) => {
+        stub.restore();
+        throw err;
       });
-      return resource.createCodeSource(create);
-    })
-    .then(() => {
-      stub.should.be.calledOnce;
-      stub.restore();
-    })
-    .catch((err) => {
-      stub.restore();
-      throw err;
-    });
   });
   it('should be rejected on undefined client', () => {
     return resource.createCodeSource().should.be.rejectedWith('Cannot create resource with undefined object.');
@@ -541,33 +565,36 @@ describe('Apps Resource', () => {
     const stub = sinon.stub(helper, 'get');
     stub.returns(resolver('datasource-list.json'));
 
-    return resource.dataSourceList()
-    .then((list) => {
-      list.should.be.instanceof(DataSourceList);
-      stub.restore();
-    })
-    .catch((err) => {
-      stub.restore();
-      throw err;
-    });
+    return resource
+      .dataSourceList()
+      .then((list) => {
+        list.should.be.instanceof(DataSourceList);
+        stub.restore();
+      })
+      .catch((err) => {
+        stub.restore();
+        throw err;
+      });
   });
   it('should throw on dataSource list filtered with dataSourceID', () => {
-    return resource.dataSourceList({ dataSourceID: 'id' })
-    .should.be.rejectedWith('Providing only an id in ResourceList filter will result in single resource response.');
+    return resource
+      .dataSourceList({ dataSourceID: 'id' })
+      .should.be.rejectedWith('Providing only an id in ResourceList filter will result in single resource response.');
   });
   it('should load dataSource resource', () => {
     const stub = sinon.stub(helper, 'get');
     stub.returns(resolver('datasource-single.json'));
 
-    return resource.dataSource('id')
-    .then((model) => {
-      model.should.be.instanceof(DataSourceResource);
-      stub.restore();
-    })
-    .catch((err) => {
-      stub.restore();
-      throw err;
-    });
+    return resource
+      .dataSource('id')
+      .then((model) => {
+        model.should.be.instanceof(DataSourceResource);
+        stub.restore();
+      })
+      .catch((err) => {
+        stub.restore();
+        throw err;
+      });
   });
   it('should be rejected on undefined dataSourceID', () => {
     return resource.dataSource().should.be.rejectedWith('resourceID must be defined');
@@ -582,23 +609,26 @@ describe('Apps Resource', () => {
         return resolve(JSON.parse(res));
       });
     })
-    .then((json) => {
-      stub.returns(Promise.resolve([json, resource.traversal]));
-      const create = Object.assign({}, {
-        dataSourceID: json.dataSourceID,
-        dataSourceType: json.dataSourceType,
-        config: json.config,
+      .then((json) => {
+        stub.returns(Promise.resolve([json, resource.traversal]));
+        const create = Object.assign(
+          {},
+          {
+            dataSourceID: json.dataSourceID,
+            dataSourceType: json.dataSourceType,
+            config: json.config,
+          },
+        );
+        return resource.createDataSource(create);
+      })
+      .then(() => {
+        stub.should.be.calledOnce;
+        stub.restore();
+      })
+      .catch((err) => {
+        stub.restore();
+        throw err;
       });
-      return resource.createDataSource(create);
-    })
-    .then(() => {
-      stub.should.be.calledOnce;
-      stub.restore();
-    })
-    .catch((err) => {
-      stub.restore();
-      throw err;
-    });
   });
   it('should be rejected on undefined client', () => {
     return resource.createDataSource().should.be.rejectedWith('Cannot create resource with undefined object.');
@@ -608,33 +638,36 @@ describe('Apps Resource', () => {
     const stub = sinon.stub(helper, 'get');
     stub.returns(resolver('target-list.json'));
 
-    return resource.targetList()
-    .then((list) => {
-      list.should.be.instanceof(TargetList);
-      stub.restore();
-    })
-    .catch((err) => {
-      stub.restore();
-      throw err;
-    });
+    return resource
+      .targetList()
+      .then((list) => {
+        list.should.be.instanceof(TargetList);
+        stub.restore();
+      })
+      .catch((err) => {
+        stub.restore();
+        throw err;
+      });
   });
   it('should throw on target list filtered with targetID', () => {
-    return resource.targetList({ targetID: 'id' })
-    .should.be.rejectedWith('Providing only an id in ResourceList filter will result in single resource response.');
+    return resource
+      .targetList({ targetID: 'id' })
+      .should.be.rejectedWith('Providing only an id in ResourceList filter will result in single resource response.');
   });
   it('should load target resource', () => {
     const stub = sinon.stub(helper, 'get');
     stub.returns(resolver('target-single.json'));
 
-    return resource.target('id')
-    .then((model) => {
-      model.should.be.instanceof(TargetResource);
-      stub.restore();
-    })
-    .catch((err) => {
-      stub.restore();
-      throw err;
-    });
+    return resource
+      .target('id')
+      .then((model) => {
+        model.should.be.instanceof(TargetResource);
+        stub.restore();
+      })
+      .catch((err) => {
+        stub.restore();
+        throw err;
+      });
   });
   it('should be rejected on undefined targetID', () => {
     return resource.target().should.be.rejectedWith('resourceID must be defined');
@@ -649,23 +682,26 @@ describe('Apps Resource', () => {
         return resolve(JSON.parse(res));
       });
     })
-    .then((json) => {
-      stub.returns(Promise.resolve([json, resource.traversal]));
-      const create = Object.assign({}, {
-        targetID: json.targetID,
-        targetType: json.targetType,
-        config: json.config,
+      .then((json) => {
+        stub.returns(Promise.resolve([json, resource.traversal]));
+        const create = Object.assign(
+          {},
+          {
+            targetID: json.targetID,
+            targetType: json.targetType,
+            config: json.config,
+          },
+        );
+        return resource.createTarget(create);
+      })
+      .then(() => {
+        stub.should.be.calledOnce;
+        stub.restore();
+      })
+      .catch((err) => {
+        stub.restore();
+        throw err;
       });
-      return resource.createTarget(create);
-    })
-    .then(() => {
-      stub.should.be.calledOnce;
-      stub.restore();
-    })
-    .catch((err) => {
-      stub.restore();
-      throw err;
-    });
   });
   it('should be rejected on undefined client', () => {
     return resource.createTarget().should.be.rejectedWith('Cannot create resource with undefined object.');

@@ -22,8 +22,7 @@ describe('Types Resource', () => {
         }
         return resolve(JSON.parse(res));
       });
-    })
-    .then((json) => {
+    }).then((json) => {
       resourceJson = json;
     });
   });
@@ -77,27 +76,32 @@ describe('Types Resource', () => {
   });
 
   it('should get plugin schema', () => {
-    resource.getPluginSchema('platform', 'website')
-    .should.have.property('id', 'https://appserver.entrecode.de/schema/types/platform-type/website');
+    resource
+      .getPluginSchema('platform', 'website')
+      .should.have.property('id', 'https://appserver.entrecode.de/schema/types/platform-type/website');
   });
   it('should be undefined schema on invalid plugin', () => {
     should.not.exist(resource.getPluginSchema('invalid', 'egal'));
   });
   it('should get platform schema', () => {
-    resource.getPlatformSchema('website')
-    .should.have.property('id', 'https://appserver.entrecode.de/schema/types/platform-type/website');
+    resource
+      .getPlatformSchema('website')
+      .should.have.property('id', 'https://appserver.entrecode.de/schema/types/platform-type/website');
   });
   it('should get code source schema', () => {
-    resource.getCodeSourceSchema('remoteGit')
-    .should.have.property('id', 'https://appserver.entrecode.de/schema/types/code-source/remoteGit');
+    resource
+      .getCodeSourceSchema('remoteGit')
+      .should.have.property('id', 'https://appserver.entrecode.de/schema/types/code-source/remoteGit');
   });
   it('should get data source schema', () => {
-    resource.getDataSourceSchema('singleEntry')
-    .should.have.property('id', 'https://appserver.entrecode.de/schema/types/data-source/singleEntry');
+    resource
+      .getDataSourceSchema('singleEntry')
+      .should.have.property('id', 'https://appserver.entrecode.de/schema/types/data-source/singleEntry');
   });
   it('should get target schema', () => {
-    resource.getTargetSchema('entrecodeS3')
-    .should.have.property('id', 'https://appserver.entrecode.de/schema/types/target-type/entrecodeS3');
+    resource
+      .getTargetSchema('entrecodeS3')
+      .should.have.property('id', 'https://appserver.entrecode.de/schema/types/target-type/entrecodeS3');
   });
 
   it('should get available types', () => {

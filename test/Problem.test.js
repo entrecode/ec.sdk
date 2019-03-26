@@ -78,12 +78,10 @@ describe('Problem', () => {
     error.should.have.property('stack', 'Error: title\n    at newError (/path/file.js:7:7)');
   });
   it('should have short pretty string representation', () => {
-    error.short().should.be
-      .equal('title (1100)');
+    error.short().should.be.equal('title (1100)');
   });
   it('should have long pretty string representation', () => {
-    error.long().should.be
-      .equal('title (1100)\ndetail - verbose (id)');
+    error.long().should.be.equal('title (1100)\ndetail - verbose (id)');
   });
   it('should have long string without verbose and requestID', () => {
     error = new Problem({
@@ -93,8 +91,7 @@ describe('Problem', () => {
       type: 'https://doc.entrecode.de/#error-100',
       detail: 'detail',
     });
-    error.long().should.be
-      .equal('title (1100)\ndetail');
+    error.long().should.be.equal('title (1100)\ndetail');
   });
   it('should have sub errors', () => {
     error.subErrors.should.be.instanceOf(Array);
@@ -131,11 +128,11 @@ describe('Problem', () => {
     });
   });
   it('should have short pretty string for all errors', () => {
-    error.shortAll().should.be
-      .equal('title (1100)\nSubErrors:\n  embedded1 (1100)\n  embedded1 (1100)\n');
+    error.shortAll().should.be.equal('title (1100)\nSubErrors:\n  embedded1 (1100)\n  embedded1 (1100)\n');
   });
   it('should have long pretty string for all errors', () => {
-    error.longAll().should.be
-      .equal('title (1100)\ndetail - verbose (id)\nSubErrors:\n  embedded1 (1100)\n  embedded1 (1100)\n');
+    error
+      .longAll()
+      .should.be.equal('title (1100)\ndetail - verbose (id)\nSubErrors:\n  embedded1 (1100)\n  embedded1 (1100)\n');
   });
 });

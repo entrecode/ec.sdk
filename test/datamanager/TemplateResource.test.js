@@ -30,8 +30,7 @@ describe('Template ListResource', () => {
         }
         return resolve(JSON.parse(res));
       });
-    })
-    .then((json) => {
+    }).then((json) => {
       listJson = json;
     });
   });
@@ -48,7 +47,7 @@ describe('Template ListResource', () => {
     list.should.be.instanceOf(TemplateList);
   });
   it('should have AccountResource items', () => {
-    list.getAllItems().forEach(item => item.should.be.instanceOf(TemplateResource.default));
+    list.getAllItems().forEach((item) => item.should.be.instanceOf(TemplateResource.default));
   });
 });
 
@@ -63,8 +62,7 @@ describe('Template Resource', () => {
         }
         return resolve(JSON.parse(res));
       });
-    })
-    .then((json) => {
+    }).then((json) => {
       resourceJson = json;
     });
   });
@@ -85,32 +83,34 @@ describe('Template Resource', () => {
     const stub = sinon.stub(helper, 'get');
     stub.returns(resolver('template-single.json'));
 
-    return resource.resolve()
-    .then((template) => {
-      template.should.be.instanceOf(TemplateResource.default);
-      resource.should.be.equal(template);
-      resource.resolved.should.be.true;
-      stub.restore();
-    })
-    .catch((err) => {
-      stub.restore();
-      throw err;
-    });
+    return resource
+      .resolve()
+      .then((template) => {
+        template.should.be.instanceOf(TemplateResource.default);
+        resource.should.be.equal(template);
+        resource.resolved.should.be.true;
+        stub.restore();
+      })
+      .catch((err) => {
+        stub.restore();
+        throw err;
+      });
   });
   it('should resolve on createDM', () => {
     const stub = sinon.stub(helper, 'post');
     stub.returns(resolver('dm-single.json'));
     resource[TemplateResource.resolvedSymbol] = true;
 
-    return resource.createDM()
-    .then((dm) => {
-      dm.should.be.instanceOf(DataManagerResource);
-      stub.restore();
-    })
-    .catch((err) => {
-      stub.restore();
-      throw err;
-    });
+    return resource
+      .createDM()
+      .then((dm) => {
+        dm.should.be.instanceOf(DataManagerResource);
+        stub.restore();
+      })
+      .catch((err) => {
+        stub.restore();
+        throw err;
+      });
   });
   it('should resolve on createDM with unresolved', () => {
     const get = sinon.stub(helper, 'get');
@@ -120,36 +120,37 @@ describe('Template Resource', () => {
 
     resource[resolvedSymbol] = false;
 
-    return resource.createDM()
-    .then((dm) => {
-      dm.should.be.instanceOf(DataManagerResource);
-      resource[resolvedSymbol].should.be.true;
-      get.restore();
-      post.restore();
-    })
-    .catch((err) => {
-      get.restore();
-      post.restore();
-      throw err;
-    });
+    return resource
+      .createDM()
+      .then((dm) => {
+        dm.should.be.instanceOf(DataManagerResource);
+        resource[resolvedSymbol].should.be.true;
+        get.restore();
+        post.restore();
+      })
+      .catch((err) => {
+        get.restore();
+        post.restore();
+        throw err;
+      });
   });
   it('should resolve on updateDM', () => {
     const stub = sinon.stub(helper, 'put');
     stub.returns(resolver('dm-single.json'));
 
-    return resource.updateDM('id')
-    .then((dm) => {
-      dm.should.be.instanceOf(DataManagerResource);
-      stub.restore();
-    })
-    .catch((err) => {
-      stub.restore();
-      throw err;
-    });
+    return resource
+      .updateDM('id')
+      .then((dm) => {
+        dm.should.be.instanceOf(DataManagerResource);
+        stub.restore();
+      })
+      .catch((err) => {
+        stub.restore();
+        throw err;
+      });
   });
   it('should be rejected on updateDM withoud dmID', () => {
-    return resource.updateDM()
-    .should.be.rejectedWith('Must provide dataManagerID for update.');
+    return resource.updateDM().should.be.rejectedWith('Must provide dataManagerID for update.');
   });
 
   const getter = ['templateID', 'name', 'collection', 'dataSchema', 'version'];

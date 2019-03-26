@@ -25,10 +25,7 @@
       "pattern": "^[a-zA-Z0-9_\\-]{1,256}$"
     },
     "description": {
-      "type": [
-        "string",
-        "null"
-      ]
+      "type": ["string", "null"]
     },
     "titleField": {
       "type": "string",
@@ -43,13 +40,7 @@
     },
     "rights": {
       "type": "object",
-      "required": [
-        "get",
-        "put",
-        "postPublic",
-        "postPrivate",
-        "delete"
-      ],
+      "required": ["get", "put", "postPublic", "postPrivate", "delete"],
       "properties": {
         "get": {
           "type": "boolean"
@@ -124,16 +115,7 @@
           "type": "object"
         },
         "method": {
-          "enum": [
-            "get",
-            "GET",
-            "put",
-            "PUT",
-            "post",
-            "POST",
-            "delete",
-            "DELETE"
-          ]
+          "enum": ["get", "GET", "put", "PUT", "post", "POST", "delete", "DELETE"]
         },
         "headers": {
           "type": "object",
@@ -156,9 +138,7 @@
           }
         }
       },
-      "required": [
-        "uri"
-      ]
+      "required": ["uri"]
     },
     "createJWT": {
       "type": "object",
@@ -167,14 +147,7 @@
           "type": "string"
         },
         "algorithm": {
-          "enum": [
-            "HS256",
-            "HS384",
-            "HS512",
-            "RS256",
-            "RS384",
-            "RS512"
-          ]
+          "enum": ["HS256", "HS384", "HS512", "RS256", "RS384", "RS512"]
         },
         "expiresIn": {
           "type": "string",
@@ -190,10 +163,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "variableToSet",
-        "algorithm"
-      ]
+      "required": ["variableToSet", "algorithm"]
     },
     "hook": {
       "type": "object",
@@ -222,20 +192,10 @@
           "$ref": "https://entrecode.de/schema/uuidV4"
         }
       },
-      "required": [
-        "hook",
-        "type",
-        "methods",
-        "config"
-      ]
+      "required": ["hook", "type", "methods", "config"]
     },
     "hookTypes": {
-      "enum": [
-        "web",
-        "sync",
-        "mail",
-        "mailgun"
-      ]
+      "enum": ["web", "sync", "mail", "mailgun"]
     },
     "hookConfig": {
       "anyOf": [
@@ -269,9 +229,7 @@
           }
         }
       },
-      "required": [
-        "requests"
-      ]
+      "required": ["requests"]
     },
     "syncHook": {
       "type": "object",
@@ -293,9 +251,7 @@
           }
         }
       },
-      "required": [
-        "models"
-      ]
+      "required": ["models"]
     },
     "mailgunHook": {
       "type": "object",
@@ -304,10 +260,7 @@
       }
     },
     "sync": {
-      "type": [
-        "object",
-        "null"
-      ],
+      "type": ["object", "null"],
       "properties": {
         "locale": {
           "type": "string"
@@ -385,13 +338,7 @@
           }
         }
       },
-      "required": [
-        "locale",
-        "requests",
-        "itemMapping",
-        "pathToArray",
-        "remoteID"
-      ]
+      "required": ["locale", "requests", "itemMapping", "pathToArray", "remoteID"]
     },
     "jsonTransformation": {
       "anyOf": [
@@ -469,10 +416,7 @@
             "pattern": "^[a-zA-Z0-9_\\-]{1,256}$"
           },
           "description": {
-            "type": [
-              "string",
-              "null"
-            ]
+            "type": ["string", "null"]
           },
           "type": {
             "enum": [
@@ -512,11 +456,7 @@
             "type": "boolean"
           },
           "validation": {
-            "type": [
-              "string",
-              "object",
-              "null"
-            ]
+            "type": ["string", "object", "null"]
           },
           "default": {}
         }

@@ -25,8 +25,7 @@ describe('Model ListResource', () => {
         }
         return resolve(JSON.parse(res));
       });
-    })
-    .then((json) => {
+    }).then((json) => {
       listJson = json;
     });
   });
@@ -43,7 +42,7 @@ describe('Model ListResource', () => {
     list.should.be.instanceOf(ModelList);
   });
   it('should have ModelResource items', () => {
-    list.getAllItems().forEach(item => item.should.be.instanceOf(ModelResource));
+    list.getAllItems().forEach((item) => item.should.be.instanceOf(ModelResource));
   });
 });
 
@@ -58,8 +57,7 @@ describe('Model Resource', () => {
         }
         return resolve(JSON.parse(res));
       });
-    })
-    .then((json) => {
+    }).then((json) => {
       resourceJson = json;
     });
   });
@@ -82,15 +80,15 @@ describe('Model Resource', () => {
     const stub = sinon.stub(helper, 'post');
     const returns = {};
     stub.returns(Promise.resolve([returns, {}]));
-    return resource.sync().should.eventually.equal(returns)
-    .notify(() => {
-      stub.restore();
-    });
+    return resource
+      .sync()
+      .should.eventually.equal(returns)
+      .notify(() => {
+        stub.restore();
+      });
   });
 
-  const dateGetter = [
-    'created', 'modified',
-  ];
+  const dateGetter = ['created', 'modified'];
   dateGetter.forEach((name) => {
     it(`should call resource.getProperty with ${name}`, () => {
       const spy = sinon.spy(resource, 'getProperty');
@@ -105,9 +103,15 @@ describe('Model Resource', () => {
   });
 
   const getter = [
-    'description', 'fields', 'hexColor',
-    'hooks', 'locales', 'policies',
-    'title', 'titleField', 'modelID',
+    'description',
+    'fields',
+    'hexColor',
+    'hooks',
+    'locales',
+    'policies',
+    'title',
+    'titleField',
+    'modelID',
   ];
   getter.forEach((name) => {
     it(`should call resource.getProperty with ${name}`, () => {
@@ -122,11 +126,7 @@ describe('Model Resource', () => {
     });
   });
 
-  const setter = [
-    'description', 'fields', 'hexColor',
-    'hooks', 'locales', 'policies',
-    'title', 'titleField',
-  ];
+  const setter = ['description', 'fields', 'hexColor', 'hooks', 'locales', 'policies', 'title', 'titleField'];
   setter.forEach((name) => {
     it(`should call resource.setProperty with ${name}`, () => {
       const spy = sinon.spy(resource, 'setProperty');

@@ -67,14 +67,7 @@
         "hexColor": "#9B2FAE",
         "locales": [],
         "rights": [],
-        "publicAssetRights": [
-          "get",
-          "put",
-          "postPrivate",
-          "postPublic",
-          "getTags",
-          "editTags"
-        ],
+        "publicAssetRights": ["get", "put", "postPrivate", "postPublic", "getTags", "editTags"],
         "shortID": "58b9a1f5",
         "title": "ec.datamanager-sdk-tests-1",
         "_links": {
@@ -166,17 +159,9 @@
           }
         },
         "hexColor": "#F1453D",
-        "locales": [
-          "de-DE"
-        ],
+        "locales": ["de-DE"],
         "rights": [],
-        "publicAssetRights": [
-          "get",
-          "getTags",
-          "put",
-          "postprivate",
-          "postPublic"
-        ],
+        "publicAssetRights": ["get", "getTags", "put", "postprivate", "postPublic"],
         "shortID": "01bd8e08",
         "title": "Test DM",
         "_links": {

@@ -10,9 +10,6 @@
       "pattern": "^#[A-Fa-f0-9]{6}$"
     }
   },
-  "required": [
-    "title",
-    "hexColor"
-  ],
+  "required": ["title", "hexColor"],
   "$schema": "http://json-schema.org/draft-04/schema#"
 }

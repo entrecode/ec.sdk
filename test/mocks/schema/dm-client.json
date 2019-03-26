@@ -14,11 +14,7 @@
     "tokenMethod": {
       "type": "array",
       "items": {
-        "enum": [
-          "query",
-          "cookie",
-          "body"
-        ]
+        "enum": ["query", "cookie", "body"]
       },
       "minItems": 1,
       "uniqueItems": true
@@ -26,9 +22,7 @@
     "disableStrategies": {
       "type": "array",
       "items": {
-        "type": [
-          "string"
-        ]
+        "type": ["string"]
       }
     },
     "hexColor": {
@@ -36,11 +30,5 @@
       "pattern": "^#[A-Fa-f0-9]{6}$"
     }
   },
-  "required": [
-    "clientID",
-    "callbackURL",
-    "tokenMethod",
-    "disableStrategies",
-    "hexColor"
-  ]
+  "required": ["clientID", "callbackURL", "tokenMethod", "disableStrategies", "hexColor"]
 }

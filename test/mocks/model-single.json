@@ -114,9 +114,7 @@
         },
         "subject": "finally {{data.subject}} "
       },
-      "methods": [
-        "post"
-      ],
+      "methods": ["post"],
       "description": "mailtest",
       "hookID": "575c341a-648d-43d3-82c6-f9188c6a2095"
     }

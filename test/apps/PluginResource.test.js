@@ -18,8 +18,7 @@ const requires = {
 chai.should();
 chai.use(sinonChai);
 
-['CodeSource', 'DataSource', 'Target']
-.forEach((plugin) => {
+['CodeSource', 'DataSource', 'Target'].forEach((plugin) => {
   const pluginCamel = plugin.charAt(0).toLowerCase() + plugin.slice(1);
   const pluginLower = plugin.toLocaleLowerCase();
 
@@ -34,8 +33,7 @@ chai.use(sinonChai);
           }
           return resolve(JSON.parse(res));
         });
-      })
-      .then((json) => {
+      }).then((json) => {
         listJson = json;
       });
     });
@@ -52,7 +50,7 @@ chai.use(sinonChai);
       list.should.be.instanceOf(requires[`${plugin}List`]);
     });
     it('should have PlatformResource items', () => {
-      list.getAllItems().forEach(item => item.should.be.instanceOf(requires[`${plugin}Resource`]));
+      list.getAllItems().forEach((item) => item.should.be.instanceOf(requires[`${plugin}Resource`]));
     });
   });
 
@@ -67,8 +65,7 @@ chai.use(sinonChai);
           }
           return resolve(JSON.parse(res));
         });
-      })
-      .then((json) => {
+      }).then((json) => {
         resourceJson = json;
       });
     });

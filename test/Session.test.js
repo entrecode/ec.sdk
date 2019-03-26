@@ -48,8 +48,9 @@ describe('Session class', () => {
     stub.returns(resolver('login-token.json'));
 
     session.setClientID('rest');
-    return session.login('andre@entrecode.de', 'mysecret').should.eventually.be.fulfilled
-    .and.notify(() => stub.restore());
+    return session
+      .login('andre@entrecode.de', 'mysecret')
+      .should.eventually.be.fulfilled.and.notify(() => stub.restore());
   });
   it('should be rejected on unset clientID', () => {
     const session = new Session();
@@ -67,16 +68,20 @@ describe('Session class', () => {
     const session = new Session();
     session[tokenStoreSymbol].deleteToken();
     session.setClientID('rest');
-    return session.setClientID('rest').login('user', null).should.be.rejectedWith('password must be defined');
+    return session
+      .setClientID('rest')
+      .login('user', null)
+      .should.be.rejectedWith('password must be defined');
   });
   it('should logout successfully', () => {
     const session = new Session();
-    session.setToken('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJlbnRyZWNvZGVUZXN0IiwiaWF0IjoxNDg1NzgzNTg4LCJleHAiOjQ2NDE0NTcxODgsImF1ZCI6IlRlc3QiLCJzdWIiOiJ0ZXN0QGVudHJlY29kZS5kZSJ9.Vhrq5GR2hNz-RoAhdlnIIWHelPciBPCemEa74s7cXn8');
+    session.setToken(
+      'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJlbnRyZWNvZGVUZXN0IiwiaWF0IjoxNDg1NzgzNTg4LCJleHAiOjQ2NDE0NTcxODgsImF1ZCI6IlRlc3QiLCJzdWIiOiJ0ZXN0QGVudHJlY29kZS5kZSJ9.Vhrq5GR2hNz-RoAhdlnIIWHelPciBPCemEa74s7cXn8',
+    );
     const stub = sinon.stub(helper, 'post');
     stub.returns(Promise.resolve());
 
-    return session.logout().should.be.eventually.fulfilled
-    .and.notify(() => stub.restore());
+    return session.logout().should.be.eventually.fulfilled.and.notify(() => stub.restore());
   });
   it('should be successful on no token', () => {
     const session = new Session();
@@ -84,7 +89,9 @@ describe('Session class', () => {
   });
   it('should be rejected on unset clientID', () => {
     const session = new Session();
-    session[tokenStoreSymbol].setToken('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJlbnRyZWNvZGVUZXN0IiwiaWF0IjoxNDg1NzgzNTg4LCJleHAiOjQ2NDE0NTcxODgsImF1ZCI6IlRlc3QiLCJzdWIiOiJ0ZXN0QGVudHJlY29kZS5kZSJ9.Vhrq5GR2hNz-RoAhdlnIIWHelPciBPCemEa74s7cXn8');
+    session[tokenStoreSymbol].setToken(
+      'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJlbnRyZWNvZGVUZXN0IiwiaWF0IjoxNDg1NzgzNTg4LCJleHAiOjQ2NDE0NTcxODgsImF1ZCI6IlRlc3QiLCJzdWIiOiJ0ZXN0QGVudHJlY29kZS5kZSJ9.Vhrq5GR2hNz-RoAhdlnIIWHelPciBPCemEa74s7cXn8',
+    );
     session[tokenStoreSymbol].clientID = undefined;
     return session.logout().should.be.rejectedWith('clientID must be set with Session#setClientID');
   });
@@ -96,15 +103,16 @@ describe('Session class', () => {
     const follow = sinon.stub(session, 'follow');
     follow.returns(Promise.resolve(session.newRequest()));
 
-    return session.checkPermission('dm-stats')
-    .then((ok) => {
-      ok.should.be.true;
-      stub.restore();
-    })
-    .catch((err) => {
-      stub.restore();
-      throw err;
-    });
+    return session
+      .checkPermission('dm-stats')
+      .then((ok) => {
+        ok.should.be.true;
+        stub.restore();
+      })
+      .catch((err) => {
+        stub.restore();
+        throw err;
+      });
   });
   it('should check false', () => {
     const session = new Session();
@@ -114,15 +122,16 @@ describe('Session class', () => {
     const follow = sinon.stub(session, 'follow');
     follow.returns(Promise.resolve(session.newRequest()));
 
-    return session.checkPermission('nonono')
-    .then((ok) => {
-      ok.should.be.false;
-      stub.restore();
-    })
-    .catch((err) => {
-      stub.restore();
-      throw err;
-    });
+    return session
+      .checkPermission('nonono')
+      .then((ok) => {
+        ok.should.be.false;
+        stub.restore();
+      })
+      .catch((err) => {
+        stub.restore();
+        throw err;
+      });
   });
   it('should check from cache', () => {
     const session = new Session();
@@ -133,17 +142,18 @@ describe('Session class', () => {
     const follow = sinon.stub(session, 'follow');
     follow.returns(Promise.resolve(session.newRequest()));
 
-    return session.checkPermission('dm-stats')
-    .then(() => session.checkPermission('dm-stats'))
-    .then((ok) => {
-      stub.should.have.callCount(1);
-      ok.should.be.true;
-      stub.restore();
-    })
-    .catch((err) => {
-      stub.restore();
-      throw err;
-    });
+    return session
+      .checkPermission('dm-stats')
+      .then(() => session.checkPermission('dm-stats'))
+      .then((ok) => {
+        stub.should.have.callCount(1);
+        ok.should.be.true;
+        stub.restore();
+      })
+      .catch((err) => {
+        stub.restore();
+        throw err;
+      });
   });
   it('should check reload', () => {
     const session = new Session();
@@ -154,20 +164,21 @@ describe('Session class', () => {
     const follow = sinon.stub(session, 'follow');
     follow.returns(Promise.resolve(session.newRequest()));
 
-    return session.checkPermission('dm-stats')
-    .then(() => {
-      session[meLoadedTimeSymbol] = new Date(new Date() - 350000);
-      return session.checkPermission('dm-stats');
-    })
-    .then((ok) => {
-      stub.should.have.callCount(2);
-      ok.should.be.true;
-      stub.restore();
-    })
-    .catch((err) => {
-      stub.restore();
-      throw err;
-    });
+    return session
+      .checkPermission('dm-stats')
+      .then(() => {
+        session[meLoadedTimeSymbol] = new Date(new Date() - 350000);
+        return session.checkPermission('dm-stats');
+      })
+      .then((ok) => {
+        stub.should.have.callCount(2);
+        ok.should.be.true;
+        stub.restore();
+      })
+      .catch((err) => {
+        stub.restore();
+        throw err;
+      });
   });
   it('should be rejected on check permission without permission', () => {
     return new Session().checkPermission().should.be.rejectedWith('permission must be defined');

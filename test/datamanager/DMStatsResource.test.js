@@ -23,8 +23,7 @@ describe('DMStats ListResource', () => {
         }
         return resolve(JSON.parse(res));
       });
-    })
-    .then((json) => {
+    }).then((json) => {
       listJson = json;
     });
   });
@@ -41,9 +40,9 @@ describe('DMStats ListResource', () => {
     list.should.be.instanceOf(DMStatsList);
   });
   it('should have DMStatsResource items', () => {
-    list.getAllItems().forEach(item => item.should.be.instanceOf(DMStatsResource));
+    list.getAllItems().forEach((item) => item.should.be.instanceOf(DMStatsResource));
   });
-  it('should get n\'th item', () => {
+  it("should get n'th item", () => {
     list.getItem(0).should.be.instanceOf(DMStatsResource);
   });
   it('should throw on undefined n', () => {
@@ -59,11 +58,10 @@ describe('DMStats ListResource', () => {
 
         return resolve(JSON.parse(res));
       });
-    })
-    .then((listJsonEmpty) => {
+    }).then((listJsonEmpty) => {
       const emptyList = new DMStatsList(listJsonEmpty);
       const throws = () => emptyList.getItem(0);
-      return throws.should.throw('Cannot get n\'th item of empty list.');
+      return throws.should.throw("Cannot get n'th item of empty list.");
     });
   });
   it('should get first item', () => {
@@ -82,8 +80,7 @@ describe('DMStats Resource', () => {
         }
         return resolve(JSON.parse(res));
       });
-    })
-    .then((json) => {
+    }).then((json) => {
       resourceJson = json;
     });
   });
@@ -101,9 +98,22 @@ describe('DMStats Resource', () => {
   });
 
   const getter = [
-    'dataManagerID', 'title', 'config', 'templateID', 'templateName', 'templateVersion',
-    'modelCount', 'entryCount', 'assetCount', 'fileCount', 'fileSize', 'numberAccounts',
-    'numberRequests', 'numberHookRequests', 'monthlyRequests', 'monthlyHooks',
+    'dataManagerID',
+    'title',
+    'config',
+    'templateID',
+    'templateName',
+    'templateVersion',
+    'modelCount',
+    'entryCount',
+    'assetCount',
+    'fileCount',
+    'fileSize',
+    'numberAccounts',
+    'numberRequests',
+    'numberHookRequests',
+    'monthlyRequests',
+    'monthlyHooks',
   ];
   getter.forEach((name) => {
     it(`should call resource.getProperty with ${name}`, () => {

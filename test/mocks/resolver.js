@@ -13,8 +13,7 @@ function resolveFile(filePath, obj, noArray) {
       }
       return resolve([JSON.parse(file), obj || new TraversonMock()]);
     });
-  })
-  .catch((err) => {
+  }).catch((err) => {
     throw new Error(`Cannot resolve mock ${filePath}: ${err.message}`);
   });
 }

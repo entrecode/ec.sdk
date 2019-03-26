@@ -22,8 +22,7 @@ describe('InvalidPermissions Resource', () => {
         }
         return resolve(JSON.parse(res));
       });
-    })
-    .then((json) => {
+    }).then((json) => {
       resourceJson = json;
     });
   });
@@ -40,9 +39,7 @@ describe('InvalidPermissions Resource', () => {
     resource.should.be.instanceOf(InvalidPermissionsResource);
   });
 
-  const getter = [
-    'invalidAccountPermissions', 'invalidGroupPermissions',
-  ];
+  const getter = ['invalidAccountPermissions', 'invalidGroupPermissions'];
   getter.forEach((name) => {
     it(`should call resource.getProperty with ${name}`, () => {
       const spy = sinon.spy(resource, 'getProperty');

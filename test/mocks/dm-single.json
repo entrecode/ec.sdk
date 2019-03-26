@@ -14,10 +14,7 @@
   "hexColor": "#F1453D",
   "locales": [],
   "rights": [],
-  "publicAssetRights": [
-    "get",
-    "getTags"
-  ],
+  "publicAssetRights": ["get", "getTags"],
   "shortID": "beefbeef",
   "title": "Test DM",
   "_links": {

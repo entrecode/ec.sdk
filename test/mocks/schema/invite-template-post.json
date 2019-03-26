@@ -26,9 +26,7 @@
             "$ref": "https://entrecode.de/schema/group#name"
           }
         },
-        "required": [
-          "groupID"
-        ]
+        "required": ["groupID"]
       }
     }
   }

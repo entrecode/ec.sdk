@@ -1,9 +1,9 @@
 {
   "id": "https://entrecode.de/schema/client",
   "allOf": [
-    {"$ref": "https://entrecode.de/schema/hal#/definitions/halResource"},
+    { "$ref": "https://entrecode.de/schema/hal#/definitions/halResource" },
     {
-      "type":"object",
+      "type": "object",
       "properties": {
         "clientID": {
           "type": "string",
@@ -22,9 +22,7 @@
         },
         "config": {
           "type": "object",
-          "required": [
-            "tokenMethod"
-          ],
+          "required": ["tokenMethod"],
           "properties": {
             "tokenMethod": {
               "enum": ["query", "cookie", "body"]
@@ -32,17 +30,10 @@
           }
         },
         "_links": {
-          "required": [
-            "self",
-            "collection"
-          ]
+          "required": ["self", "collection"]
         }
       },
-      "required": [
-        "clientID",
-        "callbackURL",
-        "config"
-      ]
+      "required": ["clientID", "callbackURL", "config"]
     }
   ],
   "$schema": "http://json-schema.org/draft-04/schema#"

@@ -2,14 +2,10 @@
   "deploymentID": 1051,
   "buildID": 693,
   "platformID": "229b4384-fcfa-437b-833e-fc779a3f8f4c",
-  "targetIDs": [
-    "6e704cae-70b4-4e7a-b882-befca792c5da"
-  ],
+  "targetIDs": ["6e704cae-70b4-4e7a-b882-befca792c5da"],
   "started": "2017-03-03T14:35:12.754Z",
   "finished": "2017-03-03T14:35:20.079Z",
-  "results": [
-    "https://cdn3.entrecode.de/deployment.download1051.zip"
-  ],
+  "results": ["https://cdn3.entrecode.de/deployment.download1051.zip"],
   "successful": "success",
   "events": [
     {

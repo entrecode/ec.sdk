@@ -28,10 +28,7 @@
       {
         "name": "AppManager-User",
         "groupID": "c7df5f26-3fa2-4bd5-8a9a-47087d69ab29",
-        "permissions": [
-          "app-create",
-          "app:codesource,datasource,target,platform"
-        ],
+        "permissions": ["app-create", "app:codesource,datasource,target,platform"],
         "_embedded": {
           "ec:account": [
             {
@@ -71,10 +68,7 @@
       {
         "name": "DataManager-User",
         "groupID": "21e6b4df-0b38-44cd-bc54-b1f517a5480b",
-        "permissions": [
-          "app-create",
-          "app:codesource,datasource,target,platform"
-        ],
+        "permissions": ["app-create", "app:codesource,datasource,target,platform"],
         "_embedded": {
           "ec:account": [
             {

@@ -44,18 +44,12 @@
           "description": "Timestamp of the creation of this entry."
         },
         "_creator": {
-          "type": [
-            "string",
-            "null"
-          ],
+          "type": ["string", "null"],
           "title": "account",
           "description": "Creator of this entry."
         },
         "creator": {
-          "type": [
-            "string",
-            "null"
-          ],
+          "type": ["string", "null"],
           "title": "account",
           "description": "Creator of this entry."
         },
@@ -253,10 +247,7 @@
               "type": "null"
             },
             {
-              "type": [
-                "object",
-                "array"
-              ]
+              "type": ["object", "array"]
             }
           ],
           "title": "json",
@@ -308,9 +299,7 @@
           },
           "title": "entries<contains_entries>",
           "description": "",
-          "default": [
-            "EJlJtSrkgl"
-          ]
+          "default": ["EJlJtSrkgl"]
         },
         "asset": {
           "oneOf": [

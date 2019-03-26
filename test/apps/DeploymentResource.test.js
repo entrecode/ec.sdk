@@ -23,8 +23,7 @@ describe('Deployment ListResource', () => {
         }
         return resolve(JSON.parse(res));
       });
-    })
-    .then((json) => {
+    }).then((json) => {
       listJson = json;
     });
   });
@@ -41,7 +40,7 @@ describe('Deployment ListResource', () => {
     list.should.be.instanceOf(DeploymentList);
   });
   it('should have DeploymentResource items', () => {
-    list.getAllItems().forEach(item => item.should.be.instanceOf(DeploymentResource));
+    list.getAllItems().forEach((item) => item.should.be.instanceOf(DeploymentResource));
   });
 });
 
@@ -56,8 +55,7 @@ describe('Deployment Resource', () => {
         }
         return resolve(JSON.parse(res));
       });
-    })
-    .then((json) => {
+    }).then((json) => {
       resourceJson = json;
     });
   });
