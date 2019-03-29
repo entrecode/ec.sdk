@@ -75,8 +75,23 @@ function jsonHandler(callback) {
     } catch (e) {
       let additional = '';
 
-      if (res.request) {
-        additional = `for request ${res.request.method} ${res.request.path}`;
+      try {
+        const cont = traversal.continue();
+        if (cont.continuation) {
+          additional = `for request ${cont.continuation.action.toUpperCase()}`;
+          if (cont.continuation.step) {
+            if (!Array.isArray(cont.continuation.step)) {
+              additional += ` ${cont.continuation.step.url}:`;
+            }
+          }
+        }
+      } catch (e) {
+        // we don't care about errors here
+        if (res.request) {
+          additional = `for request ${res.request.method} ${res.request.path}`;
+        } else if (res.req) {
+          additional = `for request ${res.req.path}`;
+        }
       }
 
       return callback(
