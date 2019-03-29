@@ -1,3 +1,11 @@
+## <small>0.19.3 (2019-03-29)</small>
+
+* release version 0.19.3 ([8dca5f7](https://github.com/entrecode/ec.sdk/commit/8dca5f7))
+* feat: possibly more vebose 5xx errors ([3ef912c](https://github.com/entrecode/ec.sdk/commit/3ef912c))
+* test: remove node 6 from travis ([f28ac94](https://github.com/entrecode/ec.sdk/commit/f28ac94))
+
+
+
 ## <small>0.19.2 (2019-03-26)</small>
 
 * release version 0.19.2 ([a69caf6](https://github.com/entrecode/ec.sdk/commit/a69caf6))
