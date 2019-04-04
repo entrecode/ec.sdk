@@ -1,3 +1,12 @@
+## <small>0.19.4 (2019-04-04)</small>
+
+* release version 0.19.4 ([9a54f45](https://github.com/entrecode/ec.sdk/commit/9a54f45))
+* fix: thow on PublicAPI#me without account ([c06d1d4](https://github.com/entrecode/ec.sdk/commit/c06d1d4))
+* fix(package): update superagent to version 5.0.2 ([76c073b](https://github.com/entrecode/ec.sdk/commit/76c073b))
+* chore(package): update lockfile package-lock.json ([f534ec8](https://github.com/entrecode/ec.sdk/commit/f534ec8))
+
+
+
 ## <small>0.19.3 (2019-03-29)</small>
 
 * release version 0.19.3 ([8dca5f7](https://github.com/entrecode/ec.sdk/commit/8dca5f7))

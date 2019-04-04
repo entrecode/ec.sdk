@@ -5,7 +5,7 @@ import * as superagent from 'superagent';
 import * as validator from 'json-schema-remote';
 import * as validate from 'validator';
 
-const { convertValidationError } = require('ec.errors')();
+const { convertValidationError, newError } = require('ec.errors')();
 
 import Core, { environment, options } from './Core';
 import EntryList, { createList } from './resources/publicAPI/EntryList';
@@ -1176,7 +1176,13 @@ export default class PublicAPI extends Core {
         throw new Error('No token stored. PublicAPI#me() unable to run.');
       }
 
-      return this.resolve(reload).then(() => this.account);
+      return this.resolve(reload).then(() => {
+        if (this.account) {
+          return this.account;
+        }
+
+        throw newError(402);
+      });
     });
   }
 

@@ -219,6 +219,26 @@ describe('PublicAPI', () => {
         throw err;
       });
   });
+  it('should throw on me with no account', () => {
+    const stub = sinon.stub(helper, 'get');
+    stub.returns(resolver('public-dm-root-no-account.json'));
+
+    api.setToken(
+      'eyJhbGciOiJSUzUxMiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6bnVsbCwianRpIjoiMTZiYjVmNDUtMTc0Ny00YjQ4LWEwMTItYjhkYjBkMDE1NDVjIiwiaWF0IjoxNTIzODY2NzM2LCJleHAiOjQ2Nzc0NjY3MzYsImlzcyI6ImVjX2FkbWluIiwic3ViIjoiMzk4MWI3YzktMzNlOC00MDg0LWI4YTYtMDU2NDBjNzUwNTZmIn0.nWturDuNcjlEE99YKCWXxwyi6gV9wKrSZg4o2nfFhG4Xtb8LzdUQKtmNGTHiBIjIkeHm2dH6RO5sTGIZboiJfLePGzE8UVYmx_e5GbfCz_gq636lFHl6fUGUdD-dwGvB65L5nWsJ-eEvYEbuQz_tuK6j1aLGmnOnSPjlCqdbE_Y',
+    );
+
+    return api
+      .me()
+      .then(() => {
+        stub.restore();
+        throw new Error('unexpectedly resolved');
+      })
+      .catch((err) => {
+        stub.restore();
+        throw err;
+      })
+      .should.be.rejectedWith('Outdated Access Token');
+  });
 
   it('should set clientID', () => {
     api.setClientID('rest');
