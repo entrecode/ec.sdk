@@ -100,10 +100,6 @@ describe('Token handling', () => {
     const throws = () => store.setClientID();
     throws.should.throw(Error);
   });
-  it('should throw on clientID other than rest', () => {
-    const throws = () => store.setClientID('notRest');
-    throws.should.throw(Error);
-  });
   it('should get clientID', () => {
     store.clientID = 'rest';
     store.getClientID().should.be.equal('rest');

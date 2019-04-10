@@ -248,10 +248,6 @@ describe('PublicAPI', () => {
     const throws = () => api.setClientID(); // eslint-disable-line new-cap
     throws.should.throw('ClientID must be defined');
   });
-  it('should throw on not rest clientID', () => {
-    const throws = () => api.setClientID('notrest'); // eslint-disable-line new-cap
-    throws.should.throw('ec.sdk currently only supports client');
-  });
 
   it('should login successfully', () => {
     const stub = sinon.stub(helper, 'post');

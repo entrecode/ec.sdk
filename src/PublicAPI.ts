@@ -1416,10 +1416,6 @@ export default class PublicAPI extends Core {
       throw new Error('ClientID must be defined');
     }
 
-    if (clientID !== 'rest') {
-      throw new Error("ec.sdk currently only supports client 'rest'");
-    }
-
     this[tokenStoreSymbol].setClientID(clientID);
     return this;
   }

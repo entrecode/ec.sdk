@@ -163,10 +163,6 @@ export class TokenStore {
       throw new Error('clientID cannot be undefined');
     }
 
-    if (clientID !== 'rest') {
-      throw new Error('clientID other than rest currently not supported');
-    }
-
     this.clientID = clientID;
   }
 
