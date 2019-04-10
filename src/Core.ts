@@ -280,14 +280,42 @@ export default class Core {
    * return accounts.mes(); // will resolve
    *
    * @param {string} token the existing token
+   * @param {string} refreshToken the existing refresh token
    * @returns {Core} this for chainability
    */
-  setToken(token: string): Core {
+  setToken(token: string, refreshToken?: string): Core {
     if (!token) {
       throw new Error('Token must be defined');
     }
 
     this[tokenStoreSymbol].setToken(token);
+
+    if (refreshToken) {
+      this.setRefreshToken(refreshToken);
+    }
+
+    return this;
+  }
+
+  /**
+   * If you have an existing refresh token you can use it by calling this function.
+   * It will be used to get a new token when time comes.
+   *
+   * @example
+   * return accounts.me(); // will result in error
+   * accounts.setToken('aJwtToken');
+   * accounts.setRefreshToken('anotherJwtToken');
+   * return accounts.me(); // will resolve
+   *
+   * @param {string} token the existing token
+   * @returns {Core} this for chainability
+   */
+  setRefreshToken(token: string): Core {
+    if (!token) {
+      throw new Error('Token must be defined');
+    }
+
+    this[tokenStoreSymbol].setRefreshToken(token);
     return this;
   }
 
