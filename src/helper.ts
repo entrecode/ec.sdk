@@ -153,6 +153,7 @@ function traversonWrapper(func: string, environment: environment, t: any, body?:
         ) {
           TokenStoreFactory(environment).deleteToken();
           EventEmitterFactory(environment).emit('logout', err);
+          // not delete refresh token so we can get new token.
         }
 
         EventEmitterFactory(environment).emit('error', err);
@@ -175,21 +176,25 @@ function traversonWrapper(func: string, environment: environment, t: any, body?:
       }
     }
 
+    let token;
     if (store.hasToken()) {
-      t.addRequestOptions({ headers: { Authorization: `Bearer ${store.getToken()}` } });
+      token = store.getToken();
     } else if (secondStore && secondStore.hasToken()) {
-      t.addRequestOptions({ headers: { Authorization: `Bearer ${secondStore.getToken()}` } });
+      token = secondStore.getToken();
+    }
+    if (token) {
+      t.addRequestOptions({ headers: { Authorization: `Bearer ${token}` } });
     }
 
+    let userAgent;
     if (store.hasUserAgent()) {
-      t.addRequestOptions({ headers: { 'X-User-Agent': `${store.getUserAgent()} ec.sdk/${packageJson.version}` } });
+      userAgent = `${store.getUserAgent()} ec.sdk/${packageJson.version}`;
     } else if (secondStore && secondStore.hasUserAgent()) {
-      t.addRequestOptions({
-        headers: { 'X-User-Agent': `${secondStore.getUserAgent()} ec.sdk/${packageJson.version}` },
-      });
+      userAgent = `${secondStore.getUserAgent()} ec.sdk/${packageJson.version}`;
     } else {
-      t.addRequestOptions({ headers: { 'X-User-Agent': `ec.sdk/${packageJson.version}` } });
+      userAgent = `ec.sdk/${packageJson.version}`;
     }
+    t.addRequestOptions({ headers: { 'X-User-Agent': userAgent } });
 
     if (func === 'getUrl') {
       t[func](cb);
@@ -507,6 +512,8 @@ function addHeaderToSuperagent(request: any, environment: environment) {
       request.set('Authorization', `Bearer ${secondStore.getToken()}`);
     }
 
+    // TODO add token refreshal
+
     if (store.hasUserAgent()) {
       request.set('X-User-Agent', `${store.getUserAgent()} ec.sdk/${packageJson.version}`);
     } else if (secondStore && secondStore.hasUserAgent()) {
@@ -713,6 +720,8 @@ export function optionsToQuery(
 
 /**
  * shortenUUID(uuid[, factor])
+ * 
+ * @access private
  *
  * shortens a UUID by XORing the the top half with the bottom half
  * The default shortening factor is 1, maximum is 5 (just one character returned).

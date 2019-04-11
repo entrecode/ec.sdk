@@ -54,10 +54,6 @@ describe('Accounts class', () => {
     const throws = () => new Accounts().setClientID();
     throws.should.throw(Error);
   });
-  it('should throw on not rest clientID', () => {
-    const throws = () => new Accounts().setClientID('notrest');
-    throws.should.throw(Error);
-  });
   it('should return list on list', () => {
     const accounts = new Accounts('live');
     const stub = sinon.stub(helper, 'get');

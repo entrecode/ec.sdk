@@ -38,10 +38,6 @@ describe('Session class', () => {
     const throws = () => new Session().setClientID();
     throws.should.throw(Error);
   });
-  it('should throw on not rest clientID', () => {
-    const throws = () => new Session().setClientID('notrest');
-    throws.should.throw(Error);
-  });
   it('should login successfully', () => {
     const session = new Session();
     const stub = sinon.stub(helper, 'post');

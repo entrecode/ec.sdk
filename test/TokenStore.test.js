@@ -40,29 +40,57 @@ describe('Token handling', () => {
     store.setToken(token);
     store.token.should.be.equal(token);
   });
+  it('should set refresh token', () => {
+    store.setRefreshToken(token);
+    store.refreshToken.should.be.equal(token);
+  });
   it('should throw on undefined token', () => {
     const throws = () => store.setToken();
+    throws.should.throw(Error);
+  });
+  it('should throw on undefined refresh token', () => {
+    const throws = () => store.setRefreshToken();
     throws.should.throw(Error);
   });
   it('should throw on invalid token', () => {
     const throws = () => store.setToken('notAJwt');
     throws.should.throw(Error);
   });
+  it('should throw on invalid refresh token', () => {
+    const throws = () => store.setRefreshToken('notAJwt');
+    throws.should.throw(Error);
+  });
   it('should get token', () => {
     store.setToken(token);
     store.getToken().should.be.equal(token);
+  });
+  it('should get refresh token', () => {
+    store.setRefreshToken(token);
+    store.getRefreshToken().should.be.equal(token);
   });
   it('should return true on has token', () => {
     store.setToken(token);
     store.hasToken().should.be.equal(true);
   });
+  it('should return true on has refresh token', () => {
+    store.setRefreshToken(token);
+    store.hasRefreshToken().should.be.equal(true);
+  });
   it('should return false on has token', () => {
     store.hasToken().should.be.equal(false);
+  });
+  it('should return false on has refresh token', () => {
+    store.hasRefreshToken().should.be.equal(false);
   });
   it('should delete token', () => {
     store.setToken(token);
     store.deleteToken();
     should.not.exist(store.token);
+  });
+  it('should delete refresh token', () => {
+    store.setRefreshToken(token);
+    store.deleteRefreshToken();
+    should.not.exist(store.refreshToken);
   });
   it('should set clientID', () => {
     store.setClientID('rest');
@@ -70,10 +98,6 @@ describe('Token handling', () => {
   });
   it('should throw on undefined clientID', () => {
     const throws = () => store.setClientID();
-    throws.should.throw(Error);
-  });
-  it('should throw on clientID other than rest', () => {
-    const throws = () => store.setClientID('notRest');
     throws.should.throw(Error);
   });
   it('should get clientID', () => {
