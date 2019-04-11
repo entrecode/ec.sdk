@@ -1,17 +1,37 @@
 import { environment } from './Core';
 
 /**
- * Login event is emitted when a login succeeds with {@link Session#login}. The newly created
- * accessToken is passed as event parameter.
+ * Login event is emitted when a login succeeds with {@link Session#login}, {@link PublicAPI#login},
+ * or {@link PublicAPI#loginWithCode}.
  *
  * @event Event#login
- * @type {string}
+ * @type {{access_token: string, refresh_token: string}}
  */
 
 /**
- * Logout event is emitted either on a successful logout with {@link Session#logout} or an API
- * error with token related error codes. Will either have undefined or {@link Problem} as event
- * parameter.
+ * Signup event is emitted when a login succeeds with {@link PublicAPI#signup}.
+ *
+ * @event Event#signup
+ * @type {{access_token: string, refresh_token: string}}
+ */
+
+/**
+ * Refresh event is emitted when a token is automatically refreshed.
+ *
+ * @event Event#refresh
+ * @type {{access_token: string, refresh_token: string}}
+ */
+
+/**
+ * Refresh error event is emitted when a token is automatically refreshed.
+ *
+ * @event Event#refreshError
+ * @type {Problem}
+ */
+
+/**
+ * Logout event is emitted either on a successful logout with {@link Session#logout} or {@link PublicAPI#logout} or an API
+ * error with token related error codes. Will either have undefined or {@link Problem} as event parameter.
  *
  * @event Event#logout
  * @type {undefined|Problem}
