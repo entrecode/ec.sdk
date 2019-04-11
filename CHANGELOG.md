@@ -1,3 +1,38 @@
+## 0.20.0 (2019-04-11)
+
+* release version 0.20.0 ([a1ac5ae](https://github.com/entrecode/ec.sdk/commit/a1ac5ae))
+* feat: allow other clientIDs than rest SDK-123 ([d1733b8](https://github.com/entrecode/ec.sdk/commit/d1733b8))
+* feat: refresh token handling in TokenStore SDK-123 ([f779764](https://github.com/entrecode/ec.sdk/commit/f779764))
+* feat: refresh token on PublicAPI requests SDK-123 ([655f59f](https://github.com/entrecode/ec.sdk/commit/655f59f))
+
+
+### BREAKING CHANGE
+
+* response signature changed for PublicAPI#login and PublicAPI#signup
+
+before:
+
+```js
+const api = new PublicAPI('beefbeef');
+// same for api.signup
+const token: string = await api.login(email, password);
+mySecureStore.saveToken(token);
+```
+
+after:
+
+```js
+const api = new PublicAPI('beefbeef');
+// same for api.signup
+const tokenResponse: {
+  access_token: string,
+  refresh_token: string
+} = await api.login(email, password);
+mySecureStore.saveToken(tokenResponse.access_token);
+mySecureStore.saveRefreshToken(tokenResponse.refresh_token);
+```
+
+
 ## <small>0.19.4 (2019-04-04)</small>
 
 * release version 0.19.4 ([9a54f45](https://github.com/entrecode/ec.sdk/commit/9a54f45))

@@ -15,6 +15,7 @@ toc:
   - options
   - fileOptions
   - models
+  - fields
   - field
   - fieldDefinition
   - name: Events and Errors

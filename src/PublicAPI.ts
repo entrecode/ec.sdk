@@ -50,6 +50,7 @@ const permissionsLoadedTimeSymbol: any = Symbol('_permissionsLoadedTimeSymbol');
 const assetBaseURLSymbol: any = Symbol('assetBaseURL');
 const requestCacheSymbol: any = Symbol('requestCache');
 const fieldConfigCacheSymbol: any = Symbol('fieldConfigCache');
+const refreshRequestSymbol: any = Symbol('refreshRequest');
 
 validator.setLoggingFunction(() => {});
 
@@ -250,7 +251,7 @@ export default class PublicAPI extends Core {
         const request = this.newRequest()
           .follow('ec:api/assets')
           .withTemplateParameters({ assetID });
-        return get(this[environmentSymbol], request);
+        return this.dispatch(() => get(this[environmentSymbol], request));
       })
       .then(([res, traversal]) => new PublicAssetResource(res, this[environmentSymbol], traversal));
   }
@@ -282,7 +283,7 @@ export default class PublicAPI extends Core {
       })
       .then((request) => {
         request.withTemplateParameters(optionsToQuery(options, this.getLink('ec:api/assets').href));
-        return get(this[environmentSymbol], request);
+        return this.dispatch(() => get(this[environmentSymbol], request));
       })
       .then(([res, traversal]) => new PublicAssetList(res, this[environmentSymbol], traversal));
   }
@@ -303,7 +304,7 @@ export default class PublicAPI extends Core {
         throw new Error('email must be defined');
       }
       return this.follow(`${this[shortIDSymbol]}:_auth/change-email`).then((request) => {
-        return postEmpty(this[environmentSymbol], request, { email });
+        return this.dispatch(() => postEmpty(this[environmentSymbol], request, { email }));
       });
     });
   }
@@ -330,7 +331,7 @@ export default class PublicAPI extends Core {
 
         if (!this[requestCacheSymbol]) {
           this[requestCacheSymbol] = this.follow('_permissions')
-            .then((request) => get(this[environmentSymbol], request))
+            .then((request) => this.dispatch(() => get(this[environmentSymbol], request)))
             .then(([response]) => {
               this[requestCacheSymbol] = undefined;
               this[permissionsSymbol] = ShiroTrie.newTrie();
@@ -362,7 +363,7 @@ export default class PublicAPI extends Core {
         if (validUntil) {
           request.withTemplateParameters({ validUntil: validUntil.toISOString() });
         }
-        return post(this[environmentSymbol], request, {});
+        return this.dispatch(() => post(this[environmentSymbol], request, {}));
       })
       .then(([tokenResponse]) => tokenResponse);
   }
@@ -390,7 +391,7 @@ export default class PublicAPI extends Core {
     }
 
     return this.follow('ec:api/assets')
-      .then((request) => getUrl(this[environmentSymbol], request))
+      .then((request) => this.dispatch(() => getUrl(this[environmentSymbol], request)))
       .then((url) => {
         const superagentRequest = superagent.post(url);
 
@@ -427,6 +428,7 @@ export default class PublicAPI extends Core {
           }
         }
 
+        // THIS dispatch for superagent? test if request is submittable n times?
         return superagentPost(this[environmentSymbol], superagentRequest);
       })
       .then((response) => {
@@ -459,7 +461,7 @@ export default class PublicAPI extends Core {
     }
 
     return this.follow('ec:api/assets')
-      .then((request) => getUrl(this[environmentSymbol], request))
+      .then((request) => this.dispatch(() => getUrl(this[environmentSymbol], request)))
       .then((url) => {
         const superagentRequest = superagent.post(url);
 
@@ -499,6 +501,7 @@ export default class PublicAPI extends Core {
           }
         }
 
+        // THIS dispatch for superagent? test if request is submittable n times?
         return superagentPost(this[environmentSymbol], superagentRequest);
       })
       .then((response) => {
@@ -550,7 +553,7 @@ export default class PublicAPI extends Core {
         }
         throw error;
       })
-      .then((request) => getUrl(this[environmentSymbol], request))
+      .then((request) => this.dispatch(() => getUrl(this[environmentSymbol], request)))
       .then((url) => {
         const request = superagent.post(url);
         const isFormData = typeof FormData === 'function' && input instanceof FormData; // eslint-disable-line no-undef
@@ -604,6 +607,7 @@ export default class PublicAPI extends Core {
           }
         }
 
+        // TODO dispatch for superagent
         return superagentPost(this[environmentSymbol], request);
       })
       .then((response) => {
@@ -656,7 +660,7 @@ export default class PublicAPI extends Core {
         if (levels) {
           request.withTemplateParameters({ _levels: levels });
         }
-        return post(this[environmentSymbol], request, e);
+        return this.dispatch(() => post(this[environmentSymbol], request, e));
       })
       .then(
         ([res, traversal]): any => {
@@ -694,7 +698,7 @@ export default class PublicAPI extends Core {
       })
       .then((request) => {
         request.withTemplateParameters({ assetID, assetGroupID });
-        return get(this[environmentSymbol], request);
+        return this.dispatch(() => get(this[environmentSymbol], request));
       })
       .then(([res, traversal]) => new DMAssetResource(res, this[environmentSymbol], traversal));
   }
@@ -737,7 +741,7 @@ export default class PublicAPI extends Core {
       })
       .then((request) => {
         request.withTemplateParameters(optionsToQuery(options, this.getLink(`ec:dm-assets/${assetGroupID}`).href));
-        return get(this[environmentSymbol], request);
+        return this.dispatch(() => get(this[environmentSymbol], request));
       })
       .then(([res, traversal]) => new DMAssetList(res, this[environmentSymbol], traversal));
   }
@@ -769,7 +773,7 @@ export default class PublicAPI extends Core {
       })
       .then((request) => {
         request.withTemplateParameters({ email });
-        return get(this[environmentSymbol], request);
+        return this.dispatch(() => get(this[environmentSymbol], request));
       })
       .then(([a]) => <boolean>a.available);
   }
@@ -821,7 +825,7 @@ export default class PublicAPI extends Core {
         request.withTemplateParameters(
           optionsToQuery(options as filterOptions, this.getLink(`${this[shortIDSymbol]}:${model}`).href, true),
         );
-        return get(this[environmentSymbol], request);
+        return this.dispatch(() => get(this[environmentSymbol], request));
       })
       .then(([res, traversal]) => {
         if ('count' in res && 'total' in res && !('_entryTitle' in res)) {
@@ -879,7 +883,7 @@ export default class PublicAPI extends Core {
         request.withTemplateParameters(
           optionsToQuery(options, this.getLink(`${this[shortIDSymbol]}:${model}`).href, true),
         );
-        return get(this[environmentSymbol], request);
+        return this.dispatch(() => get(this[environmentSymbol], request));
       })
       .then(([res, traversal]) => {
         return createList(res, this[environmentSymbol], traversal, `${this[shortIDSymbol]}:${model}`);
@@ -947,7 +951,7 @@ export default class PublicAPI extends Core {
 
         return this.follow(relation).then((request) => {
           request.withTemplateParameters(params);
-          return get(this[environmentSymbol], request);
+          return this.dispatch(() => get(this[environmentSymbol], request));
         });
       })
       .then(([res]) => res.url);
@@ -985,7 +989,7 @@ export default class PublicAPI extends Core {
             titles = modelTitle;
           }
           request.withTemplateParameters({ modelTitle: titles.join(',') });
-          return get(this[environmentSymbol], request);
+          return this.dispatch(() => get(this[environmentSymbol], request));
         })
         .then(([res]) => {
           let result;
@@ -1058,18 +1062,20 @@ export default class PublicAPI extends Core {
           return link;
         }
 
-        return get(this[environmentSymbol], this.newRequest().follow('self')).then(([res, traversal]) => {
-          this[resourceSymbol] = halfred.parse(res);
-          this[traversalSymbol] = traversal;
+        return this.dispatch(() =>
+          get(this[environmentSymbol], this.newRequest().follow('self')).then(([res, traversal]) => {
+            this[resourceSymbol] = halfred.parse(res);
+            this[traversalSymbol] = traversal;
 
-          const link = this.getLink(`${this[shortIDSymbol]}:${model}`);
+            const link = this.getLink(`${this[shortIDSymbol]}:${model}`);
 
-          if (!link) {
-            throw new Error(`Model ${model} not found.`);
-          }
+            if (!link) {
+              throw new Error(`Model ${model} not found.`);
+            }
 
-          return link;
-        });
+            return link;
+          }),
+        );
       })
       .then((link) => {
         link = link.profile;
@@ -1094,9 +1100,9 @@ export default class PublicAPI extends Core {
    *
    * @param {string} email email address of the user
    * @param {string} password password of the user
-   * @returns {Promise<string>} Promise resolving to the issued token
+   * @returns {Promise<{access_token: string, refresh_token: string}>} Promise resolving to the issued token
    */
-  login(email: string, password: string): Promise<string> {
+  login(email: string, password: string): Promise<{ access_token: string, refresh_token: string }> {
     return Promise.resolve()
       .then(() => {
         if (this[tokenStoreSymbol].hasToken()) {
@@ -1117,13 +1123,15 @@ export default class PublicAPI extends Core {
       })
       .then((request) => {
         request.withTemplateParameters({ clientID: this[tokenStoreSymbol].getClientID() });
-        return post(this[environmentSymbol], request, { email, password });
+        return this.dispatch(() => post(this[environmentSymbol], request, { email, password }));
       })
-      .then(([token]) => {
-        this[tokenStoreSymbol].setToken(token.token);
-        this[eventsSymbol].emit('login', token.token);
-
-        return <string>token.token;
+      .then(([tokenResponse]) => {
+        if (tokenResponse.refresh_token) {
+          this[tokenStoreSymbol].setRefreshToken(tokenResponse.refresh_token);
+        }
+        this[tokenStoreSymbol].setToken(tokenResponse.access_token || tokenResponse.token);
+        this[eventsSymbol].emit('login', tokenResponse);
+        return Promise.resolve(tokenResponse);
       });
   }
 
@@ -1149,7 +1157,7 @@ export default class PublicAPI extends Core {
             clientID: this[tokenStoreSymbol].getClientID(),
             token: this[tokenStoreSymbol].getToken(),
           });
-          return post(this[environmentSymbol], request);
+          return this.dispatch(() => post(this[environmentSymbol], request));
         });
       })
       .then(() => {
@@ -1240,7 +1248,7 @@ export default class PublicAPI extends Core {
           request.withTemplateParameters(optionsToQuery(options));
         }
 
-        return get(this[environmentSymbol], request);
+        return this.dispatch(() => get(this[environmentSymbol], request));
       })
       .then(([res, traversal]) => new HistoryEvents(res, this[environmentSymbol], traversal));
   }
@@ -1317,7 +1325,7 @@ export default class PublicAPI extends Core {
           clientID: this[tokenStoreSymbol].getClientID(),
           email,
         });
-        return getEmpty(this[environmentSymbol], request);
+        return this.dispatch(() => getEmpty(this[environmentSymbol], request));
       });
   }
 
@@ -1332,56 +1340,105 @@ export default class PublicAPI extends Core {
       return Promise.resolve(this);
     }
 
-    return get(this[environmentSymbol], this.newRequest().follow('self')).then(([res, traversal]) => {
-      this[resourceSymbol] = halfred.parse(res);
-      this[traversalSymbol] = traversal;
+    return this.dispatch(() =>
+      get(this[environmentSymbol], this.newRequest().follow('self')).then(([res, traversal]) => {
+        this[resourceSymbol] = halfred.parse(res);
+        this[traversalSymbol] = traversal;
 
-      const assetGroups = Object.keys(this[resourceSymbol].allLinks()).filter((x) => x.indexOf(`ec:dm-assets/`) !== -1);
+        const assetGroups = Object.keys(this[resourceSymbol].allLinks()).filter(
+          (x) => x.indexOf(`ec:dm-assets/`) !== -1,
+        );
 
-      const relations = {
-        legacyAsset: {
-          relation: 'ec:api/assets',
-          createRelation: false,
-          createTemplateModifier: '',
-          id: 'assetID',
-          ResourceClass: PublicAssetResource,
-          ListClass: PublicAssetList,
-        },
-        tags: {
-          relation: 'ec:api/tags',
-          createRelation: false,
-          createTemplateModifier: '',
-          id: 'tag',
-          ResourceClass: PublicTagResource,
-          ListClass: PublicTagList,
-        },
-      };
-      assetGroups.forEach((relation) => {
-        const relationName = `dmAsset.${relation.substr(13)}`;
-        relations[relationName] = {
-          relation: relation,
-          createRelation: false,
-          createTemplateModifier: '',
-          id: 'assetID',
-          ResourceClass: DMAssetResource,
-          ListClass: DMAssetList,
+        const relations = {
+          legacyAsset: {
+            relation: 'ec:api/assets',
+            createRelation: false,
+            createTemplateModifier: '',
+            id: 'assetID',
+            ResourceClass: PublicAssetResource,
+            ListClass: PublicAssetList,
+          },
+          tags: {
+            relation: 'ec:api/tags',
+            createRelation: false,
+            createTemplateModifier: '',
+            id: 'tag',
+            ResourceClass: PublicTagResource,
+            ListClass: PublicTagList,
+          },
         };
-      });
-      this[resourceSymbol].models.forEach((model) => {
-        relations[`model.${model.title}`] = {
-          relation: `${this[shortIDSymbol]}:${model.title}`,
-          createRelation: false, // TODO
-          createTemplateModifier: '',
-          id: '_id',
-          resourceFunction: createEntry,
-          listFunction: createList,
-        };
-      });
+        assetGroups.forEach((relation) => {
+          const relationName = `dmAsset.${relation.substr(13)}`;
+          relations[relationName] = {
+            relation: relation,
+            createRelation: false,
+            createTemplateModifier: '',
+            id: 'assetID',
+            ResourceClass: DMAssetResource,
+            ListClass: DMAssetList,
+          };
+        });
+        this[resourceSymbol].models.forEach((model) => {
+          relations[`model.${model.title}`] = {
+            relation: `${this[shortIDSymbol]}:${model.title}`,
+            createRelation: false, // TODO
+            createTemplateModifier: '',
+            id: '_id',
+            resourceFunction: createEntry,
+            listFunction: createList,
+          };
+        });
 
-      this[relationsSymbol] = relations;
+        this[relationsSymbol] = relations;
 
-      return this;
-    });
+        return this;
+      }),
+    );
+  }
+
+  /**
+   * When the logged in user has a refresh token this function will do the token refresh. On successful
+   * refreshal PublicAPI will emmit the event `refresh`, if it failes it will emmit `refreshError`. You
+   * MUST handle these events.
+   * 
+   * @returns {{access_token: string, refresh_token: string}} Returns the new token response on successful refresh
+   */
+  doRefreshToken(): Promise<{ access_token: string, refresh_token: string }> {
+    if (!this[refreshRequestSymbol]) {
+      this[refreshRequestSymbol] = Promise.resolve().then(async () => {
+        if (!this[tokenStoreSymbol].getClientID()) {
+          throw new Error('ClientID must be configured');
+        }
+
+        if (!this[tokenStoreSymbol].getRefreshToken()) {
+          throw new Error('no refresh token configured');
+        }
+
+        try {
+          const request = await this.follow(`${this[shortIDSymbol]}:_auth/token`);
+          // no dispatch since we are the one refreshing…
+          const [response] = await post(this[environmentSymbol], request, {
+            grant_type: 'refresh_token',
+            client_id: this[tokenStoreSymbol].getClientID(),
+            refresh_token: this[tokenStoreSymbol].getRefreshToken(),
+          });
+
+          if (response.refresh_token) {
+            this[tokenStoreSymbol].setRefreshToken(response.refresh_token);
+          }
+          this[tokenStoreSymbol].setToken(response.access_token);
+          this[eventsSymbol].emit('refresh', response);
+          this[refreshRequestSymbol] = undefined;
+          return response;
+        } catch (err) {
+          this[eventsSymbol].emit('refreshError', err);
+          this[refreshRequestSymbol] = undefined;
+          throw err;
+        }
+      });
+    }
+
+    return this[refreshRequestSymbol];
   }
 
   /**
@@ -1416,10 +1473,6 @@ export default class PublicAPI extends Core {
       throw new Error('ClientID must be defined');
     }
 
-    if (clientID !== 'rest') {
-      throw new Error("ec.sdk currently only supports client 'rest'");
-    }
-
     this[tokenStoreSymbol].setClientID(clientID);
     return this;
   }
@@ -1429,17 +1482,17 @@ export default class PublicAPI extends Core {
    *
    * @example
    * return api.signup(email, password, invite)
-   * .then((token) => {
-   *   api.setToken(token);
+   * .then((tokenResponse) => {
+   *   api.setToken(tokenResponse.access_token);
    *   return show('Successfully registered account');
    * });
    *
    * @param {string} email email for the new account
    * @param {string} password password for the new account
    * @param {string?} invite optional invite. signup can be declined without invite.
-   * @returns {Promise<string>} Promise resolving with the token
+   * @returns {Promise<{access_token: string, refresh_token: string}>} Promise resolving with the token
    */
-  signup(email: string, password: string, invite?: string): Promise<string> {
+  signup(email: string, password: string, invite?: string): Promise<{ access_token: string, refresh_token: string }> {
     return Promise.resolve()
       .then(() => {
         if (!email) {
@@ -1459,11 +1512,15 @@ export default class PublicAPI extends Core {
           clientID: this[tokenStoreSymbol].getClientID(),
           invite,
         });
-        return post(this[environmentSymbol], request, { email, password });
+        return this.dispatch(() => post(this[environmentSymbol], request, { email, password }));
       })
-      .then(([token]) => {
-        this[tokenStoreSymbol].setToken(token.token);
-        return Promise.resolve(token.token);
+      .then(([tokenResponse]) => {
+        if (tokenResponse.refresh_token) {
+          this[tokenStoreSymbol].setRefreshToken(tokenResponse.refresh_token);
+        }
+        this[tokenStoreSymbol].setToken(tokenResponse.access_token || tokenResponse.token);
+        this[eventsSymbol].emit('signup', tokenResponse);
+        return Promise.resolve(tokenResponse);
       });
   }
 
@@ -1490,7 +1547,7 @@ export default class PublicAPI extends Core {
       })
       .then((request) => {
         request.withTemplateParameters({ tag });
-        return get(this[environmentSymbol], request);
+        return this.dispatch(() => get(this[environmentSymbol], request));
       })
       .then(([res, traversal]) => new PublicTagResource(res, this[environmentSymbol], traversal));
   }
@@ -1537,7 +1594,7 @@ export default class PublicAPI extends Core {
       })
       .then((request) => {
         request.withTemplateParameters(optionsToQuery(options, this.getLink('ec:api/tags').href));
-        return get(this[environmentSymbol], request);
+        return this.dispatch(() => get(this[environmentSymbol], request));
       })
       .then(([res, traversal]) => new PublicTagList(res, this[environmentSymbol], traversal));
   }
@@ -1545,7 +1602,7 @@ export default class PublicAPI extends Core {
   /**
    * Programatically signup a user, mostly used for special register flows using legacy users or magic link login.
    *
-   * @param {{email: string, password?: stirng, invite?: stirng, pendin?: boolean, sendWelcomMail?: boolean, anonymousToken?: string }} body Request body containing configuration options.
+   * @param {{email: string, password?: string, invite?: string, pending?: boolean, sendWelcomeMail?: boolean, anonymousToken?: string }} body Request body containing configuration options.
    */
   async configurableSignup(body: {
     email: string;
@@ -1568,7 +1625,7 @@ export default class PublicAPI extends Core {
     }
 
     const request = await this.follow(`${this[shortIDSymbol]}:_auth/api/signup`);
-    const [response] = await post(this[environmentSymbol], request, body);
+    const [response] = await this.dispatch(() => post(this[environmentSymbol], request, body));
     return response;
   }
 
@@ -1592,7 +1649,7 @@ export default class PublicAPI extends Core {
     }
 
     const request = await this.follow(`${this[shortIDSymbol]}:_auth/api/signup`);
-    const [response] = await put(this[environmentSymbol], request, body);
+    const [response] = await this.dispatch(() => put(this[environmentSymbol], request, body));
 
     return response.token;
   }
@@ -1609,7 +1666,7 @@ export default class PublicAPI extends Core {
 
     const request = await this.follow(`${this[shortIDSymbol]}:_auth/api/validation-token`);
     request.withTemplateParameters({ email });
-    const [response] = await get(this[environmentSymbol], request);
+    const [response] = await this.dispatch(() => get(this[environmentSymbol], request));
     return response.validationToken;
   }
 
@@ -1632,15 +1689,21 @@ export default class PublicAPI extends Core {
 
     const request = await this.follow(`${this[shortIDSymbol]}:_auth/api/validate-token`);
     request.withTemplateParameters({ validationToken });
-    const [response] = await get(this[environmentSymbol], request);
+    const [response] = await this.dispatch(() => get(this[environmentSymbol], request));
     return response;
   }
 
   /**
+   * Login with token from magic link
    *
    * @param {{validationToken: string, useragent: stirng, ip: string}} body Login request body.
+   * @returns {Promise<{{access_token: string, refresh_token: string}}>} Login response with access_token and refresh_token.
    */
-  async loginWithToken(body: { validationToken: string; userAgent?: string; ip?: string }): Promise<string> {
+  async loginWithToken(body: {
+    validationToken: string;
+    userAgent?: string;
+    ip?: string;
+  }): Promise<{ access_token: string, refresh_token: string }> {
     if (!body || typeof body !== 'object') {
       throw new Error('body must be defined');
     }
@@ -1649,9 +1712,14 @@ export default class PublicAPI extends Core {
     }
 
     const request = await this.follow(`${this[shortIDSymbol]}:_auth/api/login-token`);
-    const [response] = await post(this[environmentSymbol], request, body);
+    const [response] = await this.dispatch(() => post(this[environmentSymbol], request, body));
 
-    return response.token;
+    if (response.refresh_token) {
+      this[tokenStoreSymbol].setRefreshToken(response.refresh_token);
+    }
+    this[tokenStoreSymbol].setToken(response.access_token || response.token);
+    this[eventsSymbol].emit('login', response);
+    return response;
   }
 }
 

@@ -4,6 +4,7 @@ import * as HalAdapter from 'traverson-hal';
 import * as halfred from 'halfred';
 import * as validator from 'json-schema-remote';
 import * as shortID from 'shortid';
+import * as jwtDecode from 'jwt-decode';
 
 const { convertValidationError } = require('ec.errors')();
 
@@ -280,14 +281,42 @@ export default class Core {
    * return accounts.mes(); // will resolve
    *
    * @param {string} token the existing token
+   * @param {string} refreshToken the existing refresh token
    * @returns {Core} this for chainability
    */
-  setToken(token: string): Core {
+  setToken(token: string, refreshToken?: string): Core {
     if (!token) {
       throw new Error('Token must be defined');
     }
 
     this[tokenStoreSymbol].setToken(token);
+
+    if (refreshToken) {
+      this.setRefreshToken(refreshToken);
+    }
+
+    return this;
+  }
+
+  /**
+   * If you have an existing refresh token you can use it by calling this function.
+   * It will be used to get a new token when time comes.
+   *
+   * @example
+   * return accounts.me(); // will result in error
+   * accounts.setToken('aJwtToken');
+   * accounts.setRefreshToken('anotherJwtToken');
+   * return accounts.me(); // will resolve
+   *
+   * @param {string} token the existing token
+   * @returns {Core} this for chainability
+   */
+  setRefreshToken(token: string): Core {
+    if (!token) {
+      throw new Error('Token must be defined');
+    }
+
+    this[tokenStoreSymbol].setRefreshToken(token);
     return this;
   }
 
@@ -402,6 +431,90 @@ export default class Core {
 
         return new this[relationsSymbol][relation].ResourceClass(res, this[environmentSymbol], traversal);
       });
+  }
+
+  /**
+   * `Abstract interface` for PublicAPI#doRefreshToken. Exists until Accountserver has token refreshal of its own.
+   *
+   * @returns {{access_token: string, refresh_token: string}} Returns the new token response on successful refresh
+   */
+  async doRefreshToken(): Promise<{ access_token: string; refresh_token: string } | undefined> {
+    throw new Error('only supported on PublicAPI');
+  }
+
+  /**
+   * Check if we have a refresh token and if it is time (token expiraion < 24h) to refresh the token
+   *
+   * @returns {boolean} Wether or not the refreshal should be performed.
+   */
+  timeToRefresh(): boolean {
+    if (!this[tokenStoreSymbol].hasRefreshToken()) {
+      // no refresh token -> no refresh
+      return false;
+    }
+
+    if (!this[tokenStoreSymbol].hasToken()) {
+      // refresh token but no token -> refresh (outdated and deleted token)
+      return true;
+    }
+
+    const token = this[tokenStoreSymbol].getToken();
+    let decoded: any;
+
+    try {
+      decoded = jwtDecode(token);
+
+      if (decoded.iss.indexOf('entrecode') !== -1) {
+        // This is an accountserver token. No refresh for now;
+        return false;
+      }
+
+      const now = new Date();
+
+      if (now.getTime() + 60 * 60 * 24 * 1000 > decoded.exp * 1000) {
+        return true;
+      }
+
+      return false;
+    } catch (err) {
+      throw new Error('Malformed token');
+    }
+  }
+
+  /**
+   * Dispatch a request for helper lib. This will handle token refreshal on every request and on 401 errors
+   *
+   * @param {function} fkt A function returning a Promise from any network helper in helper.js
+   */
+  async dispatch(fkt): Promise<any> {
+    if (this.timeToRefresh()) {
+      console.log('Refreshing token…');
+      this.doRefreshToken()
+        .then(() => {
+          console.log('… successfully refreshed');
+        })
+        .catch((err) => {
+          console.warn(`Error refreshing: ${err.message}`);
+        });
+    }
+    // const trace = new Error('message').stack || 'message';
+    try {
+      return await fkt().catch((err) => {
+        // err.stack = trace.replace('message', err.message);
+        throw err;
+      });
+    } catch (err) {
+      if (err.status !== 401) {
+        throw err;
+      }
+      return this.doRefreshToken()
+        .catch((err) => {
+          console.warn(`Could not refresh token: ${err.message}`);
+          // Error refreshing, raise first error;
+          throw err;
+        })
+        .then(() => fkt());
+    }
   }
 
   /**

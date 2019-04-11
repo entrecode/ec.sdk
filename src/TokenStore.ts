@@ -23,6 +23,7 @@ export class TokenStore {
   protected clientID: string | undefined;
   protected environment: string;
   protected token: string | undefined;
+  protected refreshToken: string | undefined;
 
   /**
    * Creates a new {@link TokenStore} for the specified environment.
@@ -33,6 +34,7 @@ export class TokenStore {
   constructor(environment: environment | string = 'live') {
     this.environment = environment;
     this.token = undefined;
+    this.refreshToken = undefined;
     this.clientID = undefined;
     this.agent = undefined;
   }
@@ -44,10 +46,23 @@ export class TokenStore {
    */
   deleteToken(): void {
     if (typeof document !== 'undefined') {
-      cookie['erase'](`${this.environment}Token`); // TODO cookie.erase
+      cookie['erase'](`${this.environment}Token`);
     }
 
     this.token = undefined;
+  }
+
+  /**
+   * Delete the saved token.
+   *
+   * @returns {undefined}
+   */
+  deleteRefreshToken(): void {
+    if (typeof document !== 'undefined') {
+      cookie['erase'](`${this.environment}RefreshToken`);
+    }
+
+    this.refreshToken = undefined;
   }
 
   /**
@@ -70,6 +85,19 @@ export class TokenStore {
     }
 
     return this.token as string;
+  }
+
+  /**
+   * Get a previously saved refresh token. Undefined on missing token.
+   *
+   * @returns {string} The token or undefined.
+   */
+  getRefreshToken(): string {
+    if (!this.token && typeof document !== 'undefined') {
+      this.token = cookie.get(`${this.environment}RefreshToken`) as string;
+    }
+
+    return this.refreshToken as string;
   }
 
   /**
@@ -104,6 +132,19 @@ export class TokenStore {
   }
 
   /**
+   * Check if a refresh token is saved.
+   *
+   * @returns {boolean} Whether or not a token is saved.
+   */
+  hasRefreshToken(): boolean {
+    if (!this.refreshToken && typeof document !== 'undefined') {
+      this.refreshToken = cookie.get(`${this.environment}RefreshToken`) as string;
+    }
+
+    return !!this.refreshToken;
+  }
+
+  /**
    * Whether or not this {@link TokenStore} has a user agent set.
    *
    * @returns {boolean} Whether or not a user agent is set.
@@ -120,10 +161,6 @@ export class TokenStore {
   setClientID(clientID: string): void {
     if (!clientID) {
       throw new Error('clientID cannot be undefined');
-    }
-
-    if (clientID !== 'rest') {
-      throw new Error('clientID other than rest currently not supported');
     }
 
     this.clientID = clientID;
@@ -158,6 +195,37 @@ export class TokenStore {
     }
 
     this.token = token;
+  }
+
+  /**
+   * Set a new refresh token.
+   *
+   * @param {string} token new token.
+   */
+  setRefreshToken(token: string): void {
+    if (!token) {
+      throw new Error('Token cannot be undefined');
+    }
+
+    let decoded: any;
+
+    try {
+      decoded = jwtDecode(token);
+    } catch (err) {
+      throw new Error('Malformed token');
+    }
+
+    if (typeof document !== 'undefined') {
+      cookie.set(`${this.environment}RefreshToken`, token, {
+        secure: true,
+        expires: new Date(decoded.exp * 1000),
+      });
+      if (!cookie.get(`${this.environment}RefreshToken`)) {
+        console.warn('ec.sdk: cookie not set. are you on a http site?');
+      }
+    }
+
+    this.refreshToken = token;
   }
 
   /**

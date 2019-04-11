@@ -248,10 +248,6 @@ describe('PublicAPI', () => {
     const throws = () => api.setClientID(); // eslint-disable-line new-cap
     throws.should.throw('ClientID must be defined');
   });
-  it('should throw on not rest clientID', () => {
-    const throws = () => api.setClientID('notrest'); // eslint-disable-line new-cap
-    throws.should.throw('ec.sdk currently only supports client');
-  });
 
   it('should login successfully', () => {
     const stub = sinon.stub(helper, 'post');
@@ -328,21 +324,15 @@ describe('PublicAPI', () => {
   it('should signup new account', () => {
     api.setClientID('rest');
     const token = sinon.stub(helper, 'post');
-    token.returns(
-      Promise.resolve([
-        {
-          token:
-            'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJlbnRyZWNvZGVUZXN0IiwiaWF0IjoxNDg1NzgzNTg4LCJleHAiOjQ2NDE0NTcxODgsImF1ZCI6IlRlc3QiLCJzdWIiOiJ0ZXN0QGVudHJlY29kZS5kZSJ9.Vhrq5GR2hNz-RoAhdlnIIWHelPciBPCemEa74s7cXn8',
-        },
-      ]),
-    );
+    token.returns(resolver('public-register.json'));
+
     api[tokenStoreSymbol].deleteToken();
     api[tokenStoreSymbol].hasToken().should.be.false;
 
     return api
       .signup('someone@example.com', 'suchsecurewow')
       .then((tokenResponse) => {
-        tokenResponse.should.be.equal(
+        tokenResponse.access_token.should.be.equal(
           'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJlbnRyZWNvZGVUZXN0IiwiaWF0IjoxNDg1NzgzNTg4LCJleHAiOjQ2NDE0NTcxODgsImF1ZCI6IlRlc3QiLCJzdWIiOiJ0ZXN0QGVudHJlY29kZS5kZSJ9.Vhrq5GR2hNz-RoAhdlnIIWHelPciBPCemEa74s7cXn8',
         );
         api[tokenStoreSymbol].hasToken().should.be.true;
@@ -604,7 +594,7 @@ describe('PublicAPI', () => {
     return api.entry('allFields', '1234567', { _fields: 'string' }).should.be.rejectedWith('_fields must be an array');
   });
 
-  it('should create entry', () => {
+  it('should create entry #1', () => {
     const getStub = sinon.stub(helper, 'get');
     getStub.returns(resolver('public-dm-root.json'));
     const postStub = sinon.stub(helper, 'post');
@@ -640,11 +630,11 @@ describe('PublicAPI', () => {
         throw err;
       });
   });
-  it('should create entry', () => {
+  it('should create entry #2', () => {
     const getStub = sinon.stub(helper, 'get');
     getStub.returns(resolver('public-dm-root.json'));
     const postStub = sinon.stub(helper, 'post');
-    postStub.returns([]);
+    postStub.returns(Promise.resolve([]));
 
     return api
       .createEntry('allFields', {
@@ -1608,7 +1598,9 @@ describe('PublicAPI', () => {
       return api
         .loginWithToken({ validationToken: 'validationToken' })
         .then((res) => {
-          res.should.be.equal('accessToken');
+          res.access_token.should.be.equal(
+            'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJlbnRyZWNvZGVUZXN0IiwiaWF0IjoxNDg1NzgzNTg4LCJleHAiOjQ2NDE0NTcxODgsImF1ZCI6IlRlc3QiLCJzdWIiOiJ0ZXN0QGVudHJlY29kZS5kZSJ9.Vhrq5GR2hNz-RoAhdlnIIWHelPciBPCemEa74s7cXn8',
+          );
           stub.restore();
         })
         .catch((err) => {
@@ -1658,6 +1650,19 @@ describe('PublicAPI', () => {
     });
     it('should be rejected on undefined tag', () => {
       return api.tag().should.be.rejectedWith('tag must be defined');
+    });
+  });
+
+  describe('refreshToken', () => {
+    it('should check refresh token', async () => {
+      api.setToken(
+        'eyJhbGciOiJSUzUxMiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNjaGVyemluZ2VyK2RlYWxAZW50cmVjb2RlLmRlIiwianRpIjoiNWYwNWVjMDktYTNkMC00YTM1LTk3YTYtZmQ2NTEwMzFkMWE0IiwiaWF0IjoxNTU0ODc5MjY4LCJleHAiOjE1NTc0NzEyNjgsImlzcyI6ImRlYWxidW5ueV9kZXYiLCJzdWIiOiJjN2ExYzc0NS03Zjg3LTRhNjItYmM1Ni04ZWIwM2Y2M2ZhMDYifQ.VdxqAuQf1M0pO7bN8d3bEtgKqYfgTEwfK78xdt397UJR3STwj3GF9zryCCCRwzXYR2VZApfOJPELQPwQCcfpSJo_cgyLXKK3v1sz0dP8WxMpUGy7kfVZDxh-ofzir87MH_VCm4bskb07xjUWzJCy_dO7hgsH9NmesP1w8PLEnNg',
+      );
+      api.setRefreshToken(
+        'eyJhbGciOiJSUzUxMiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJhN2ZlYzdhZC0xMWVmLTQzNjktODY1My1kY2Q3ZmFiNTNmODEiLCJ0eXBlIjoicmVmcmVzaCIsImlhdCI6MTU1NDg3OTI2OCwiaXNzIjoiZGVhbGJ1bm55X2RldiIsInN1YiI6ImM3YTFjNzQ1LTdmODctNGE2Mi1iYzU2LThlYjAzZjYzZmEwNiJ9.Aw7HC6YtWVd6d7rGBApxSSswHlH_XbVnfydwd8NpDk2oGJUXG53kHWKl79t-7fDLBw92jgRiHHKkhSWmRdEKjY7sspregHgNWCWT77kWf8_uJBgIiNpRxhfr-GBo-yhDStmgnj8FRtB9v1Uy7NMFRYYw1_6RodCXOHqRr1PuVko',
+      );
+      const shouldRefresh = await api.timeToRefresh();
+      shouldRefresh.should.be.false;
     });
   });
 });
