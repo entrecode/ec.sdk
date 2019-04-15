@@ -1697,7 +1697,7 @@ export default class PublicAPI extends Core {
    * Login with token from magic link
    *
    * @param {{validationToken: string, useragent: stirng, ip: string}} body Login request body.
-   * @returns {Promise<{{access_token: string, refresh_token: string}}>} Login response with access_token and refresh_token.
+   * @returns {Promise<{access_token: string, refresh_token: string}>} Promise resolving to the issued token
    */
   async loginWithToken(body: {
     validationToken: string;
