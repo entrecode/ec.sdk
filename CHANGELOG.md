@@ -1,3 +1,10 @@
+## <small>0.20.2 (2019-04-15)</small>
+
+* release version 0.20.2 ([a9ff97d](https://github.com/entrecode/ec.sdk/commit/a9ff97d))
+* feat: grantTypes in DMClientResource editable SDK-125 ([ba45bf2](https://github.com/entrecode/ec.sdk/commit/ba45bf2))
+
+
+
 ## <small>0.20.1 (2019-04-15)</small>
 
 * release version 0.20.1 ([4db330c](https://github.com/entrecode/ec.sdk/commit/4db330c))

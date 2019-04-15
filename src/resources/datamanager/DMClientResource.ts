@@ -5,6 +5,7 @@ interface DMClientResource {
   callbackURL: string;
   clientID: string;
   tokenMethod: Array<string>;
+  grantTypes: Array<string>;
   disableStrategies: Array<string>;
   hexColor: string;
 }
@@ -17,6 +18,7 @@ interface DMClientResource {
  * @prop {string} clientID - name/id of this client.
  * @prop {string} callbackURL - url used for callback requests.
  * @prop {Array<string>} tokenMethod - list of available token methods.
+ * @prop {Array<string>} grantTypes - list of available token methods.
  * @prop {array<String>} disableStrategies - Strategies disabled in this client.
  * @prop {string} hexColor - hex color for this client.
  */
@@ -46,6 +48,11 @@ class DMClientResource extends Resource {
         enumerable: true,
         get: () => <Array<string>>this.getProperty('tokenMethod'),
         set: (value: Array<string>) => this.setProperty('tokenMethod', value),
+      },
+      grantTypes: {
+        enumerable: true,
+        get: () => <Array<string>>this.getProperty('grantTypes'),
+        set: (value: Array<string>) => this.setProperty('grantTypes', value),
       },
       disableStrategies: {
         enumerable: true,
