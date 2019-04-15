@@ -1,3 +1,15 @@
+## <small>0.20.3 (2019-04-15)</small>
+
+* release version 0.20.3 ([d4ba001](https://github.com/entrecode/ec.sdk/commit/d4ba001))
+* feat: changed configurableSignupEdit return signature ([bd12d1b](https://github.com/entrecode/ec.sdk/commit/bd12d1b))
+* doc: fix jsdoc for loginWithToken ([16d3ec1](https://github.com/entrecode/ec.sdk/commit/16d3ec1))
+
+
+### BREAKING CHANGE
+
+* method signature changed – same as with 0.20.0
+
+
 ## <small>0.20.2 (2019-04-15)</small>
 
 * release version 0.20.2 ([a9ff97d](https://github.com/entrecode/ec.sdk/commit/a9ff97d))
