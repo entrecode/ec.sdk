@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset='utf-8' />
-  <title>ec.sdk 0.20.2 | Documentation</title>
+  <title>ec.sdk 0.20.3 | Documentation</title>
   <meta name='description' content='SDK for ec.api'>
   <meta name='viewport' content='width=device-width,initial-scale=1'>
   <link href='assets/bass.css' rel='stylesheet' />
@@ -15,7 +15,7 @@
       <div id='split-left' class='overflow-auto fs0 height-viewport-100'>
         <div class='py1 px2'>
           <h3 class='mb0 no-anchor'>ec.sdk</h3>
-          <div class='mb1'><code>0.20.2</code></div>
+          <div class='mb1'><code>0.20.3</code></div>
           <input
             placeholder='Filter'
             id='filter-input'
@@ -11286,7 +11286,7 @@ users (check not enforced).</p>
 
   <p>Programatically signup a user, mostly used for special register flows using legacy users or magic link login.</p>
 
-    <div class='pre p1 fill-light mt0'>configurableSignup(body: any)</div>
+    <div class='pre p1 fill-light mt0'>configurableSignup(body: any): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;{accountID: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, email: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, hasPassword: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>, pending: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>}></div>
   
   
 
@@ -11314,6 +11314,14 @@ users (check not enforced).</p>
 
   
 
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;{accountID: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, email: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, hasPassword: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>, pending: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>}></code>:
+        Promise resolving to the created account
+
+      
+    
   
 
   
@@ -11346,7 +11354,7 @@ users (check not enforced).</p>
 
   <p>Programatically complete a signup with a single use validationToken, mostly used for special register flows using legacy users or magic link login.</p>
 
-    <div class='pre p1 fill-light mt0'>configurableSignupEdit(body: any)</div>
+    <div class='pre p1 fill-light mt0'>configurableSignupEdit(body: any): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;{access_token: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, refresh_token: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>}></div>
   
   
 
@@ -11374,6 +11382,14 @@ users (check not enforced).</p>
 
   
 
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;{access_token: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, refresh_token: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>}></code>:
+        Promise resolving to the issued token
+
+      
+    
   
 
   
@@ -11528,7 +11544,7 @@ users (check not enforced).</p>
 
   <p>Login with token from magic link</p>
 
-    <div class='pre p1 fill-light mt0'>loginWithToken(body: {validationToken: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, useragent: stirng, ip: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>})</div>
+    <div class='pre p1 fill-light mt0'>loginWithToken(body: {validationToken: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, useragent: stirng, ip: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>}): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;{access_token: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, refresh_token: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>}></div>
   
   
 
@@ -11557,6 +11573,14 @@ users (check not enforced).</p>
 
   
 
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;{access_token: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, refresh_token: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>}></code>:
+        Promise resolving to the issued token
+
+      
+    
   
 
   
