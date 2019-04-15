@@ -1524,9 +1524,16 @@ describe('PublicAPI', () => {
     it('should be rejected on configurableSignupEdit no validationToken', () => {
       return api.configurableSignupEdit({}).should.be.rejectedWith('validationToken must be defined in body');
     });
+    it('should be rejected on configurableSignupEdit no clientID', () => {
+      return api
+        .configurableSignupEdit({ validationToken: 'asdf' })
+        .should.be.rejectedWith('clientID must be set with PublicAPI#setClientID(clientID: string)');
+    });
     it('should call configurableSignupEdit', () => {
       const stub = sinon.stub(helper, 'put');
       stub.returns(resolver('configurable-signup-edit.json'));
+
+      api.setClientID('rest');
 
       return api
         .configurableSignupEdit({
@@ -1591,9 +1598,16 @@ describe('PublicAPI', () => {
     it('should be rejected on loginWithToken no validationToken', () => {
       return api.loginWithToken({}).should.be.rejectedWith('validationToken must be defined in body');
     });
+    it('should be rejected on loginWithToken with no clientID', () => {
+      return api
+        .loginWithToken({ validationToken: 'validationToken' })
+        .should.be.rejectedWith('clientID must be set with PublicAPI#setClientID(clientID: string)');
+    });
     it('should call loginWithToken', () => {
       const stub = sinon.stub(helper, 'post');
       stub.returns(resolver('email-login-token.json'));
+
+      api.setClientID('rest');
 
       return api
         .loginWithToken({ validationToken: 'validationToken' })
