@@ -1,3 +1,11 @@
+## <small>0.20.1 (2019-04-15)</small>
+
+* release version 0.20.1 ([4db330c](https://github.com/entrecode/ec.sdk/commit/4db330c))
+* feat: change error stacktrace ([f6955c6](https://github.com/entrecode/ec.sdk/commit/f6955c6))
+* chore: fix typo ([2698576](https://github.com/entrecode/ec.sdk/commit/2698576))
+
+
+
 ## 0.20.0 (2019-04-11)
 
 * release version 0.20.0 ([a1ac5ae](https://github.com/entrecode/ec.sdk/commit/a1ac5ae))

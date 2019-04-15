@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset='utf-8' />
-  <title>ec.sdk 0.20.0 | Documentation</title>
+  <title>ec.sdk 0.20.1 | Documentation</title>
   <meta name='description' content='SDK for ec.api'>
   <meta name='viewport' content='width=device-width,initial-scale=1'>
   <link href='assets/bass.css' rel='stylesheet' />
@@ -15,7 +15,7 @@
       <div id='split-left' class='overflow-auto fs0 height-viewport-100'>
         <div class='py1 px2'>
           <h3 class='mb0 no-anchor'>ec.sdk</h3>
-          <div class='mb1'><code>0.20.0</code></div>
+          <div class='mb1'><code>0.20.1</code></div>
           <input
             placeholder='Filter'
             id='filter-input'
@@ -3163,9 +3163,9 @@
               
                 
                 <li><a
-                  href='#eventeventrefresherror'
+                  href='#eventeventrefresh'
                   class="">
-                  Event#refreshError
+                  Event#refresh
                   
                 </a>
                 
@@ -3173,9 +3173,9 @@
               
                 
                 <li><a
-                  href='#eventeventrefresh'
+                  href='#eventeventrefresherror'
                   class="">
-                  Event#refresh
+                  Event#refreshError
                   
                 </a>
                 
@@ -33376,7 +33376,13 @@ be the same object but with refreshed data.
     </h2>
 
     
-      <h2>0.20.0 (2019-04-11)</h2>
+      <h2><small>0.20.1 (2019-04-15)</small></h2>
+<ul>
+<li>release version 0.20.1 (<a href="https://github.com/entrecode/ec.sdk/commit/4db330c">4db330c</a>)</li>
+<li>feat: change error stacktrace (<a href="https://github.com/entrecode/ec.sdk/commit/f6955c6">f6955c6</a>)</li>
+<li>chore: fix typo (<a href="https://github.com/entrecode/ec.sdk/commit/2698576">2698576</a>)</li>
+</ul>
+<h2>0.20.0 (2019-04-11)</h2>
 <ul>
 <li>release version 0.20.0 (<a href="https://github.com/entrecode/ec.sdk/commit/a1ac5ae">a1ac5ae</a>)</li>
 <li>feat: allow other clientIDs than rest SDK-123 (<a href="https://github.com/entrecode/ec.sdk/commit/d1733b8">d1733b8</a>)</li>
@@ -35043,21 +35049,21 @@ accounts.account(…);</pre>
   
   <div class='clearfix'>
     
-    <h3 class='fl m0' id='eventeventrefresherror'>
-      Event#refreshError
+    <h3 class='fl m0' id='eventeventrefresh'>
+      Event#refresh
     </h3>
     
     
   </div>
   
 
-  <p>Refresh error event is emitted when a token is automatically refreshed.</p>
+  <p>Refresh event is emitted when a token is automatically refreshed.</p>
 
-    <div class='pre p1 fill-light mt0'>Event#refreshError</div>
+    <div class='pre p1 fill-light mt0'>Event#refresh</div>
   
     <p>
       Type:
-      <a href="#problem">Problem</a>
+      {access_token: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, refresh_token: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>}
     </p>
   
   
@@ -35096,21 +35102,21 @@ accounts.account(…);</pre>
   
   <div class='clearfix'>
     
-    <h3 class='fl m0' id='eventeventrefresh'>
-      Event#refresh
+    <h3 class='fl m0' id='eventeventrefresherror'>
+      Event#refreshError
     </h3>
     
     
   </div>
   
 
-  <p>Refresh event is emitted when a token is automatically refreshed.</p>
+  <p>Refresh error event is emitted when a token is automatically refreshed.</p>
 
-    <div class='pre p1 fill-light mt0'>Event#refresh</div>
+    <div class='pre p1 fill-light mt0'>Event#refreshError</div>
   
     <p>
       Type:
-      {access_token: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, refresh_token: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>}
+      <a href="#problem">Problem</a>
     </p>
   
   
