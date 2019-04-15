@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset='utf-8' />
-  <title>ec.sdk 0.20.3 | Documentation</title>
+  <title>ec.sdk 0.20.4 | Documentation</title>
   <meta name='description' content='SDK for ec.api'>
   <meta name='viewport' content='width=device-width,initial-scale=1'>
   <link href='assets/bass.css' rel='stylesheet' />
@@ -15,7 +15,7 @@
       <div id='split-left' class='overflow-auto fs0 height-viewport-100'>
         <div class='py1 px2'>
           <h3 class='mb0 no-anchor'>ec.sdk</h3>
-          <div class='mb1'><code>0.20.3</code></div>
+          <div class='mb1'><code>0.20.4</code></div>
           <input
             placeholder='Filter'
             id='filter-input'
@@ -3153,6 +3153,16 @@
               
                 
                 <li><a
+                  href='#eventeventrefresherror'
+                  class="">
+                  Event#refreshError
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
                   href='#eventeventrefresh'
                   class="">
                   Event#refresh
@@ -3166,16 +3176,6 @@
                   href='#eventeventsignup'
                   class="">
                   Event#signup
-                  
-                </a>
-                
-                </li>
-              
-                
-                <li><a
-                  href='#eventeventrefresherror'
-                  class="">
-                  Event#refreshError
                   
                 </a>
                 
@@ -33407,7 +33407,12 @@ be the same object but with refreshed data.
     </h2>
 
     
-      <h2><small>0.20.3 (2019-04-15)</small></h2>
+      <h2><small>0.20.4 (2019-04-15)</small></h2>
+<ul>
+<li>release version 0.20.4 (<a href="https://github.com/entrecode/ec.sdk/commit/97ef4b8">97ef4b8</a>)</li>
+<li>feat: clientID on configurableSignupEdit and loginWithToken SDK-123 (<a href="https://github.com/entrecode/ec.sdk/commit/eef12d9">eef12d9</a>)</li>
+</ul>
+<h2><small>0.20.3 (2019-04-15)</small></h2>
 <ul>
 <li>release version 0.20.3 (<a href="https://github.com/entrecode/ec.sdk/commit/d4ba001">d4ba001</a>)</li>
 <li>feat: changed configurableSignupEdit return signature (<a href="https://github.com/entrecode/ec.sdk/commit/bd12d1b">bd12d1b</a>)</li>
@@ -35042,6 +35047,59 @@ accounts.account(…);</pre>
   
   <div class='clearfix'>
     
+    <h3 class='fl m0' id='eventeventrefresherror'>
+      Event#refreshError
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Refresh error event is emitted when a token is automatically refreshed.</p>
+
+    <div class='pre p1 fill-light mt0'>Event#refreshError</div>
+  
+    <p>
+      Type:
+      <a href="#problem">Problem</a>
+    </p>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
     <h3 class='fl m0' id='eventeventrefresh'>
       Event#refresh
     </h3>
@@ -35110,59 +35168,6 @@ accounts.account(…);</pre>
     <p>
       Type:
       {access_token: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, refresh_token: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>}
-    </p>
-  
-  
-
-  
-  
-  
-  
-  
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-</section>
-
-          
-        
-          
-          <section class='p2 mb2 clearfix bg-white minishadow'>
-
-  
-  <div class='clearfix'>
-    
-    <h3 class='fl m0' id='eventeventrefresherror'>
-      Event#refreshError
-    </h3>
-    
-    
-  </div>
-  
-
-  <p>Refresh error event is emitted when a token is automatically refreshed.</p>
-
-    <div class='pre p1 fill-light mt0'>Event#refreshError</div>
-  
-    <p>
-      Type:
-      <a href="#problem">Problem</a>
     </p>
   
   

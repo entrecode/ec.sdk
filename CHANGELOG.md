@@ -1,3 +1,10 @@
+## <small>0.20.4 (2019-04-15)</small>
+
+* release version 0.20.4 ([97ef4b8](https://github.com/entrecode/ec.sdk/commit/97ef4b8))
+* feat: clientID on configurableSignupEdit and loginWithToken SDK-123 ([eef12d9](https://github.com/entrecode/ec.sdk/commit/eef12d9))
+
+
+
 ## <small>0.20.3 (2019-04-15)</small>
 
 * release version 0.20.3 ([d4ba001](https://github.com/entrecode/ec.sdk/commit/d4ba001))
