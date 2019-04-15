@@ -1102,7 +1102,7 @@ export default class PublicAPI extends Core {
    * @param {string} password password of the user
    * @returns {Promise<{access_token: string, refresh_token: string}>} Promise resolving to the issued token
    */
-  login(email: string, password: string): Promise<{ access_token: string, refresh_token: string }> {
+  login(email: string, password: string): Promise<{ access_token: string; refresh_token: string }> {
     return Promise.resolve()
       .then(() => {
         if (this[tokenStoreSymbol].hasToken()) {
@@ -1400,10 +1400,10 @@ export default class PublicAPI extends Core {
    * When the logged in user has a refresh token this function will do the token refresh. On successful
    * refreshal PublicAPI will emmit the event `refresh`, if it failes it will emmit `refreshError`. You
    * MUST handle these events.
-   * 
+   *
    * @returns {{access_token: string, refresh_token: string}} Returns the new token response on successful refresh
    */
-  doRefreshToken(): Promise<{ access_token: string, refresh_token: string }> {
+  doRefreshToken(): Promise<{ access_token: string; refresh_token: string }> {
     if (!this[refreshRequestSymbol]) {
       this[refreshRequestSymbol] = Promise.resolve().then(async () => {
         if (!this[tokenStoreSymbol].getClientID()) {
@@ -1492,7 +1492,7 @@ export default class PublicAPI extends Core {
    * @param {string?} invite optional invite. signup can be declined without invite.
    * @returns {Promise<{access_token: string, refresh_token: string}>} Promise resolving with the token
    */
-  signup(email: string, password: string, invite?: string): Promise<{ access_token: string, refresh_token: string }> {
+  signup(email: string, password: string, invite?: string): Promise<{ access_token: string; refresh_token: string }> {
     return Promise.resolve()
       .then(() => {
         if (!email) {
@@ -1703,7 +1703,7 @@ export default class PublicAPI extends Core {
     validationToken: string;
     userAgent?: string;
     ip?: string;
-  }): Promise<{ access_token: string, refresh_token: string }> {
+  }): Promise<{ access_token: string; refresh_token: string }> {
     if (!body || typeof body !== 'object') {
       throw new Error('body must be defined');
     }

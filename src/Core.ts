@@ -497,10 +497,12 @@ export default class Core {
           console.warn(`Error refreshing: ${err.message}`);
         });
     }
-    // const trace = new Error('message').stack || 'message';
+
+    const trace = new Error('message').stack || 'message';
     try {
       return await fkt().catch((err) => {
-        // err.stack = trace.replace('message', err.message);
+        err.originalStack = err.stack;
+        err.stack = trace.replace('message', err.message);
         throw err;
       });
     } catch (err) {
