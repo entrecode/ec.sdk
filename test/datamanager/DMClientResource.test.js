@@ -73,7 +73,7 @@ describe('DMClient Resource', () => {
     resource.should.be.instanceOf(DMClientResource);
   });
 
-  const getter = ['clientID', 'callbackURL', 'hexColor', 'disableStrategies', 'tokenMethod'];
+  const getter = ['clientID', 'callbackURL', 'hexColor', 'disableStrategies', 'tokenMethod', 'grantTypes'];
   getter.forEach((name) => {
     it(`should call resource.getProperty with ${name}`, () => {
       const spy = sinon.spy(resource, 'getProperty');
@@ -87,7 +87,7 @@ describe('DMClient Resource', () => {
     });
   });
 
-  const setter = ['callbackURL', 'hexColor', 'disableStrategies', 'tokenMethod'];
+  const setter = ['callbackURL', 'hexColor', 'disableStrategies', 'tokenMethod', 'grantTypes'];
   setter.forEach((name) => {
     it(`should call resource.setProperty with ${name}`, () => {
       const spy = sinon.spy(resource, 'setProperty');
