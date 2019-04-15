@@ -1534,7 +1534,7 @@ describe('PublicAPI', () => {
           pending: false,
         })
         .then((res) => {
-          res.should.be.equal('accessToken');
+          res.token.should.be.equal('accessToken');
           stub.restore();
         })
         .catch((err) => {

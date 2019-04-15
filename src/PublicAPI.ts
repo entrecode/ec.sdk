@@ -1603,6 +1603,7 @@ export default class PublicAPI extends Core {
    * Programatically signup a user, mostly used for special register flows using legacy users or magic link login.
    *
    * @param {{email: string, password?: string, invite?: string, pending?: boolean, sendWelcomeMail?: boolean, anonymousToken?: string }} body Request body containing configuration options.
+   * @returns {Promise<{accountID: string, email: string, hasPassword: boolean, pending: boolean}>} Promise resolving to the created account
    */
   async configurableSignup(body: {
     email: string;
@@ -1633,6 +1634,7 @@ export default class PublicAPI extends Core {
    * Programatically complete a signup with a single use validationToken, mostly used for special register flows using legacy users or magic link login.
    *
    * @param {{validationToken: string, useragent?: string ip?: string, password?: string, pending?: string}} body Request body containing configuration options.
+   * @returns {Promise<{access_token: string, refresh_token: string}>} Promise resolving to the issued token
    */
   async configurableSignupEdit(body: {
     validationToken: string;
@@ -1640,7 +1642,7 @@ export default class PublicAPI extends Core {
     ip?: string;
     password?: string;
     pending?: string;
-  }): Promise<string> {
+  }): Promise<{ access_token: string; refresh_token: string }> {
     if (!body || typeof body !== 'object') {
       throw new Error('body must be defined');
     }
@@ -1651,7 +1653,7 @@ export default class PublicAPI extends Core {
     const request = await this.follow(`${this[shortIDSymbol]}:_auth/api/signup`);
     const [response] = await this.dispatch(() => put(this[environmentSymbol], request, body));
 
-    return response.token;
+    return response;
   }
 
   /**
@@ -1697,7 +1699,7 @@ export default class PublicAPI extends Core {
    * Login with token from magic link
    *
    * @param {{validationToken: string, useragent: stirng, ip: string}} body Login request body.
-   * @returns {Promise<{{access_token: string, refresh_token: string}}>} Login response with access_token and refresh_token.
+   * @returns {Promise<{access_token: string, refresh_token: string}>} Promise resolving to the issued token
    */
   async loginWithToken(body: {
     validationToken: string;
