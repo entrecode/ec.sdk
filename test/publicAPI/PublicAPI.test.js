@@ -1527,7 +1527,7 @@ describe('PublicAPI', () => {
     it('should be rejected on configurableSignupEdit no clientID', () => {
       return api
         .configurableSignupEdit({ validationToken: 'asdf' })
-        .should.be.rejectedWith('clientID must be set with PublicAPI#setClientID(clientID: string)');
+        .should.be.rejectedWith('clientID must be set with PublicAPI#setClientID(clientID: string) or sent in body');
     });
     it('should call configurableSignupEdit', () => {
       const stub = sinon.stub(helper, 'put');
@@ -1601,11 +1601,13 @@ describe('PublicAPI', () => {
     it('should be rejected on loginWithToken with no clientID', () => {
       return api
         .loginWithToken({ validationToken: 'validationToken' })
-        .should.be.rejectedWith('clientID must be set with PublicAPI#setClientID(clientID: string)');
+        .should.be.rejectedWith('clientID must be set with PublicAPI#setClientID(clientID: string) or sent in body');
     });
     it('should call loginWithToken', () => {
       const stub = sinon.stub(helper, 'post');
       stub.returns(resolver('email-login-token.json'));
+      const getStub = sinon.stub(helper, 'get');
+      getStub.returns(resolver('public-dm-root.json'));
 
       api.setClientID('rest');
 
@@ -1616,9 +1618,11 @@ describe('PublicAPI', () => {
             'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJlbnRyZWNvZGVUZXN0IiwiaWF0IjoxNDg1NzgzNTg4LCJleHAiOjQ2NDE0NTcxODgsImF1ZCI6IlRlc3QiLCJzdWIiOiJ0ZXN0QGVudHJlY29kZS5kZSJ9.Vhrq5GR2hNz-RoAhdlnIIWHelPciBPCemEa74s7cXn8',
           );
           stub.restore();
+          getStub.restore();
         })
         .catch((err) => {
           stub.restore();
+          getStub.restore();
           throw err;
         });
     });

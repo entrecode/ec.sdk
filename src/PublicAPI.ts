@@ -1642,6 +1642,7 @@ export default class PublicAPI extends Core {
     ip?: string;
     password?: string;
     pending?: string;
+    clientID?: string;
   }): Promise<{ access_token: string; refresh_token: string }> {
     if (!body || typeof body !== 'object') {
       throw new Error('body must be defined');
@@ -1650,11 +1651,15 @@ export default class PublicAPI extends Core {
       throw new Error('validationToken must be defined in body');
     }
 
-    const b = { };
+    const b: any = {};
     if (this[tokenStoreSymbol].hasClientID()) {
       Object.assign(b, { clientID: this[tokenStoreSymbol].getClientID() });
     }
     Object.assign(b, body);
+
+    if (!b.clientID) {
+      throw new Error('clientID must be set with PublicAPI#setClientID(clientID: string) or sent in body');
+    }
 
     const request = await this.follow(`${this[shortIDSymbol]}:_auth/api/signup`);
     const [response] = await this.dispatch(() => put(this[environmentSymbol], request, b));
@@ -1711,6 +1716,7 @@ export default class PublicAPI extends Core {
     validationToken: string;
     userAgent?: string;
     ip?: string;
+    clientID?: string;
   }): Promise<{ access_token: string; refresh_token: string }> {
     if (!body || typeof body !== 'object') {
       throw new Error('body must be defined');
@@ -1719,15 +1725,19 @@ export default class PublicAPI extends Core {
       throw new Error('validationToken must be defined in body');
     }
 
-    const b = { };
+    const b: any = {};
     if (this[tokenStoreSymbol].hasClientID()) {
       Object.assign(b, { clientID: this[tokenStoreSymbol].getClientID() });
     }
     Object.assign(b, body);
 
+    if (!b.clientID) {
+      throw new Error('clientID must be set with PublicAPI#setClientID(clientID: string) or sent in body');
+    }
+
     const request = await this.follow(`${this[shortIDSymbol]}:_auth/api/login-token`);
     const [response] = await this.dispatch(() => post(this[environmentSymbol], request, b));
-    
+
     this[eventsSymbol].emit('login', response);
     return response;
   }
