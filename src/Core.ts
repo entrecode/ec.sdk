@@ -167,6 +167,42 @@ export default class Core {
     return this[tokenStoreSymbol].getToken();
   }
 
+  /**
+   * If you want to have access to the currently used refresh token you can call this function.
+   *
+   * @example
+   * console.log(accounts.getRefreshToken()); // will log current refresh token
+   *
+   * @returns {string} currently used refresh token
+   */
+  getRefreshToken(): string {
+    return this[tokenStoreSymbol].getRefreshToken();
+  }
+
+  /**
+   * Check if a access token is stored
+   *
+   * @example
+   * console.log(accounts.hasToken()); // will log true or false
+   *
+   * @returns {boolean} currently used token
+   */
+  hasToken(): boolean {
+    return this[tokenStoreSymbol].hasToken();
+  }
+
+  /**
+   * Check if a refresh token is stored
+   *
+   * @example
+   * console.log(accounts.hasRefreshToken()); // will log true or false
+   *
+   * @returns {boolean} currently used token
+   */
+  hasRefreshToken(): boolean {
+    return this[tokenStoreSymbol].hasRefreshToken();
+  }
+
   link(link: string): Promise<any> {
     return Promise.resolve().then(() => {
       if (this[resourceSymbol] && this[traversalSymbol] && this[resourceSymbol].link(link) !== null) {

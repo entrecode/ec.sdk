@@ -1,3 +1,10 @@
+## <small>0.20.7 (2019-04-16)</small>
+
+* release version 0.20.7 ([28e0cdb](https://github.com/entrecode/ec.sdk/commit/28e0cdb))
+* feat: add Core#get/hasRefreshToken() ([ca4f262](https://github.com/entrecode/ec.sdk/commit/ca4f262))
+
+
+
 ## <small>0.20.6 (2019-04-16)</small>
 
 * only set clientID if not set ([a7ec5ae](https://github.com/entrecode/ec.sdk/commit/a7ec5ae))
