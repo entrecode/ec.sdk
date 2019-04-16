@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset='utf-8' />
-  <title>ec.sdk 0.20.7 | Documentation</title>
+  <title>ec.sdk 0.20.8 | Documentation</title>
   <meta name='description' content='SDK for ec.api'>
   <meta name='viewport' content='width=device-width,initial-scale=1'>
   <link href='assets/bass.css' rel='stylesheet' />
@@ -15,7 +15,7 @@
       <div id='split-left' class='overflow-auto fs0 height-viewport-100'>
         <div class='py1 px2'>
           <h3 class='mb0 no-anchor'>ec.sdk</h3>
-          <div class='mb1'><code>0.20.7</code></div>
+          <div class='mb1'><code>0.20.8</code></div>
           <input
             placeholder='Filter'
             id='filter-input'
@@ -3181,9 +3181,9 @@
               
                 
                 <li><a
-                  href='#eventeventrefresh'
+                  href='#eventeventsignup'
                   class="">
-                  Event#refresh
+                  Event#signup
                   
                 </a>
                 
@@ -3191,9 +3191,9 @@
               
                 
                 <li><a
-                  href='#eventeventsignup'
+                  href='#eventeventrefresh'
                   class="">
-                  Event#signup
+                  Event#refresh
                   
                 </a>
                 
@@ -35318,17 +35318,17 @@ accounts.account(…);</pre>
   
   <div class='clearfix'>
     
-    <h3 class='fl m0' id='eventeventrefresh'>
-      Event#refresh
+    <h3 class='fl m0' id='eventeventsignup'>
+      Event#signup
     </h3>
     
     
   </div>
   
 
-  <p>Refresh event is emitted when a token is automatically refreshed.</p>
+  <p>Signup event is emitted when a login succeeds with <a href="#publicapisignup">PublicAPI#signup</a>.</p>
 
-    <div class='pre p1 fill-light mt0'>Event#refresh</div>
+    <div class='pre p1 fill-light mt0'>Event#signup</div>
   
     <p>
       Type:
@@ -35371,17 +35371,17 @@ accounts.account(…);</pre>
   
   <div class='clearfix'>
     
-    <h3 class='fl m0' id='eventeventsignup'>
-      Event#signup
+    <h3 class='fl m0' id='eventeventrefresh'>
+      Event#refresh
     </h3>
     
     
   </div>
   
 
-  <p>Signup event is emitted when a login succeeds with <a href="#publicapisignup">PublicAPI#signup</a>.</p>
+  <p>Refresh event is emitted when a token is automatically refreshed.</p>
 
-    <div class='pre p1 fill-light mt0'>Event#signup</div>
+    <div class='pre p1 fill-light mt0'>Event#refresh</div>
   
     <p>
       Type:
