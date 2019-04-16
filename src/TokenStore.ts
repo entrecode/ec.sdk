@@ -93,8 +93,8 @@ export class TokenStore {
    * @returns {string} The token or undefined.
    */
   getRefreshToken(): string {
-    if (!this.token && typeof document !== 'undefined') {
-      this.token = cookie.get(`${this.environment}RefreshToken`) as string;
+    if (!this.refreshToken && typeof document !== 'undefined') {
+      this.refreshToken = cookie.get(`${this.environment}RefreshToken`) as string;
     }
 
     return this.refreshToken as string;
