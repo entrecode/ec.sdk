@@ -1650,10 +1650,11 @@ export default class PublicAPI extends Core {
       throw new Error('validationToken must be defined in body');
     }
 
-    if (!this[tokenStoreSymbol].hasClientID()) {
-      throw new Error('clientID must be set with PublicAPI#setClientID(clientID: string)');
+    const b = { };
+    if (this[tokenStoreSymbol].hasClientID()) {
+      Object.assign(b, { clientID: this[tokenStoreSymbol].getClientID() });
     }
-    const b = Object.assign({}, body, { clientID: this[tokenStoreSymbol].getClientID() });
+    Object.assign(b, body);
 
     const request = await this.follow(`${this[shortIDSymbol]}:_auth/api/signup`);
     const [response] = await this.dispatch(() => put(this[environmentSymbol], request, b));
@@ -1718,10 +1719,11 @@ export default class PublicAPI extends Core {
       throw new Error('validationToken must be defined in body');
     }
 
-    if (!this[tokenStoreSymbol].hasClientID()) {
-      throw new Error('clientID must be set with PublicAPI#setClientID(clientID: string)');
+    const b = { };
+    if (this[tokenStoreSymbol].hasClientID()) {
+      Object.assign(b, { clientID: this[tokenStoreSymbol].getClientID() });
     }
-    const b = Object.assign({}, body, { clientID: this[tokenStoreSymbol].getClientID() });
+    Object.assign(b, body);
 
     const request = await this.follow(`${this[shortIDSymbol]}:_auth/api/login-token`);
     const [response] = await this.dispatch(() => post(this[environmentSymbol], request, b));
