@@ -1,3 +1,11 @@
+## <small>0.20.8 (2019-04-16)</small>
+
+* merge release/0.20.7 into develop ([21d573c](https://github.com/entrecode/ec.sdk/commit/21d573c))
+* release version 0.20.8 ([8d3738d](https://github.com/entrecode/ec.sdk/commit/8d3738d))
+* fix: wrong cookie on refresh token ([4c0a2fe](https://github.com/entrecode/ec.sdk/commit/4c0a2fe))
+
+
+
 ## <small>0.20.7 (2019-04-16)</small>
 
 * release version 0.20.7 ([28e0cdb](https://github.com/entrecode/ec.sdk/commit/28e0cdb))
