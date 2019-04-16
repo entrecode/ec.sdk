@@ -1725,11 +1725,7 @@ export default class PublicAPI extends Core {
 
     const request = await this.follow(`${this[shortIDSymbol]}:_auth/api/login-token`);
     const [response] = await this.dispatch(() => post(this[environmentSymbol], request, b));
-
-    if (response.refresh_token) {
-      this[tokenStoreSymbol].setRefreshToken(response.refresh_token);
-    }
-    this[tokenStoreSymbol].setToken(response.access_token || response.token);
+    
     this[eventsSymbol].emit('login', response);
     return response;
   }
