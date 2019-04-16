@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset='utf-8' />
-  <title>ec.sdk 0.20.6 | Documentation</title>
+  <title>ec.sdk 0.20.7 | Documentation</title>
   <meta name='description' content='SDK for ec.api'>
   <meta name='viewport' content='width=device-width,initial-scale=1'>
   <link href='assets/bass.css' rel='stylesheet' />
@@ -15,7 +15,7 @@
       <div id='split-left' class='overflow-auto fs0 height-viewport-100'>
         <div class='py1 px2'>
           <h3 class='mb0 no-anchor'>ec.sdk</h3>
-          <div class='mb1'><code>0.20.6</code></div>
+          <div class='mb1'><code>0.20.7</code></div>
           <input
             placeholder='Filter'
             id='filter-input'
@@ -101,6 +101,24 @@
                         href='#coregettoken'
                         class='regular pre-open'>
                         #getToken
+                      </a></li>
+                      
+                      <li><a
+                        href='#coregetrefreshtoken'
+                        class='regular pre-open'>
+                        #getRefreshToken
+                      </a></li>
+                      
+                      <li><a
+                        href='#corehastoken'
+                        class='regular pre-open'>
+                        #hasToken
+                      </a></li>
+                      
+                      <li><a
+                        href='#corehasrefreshtoken'
+                        class='regular pre-open'>
+                        #hasRefreshToken
                       </a></li>
                       
                       <li><a
@@ -3153,9 +3171,9 @@
               
                 
                 <li><a
-                  href='#eventeventsignup'
+                  href='#eventeventrefresherror'
                   class="">
-                  Event#signup
+                  Event#refreshError
                   
                 </a>
                 
@@ -3163,9 +3181,9 @@
               
                 
                 <li><a
-                  href='#eventeventrefresherror'
+                  href='#eventeventsignup'
                   class="">
-                  Event#refreshError
+                  Event#signup
                   
                 </a>
                 
@@ -3813,6 +3831,189 @@ appear/disappear when login state changes.</p>
     
       
       <pre class='p1 overflow-auto round fill-light'><span class="hljs-built_in">console</span>.log(accounts.getToken()); <span class="hljs-comment">// will log current token</span></pre>
+    
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='coregetrefreshtoken'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>getRefreshToken()</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>If you want to have access to the currently used refresh token you can call this function.</p>
+
+    <div class='pre p1 fill-light mt0'>getRefreshToken(): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>:
+        currently used refresh token
+
+      
+    
+  
+
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-built_in">console</span>.log(accounts.getRefreshToken()); <span class="hljs-comment">// will log current refresh token</span></pre>
+    
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='corehastoken'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>hasToken()</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Check if a access token is stored</p>
+
+    <div class='pre p1 fill-light mt0'>hasToken(): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code>:
+        currently used token
+
+      
+    
+  
+
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-built_in">console</span>.log(accounts.hasToken()); <span class="hljs-comment">// will log true or false</span></pre>
+    
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='corehasrefreshtoken'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>hasRefreshToken()</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Check if a refresh token is stored</p>
+
+    <div class='pre p1 fill-light mt0'>hasRefreshToken(): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code>:
+        currently used token
+
+      
+    
+  
+
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-built_in">console</span>.log(accounts.hasRefreshToken()); <span class="hljs-comment">// will log true or false</span></pre>
     
   
 
@@ -35059,21 +35260,21 @@ accounts.account(…);</pre>
   
   <div class='clearfix'>
     
-    <h3 class='fl m0' id='eventeventsignup'>
-      Event#signup
+    <h3 class='fl m0' id='eventeventrefresherror'>
+      Event#refreshError
     </h3>
     
     
   </div>
   
 
-  <p>Signup event is emitted when a login succeeds with <a href="#publicapisignup">PublicAPI#signup</a>.</p>
+  <p>Refresh error event is emitted when a token is automatically refreshed.</p>
 
-    <div class='pre p1 fill-light mt0'>Event#signup</div>
+    <div class='pre p1 fill-light mt0'>Event#refreshError</div>
   
     <p>
       Type:
-      {access_token: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, refresh_token: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>}
+      <a href="#problem">Problem</a>
     </p>
   
   
@@ -35112,21 +35313,21 @@ accounts.account(…);</pre>
   
   <div class='clearfix'>
     
-    <h3 class='fl m0' id='eventeventrefresherror'>
-      Event#refreshError
+    <h3 class='fl m0' id='eventeventsignup'>
+      Event#signup
     </h3>
     
     
   </div>
   
 
-  <p>Refresh error event is emitted when a token is automatically refreshed.</p>
+  <p>Signup event is emitted when a login succeeds with <a href="#publicapisignup">PublicAPI#signup</a>.</p>
 
-    <div class='pre p1 fill-light mt0'>Event#refreshError</div>
+    <div class='pre p1 fill-light mt0'>Event#signup</div>
   
     <p>
       Type:
-      <a href="#problem">Problem</a>
+      {access_token: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, refresh_token: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>}
     </p>
   
   
