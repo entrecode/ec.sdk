@@ -1,3 +1,10 @@
+## <small>0.20.5 (2019-04-16)</small>
+
+* release version 0.20.5 ([44fc98d](https://github.com/entrecode/ec.sdk/commit/44fc98d))
+* fix: do not save tokens in PublicAPI#loginWithToken ([4a87f3e](https://github.com/entrecode/ec.sdk/commit/4a87f3e))
+
+
+
 ## <small>0.20.4 (2019-04-15)</small>
 
 * release version 0.20.4 ([97ef4b8](https://github.com/entrecode/ec.sdk/commit/97ef4b8))
