@@ -1,3 +1,12 @@
+## <small>0.20.6 (2019-04-16)</small>
+
+* only set clientID if not set ([a7ec5ae](https://github.com/entrecode/ec.sdk/commit/a7ec5ae))
+* release version 0.20.6 ([8314873](https://github.com/entrecode/ec.sdk/commit/8314873))
+* feat: overwrite clientID on PublicAPI auth api ([5b95fed](https://github.com/entrecode/ec.sdk/commit/5b95fed))
+* fix: inner error typo in Core#dispatch ([468137e](https://github.com/entrecode/ec.sdk/commit/468137e))
+
+
+
 ## <small>0.20.5 (2019-04-16)</small>
 
 * release version 0.20.5 ([44fc98d](https://github.com/entrecode/ec.sdk/commit/44fc98d))

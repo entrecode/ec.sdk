@@ -510,8 +510,8 @@ export default class Core {
         throw err;
       }
       return this.doRefreshToken()
-        .catch((err) => {
-          console.warn(`Could not refresh token: ${err.message}`);
+        .catch((innerErr) => {
+          console.warn(`Could not refresh token: ${innerErr.message}`);
           // Error refreshing, raise first error;
           throw err;
         })
