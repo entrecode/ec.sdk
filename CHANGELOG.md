@@ -1,3 +1,10 @@
+## <small>0.20.9 (2019-04-17)</small>
+
+* release version 0.20.9 ([ed45c9e](https://github.com/entrecode/ec.sdk/commit/ed45c9e))
+* fix: only perform refresh is dispatch if token is set ([9edf52e](https://github.com/entrecode/ec.sdk/commit/9edf52e))
+
+
+
 ## <small>0.20.8 (2019-04-16)</small>
 
 * merge release/0.20.7 into develop ([21d573c](https://github.com/entrecode/ec.sdk/commit/21d573c))
