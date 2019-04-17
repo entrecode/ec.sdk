@@ -518,6 +518,15 @@ export default class Core {
   }
 
   /**
+   * Check if we can refresh a token
+   *
+   * @returns {boolean} Wether or not the refreshal can be performed.
+   */
+  canRefreshToken(): boolean {
+    return this[tokenStoreSymbol].hasRefreshToken();
+  }
+
+  /**
    * Dispatch a request for helper lib. This will handle token refreshal on every request and on 401 errors
    *
    * @param {function} fkt A function returning a Promise from any network helper in helper.js
@@ -542,7 +551,7 @@ export default class Core {
         throw err;
       });
     } catch (err) {
-      if (err.status !== 401) {
+      if (err.status !== 401 || !this.canRefreshToken()) {
         throw err;
       }
       return this.doRefreshToken()
