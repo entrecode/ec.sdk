@@ -891,6 +891,40 @@ export default class PublicAPI extends Core {
   }
 
   /**
+   * Call PublicAPI#refCount with model, field and desired ids to get a simple object with ref counts.
+   * 
+   * @example
+   * const counts = await api.refCount('myModel', 'myField', [entryID1, entryID2, ...entryIDn]);
+   * alert(`Entry ${entryID1} has ${counts[entryID1]} references`);
+   * 
+   * @param {string} model Model for which you want a ref count
+   * @param {string} field Field for which you want a ref count
+   * @param {Array<string>} ids Array of entry ids for which you want the ref count
+   */
+  async refCount(model: string, field: string, ids: Array<string>): Promise<{ [key: string]: number }> {
+    if (!model) {
+      throw new Error('model must be defined');
+    }
+
+    if (!field) {
+      throw new Error('field must be defined');
+    }
+
+    if (!ids || !Array.isArray(ids) || ids.some((i) => typeof i !== 'string')) {
+      throw new Error('ids must be defined and an array of strings');
+    }
+
+    const request = await this.follow('ec:api/dm-entryRefCount');
+    request.withTemplateParameters({
+      model,
+      field,
+      id: ids.join(','),
+    });
+    const [res] = await this.dispatch(() => get(this[environmentSymbol], request));
+    return res;
+  }
+
+  /**
    * This is a short hand for {@link Core#link} for auth links in public APIs. It will load
    * `${shortID}:_auth/${name}` link.
    *

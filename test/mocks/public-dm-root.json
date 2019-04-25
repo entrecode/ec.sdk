@@ -207,6 +207,10 @@
       "href": "https://dm-history.entrecode.de/entries?shortID=beefbeef{&modelID,entryID,size,fromEventNumber,fromDate,toDate}",
       "templated": true
     },
+    "ec:api/dm-entryRefCount": {
+      "href": "https://datamanager.cachena.entrecode.de/api/beefbeef/{model}/refcount/{field}{?id}",
+      "templated": true
+    },
     "beefbeef:_auth/anonymous": {
       "name": "Register new anonymous account (POST)",
       "href": "https://datamanager.entrecode.de/api/beefbeef/_auth/account{?validUntil}",
