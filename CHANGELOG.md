@@ -1,3 +1,13 @@
+## <small>0.20.10 (2019-04-26)</small>
+
+* release version 0.20.10 ([2c201ec](https://github.com/entrecode/ec.sdk/commit/2c201ec))
+* fix: invalid environment error in DataManager#getPublicAPI() SDK-121 ([0c6cced](https://github.com/entrecode/ec.sdk/commit/0c6cced))
+* feat: refCount in PublicAPI SDK-126 ([852e2c6](https://github.com/entrecode/ec.sdk/commit/852e2c6))
+* chore(package): update documentation to version 10.0.0 ([4d2e228](https://github.com/entrecode/ec.sdk/commit/4d2e228))
+* chore(package): update lockfile package-lock.json ([2ff3994](https://github.com/entrecode/ec.sdk/commit/2ff3994))
+
+
+
 ## <small>0.20.9 (2019-04-17)</small>
 
 * release version 0.20.9 ([ed45c9e](https://github.com/entrecode/ec.sdk/commit/ed45c9e))
