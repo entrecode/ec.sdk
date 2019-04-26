@@ -4,6 +4,7 @@ import * as ShiroTrie from 'shiro-trie';
 import * as superagent from 'superagent';
 import * as validator from 'json-schema-remote';
 import * as validate from 'validator';
+import * as shortID from 'shortid';
 
 const { convertValidationError, newError } = require('ec.errors')();
 
@@ -182,6 +183,16 @@ export default class PublicAPI extends Core {
         env.cookieModifier += id;
       } else {
         env.cookieModifier = id;
+      }
+    }
+
+    if (!(env.environment in urls)) {
+      const foundOne = Object.keys(urls).find((urlKey) => env.environment.indexOf(urlKey) !== -1);
+      if (foundOne) {
+        env.environment = foundOne;
+        env.cookieModifier += shortID.generate();
+      } else {
+        throw new Error('invalid environment specified');
       }
     }
 
@@ -892,11 +903,11 @@ export default class PublicAPI extends Core {
 
   /**
    * Call PublicAPI#refCount with model, field and desired ids to get a simple object with ref counts.
-   * 
+   *
    * @example
    * const counts = await api.refCount('myModel', 'myField', [entryID1, entryID2, ...entryIDn]);
    * alert(`Entry ${entryID1} has ${counts[entryID1]} references`);
-   * 
+   *
    * @param {string} model Model for which you want a ref count
    * @param {string} field Field for which you want a ref count
    * @param {Array<string>} ids Array of entry ids for which you want the ref count

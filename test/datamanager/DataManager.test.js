@@ -1170,6 +1170,12 @@ describe('DataManager Resource', () => {
     resource.getPublicAPI().should.be.instanceOf(PublicAPI);
     resource.getPublicAPI().should.have.property('shortID', 'beefbeef');
   });
+
+  it('should get public API', () => {
+    resource = new DataManagerResource(resourceJson, 'stagerandomid');
+    resource.getPublicAPI().should.be.instanceOf(PublicAPI);
+    resource.getPublicAPI().should.have.property('shortID', 'beefbeef');
+  });
   it('should get filter options', () => {
     return resource.getFilterOptions('model').then((options) => {
       options.should.be.an('array');
