@@ -3183,9 +3183,9 @@
               
                 
                 <li><a
-                  href='#eventeventrefresh'
+                  href='#eventeventsignup'
                   class="">
-                  Event#refresh
+                  Event#signup
                   
                 </a>
                 
@@ -3203,9 +3203,9 @@
               
                 
                 <li><a
-                  href='#eventeventsignup'
+                  href='#eventeventrefresh'
                   class="">
-                  Event#signup
+                  Event#refresh
                   
                 </a>
                 
@@ -33761,7 +33761,15 @@ be the same object but with refreshed data.
     </h2>
 
     
-      <h2><small>0.20.9 (2019-04-17)</small></h2>
+      <h2><small>0.20.10 (2019-04-26)</small></h2>
+<ul>
+<li>release version 0.20.10 (<a href="https://github.com/entrecode/ec.sdk/commit/2c201ec">2c201ec</a>)</li>
+<li>fix: invalid environment error in DataManager#getPublicAPI() SDK-121 (<a href="https://github.com/entrecode/ec.sdk/commit/0c6cced">0c6cced</a>)</li>
+<li>feat: refCount in PublicAPI SDK-126 (<a href="https://github.com/entrecode/ec.sdk/commit/852e2c6">852e2c6</a>)</li>
+<li>chore(package): update documentation to version 10.0.0 (<a href="https://github.com/entrecode/ec.sdk/commit/4d2e228">4d2e228</a>)</li>
+<li>chore(package): update lockfile package-lock.json (<a href="https://github.com/entrecode/ec.sdk/commit/2ff3994">2ff3994</a>)</li>
+</ul>
+<h2><small>0.20.9 (2019-04-17)</small></h2>
 <ul>
 <li>release version 0.20.9 (<a href="https://github.com/entrecode/ec.sdk/commit/ed45c9e">ed45c9e</a>)</li>
 <li>fix: only perform refresh is dispatch if token is set (<a href="https://github.com/entrecode/ec.sdk/commit/9edf52e">9edf52e</a>)</li>
@@ -35429,17 +35437,17 @@ accounts.account(…);</pre>
   
   <div class='clearfix'>
     
-    <h3 class='fl m0' id='eventeventrefresh'>
-      Event#refresh
+    <h3 class='fl m0' id='eventeventsignup'>
+      Event#signup
     </h3>
     
     
   </div>
   
 
-  <p>Refresh event is emitted when a token is automatically refreshed.</p>
+  <p>Signup event is emitted when a login succeeds with <a href="#publicapisignup">PublicAPI#signup</a>.</p>
 
-    <div class='pre p1 fill-light mt0'>Event#refresh</div>
+    <div class='pre p1 fill-light mt0'>Event#signup</div>
   
     <p>
       Type:
@@ -35535,17 +35543,17 @@ accounts.account(…);</pre>
   
   <div class='clearfix'>
     
-    <h3 class='fl m0' id='eventeventsignup'>
-      Event#signup
+    <h3 class='fl m0' id='eventeventrefresh'>
+      Event#refresh
     </h3>
     
     
   </div>
   
 
-  <p>Signup event is emitted when a login succeeds with <a href="#publicapisignup">PublicAPI#signup</a>.</p>
+  <p>Refresh event is emitted when a token is automatically refreshed.</p>
 
-    <div class='pre p1 fill-light mt0'>Event#signup</div>
+    <div class='pre p1 fill-light mt0'>Event#refresh</div>
   
     <p>
       Type:
