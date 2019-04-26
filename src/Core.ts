@@ -75,7 +75,13 @@ export default class Core {
     }
 
     if (!(environment in urls)) {
-      throw new Error('invalid environment specified');
+      const foundOne = Object.keys(urls).find((urlKey) => environment.indexOf(urlKey) !== -1);
+      if (foundOne) {
+        environment = foundOne;
+        cookieModifier += shortID.generate();
+      } else {
+        throw new Error('invalid environment specified');
+      }
     }
 
     this[environmentSymbol] = environment + cookieModifier;

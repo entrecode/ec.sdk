@@ -530,6 +530,42 @@ describe('PublicAPI', () => {
     return api.entryList().should.be.rejectedWith('model must be defined');
   });
 
+  it('should resolve on refcount', () => {
+    const stub = sinon.stub(helper, 'get');
+    stub.onFirstCall().returns(resolver('public-dm-root.json'));
+    stub.onSecondCall().returns(resolver('refcount.json'));
+
+    return api
+      .refCount('allFields', 'entry', ['id'])
+      .then((count) => {
+        count.should.have.property('mlGMzYdI4Q', 2);
+        stub.restore();
+      })
+      .catch((err) => {
+        stub.restore();
+        throw err;
+      });
+  });
+  it('should throw on refcount no model', () => {
+    return api.refCount().should.be.rejectedWith('model must be defined');
+  });
+  it('should throw on refcount no field', () => {
+    return api.refCount('mymodel').should.be.rejectedWith('field must be defined');
+  });
+  it('should throw on refcount no ids', () => {
+    return api.refCount('mymodel', 'myfield').should.be.rejectedWith('ids must be defined and an array of strings');
+  });
+  it('should throw on refcount ids not an array', () => {
+    return api
+      .refCount('mymodel', 'myfield', 'notanarray')
+      .should.be.rejectedWith('ids must be defined and an array of strings');
+  });
+  it('should throw on refcount ids not an array of strings', () => {
+    return api
+      .refCount('mymodel', 'myfield', [1])
+      .should.be.rejectedWith('ids must be defined and an array of strings');
+  });
+
   it('should resolve on entry', () => {
     const stub = sinon.stub(helper, 'get');
     stub.onFirstCall().returns(resolver('public-dm-root.json'));
