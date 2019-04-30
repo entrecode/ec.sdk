@@ -268,6 +268,27 @@ export default class PublicAPI extends Core {
   }
 
   /**
+   * Load the list of assetGroupIDs.
+   *
+   * @param {boolean?} reload whether or not to force reload
+   * @returns {Promise<Array<string>>} Resolves to an array with all available asssetGroupIDs
+   */
+  assetGroupList(reload: boolean = false): Promise<any> {
+    return this.resolve(reload).then(() =>
+      Object.keys(this[resourceSymbol].allLinks())
+        .map((key) => {
+          const result = /^ec:dm-assets\/(.*)$/.exec(key);
+          if (!result) {
+            return undefined;
+          }
+
+          return result[1];
+        })
+        .filter((x) => !!x),
+    );
+  }
+
+  /**
    * Load the {@link PublicAssetList}.
    *
    * @example
@@ -355,6 +376,74 @@ export default class PublicAPI extends Core {
         return this[requestCacheSymbol];
       })
       .then(() => <boolean>this[permissionsSymbol].check(permission));
+  }
+
+  /**
+   * Programatically signup a user, mostly used for special register flows using legacy users or magic link login.
+   *
+   * @param {{email: string, password?: string, invite?: string, pending?: boolean, sendWelcomeMail?: boolean, anonymousToken?: string }} body Request body containing configuration options.
+   * @returns {Promise<{accountID: string, email: string, hasPassword: boolean, pending: boolean}>} Promise resolving to the created account
+   */
+  async configurableSignup(body: {
+    email: string;
+    password?: string;
+    invite?: string;
+    pending?: boolean;
+    sendWelcomeMail?: boolean;
+    anonymousToken?: string;
+  }): Promise<{
+    accountID: string;
+    email: string;
+    hasPassword: boolean;
+    pending: boolean;
+  }> {
+    if (!body || typeof body !== 'object') {
+      throw new Error('body must be defined');
+    }
+    if (!('email' in body)) {
+      throw new Error('email must be defined in body');
+    }
+
+    const request = await this.follow(`${this[shortIDSymbol]}:_auth/api/signup`);
+    const [response] = await this.dispatch(() => post(this[environmentSymbol], request, body));
+    return response;
+  }
+
+  /**
+   * Programatically complete a signup with a single use validationToken, mostly used for special register flows using legacy users or magic link login.
+   *
+   * @param {{validationToken: string, useragent?: string ip?: string, password?: string, pending?: string}} body Request body containing configuration options.
+   * @returns {Promise<{access_token: string, refresh_token: string}>} Promise resolving to the issued token
+   */
+  async configurableSignupEdit(body: {
+    validationToken: string;
+    useragent?: string;
+    ip?: string;
+    password?: string;
+    pending?: string;
+    clientID?: string;
+  }): Promise<{ access_token: string; refresh_token: string }> {
+    if (!body || typeof body !== 'object') {
+      throw new Error('body must be defined');
+    }
+    if (!('validationToken' in body)) {
+      throw new Error('validationToken must be defined in body');
+    }
+
+    const b: any = {};
+    if (this[tokenStoreSymbol].hasClientID()) {
+      Object.assign(b, { clientID: this[tokenStoreSymbol].getClientID() });
+    }
+    Object.assign(b, body);
+
+    if (!b.clientID) {
+      throw new Error('clientID must be set with PublicAPI#setClientID(clientID: string) or sent in body');
+    }
+
+    const request = await this.follow(`${this[shortIDSymbol]}:_auth/api/signup`);
+    const [response] = await this.dispatch(() => put(this[environmentSymbol], request, b));
+
+    return response;
   }
 
   /**
@@ -758,6 +847,51 @@ export default class PublicAPI extends Core {
   }
 
   /**
+   * When the logged in user has a refresh token this function will do the token refresh. On successful
+   * refreshal PublicAPI will emmit the event `refresh`, if it failes it will emmit `refreshError`. You
+   * MUST handle these events.
+   *
+   * @returns {{access_token: string, refresh_token: string}} Returns the new token response on successful refresh
+   */
+  doRefreshToken(): Promise<{ access_token: string; refresh_token: string }> {
+    if (!this[refreshRequestSymbol]) {
+      this[refreshRequestSymbol] = Promise.resolve().then(async () => {
+        if (!this[tokenStoreSymbol].getClientID()) {
+          throw new Error('ClientID must be configured');
+        }
+
+        if (!this[tokenStoreSymbol].getRefreshToken()) {
+          throw new Error('no refresh token configured');
+        }
+
+        try {
+          const request = await this.follow(`${this[shortIDSymbol]}:_auth/token`);
+          // no dispatch since we are the one refreshing…
+          const [response] = await post(this[environmentSymbol], request, {
+            grant_type: 'refresh_token',
+            client_id: this[tokenStoreSymbol].getClientID(),
+            refresh_token: this[tokenStoreSymbol].getRefreshToken(),
+          });
+
+          if (response.refresh_token) {
+            this[tokenStoreSymbol].setRefreshToken(response.refresh_token);
+          }
+          this[tokenStoreSymbol].setToken(response.access_token);
+          this[eventsSymbol].emit('refresh', response);
+          this[refreshRequestSymbol] = undefined;
+          return response;
+        } catch (err) {
+          this[eventsSymbol].emit('refreshError', err);
+          this[refreshRequestSymbol] = undefined;
+          throw err;
+        }
+      });
+    }
+
+    return this[refreshRequestSymbol];
+  }
+
+  /**
    * Will check if the given email is available for login.
    *
    * @example
@@ -902,40 +1036,6 @@ export default class PublicAPI extends Core {
   }
 
   /**
-   * Call PublicAPI#refCount with model, field and desired ids to get a simple object with ref counts.
-   *
-   * @example
-   * const counts = await api.refCount('myModel', 'myField', [entryID1, entryID2, ...entryIDn]);
-   * alert(`Entry ${entryID1} has ${counts[entryID1]} references`);
-   *
-   * @param {string} model Model for which you want a ref count
-   * @param {string} field Field for which you want a ref count
-   * @param {Array<string>} ids Array of entry ids for which you want the ref count
-   */
-  async refCount(model: string, field: string, ids: Array<string>): Promise<{ [key: string]: number }> {
-    if (!model) {
-      throw new Error('model must be defined');
-    }
-
-    if (!field) {
-      throw new Error('field must be defined');
-    }
-
-    if (!ids || !Array.isArray(ids) || ids.some((i) => typeof i !== 'string')) {
-      throw new Error('ids must be defined and an array of strings');
-    }
-
-    const request = await this.follow('ec:api/dm-entryRefCount');
-    request.withTemplateParameters({
-      model,
-      field,
-      id: ids.join(','),
-    });
-    const [res] = await this.dispatch(() => get(this[environmentSymbol], request));
-    return res;
-  }
-
-  /**
    * This is a short hand for {@link Core#link} for auth links in public APIs. It will load
    * `${shortID}:_auth/${name}` link.
    *
@@ -952,54 +1052,44 @@ export default class PublicAPI extends Core {
   }
 
   /**
-   * Best file helper for files.
+   * Get the {@link DataManagerResource} for this PublicAPI Connector. Does only make sense for ec
+   * users (check not enforced).
    *
-   * @param {string} assetID - the assetID
-   * @returns {Promise<string>} URL to the file
+   * @returns {Promise<DataManagerResource>}
    */
-  getFileUrl(assetID: string): Promise<string> {
-    return <Promise<string>>this.getFileVariant(assetID);
+  getDataManagerResource(): Promise<DataManagerResource> {
+    const options: any = {};
+
+    if (this[cookieModifierSymbol].length === 0) {
+      options.environment = this[environmentSymbol];
+    } else {
+      options.environment = this[environmentSymbol];
+      options.cookieModifier = this[cookieModifierSymbol];
+    }
+
+    const dm = new DataManager(options);
+    dm.setToken(this.getToken());
+    return dm.dataManager(this.dataManagerID);
   }
 
   /**
-   * Generic file helper for images and thumbnails.
+   * Load the HistoryEvents for this DataManager from v3 API.
+   * Note: This Request only has pagination when you load a single modelID.
    *
-   * @param {string} assetID - assetID of the file requested. Can be legacy Asset (uuid v4) or
-   *   AssetNeue.
-   * @param {boolean} thumb - true when image should be a thumbnail
-   * @param {number} size - the minimum size of the image
-   * @returns {Promise<string>} the url string of the requested image
+   * @param {filterOptions | any} options The filter options
+   * @returns {Promise<HistoryEvents} The filtered HistoryEvents
    */
-  getFileVariant(assetID: string, thumb: boolean = false, size?: number) {
+  getEvents(options?: filterOptions): Promise<any> {
     return Promise.resolve()
-      .then(() => {
-        if (!assetID) {
-          throw new Error('assetID must be defined');
+      .then(() => this.follow('ec:api/history'))
+      .then((request) => {
+        if (options) {
+          request.withTemplateParameters(optionsToQuery(options));
         }
 
-        let relation;
-        const params: any = {};
-
-        params.assetID = assetID;
-        if (size) {
-          params.size = size;
-        }
-
-        if (validate.isUUID(assetID, 4)) {
-          relation = 'ec:api/assets/bestFile';
-          params.thumb = thumb;
-        } else if (thumb) {
-          relation = 'ec:dm-asset/thumbnail';
-        } else {
-          relation = 'ec:dm-asset/file';
-        }
-
-        return this.follow(relation).then((request) => {
-          request.withTemplateParameters(params);
-          return this.dispatch(() => get(this[environmentSymbol], request));
-        });
+        return this.dispatch(() => get(this[environmentSymbol], request));
       })
-      .then(([res]) => res.url);
+      .then(([res, traversal]) => new HistoryEvents(res, this[environmentSymbol], traversal));
   }
 
   /**
@@ -1052,6 +1142,57 @@ export default class PublicAPI extends Core {
           return result;
         });
     });
+  }
+
+  /**
+   * Best file helper for files.
+   *
+   * @param {string} assetID - the assetID
+   * @returns {Promise<string>} URL to the file
+   */
+  getFileUrl(assetID: string): Promise<string> {
+    return <Promise<string>>this.getFileVariant(assetID);
+  }
+
+  /**
+   * Generic file helper for images and thumbnails.
+   *
+   * @param {string} assetID - assetID of the file requested. Can be legacy Asset (uuid v4) or
+   *   AssetNeue.
+   * @param {boolean} thumb - true when image should be a thumbnail
+   * @param {number} size - the minimum size of the image
+   * @returns {Promise<string>} the url string of the requested image
+   */
+  getFileVariant(assetID: string, thumb: boolean = false, size?: number) {
+    return Promise.resolve()
+      .then(() => {
+        if (!assetID) {
+          throw new Error('assetID must be defined');
+        }
+
+        let relation;
+        const params: any = {};
+
+        params.assetID = assetID;
+        if (size) {
+          params.size = size;
+        }
+
+        if (validate.isUUID(assetID, 4)) {
+          relation = 'ec:api/assets/bestFile';
+          params.thumb = thumb;
+        } else if (thumb) {
+          relation = 'ec:dm-asset/thumbnail';
+        } else {
+          relation = 'ec:dm-asset/file';
+        }
+
+        return this.follow(relation).then((request) => {
+          request.withTemplateParameters(params);
+          return this.dispatch(() => get(this[environmentSymbol], request));
+        });
+      })
+      .then(([res]) => res.url);
   }
 
   /**
@@ -1140,6 +1281,22 @@ export default class PublicAPI extends Core {
   }
 
   /**
+   * Create a single-use validation token for a user. The token should then be send to the user via mail and MUST NOT be displayed to her.
+   *
+   * @param {stirng} email The users email.
+   */
+  async getValidationToken(email: string): Promise<string> {
+    if (!email) {
+      throw new Error('email must be defined');
+    }
+
+    const request = await this.follow(`${this[shortIDSymbol]}:_auth/api/validation-token`);
+    request.withTemplateParameters({ email });
+    const [response] = await this.dispatch(() => get(this[environmentSymbol], request));
+    return response.validationToken;
+  }
+
+  /**
    * Login with email and password. Currently only supports `rest` clientID with body post of
    * credentials and tokenMethod `body`.
    *
@@ -1178,6 +1335,42 @@ export default class PublicAPI extends Core {
         this[eventsSymbol].emit('login', tokenResponse);
         return Promise.resolve(tokenResponse);
       });
+  }
+
+  /**
+   * Login with token from magic link
+   *
+   * @param {{validationToken: string, useragent: stirng, ip: string}} body Login request body.
+   * @returns {Promise<{access_token: string, refresh_token: string}>} Promise resolving to the issued token
+   */
+  async loginWithToken(body: {
+    validationToken: string;
+    userAgent?: string;
+    ip?: string;
+    clientID?: string;
+  }): Promise<{ access_token: string; refresh_token: string }> {
+    if (!body || typeof body !== 'object') {
+      throw new Error('body must be defined');
+    }
+    if (!('validationToken' in body)) {
+      throw new Error('validationToken must be defined in body');
+    }
+
+    const b: any = {};
+    if (this[tokenStoreSymbol].hasClientID()) {
+      Object.assign(b, { clientID: this[tokenStoreSymbol].getClientID() });
+    }
+    Object.assign(b, body);
+
+    if (!b.clientID) {
+      throw new Error('clientID must be set with PublicAPI#setClientID(clientID: string) or sent in body');
+    }
+
+    const request = await this.follow(`${this[shortIDSymbol]}:_auth/api/login-token`);
+    const [response] = await this.dispatch(() => post(this[environmentSymbol], request, b));
+
+    this[eventsSymbol].emit('login', response);
+    return response;
   }
 
   /**
@@ -1258,44 +1451,37 @@ export default class PublicAPI extends Core {
   }
 
   /**
-   * Load the list of assetGroupIDs.
+   * Call PublicAPI#refCount with model, field and desired ids to get a simple object with ref counts.
    *
-   * @param {boolean?} reload whether or not to force reload
-   * @returns {Promise<Array<string>>} Resolves to an array with all available asssetGroupIDs
-   */
-  assetGroupList(reload: boolean = false): Promise<any> {
-    return this.resolve(reload).then(() =>
-      Object.keys(this[resourceSymbol].allLinks())
-        .map((key) => {
-          const result = /^ec:dm-assets\/(.*)$/.exec(key);
-          if (!result) {
-            return undefined;
-          }
-
-          return result[1];
-        })
-        .filter((x) => !!x),
-    );
-  }
-
-  /**
-   * Load the HistoryEvents for this DataManager from v3 API.
-   * Note: This Request only has pagination when you load a single modelID.
+   * @example
+   * const counts = await api.refCount('myModel', 'myField', [entryID1, entryID2, ...entryIDn]);
+   * alert(`Entry ${entryID1} has ${counts[entryID1]} references`);
    *
-   * @param {filterOptions | any} options The filter options
-   * @returns {Promise<HistoryEvents} The filtered HistoryEvents
+   * @param {string} model Model for which you want a ref count
+   * @param {string} field Field for which you want a ref count
+   * @param {Array<string>} ids Array of entry ids for which you want the ref count
    */
-  getEvents(options?: filterOptions): Promise<any> {
-    return Promise.resolve()
-      .then(() => this.follow('ec:api/history'))
-      .then((request) => {
-        if (options) {
-          request.withTemplateParameters(optionsToQuery(options));
-        }
+  async refCount(model: string, field: string, ids: Array<string>): Promise<{ [key: string]: number }> {
+    if (!model) {
+      throw new Error('model must be defined');
+    }
 
-        return this.dispatch(() => get(this[environmentSymbol], request));
-      })
-      .then(([res, traversal]) => new HistoryEvents(res, this[environmentSymbol], traversal));
+    if (!field) {
+      throw new Error('field must be defined');
+    }
+
+    if (!ids || !Array.isArray(ids) || ids.some((i) => typeof i !== 'string')) {
+      throw new Error('ids must be defined and an array of strings');
+    }
+
+    const request = await this.follow('ec:api/dm-entryRefCount');
+    request.withTemplateParameters({
+      model,
+      field,
+      id: ids.join(','),
+    });
+    const [res] = await this.dispatch(() => get(this[environmentSymbol], request));
+    return res;
   }
 
   /*
@@ -1442,72 +1628,6 @@ export default class PublicAPI extends Core {
   }
 
   /**
-   * When the logged in user has a refresh token this function will do the token refresh. On successful
-   * refreshal PublicAPI will emmit the event `refresh`, if it failes it will emmit `refreshError`. You
-   * MUST handle these events.
-   *
-   * @returns {{access_token: string, refresh_token: string}} Returns the new token response on successful refresh
-   */
-  doRefreshToken(): Promise<{ access_token: string; refresh_token: string }> {
-    if (!this[refreshRequestSymbol]) {
-      this[refreshRequestSymbol] = Promise.resolve().then(async () => {
-        if (!this[tokenStoreSymbol].getClientID()) {
-          throw new Error('ClientID must be configured');
-        }
-
-        if (!this[tokenStoreSymbol].getRefreshToken()) {
-          throw new Error('no refresh token configured');
-        }
-
-        try {
-          const request = await this.follow(`${this[shortIDSymbol]}:_auth/token`);
-          // no dispatch since we are the one refreshing…
-          const [response] = await post(this[environmentSymbol], request, {
-            grant_type: 'refresh_token',
-            client_id: this[tokenStoreSymbol].getClientID(),
-            refresh_token: this[tokenStoreSymbol].getRefreshToken(),
-          });
-
-          if (response.refresh_token) {
-            this[tokenStoreSymbol].setRefreshToken(response.refresh_token);
-          }
-          this[tokenStoreSymbol].setToken(response.access_token);
-          this[eventsSymbol].emit('refresh', response);
-          this[refreshRequestSymbol] = undefined;
-          return response;
-        } catch (err) {
-          this[eventsSymbol].emit('refreshError', err);
-          this[refreshRequestSymbol] = undefined;
-          throw err;
-        }
-      });
-    }
-
-    return this[refreshRequestSymbol];
-  }
-
-  /**
-   * Get the {@link DataManagerResource} for this PublicAPI Connector. Does only make sense for ec
-   * users (check not enforced).
-   *
-   * @returns {Promise<DataManagerResource>}
-   */
-  getDataManagerResource(): Promise<DataManagerResource> {
-    const options: any = {};
-
-    if (this[cookieModifierSymbol].length === 0) {
-      options.environment = this[environmentSymbol];
-    } else {
-      options.environment = this[environmentSymbol];
-      options.cookieModifier = this[cookieModifierSymbol];
-    }
-
-    const dm = new DataManager(options);
-    dm.setToken(this.getToken());
-    return dm.dataManager(this.dataManagerID);
-  }
-
-  /**
    * Set the clientID to use with the public API. Currently only `rest` is supported.
    *
    * @param {string} clientID the clientID.
@@ -1645,90 +1765,6 @@ export default class PublicAPI extends Core {
   }
 
   /**
-   * Programatically signup a user, mostly used for special register flows using legacy users or magic link login.
-   *
-   * @param {{email: string, password?: string, invite?: string, pending?: boolean, sendWelcomeMail?: boolean, anonymousToken?: string }} body Request body containing configuration options.
-   * @returns {Promise<{accountID: string, email: string, hasPassword: boolean, pending: boolean}>} Promise resolving to the created account
-   */
-  async configurableSignup(body: {
-    email: string;
-    password?: string;
-    invite?: string;
-    pending?: boolean;
-    sendWelcomeMail?: boolean;
-    anonymousToken?: string;
-  }): Promise<{
-    accountID: string;
-    email: string;
-    hasPassword: boolean;
-    pending: boolean;
-  }> {
-    if (!body || typeof body !== 'object') {
-      throw new Error('body must be defined');
-    }
-    if (!('email' in body)) {
-      throw new Error('email must be defined in body');
-    }
-
-    const request = await this.follow(`${this[shortIDSymbol]}:_auth/api/signup`);
-    const [response] = await this.dispatch(() => post(this[environmentSymbol], request, body));
-    return response;
-  }
-
-  /**
-   * Programatically complete a signup with a single use validationToken, mostly used for special register flows using legacy users or magic link login.
-   *
-   * @param {{validationToken: string, useragent?: string ip?: string, password?: string, pending?: string}} body Request body containing configuration options.
-   * @returns {Promise<{access_token: string, refresh_token: string}>} Promise resolving to the issued token
-   */
-  async configurableSignupEdit(body: {
-    validationToken: string;
-    useragent?: string;
-    ip?: string;
-    password?: string;
-    pending?: string;
-    clientID?: string;
-  }): Promise<{ access_token: string; refresh_token: string }> {
-    if (!body || typeof body !== 'object') {
-      throw new Error('body must be defined');
-    }
-    if (!('validationToken' in body)) {
-      throw new Error('validationToken must be defined in body');
-    }
-
-    const b: any = {};
-    if (this[tokenStoreSymbol].hasClientID()) {
-      Object.assign(b, { clientID: this[tokenStoreSymbol].getClientID() });
-    }
-    Object.assign(b, body);
-
-    if (!b.clientID) {
-      throw new Error('clientID must be set with PublicAPI#setClientID(clientID: string) or sent in body');
-    }
-
-    const request = await this.follow(`${this[shortIDSymbol]}:_auth/api/signup`);
-    const [response] = await this.dispatch(() => put(this[environmentSymbol], request, b));
-
-    return response;
-  }
-
-  /**
-   * Create a single-use validation token for a user. The token should then be send to the user via mail and MUST NOT be displayed to her.
-   *
-   * @param {stirng} email The users email.
-   */
-  async getValidationToken(email: string): Promise<string> {
-    if (!email) {
-      throw new Error('email must be defined');
-    }
-
-    const request = await this.follow(`${this[shortIDSymbol]}:_auth/api/validation-token`);
-    request.withTemplateParameters({ email });
-    const [response] = await this.dispatch(() => get(this[environmentSymbol], request));
-    return response.validationToken;
-  }
-
-  /**
    * Validates a single-use token from a user. Checks if the token is valid and responds with user information.
    *
    * @param {string} validationToken Single-use token.
@@ -1748,42 +1784,6 @@ export default class PublicAPI extends Core {
     const request = await this.follow(`${this[shortIDSymbol]}:_auth/api/validate-token`);
     request.withTemplateParameters({ validationToken });
     const [response] = await this.dispatch(() => get(this[environmentSymbol], request));
-    return response;
-  }
-
-  /**
-   * Login with token from magic link
-   *
-   * @param {{validationToken: string, useragent: stirng, ip: string}} body Login request body.
-   * @returns {Promise<{access_token: string, refresh_token: string}>} Promise resolving to the issued token
-   */
-  async loginWithToken(body: {
-    validationToken: string;
-    userAgent?: string;
-    ip?: string;
-    clientID?: string;
-  }): Promise<{ access_token: string; refresh_token: string }> {
-    if (!body || typeof body !== 'object') {
-      throw new Error('body must be defined');
-    }
-    if (!('validationToken' in body)) {
-      throw new Error('validationToken must be defined in body');
-    }
-
-    const b: any = {};
-    if (this[tokenStoreSymbol].hasClientID()) {
-      Object.assign(b, { clientID: this[tokenStoreSymbol].getClientID() });
-    }
-    Object.assign(b, body);
-
-    if (!b.clientID) {
-      throw new Error('clientID must be set with PublicAPI#setClientID(clientID: string) or sent in body');
-    }
-
-    const request = await this.follow(`${this[shortIDSymbol]}:_auth/api/login-token`);
-    const [response] = await this.dispatch(() => post(this[environmentSymbol], request, b));
-
-    this[eventsSymbol].emit('login', response);
     return response;
   }
 }

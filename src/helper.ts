@@ -720,8 +720,9 @@ export function optionsToQuery(
 
 /**
  * shortenUUID(uuid[, factor])
- * 
+ *
  * @access private
+ * @private
  *
  * shortens a UUID by XORing the the top half with the bottom half
  * The default shortening factor is 1, maximum is 5 (just one character returned).
