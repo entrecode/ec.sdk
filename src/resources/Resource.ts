@@ -84,7 +84,6 @@ class Resource {
     this[relationsSymbol] = {};
     this.countProperties();
   }
-
   /**
    * Returns a collection of available relations in this Resource.
    *

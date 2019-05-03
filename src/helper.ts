@@ -487,6 +487,25 @@ export function superagentPost(environment: environment, request: any): Promise<
 }
 
 /**
+ * Function for retrying requests when they are getting 5xx errors.
+ * 
+ * @access private
+ * 
+ * @param {function} fkt function which should be retried
+ * @param {number} retries number of retries. max 7, default 8 so no retry
+ */
+export function retryReq(fkt: () => Promise<any>, retries: number = 8): Promise<any> {
+  return fkt().catch((e) => {
+    if (retries < 7 && e.status && e.status >= 500) {
+      console.log(`Retry iteration in ${2 ** retries * 1000}ms because of ${e.message}`);
+      return new Promise((resolve) => setTimeout(resolve, 2 ** retries * 1000)).then(() => retryReq(fkt, retries + 1));
+    }
+
+    throw e;
+  });
+}
+
+/**
  * Adds Authorization and X-User-Agent header to requests
  *
  * @private
@@ -720,8 +739,9 @@ export function optionsToQuery(
 
 /**
  * shortenUUID(uuid[, factor])
- * 
+ *
  * @access private
+ * @private
  *
  * shortens a UUID by XORing the the top half with the bottom half
  * The default shortening factor is 1, maximum is 5 (just one character returned).

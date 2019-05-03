@@ -1,3 +1,12 @@
+## <small>0.20.11 (2019-05-03)</small>
+
+* merge release/0.20.10 into master ([5605797](https://github.com/entrecode/ec.sdk/commit/5605797))
+* release version 0.20.11 ([67b86cc](https://github.com/entrecode/ec.sdk/commit/67b86cc))
+* feat: retry flag for ListResource#map/find/filter SDK-120 ([cbf6039](https://github.com/entrecode/ec.sdk/commit/cbf6039))
+* doc: sort documentation SDK-127 ([725bf79](https://github.com/entrecode/ec.sdk/commit/725bf79))
+
+
+
 ## <small>0.20.10 (2019-04-26)</small>
 
 * release version 0.20.10 ([2c201ec](https://github.com/entrecode/ec.sdk/commit/2c201ec))

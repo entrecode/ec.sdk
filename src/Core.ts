@@ -110,19 +110,125 @@ export default class Core {
   }
 
   /**
-   * Returns a collection of available relations in this API Connector.
+   * Check if we can refresh a token
    *
-   * @return {object} Collection of available relations
+   * @returns {boolean} Wether or not the refreshal can be performed.
    */
-  getAvailableRelations(): any {
-    const out = {};
-    Object.keys(this[relationsSymbol]).forEach((rel) => {
-      out[rel] = {
-        id: this[relationsSymbol][rel].id,
-        createable: !!this[relationsSymbol][rel].createRelation,
-      };
-    });
-    return out;
+  canRefreshToken(): boolean {
+    return this[tokenStoreSymbol].hasRefreshToken();
+  }
+
+  /**
+   * Create a new Resource. Note: Not all relations will support this.
+   *
+   * @example
+   * return accounts.create('client', {
+   *   clientID: 'myClient',
+   *   callbackURL: 'https://example.com/login',
+   *   config: {
+   *     tokenMethod: 'query',
+   *   },
+   * })
+   * .then(client => show(client));
+   *
+   * @param {string} relation The shortened relation name
+   * @param {object} resource object representing the resource
+   * @param {boolean} returnList override Resource creation with List creation.
+   * @returns {Promise<Resource>} the newly created Resource
+   */
+  create(relation: string, resource: any, returnList = false): Promise<Resource> {
+    return Promise.resolve()
+      .then(() => {
+        if (!relation) {
+          throw new Error('relation must be defined');
+        }
+        if (!this[relationsSymbol][relation]) {
+          throw new Error(`unknown relation, use one of ${Object.keys(this[relationsSymbol]).join(', ')}`);
+        }
+        if (!this[relationsSymbol][relation].createRelation) {
+          throw new Error('Resource has no createRelation');
+        }
+        if (!resource) {
+          throw new Error('Cannot create resource with undefined object.');
+        }
+        return this.link(this[relationsSymbol][relation].createRelation);
+      })
+      .then((link) =>
+        validator
+          .validate(resource, `${link.profile}${this[relationsSymbol][relation].createTemplateModifier}`)
+          .catch((e) => {
+            throw new Problem(convertValidationError(e), locale);
+          }),
+      )
+      .then(() => this.follow(this[relationsSymbol][relation].relation))
+      .then((request) => {
+        if (this[relationsSymbol][relation].additionalTemplateParam) {
+          request.withTemplateParameters(
+            optionsToQuery({
+              [this[relationsSymbol][relation].additionalTemplateParam]: this[
+                this[relationsSymbol][relation].additionalTemplateParam
+              ],
+            }),
+          );
+        }
+        return post(this[environmentSymbol], request, resource);
+      })
+      .then(([c, traversal]) => {
+        let ResourceConstructor;
+        if (returnList) {
+          ResourceConstructor = this[relationsSymbol][relation].ListClass;
+        } else {
+          ResourceConstructor = this[relationsSymbol][relation].ResourceClass;
+        }
+        return <Resource>new ResourceConstructor(c, this[environmentSymbol], traversal);
+      });
+  }
+
+  /**
+   * Dispatch a request for helper lib. This will handle token refreshal on every request and on 401 errors
+   *
+   * @param {function} fkt A function returning a Promise from any network helper in helper.js
+   */
+  async dispatch(fkt): Promise<any> {
+    if (this.timeToRefresh()) {
+      console.log('Refreshing token…');
+      this.doRefreshToken()
+        .then(() => {
+          console.log('… successfully refreshed');
+        })
+        .catch((err) => {
+          console.warn(`Error refreshing: ${err.message}`);
+        });
+    }
+
+    const trace = new Error('message').stack || 'message';
+    try {
+      return await fkt().catch((err) => {
+        err.originalStack = err.stack;
+        err.stack = trace.replace('message', err.message);
+        throw err;
+      });
+    } catch (err) {
+      if (err.status !== 401 || !this.canRefreshToken()) {
+        throw err;
+      }
+      return this.doRefreshToken()
+        .catch((innerErr) => {
+          console.warn(`Could not refresh token: ${innerErr.message}`);
+          // Error refreshing, raise first error;
+          throw err;
+        })
+        .then(() => fkt());
+    }
+  }
+
+  /**
+   * `Abstract interface` for PublicAPI#doRefreshToken. Exists until Accountserver has token refreshal of its own.
+   *
+   * @returns {{access_token: string, refresh_token: string}} Returns the new token response on successful refresh
+   */
+  async doRefreshToken(): Promise<{ access_token: string; refresh_token: string } | undefined> {
+    throw new Error('only supported on PublicAPI');
   }
 
   /**
@@ -153,12 +259,74 @@ export default class Core {
   }
 
   /**
+   * Returns a collection of available relations in this API Connector.
+   *
+   * @return {object} Collection of available relations
+   */
+  getAvailableRelations(): any {
+    const out = {};
+    Object.keys(this[relationsSymbol]).forEach((rel) => {
+      out[rel] = {
+        id: this[relationsSymbol][rel].id,
+        createable: !!this[relationsSymbol][rel].createRelation,
+      };
+    });
+    return out;
+  }
+
+  /**
+   * Get a list of all avaliable filter options for a given relation.
+   *
+   * @param {string} relation The shortened relation name
+   * @returns {Promise<Array<string>>} resolves to an array of avaliable filter options (query string notation).
+   */
+  getFilterOptions(relation: string): Promise<any> {
+    return Promise.resolve()
+      .then(() => {
+        if (!relation) {
+          throw new Error('relation must be defined');
+        }
+        if (!this[relationsSymbol][relation]) {
+          throw new Error(`unknown relation, use one of ${Object.keys(this[relationsSymbol]).join(', ')}`);
+        }
+        return this.newRequest();
+      })
+      .then((request) => get(this[environmentSymbol], request))
+      .then(([res]) => {
+        let link = halfred.parse(res).link(this[relationsSymbol][relation].relation);
+        const matchResults = link.href.match(/{[^}]*}/g);
+        if (matchResults) {
+          return matchResults
+            .map((result) => {
+              const res = /^{[?&]([^}]+)}$/.exec(result);
+              if (res) {
+                return res[1].split(',');
+              }
+              return [];
+            })
+            .reduce((a, b) => a.concat(b), []);
+        }
+      });
+  }
+
+  /**
    * Get a given link from the root resource
    * @param {string} link
    * @returns {any} link object
    */
   getLink(link: string): any {
     return this[resourceSymbol].link(link);
+  }
+  /**
+   * If you want to have access to the currently used refresh token you can call this function.
+   *
+   * @example
+   * console.log(accounts.getRefreshToken()); // will log current refresh token
+   *
+   * @returns {string} currently used refresh token
+   */
+  getRefreshToken(): string {
+    return this[tokenStoreSymbol].getRefreshToken();
   }
 
   /**
@@ -171,18 +339,6 @@ export default class Core {
    */
   getToken(): string {
     return this[tokenStoreSymbol].getToken();
-  }
-
-  /**
-   * If you want to have access to the currently used refresh token you can call this function.
-   *
-   * @example
-   * console.log(accounts.getRefreshToken()); // will log current refresh token
-   *
-   * @returns {string} currently used refresh token
-   */
-  getRefreshToken(): string {
-    return this[tokenStoreSymbol].getRefreshToken();
   }
 
   /**
@@ -313,6 +469,129 @@ export default class Core {
   }
 
   /**
+   * Get a single {@link Resource} identified by resourceID.
+   *
+   * @example
+   * return accounts.resource('account', me.accountID)
+   * .then(account => show(account.email));
+   *
+   * @param {string} relation The shortened relation name
+   * @param {string} resourceID id of the Resource
+   * @returns {Promise<Resource>} resolves to the Resource which should be loaded
+   */
+  resource(relation: string, resourceID, additionalTemplateParams: any = {}): Promise<Resource> {
+    return Promise.resolve()
+      .then(() => {
+        if (!relation) {
+          throw new Error('relation must be defined');
+        }
+        if (!this[relationsSymbol][relation]) {
+          throw new Error(`unknown relation, use one of ${Object.keys(this[relationsSymbol]).join(', ')}`);
+        }
+        if (!resourceID) {
+          throw new Error('resourceID must be defined');
+        }
+
+        return this.follow(this[relationsSymbol][relation].relation);
+      })
+      .then((request) => {
+        if (
+          this[relationsSymbol][relation].additionalTemplateParam &&
+          !(this[relationsSymbol][relation].additionalTemplateParam in additionalTemplateParams)
+        ) {
+          additionalTemplateParams[this[relationsSymbol][relation].additionalTemplateParam] = this[
+            this[relationsSymbol][relation].additionalTemplateParam
+          ];
+        }
+        const params = Object.assign({}, additionalTemplateParams, {
+          [this[relationsSymbol][relation].id]: resourceID,
+        });
+        request.withTemplateParameters(params);
+        return get(this[environmentSymbol], request);
+      })
+      .then(([res, traversal]) => {
+        if (this[relationsSymbol][relation].resourceFunction) {
+          return this[relationsSymbol][relation].resourceFunction(res, this[environmentSymbol], traversal);
+        }
+
+        return new this[relationsSymbol][relation].ResourceClass(res, this[environmentSymbol], traversal);
+      });
+  }
+
+  /**
+   * Load a {@link ListResource} of {@link Resource}s filtered by the values specified by the
+   * options parameter.
+   *
+   * @example
+   * return accounts.resourceList('account', {
+   *   filter: {
+   *     created: {
+   *       from: new Date(new Date.getTime() - 600000).toISOString()),
+   *     },
+   *   },
+   * })
+   * .then(list => show(list))
+   *
+   * @param {string} relation The shortened relation name
+   * @param {filterOptions?} options the filter options
+   * @param {object} additionalTemplateParams additional template parameters to apply
+   * @returns {Promise<ListResource>} resolves to resource list with applied filters
+   */
+  resourceList(
+    relation: string,
+    options: filterOptions | any = {},
+    additionalTemplateParams: any = {},
+  ): Promise<ListResource> {
+    return Promise.resolve()
+      .then(() => {
+        if (!relation) {
+          throw new Error('relation must be defined');
+        }
+        if (!this[relationsSymbol][relation]) {
+          throw new Error(`unknown relation, use one of ${Object.keys(this[relationsSymbol]).join(', ')}`);
+        }
+
+        const id = this[relationsSymbol][relation].id;
+        if (
+          options &&
+          Object.keys(options).length === 1 &&
+          id in options &&
+          (typeof options[id] === 'string' || 'exact' in options[id])
+        ) {
+          throw new Error('Providing only an id in ResourceList filter will result in single resource response.');
+        }
+
+        if (options && '_levels' in options) {
+          throw new Error('_levels on list resources not supported');
+        }
+
+        return this.follow(this[relationsSymbol][relation].relation);
+      })
+      .then((request) => {
+        if (
+          this[relationsSymbol][relation].additionalTemplateParam &&
+          !(this[relationsSymbol][relation].additionalTemplateParam in additionalTemplateParams)
+        ) {
+          additionalTemplateParams[this[relationsSymbol][relation].additionalTemplateParam] = this[
+            this[relationsSymbol][relation].additionalTemplateParam
+          ];
+        }
+        const params = Object.assign({}, additionalTemplateParams, options);
+        request.withTemplateParameters(
+          optionsToQuery(params, this.getLink(this[relationsSymbol][relation].relation).href),
+        );
+        return get(this[environmentSymbol], request);
+      })
+      .then(([res, traversal]) => {
+        if (this[relationsSymbol][relation].listFunction) {
+          return this[relationsSymbol][relation].listFunction(res, this[environmentSymbol], traversal);
+        }
+
+        return new this[relationsSymbol][relation].ListClass(res, this[environmentSymbol], traversal);
+      });
+  }
+
+  /**
    * If you have an existing access token you can use it by calling this function. All
    * subsequent requests will use the provided {@link https://jwt.io/ Json Web Token} with an
    * Authorization header.
@@ -391,100 +670,6 @@ export default class Core {
   }
 
   /**
-   * Get a list of all avaliable filter options for a given relation.
-   *
-   * @param {string} relation The shortened relation name
-   * @returns {Promise<Array<string>>} resolves to an array of avaliable filter options (query string notation).
-   */
-  getFilterOptions(relation: string): Promise<any> {
-    return Promise.resolve()
-      .then(() => {
-        if (!relation) {
-          throw new Error('relation must be defined');
-        }
-        if (!this[relationsSymbol][relation]) {
-          throw new Error(`unknown relation, use one of ${Object.keys(this[relationsSymbol]).join(', ')}`);
-        }
-        return this.newRequest();
-      })
-      .then((request) => get(this[environmentSymbol], request))
-      .then(([res]) => {
-        let link = halfred.parse(res).link(this[relationsSymbol][relation].relation);
-        const matchResults = link.href.match(/{[^}]*}/g);
-        if (matchResults) {
-          return matchResults
-            .map((result) => {
-              const res = /^{[?&]([^}]+)}$/.exec(result);
-              if (res) {
-                return res[1].split(',');
-              }
-              return [];
-            })
-            .reduce((a, b) => a.concat(b), []);
-        }
-      });
-  }
-
-  /**
-   * Get a single {@link Resource} identified by resourceID.
-   *
-   * @example
-   * return accounts.resource('account', me.accountID)
-   * .then(account => show(account.email));
-   *
-   * @param {string} relation The shortened relation name
-   * @param {string} resourceID id of the Resource
-   * @returns {Promise<Resource>} resolves to the Resource which should be loaded
-   */
-  resource(relation: string, resourceID, additionalTemplateParams: any = {}): Promise<Resource> {
-    return Promise.resolve()
-      .then(() => {
-        if (!relation) {
-          throw new Error('relation must be defined');
-        }
-        if (!this[relationsSymbol][relation]) {
-          throw new Error(`unknown relation, use one of ${Object.keys(this[relationsSymbol]).join(', ')}`);
-        }
-        if (!resourceID) {
-          throw new Error('resourceID must be defined');
-        }
-
-        return this.follow(this[relationsSymbol][relation].relation);
-      })
-      .then((request) => {
-        if (
-          this[relationsSymbol][relation].additionalTemplateParam &&
-          !(this[relationsSymbol][relation].additionalTemplateParam in additionalTemplateParams)
-        ) {
-          additionalTemplateParams[this[relationsSymbol][relation].additionalTemplateParam] = this[
-            this[relationsSymbol][relation].additionalTemplateParam
-          ];
-        }
-        const params = Object.assign({}, additionalTemplateParams, {
-          [this[relationsSymbol][relation].id]: resourceID,
-        });
-        request.withTemplateParameters(params);
-        return get(this[environmentSymbol], request);
-      })
-      .then(([res, traversal]) => {
-        if (this[relationsSymbol][relation].resourceFunction) {
-          return this[relationsSymbol][relation].resourceFunction(res, this[environmentSymbol], traversal);
-        }
-
-        return new this[relationsSymbol][relation].ResourceClass(res, this[environmentSymbol], traversal);
-      });
-  }
-
-  /**
-   * `Abstract interface` for PublicAPI#doRefreshToken. Exists until Accountserver has token refreshal of its own.
-   *
-   * @returns {{access_token: string, refresh_token: string}} Returns the new token response on successful refresh
-   */
-  async doRefreshToken(): Promise<{ access_token: string; refresh_token: string } | undefined> {
-    throw new Error('only supported on PublicAPI');
-  }
-
-  /**
    * Check if we have a refresh token and if it is time (token expiraion < 24h) to refresh the token
    *
    * @returns {boolean} Wether or not the refreshal should be performed.
@@ -521,192 +706,6 @@ export default class Core {
     } catch (err) {
       throw new Error('Malformed token');
     }
-  }
-
-  /**
-   * Check if we can refresh a token
-   *
-   * @returns {boolean} Wether or not the refreshal can be performed.
-   */
-  canRefreshToken(): boolean {
-    return this[tokenStoreSymbol].hasRefreshToken();
-  }
-
-  /**
-   * Dispatch a request for helper lib. This will handle token refreshal on every request and on 401 errors
-   *
-   * @param {function} fkt A function returning a Promise from any network helper in helper.js
-   */
-  async dispatch(fkt): Promise<any> {
-    if (this.timeToRefresh()) {
-      console.log('Refreshing token…');
-      this.doRefreshToken()
-        .then(() => {
-          console.log('… successfully refreshed');
-        })
-        .catch((err) => {
-          console.warn(`Error refreshing: ${err.message}`);
-        });
-    }
-
-    const trace = new Error('message').stack || 'message';
-    try {
-      return await fkt().catch((err) => {
-        err.originalStack = err.stack;
-        err.stack = trace.replace('message', err.message);
-        throw err;
-      });
-    } catch (err) {
-      if (err.status !== 401 || !this.canRefreshToken()) {
-        throw err;
-      }
-      return this.doRefreshToken()
-        .catch((innerErr) => {
-          console.warn(`Could not refresh token: ${innerErr.message}`);
-          // Error refreshing, raise first error;
-          throw err;
-        })
-        .then(() => fkt());
-    }
-  }
-
-  /**
-   * Load a {@link ListResource} of {@link Resource}s filtered by the values specified by the
-   * options parameter.
-   *
-   * @example
-   * return accounts.resourceList('account', {
-   *   filter: {
-   *     created: {
-   *       from: new Date(new Date.getTime() - 600000).toISOString()),
-   *     },
-   *   },
-   * })
-   * .then(list => show(list))
-   *
-   * @param {string} relation The shortened relation name
-   * @param {filterOptions?} options the filter options
-   * @param {object} additionalTemplateParams additional template parameters to apply
-   * @returns {Promise<ListResource>} resolves to resource list with applied filters
-   */
-  resourceList(
-    relation: string,
-    options: filterOptions | any = {},
-    additionalTemplateParams: any = {},
-  ): Promise<ListResource> {
-    return Promise.resolve()
-      .then(() => {
-        if (!relation) {
-          throw new Error('relation must be defined');
-        }
-        if (!this[relationsSymbol][relation]) {
-          throw new Error(`unknown relation, use one of ${Object.keys(this[relationsSymbol]).join(', ')}`);
-        }
-
-        const id = this[relationsSymbol][relation].id;
-        if (
-          options &&
-          Object.keys(options).length === 1 &&
-          id in options &&
-          (typeof options[id] === 'string' || 'exact' in options[id])
-        ) {
-          throw new Error('Providing only an id in ResourceList filter will result in single resource response.');
-        }
-
-        if (options && '_levels' in options) {
-          throw new Error('_levels on list resources not supported');
-        }
-
-        return this.follow(this[relationsSymbol][relation].relation);
-      })
-      .then((request) => {
-        if (
-          this[relationsSymbol][relation].additionalTemplateParam &&
-          !(this[relationsSymbol][relation].additionalTemplateParam in additionalTemplateParams)
-        ) {
-          additionalTemplateParams[this[relationsSymbol][relation].additionalTemplateParam] = this[
-            this[relationsSymbol][relation].additionalTemplateParam
-          ];
-        }
-        const params = Object.assign({}, additionalTemplateParams, options);
-        request.withTemplateParameters(
-          optionsToQuery(params, this.getLink(this[relationsSymbol][relation].relation).href),
-        );
-        return get(this[environmentSymbol], request);
-      })
-      .then(([res, traversal]) => {
-        if (this[relationsSymbol][relation].listFunction) {
-          return this[relationsSymbol][relation].listFunction(res, this[environmentSymbol], traversal);
-        }
-
-        return new this[relationsSymbol][relation].ListClass(res, this[environmentSymbol], traversal);
-      });
-  }
-
-  /**
-   * Create a new Resource. Note: Not all relations will support this.
-   *
-   * @example
-   * return accounts.create('client', {
-   *   clientID: 'myClient',
-   *   callbackURL: 'https://example.com/login',
-   *   config: {
-   *     tokenMethod: 'query',
-   *   },
-   * })
-   * .then(client => show(client));
-   *
-   * @param {string} relation The shortened relation name
-   * @param {object} resource object representing the resource
-   * @param {boolean} returnList override Resource creation with List creation.
-   * @returns {Promise<Resource>} the newly created Resource
-   */
-  create(relation: string, resource: any, returnList = false): Promise<Resource> {
-    return Promise.resolve()
-      .then(() => {
-        if (!relation) {
-          throw new Error('relation must be defined');
-        }
-        if (!this[relationsSymbol][relation]) {
-          throw new Error(`unknown relation, use one of ${Object.keys(this[relationsSymbol]).join(', ')}`);
-        }
-        if (!this[relationsSymbol][relation].createRelation) {
-          throw new Error('Resource has no createRelation');
-        }
-        if (!resource) {
-          throw new Error('Cannot create resource with undefined object.');
-        }
-        return this.link(this[relationsSymbol][relation].createRelation);
-      })
-      .then((link) =>
-        validator
-          .validate(resource, `${link.profile}${this[relationsSymbol][relation].createTemplateModifier}`)
-          .catch((e) => {
-            throw new Problem(convertValidationError(e), locale);
-          }),
-      )
-      .then(() => this.follow(this[relationsSymbol][relation].relation))
-      .then((request) => {
-        if (this[relationsSymbol][relation].additionalTemplateParam) {
-          request.withTemplateParameters(
-            optionsToQuery({
-              [this[relationsSymbol][relation].additionalTemplateParam]: this[
-                this[relationsSymbol][relation].additionalTemplateParam
-              ],
-            }),
-          );
-        }
-        return post(this[environmentSymbol], request, resource);
-      })
-      .then(([c, traversal]) => {
-        let ResourceConstructor;
-        if (returnList) {
-          ResourceConstructor = this[relationsSymbol][relation].ListClass;
-        } else {
-          ResourceConstructor = this[relationsSymbol][relation].ResourceClass;
-        }
-        return <Resource>new ResourceConstructor(c, this[environmentSymbol], traversal);
-      });
   }
 }
 

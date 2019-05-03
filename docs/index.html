@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset='utf-8' />
-  <title>ec.sdk 0.20.10 | Documentation</title>
+  <title>ec.sdk 0.20.11 | Documentation</title>
   <meta name='description' content='SDK for ec.api'>
   <meta name='viewport' content='width=device-width,initial-scale=1'>
   <link href='assets/bass.css' rel='stylesheet' />
@@ -15,7 +15,7 @@
       <div id='split-left' class='overflow-auto fs0 height-viewport-100'>
         <div class='py1 px2'>
           <h3 class='mb0 no-anchor'>ec.sdk</h3>
-          <div class='mb1'><code>0.20.10</code></div>
+          <div class='mb1'><code>0.20.11</code></div>
           <input
             placeholder='Filter'
             id='filter-input'
@@ -80,9 +80,27 @@
                       <li class='h5'><span>Instance members</span></li>
                       
                       <li><a
-                        href='#coregetavailablerelations'
+                        href='#corecanrefreshtoken'
                         class='regular pre-open'>
-                        #getAvailableRelations
+                        #canRefreshToken
+                      </a></li>
+                      
+                      <li><a
+                        href='#corecreate'
+                        class='regular pre-open'>
+                        #create
+                      </a></li>
+                      
+                      <li><a
+                        href='#coredispatch'
+                        class='regular pre-open'>
+                        #dispatch
+                      </a></li>
+                      
+                      <li><a
+                        href='#coredorefreshtoken'
+                        class='regular pre-open'>
+                        #doRefreshToken
                       </a></li>
                       
                       <li><a
@@ -92,21 +110,33 @@
                       </a></li>
                       
                       <li><a
+                        href='#coregetavailablerelations'
+                        class='regular pre-open'>
+                        #getAvailableRelations
+                      </a></li>
+                      
+                      <li><a
+                        href='#coregetfilteroptions'
+                        class='regular pre-open'>
+                        #getFilterOptions
+                      </a></li>
+                      
+                      <li><a
                         href='#coregetlink'
                         class='regular pre-open'>
                         #getLink
                       </a></li>
                       
                       <li><a
-                        href='#coregettoken'
-                        class='regular pre-open'>
-                        #getToken
-                      </a></li>
-                      
-                      <li><a
                         href='#coregetrefreshtoken'
                         class='regular pre-open'>
                         #getRefreshToken
+                      </a></li>
+                      
+                      <li><a
+                        href='#coregettoken'
+                        class='regular pre-open'>
+                        #getToken
                       </a></li>
                       
                       <li><a
@@ -140,6 +170,18 @@
                       </a></li>
                       
                       <li><a
+                        href='#coreresource'
+                        class='regular pre-open'>
+                        #resource
+                      </a></li>
+                      
+                      <li><a
+                        href='#coreresourcelist'
+                        class='regular pre-open'>
+                        #resourceList
+                      </a></li>
+                      
+                      <li><a
                         href='#coresettoken'
                         class='regular pre-open'>
                         #setToken
@@ -164,51 +206,9 @@
                       </a></li>
                       
                       <li><a
-                        href='#coregetfilteroptions'
-                        class='regular pre-open'>
-                        #getFilterOptions
-                      </a></li>
-                      
-                      <li><a
-                        href='#coreresource'
-                        class='regular pre-open'>
-                        #resource
-                      </a></li>
-                      
-                      <li><a
-                        href='#coredorefreshtoken'
-                        class='regular pre-open'>
-                        #doRefreshToken
-                      </a></li>
-                      
-                      <li><a
                         href='#coretimetorefresh'
                         class='regular pre-open'>
                         #timeToRefresh
-                      </a></li>
-                      
-                      <li><a
-                        href='#corecanrefreshtoken'
-                        class='regular pre-open'>
-                        #canRefreshToken
-                      </a></li>
-                      
-                      <li><a
-                        href='#coredispatch'
-                        class='regular pre-open'>
-                        #dispatch
-                      </a></li>
-                      
-                      <li><a
-                        href='#coreresourcelist'
-                        class='regular pre-open'>
-                        #resourceList
-                      </a></li>
-                      
-                      <li><a
-                        href='#corecreate'
-                        class='regular pre-open'>
-                        #create
                       </a></li>
                       
                     </ul>
@@ -574,6 +574,12 @@
                       </a></li>
                       
                       <li><a
+                        href='#publicapiassetgrouplist'
+                        class='regular pre-open'>
+                        #assetGroupList
+                      </a></li>
+                      
+                      <li><a
                         href='#publicapiassetlist'
                         class='regular pre-open'>
                         #assetList
@@ -589,6 +595,18 @@
                         href='#publicapicheckpermission'
                         class='regular pre-open'>
                         #checkPermission
+                      </a></li>
+                      
+                      <li><a
+                        href='#publicapiconfigurablesignup'
+                        class='regular pre-open'>
+                        #configurableSignup
+                      </a></li>
+                      
+                      <li><a
+                        href='#publicapiconfigurablesignupedit'
+                        class='regular pre-open'>
+                        #configurableSignupEdit
                       </a></li>
                       
                       <li><a
@@ -634,6 +652,12 @@
                       </a></li>
                       
                       <li><a
+                        href='#publicapidorefreshtoken'
+                        class='regular pre-open'>
+                        #doRefreshToken
+                      </a></li>
+                      
+                      <li><a
                         href='#publicapiemailavailable'
                         class='regular pre-open'>
                         #emailAvailable
@@ -652,15 +676,27 @@
                       </a></li>
                       
                       <li><a
-                        href='#publicapirefcount'
-                        class='regular pre-open'>
-                        #refCount
-                      </a></li>
-                      
-                      <li><a
                         href='#publicapigetauthlink'
                         class='regular pre-open'>
                         #getAuthLink
+                      </a></li>
+                      
+                      <li><a
+                        href='#publicapigetdatamanagerresource'
+                        class='regular pre-open'>
+                        #getDataManagerResource
+                      </a></li>
+                      
+                      <li><a
+                        href='#publicapigetevents'
+                        class='regular pre-open'>
+                        #getEvents
+                      </a></li>
+                      
+                      <li><a
+                        href='#publicapigetfieldconfig'
+                        class='regular pre-open'>
+                        #getFieldConfig
                       </a></li>
                       
                       <li><a
@@ -673,12 +709,6 @@
                         href='#publicapigetfilevariant'
                         class='regular pre-open'>
                         #getFileVariant
-                      </a></li>
-                      
-                      <li><a
-                        href='#publicapigetfieldconfig'
-                        class='regular pre-open'>
-                        #getFieldConfig
                       </a></li>
                       
                       <li><a
@@ -700,9 +730,21 @@
                       </a></li>
                       
                       <li><a
+                        href='#publicapigetvalidationtoken'
+                        class='regular pre-open'>
+                        #getValidationToken
+                      </a></li>
+                      
+                      <li><a
                         href='#publicapilogin'
                         class='regular pre-open'>
                         #login
+                      </a></li>
+                      
+                      <li><a
+                        href='#publicapiloginwithtoken'
+                        class='regular pre-open'>
+                        #loginWithToken
                       </a></li>
                       
                       <li><a
@@ -724,15 +766,9 @@
                       </a></li>
                       
                       <li><a
-                        href='#publicapiassetgrouplist'
+                        href='#publicapirefcount'
                         class='regular pre-open'>
-                        #assetGroupList
-                      </a></li>
-                      
-                      <li><a
-                        href='#publicapigetevents'
-                        class='regular pre-open'>
-                        #getEvents
+                        #refCount
                       </a></li>
                       
                       <li><a
@@ -745,18 +781,6 @@
                         href='#publicapiresolve'
                         class='regular pre-open'>
                         #resolve
-                      </a></li>
-                      
-                      <li><a
-                        href='#publicapidorefreshtoken'
-                        class='regular pre-open'>
-                        #doRefreshToken
-                      </a></li>
-                      
-                      <li><a
-                        href='#publicapigetdatamanagerresource'
-                        class='regular pre-open'>
-                        #getDataManagerResource
                       </a></li>
                       
                       <li><a
@@ -784,33 +808,9 @@
                       </a></li>
                       
                       <li><a
-                        href='#publicapiconfigurablesignup'
-                        class='regular pre-open'>
-                        #configurableSignup
-                      </a></li>
-                      
-                      <li><a
-                        href='#publicapiconfigurablesignupedit'
-                        class='regular pre-open'>
-                        #configurableSignupEdit
-                      </a></li>
-                      
-                      <li><a
-                        href='#publicapigetvalidationtoken'
-                        class='regular pre-open'>
-                        #getValidationToken
-                      </a></li>
-                      
-                      <li><a
                         href='#publicapivalidatevalidationtoken'
                         class='regular pre-open'>
                         #validateValidationToken
-                      </a></li>
-                      
-                      <li><a
-                        href='#publicapiloginwithtoken'
-                        class='regular pre-open'>
-                        #loginWithToken
                       </a></li>
                       
                     </ul>
@@ -965,9 +965,39 @@
               
                 
                 <li><a
+                  href='#eventeventsignup'
+                  class="">
+                  Event#signup
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
                   href='#eventeventerror'
                   class="">
                   Event#error
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#eventeventrefresh'
+                  class="">
+                  Event#refresh
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#eventeventrefresherror'
+                  class="">
+                  Event#refreshError
                   
                 </a>
                 
@@ -3181,46 +3211,6 @@
                 
                 </li>
               
-                
-                <li><a
-                  href='#eventeventsignup'
-                  class="">
-                  Event#signup
-                  
-                </a>
-                
-                </li>
-              
-                
-                <li><a
-                  href='#eventeventrefresherror'
-                  class="">
-                  Event#refreshError
-                  
-                </a>
-                
-                </li>
-              
-                
-                <li><a
-                  href='#eventeventrefresh'
-                  class="">
-                  Event#refresh
-                  
-                </a>
-                
-                </li>
-              
-                
-                <li><a
-                  href='#shortenuuid'
-                  class="">
-                  shortenUUID
-                  
-                </a>
-                
-                </li>
-              
             </ul>
           </div>
           <div class='mt1 h6 quiet'>
@@ -3603,11 +3593,11 @@ PublicAPI.enableHistoryEvents(EventSource);
     <div class='py1 quiet mt1 prose-big'>Instance Members</div>
     <div class="clearfix">
   
-    <div class='border-bottom' id='coregetavailablerelations'>
+    <div class='border-bottom' id='corecanrefreshtoken'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>getAvailableRelations()</span>
+            <span class='code strong strong truncate'>canRefreshToken()</span>
         </div>
       </div>
       <div class="clearfix display-none toggle-target">
@@ -3615,9 +3605,9 @@ PublicAPI.enableHistoryEvents(EventSource);
 
   
 
-  <p>Returns a collection of available relations in this API Connector.</p>
+  <p>Check if we can refresh a token</p>
 
-    <div class='pre p1 fill-light mt0'>getAvailableRelations(): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a></div>
+    <div class='pre p1 fill-light mt0'>canRefreshToken(): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></div>
   
   
 
@@ -3635,8 +3625,225 @@ PublicAPI.enableHistoryEvents(EventSource);
   
     
       <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a></code>:
-        Collection of available relations
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code>:
+        Wether or not the refreshal can be performed.
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='corecreate'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>create(relation, resource, returnList)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Create a new Resource. Note: Not all relations will support this.</p>
+
+    <div class='pre p1 fill-light mt0'>create(relation: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, resource: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, returnList: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#resource">Resource</a>></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>relation</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    The shortened relation name
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>resource</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    object representing the resource
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>returnList</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>
+            = <code>false</code>)</code>
+	    override Resource creation with List creation.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#resource">Resource</a>></code>:
+        the newly created Resource
+
+      
+    
+  
+
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">return</span> accounts.create(<span class="hljs-string">'client'</span>, {
+  <span class="hljs-attr">clientID</span>: <span class="hljs-string">'myClient'</span>,
+  <span class="hljs-attr">callbackURL</span>: <span class="hljs-string">'https://example.com/login'</span>,
+  <span class="hljs-attr">config</span>: {
+    <span class="hljs-attr">tokenMethod</span>: <span class="hljs-string">'query'</span>,
+  },
+})
+.then(<span class="hljs-function"><span class="hljs-params">client</span> =&gt;</span> show(client));</pre>
+    
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='coredispatch'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>dispatch(fkt)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Dispatch a request for helper lib. This will handle token refreshal on every request and on 401 errors</p>
+
+    <div class='pre p1 fill-light mt0'>dispatch(fkt: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function">function</a>)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>fkt</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function">function</a>)</code>
+	    A function returning a Promise from any network helper in helper.js
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='coredorefreshtoken'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>doRefreshToken()</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p><code>Abstract interface</code> for PublicAPI#doRefreshToken. Exists until Accountserver has token refreshal of its own.</p>
+
+    <div class='pre p1 fill-light mt0'>doRefreshToken(): {access_token: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, refresh_token: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>}</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code>{access_token: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, refresh_token: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>}</code>:
+        Returns the new token response on successful refresh
 
       
     
@@ -3729,6 +3936,130 @@ appear/disappear when login state changes.</p>
       </div>
     </div>
   
+    <div class='border-bottom' id='coregetavailablerelations'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>getAvailableRelations()</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Returns a collection of available relations in this API Connector.</p>
+
+    <div class='pre p1 fill-light mt0'>getAvailableRelations(): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a></code>:
+        Collection of available relations
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='coregetfilteroptions'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>getFilterOptions(relation)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Get a list of all avaliable filter options for a given relation.</p>
+
+    <div class='pre p1 fill-light mt0'>getFilterOptions(relation: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>>></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>relation</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    The shortened relation name
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>>></code>:
+        resolves to an array of avaliable filter options (query string notation).
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
     <div class='border-bottom' id='coregetlink'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
@@ -3797,67 +4128,6 @@ appear/disappear when login state changes.</p>
       </div>
     </div>
   
-    <div class='border-bottom' id='coregettoken'>
-      <div class="clearfix small pointer toggle-sibling">
-        <div class="py1 contain">
-            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>getToken()</span>
-        </div>
-      </div>
-      <div class="clearfix display-none toggle-target">
-        <section class='p2 mb2 clearfix bg-white minishadow'>
-
-  
-
-  <p>If you want to have access to the currently used token you can call this function.</p>
-
-    <div class='pre p1 fill-light mt0'>getToken(): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></div>
-  
-  
-
-  
-  
-  
-  
-  
-  
-
-  
-
-  
-
-  
-    
-      <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>:
-        currently used token
-
-      
-    
-  
-
-  
-
-  
-    <div class='py1 quiet mt1 prose-big'>Example</div>
-    
-      
-      <pre class='p1 overflow-auto round fill-light'><span class="hljs-built_in">console</span>.log(accounts.getToken()); <span class="hljs-comment">// will log current token</span></pre>
-    
-  
-
-  
-
-  
-
-  
-
-  
-</section>
-
-      </div>
-    </div>
-  
     <div class='border-bottom' id='coregetrefreshtoken'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
@@ -3904,6 +4174,67 @@ appear/disappear when login state changes.</p>
     
       
       <pre class='p1 overflow-auto round fill-light'><span class="hljs-built_in">console</span>.log(accounts.getRefreshToken()); <span class="hljs-comment">// will log current refresh token</span></pre>
+    
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='coregettoken'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>getToken()</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>If you want to have access to the currently used token you can call this function.</p>
+
+    <div class='pre p1 fill-light mt0'>getToken(): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>:
+        currently used token
+
+      
+    
+  
+
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-built_in">console</span>.log(accounts.getToken()); <span class="hljs-comment">// will log current token</span></pre>
     
   
 
@@ -4285,6 +4616,203 @@ session.login(email, password)
       </div>
     </div>
   
+    <div class='border-bottom' id='coreresource'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>resource(relation, resourceID, additionalTemplateParams)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Get a single <a href="#resource">Resource</a> identified by resourceID.</p>
+
+    <div class='pre p1 fill-light mt0'>resource(relation: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, resourceID: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, additionalTemplateParams: any): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#resource">Resource</a>></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>relation</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    The shortened relation name
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>resourceID</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    id of the Resource
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>additionalTemplateParams</span> <code class='quiet'>(any
+            = <code>{}</code>)</code>
+	    
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#resource">Resource</a>></code>:
+        resolves to the Resource which should be loaded
+
+      
+    
+  
+
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">return</span> accounts.resource(<span class="hljs-string">'account'</span>, me.accountID)
+.then(<span class="hljs-function"><span class="hljs-params">account</span> =&gt;</span> show(account.email));</pre>
+    
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='coreresourcelist'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>resourceList(relation, options, additionalTemplateParams)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Load a <a href="#listresource">ListResource</a> of <a href="#resource">Resource</a>s filtered by the values specified by the
+options parameter.</p>
+
+    <div class='pre p1 fill-light mt0'>resourceList(relation: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, options: <a href="#filteroptions">filterOptions</a>?, additionalTemplateParams: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#listresource">ListResource</a>></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>relation</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    The shortened relation name
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>options</span> <code class='quiet'>(<a href="#filteroptions">filterOptions</a>?
+            = <code>{}</code>)</code>
+	    the filter options
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>additionalTemplateParams</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>
+            = <code>{}</code>)</code>
+	    additional template parameters to apply
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#listresource">ListResource</a>></code>:
+        resolves to resource list with applied filters
+
+      
+    
+  
+
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">return</span> accounts.resourceList(<span class="hljs-string">'account'</span>, {
+  <span class="hljs-attr">filter</span>: {
+    <span class="hljs-attr">created</span>: {
+      <span class="hljs-attr">from</span>: <span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>(<span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>.getTime() - <span class="hljs-number">600000</span>).toISOString()),
+    },
+  },
+})
+.then(<span class="hljs-function"><span class="hljs-params">list</span> =&gt;</span> show(list))</pre>
+    
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
     <div class='border-bottom' id='coresettoken'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
@@ -4590,224 +5118,6 @@ function to add any string.</p>
       </div>
     </div>
   
-    <div class='border-bottom' id='coregetfilteroptions'>
-      <div class="clearfix small pointer toggle-sibling">
-        <div class="py1 contain">
-            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>getFilterOptions(relation)</span>
-        </div>
-      </div>
-      <div class="clearfix display-none toggle-target">
-        <section class='p2 mb2 clearfix bg-white minishadow'>
-
-  
-
-  <p>Get a list of all avaliable filter options for a given relation.</p>
-
-    <div class='pre p1 fill-light mt0'>getFilterOptions(relation: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>>></div>
-  
-  
-
-  
-  
-  
-  
-  
-  
-
-  
-    <div class='py1 quiet mt1 prose-big'>Parameters</div>
-    <div class='prose'>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>relation</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
-	    The shortened relation name
-
-          </div>
-          
-        </div>
-      
-    </div>
-  
-
-  
-
-  
-    
-      <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>>></code>:
-        resolves to an array of avaliable filter options (query string notation).
-
-      
-    
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-</section>
-
-      </div>
-    </div>
-  
-    <div class='border-bottom' id='coreresource'>
-      <div class="clearfix small pointer toggle-sibling">
-        <div class="py1 contain">
-            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>resource(relation, resourceID, additionalTemplateParams)</span>
-        </div>
-      </div>
-      <div class="clearfix display-none toggle-target">
-        <section class='p2 mb2 clearfix bg-white minishadow'>
-
-  
-
-  <p>Get a single <a href="#resource">Resource</a> identified by resourceID.</p>
-
-    <div class='pre p1 fill-light mt0'>resource(relation: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, resourceID: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, additionalTemplateParams: any): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#resource">Resource</a>></div>
-  
-  
-
-  
-  
-  
-  
-  
-  
-
-  
-    <div class='py1 quiet mt1 prose-big'>Parameters</div>
-    <div class='prose'>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>relation</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
-	    The shortened relation name
-
-          </div>
-          
-        </div>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>resourceID</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
-	    id of the Resource
-
-          </div>
-          
-        </div>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>additionalTemplateParams</span> <code class='quiet'>(any
-            = <code>{}</code>)</code>
-	    
-          </div>
-          
-        </div>
-      
-    </div>
-  
-
-  
-
-  
-    
-      <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#resource">Resource</a>></code>:
-        resolves to the Resource which should be loaded
-
-      
-    
-  
-
-  
-
-  
-    <div class='py1 quiet mt1 prose-big'>Example</div>
-    
-      
-      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">return</span> accounts.resource(<span class="hljs-string">'account'</span>, me.accountID)
-.then(<span class="hljs-function"><span class="hljs-params">account</span> =&gt;</span> show(account.email));</pre>
-    
-  
-
-  
-
-  
-
-  
-
-  
-</section>
-
-      </div>
-    </div>
-  
-    <div class='border-bottom' id='coredorefreshtoken'>
-      <div class="clearfix small pointer toggle-sibling">
-        <div class="py1 contain">
-            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>doRefreshToken()</span>
-        </div>
-      </div>
-      <div class="clearfix display-none toggle-target">
-        <section class='p2 mb2 clearfix bg-white minishadow'>
-
-  
-
-  <p><code>Abstract interface</code> for PublicAPI#doRefreshToken. Exists until Accountserver has token refreshal of its own.</p>
-
-    <div class='pre p1 fill-light mt0'>doRefreshToken(): {access_token: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, refresh_token: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>}</div>
-  
-  
-
-  
-  
-  
-  
-  
-  
-
-  
-
-  
-
-  
-    
-      <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code>{access_token: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, refresh_token: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>}</code>:
-        Returns the new token response on successful refresh
-
-      
-    
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-</section>
-
-      </div>
-    </div>
-  
     <div class='border-bottom' id='coretimetorefresh'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
@@ -4849,326 +5159,6 @@ function to add any string.</p>
 
   
 
-  
-
-  
-
-  
-
-  
-
-  
-</section>
-
-      </div>
-    </div>
-  
-    <div class='border-bottom' id='corecanrefreshtoken'>
-      <div class="clearfix small pointer toggle-sibling">
-        <div class="py1 contain">
-            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>canRefreshToken()</span>
-        </div>
-      </div>
-      <div class="clearfix display-none toggle-target">
-        <section class='p2 mb2 clearfix bg-white minishadow'>
-
-  
-
-  <p>Check if we can refresh a token</p>
-
-    <div class='pre p1 fill-light mt0'>canRefreshToken(): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></div>
-  
-  
-
-  
-  
-  
-  
-  
-  
-
-  
-
-  
-
-  
-    
-      <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code>:
-        Wether or not the refreshal can be performed.
-
-      
-    
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-</section>
-
-      </div>
-    </div>
-  
-    <div class='border-bottom' id='coredispatch'>
-      <div class="clearfix small pointer toggle-sibling">
-        <div class="py1 contain">
-            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>dispatch(fkt)</span>
-        </div>
-      </div>
-      <div class="clearfix display-none toggle-target">
-        <section class='p2 mb2 clearfix bg-white minishadow'>
-
-  
-
-  <p>Dispatch a request for helper lib. This will handle token refreshal on every request and on 401 errors</p>
-
-    <div class='pre p1 fill-light mt0'>dispatch(fkt: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function">function</a>)</div>
-  
-  
-
-  
-  
-  
-  
-  
-  
-
-  
-    <div class='py1 quiet mt1 prose-big'>Parameters</div>
-    <div class='prose'>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>fkt</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function">function</a>)</code>
-	    A function returning a Promise from any network helper in helper.js
-
-          </div>
-          
-        </div>
-      
-    </div>
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-</section>
-
-      </div>
-    </div>
-  
-    <div class='border-bottom' id='coreresourcelist'>
-      <div class="clearfix small pointer toggle-sibling">
-        <div class="py1 contain">
-            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>resourceList(relation, options, additionalTemplateParams)</span>
-        </div>
-      </div>
-      <div class="clearfix display-none toggle-target">
-        <section class='p2 mb2 clearfix bg-white minishadow'>
-
-  
-
-  <p>Load a <a href="#listresource">ListResource</a> of <a href="#resource">Resource</a>s filtered by the values specified by the
-options parameter.</p>
-
-    <div class='pre p1 fill-light mt0'>resourceList(relation: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, options: <a href="#filteroptions">filterOptions</a>?, additionalTemplateParams: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#listresource">ListResource</a>></div>
-  
-  
-
-  
-  
-  
-  
-  
-  
-
-  
-    <div class='py1 quiet mt1 prose-big'>Parameters</div>
-    <div class='prose'>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>relation</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
-	    The shortened relation name
-
-          </div>
-          
-        </div>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>options</span> <code class='quiet'>(<a href="#filteroptions">filterOptions</a>?
-            = <code>{}</code>)</code>
-	    the filter options
-
-          </div>
-          
-        </div>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>additionalTemplateParams</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>
-            = <code>{}</code>)</code>
-	    additional template parameters to apply
-
-          </div>
-          
-        </div>
-      
-    </div>
-  
-
-  
-
-  
-    
-      <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#listresource">ListResource</a>></code>:
-        resolves to resource list with applied filters
-
-      
-    
-  
-
-  
-
-  
-    <div class='py1 quiet mt1 prose-big'>Example</div>
-    
-      
-      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">return</span> accounts.resourceList(<span class="hljs-string">'account'</span>, {
-  <span class="hljs-attr">filter</span>: {
-    <span class="hljs-attr">created</span>: {
-      <span class="hljs-attr">from</span>: <span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>(<span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>.getTime() - <span class="hljs-number">600000</span>).toISOString()),
-    },
-  },
-})
-.then(<span class="hljs-function"><span class="hljs-params">list</span> =&gt;</span> show(list))</pre>
-    
-  
-
-  
-
-  
-
-  
-
-  
-</section>
-
-      </div>
-    </div>
-  
-    <div class='border-bottom' id='corecreate'>
-      <div class="clearfix small pointer toggle-sibling">
-        <div class="py1 contain">
-            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>create(relation, resource, returnList)</span>
-        </div>
-      </div>
-      <div class="clearfix display-none toggle-target">
-        <section class='p2 mb2 clearfix bg-white minishadow'>
-
-  
-
-  <p>Create a new Resource. Note: Not all relations will support this.</p>
-
-    <div class='pre p1 fill-light mt0'>create(relation: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, resource: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, returnList: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#resource">Resource</a>></div>
-  
-  
-
-  
-  
-  
-  
-  
-  
-
-  
-    <div class='py1 quiet mt1 prose-big'>Parameters</div>
-    <div class='prose'>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>relation</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
-	    The shortened relation name
-
-          </div>
-          
-        </div>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>resource</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
-	    object representing the resource
-
-          </div>
-          
-        </div>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>returnList</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>
-            = <code>false</code>)</code>
-	    override Resource creation with List creation.
-
-          </div>
-          
-        </div>
-      
-    </div>
-  
-
-  
-
-  
-    
-      <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#resource">Resource</a>></code>:
-        the newly created Resource
-
-      
-    
-  
-
-  
-
-  
-    <div class='py1 quiet mt1 prose-big'>Example</div>
-    
-      
-      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">return</span> accounts.create(<span class="hljs-string">'client'</span>, {
-  <span class="hljs-attr">clientID</span>: <span class="hljs-string">'myClient'</span>,
-  <span class="hljs-attr">callbackURL</span>: <span class="hljs-string">'https://example.com/login'</span>,
-  <span class="hljs-attr">config</span>: {
-    <span class="hljs-attr">tokenMethod</span>: <span class="hljs-string">'query'</span>,
-  },
-})
-.then(<span class="hljs-function"><span class="hljs-params">client</span> =&gt;</span> show(client));</pre>
-    
   
 
   
@@ -8876,6 +8866,76 @@ session.setClientID(<span class="hljs-string">'rest'</span>);
       </div>
     </div>
   
+    <div class='border-bottom' id='publicapiassetgrouplist'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>assetGroupList(reload)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Load the list of assetGroupIDs.</p>
+
+    <div class='pre p1 fill-light mt0'>assetGroupList(reload: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>?): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>>></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>reload</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>?
+            = <code>false</code>)</code>
+	    whether or not to force reload
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>>></code>:
+        Resolves to an array with all available asssetGroupIDs
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
     <div class='border-bottom' id='publicapiassetlist'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
@@ -9088,6 +9148,142 @@ with <a href="Sessin#checkPermission">Sessin#checkPermission</a>.</p>
       <div class='py1 quiet mt1 prose-big'>Returns</div>
       <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>></code>:
         true if user has permission, false otherwise
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='publicapiconfigurablesignup'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>configurableSignup(body)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Programatically signup a user, mostly used for special register flows using legacy users or magic link login.</p>
+
+    <div class='pre p1 fill-light mt0'>configurableSignup(body: any): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;{accountID: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, email: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, hasPassword: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>, pending: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>}></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>body</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;{accountID: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, email: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, hasPassword: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>, pending: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>}></code>:
+        Promise resolving to the created account
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='publicapiconfigurablesignupedit'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>configurableSignupEdit(body)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Programatically complete a signup with a single use validationToken, mostly used for special register flows using legacy users or magic link login.</p>
+
+    <div class='pre p1 fill-light mt0'>configurableSignupEdit(body: any): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;{access_token: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, refresh_token: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>}></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>body</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;{access_token: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, refresh_token: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>}></code>:
+        Promise resolving to the issued token
 
       
     
@@ -9722,6 +9918,63 @@ factory which then resolves to the newly created assets as DMAssetList
       </div>
     </div>
   
+    <div class='border-bottom' id='publicapidorefreshtoken'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>doRefreshToken()</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>When the logged in user has a refresh token this function will do the token refresh. On successful
+refreshal PublicAPI will emmit the event <code>refresh</code>, if it failes it will emmit <code>refreshError</code>. You
+MUST handle these events.</p>
+
+    <div class='pre p1 fill-light mt0'>doRefreshToken(): {access_token: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, refresh_token: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>}</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code>{access_token: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, refresh_token: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>}</code>:
+        Returns the new token response on successful refresh
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
     <div class='border-bottom' id='publicapiemailavailable'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
@@ -9995,92 +10248,6 @@ levels directly request
       </div>
     </div>
   
-    <div class='border-bottom' id='publicapirefcount'>
-      <div class="clearfix small pointer toggle-sibling">
-        <div class="py1 contain">
-            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>refCount(model, field, ids)</span>
-        </div>
-      </div>
-      <div class="clearfix display-none toggle-target">
-        <section class='p2 mb2 clearfix bg-white minishadow'>
-
-  
-
-  <p>Call PublicAPI#refCount with model, field and desired ids to get a simple object with ref counts.</p>
-
-    <div class='pre p1 fill-light mt0'>refCount(model: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, field: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, ids: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>>)</div>
-  
-  
-
-  
-  
-  
-  
-  
-  
-
-  
-    <div class='py1 quiet mt1 prose-big'>Parameters</div>
-    <div class='prose'>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>model</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
-	    Model for which you want a ref count
-
-          </div>
-          
-        </div>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>field</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
-	    Field for which you want a ref count
-
-          </div>
-          
-        </div>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>ids</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>>)</code>
-	    Array of entry ids for which you want the ref count
-
-          </div>
-          
-        </div>
-      
-    </div>
-  
-
-  
-
-  
-
-  
-
-  
-    <div class='py1 quiet mt1 prose-big'>Example</div>
-    
-      
-      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">const</span> counts = <span class="hljs-keyword">await</span> api.refCount(<span class="hljs-string">'myModel'</span>, <span class="hljs-string">'myField'</span>, [entryID1, entryID2, ...entryIDn]);
-alert(<span class="hljs-string">`Entry <span class="hljs-subst">${entryID1}</span> has <span class="hljs-subst">${counts[entryID1]}</span> references`</span>);</pre>
-    
-  
-
-  
-
-  
-
-  
-
-  
-</section>
-
-      </div>
-    </div>
-  
     <div class='border-bottom' id='publicapigetauthlink'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
@@ -10140,6 +10307,193 @@ alert(<span class="hljs-string">`Entry <span class="hljs-subst">${entryID1}</spa
       <div class='py1 quiet mt1 prose-big'>Returns</div>
       <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>></code>:
         
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='publicapigetdatamanagerresource'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>getDataManagerResource()</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Get the <a href="#datamanagerresource">DataManagerResource</a> for this PublicAPI Connector. Does only make sense for ec
+users (check not enforced).</p>
+
+    <div class='pre p1 fill-light mt0'>getDataManagerResource(): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#datamanagerresource">DataManagerResource</a>></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#datamanagerresource">DataManagerResource</a>></code>:
+        
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='publicapigetevents'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>getEvents(options)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Load the HistoryEvents for this DataManager from v3 API.
+Note: This Request only has pagination when you load a single modelID.</p>
+
+    <div class='pre p1 fill-light mt0'>getEvents(options: (<a href="#filteroptions">filterOptions</a> | any))</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>options</span> <code class='quiet'>((<a href="#filteroptions">filterOptions</a> | any))</code>
+	    The filter options
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='publicapigetfieldconfig'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>getFieldConfig(modelTitle)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Load fieldConfig for one or many models. Can be used to configure and style forms etc.</p>
+
+    <div class='pre p1 fill-light mt0'>getFieldConfig(modelTitle: (<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a> | <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>>)): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>modelTitle</span> <code class='quiet'>((<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a> | <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>>))</code>
+	    The model title or array of model titles to load the field config for.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>></code>:
+        Returns either a Object with single model field config, or an object with multiple field configs
 
       
     
@@ -10298,75 +10652,6 @@ AssetNeue.
       <div class='py1 quiet mt1 prose-big'>Returns</div>
       <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>></code>:
         the url string of the requested image
-
-      
-    
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-</section>
-
-      </div>
-    </div>
-  
-    <div class='border-bottom' id='publicapigetfieldconfig'>
-      <div class="clearfix small pointer toggle-sibling">
-        <div class="py1 contain">
-            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>getFieldConfig(modelTitle)</span>
-        </div>
-      </div>
-      <div class="clearfix display-none toggle-target">
-        <section class='p2 mb2 clearfix bg-white minishadow'>
-
-  
-
-  <p>Load fieldConfig for one or many models. Can be used to configure and style forms etc.</p>
-
-    <div class='pre p1 fill-light mt0'>getFieldConfig(modelTitle: (<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a> | <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>>)): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>></div>
-  
-  
-
-  
-  
-  
-  
-  
-  
-
-  
-    <div class='py1 quiet mt1 prose-big'>Parameters</div>
-    <div class='prose'>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>modelTitle</span> <code class='quiet'>((<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a> | <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>>))</code>
-	    The model title or array of model titles to load the field config for.
-
-          </div>
-          
-        </div>
-      
-    </div>
-  
-
-  
-
-  
-    
-      <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>></code>:
-        Returns either a Object with single model field config, or an object with multiple field configs
 
       
     
@@ -10624,6 +10909,67 @@ load.</p>
       </div>
     </div>
   
+    <div class='border-bottom' id='publicapigetvalidationtoken'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>getValidationToken(email)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Create a single-use validation token for a user. The token should then be send to the user via mail and MUST NOT be displayed to her.</p>
+
+    <div class='pre p1 fill-light mt0'>getValidationToken(email: stirng)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>email</span> <code class='quiet'>(stirng)</code>
+	    The users email.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
     <div class='border-bottom' id='publicapilogin'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
@@ -10667,6 +11013,75 @@ credentials and tokenMethod <code>body</code>.</p>
           <div>
             <span class='code bold'>password</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
 	    password of the user
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;{access_token: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, refresh_token: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>}></code>:
+        Promise resolving to the issued token
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='publicapiloginwithtoken'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>loginWithToken(body)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Login with token from magic link</p>
+
+    <div class='pre p1 fill-light mt0'>loginWithToken(body: {validationToken: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, useragent: stirng, ip: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>}): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;{access_token: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, refresh_token: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>}></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>body</span> <code class='quiet'>({validationToken: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, useragent: stirng, ip: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>})</code>
+	    Login request body.
 
           </div>
           
@@ -10900,11 +11315,11 @@ value.</p>
       </div>
     </div>
   
-    <div class='border-bottom' id='publicapiassetgrouplist'>
+    <div class='border-bottom' id='publicapirefcount'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>assetGroupList(reload)</span>
+            <span class='code strong strong truncate'>refCount(model, field, ids)</span>
         </div>
       </div>
       <div class="clearfix display-none toggle-target">
@@ -10912,9 +11327,9 @@ value.</p>
 
   
 
-  <p>Load the list of assetGroupIDs.</p>
+  <p>Call PublicAPI#refCount with model, field and desired ids to get a simple object with ref counts.</p>
 
-    <div class='pre p1 fill-light mt0'>assetGroupList(reload: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>?): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>>></div>
+    <div class='pre p1 fill-light mt0'>refCount(model: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, field: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, ids: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>>)</div>
   
   
 
@@ -10931,79 +11346,26 @@ value.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>reload</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>?
-            = <code>false</code>)</code>
-	    whether or not to force reload
+            <span class='code bold'>model</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    Model for which you want a ref count
 
           </div>
           
         </div>
-      
-    </div>
-  
-
-  
-
-  
-    
-      <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>>></code>:
-        Resolves to an array with all available asssetGroupIDs
-
-      
-    
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-</section>
-
-      </div>
-    </div>
-  
-    <div class='border-bottom' id='publicapigetevents'>
-      <div class="clearfix small pointer toggle-sibling">
-        <div class="py1 contain">
-            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>getEvents(options)</span>
-        </div>
-      </div>
-      <div class="clearfix display-none toggle-target">
-        <section class='p2 mb2 clearfix bg-white minishadow'>
-
-  
-
-  <p>Load the HistoryEvents for this DataManager from v3 API.
-Note: This Request only has pagination when you load a single modelID.</p>
-
-    <div class='pre p1 fill-light mt0'>getEvents(options: (<a href="#filteroptions">filterOptions</a> | any))</div>
-  
-  
-
-  
-  
-  
-  
-  
-  
-
-  
-    <div class='py1 quiet mt1 prose-big'>Parameters</div>
-    <div class='prose'>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>options</span> <code class='quiet'>((<a href="#filteroptions">filterOptions</a> | any))</code>
-	    The filter options
+            <span class='code bold'>field</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    Field for which you want a ref count
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>ids</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>>)</code>
+	    Array of entry ids for which you want the ref count
 
           </div>
           
@@ -11018,6 +11380,13 @@ Note: This Request only has pagination when you load a single modelID.</p>
 
   
 
+  
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">const</span> counts = <span class="hljs-keyword">await</span> api.refCount(<span class="hljs-string">'myModel'</span>, <span class="hljs-string">'myField'</span>, [entryID1, entryID2, ...entryIDn]);
+alert(<span class="hljs-string">`Entry <span class="hljs-subst">${entryID1}</span> has <span class="hljs-subst">${counts[entryID1]}</span> references`</span>);</pre>
+    
   
 
   
@@ -11157,119 +11526,6 @@ Note: This Request only has pagination when you load a single modelID.</p>
       <div class='py1 quiet mt1 prose-big'>Returns</div>
       <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#publicapi">PublicAPI</a>></code>:
         returns this
-
-      
-    
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-</section>
-
-      </div>
-    </div>
-  
-    <div class='border-bottom' id='publicapidorefreshtoken'>
-      <div class="clearfix small pointer toggle-sibling">
-        <div class="py1 contain">
-            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>doRefreshToken()</span>
-        </div>
-      </div>
-      <div class="clearfix display-none toggle-target">
-        <section class='p2 mb2 clearfix bg-white minishadow'>
-
-  
-
-  <p>When the logged in user has a refresh token this function will do the token refresh. On successful
-refreshal PublicAPI will emmit the event <code>refresh</code>, if it failes it will emmit <code>refreshError</code>. You
-MUST handle these events.</p>
-
-    <div class='pre p1 fill-light mt0'>doRefreshToken(): {access_token: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, refresh_token: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>}</div>
-  
-  
-
-  
-  
-  
-  
-  
-  
-
-  
-
-  
-
-  
-    
-      <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code>{access_token: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, refresh_token: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>}</code>:
-        Returns the new token response on successful refresh
-
-      
-    
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-</section>
-
-      </div>
-    </div>
-  
-    <div class='border-bottom' id='publicapigetdatamanagerresource'>
-      <div class="clearfix small pointer toggle-sibling">
-        <div class="py1 contain">
-            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>getDataManagerResource()</span>
-        </div>
-      </div>
-      <div class="clearfix display-none toggle-target">
-        <section class='p2 mb2 clearfix bg-white minishadow'>
-
-  
-
-  <p>Get the <a href="#datamanagerresource">DataManagerResource</a> for this PublicAPI Connector. Does only make sense for ec
-users (check not enforced).</p>
-
-    <div class='pre p1 fill-light mt0'>getDataManagerResource(): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#datamanagerresource">DataManagerResource</a>></div>
-  
-  
-
-  
-  
-  
-  
-  
-  
-
-  
-
-  
-
-  
-    
-      <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#datamanagerresource">DataManagerResource</a>></code>:
-        
 
       
     
@@ -11626,203 +11882,6 @@ users (check not enforced).</p>
       </div>
     </div>
   
-    <div class='border-bottom' id='publicapiconfigurablesignup'>
-      <div class="clearfix small pointer toggle-sibling">
-        <div class="py1 contain">
-            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>configurableSignup(body)</span>
-        </div>
-      </div>
-      <div class="clearfix display-none toggle-target">
-        <section class='p2 mb2 clearfix bg-white minishadow'>
-
-  
-
-  <p>Programatically signup a user, mostly used for special register flows using legacy users or magic link login.</p>
-
-    <div class='pre p1 fill-light mt0'>configurableSignup(body: any): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;{accountID: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, email: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, hasPassword: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>, pending: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>}></div>
-  
-  
-
-  
-  
-  
-  
-  
-  
-
-  
-    <div class='py1 quiet mt1 prose-big'>Parameters</div>
-    <div class='prose'>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>body</span> <code class='quiet'>(any)</code>
-	    
-          </div>
-          
-        </div>
-      
-    </div>
-  
-
-  
-
-  
-    
-      <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;{accountID: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, email: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, hasPassword: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>, pending: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>}></code>:
-        Promise resolving to the created account
-
-      
-    
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-</section>
-
-      </div>
-    </div>
-  
-    <div class='border-bottom' id='publicapiconfigurablesignupedit'>
-      <div class="clearfix small pointer toggle-sibling">
-        <div class="py1 contain">
-            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>configurableSignupEdit(body)</span>
-        </div>
-      </div>
-      <div class="clearfix display-none toggle-target">
-        <section class='p2 mb2 clearfix bg-white minishadow'>
-
-  
-
-  <p>Programatically complete a signup with a single use validationToken, mostly used for special register flows using legacy users or magic link login.</p>
-
-    <div class='pre p1 fill-light mt0'>configurableSignupEdit(body: any): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;{access_token: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, refresh_token: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>}></div>
-  
-  
-
-  
-  
-  
-  
-  
-  
-
-  
-    <div class='py1 quiet mt1 prose-big'>Parameters</div>
-    <div class='prose'>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>body</span> <code class='quiet'>(any)</code>
-	    
-          </div>
-          
-        </div>
-      
-    </div>
-  
-
-  
-
-  
-    
-      <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;{access_token: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, refresh_token: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>}></code>:
-        Promise resolving to the issued token
-
-      
-    
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-</section>
-
-      </div>
-    </div>
-  
-    <div class='border-bottom' id='publicapigetvalidationtoken'>
-      <div class="clearfix small pointer toggle-sibling">
-        <div class="py1 contain">
-            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>getValidationToken(email)</span>
-        </div>
-      </div>
-      <div class="clearfix display-none toggle-target">
-        <section class='p2 mb2 clearfix bg-white minishadow'>
-
-  
-
-  <p>Create a single-use validation token for a user. The token should then be send to the user via mail and MUST NOT be displayed to her.</p>
-
-    <div class='pre p1 fill-light mt0'>getValidationToken(email: stirng)</div>
-  
-  
-
-  
-  
-  
-  
-  
-  
-
-  
-    <div class='py1 quiet mt1 prose-big'>Parameters</div>
-    <div class='prose'>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>email</span> <code class='quiet'>(stirng)</code>
-	    The users email.
-
-          </div>
-          
-        </div>
-      
-    </div>
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-</section>
-
-      </div>
-    </div>
-  
     <div class='border-bottom' id='publicapivalidatevalidationtoken'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
@@ -11866,75 +11925,6 @@ users (check not enforced).</p>
 
   
 
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-</section>
-
-      </div>
-    </div>
-  
-    <div class='border-bottom' id='publicapiloginwithtoken'>
-      <div class="clearfix small pointer toggle-sibling">
-        <div class="py1 contain">
-            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>loginWithToken(body)</span>
-        </div>
-      </div>
-      <div class="clearfix display-none toggle-target">
-        <section class='p2 mb2 clearfix bg-white minishadow'>
-
-  
-
-  <p>Login with token from magic link</p>
-
-    <div class='pre p1 fill-light mt0'>loginWithToken(body: {validationToken: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, useragent: stirng, ip: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>}): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;{access_token: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, refresh_token: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>}></div>
-  
-  
-
-  
-  
-  
-  
-  
-  
-
-  
-    <div class='py1 quiet mt1 prose-big'>Parameters</div>
-    <div class='prose'>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>body</span> <code class='quiet'>({validationToken: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, useragent: stirng, ip: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>})</code>
-	    Login request body.
-
-          </div>
-          
-        </div>
-      
-    </div>
-  
-
-  
-
-  
-    
-      <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;{access_token: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, refresh_token: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>}></code>:
-        Promise resolving to the issued token
-
-      
-    
   
 
   
@@ -12986,6 +12976,59 @@ error with token related error codes. Will either have undefined or <a href="#pr
   
   <div class='clearfix'>
     
+    <h3 class='fl m0' id='eventeventsignup'>
+      Event#signup
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Signup event is emitted when a login succeeds with <a href="#publicapisignup">PublicAPI#signup</a>.</p>
+
+    <div class='pre p1 fill-light mt0'>Event#signup</div>
+  
+    <p>
+      Type:
+      {access_token: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, refresh_token: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>}
+    </p>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
     <h3 class='fl m0' id='eventeventerror'>
       Event#error
     </h3>
@@ -12997,6 +13040,112 @@ error with token related error codes. Will either have undefined or <a href="#pr
   <p>Error events are emitted whenever an API responds with an <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error">Error</a> or <a href="#problem">Problem</a>.</p>
 
     <div class='pre p1 fill-light mt0'>Event#error</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='eventeventrefresh'>
+      Event#refresh
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Refresh event is emitted when a token is automatically refreshed.</p>
+
+    <div class='pre p1 fill-light mt0'>Event#refresh</div>
+  
+    <p>
+      Type:
+      {access_token: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, refresh_token: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>}
+    </p>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='eventeventrefresherror'>
+      Event#refreshError
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Refresh error event is emitted when a token is automatically refreshed.</p>
+
+    <div class='pre p1 fill-light mt0'>Event#refreshError</div>
+  
+    <p>
+      Type:
+      <a href="#problem">Problem</a>
+    </p>
   
   
 
@@ -14742,7 +14891,7 @@ with them.</p>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>filter(iterator)</span>
+            <span class='code strong strong truncate'>filter(iterator, retry)</span>
         </div>
       </div>
       <div class="clearfix display-none toggle-target">
@@ -14755,7 +14904,7 @@ the provided function. It will use <a href="#listresourcefollownextlink">ListRes
 altering the list within the map method is possible but can change the order of the list. E.g.
 do not use on lists sorted by modified and update the entries during the process.</p>
 
-    <div class='pre p1 fill-light mt0'>filter(iterator: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function">function</a>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></div>
+    <div class='pre p1 fill-light mt0'>filter(iterator: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function">function</a>, retry: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></div>
   
   
 
@@ -14775,6 +14924,16 @@ do not use on lists sorted by modified and update the entries during the process
             <span class='code bold'>iterator</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function">function</a>)</code>
 	    function to test each element of the array. Return true to keep the
 element, false otherwise.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>retry</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>
+            = <code>false</code>)</code>
+	    boolean flag wheter or not to retry on failed requests
 
           </div>
           
@@ -14815,7 +14974,7 @@ element, false otherwise.
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>find(iterator)</span>
+            <span class='code strong strong truncate'>find(iterator, retry)</span>
         </div>
       </div>
       <div class="clearfix display-none toggle-target">
@@ -14828,7 +14987,7 @@ function. It will use <a href="#listresourcefollownextlink">ListResource#followN
 within the map method is possible but can change the order of the list. E.g. do not use on
 lists sorted by modified and update the entries during the process.</p>
 
-    <div class='pre p1 fill-light mt0'>find(iterator: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function">function</a>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></div>
+    <div class='pre p1 fill-light mt0'>find(iterator: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function">function</a>, retry: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></div>
   
   
 
@@ -14848,6 +15007,16 @@ lists sorted by modified and update the entries during the process.</p>
             <span class='code bold'>iterator</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function">function</a>)</code>
 	    function to test each element of the array. Return true to keep the
 element, false otherwise.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>retry</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>
+            = <code>false</code>)</code>
+	    boolean flag wheter or not to retry on failed requests
 
           </div>
           
@@ -15400,7 +15569,7 @@ returns a <a href="#listresource">ListResource</a> with the loaded result.</p>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>map(iterator)</span>
+            <span class='code strong strong truncate'>map(iterator, retry)</span>
         </div>
       </div>
       <div class="clearfix display-none toggle-target">
@@ -15413,7 +15582,7 @@ item in this list. It will use <a href="#listresourcefollownextlink">ListResourc
 the list within the map method is possible but can change the order of the list. E.g. do not
 use on lists sorted by modified and update the entries during the process.</p>
 
-    <div class='pre p1 fill-light mt0'>map(iterator: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function">function</a>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></div>
+    <div class='pre p1 fill-light mt0'>map(iterator: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function">function</a>, retry: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a></div>
   
   
 
@@ -15432,6 +15601,16 @@ use on lists sorted by modified and update the entries during the process.</p>
           <div>
             <span class='code bold'>iterator</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function">function</a>)</code>
 	    function that produces an element of the new array.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>retry</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>
+            = <code>false</code>)</code>
+	    boolean flag wheter or not to retry on failed requests
 
           </div>
           
@@ -33761,7 +33940,14 @@ be the same object but with refreshed data.
     </h2>
 
     
-      <h2><small>0.20.10 (2019-04-26)</small></h2>
+      <h2><small>0.20.11 (2019-05-03)</small></h2>
+<ul>
+<li>merge release/0.20.10 into master (<a href="https://github.com/entrecode/ec.sdk/commit/5605797">5605797</a>)</li>
+<li>release version 0.20.11 (<a href="https://github.com/entrecode/ec.sdk/commit/67b86cc">67b86cc</a>)</li>
+<li>feat: retry flag for ListResource#map/find/filter SDK-120 (<a href="https://github.com/entrecode/ec.sdk/commit/cbf6039">cbf6039</a>)</li>
+<li>doc: sort documentation SDK-127 (<a href="https://github.com/entrecode/ec.sdk/commit/725bf79">725bf79</a>)</li>
+</ul>
+<h2><small>0.20.10 (2019-04-26)</small></h2>
 <ul>
 <li>release version 0.20.10 (<a href="https://github.com/entrecode/ec.sdk/commit/2c201ec">2c201ec</a>)</li>
 <li>fix: invalid environment error in DataManager#getPublicAPI() SDK-121 (<a href="https://github.com/entrecode/ec.sdk/commit/0c6cced">0c6cced</a>)</li>
@@ -35429,245 +35615,6 @@ accounts.account(…);</pre>
     
   </section>
 </div>
-          
-        
-          
-          <section class='p2 mb2 clearfix bg-white minishadow'>
-
-  
-  <div class='clearfix'>
-    
-    <h3 class='fl m0' id='eventeventsignup'>
-      Event#signup
-    </h3>
-    
-    
-  </div>
-  
-
-  <p>Signup event is emitted when a login succeeds with <a href="#publicapisignup">PublicAPI#signup</a>.</p>
-
-    <div class='pre p1 fill-light mt0'>Event#signup</div>
-  
-    <p>
-      Type:
-      {access_token: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, refresh_token: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>}
-    </p>
-  
-  
-
-  
-  
-  
-  
-  
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-</section>
-
-          
-        
-          
-          <section class='p2 mb2 clearfix bg-white minishadow'>
-
-  
-  <div class='clearfix'>
-    
-    <h3 class='fl m0' id='eventeventrefresherror'>
-      Event#refreshError
-    </h3>
-    
-    
-  </div>
-  
-
-  <p>Refresh error event is emitted when a token is automatically refreshed.</p>
-
-    <div class='pre p1 fill-light mt0'>Event#refreshError</div>
-  
-    <p>
-      Type:
-      <a href="#problem">Problem</a>
-    </p>
-  
-  
-
-  
-  
-  
-  
-  
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-</section>
-
-          
-        
-          
-          <section class='p2 mb2 clearfix bg-white minishadow'>
-
-  
-  <div class='clearfix'>
-    
-    <h3 class='fl m0' id='eventeventrefresh'>
-      Event#refresh
-    </h3>
-    
-    
-  </div>
-  
-
-  <p>Refresh event is emitted when a token is automatically refreshed.</p>
-
-    <div class='pre p1 fill-light mt0'>Event#refresh</div>
-  
-    <p>
-      Type:
-      {access_token: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, refresh_token: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>}
-    </p>
-  
-  
-
-  
-  
-  
-  
-  
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-</section>
-
-          
-        
-          
-          <section class='p2 mb2 clearfix bg-white minishadow'>
-
-  
-  <div class='clearfix'>
-    
-    <h3 class='fl m0' id='shortenuuid'>
-      shortenUUID
-    </h3>
-    
-    
-  </div>
-  
-
-  <p>shortenUUID(uuid[, factor])</p>
-
-    <div class='pre p1 fill-light mt0'>shortenUUID(uuid: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, factor: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></div>
-  
-  
-
-  
-  
-  
-  
-  
-  
-
-  
-    <div class='py1 quiet mt1 prose-big'>Parameters</div>
-    <div class='prose'>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>uuid</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
-	    A UUID v4 (including dashes)
-
-          </div>
-          
-        </div>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>factor</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>)</code>
-	    A int 1-5, default is 1 (16 characters returned). Recommended is 2 (8
-characters returned).
-
-          </div>
-          
-        </div>
-      
-    </div>
-  
-
-  
-
-  
-    
-      <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>:
-        1-16 character hex string
-
-      
-    
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-</section>
-
           
         
       </div>

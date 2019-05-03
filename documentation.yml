@@ -24,7 +24,10 @@ toc:
   - EventEmitter
   - Event#login
   - Event#logout
+  - Event#signup
   - Event#error
+  - Event#refresh
+  - Event#refreshError
   - name: Resources
     file: ./src/doc/4-resources.md
   - Resource
