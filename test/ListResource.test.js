@@ -169,6 +169,70 @@ describe('ListResource', () => {
         result.length.should.be.equal(4);
       });
   });
+  it('should map over entries with retry, sync iterator', () => {
+    nock('https://datamanager.entrecode.de')
+      .get('/?title~=test&size=2')
+      .replyWithFile(200, `${__dirname}/mocks/dm-list.json`, { 'Content-Type': 'application/json' })
+      .get('/?title~=test&size=2&page=2')
+      .replyWithFile(200, `${__dirname}/mocks/dm-list-page.json`, { 'Content-Type': 'application/json' });
+
+    let error = true;
+    const iterator = (dm) => {
+      if (error) {
+        error = false;
+        const err = new Error('mocked error');
+        err.status = 500;
+        throw err;
+      }
+      return dm.getProperty('dataManagerID');
+    };
+
+    return list.map(iterator, true).then((result) => {
+      result.should.be.an('array');
+      result.length.should.be.equal(4);
+    });
+  });
+  it.only('should map over entries with retry on next page, sync iterator', () => {
+    const e = new Error('mocked error');
+    e.status = 500;
+
+    nock('https://datamanager.entrecode.de')
+      .get('/?title~=test&size=2')
+      .replyWithFile(200, `${__dirname}/mocks/dm-list.json`, { 'Content-Type': 'application/json' })
+      .get('/?title~=test&size=2')
+      .replyWithFile(200, `${__dirname}/mocks/dm-list.json`, { 'Content-Type': 'application/json' })
+      .get('/?title~=test&size=2&page=2')
+      .replyWithError(e)
+      .get('/?title~=test&size=2&page=2')
+      .replyWithFile(200, `${__dirname}/mocks/dm-list-page.json`, { 'Content-Type': 'application/json' });
+
+    return list
+      .map((dm) => dm.getProperty('dataManagerID'), true)
+      .then((result) => {
+        result.should.be.an('array');
+        result.length.should.be.equal(4);
+      });
+  });
+  it('should be rejected on error without retry, sync iterator', () => {
+    nock('https://datamanager.entrecode.de')
+      .get('/?title~=test&size=2')
+      .replyWithFile(200, `${__dirname}/mocks/dm-list.json`, { 'Content-Type': 'application/json' })
+      .get('/?title~=test&size=2&page=2')
+      .replyWithFile(200, `${__dirname}/mocks/dm-list-page.json`, { 'Content-Type': 'application/json' });
+
+    let error = true;
+    const iterator = (dm) => {
+      if (error) {
+        error = false;
+        const err = new Error('mocked error');
+        err.status = 500;
+        throw err;
+      }
+      return dm.getProperty('dataManagerID');
+    };
+
+    return list.map(iterator).should.be.rejectedWith('mocked error');
+  });
   it('should map over entries, promise iterator', () => {
     nock('https://datamanager.entrecode.de')
       .get('/?title~=test&size=2')

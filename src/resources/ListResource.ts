@@ -1,4 +1,5 @@
 import Resource from './Resource';
+import { retryReq } from '../helper';
 
 const environmentSymbol: any = Symbol.for('environment');
 const resourceSymbol: any = Symbol.for('resource');
@@ -7,16 +8,37 @@ const nameSymbol: any = Symbol.for('name');
 const itemClassSymbol: any = Symbol('_itemClass');
 const listClassSymbol: any = Symbol('_listClass');
 
+async function retry(entry: Resource, iterator: (resource: Resource) => Promise<any> | any, retries: number = 0) {
+  return Promise.resolve()
+    .then(() => iterator(entry))
+    .catch((e) => {
+      if (retries < 7 && e.status && e.status >= 500) {
+        console.log(`Retry iteration in ${2 ** retries * 1000}ms because of ${e.message}`);
+        return new Promise((resolve) => setTimeout(resolve, 2 ** retries * 1000)).then(() =>
+          retry(entry, iterator, retries + 1),
+        );
+      }
+
+      throw e;
+    });
+}
+
 function map(
   list: ListResource,
   iterator: (resource: Resource) => Promise<any> | any,
+  retryFlag: boolean,
   results: Array<Resource> = [],
 ): Promise<Array<any>> {
   return list
     .getAllItems()
     .map((entry) => (res) =>
       Promise.resolve()
-        .then(() => iterator(entry))
+        .then(() => {
+          if (retryFlag) {
+            return retry(entry, iterator);
+          }
+          return iterator(entry);
+        })
         .then((result) => {
           res.push(result);
           return res;
@@ -27,20 +49,29 @@ function map(
       if (!list.hasNextLink()) {
         return res;
       }
-      return list.followNextLink().then((next) => map(next, iterator, res));
+      return retryReq(
+        () => list.followNextLink().then((next) => map(next, iterator, retryFlag, res)),
+        retryFlag ? 0 : 8,
+      );
     });
 }
 
 function filter(
   list: ListResource,
   iterator: (resource: Resource) => Promise<boolean> | boolean,
+  retryFlag: boolean,
   results: Array<Resource> = [],
 ): Promise<Array<Resource>> {
   return list
     .getAllItems()
     .map((entry) => (res) =>
       Promise.resolve()
-        .then(() => iterator(entry))
+        .then(() => {
+          if (retryFlag) {
+            return retry(entry, iterator);
+          }
+          return iterator(entry);
+        })
         .then((add) => {
           if (add) {
             res.push(entry);
@@ -53,19 +84,28 @@ function filter(
       if (!list.hasNextLink()) {
         return res;
       }
-      return list.followNextLink().then((next) => filter(next, iterator, res));
+      return retryReq(
+        () => list.followNextLink().then((next) => filter(next, iterator, retryFlag, res)),
+        retryFlag ? 0 : 8,
+      );
     });
 }
 
 function find(
   list: ListResource,
   iterator: (resource: Resource) => Promise<boolean> | boolean,
+  retryFlag: boolean,
 ): Promise<Resource | undefined> {
   return list
     .getAllItems()
     .map((entry) => () =>
       Promise.resolve()
-        .then(() => iterator(entry))
+        .then(() => {
+          if (retryFlag) {
+            return retry(entry, iterator);
+          }
+          return iterator(entry);
+        })
         .then((found) => {
           if (!found) {
             return undefined;
@@ -89,7 +129,7 @@ function find(
       }
 
       if (list.hasNextLink()) {
-        return list.followNextLink().then((next) => find(next, iterator));
+        return retryReq(() => list.followNextLink().then((next) => find(next, iterator, retryFlag)), retryFlag ? 0 : 8);
       }
 
       return undefined;
@@ -187,10 +227,14 @@ class ListResource extends Resource {
    *
    * @param {function} iterator function to test each element of the array. Return true to keep the
    *   element, false otherwise.
+   * @param {boolean} retry boolean flag wheter or not to retry on failed requests
    * @returns {Promise} returns Promise resolving to the new array.
    */
-  filter(iterator: (resource: Resource) => Promise<boolean> | boolean): Promise<Array<Resource>> {
-    return filter(this, iterator);
+  filter(
+    iterator: (resource: Resource) => Promise<boolean> | boolean,
+    retry: boolean = false,
+  ): Promise<Array<Resource>> {
+    return filter(this, iterator, retry);
   }
 
   /**
@@ -201,10 +245,11 @@ class ListResource extends Resource {
    *
    * @param {function} iterator function to test each element of the array. Return true to keep the
    *   element, false otherwise.
+   * @param {boolean} retry boolean flag wheter or not to retry on failed requests
    * @returns {Promise} returns Promise resolving to the new array.
    */
-  find(iterator: (resource: Resource) => Promise<boolean> | boolean): Promise<Resource | void> {
-    return find(this, iterator);
+  find(iterator: (resource: Resource) => Promise<boolean> | boolean, retry: boolean = false): Promise<Resource | void> {
+    return find(this, iterator, retry);
   }
 
   /**
@@ -335,10 +380,11 @@ class ListResource extends Resource {
    * use on lists sorted by modified and update the entries during the process.
    *
    * @param {function} iterator function that produces an element of the new array.
+   * @param {boolean} retry boolean flag wheter or not to retry on failed requests
    * @returns {Promise} returns Promise resolving to the new array.
    */
-  map(iterator: (resource: Resource) => Promise<any> | any): Promise<Array<Resource>> {
-    return map(this, iterator);
+  map(iterator: (resource: Resource) => Promise<any> | any, retry: boolean = false): Promise<Array<Resource>> {
+    return map(this, iterator, retry);
   }
 }
 
