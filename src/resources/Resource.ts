@@ -274,11 +274,16 @@ class Resource {
    * Returns a traverson request builder following the provided link.
    *
    * @param {string} link The link to follow
+   * @param {object?} templateParams Optional template params for start url
    * @returns {Promise<any>} Promise resolving to traverson request builder
    */
-  async follow(link) {
+  async follow(link: string, templateParams?: any) {
     if (typeof this[traversalSymbol].continue !== 'function' && this.hasLink(link)) {
-      return traverson.from(this.getLink(link)).jsonHal();
+      const req = traverson.from(this.getLink(link)).jsonHal();
+      if (templateParams) {
+        req.withTemplateParameters(templateParams);
+      }
+      return req;
     }
 
     return this.newRequest().follow(link);
