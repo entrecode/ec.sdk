@@ -192,7 +192,7 @@ describe('ListResource', () => {
       result.length.should.be.equal(4);
     });
   });
-  it.only('should map over entries with retry on next page, sync iterator', () => {
+  it('should map over entries with retry on next page, sync iterator', () => {
     const e = new Error('mocked error');
     e.status = 500;
 
