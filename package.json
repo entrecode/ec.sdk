@@ -38,7 +38,6 @@
     "json-schema-remote": "^1.4.0",
     "jwt-decode": "^2.2.0",
     "locale": "^0.1.0",
-    "lodash.isequal": "^4.5.0",
     "shiro-trie": "^0.4.8",
     "shortid": "^2.2.13",
     "stream": "^0.0.2",

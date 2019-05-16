@@ -1716,7 +1716,7 @@ describe('PublicAPI', () => {
         'eyJhbGciOiJSUzUxMiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJhN2ZlYzdhZC0xMWVmLTQzNjktODY1My1kY2Q3ZmFiNTNmODEiLCJ0eXBlIjoicmVmcmVzaCIsImlhdCI6MTU1NDg3OTI2OCwiaXNzIjoiZGVhbGJ1bm55X2RldiIsInN1YiI6ImM3YTFjNzQ1LTdmODctNGE2Mi1iYzU2LThlYjAzZjYzZmEwNiJ9.Aw7HC6YtWVd6d7rGBApxSSswHlH_XbVnfydwd8NpDk2oGJUXG53kHWKl79t-7fDLBw92jgRiHHKkhSWmRdEKjY7sspregHgNWCWT77kWf8_uJBgIiNpRxhfr-GBo-yhDStmgnj8FRtB9v1Uy7NMFRYYw1_6RodCXOHqRr1PuVko',
       );
       const shouldRefresh = await api.timeToRefresh();
-      shouldRefresh.should.be.false;
+      shouldRefresh.should.be.true;
     });
   });
 });

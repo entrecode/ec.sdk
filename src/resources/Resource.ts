@@ -3,7 +3,6 @@ import * as HalAdapter from 'traverson-hal';
 import * as halfred from 'halfred';
 import * as traverson from 'traverson';
 import * as validator from 'json-schema-remote';
-import * as isEqual from 'lodash.isequal';
 import * as equal from 'deep-equal';
 
 const { convertValidationError } = require('ec.errors')();
@@ -541,10 +540,6 @@ class Resource {
    * @returns {Resource} this Resource for chainability
    */
   setProperty(property: string, value: any): any {
-    if (isEqual(value, this.getProperty(property))) {
-      return this;
-    }
-
     this[resourceSymbol][property] = value;
     return this;
   }
