@@ -193,17 +193,18 @@ class DMAssetResource extends Resource {
         return file.url;
       }
 
-      let request;
-      if (thumb) {
-        request = await this.follow('ec:dm-asset/thumbnail');
-      } else {
-        request = await this.follow('ec:dm-asset/file-variant');
-      }
       const templateParams: any = {};
       if (size) {
         templateParams.size = size;
       }
-      request.withTemplateParameters(templateParams);
+
+      let request;
+      if (thumb) {
+        request = await this.follow('ec:dm-asset/thumbnail', templateParams);
+      } else {
+        request = await this.follow('ec:dm-asset/file-variant', templateParams);
+      }
+
       return get(this[environmentSymbol], request).then(([res]) => {
         return res.url;
       });
