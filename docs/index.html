@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset='utf-8' />
-  <title>ec.sdk 0.21.0 | Documentation</title>
+  <title>ec.sdk 0.21.1 | Documentation</title>
   <meta name='description' content='SDK for ec.api'>
   <meta name='viewport' content='width=device-width,initial-scale=1'>
   <link href='assets/bass.css' rel='stylesheet' />
@@ -15,7 +15,7 @@
       <div id='split-left' class='overflow-auto fs0 height-viewport-100'>
         <div class='py1 px2'>
           <h3 class='mb0 no-anchor'>ec.sdk</h3>
-          <div class='mb1'><code>0.21.0</code></div>
+          <div class='mb1'><code>0.21.1</code></div>
           <input
             placeholder='Filter'
             id='filter-input'
@@ -13997,7 +13997,7 @@ the given name.</p>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>follow(link)</span>
+            <span class='code strong strong truncate'>follow(link, templateParams)</span>
         </div>
       </div>
       <div class="clearfix display-none toggle-target">
@@ -14007,7 +14007,7 @@ the given name.</p>
 
   <p>Returns a traverson request builder following the provided link.</p>
 
-    <div class='pre p1 fill-light mt0'>follow(link: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;any></div>
+    <div class='pre p1 fill-light mt0'>follow(link: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, templateParams: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;any></div>
   
   
 
@@ -14026,6 +14026,15 @@ the given name.</p>
           <div>
             <span class='code bold'>link</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
 	    The link to follow
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>templateParams</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</code>
+	    Optional template params for start url
 
           </div>
           
