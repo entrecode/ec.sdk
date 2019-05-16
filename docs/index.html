@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset='utf-8' />
-  <title>ec.sdk 0.20.11 | Documentation</title>
+  <title>ec.sdk 0.21.0 | Documentation</title>
   <meta name='description' content='SDK for ec.api'>
   <meta name='viewport' content='width=device-width,initial-scale=1'>
   <link href='assets/bass.css' rel='stylesheet' />
@@ -15,7 +15,7 @@
       <div id='split-left' class='overflow-auto fs0 height-viewport-100'>
         <div class='py1 px2'>
           <h3 class='mb0 no-anchor'>ec.sdk</h3>
-          <div class='mb1'><code>0.20.11</code></div>
+          <div class='mb1'><code>0.21.0</code></div>
           <input
             placeholder='Filter'
             id='filter-input'
@@ -682,12 +682,6 @@
                       </a></li>
                       
                       <li><a
-                        href='#publicapigetdatamanagerresource'
-                        class='regular pre-open'>
-                        #getDataManagerResource
-                      </a></li>
-                      
-                      <li><a
                         href='#publicapigetevents'
                         class='regular pre-open'>
                         #getEvents
@@ -1091,6 +1085,12 @@
                         href='#resourcehaslink'
                         class='regular pre-open'>
                         #hasLink
+                      </a></li>
+                      
+                      <li><a
+                        href='#resourcefollow'
+                        class='regular pre-open'>
+                        #follow
                       </a></li>
                       
                       <li><a
@@ -3248,7 +3248,7 @@
   <span class="hljs-comment">// …</span>
   node: {
     <span class="hljs-attr">fs</span>: <span class="hljs-string">'empty'</span>,
-    <span class="hljs-attr">Buffer</span>: <span class="hljs-literal">true</span>,
+    <span class="hljs-attr">Buffer</span>: <span class="hljs-literal">false</span>,
     <span class="hljs-attr">net</span>: <span class="hljs-string">'empty'</span>,
     <span class="hljs-attr">tls</span>: <span class="hljs-string">'empty'</span>,
   },
@@ -9403,9 +9403,7 @@ token
   
 
   <p>Create a new asset. This should handle various input types.</p>
-<p>The most basic type is a string representing a file path, this can be used on node projects.
-Another option for node is providing a Buffer object (eg. fs.readFile, …). When providing a
-Buffer you must specify 'fileName' in options object.</p>
+<p>The most basic type is a string representing a file path, this can be used on node projects.</p>
 <p>For frontend usage you musst provide a
 <a href="https://developer.mozilla.org/de/docs/Web/API/FormData">FormData</a> object containing the
 file in a field with the name 'file'.</p>
@@ -9428,8 +9426,7 @@ file in a field with the name 'file'.</p>
         <div class='space-bottom0'>
           <div>
             <span class='code bold'>input</span> <code class='quiet'>((<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a> | <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>))</code>
-	    representing the asset, either a path, a FormData object, or an
-object containing a buffer.
+	    representing the asset, either a path, or a FormData object.
 
           </div>
           
@@ -9491,8 +9488,7 @@ factory which then resolves to the newly created PublicAssetResource
 
   <p>Create multiple new asset. This should handle various input types.</p>
 <p>The most basic type is an array of strings representing a file paths, this can be used on node
-projects. Another option for node is providing an array of Buffer objects (eg. fs.readFile,
-…). When providing a Buffer you must specify 'fileName' in options object.</p>
+projects.</p>
 <p>For frontend usage you musst provide a
 <a href="https://developer.mozilla.org/de/docs/Web/API/FormData">FormData</a> object containing the
 multiple files in a field with the name 'file'.</p>
@@ -9516,7 +9512,7 @@ multiple files in a field with the name 'file'.</p>
           <div>
             <span class='code bold'>input</span> <code class='quiet'>((<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a> | <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">array</a>&#x3C;(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a> | <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)>))</code>
 	    representing the asset, either an array of paths, a
-FormData object, a array of readStreams, or an array containing buffers.
+FormData object, or an array of readStreams.
 
           </div>
           
@@ -9578,8 +9574,7 @@ factory which then resolves to the newly created assets as AssetList
 
   <p>Create multiple new asset. This should handle various input types.</p>
 <p>The most basic type is a string representing a file path, this can be used on node
-projects. Another option for node is providing a Buffer object (eg. fs.readFile,
-…). When providing a Buffer you must specify 'fileName' in options object.</p>
+projects.</p>
 <p>For frontend usage you must provide a
 <a href="https://developer.mozilla.org/de/docs/Web/API/FormData">FormData</a> object containing the
 multiple files in a field with the name 'file'.</p>
@@ -9613,7 +9608,7 @@ multiple files in a field with the name 'file'.</p>
           <div>
             <span class='code bold'>input</span> <code class='quiet'>((<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a> | <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">array</a>&#x3C;(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a> | <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)> | <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>))</code>
 	    representing the asset, either an array of
-paths, a FormData object, a array of readStreams, an array containing buffers, or a string.
+paths, a FormData object, an array of readStreams, or a string.
 
           </div>
           
@@ -10306,62 +10301,6 @@ levels directly request
     
       <div class='py1 quiet mt1 prose-big'>Returns</div>
       <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>></code>:
-        
-
-      
-    
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-</section>
-
-      </div>
-    </div>
-  
-    <div class='border-bottom' id='publicapigetdatamanagerresource'>
-      <div class="clearfix small pointer toggle-sibling">
-        <div class="py1 contain">
-            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>getDataManagerResource()</span>
-        </div>
-      </div>
-      <div class="clearfix display-none toggle-target">
-        <section class='p2 mb2 clearfix bg-white minishadow'>
-
-  
-
-  <p>Get the <a href="#datamanagerresource">DataManagerResource</a> for this PublicAPI Connector. Does only make sense for ec
-users (check not enforced).</p>
-
-    <div class='pre p1 fill-light mt0'>getDataManagerResource(): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#datamanagerresource">DataManagerResource</a>></div>
-  
-  
-
-  
-  
-  
-  
-  
-  
-
-  
-
-  
-
-  
-    
-      <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#datamanagerresource">DataManagerResource</a>></code>:
         
 
       
@@ -14033,6 +13972,75 @@ the given name.</p>
       <div class='py1 quiet mt1 prose-big'>Returns</div>
       <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code>:
         whether or not a link with the given name was found.
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='resourcefollow'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>follow(link)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Returns a traverson request builder following the provided link.</p>
+
+    <div class='pre p1 fill-light mt0'>follow(link: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;any></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>link</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    The link to follow
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;any></code>:
+        Promise resolving to traverson request builder
 
       
     
@@ -24392,7 +24400,7 @@ by the options parameter.</p>
           <div>
             <span class='code bold'>input</span> <code class='quiet'>((<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a> | <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>))</code>
 	    representing the asset, either a path, a FormData object,
-a readStream, or an object containing a buffer.
+or a readStream.
 
           </div>
           
@@ -24541,7 +24549,7 @@ a readStream, or an object containing a buffer.
           <div>
             <span class='code bold'>input</span> <code class='quiet'>((<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a> | <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">array</a>&#x3C;(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a> | <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)>))</code>
 	    representing the asset, either an array of paths, a
-FormData object, a array of readStreams, or an array containing buffers.
+FormData object, or an array of readStreams.
 
           </div>
           
@@ -28434,7 +28442,7 @@ be the same object but with refreshed data.
         </div>
       
         <div class='space-bottom0'>
-          <span class='code bold'>tags</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">array</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>>)</code>
+          <span class='code bold'>tags</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">array</a>&#x3C;(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a> | <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)>)</code>
           : array of tags
 
           
@@ -31956,7 +31964,7 @@ otherwise.
         </div>
       
         <div class='space-bottom0'>
-          <span class='code bold'>tags</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>>)</code>
+          <span class='code bold'>tags</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a> | <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)>)</code>
           : Array of tags
 
           
@@ -32755,7 +32763,7 @@ embedded version of this asset.</p>
         </div>
       
         <div class='space-bottom0'>
-          <span class='code bold'>tags</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">array</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>>)</code>
+          <span class='code bold'>tags</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">array</a>&#x3C;(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a> | <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)>)</code>
           : array of tags
 
           
@@ -33940,7 +33948,30 @@ be the same object but with refreshed data.
     </h2>
 
     
-      <h2><small>0.20.11 (2019-05-03)</small></h2>
+      <h2>0.21.0 (2019-05-16)</h2>
+<ul>
+<li>release version 0.21.0 (<a href="https://github.com/entrecode/ec.sdk/commit/a4582e9">a4582e9</a>)</li>
+<li>feat: drop support for Buffers in createAssets SDK-133 (<a href="https://github.com/entrecode/ec.sdk/commit/d2a95c5">d2a95c5</a>)</li>
+<li>feat: dropped PublicAPI#getDataManagerResource (<a href="https://github.com/entrecode/ec.sdk/commit/c4f160b">c4f160b</a>)</li>
+<li>feat: support tags in assets as object SDK-128 (<a href="https://github.com/entrecode/ec.sdk/commit/cfec54e">cfec54e</a>)</li>
+<li>chore: changed superagent version - minimizing size with dedup (<a href="https://github.com/entrecode/ec.sdk/commit/469d983">469d983</a>)</li>
+<li>chore: optimize traverson handling in Resource SDK-131 (<a href="https://github.com/entrecode/ec.sdk/commit/808a683">808a683</a>)</li>
+<li>chore: removed lodash.isEqual SDK-129 (<a href="https://github.com/entrecode/ec.sdk/commit/3aba697">3aba697</a>)</li>
+<li>chore: removes unused validator lib (<a href="https://github.com/entrecode/ec.sdk/commit/153e64c">153e64c</a>)</li>
+<li>tests: removed only in tests (<a href="https://github.com/entrecode/ec.sdk/commit/8a2b36e">8a2b36e</a>)</li>
+</ul>
+<h3>BREAKING CHANGE</h3>
+<ul>
+<li>dopped PublicAPI#getDataManagerResource</li>
+</ul>
+<p>This function is only used by ec user and they are capable of getting their DataManagerResource by their own. ;-)</p>
+<p>Something like <code>await dmApi.dataManager(publicAPI.dataManagerID);</code> will help.</p>
+<ul>
+<li>Dropped support for asset upload via Buffer</li>
+</ul>
+<p>Before 0.21.0 you could upload assets via Buffer (eg. loaded with fs.readFile or loaded by url). This was dropped because it was hardly used and assets neue are capable of uploading via url which should be sufficient.</p>
+<p>If are using asset upload via Buffer, you should be capable of migrating by yourself. Possible solutions are saving the file to disc and upload with path string or uploading directly with an url.</p>
+<h2><small>0.20.11 (2019-05-03)</small></h2>
 <ul>
 <li>merge release/0.20.10 into master (<a href="https://github.com/entrecode/ec.sdk/commit/5605797">5605797</a>)</li>
 <li>release version 0.20.11 (<a href="https://github.com/entrecode/ec.sdk/commit/67b86cc">67b86cc</a>)</li>
