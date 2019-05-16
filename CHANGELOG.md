@@ -1,3 +1,10 @@
+## <small>0.21.1 (2019-05-16)</small>
+
+* release version 0.21.1 ([6261728](https://github.com/entrecode/ec.sdk/commit/6261728))
+* fix: asset negotiation with template params ([d7797ee](https://github.com/entrecode/ec.sdk/commit/d7797ee))
+
+
+
 ## 0.21.0 (2019-05-16)
 
 * release version 0.21.0 ([a4582e9](https://github.com/entrecode/ec.sdk/commit/a4582e9))
