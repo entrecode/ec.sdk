@@ -34,7 +34,7 @@ const webpackConfig = {
     // setImmediate: false,
     //  clearImmediate: false,
     fs: 'empty',
-    Buffer: true,
+    Buffer: false,
     net: 'empty',
     tls: 'empty',
   },
