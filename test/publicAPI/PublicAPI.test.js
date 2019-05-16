@@ -831,63 +831,6 @@ describe('PublicAPI', () => {
         throw err;
       });
   });
-  it('should create asset, buffer, title and tags', () => {
-    const stubGetUrl = sinon.stub(helper, 'getUrl');
-    stubGetUrl.returns(Promise.resolve('https://datamanager.entrecode.de/asset/beefbeef'));
-    const stubSuperagentPost = sinon.stub(helper, 'superagentPost');
-    stubSuperagentPost.returns(
-      Promise.resolve({
-        _links: {
-          'ec:asset': {
-            href: 'https://datamanager.entrecode.de/asset/beefbeef?assetID=d845a328-0ea4-475a-b593-bae9df92a11a',
-          },
-        },
-      }),
-    );
-
-    return new Promise((resolve, reject) => {
-      fs.readFile(`${__dirname}/../mocks/test.png`, (err, file) => {
-        if (err) {
-          return reject(err);
-        }
-        return resolve(file);
-      });
-    })
-      .then((file) =>
-        api.createAsset(file, {
-          fileName: 'test.png',
-          title: 'hello',
-          tags: ['helloTag'],
-        }),
-      )
-      .then((response) => {
-        response.should.be.a('function');
-        stubGetUrl.restore();
-        stubSuperagentPost.restore();
-      })
-      .catch((err) => {
-        stubGetUrl.restore();
-        stubSuperagentPost.restore();
-        throw err;
-      });
-  });
-  it('should be rejected on create with buffer and no file name', () => {
-    const stubGetUrl = sinon.stub(helper, 'getUrl');
-    stubGetUrl.returns(Promise.resolve('https://datamanager.entrecode.de/asset/beefbeef'));
-
-    return api
-      .createAsset(new Buffer([]))
-      .then(() => {
-        throw new Error('Unexpectedly resolved');
-      })
-      .catch((err) => {
-        stubGetUrl.restore();
-        if (err.message === 'Unexpectedly resolved') {
-          throw err;
-        }
-        err.message.should.be.equal('When using buffer file input you must provide options.fileName.');
-      });
-  });
   it('should create asset, FormData (mock), title and tags', () => {
     global.FormData = fdMock;
     const stubGetUrl = sinon.stub(helper, 'getUrl');
@@ -970,102 +913,6 @@ describe('PublicAPI', () => {
         stubSuperagentPost.restore();
         stubGet.restore();
         throw err;
-      });
-  });
-  it('should create assets, buffer, title and tags', () => {
-    const stubGetUrl = sinon.stub(helper, 'getUrl');
-    stubGetUrl.returns(Promise.resolve('https://datamanager.entrecode.de/asset/beefbeef'));
-    const stubSuperagentPost = sinon.stub(helper, 'superagentPost');
-    stubSuperagentPost.returns(
-      Promise.resolve({
-        _links: {
-          'ec:asset': [
-            {
-              href: 'https://datamanager.entrecode.de/asset/beefbeef?assetID=d845a328-0ea4-475a-b593-bae9df92a11a',
-            },
-            {
-              href: 'https://datamanager.entrecode.de/asset/beefbeef?assetID=d845a328-0ea4-475a-b593-bae9df92a11a',
-            },
-          ],
-        },
-      }),
-    );
-
-    return new Promise((resolve, reject) => {
-      fs.readFile(`${__dirname}/../mocks/test.png`, (err, file) => {
-        if (err) {
-          return reject(err);
-        }
-        return resolve(file);
-      });
-    })
-      .then((file) =>
-        api.createAssets([file, file], {
-          fileName: ['test.png', 'test.png'],
-          title: 'hello',
-          tags: ['helloTag'],
-        }),
-      )
-      .then((response) => {
-        response.should.be.a('function');
-        stubGetUrl.restore();
-        stubSuperagentPost.restore();
-      })
-      .catch((err) => {
-        stubGetUrl.restore();
-        stubSuperagentPost.restore();
-        throw err;
-      });
-  });
-  it('should be rejected on create assets with buffer and no file name #1', () => {
-    const stubGetUrl = sinon.stub(helper, 'getUrl');
-    stubGetUrl.returns(Promise.resolve('https://datamanager.entrecode.de/asset/beefbeef'));
-
-    return api
-      .createAssets([new Buffer([])])
-      .then(() => {
-        throw new Error('Unexpectedly resolved');
-      })
-      .catch((err) => {
-        stubGetUrl.restore();
-        if (err.message === 'Unexpectedly resolved') {
-          throw err;
-        }
-        err.message.should.be.equal('When using buffer file input you must provide options.fileName.');
-      });
-  });
-  it('should be rejected on create assets with buffer and no file name #2', () => {
-    const stubGetUrl = sinon.stub(helper, 'getUrl');
-    stubGetUrl.returns(Promise.resolve('https://datamanager.entrecode.de/asset/beefbeef'));
-
-    return api
-      .createAssets([new Buffer([])], { fileName: 'string' })
-      .then(() => {
-        throw new Error('Unexpectedly resolved');
-      })
-      .catch((err) => {
-        stubGetUrl.restore();
-        if (err.message === 'Unexpectedly resolved') {
-          throw err;
-        }
-        err.message.should.be.equal('When using buffer file input you must provide options.fileName.');
-      });
-  });
-  it('should be rejected on create assets with buffer and no file name #3', () => {
-    const stubGetUrl = sinon.stub(helper, 'getUrl');
-    stubGetUrl.returns(Promise.resolve('https://datamanager.entrecode.de/asset/beefbeef'));
-
-    return api
-      .createAssets([new Buffer([])], { fileName: [] })
-      .then(() => {
-        throw new Error('Unexpectedly resolved');
-      })
-      .catch((err) => {
-        stubGetUrl.restore();
-        if (err.message === 'Unexpectedly resolved') {
-          throw err;
-        }
-        err.message.should.be.equal('When using buffer file input you must provide options.fileName.');
       });
   });
   it('should create assets, FormData (mock), title and tags', () => {
@@ -1394,93 +1241,6 @@ describe('PublicAPI', () => {
           throw err;
         });
     });
-    it('should create dmAssets, buffer, title and tags', () => {
-      mock.reset();
-      const stubGetUrl = sinon.stub(helper, 'getUrl');
-      stubGetUrl.returns(Promise.resolve('https://datamanager.entrecode.de/a/beefbeef/test1'));
-      const stubSuperagentPost = sinon.stub(helper, 'superagentPost');
-      stubSuperagentPost.returns(resolver('dm-asset-create.json', null, true));
-
-      return new Promise((resolve, reject) => {
-        fs.readFile(`${__dirname}/../mocks/test.png`, (err, file) => {
-          if (err) {
-            return reject(err);
-          }
-          return resolve(file);
-        });
-      })
-        .then((file) =>
-          api.createDMAssets('test1', [file, file], {
-            fileName: ['test.png', 'test.png'],
-            title: 'hello',
-            tags: ['helloTag'],
-          }),
-        )
-        .then((response) => {
-          response.should.be.instanceof(DMAssetList);
-          stubGetUrl.restore();
-          stubSuperagentPost.restore();
-        })
-        .catch((err) => {
-          stubGetUrl.restore();
-          stubSuperagentPost.restore();
-          throw err;
-        });
-    });
-    it('should be rejected on create dmAssets with buffer and no file name #1', () => {
-      mock.reset();
-      const stubGetUrl = sinon.stub(helper, 'getUrl');
-      stubGetUrl.returns(Promise.resolve('https://datamanager.entrecode.de/a/beefbeef/test1'));
-
-      return api
-        .createDMAssets('test1', [new Buffer([])])
-        .then(() => {
-          throw new Error('Unexpectedly resolved');
-        })
-        .catch((err) => {
-          stubGetUrl.restore();
-          if (err.message === 'Unexpectedly resolved') {
-            throw err;
-          }
-          err.message.should.be.equal('When using buffer file input you must provide options.fileName.');
-        });
-    });
-    it('should be rejected on create dmAssets with buffer and no file name #2', () => {
-      mock.reset();
-      const stubGetUrl = sinon.stub(helper, 'getUrl');
-      stubGetUrl.returns(Promise.resolve('https://datamanager.entrecode.de/a/beefbeef/test1'));
-
-      return api
-        .createDMAssets('test1', [new Buffer([])], { fileName: 'string' })
-        .then(() => {
-          throw new Error('Unexpectedly resolved');
-        })
-        .catch((err) => {
-          stubGetUrl.restore();
-          if (err.message === 'Unexpectedly resolved') {
-            throw err;
-          }
-          err.message.should.be.equal('When using buffer file input you must provide options.fileName.');
-        });
-    });
-    it('should be rejected on create dmAssets with buffer and no file name #3', () => {
-      mock.reset();
-      const stubGetUrl = sinon.stub(helper, 'getUrl');
-      stubGetUrl.returns(Promise.resolve('https://datamanager.entrecode.de/a/beefbeef/test1'));
-
-      return api
-        .createDMAssets('test1', [new Buffer([])], { fileName: [] })
-        .then(() => {
-          throw new Error('Unexpectedly resolved');
-        })
-        .catch((err) => {
-          stubGetUrl.restore();
-          if (err.message === 'Unexpectedly resolved') {
-            throw err;
-          }
-          err.message.should.be.equal('When using buffer file input you must provide options.fileName.');
-        });
-    });
     it('should create dmAssets, FormData (mock), title and tags', () => {
       mock.reset();
       global.FormData = fdMock;
@@ -1716,7 +1476,7 @@ describe('PublicAPI', () => {
         'eyJhbGciOiJSUzUxMiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJhN2ZlYzdhZC0xMWVmLTQzNjktODY1My1kY2Q3ZmFiNTNmODEiLCJ0eXBlIjoicmVmcmVzaCIsImlhdCI6MTU1NDg3OTI2OCwiaXNzIjoiZGVhbGJ1bm55X2RldiIsInN1YiI6ImM3YTFjNzQ1LTdmODctNGE2Mi1iYzU2LThlYjAzZjYzZmEwNiJ9.Aw7HC6YtWVd6d7rGBApxSSswHlH_XbVnfydwd8NpDk2oGJUXG53kHWKl79t-7fDLBw92jgRiHHKkhSWmRdEKjY7sspregHgNWCWT77kWf8_uJBgIiNpRxhfr-GBo-yhDStmgnj8FRtB9v1Uy7NMFRYYw1_6RodCXOHqRr1PuVko',
       );
       const shouldRefresh = await api.timeToRefresh();
-      shouldRefresh.should.be.false;
+      shouldRefresh.should.be.true;
     });
   });
 });

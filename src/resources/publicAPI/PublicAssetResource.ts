@@ -10,7 +10,7 @@ interface PublicAssetResource extends Resource {
   created: Date;
   files: Array<any>;
   isResolved: boolean;
-  tags: Array<string>;
+  tags: Array<string | any>;
   title: string;
   type: string;
 }
@@ -25,7 +25,7 @@ interface PublicAssetResource extends Resource {
  *
  * @prop {string}        tokenID - The id of this asset
  * @prop {string}        title   - The title of this asset
- * @prop {array<string>} tags    - array of tags
+ * @prop {array<string|object>} tags    - array of tags
  * @prop {Date}          created - Timestamp when this asset was created
  * @prop {string}        type    - type of this asset, like image
  * @prop {array<object>} files   - all files associated with this asset
@@ -66,8 +66,8 @@ class PublicAssetResource extends Resource {
       tags: {
         enumerable: true,
         get: () => <Array<string>>this.getProperty('tags'),
-        set: (value: Array<string>) => {
-          this.setProperty('tags', value);
+        set: (value: Array<string | any>) => {
+          return this.setProperty('tags', value.map((x) => (typeof x === 'string' ? x : x.tag)));
         },
       },
       title: {

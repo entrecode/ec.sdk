@@ -3,7 +3,6 @@ import * as HalAdapter from 'traverson-hal';
 import * as halfred from 'halfred';
 import * as traverson from 'traverson';
 import * as validator from 'json-schema-remote';
-import * as isEqual from 'lodash.isequal';
 import * as equal from 'deep-equal';
 
 const { convertValidationError } = require('ec.errors')();
@@ -269,6 +268,20 @@ class Resource {
    */
   hasLink(link) {
     return this[resourceSymbol].link(link) !== null;
+  }
+
+  /**
+   * Returns a traverson request builder following the provided link.
+   *
+   * @param {string} link The link to follow
+   * @returns {Promise<any>} Promise resolving to traverson request builder
+   */
+  async follow(link) {
+    if (typeof this[traversalSymbol].continue !== 'function' && this.hasLink(link)) {
+      return traverson.from(this.getLink(link)).jsonHal();
+    }
+
+    return this.newRequest().follow(link);
   }
 
   /**
@@ -541,10 +554,6 @@ class Resource {
    * @returns {Resource} this Resource for chainability
    */
   setProperty(property: string, value: any): any {
-    if (isEqual(value, this.getProperty(property))) {
-      return this;
-    }
-
     this[resourceSymbol][property] = value;
     return this;
   }

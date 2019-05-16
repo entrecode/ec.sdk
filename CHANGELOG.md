@@ -1,3 +1,30 @@
+## 0.21.0 (2019-05-16)
+
+* release version 0.21.0 ([a4582e9](https://github.com/entrecode/ec.sdk/commit/a4582e9))
+* feat: drop support for Buffers in createAssets SDK-133 ([d2a95c5](https://github.com/entrecode/ec.sdk/commit/d2a95c5))
+* feat: dropped PublicAPI#getDataManagerResource ([c4f160b](https://github.com/entrecode/ec.sdk/commit/c4f160b))
+* feat: support tags in assets as object SDK-128 ([cfec54e](https://github.com/entrecode/ec.sdk/commit/cfec54e))
+* chore: changed superagent version - minimizing size with dedup ([469d983](https://github.com/entrecode/ec.sdk/commit/469d983))
+* chore: optimize traverson handling in Resource SDK-131 ([808a683](https://github.com/entrecode/ec.sdk/commit/808a683))
+* chore: removed lodash.isEqual SDK-129 ([3aba697](https://github.com/entrecode/ec.sdk/commit/3aba697))
+* chore: removes unused validator lib ([153e64c](https://github.com/entrecode/ec.sdk/commit/153e64c))
+* tests: removed only in tests ([8a2b36e](https://github.com/entrecode/ec.sdk/commit/8a2b36e))
+
+
+### BREAKING CHANGE
+
+* dopped PublicAPI#getDataManagerResource
+
+This function is only used by ec user and they are capable of getting their DataManagerResource by their own. ;-)
+
+Something like `await dmApi.dataManager(publicAPI.dataManagerID);` will help.
+* Dropped support for asset upload via Buffer
+
+Before 0.21.0 you could upload assets via Buffer (eg. loaded with fs.readFile or loaded by url). This was dropped because it was hardly used and assets neue are capable of uploading via url which should be sufficient.
+
+If are using asset upload via Buffer, you should be capable of migrating by yourself. Possible solutions are saving the file to disc and upload with path string or uploading directly with an url.
+
+
 ## <small>0.20.11 (2019-05-03)</small>
 
 * merge release/0.20.10 into master ([5605797](https://github.com/entrecode/ec.sdk/commit/5605797))

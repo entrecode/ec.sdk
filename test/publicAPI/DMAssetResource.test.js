@@ -176,4 +176,14 @@ describe('DMAsset Resource', () => {
       spy.restore();
     });
   });
+
+  it('should call resource.setProperty with tag on tag objects', () => {
+    const spy = sinon.spy(resource, 'setProperty');
+
+    resource.tags = [{ tag: 'tag' }];
+    spy.should.have.been.calledOnce;
+    spy.should.have.been.calledWith('tags');
+
+    spy.restore();
+  });
 });

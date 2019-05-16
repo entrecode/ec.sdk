@@ -29,8 +29,6 @@ import {
 } from './helper';
 import DMAssetResource from './resources/publicAPI/DMAssetResource';
 import DMAssetList from './resources/publicAPI/DMAssetList';
-import DataManagerResource from './resources/datamanager/DataManagerResource';
-import DataManager from './DataManager';
 import Problem from './Problem';
 import HistoryEvents from './resources/publicAPI/HistoryEvents';
 import PublicTagList from './resources/publicAPI/PublicTagList';
@@ -472,15 +470,12 @@ export default class PublicAPI extends Core {
    * Create a new asset. This should handle various input types.
    *
    * The most basic type is a string representing a file path, this can be used on node projects.
-   * Another option for node is providing a Buffer object (eg. fs.readFile, …). When providing a
-   * Buffer you must specify 'fileName' in options object.
    *
    * For frontend usage you musst provide a
    * {@link https://developer.mozilla.org/de/docs/Web/API/FormData|FormData} object containing the
    * file in a field with the name 'file'.
    *
-   * @param {object|string} input representing the asset, either a path, a FormData object, or an
-   *   object containing a buffer.
+   * @param {object|string} input representing the asset, either a path, or a FormData object.
    * @param {object} options options for creating an asset.
    * @returns {Promise<function<Promise<PublicAssetResource>>>} Promise resolving to a Promise
    *   factory which then resolves to the newly created PublicAssetResource
@@ -501,11 +496,6 @@ export default class PublicAPI extends Core {
           superagentRequest.send(input);
         } else if (typeof input === 'string') {
           superagentRequest.attach('file', input);
-        } else if (Buffer.isBuffer(input)) {
-          if (!('fileName' in options)) {
-            throw new Error('When using buffer file input you must provide options.fileName.');
-          }
-          superagentRequest.attach('file', input, <string>options.fileName);
         } else {
           throw new Error('Cannot handle input.');
         }
@@ -542,15 +532,14 @@ export default class PublicAPI extends Core {
    * Create multiple new asset. This should handle various input types.
    *
    * The most basic type is an array of strings representing a file paths, this can be used on node
-   * projects. Another option for node is providing an array of Buffer objects (eg. fs.readFile,
-   * …). When providing a Buffer you must specify 'fileName' in options object.
+   * projects.
    *
    * For frontend usage you musst provide a
    * {@link https://developer.mozilla.org/de/docs/Web/API/FormData|FormData} object containing the
    * multiple files in a field with the name 'file'.
    *
    * @param {object|array<object|string>} input representing the asset, either an array of paths, a
-   *   FormData object, a array of readStreams, or an array containing buffers.
+   *   FormData object, or an array of readStreams.
    * @param {object} options options for creating an asset.
    * @returns {Promise<function<Promise<AssetList>>>}  Promise resolving to a Promise
    *   factory which then resolves to the newly created assets as AssetList
@@ -573,11 +562,6 @@ export default class PublicAPI extends Core {
           input.forEach((file, index) => {
             if (typeof file === 'string') {
               superagentRequest.attach('file', file);
-            } else if (Buffer.isBuffer(file)) {
-              if (!('fileName' in options) || !Array.isArray(options.fileName) || !options.fileName[index]) {
-                throw new Error('When using buffer file input you must provide options.fileName.');
-              }
-              superagentRequest.attach('file', file, options.fileName[index]);
             } else {
               throw new Error('Cannot handle input.');
             }
@@ -618,8 +602,7 @@ export default class PublicAPI extends Core {
    * Create multiple new asset. This should handle various input types.
    *
    * The most basic type is a string representing a file path, this can be used on node
-   * projects. Another option for node is providing a Buffer object (eg. fs.readFile,
-   * …). When providing a Buffer you must specify 'fileName' in options object.
+   * projects.
    *
    * For frontend usage you must provide a
    * {@link https://developer.mozilla.org/de/docs/Web/API/FormData|FormData} object containing the
@@ -629,7 +612,7 @@ export default class PublicAPI extends Core {
    *
    * @param {string} assetGroupID the asset group in which the asset should be created.
    * @param {object|array<object|string>|string} input representing the asset, either an array of
-   *   paths, a FormData object, a array of readStreams, an array containing buffers, or a string.
+   *   paths, a FormData object, an array of readStreams, or a string.
    * @param {fileOptions} options options for creating an asset.
    * @returns {Promise<function<Promise<DMAssetList>>>}  Promise resolving to a Promise
    *   factory which then resolves to the newly created assets as DMAssetList
@@ -676,11 +659,6 @@ export default class PublicAPI extends Core {
               } else {
                 request.attach('file', file);
               }
-            } else if (Buffer.isBuffer(file)) {
-              if (!('fileName' in options) || !Array.isArray(options.fileName) || !options.fileName[index]) {
-                throw new Error('When using buffer file input you must provide options.fileName.');
-              }
-              request.attach('file', file, options.fileName[index]);
             } else {
               throw new Error('Cannot handle input.');
             }
@@ -1049,27 +1027,6 @@ export default class PublicAPI extends Core {
       request.withTemplateParameters(templateParameter);
       return getUrl(this[environmentSymbol], request);
     });
-  }
-
-  /**
-   * Get the {@link DataManagerResource} for this PublicAPI Connector. Does only make sense for ec
-   * users (check not enforced).
-   *
-   * @returns {Promise<DataManagerResource>}
-   */
-  getDataManagerResource(): Promise<DataManagerResource> {
-    const options: any = {};
-
-    if (this[cookieModifierSymbol].length === 0) {
-      options.environment = this[environmentSymbol];
-    } else {
-      options.environment = this[environmentSymbol];
-      options.cookieModifier = this[cookieModifierSymbol];
-    }
-
-    const dm = new DataManager(options);
-    dm.setToken(this.getToken());
-    return dm.dataManager(this.dataManagerID);
   }
 
   /**

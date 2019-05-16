@@ -32,7 +32,7 @@ const config = {
   // …
   node: {
     fs: 'empty',
-    Buffer: true,
+    Buffer: false,
     net: 'empty',
     tls: 'empty',
   },

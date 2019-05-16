@@ -350,7 +350,7 @@ class DataManagerResource extends Resource {
    * Create a new asset.
    *
    * @param {object|string} input representing the asset, either a path, a FormData object,
-   *  a readStream, or an object containing a buffer.
+   *  or a readStream.
    * @param {object?} options options for creating an asset.
    * @returns {Promise<Promise<AssetResource>>} the newly created AssetResource
    */
@@ -368,11 +368,6 @@ class DataManagerResource extends Resource {
           superagentRequest.send(input);
         } else if (typeof input === 'string') {
           superagentRequest.attach('file', input);
-        } else if (Buffer.isBuffer(input)) {
-          if (!('fileName' in options)) {
-            throw new Error('When using buffer file input you must provide options.fileName.');
-          }
-          superagentRequest.attach('file', input, <string>options.fileName);
         } else {
           throw new Error('Cannot handle input.');
         }
@@ -418,7 +413,7 @@ class DataManagerResource extends Resource {
    * Create multiple new asset.
    *
    * @param {object|array<object|string>} input representing the asset, either an array of paths, a
-   *   FormData object, a array of readStreams, or an array containing buffers.
+   *   FormData object, or an array of readStreams.
    * @param {object?} options options for creating an asset.
    * @returns {Promise<Promise<AssetList>>} the newly created assets as AssetList
    */
@@ -439,11 +434,6 @@ class DataManagerResource extends Resource {
           input.forEach((file, index) => {
             if (typeof file === 'string') {
               superagentRequest.attach('file', file);
-            } else if (Buffer.isBuffer(file)) {
-              if (!('fileName' in options) || !Array.isArray(options.fileName) || !options.fileName[index]) {
-                throw new Error('When using buffer file input you must provide options.fileName.');
-              }
-              superagentRequest.attach('file', file, options.fileName[index]);
             } else {
               throw new Error('Cannot handle input.');
             }
