@@ -165,9 +165,20 @@ class DMAssetResource extends Resource {
    * @returns {Promise<string>} the url string of the requested image
    */
   getFileVariant(size?: number, thumb: boolean = false): Promise<string> {
-    return Promise.resolve().then(() => {
+    return Promise.resolve().then(async () => {
       if (!size && !thumb) {
         return this.file.url;
+      }
+
+      if (!thumb && !this.file.resolution) {
+        return this.file.url;
+      }
+
+      if (!thumb && this.file.resolution) {
+        const biggestDimension = Math.max(this.file.resolution.width, this.file.resolution.height);
+        if (!size || biggestDimension <= size) {
+          return this.file.url;
+        }
       }
 
       let file;
@@ -180,11 +191,11 @@ class DMAssetResource extends Resource {
         return file.url;
       }
 
-      const request = this.newRequest();
+      let request;
       if (thumb) {
-        request.follow('ec:dm-asset/thumbnail');
+        request = await this.follow('ec:dm-asset/thumbnail');
       } else {
-        request.follow('ec:dm-asset/file-variant');
+        request = await this.follow('ec:dm-asset/file-variant');
       }
       const templateParams: any = {};
       if (size) {

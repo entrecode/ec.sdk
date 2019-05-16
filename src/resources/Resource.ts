@@ -271,6 +271,20 @@ class Resource {
   }
 
   /**
+   * Returns a traverson request builder following the provided link.
+   *
+   * @param {string} link The link to follow
+   * @returns {Promise<any>} Promise resolving to traverson request builder
+   */
+  async follow(link) {
+    if (typeof this[traversalSymbol].continue !== 'function' && this.hasLink(link)) {
+      return traverson.from(this.getLink(link)).jsonHal();
+    }
+
+    return this.newRequest().follow(link);
+  }
+
+  /**
    * Creates a new {@link
    * https://github.com/basti1302/traverson/blob/master/api.markdown#request-builder
    * traverson request builder}
