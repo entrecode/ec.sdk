@@ -29,8 +29,6 @@ import {
 } from './helper';
 import DMAssetResource from './resources/publicAPI/DMAssetResource';
 import DMAssetList from './resources/publicAPI/DMAssetList';
-import DataManagerResource from './resources/datamanager/DataManagerResource';
-import DataManager from './DataManager';
 import Problem from './Problem';
 import HistoryEvents from './resources/publicAPI/HistoryEvents';
 import PublicTagList from './resources/publicAPI/PublicTagList';
@@ -1029,27 +1027,6 @@ export default class PublicAPI extends Core {
       request.withTemplateParameters(templateParameter);
       return getUrl(this[environmentSymbol], request);
     });
-  }
-
-  /**
-   * Get the {@link DataManagerResource} for this PublicAPI Connector. Does only make sense for ec
-   * users (check not enforced).
-   *
-   * @returns {Promise<DataManagerResource>}
-   */
-  getDataManagerResource(): Promise<DataManagerResource> {
-    const options: any = {};
-
-    if (this[cookieModifierSymbol].length === 0) {
-      options.environment = this[environmentSymbol];
-    } else {
-      options.environment = this[environmentSymbol];
-      options.cookieModifier = this[cookieModifierSymbol];
-    }
-
-    const dm = new DataManager(options);
-    dm.setToken(this.getToken());
-    return dm.dataManager(this.dataManagerID);
   }
 
   /**
