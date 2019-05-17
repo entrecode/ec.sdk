@@ -1,3 +1,10 @@
+## <small>0.21.2 (2019-05-17)</small>
+
+* release version 0.21.2 ([3553b4b](https://github.com/entrecode/ec.sdk/commit/3553b4b))
+* fix: invalid uri / error in traverson.from SDK-134 ([11cdd49](https://github.com/entrecode/ec.sdk/commit/11cdd49))
+
+
+
 ## <small>0.21.1 (2019-05-16)</small>
 
 * release version 0.21.1 ([6261728](https://github.com/entrecode/ec.sdk/commit/6261728))
