@@ -279,7 +279,7 @@ class Resource {
    */
   async follow(link: string, templateParams?: any) {
     if (typeof this[traversalSymbol].continue !== 'function' && this.hasLink(link)) {
-      const req = traverson.from(this.getLink(link)).jsonHal();
+      const req = traverson.from(this.getLink(link).href).jsonHal();
       if (templateParams) {
         req.withTemplateParameters(templateParams);
       }
