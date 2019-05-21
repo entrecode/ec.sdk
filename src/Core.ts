@@ -711,7 +711,7 @@ export default class Core {
 
 export type environment = 'live' | 'stage' | 'nightly' | 'develop';
 
-export type options = { environment: environment; noCookie: boolean; cookieModifier: string; ecUser: boolean };
+export type options = { environment?: environment; noCookie?: boolean; cookieModifier?: string; ecUser?: boolean };
 
 /**
  * You can define which API should be used with the environment parameter. Internally this is also
