@@ -1,3 +1,11 @@
+## <small>0.21.3 (2019-05-22)</small>
+
+* release version 0.21.3 ([b37557b](https://github.com/entrecode/ec.sdk/commit/b37557b))
+* feat: valueCount in PublicAPI for DEAL-1217 ([e11fcc7](https://github.com/entrecode/ec.sdk/commit/e11fcc7))
+* fix: typings for envOrOptions in API Conector constructor ([407e2aa](https://github.com/entrecode/ec.sdk/commit/407e2aa))
+
+
+
 ## <small>0.21.2 (2019-05-17)</small>
 
 * release version 0.21.2 ([3553b4b](https://github.com/entrecode/ec.sdk/commit/3553b4b))

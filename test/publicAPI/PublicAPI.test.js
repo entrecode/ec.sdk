@@ -530,6 +530,30 @@ describe('PublicAPI', () => {
     return api.entryList().should.be.rejectedWith('model must be defined');
   });
 
+  it('should resolve on valueCount', () => {
+    const stub = sinon.stub(helper, 'get');
+    stub.onFirstCall().returns(resolver('public-dm-root.json'));
+    stub.onSecondCall().returns(resolver('valuecount.json'));
+
+    return api
+      .valueCount('allFields', 'entry')
+      .then((values) => {
+        values.should.be.an('array');
+        values[0].should.have.property('count', 14478);
+        stub.restore();
+      })
+      .catch((err) => {
+        stub.restore();
+        throw err;
+      });
+  });
+  it('should throw on valueCount no model', () => {
+    return api.valueCount().should.be.rejectedWith('model must be defined');
+  });
+  it('should throw on valueCount no field', () => {
+    return api.valueCount('mymodel').should.be.rejectedWith('field must be defined');
+  });
+
   it('should resolve on refcount', () => {
     const stub = sinon.stub(helper, 'get');
     stub.onFirstCall().returns(resolver('public-dm-root.json'));
