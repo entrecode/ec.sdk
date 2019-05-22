@@ -39,7 +39,6 @@ const tokenStoreSymbol: any = Symbol.for('tokenStore');
 const traversalSymbol: any = Symbol.for('traversal');
 const eventsSymbol: any = Symbol.for('events');
 const environmentSymbol: any = Symbol.for('environment');
-const cookieModifierSymbol: any = Symbol.for('cookieModifier');
 const relationsSymbol: any = Symbol.for('relations');
 
 const shortIDSymbol: any = Symbol('_shortID');
@@ -1417,6 +1416,7 @@ export default class PublicAPI extends Core {
    * @param {string} model Model for which you want a ref count
    * @param {string} field Field for which you want a ref count
    * @param {Array<string>} ids Array of entry ids for which you want the ref count
+   * @returns {object} Returns an object with entryID keys and number values
    */
   async refCount(model: string, field: string, ids: Array<string>): Promise<{ [key: string]: number }> {
     if (!model) {
@@ -1742,6 +1742,35 @@ export default class PublicAPI extends Core {
     request.withTemplateParameters({ validationToken });
     const [response] = await this.dispatch(() => get(this[environmentSymbol], request));
     return response;
+  }
+
+  /**
+   * Call PublicAPI#valueCount with model and field to get a simple array with value counts.
+   *
+   * @example
+   * const values = await api.valueCount('myModel', 'myField');
+   * alert(`Values are: ${values.map(x => `Value: ${x.value} (${x.count})`).join(', ')}`);
+   *
+   * @param {string} model Model for which you want a ref count
+   * @param {string} field Field for which you want a ref count
+   * @returns {Array<object>} Returns an array with values an their counts.
+   */
+  async valueCount(model: string, field: string): Promise<Array<{ value: any; count: number }>> {
+    if (!model) {
+      throw new Error('model must be defined');
+    }
+
+    if (!field) {
+      throw new Error('field must be defined');
+    }
+
+    const request = await this.follow('ec:api/dm-entryValueCount');
+    request.withTemplateParameters({
+      model,
+      field,
+    });
+    const [res] = await this.dispatch(() => get(this[environmentSymbol], request));
+    return res;
   }
 }
 

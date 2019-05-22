@@ -211,6 +211,10 @@
       "href": "https://datamanager.cachena.entrecode.de/api/beefbeef/{model}/refcount/{field}{?id}",
       "templated": true
     },
+    "ec:api/dm-entryValueCount": {
+      "href": "https://datamanager.cachena.entrecode.de/api/beefbeef/{model}/valuecount/{field}",
+      "templated": true
+    },
     "beefbeef:_auth/anonymous": {
       "name": "Register new anonymous account (POST)",
       "href": "https://datamanager.entrecode.de/api/beefbeef/_auth/account{?validUntil}",
