@@ -59,6 +59,15 @@ const urls = {
   develop: 'http://localhost:7471/api',
 };
 
+function chunk(array, size) {
+  const chunked_arr: Array<any> = [];
+  let copied = [...array]; // ES6 destructuring
+  const numOfChild = Math.ceil(copied.length / size); // Round up to the nearest integer
+  for (let i = 0; i < numOfChild; i++) {
+    chunked_arr.push(copied.splice(0, size));
+  }
+  return chunked_arr;
+}
 /**
  * API connector for public APIs. This is the successor of
  * [ec.datamanager.js](https://github.com/entrecode/ec.datamanager.js).
@@ -1431,13 +1440,21 @@ export default class PublicAPI extends Core {
       throw new Error('ids must be defined and an array of strings');
     }
 
-    const request = await this.follow('ec:api/dm-entryRefCount');
-    request.withTemplateParameters({
-      model,
-      field,
-      id: ids.join(','),
-    });
-    const [res] = await this.dispatch(() => get(this[environmentSymbol], request));
+    const idChunks = chunk(ids, 500);
+
+    const res = await idChunks
+      .map((idChunk) => async (results) => {
+        const request = await this.follow('ec:api/dm-entryRefCount');
+        request.withTemplateParameters({
+          model,
+          field,
+          id: idChunk.join(','),
+        });
+        const [res] = await this.dispatch(() => get(this[environmentSymbol], request));
+        return Object.assign(results, res);
+      })
+      .reduce((a, b) => a.then(b), Promise.resolve({}));
+
     return res;
   }
 
