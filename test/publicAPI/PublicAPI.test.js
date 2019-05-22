@@ -570,6 +570,28 @@ describe('PublicAPI', () => {
         throw err;
       });
   });
+  it.only('should resolve on refcount with chunks', () => {
+    const stub = sinon.stub(helper, 'get');
+    stub.onFirstCall().returns(resolver('public-dm-root.json'));
+    stub.onSecondCall().returns(resolver('refcount.json'));
+    stub.onThirdCall().returns(resolver('refcount.json'));
+
+    const ids = [];
+    while (ids.length < 505) {
+      ids.push('id');
+    }
+
+    return api
+      .refCount('allFields', 'entry', ids)
+      .then((count) => {
+        count.should.have.property('mlGMzYdI4Q', 2);
+        stub.restore();
+      })
+      .catch((err) => {
+        stub.restore();
+        throw err;
+      });
+  });
   it('should throw on refcount no model', () => {
     return api.refCount().should.be.rejectedWith('model must be defined');
   });

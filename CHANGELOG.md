@@ -1,3 +1,10 @@
+## <small>0.21.4 (2019-05-22)</small>
+
+* release version 0.21.4 ([84cb5de](https://github.com/entrecode/ec.sdk/commit/84cb5de))
+* feat: chunking refCount when > 500 ids SDK-135 ([3e68a54](https://github.com/entrecode/ec.sdk/commit/3e68a54))
+
+
+
 ## <small>0.21.3 (2019-05-22)</small>
 
 * release version 0.21.3 ([b37557b](https://github.com/entrecode/ec.sdk/commit/b37557b))
