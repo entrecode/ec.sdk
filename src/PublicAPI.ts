@@ -1272,10 +1272,6 @@ export default class PublicAPI extends Core {
   login(email: string, password: string): Promise<{ access_token: string; refresh_token: string }> {
     return Promise.resolve()
       .then(() => {
-        if (this[tokenStoreSymbol].hasToken()) {
-          throw new Error('already logged in or old token present. logout first');
-        }
-
         if (!this[tokenStoreSymbol].hasClientID()) {
           throw new Error('clientID must be set with PublicAPI#setClientID(clientID: string)');
         }
