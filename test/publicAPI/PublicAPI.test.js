@@ -256,14 +256,6 @@ describe('PublicAPI', () => {
     api.setClientID('rest');
     return api.login('andre@entrecode.de', 'mysecret').should.eventually.be.fulfilled.and.notify(() => stub.restore());
   });
-  it('should reject when already logged in', () => {
-    api[tokenStoreSymbol].setToken(
-      'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJlbnRyZWNvZGVUZXN0IiwiaWF0IjoxNDg1NzgzNTg4LCJleHAiOjQ2NDE0NTcxODgsImF1ZCI6IlRlc3QiLCJzdWIiOiJ0ZXN0QGVudHJlY29kZS5kZSJ9.Vhrq5GR2hNz-RoAhdlnIIWHelPciBPCemEa74s7cXn8',
-    );
-    api.setClientID('rest');
-
-    return api.login('user', 'mysecret').should.be.rejectedWith('already logged in or old token present. logout first');
-  });
   it('should be rejected on unset clientID', () => {
     api[tokenStoreSymbol].deleteToken();
     api[tokenStoreSymbol].clientID = undefined;
@@ -570,7 +562,7 @@ describe('PublicAPI', () => {
         throw err;
       });
   });
-  it.only('should resolve on refcount with chunks', () => {
+  it('should resolve on refcount with chunks', () => {
     const stub = sinon.stub(helper, 'get');
     stub.onFirstCall().returns(resolver('public-dm-root.json'));
     stub.onSecondCall().returns(resolver('refcount.json'));
