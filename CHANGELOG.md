@@ -1,3 +1,10 @@
+## <small>0.21.5 (2019-06-13)</small>
+
+* release version 0.21.5 ([c28313a](https://github.com/entrecode/ec.sdk/commit/c28313a))
+* feat: removed mandatory logout befor new login ([c85591d](https://github.com/entrecode/ec.sdk/commit/c85591d))
+
+
+
 ## <small>0.21.4 (2019-05-22)</small>
 
 * release version 0.21.4 ([84cb5de](https://github.com/entrecode/ec.sdk/commit/84cb5de))
