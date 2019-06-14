@@ -457,9 +457,9 @@ export default class PublicAPI extends Core {
    *
    * @example
    * return api.createAnonymous()
-   * .then(token => save(token));
+   * .then(token => yourFancySaveFkt(token));
    *
-   * @param {Date}? validUntil valid until date
+   * @param {Date?} validUntil valid until date
    * @returns {Promise<{jwt: string, accountID: string, iat: number, exp: number}>} the created api
    *   token
    */
