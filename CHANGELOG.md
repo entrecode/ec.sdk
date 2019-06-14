@@ -1,3 +1,12 @@
+## <small>0.21.6 (2019-06-14)</small>
+
+* release version 0.21.6 ([81bce26](https://github.com/entrecode/ec.sdk/commit/81bce26))
+* feat: delete Asset/Entry/Resource by id SDK-130 ([af84d14](https://github.com/entrecode/ec.sdk/commit/af84d14))
+* chore: eslint fixes in test file ([f6ddfd0](https://github.com/entrecode/ec.sdk/commit/f6ddfd0))
+* doc: fixed docs for createAnonymous SDK-137 ([11d94dd](https://github.com/entrecode/ec.sdk/commit/11d94dd))
+
+
+
 ## <small>0.21.5 (2019-06-13)</small>
 
 * release version 0.21.5 ([c28313a](https://github.com/entrecode/ec.sdk/commit/c28313a))
