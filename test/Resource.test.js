@@ -1,3 +1,5 @@
+/* eslint-disable no-underscore-dangle */
+/* eslint-disable new-cap */
 /* eslint no-unused-expressions: "off" */
 
 const chai = require('chai');
@@ -5,9 +7,9 @@ const chaiAsPromised = require('chai-as-promised');
 const fs = require('fs');
 const sinon = require('sinon');
 const sinonChai = require('sinon-chai');
+const traverson = require('traverson');
 
 const helper = require('../lib/helper');
-const traverson = require('traverson');
 const resolver = require('./mocks/resolver');
 const Resource = require('../lib/resources/Resource');
 const EntryResource = require('../lib/resources/publicAPI/EntryResource');
@@ -275,39 +277,29 @@ describe('Resource', () => {
   });
   it('should throw on get unknown property', () => {
     resource.missing = 'yes its missing';
-    return resource.save().should.be.rejectedWith(`Additional properties found: missing`);
+    return resource.save().should.be.rejectedWith('Additional properties found: missing');
   });
-  it('resource called without relation', () => {
-    return resource.resource().should.be.rejectedWith('relation must be defined');
-  });
-  it('resource called with non existing relation', () => {
-    return resource.resource('asdf').should.be.rejectedWith('unknown relation, use one of');
-  });
-  it('resourceList called without relation', () => {
-    return resource.resourceList().should.be.rejectedWith('relation must be defined');
-  });
-  it('resourceList called with non existing relation', () => {
-    return resource.resourceList('asdf').should.be.rejectedWith('unknown relation, use one of');
-  });
+  it('resource called without relation', () => resource.resource().should.be.rejectedWith('relation must be defined'));
+  it('resource called with non existing relation', () =>
+    resource.resource('asdf').should.be.rejectedWith('unknown relation, use one of'));
+  it('resourceList called without relation', () =>
+    resource.resourceList().should.be.rejectedWith('relation must be defined'));
+  it('resourceList called with non existing relation', () =>
+    resource.resourceList('asdf').should.be.rejectedWith('unknown relation, use one of'));
   it('resourceList called with levels param', () => {
     resource[relationsSymbol] = { dummy: {} };
     return resource
       .resourceList('dummy', { _levels: 2 })
       .should.be.rejectedWith('_levels on list resources not supported');
   });
-  it('create called without relation', () => {
-    return resource.create().should.be.rejectedWith('relation must be defined');
-  });
-  it('create called with non existing relation', () => {
-    return resource.create('asdf').should.be.rejectedWith('unknown relation, use one of');
-  });
+  it('create called without relation', () => resource.create().should.be.rejectedWith('relation must be defined'));
+  it('create called with non existing relation', () =>
+    resource.create('asdf').should.be.rejectedWith('unknown relation, use one of'));
   it('create called with relation without create options', () => {
     resource[relationsSymbol] = { dummy: {} };
     return resource.create('dummy').should.be.rejectedWith('Resource has no createRelation');
   });
-  it('should validate', () => {
-    return resource.validate().should.eventually.equal(true);
-  });
+  it('should validate', () => resource.validate().should.eventually.equal(true));
   it('should not validate', () => {
     schemaNock.reset();
     const dm = new DataManagerResource(resourceJson);
