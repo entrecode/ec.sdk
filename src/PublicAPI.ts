@@ -26,6 +26,7 @@ import {
   locale,
   put,
   shortenUUID,
+  del,
 } from './helper';
 import DMAssetResource from './resources/publicAPI/DMAssetResource';
 import DMAssetList from './resources/publicAPI/DMAssetList';
@@ -759,10 +760,61 @@ export default class PublicAPI extends Core {
   }
 
   /**
+   * Delete a single {@link PublicAssetResource}.
+   *
+   * @example
+   * return api.deleteAsset(thisOne)
+   * .then(()) => alert('Asset deleted'));
+   *
+   * @param {string} assetID the assetID
+   * @returns {Promise<undefined>} Promise resolving when Asset got deleted
+   */
+  async deleteAsset(assetID: string): Promise<void> {
+    if (!assetID) {
+      throw new Error('assetID must be defined');
+    }
+    const request = this.newRequest()
+      .follow('ec:api/assets')
+      .withTemplateParameters({ assetID });
+    await this.dispatch(() => del(this[environmentSymbol], request));
+  }
+
+  /**
+   * Delete a single {@link EntryResource}.
+   *
+   * @example
+   * return api.deleteEntry('myModel', '1234567')
+   * .then(()) => alert('Entry deleted'));
+   *
+   * @param {string} model name of the model for which the list should be loaded
+   * @param {string} id the entry id
+   * @returns {Promise<undefined>} Promise resolving when Entry got deleted
+   */
+  async deleteEntry(model: string, id: string): Promise<void> {
+    if (!model) {
+      throw new Error('model must be defined');
+    }
+
+    if (!id) {
+      throw new Error('id must be defined');
+    }
+
+    if (typeof id !== 'string') {
+      throw new Error('invalid format for id');
+    }
+
+    const request = await this.follow(`${this[shortIDSymbol]}:${model}`);
+    request.withTemplateParameters(
+      optionsToQuery({ id } as filterOptions, this.getLink(`${this[shortIDSymbol]}:${model}`).href, true),
+    );
+    await this.dispatch(() => del(this[environmentSymbol], request));
+  }
+
+  /**
    * Load a single {@link DMAssetResource}.
    *
    * @example
-   * return api.asset(thisOne)
+   * return api.dmAsset(thisOne)
    * .then(asset => show(asset));
    *
    * @param {string} assetGroupID the assetGroupID
@@ -787,6 +839,31 @@ export default class PublicAPI extends Core {
         return this.dispatch(() => get(this[environmentSymbol], request));
       })
       .then(([res, traversal]) => new DMAssetResource(res, this[environmentSymbol], traversal));
+  }
+
+  /**
+   * Delete a single {@link DMAssetResource}.
+   *
+   * @example
+   * return api.deleteDmAsset(thisOne)
+   * .then(() => alert('Asset deleted'));
+   *
+   * @param {string} assetGroupID the assetGroupID
+   * @param {string} assetID the assetID
+   * @returns {Promise<undefined>} Promise resolving when entry is deleted
+   */
+  async deleteDmAsset(assetGroupID: string, assetID: string): Promise<void> {
+    if (!assetGroupID) {
+      throw new Error('assetGroupID must be defined');
+    }
+
+    if (!assetID) {
+      throw new Error('assetID must be defined');
+    }
+
+    const request = await this.follow('ec:dm-asset/by-id');
+    request.withTemplateParameters({ assetID, assetGroupID });
+    await this.dispatch(() => del(this[environmentSymbol], request));
   }
 
   /**

@@ -10,7 +10,7 @@ const { convertValidationError } = require('ec.errors')();
 
 import { EventEmitterFactory } from './EventEmitter';
 import TokenStoreFactory from './TokenStore';
-import { locale, setLocale, get, getSchema, optionsToQuery, post, enableHistoryEvents } from './helper';
+import { locale, setLocale, get, getSchema, optionsToQuery, post, enableHistoryEvents, del } from './helper';
 import Resource from './resources/Resource';
 import ListResource, { filterOptions } from './resources/ListResource';
 import Problem from './Problem';
@@ -182,6 +182,44 @@ export default class Core {
         }
         return <Resource>new ResourceConstructor(c, this[environmentSymbol], traversal);
       });
+  }
+
+  /**
+   * Delete a single {@link Resource} identified by resourceID.
+   *
+   * @example
+   * return accounts.deleteResource('account', me.accountID)
+   * .then(()) => alert('Account deleted'));
+   *
+   * @param {string} relation The shortened relation name
+   * @param {string} resourceID id of the Resource
+   * @returns {Promise<undefined>} resolves when Resource could be deleted
+   */
+  async deleteResource(relation: string, resourceID: string, additionalTemplateParams: any = {}): Promise<void> {
+    if (!relation) {
+      throw new Error('relation must be defined');
+    }
+    if (!this[relationsSymbol][relation]) {
+      throw new Error(`unknown relation, use one of ${Object.keys(this[relationsSymbol]).join(', ')}`);
+    }
+    if (!resourceID) {
+      throw new Error('resourceID must be defined');
+    }
+
+    const request = await this.follow(this[relationsSymbol][relation].relation);
+    if (
+      this[relationsSymbol][relation].additionalTemplateParam &&
+      !(this[relationsSymbol][relation].additionalTemplateParam in additionalTemplateParams)
+    ) {
+      additionalTemplateParams[this[relationsSymbol][relation].additionalTemplateParam] = this[
+        this[relationsSymbol][relation].additionalTemplateParam
+      ];
+    }
+    const params = Object.assign({}, additionalTemplateParams, {
+      [this[relationsSymbol][relation].id]: resourceID,
+    });
+    request.withTemplateParameters(params);
+    await del(this[environmentSymbol], request);
   }
 
   /**
