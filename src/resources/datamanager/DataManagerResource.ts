@@ -30,6 +30,7 @@ interface DataManagerResource {
   config: any;
   created: any;
   dataManagerID: string;
+  template: string;
   description: string;
   hexColor: string;
   locales: Array<string>;
@@ -46,6 +47,7 @@ interface DataManagerResource {
  * @class
  *
  * @prop {string}         dataManagerID     - The id of the dataManager
+ * @prop {string}         template          - The templateID from which this dataManager was created
  * @prop {object}         config            - The dataManager config
  * @prop {Date}           created           - The Date this dataManager was created
  * @prop {string}         description       - The description
@@ -138,6 +140,10 @@ class DataManagerResource extends Resource {
       dataManagerID: {
         enumerable: true,
         get: () => <string>this.getProperty('dataManagerID'),
+      },
+      template: {
+        enumerable: true,
+        get: () => <string>this.getProperty('template'),
       },
       description: {
         enumerable: true,

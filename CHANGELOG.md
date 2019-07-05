@@ -1,3 +1,10 @@
+## <small>0.21.7 (2019-07-05)</small>
+
+* release version 0.21.7 ([55103d3](https://github.com/entrecode/ec.sdk/commit/55103d3))
+* feat: add template param to DataManagerResource ([5fdc4e5](https://github.com/entrecode/ec.sdk/commit/5fdc4e5))
+
+
+
 ## <small>0.21.6 (2019-06-14)</small>
 
 * release version 0.21.6 ([81bce26](https://github.com/entrecode/ec.sdk/commit/81bce26))
