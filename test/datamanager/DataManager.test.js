@@ -445,7 +445,7 @@ describe('DataManager Resource', () => {
     });
   });
 
-  const getter = ['dataManagerID', 'shortID'];
+  const getter = ['dataManagerID', 'shortID', 'template'];
   getter.forEach((name) => {
     it(`should call resource.getProperty with ${name}`, () => {
       const spy = sinon.spy(resource, 'getProperty');

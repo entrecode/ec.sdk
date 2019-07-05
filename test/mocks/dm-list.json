@@ -54,6 +54,7 @@
       {
         "created": "2015-12-01T14:33:03.498Z",
         "dataManagerID": "bbbff362-62f2-4513-b034-eeb7c3427ce8",
+        "template": "48e18a34-cf64-4f4a-bc47-45323a7f0e44",
         "defaultLocale": null,
         "description": "without models",
         "config": {
@@ -143,6 +144,7 @@
       {
         "created": "2015-11-30T11:03:15.207Z",
         "dataManagerID": "768823d9-e015-4452-b8f3-6061133c5775",
+        "template": null,
         "defaultLocale": null,
         "description": "",
         "config": {
