@@ -684,6 +684,7 @@ class EntryResource extends LiteEntryResource {
   /**
    * Saves this {@link EntryResource}.
    *
+   * @param {boolean} safePut Send true if you want save put active.
    * @returns {Promise<EntryResource>} Promise will resolve to the saved EntryResource. Will
    *   be the same object but with refreshed data.
    */
@@ -692,8 +693,19 @@ class EntryResource extends LiteEntryResource {
   }
 
   /**
+   * Validates this entry against its schema.
+   *
+   * @returns {Promise<boolean>} Promise will resolve true when Resource is valid, rejects
+   *   otherwise.
+   */
+  validate() {
+    return super.validate(`${this.getLink('self').profile}?template=put`);
+  }
+
+  /**
    * Validates a field of this {@link EntryResource} against its schema.
    *
+   * @param {string} field The field name which should be validated.
    * @returns {Promise<boolean>} Promise will resolve true when Resource is valid, rejects
    *   otherwise.
    */

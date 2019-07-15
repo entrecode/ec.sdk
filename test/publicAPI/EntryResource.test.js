@@ -550,12 +550,19 @@ describe('Entry Resource', () => {
     }
   });
 
-  it('should validate', () => {
+  it('should validate field', () => {
     return resource.validateField('text').should.eventually.equal(true);
+  });
+  it('should not validate field', () => {
+    resource.text = 1;
+    return resource.validateField('text').should.be.rejectedWith('Invalid format for property in JSON body');
+  });
+  it('should validate', () => {
+    return resource.validate().should.eventually.equal(true);
   });
   it('should not validate', () => {
     resource.text = 1;
-    return resource.validateField('text').should.be.rejectedWith('Invalid format for property in JSON body');
+    return resource.validate().should.be.rejectedWith('Invalid format for property in JSON body');
   });
   it('should resolve with levels', () => {
     const getUrlStub = sinon.stub(helper, 'getUrl');
