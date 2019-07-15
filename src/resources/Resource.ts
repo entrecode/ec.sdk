@@ -526,6 +526,7 @@ class Resource {
       .then(([res, traversal]) => {
         if (res) {
           this[resourceSymbol] = halfred.parse(res);
+          this[originalSymbol] = JSON.parse(JSON.stringify(res));
         }
 
         if (traversal) {
