@@ -520,6 +520,14 @@ describe('Entry Resource', () => {
     resource.json.hello = 'testing';
     resource.isDirty.should.be.true;
   });
+  it('should be clean if array sort and reset', () => {
+    resource.isDirty.should.be.false;
+    const [one, two] = resource.entries;
+    resource.entries = [two, one];
+    resource.isDirty.should.be.true;
+    resource.reset();
+    resource.isDirty.should.be.false;
+  });
 
   it('should validate', () => {
     return resource.validateField('text').should.eventually.equal(true);

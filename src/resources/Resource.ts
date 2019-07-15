@@ -320,7 +320,7 @@ class Resource {
    * @returns {undefined}
    */
   reset(): void {
-    this[resourceSymbol] = halfred.parse(this[resourceSymbol].original());
+    this[resourceSymbol] = halfred.parse(this[originalSymbol]);
   }
 
   /**
