@@ -1150,6 +1150,10 @@ export default class PublicAPI extends Core {
 
       if (this[fieldConfigCacheSymbol].has(cacheKey)) {
         const cachedResult = this[fieldConfigCacheSymbol].get(cacheKey);
+        if (cachedResult instanceof Promise) {
+          return cachedResult;
+        }
+
         if (cachedResult.timestamp > new Date().getTime() - 1000 * 60 * 5) {
           return cachedResult.result;
         } else {
@@ -1157,7 +1161,7 @@ export default class PublicAPI extends Core {
         }
       }
 
-      return this.follow(`${this[shortIDSymbol]}:_fieldConfig`)
+      const request = this.follow(`${this[shortIDSymbol]}:_fieldConfig`)
         .then((request) => {
           let titles: Array<string>;
           if (!Array.isArray(modelTitle)) {
@@ -1182,7 +1186,15 @@ export default class PublicAPI extends Core {
           });
 
           return result;
+        })
+        .catch((e) => {
+          this[fieldConfigCacheSymbol].delete(cacheKey);
+          throw e;
         });
+
+      this[fieldConfigCacheSymbol].set(cacheKey, request);
+
+      return request;
     });
   }
 
