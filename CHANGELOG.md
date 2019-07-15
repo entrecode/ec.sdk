@@ -1,3 +1,15 @@
+## <small>0.21.8 (2019-07-15)</small>
+
+* release version 0.21.8 ([b957f98](https://github.com/entrecode/ec.sdk/commit/b957f98))
+* fix: fix loading single DMAssetResource from Group SDK-142 ([5a2b6a1](https://github.com/entrecode/ec.sdk/commit/5a2b6a1))
+* fix: Resource#reset for sorted arrays SDK-141 ([b8425b7](https://github.com/entrecode/ec.sdk/commit/b8425b7))
+* fix: should fix still dirty after save SDK-140 ([37a4d1c](https://github.com/entrecode/ec.sdk/commit/37a4d1c))
+* feat: public validate function for Resources SDK-136 ([eb75050](https://github.com/entrecode/ec.sdk/commit/eb75050))
+* feat: requst cache for getFieldConfig SDK-139 ([03150b4](https://github.com/entrecode/ec.sdk/commit/03150b4))
+* test: Test for SDK-140 still dirty after save ([56c6648](https://github.com/entrecode/ec.sdk/commit/56c6648))
+
+
+
 ## <small>0.21.7 (2019-07-05)</small>
 
 * release version 0.21.7 ([55103d3](https://github.com/entrecode/ec.sdk/commit/55103d3))
