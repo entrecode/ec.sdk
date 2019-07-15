@@ -121,7 +121,7 @@ describe('AssetGroup Resource', () => {
   });
   it('should load asset resource', () => {
     const stub = sinon.stub(helper, 'get');
-    stub.returns(resolver('dm-asset-single.json'));
+    stub.returns(resolver('dm-asset-list.json'));
 
     return resource
       .asset('id')

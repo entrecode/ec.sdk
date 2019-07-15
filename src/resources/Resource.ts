@@ -413,6 +413,10 @@ class Resource {
           return this[relationsSymbol][relation].resourceFunction(res, this[environmentSymbol], traversal);
         }
 
+        if (this[relationsSymbol][relation].singleIsList) {
+          return new this[relationsSymbol][relation].ListClass(res, this[environmentSymbol], traversal).getFirstItem();
+        }
+
         return new this[relationsSymbol][relation].ResourceClass(res, this[environmentSymbol], traversal);
       });
   }

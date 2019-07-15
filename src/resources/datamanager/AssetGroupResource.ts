@@ -66,6 +66,7 @@ class AssetGroupResource extends Resource {
         createTemplateModifier: '',
         id: 'assetID',
         ResourceClass: DMAssetResource,
+        singleIsList: true,
         ListClass: DMAssetList,
       },
     };
