@@ -520,13 +520,49 @@ describe('Entry Resource', () => {
     resource.json.hello = 'testing';
     resource.isDirty.should.be.true;
   });
+  it('should be clean if array sort and reset', () => {
+    resource.isDirty.should.be.false;
+    const [one, two] = resource.entries;
+    resource.entries = [two, one];
+    resource.isDirty.should.be.true;
+    resource.reset();
+    resource.isDirty.should.be.false;
+  });
+  it('should be clean on save', async () => {
+    const get = sinon.stub(helper, 'get');
+    get.returns(resolver('public-entry.json'));
+    const put = sinon.stub(helper, 'put');
+    put.returns(resolver('public-entry.json'));
 
-  it('should validate', () => {
+    try {
+      resource.isDirty.should.be.false;
+      resource.text = 'alala';
+      resource.isDirty.should.be.true;
+      await resource.save();
+      resource.isDirty.should.be.false;
+
+      get.restore();
+      put.restore();
+    } catch (e) {
+      get.restore();
+      put.restore();
+      throw e;
+    }
+  });
+
+  it('should validate field', () => {
     return resource.validateField('text').should.eventually.equal(true);
+  });
+  it('should not validate field', () => {
+    resource.text = 1;
+    return resource.validateField('text').should.be.rejectedWith('Invalid format for property in JSON body');
+  });
+  it('should validate', () => {
+    return resource.validate().should.eventually.equal(true);
   });
   it('should not validate', () => {
     resource.text = 1;
-    return resource.validateField('text').should.be.rejectedWith('Invalid format for property in JSON body');
+    return resource.validate().should.be.rejectedWith('Invalid format for property in JSON body');
   });
   it('should resolve with levels', () => {
     const getUrlStub = sinon.stub(helper, 'getUrl');

@@ -320,7 +320,7 @@ class Resource {
    * @returns {undefined}
    */
   reset(): void {
-    this[resourceSymbol] = halfred.parse(this[resourceSymbol].original());
+    this[resourceSymbol] = halfred.parse(this[originalSymbol]);
   }
 
   /**
@@ -411,6 +411,10 @@ class Resource {
       .then(([res, traversal]) => {
         if (this[relationsSymbol][relation].resourceFunction) {
           return this[relationsSymbol][relation].resourceFunction(res, this[environmentSymbol], traversal);
+        }
+
+        if (this[relationsSymbol][relation].singleIsList) {
+          return new this[relationsSymbol][relation].ListClass(res, this[environmentSymbol], traversal).getFirstItem();
         }
 
         return new this[relationsSymbol][relation].ResourceClass(res, this[environmentSymbol], traversal);
@@ -526,6 +530,7 @@ class Resource {
       .then(([res, traversal]) => {
         if (res) {
           this[resourceSymbol] = halfred.parse(res);
+          this[originalSymbol] = JSON.parse(JSON.stringify(res));
         }
 
         if (traversal) {
