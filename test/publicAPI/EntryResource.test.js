@@ -528,6 +528,27 @@ describe('Entry Resource', () => {
     resource.reset();
     resource.isDirty.should.be.false;
   });
+  it('should be clean on save', async () => {
+    const get = sinon.stub(helper, 'get');
+    get.returns(resolver('public-entry.json'));
+    const put = sinon.stub(helper, 'put');
+    put.returns(resolver('public-entry.json'));
+
+    try {
+      resource.isDirty.should.be.false;
+      resource.text = 'alala';
+      resource.isDirty.should.be.true;
+      await resource.save();
+      resource.isDirty.should.be.false;
+
+      get.restore();
+      put.restore();
+    } catch (e) {
+      get.restore();
+      put.restore();
+      throw e;
+    }
+  });
 
   it('should validate', () => {
     return resource.validateField('text').should.eventually.equal(true);
