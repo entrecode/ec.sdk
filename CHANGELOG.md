@@ -1,3 +1,10 @@
+## <small>0.21.11 (2019-08-01)</small>
+
+* release version 0.21.11 ([01bb812](https://github.com/entrecode/ec.sdk/commit/01bb812))
+* fix: remove title setter for plugin resources ([6bb8bb4](https://github.com/entrecode/ec.sdk/commit/6bb8bb4))
+
+
+
 ## <small>0.21.10 (2019-08-01)</small>
 
 * release version 0.21.10 ([d6d498f](https://github.com/entrecode/ec.sdk/commit/d6d498f))
