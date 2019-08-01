@@ -1,3 +1,11 @@
+## <small>0.21.10 (2019-08-01)</small>
+
+* release version 0.21.10 ([d6d498f](https://github.com/entrecode/ec.sdk/commit/d6d498f))
+* feat: plugin type when title is empty ([4675445](https://github.com/entrecode/ec.sdk/commit/4675445))
+* fix: pin to json-schema-remote 1.4.0 ([4616336](https://github.com/entrecode/ec.sdk/commit/4616336))
+
+
+
 ## <small>0.21.9 (2019-08-01)</small>
 
 * release version 0.21.9 ([59c0316](https://github.com/entrecode/ec.sdk/commit/59c0316))
