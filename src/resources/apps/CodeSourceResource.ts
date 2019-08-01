@@ -5,6 +5,7 @@ interface CodeSourceResource {
   config: any;
   codeSourceID: string;
   codeSourceType: string;
+  title: string;
 }
 
 /**
@@ -42,6 +43,12 @@ class CodeSourceResource extends Resource {
         enumerable: true,
         get: () => <string>this.getProperty('codeSourceType'),
         set: (value: string) => this.setProperty('codeSourceType', value),
+      },
+      title: {
+        enumerable: false,
+        get: () => <string>(this.getProperty('config') || {})._title,
+        set: (value: string) =>
+          this.setProperty('config', Object.assign(this.getProperty('config') || {}, { _title: value || null })),
       },
     });
     this.countProperties();

@@ -5,6 +5,7 @@ interface DataSourceResource {
   config: any;
   dataSourceID: string;
   dataSourceType: string;
+  title: string;
 }
 
 /**
@@ -42,6 +43,12 @@ class DataSourceResource extends Resource {
         enumerable: true,
         get: () => <string>this.getProperty('dataSourceType'),
         set: (value: string) => this.setProperty('dataSourceType', value),
+      },
+      title: {
+        enumerable: false,
+        get: () => <string>(this.getProperty('config') || {})._title,
+        set: (value: string) =>
+          this.setProperty('config', Object.assign(this.getProperty('config') || {}, { _title: value || null })),
       },
     });
     this.countProperties();

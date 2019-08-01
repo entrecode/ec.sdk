@@ -5,6 +5,7 @@ interface TargetResource {
   config: any;
   targetID: string;
   targetType: string;
+  title: string;
 }
 
 /**
@@ -42,6 +43,12 @@ class TargetResource extends Resource {
         enumerable: true,
         get: () => <string>this.getProperty('targetType'),
         set: (value: string) => this.setProperty('targetType', value),
+      },
+      title: {
+        enumerable: false,
+        get: () => <string>(this.getProperty('config') || {})._title,
+        set: (value: string) =>
+          this.setProperty('config', Object.assign(this.getProperty('config') || {}, { _title: value || null })),
       },
     });
     this.countProperties();

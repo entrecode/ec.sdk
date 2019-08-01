@@ -1,3 +1,10 @@
+## <small>0.21.9 (2019-08-01)</small>
+
+* release version 0.21.9 ([59c0316](https://github.com/entrecode/ec.sdk/commit/59c0316))
+* feat: add title (from config._title) as property to plugin Resoruces ([1f4a686](https://github.com/entrecode/ec.sdk/commit/1f4a686))
+
+
+
 ## <small>0.21.8 (2019-07-15)</small>
 
 * release version 0.21.8 ([b957f98](https://github.com/entrecode/ec.sdk/commit/b957f98))
