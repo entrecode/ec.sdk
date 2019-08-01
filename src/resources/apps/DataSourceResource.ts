@@ -46,7 +46,7 @@ class DataSourceResource extends Resource {
       },
       title: {
         enumerable: false,
-        get: () => <string>(this.getProperty('config') || {})._title,
+        get: () => <string>(this.getProperty('config') || {})._title || this.dataSourceType,
         set: (value: string) =>
           this.setProperty('config', Object.assign(this.getProperty('config') || {}, { _title: value || null })),
       },
