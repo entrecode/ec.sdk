@@ -4,6 +4,7 @@ import { environment } from '../../Core';
 interface BuildResource {
   buildID: string;
   buildLocation: any;
+  creator: { email: string; accountID: string };
   events: Array<any>;
   finished: Date;
   started: Date;
@@ -37,6 +38,10 @@ class BuildResource extends Resource {
       buildLocation: {
         enumerable: true,
         get: () => this.getProperty('buildLocation'),
+      },
+      creator: {
+        enumerable: true,
+        get: () => <{ email: string; accountID: string }>this.getProperty('creator'),
       },
       events: {
         enumerable: true,

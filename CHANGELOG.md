@@ -1,3 +1,10 @@
+## <small>0.21.12 (2019-08-13)</small>
+
+* release version 0.21.12 ([e793cdc](https://github.com/entrecode/ec.sdk/commit/e793cdc))
+* feat: creator for Build and Deployment APPADMIN-934 ([458bcbd](https://github.com/entrecode/ec.sdk/commit/458bcbd))
+
+
+
 ## <small>0.21.11 (2019-08-01)</small>
 
 * release version 0.21.11 ([01bb812](https://github.com/entrecode/ec.sdk/commit/01bb812))
