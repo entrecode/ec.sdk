@@ -72,7 +72,7 @@ describe('Deployment Resource', () => {
     resource.should.be.instanceOf(DeploymentResource);
   });
 
-  const getter = ['deploymentID', 'buildID', 'platformID', 'targetIDs', 'successful', 'events', 'results'];
+  const getter = ['deploymentID', 'buildID', 'platformID', 'targetIDs', 'successful', 'events', 'results', 'creator'];
   getter.forEach((name) => {
     it(`should call resource.getProperty with ${name}`, () => {
       const spy = sinon.spy(resource, 'getProperty');

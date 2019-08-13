@@ -28,6 +28,7 @@
     "ec:app/build": [
       {
         "buildID": 734,
+        "creator": { "email": "scherzinger@entrecode.de", "accountID": "536de4b0-4441-4504-ac2e-925daea52621" },
         "started": "2017-03-23T12:13:21.572Z",
         "finished": "2017-03-23T12:17:37.011Z",
         "successful": "success",
@@ -296,6 +297,7 @@
       },
       {
         "buildID": 693,
+        "creator": { "email": "scherzinger@entrecode.de", "accountID": "536de4b0-4441-4504-ac2e-925daea52621" },
         "started": "2017-03-03T14:29:11.516Z",
         "finished": "2017-03-03T14:33:47.978Z",
         "successful": "success",
