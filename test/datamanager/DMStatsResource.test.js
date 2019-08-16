@@ -36,7 +36,7 @@ describe('DMStats ListResource', () => {
   it('should be instance of Resource', () => {
     list.should.be.instanceOf(Resource);
   });
-  it('should be instance of TokenList', () => {
+  it('should be instance of DMStatsList', () => {
     list.should.be.instanceOf(DMStatsList);
   });
   it('should have DMStatsResource items', () => {
@@ -90,30 +90,27 @@ describe('DMStats Resource', () => {
   afterEach(() => {
     resource = null;
   });
-  it('should be instance of Resource', () => {
-    resource.should.be.instanceOf(Resource);
-  });
   it('should be instance of DMStatsResource', () => {
     resource.should.be.instanceOf(DMStatsResource);
   });
 
   const getter = [
-    'dataManagerID',
-    'title',
+    'assetCount',
     'config',
+    'dataManagerID',
+    'entryCount',
+    'fileSize',
+    'lAssetCount',
+    'lFileCount',
+    'lFileSize',
+    'modelCount',
+    'numberAccounts',
+    'numberRequests',
+    'requestStats',
     'templateID',
     'templateName',
     'templateVersion',
-    'modelCount',
-    'entryCount',
-    'assetCount',
-    'fileCount',
-    'fileSize',
-    'numberAccounts',
-    'numberRequests',
-    'numberHookRequests',
-    'monthlyRequests',
-    'monthlyHooks',
+    'title',
   ];
   getter.forEach((name) => {
     it(`should call resource.getProperty with ${name}`, () => {

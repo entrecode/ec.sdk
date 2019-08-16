@@ -1,8 +1,165 @@
 {
   "dataManagers": [
     {
-      "dataManagerID": "6fa28c7a-58a4-4486-aae5-09ecdc5fdfa1",
-      "title": "dm1",
+      "dataManagerID": "fce10016-b486-4738-9f8a-7204095d1f6e",
+      "title": "Simi Testing",
+      "config": {
+        "users": {
+          "google": null,
+          "facebook": null,
+          "password": true,
+          "anonymous": null
+        },
+        "assetSettings": {}
+      },
+      "templateID": null,
+      "templateName": null,
+      "templateVersion": null,
+      "modelCount": "3",
+      "entryCount": "2",
+      "lAssetCount": null,
+      "lFileCount": null,
+      "lFileSize": null,
+      "assetCount": "2",
+      "fileSize": "81916",
+      "numberAccounts": "4",
+      "requestStats": [
+        {
+          "dataManagerID": "fce10016-b486-4738-9f8a-7204095d1f6e",
+          "year": 2019,
+          "month": 1,
+          "get": 19,
+          "put": 2,
+          "post": 0,
+          "delete": 0,
+          "total": 21
+        },
+        {
+          "dataManagerID": "fce10016-b486-4738-9f8a-7204095d1f6e",
+          "year": 2019,
+          "month": 2,
+          "get": 15,
+          "put": 0,
+          "post": 0,
+          "delete": 0,
+          "total": 15
+        },
+        {
+          "dataManagerID": "fce10016-b486-4738-9f8a-7204095d1f6e",
+          "year": 2019,
+          "month": 3,
+          "get": 13,
+          "put": 0,
+          "post": 0,
+          "delete": 0,
+          "total": 13
+        },
+        {
+          "dataManagerID": "fce10016-b486-4738-9f8a-7204095d1f6e",
+          "year": 2019,
+          "month": 4,
+          "get": 15,
+          "put": 0,
+          "post": 0,
+          "delete": 0,
+          "total": 15
+        },
+        {
+          "dataManagerID": "fce10016-b486-4738-9f8a-7204095d1f6e",
+          "year": 2018,
+          "month": 5,
+          "get": 29,
+          "put": 0,
+          "post": 4,
+          "delete": 0,
+          "total": 33
+        },
+        {
+          "dataManagerID": "fce10016-b486-4738-9f8a-7204095d1f6e",
+          "year": 2019,
+          "month": 5,
+          "get": 2,
+          "put": 0,
+          "post": 0,
+          "delete": 0,
+          "total": 2
+        },
+        {
+          "dataManagerID": "fce10016-b486-4738-9f8a-7204095d1f6e",
+          "year": 2018,
+          "month": 6,
+          "get": 17,
+          "put": 0,
+          "post": 0,
+          "delete": 0,
+          "total": 17
+        },
+        {
+          "dataManagerID": "fce10016-b486-4738-9f8a-7204095d1f6e",
+          "year": 2018,
+          "month": 7,
+          "get": 63,
+          "put": 0,
+          "post": 3,
+          "delete": 0,
+          "total": 66
+        },
+        {
+          "dataManagerID": "fce10016-b486-4738-9f8a-7204095d1f6e",
+          "year": 2018,
+          "month": 8,
+          "get": 105,
+          "put": 25,
+          "post": 0,
+          "delete": 0,
+          "total": 130
+        },
+        {
+          "dataManagerID": "fce10016-b486-4738-9f8a-7204095d1f6e",
+          "year": 2018,
+          "month": 9,
+          "get": 3,
+          "put": 0,
+          "post": 0,
+          "delete": 0,
+          "total": 3
+        },
+        {
+          "dataManagerID": "fce10016-b486-4738-9f8a-7204095d1f6e",
+          "year": 2018,
+          "month": 10,
+          "get": 14,
+          "put": 0,
+          "post": 0,
+          "delete": 0,
+          "total": 14
+        },
+        {
+          "dataManagerID": "fce10016-b486-4738-9f8a-7204095d1f6e",
+          "year": 2018,
+          "month": 11,
+          "get": 6,
+          "put": 0,
+          "post": 0,
+          "delete": 0,
+          "total": 6
+        },
+        {
+          "dataManagerID": "fce10016-b486-4738-9f8a-7204095d1f6e",
+          "year": 2018,
+          "month": 12,
+          "get": 1,
+          "put": 0,
+          "post": 0,
+          "delete": 0,
+          "total": 1
+        }
+      ],
+      "numberRequests": "336"
+    },
+    {
+      "dataManagerID": "73538731-4ac3-4a1a-b3b5-e31d09e94d42",
+      "title": "ec-admin",
       "config": {
         "users": {
           "google": null,
@@ -10,87 +167,224 @@
           "password": true,
           "anonymous": true
         },
-        "disableUserEmailVerificationEmail": true
-      },
-      "templateID": "id",
-      "templateName": "hello",
-      "templateVersion": "5.50",
-      "modelCount": "9",
-      "entryCount": "7577",
-      "assetCount": "3",
-      "fileCount": "27",
-      "fileSize": "7656157",
-      "numberAccounts": "2729",
-      "numberRequests": "1100472",
-      "numberHookRequests": "5039",
-      "monthlyHooks": {
-        "2016-12": 22,
-        "2017-02": 2181,
-        "2016-10": 2,
-        "2016-11": 1,
-        "2017-01": 1883,
-        "2017-03": 950
-      },
-      "_links": {
-        "ec:datamanager": {
-          "profile": "https://entrecode.de/schema/datamanager",
-          "href": "https://datamanager.entrecode.de/?dataManagerID=6fa28c7a-58a4-4486-aae5-09ecdc5fdfa1"
+        "assetSettings": {
+          "imageSizes": [11, 111, 1112]
         },
-        "self": {
-          "href": "https://datamanager.entrecode.de/stats?dataManagerID=6fa28c7a-58a4-4486-aae5-09ecdc5fdfa1"
+        "disableLegacyAssets": false
+      },
+      "templateID": null,
+      "templateName": null,
+      "templateVersion": null,
+      "modelCount": "10",
+      "entryCount": "106",
+      "lAssetCount": "82",
+      "lFileCount": "538",
+      "lFileSize": "37485550",
+      "assetCount": "31",
+      "fileSize": "27661406",
+      "numberAccounts": "13",
+      "requestStats": [
+        {
+          "dataManagerID": "73538731-4ac3-4a1a-b3b5-e31d09e94d42",
+          "year": 2018,
+          "month": 1,
+          "get": 1248,
+          "put": 7,
+          "post": 14,
+          "delete": 0,
+          "total": 1269
+        },
+        {
+          "dataManagerID": "73538731-4ac3-4a1a-b3b5-e31d09e94d42",
+          "year": 2019,
+          "month": 1,
+          "get": 1303,
+          "put": 22,
+          "post": 14,
+          "delete": 1,
+          "total": 1340
+        },
+        {
+          "dataManagerID": "73538731-4ac3-4a1a-b3b5-e31d09e94d42",
+          "year": 2018,
+          "month": 2,
+          "get": 1083,
+          "put": 22,
+          "post": 6,
+          "delete": 7,
+          "total": 1118
+        },
+        {
+          "dataManagerID": "73538731-4ac3-4a1a-b3b5-e31d09e94d42",
+          "year": 2019,
+          "month": 2,
+          "get": 5583,
+          "put": 30,
+          "post": 7,
+          "delete": 0,
+          "total": 5620
+        },
+        {
+          "dataManagerID": "73538731-4ac3-4a1a-b3b5-e31d09e94d42",
+          "year": 2018,
+          "month": 3,
+          "get": 3402,
+          "put": 67,
+          "post": 40,
+          "delete": 37,
+          "total": 3546
+        },
+        {
+          "dataManagerID": "73538731-4ac3-4a1a-b3b5-e31d09e94d42",
+          "year": 2019,
+          "month": 3,
+          "get": 8470,
+          "put": 18,
+          "post": 6,
+          "delete": 1,
+          "total": 8495
+        },
+        {
+          "dataManagerID": "73538731-4ac3-4a1a-b3b5-e31d09e94d42",
+          "year": 2018,
+          "month": 4,
+          "get": 4459,
+          "put": 158,
+          "post": 41,
+          "delete": 2,
+          "total": 4660
+        },
+        {
+          "dataManagerID": "73538731-4ac3-4a1a-b3b5-e31d09e94d42",
+          "year": 2019,
+          "month": 4,
+          "get": 5992,
+          "put": 36,
+          "post": 39,
+          "delete": 4,
+          "total": 6071
+        },
+        {
+          "dataManagerID": "73538731-4ac3-4a1a-b3b5-e31d09e94d42",
+          "year": 2018,
+          "month": 5,
+          "get": 2626,
+          "put": 78,
+          "post": 14,
+          "delete": 4,
+          "total": 2722
+        },
+        {
+          "dataManagerID": "73538731-4ac3-4a1a-b3b5-e31d09e94d42",
+          "year": 2019,
+          "month": 5,
+          "get": 5370,
+          "put": 35,
+          "post": 30,
+          "delete": 12,
+          "total": 5447
+        },
+        {
+          "dataManagerID": "73538731-4ac3-4a1a-b3b5-e31d09e94d42",
+          "year": 2018,
+          "month": 6,
+          "get": 7072,
+          "put": 34,
+          "post": 13,
+          "delete": 30,
+          "total": 7149
+        },
+        {
+          "dataManagerID": "73538731-4ac3-4a1a-b3b5-e31d09e94d42",
+          "year": 2019,
+          "month": 6,
+          "get": 4426,
+          "put": 8,
+          "post": 0,
+          "delete": 0,
+          "total": 4434
+        },
+        {
+          "dataManagerID": "73538731-4ac3-4a1a-b3b5-e31d09e94d42",
+          "year": 2018,
+          "month": 7,
+          "get": 1139,
+          "put": 6,
+          "post": 12,
+          "delete": 1,
+          "total": 1158
+        },
+        {
+          "dataManagerID": "73538731-4ac3-4a1a-b3b5-e31d09e94d42",
+          "year": 2019,
+          "month": 7,
+          "get": 3845,
+          "put": 37,
+          "post": 7,
+          "delete": 0,
+          "total": 3889
+        },
+        {
+          "dataManagerID": "73538731-4ac3-4a1a-b3b5-e31d09e94d42",
+          "year": 2018,
+          "month": 8,
+          "get": 2616,
+          "put": 81,
+          "post": 13,
+          "delete": 7,
+          "total": 2717
+        },
+        {
+          "dataManagerID": "73538731-4ac3-4a1a-b3b5-e31d09e94d42",
+          "year": 2018,
+          "month": 9,
+          "get": 2847,
+          "put": 14,
+          "post": 6,
+          "delete": 5,
+          "total": 2872
+        },
+        {
+          "dataManagerID": "73538731-4ac3-4a1a-b3b5-e31d09e94d42",
+          "year": 2018,
+          "month": 10,
+          "get": 7363,
+          "put": 31,
+          "post": 14,
+          "delete": 14,
+          "total": 7422
+        },
+        {
+          "dataManagerID": "73538731-4ac3-4a1a-b3b5-e31d09e94d42",
+          "year": 2018,
+          "month": 11,
+          "get": 7791,
+          "put": 23,
+          "post": 3,
+          "delete": 3,
+          "total": 7820
+        },
+        {
+          "dataManagerID": "73538731-4ac3-4a1a-b3b5-e31d09e94d42",
+          "year": 2018,
+          "month": 12,
+          "get": 973,
+          "put": 6,
+          "post": 0,
+          "delete": 1,
+          "total": 980
         }
-      }
-    },
-    {
-      "dataManagerID": "b7e6305a-2453-4601-87aa-bf5994d4fd91",
-      "title": "dm2",
-      "config": {
-        "users": {
-          "google": null,
-          "hector": true,
-          "facebook": null,
-          "password": false,
-          "anonymous": false
-        },
-        "disableUserEmailVerificationEmail": true
-      },
-      "templateID": "5fe396d9-ce29-4acb-bd86-c1c97b67b728",
-      "templateName": "Clubapp 1.0.1",
-      "templateVersion": "2016-07-08T10:41:48.137Z",
-      "modelCount": "17",
-      "entryCount": "257",
-      "assetCount": "3",
-      "fileCount": "6",
-      "fileSize": "101442",
-      "numberAccounts": "530",
-      "numberRequests": "54656",
-      "numberHookRequests": "218",
-      "monthlyHooks": {
-        "2016-10": 17,
-        "2017-02": 22,
-        "2017-01": 3,
-        "2016-11": 12,
-        "2017-03": 151,
-        "2016-12": 13
-      },
-      "_links": {
-        "ec:datamanager": {
-          "profile": "https://entrecode.de/schema/datamanager",
-          "href": "https://datamanager.entrecode.de/?dataManagerID=b7e6305a-2453-4601-87aa-bf5994d4fd91"
-        },
-        "self": {
-          "href": "https://datamanager.entrecode.de/stats?dataManagerID=b7e6305a-2453-4601-87aa-bf5994d4fd91"
-        }
-      }
+      ],
+      "numberRequests": "78729"
     }
   ],
   "_links": {
-    "self": {
-      "href": "https://datamanager.entrecode.de/stats"
-    },
     "ec:datamanagers": {
       "profile": "https://entrecode.de/schema/datamanagers",
-      "href": "https://datamanager.entrecode.de"
+      "href": "https://datamanager.cachena.entrecode.de"
+    },
+    "self": {
+      "href": "https://datamanager.cachena.entrecode.de/stats"
     }
   }
 }

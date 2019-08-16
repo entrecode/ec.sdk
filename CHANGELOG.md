@@ -1,3 +1,10 @@
+## <small>0.21.13 (2019-08-16)</small>
+
+* release version 0.21.13 ([2695d00](https://github.com/entrecode/ec.sdk/commit/2695d00))
+* feat: updates dm stats resource SDK-143 ([1d288ba](https://github.com/entrecode/ec.sdk/commit/1d288ba))
+
+
+
 ## <small>0.21.12 (2019-08-13)</small>
 
 * release version 0.21.12 ([e793cdc](https://github.com/entrecode/ec.sdk/commit/e793cdc))
