@@ -1,24 +1,24 @@
-import Resource from '../Resource';
-import { environment } from '../../Core';
-
 interface DMStatsResource {
   assetCount: number;
   config: any;
   dataManagerID: string;
   entryCount: number;
-  fileCount: number;
   fileSize: number;
+  lAssetCount: number;
+  lFileCount: number;
+  lFileSize: number;
   modelCount: number;
-  monthlyHooks: Array<any>;
-  monthlyRequests: Array<any>;
   numberAccounts: number;
-  numberHookRequests: Array<any>;
   numberRequests: number;
-  templateVersion: string;
+  requestStats: Array<any>;
   templateID: string;
   templateName: string;
+  templateVersion: string;
   title: string;
 }
+
+const resourceSymbol: any = Symbol.for('resource');
+const resourcePropertiesSymbol: any = Symbol.for('resourceProperties');
 
 /**
  * DMStatsResource class
@@ -27,7 +27,7 @@ interface DMStatsResource {
  *
  * @prop {array<object>} dataManagerID - the dataManagerID
  */
-class DMStatsResource extends Resource {
+class DMStatsResource {
   /**
    * Creates a new {@link DMStatsResource}.
    *
@@ -37,8 +37,9 @@ class DMStatsResource extends Resource {
    * @param {environment} environment the environment this resource is associated to.
    * @param {?object} traversal traversal from which traverson can continue.
    */
-  constructor(resource: any, environment: environment, traversal?: any) {
-    super(resource, environment, traversal);
+  constructor(resource: any) {
+    this[resourceSymbol] = JSON.parse(JSON.stringify(resource));
+
     Object.defineProperties(this, {
       assetCount: {
         enumerable: true,
@@ -56,37 +57,37 @@ class DMStatsResource extends Resource {
         enumerable: true,
         get: () => <number>this.getProperty('entryCount'),
       },
-      fileCount: {
-        enumerable: true,
-        get: () => <number>this.getProperty('fileCount'),
-      },
       fileSize: {
         enumerable: true,
         get: () => <number>this.getProperty('fileSize'),
+      },
+      lAssetCount: {
+        enumerable: true,
+        get: () => <number>this.getProperty('lAssetCount'),
+      },
+      lFileCount: {
+        enumerable: true,
+        get: () => <number>this.getProperty('lFileCount'),
+      },
+      lFileSize: {
+        enumerable: true,
+        get: () => <number>this.getProperty('lFileSize'),
       },
       modelCount: {
         enumerable: true,
         get: () => <number>this.getProperty('modelCount'),
       },
-      monthlyHooks: {
-        enumerable: true,
-        get: () => <Array<any>>this.getProperty('monthlyHooks'),
-      },
-      monthlyRequests: {
-        enumerable: true,
-        get: () => <Array<any>>this.getProperty('monthlyRequests'),
-      },
       numberAccounts: {
         enumerable: true,
         get: () => <number>this.getProperty('numberAccounts'),
       },
-      numberHookRequests: {
-        enumerable: true,
-        get: () => <number>this.getProperty('numberHookRequests'),
-      },
       numberRequests: {
         enumerable: true,
         get: () => <number>this.getProperty('numberRequests'),
+      },
+      requestStats: {
+        enumerable: true,
+        get: () => <Array<any>>this.getProperty('requestStats'),
       },
       templateID: {
         enumerable: true,
@@ -106,6 +107,26 @@ class DMStatsResource extends Resource {
       },
     });
     this.countProperties();
+  }
+
+  /**
+   * Will return a single selected property identified by property.
+   *
+   * @private
+   *
+   * @param {string} property the selected property name.
+   * @returns {*} the property which was selected.
+   */
+  getProperty(property: string): any {
+    if (!property) {
+      throw new Error('Property name cannot be undefined');
+    }
+
+    return this[resourceSymbol][property];
+  }
+
+  countProperties(): void {
+    this[resourcePropertiesSymbol] = Object.keys(this);
   }
 }
 
