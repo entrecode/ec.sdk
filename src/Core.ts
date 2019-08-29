@@ -151,6 +151,9 @@ export default class Core {
         if (!resource) {
           throw new Error('Cannot create resource with undefined object.');
         }
+        if (this[relationsSymbol][relation].createTransform) {
+          resource = this[relationsSymbol][relation].createTransform(resource);
+        }
         return this.link(this[relationsSymbol][relation].createRelation);
       })
       .then((link) =>

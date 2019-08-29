@@ -450,6 +450,7 @@ describe('Accounts class', () => {
           {
             name: resource.name,
             permissions: resource.permissions,
+            accounts: ['ddd29fd1-7417-4894-a546-5c12b11c0186'],
           },
         );
         return acc.createGroup(create);
