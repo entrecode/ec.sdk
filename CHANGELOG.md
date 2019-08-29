@@ -1,3 +1,10 @@
+## <small>0.21.14 (2019-08-29)</small>
+
+* release version 0.21.14 ([5545325](https://github.com/entrecode/ec.sdk/commit/5545325))
+* fix: create group in Accounts now supports accounts ([207acac](https://github.com/entrecode/ec.sdk/commit/207acac))
+
+
+
 ## <small>0.21.13 (2019-08-16)</small>
 
 * release version 0.21.13 ([2695d00](https://github.com/entrecode/ec.sdk/commit/2695d00))
