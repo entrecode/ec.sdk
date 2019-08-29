@@ -145,6 +145,9 @@ class Resource {
         if (!resource) {
           throw new Error('Cannot create resource with undefined object.');
         }
+        if (this[relationsSymbol][relation].createTransform) {
+          resource = this[relationsSymbol][relation].createTransform(resource);
+        }
         return this.getLink(this[relationsSymbol][relation].createRelation);
       })
       .then((link) =>

@@ -1,5 +1,6 @@
 import Resource from '../Resource';
 import { environment } from '../../Core';
+import { isRegExp } from 'util';
 
 const resourceSymbol: any = Symbol.for('resource');
 
@@ -205,6 +206,23 @@ class GroupResource extends Resource {
     this[resourceSymbol]._embedded['ec:account'] = accounts;
 
     return this;
+  }
+
+  static createTransform(group) {
+    if ('accounts' in group) {
+      if (!('_embedded' in group)) {
+        group._embedded = {};
+      }
+      group._embedded['ec:account'] = group.accounts.map((x) => {
+        if (typeof x === 'string') {
+          return {
+            accountID: x,
+          };
+        }
+        return x;
+      });
+    }
+    return group;
   }
 }
 

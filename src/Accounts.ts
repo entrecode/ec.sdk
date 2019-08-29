@@ -78,6 +78,7 @@ export default class Accounts extends Core {
         relation: 'ec:acc/groups/options',
         createRelation: 'ec:acc/group/by-id',
         createTemplateModifier: '-template',
+        createTransform: GroupResource.createTransform,
         id: 'groupid',
         ResourceClass: GroupResource,
         ListClass: GroupList,
