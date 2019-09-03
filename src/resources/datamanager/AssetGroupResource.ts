@@ -8,7 +8,7 @@ const relationsSymbol: any = Symbol.for('relations');
 
 interface AssetGroupResource {
   assetGroupID: string;
-  policies: any;
+  policies: Array<any>;
   public: boolean;
   settings: any;
 }
@@ -18,12 +18,10 @@ interface AssetGroupResource {
  *
  * @class
  *
- * @prop {string}        tokenID - The id of this asset
- * @prop {string}        title   - The title of this asset
- * @prop {array<string>} tags    - array of tags
- * @prop {Date}          created - Timestamp when this asset was created
- * @prop {string}        type    - type of this asset, like image
- * @prop {array<object>} files   - all files associated with this asset
+ * @prop {string}        assetGroupID - The id of this asset group
+ * @prop {Array<object>} policies - Attached plolicies for this group
+ * @prop {boolean} public - Wether or not these assets are public
+ * @prop {object} settings - Settings for this asset group
  */
 class AssetGroupResource extends Resource {
   /**
