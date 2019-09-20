@@ -133,6 +133,13 @@ dataManager.dataManagerList()
 </script>
 ```
 
+## Development
+
+Here are two notes on developing ec.sdk:
+
+* Please use [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0-beta.2/)
+* When releasing a new version use `npm run release <semver-version>` – This will build docs and changelog etc, `npm publish` is handled by travis.
+
 [travis-image]: https://travis-ci.org/entrecode/ec.sdk.svg?branch=master
 [travis-url]: https://travis-ci.org/entrecode/ec.sdk
 [cover-image]: https://coveralls.io/repos/github/entrecode/ec.sdk/badge.svg?branch=master
