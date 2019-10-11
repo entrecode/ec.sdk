@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset='utf-8' />
-  <title>ec.sdk 0.21.14 | Documentation</title>
+  <title>ec.sdk 0.21.15 | Documentation</title>
   <meta name='description' content='SDK for ec.api'>
   <meta name='viewport' content='width=device-width,initial-scale=1'>
   <link href='assets/bass.css' rel='stylesheet' />
@@ -15,7 +15,7 @@
       <div id='split-left' class='overflow-auto fs0 height-viewport-100'>
         <div class='py1 px2'>
           <h3 class='mb0 no-anchor'>ec.sdk</h3>
-          <div class='mb1'><code>0.21.14</code></div>
+          <div class='mb1'><code>0.21.15</code></div>
           <input
             placeholder='Filter'
             id='filter-input'
@@ -3371,6 +3371,12 @@ dataManager.dataManagerList()
     .then(<span class="hljs-function"><span class="hljs-params">list</span> =&gt;</span> doSomthingWith(list))
     .catch(<span class="hljs-built_in">console</span>.log);
 </span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></pre>
+<h2>Development</h2>
+<p>Here are two notes on developing ec.sdk:</p>
+<ul>
+<li>Please use <a href="https://www.conventionalcommits.org/en/v1.0.0-beta.2/">Conventional Commits</a></li>
+<li>When releasing a new version use <code>npm run release &#x3C;semver-version></code> – This will build docs and changelog etc, <code>npm publish</code> is handled by travis.</li>
+</ul>
 
     
   </section>
@@ -13815,7 +13821,7 @@ resource.</p>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>create(relation, resource)</span>
+            <span class='code strong strong truncate'>create(relation, resource, returnList)</span>
         </div>
       </div>
       <div class="clearfix display-none toggle-target">
@@ -13825,7 +13831,7 @@ resource.</p>
 
   <p>Create a new Resource. Note: Not all relations will support this.</p>
 
-    <div class='pre p1 fill-light mt0'>create(relation: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, resource: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#resource">Resource</a>></div>
+    <div class='pre p1 fill-light mt0'>create(relation: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, resource: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, returnList: any): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#resource">Resource</a>></div>
   
   
 
@@ -13854,6 +13860,15 @@ resource.</p>
             <span class='code bold'>resource</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
 	    object representing the resource
 
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>returnList</span> <code class='quiet'>(any
+            = <code>false</code>)</code>
+	    
           </div>
           
         </div>
@@ -28532,43 +28547,29 @@ be the same object but with refreshed data.
     <div>
       
         <div class='space-bottom0'>
-          <span class='code bold'>tokenID</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
-          : The id of this asset
+          <span class='code bold'>assetGroupID</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+          : The id of this asset group
 
           
         </div>
       
         <div class='space-bottom0'>
-          <span class='code bold'>title</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
-          : The title of this asset
+          <span class='code bold'>policies</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>>)</code>
+          : Attached plolicies for this group
 
           
         </div>
       
         <div class='space-bottom0'>
-          <span class='code bold'>tags</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">array</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>>)</code>
-          : array of tags
+          <span class='code bold'>public</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>)</code>
+          : Wether or not these assets are public
 
           
         </div>
       
         <div class='space-bottom0'>
-          <span class='code bold'>created</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Date">Date</a>)</code>
-          : Timestamp when this asset was created
-
-          
-        </div>
-      
-        <div class='space-bottom0'>
-          <span class='code bold'>type</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
-          : type of this asset, like image
-
-          
-        </div>
-      
-        <div class='space-bottom0'>
-          <span class='code bold'>files</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">array</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>>)</code>
-          : all files associated with this asset
+          <span class='code bold'>settings</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+          : Settings for this asset group
 
           
         </div>
