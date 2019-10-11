@@ -178,7 +178,7 @@ export default class Core {
       })
       .then(([c, traversal]) => {
         let ResourceConstructor;
-        if (returnList) {
+        if (returnList || this[relationsSymbol][relation].returnList) {
           ResourceConstructor = this[relationsSymbol][relation].ListClass;
         } else {
           ResourceConstructor = this[relationsSymbol][relation].ResourceClass;

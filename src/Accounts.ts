@@ -63,6 +63,7 @@ export default class Accounts extends Core {
         createRelation: 'ec:invites',
         createTemplateModifier: '-template-post',
         id: 'invite',
+        returnList: true,
         ResourceClass: InviteResource,
         ListClass: InviteList,
       },
