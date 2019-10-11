@@ -1,3 +1,13 @@
+## <small>0.21.15 (2019-10-11)</small>
+
+* release version 0.21.15 ([6845121](https://github.com/entrecode/ec.sdk/commit/6845121))
+* fix: fix AssetGroup docs ([4145727](https://github.com/entrecode/ec.sdk/commit/4145727))
+* fix: return Type on createInvite ([2be1112](https://github.com/entrecode/ec.sdk/commit/2be1112))
+* doc: add notes for development ([6755c15](https://github.com/entrecode/ec.sdk/commit/6755c15))
+* chore: updates package-lock ([064dcc4](https://github.com/entrecode/ec.sdk/commit/064dcc4))
+
+
+
 ## <small>0.21.14 (2019-08-29)</small>
 
 * release version 0.21.14 ([5545325](https://github.com/entrecode/ec.sdk/commit/5545325))
