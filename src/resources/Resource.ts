@@ -130,7 +130,7 @@ class Resource {
    * @param {object} resource object representing the resource
    * @returns {Promise<Resource>} the newly created Resource
    */
-  create(relation: string, resource: any): Promise<Resource> {
+  create(relation: string, resource: any, returnList: boolean = false): Promise<Resource> {
     return Promise.resolve()
       .then(() => {
         if (!relation) {
@@ -170,9 +170,15 @@ class Resource {
         }
         return post(this[environmentSymbol], request, resource);
       })
-      .then(
-        ([c, traversal]) => new this[relationsSymbol][relation].ResourceClass(c, this[environmentSymbol], traversal),
-      );
+      .then(([c, traversal]) => {
+        let ResourceConstructor;
+        if (returnList || this[relationsSymbol][relation].returnList) {
+          ResourceConstructor = this[relationsSymbol][relation].ListClass;
+        } else {
+          ResourceConstructor = this[relationsSymbol][relation].ResourceClass;
+        }
+        return <Resource>new ResourceConstructor(c, this[environmentSymbol], traversal);
+      });
   }
 
   /**
