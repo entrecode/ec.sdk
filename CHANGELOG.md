@@ -1,3 +1,11 @@
+## <small>0.21.16 (2019-10-18)</small>
+
+* release version 0.21.16 ([81da437](https://github.com/entrecode/ec.sdk/commit/81da437))
+* fix: fix error in ec.errors and json-schema-remote SDK-148 ([1568d43](https://github.com/entrecode/ec.sdk/commit/1568d43))
+* feat: _links enumerable in DMAssetResource for asset helper SDK-147 ([9e0c4cf](https://github.com/entrecode/ec.sdk/commit/9e0c4cf))
+
+
+
 ## <small>0.21.15 (2019-10-11)</small>
 
 * release version 0.21.15 ([6845121](https://github.com/entrecode/ec.sdk/commit/6845121))
