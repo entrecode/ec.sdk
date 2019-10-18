@@ -1,21 +1,21 @@
 <!doctype html>
 <html>
 <head>
-  <meta charset='utf-8' />
-  <title>ec.sdk 0.21.15 | Documentation</title>
+  <meta charset='utf-8'>
+  <title>ec.sdk 0.21.16 | Documentation</title>
   <meta name='description' content='SDK for ec.api'>
   <meta name='viewport' content='width=device-width,initial-scale=1'>
-  <link href='assets/bass.css' rel='stylesheet' />
-  <link href='assets/style.css' rel='stylesheet' />
-  <link href='assets/github.css' rel='stylesheet' />
-  <link href='assets/split.css' rel='stylesheet' />
+  <link href='assets/bass.css' rel='stylesheet'>
+  <link href='assets/style.css' rel='stylesheet'>
+  <link href='assets/github.css' rel='stylesheet'>
+  <link href='assets/split.css' rel='stylesheet'>
 </head>
 <body class='documentation m0'>
     <div class='flex'>
       <div id='split-left' class='overflow-auto fs0 height-viewport-100'>
         <div class='py1 px2'>
           <h3 class='mb0 no-anchor'>ec.sdk</h3>
-          <div class='mb1'><code>0.21.15</code></div>
+          <div class='mb1'><code>0.21.16</code></div>
           <input
             placeholder='Filter'
             id='filter-input'
@@ -3257,15 +3257,14 @@
       <div id='split-right' class='relative overflow-auto height-viewport-100'>
         
           
-            <div class='keyline-top-not py2'>
-  <section class='py2 clearfix'>
+            <div class='keyline-top-not py2'><section class='py2 clearfix'>
 
-    <h2 id='getting-started' class='mt0'>
-      Getting Started
-    </h2>
+  <h2 id='getting-started' class='mt0'>
+    Getting Started
+  </h2>
 
-    
-      <h1>ec.sdk</h1>
+  
+    <h1>ec.sdk</h1>
 <blockquote>
 <p>This is the SDK for all <a href="https://doc.entrecode.de">ec.APIs</a> by entrecode. By entrecode.</p>
 </blockquote>
@@ -3378,21 +3377,19 @@ dataManager.dataManagerList()
 <li>When releasing a new version use <code>npm run release &#x3C;semver-version></code> – This will build docs and changelog etc, <code>npm publish</code> is handled by travis.</li>
 </ul>
 
-    
-  </section>
-</div>
+  
+</section></div>
           
         
           
-            <div class='keyline-top-not py2'>
-  <section class='py2 clearfix'>
+            <div class='keyline-top-not py2'><section class='py2 clearfix'>
 
-    <h2 id='public-api-cheatsheet' class='mt0'>
-      Public API Cheatsheet
-    </h2>
+  <h2 id='public-api-cheatsheet' class='mt0'>
+    Public API Cheatsheet
+  </h2>
 
-    
-      <p>This is a quick cheatsheet with the most needed snippets to get started with the <a href="#publicapi">PublicAPI</a>.</p>
+  
+    <p>This is a quick cheatsheet with the most needed snippets to get started with the <a href="#publicapi">PublicAPI</a>.</p>
 <h3>Setup</h3>
 <p>NodeJS / ec-user-token:</p>
 <pre class='hljs'><span class="hljs-keyword">const</span> { PublicAPI } = <span class="hljs-built_in">require</span>(<span class="hljs-string">'ec.sdk'</span>);
@@ -3434,26 +3431,23 @@ list.getFirstItem() <span class="hljs-comment">// not really needed anymore:</sp
 <pre class='hljs'><span class="hljs-keyword">await</span> entry.del();
 <span class="hljs-keyword">await</span> entry.save(<span class="hljs-literal">true</span>); <span class="hljs-comment">// save PUT</span></pre>
 
-    
-  </section>
-</div>
+  
+</section></div>
           
         
           
-            <div class='keyline-top-not py2'>
-  <section class='py2 clearfix'>
+            <div class='keyline-top-not py2'><section class='py2 clearfix'>
 
-    <h2 id='api-connectors' class='mt0'>
-      API connectors
-    </h2>
+  <h2 id='api-connectors' class='mt0'>
+    API connectors
+  </h2>
 
-    
-      <p>You can view an API connector as the entry point to an <a href="https://doc.entrecode.de/en/latest/">ec.api</a>. Each connector is a class which must be instantiated with <code>new</code> and an optional <a href="#environment"><code>environment</code></a>. If no environment is specified the API connector will connect to <code>live</code> or rather <a href="https://editor.entrecode.de">production</a>. It is possible to have multiple API connectors for multiple environments.</p>
+  
+    <p>You can view an API connector as the entry point to an <a href="https://doc.entrecode.de/en/latest/">ec.api</a>. Each connector is a class which must be instantiated with <code>new</code> and an optional <a href="#environment"><code>environment</code></a>. If no environment is specified the API connector will connect to <code>live</code> or rather <a href="https://editor.entrecode.de">production</a>. It is possible to have multiple API connectors for multiple environments.</p>
 <p>The two API connectors <a href="#Core">Core</a> and <a href="#Session">Session</a> are special cases. Core is the API connector every other inherits from and contains functionality shared by all other API connectors. Session is only used for login and logout of ec.users. This will allow you to implement tree shaking into your build and only the parts which are used will be in your bundle.</p>
 
-    
-  </section>
-</div>
+  
+</section></div>
           
         
           
@@ -12889,20 +12883,18 @@ route of Asset neue.</p>
           
         
           
-            <div class='keyline-top-not py2'>
-  <section class='py2 clearfix'>
+            <div class='keyline-top-not py2'><section class='py2 clearfix'>
 
-    <h2 id='events-and-errors' class='mt0'>
-      Events and Errors
-    </h2>
+  <h2 id='events-and-errors' class='mt0'>
+    Events and Errors
+  </h2>
 
-    
-      <p>Whenever the ec.sdk receives an Error from any ec.API it will create not only an <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error">Error</a> object but a <a href="#Problem">Problem</a>. Problems will contain the <a href="https://doc.entrecode.de/en/latest/#errors">error codes</a> from ec.APIs and all other information of the error. See below for a detailed description for Problems.</p>
+  
+    <p>Whenever the ec.sdk receives an Error from any ec.API it will create not only an <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error">Error</a> object but a <a href="#Problem">Problem</a>. Problems will contain the <a href="https://doc.entrecode.de/en/latest/#errors">error codes</a> from ec.APIs and all other information of the error. See below for a detailed description for Problems.</p>
 <p>Amongst other all Erors or Problems are emitted as events in every API connector. You can subscribe to <a href="#eventeventlerror">error events</a> with <a href="#Core#on">Core#on</a>. Additionally to error events there are also events for <a href="#eventeventlogin">login</a> and <a href="#eventeventlogout">logout</a>. Below you will find a description for each event type.</p>
 
-    
-  </section>
-</div>
+  
+</section></div>
           
         
           
@@ -13584,22 +13576,20 @@ error with token related error codes. Will either have undefined or <a href="#pr
           
         
           
-            <div class='keyline-top-not py2'>
-  <section class='py2 clearfix'>
+            <div class='keyline-top-not py2'><section class='py2 clearfix'>
 
-    <h2 id='resources' class='mt0'>
-      Resources
-    </h2>
+  <h2 id='resources' class='mt0'>
+    Resources
+  </h2>
 
-    
-      <p>All resources used by ec.APIs and ec.sdk are <a href="https://tools.ietf.org/html/draft-kelly-json-hal-08">HAL resources</a> (Content-Type: application/hal+json). A HAL resources define the resources itself and relations to other resources.</p>
+  
+    <p>All resources used by ec.APIs and ec.sdk are <a href="https://tools.ietf.org/html/draft-kelly-json-hal-08">HAL resources</a> (Content-Type: application/hal+json). A HAL resources define the resources itself and relations to other resources.</p>
 <p>Take a look at the API state digrams of ec.APIs for an overview of all relations and how they are connected (<a href="https://doc.entrecode.de/en/latest/account_server/#state-diagram">Accounts</a>, <a href="https://doc.entrecode.de/en/latest/app_manager/#app-manager-api">AppManager</a>, and <a href="https://doc.entrecode.de/en/latest/data_manager/#state-diagram">DataManager</a>). You can keep the state diagrams in mind since they tell you where to find any functionality inside ec.sdk. API connectors are the entry points, resources are – well – resources, and relations resemble the functions of them.</p>
 <p>In the next section you will find the description of <a href="#Resource">Resource</a> and <a href="#ListResource">ListResource</a> at the top. They define functionality all other resources. Like <a href="#Resource#save">Resource#save</a> or functions for pagination. Following those are the documentation of resources for any individual ec.APIs.</p>
 <p>All resources which are from a specialized type (eg.: <a href="#DataManagerResource">DataManagerResource</a>) will contain properties with getter and setter implementations. So calling <code>dataManager.title = 'new title'</code> will change the title and mark the resource dirty (<a href="#Resource#isDirty">Resource#isDirty</a>). Calling <a href="#Resource#save">Resource#save</a> would then save the resource with the ec.API.</p>
 
-    
-  </section>
-</div>
+  
+</section></div>
           
         
           
@@ -16804,19 +16794,17 @@ object will be applied when loading a <a href="#listresource">ListResource</a>.<
           
         
           
-            <div class='keyline-top-not py2'>
-  <section class='py2 clearfix'>
+            <div class='keyline-top-not py2'><section class='py2 clearfix'>
 
-    <h2 id='accounts-resources' class='mt0'>
-      Accounts Resources
-    </h2>
+  <h2 id='accounts-resources' class='mt0'>
+    Accounts Resources
+  </h2>
 
-    
-      <p>The following section describes resources of <a href="https://doc.entrecode.de/en/latest/account_server/">Accounts</a>.</p>
+  
+    <p>The following section describes resources of <a href="https://doc.entrecode.de/en/latest/account_server/">Accounts</a>.</p>
 
-    
-  </section>
-</div>
+  
+</section></div>
           
         
           
@@ -19040,19 +19028,17 @@ be the same object but with refreshed data.
           
         
           
-            <div class='keyline-top-not py2'>
-  <section class='py2 clearfix'>
+            <div class='keyline-top-not py2'><section class='py2 clearfix'>
 
-    <h2 id='appmanager-resources' class='mt0'>
-      AppManager Resources
-    </h2>
+  <h2 id='appmanager-resources' class='mt0'>
+    AppManager Resources
+  </h2>
 
-    
-      <p>The following section describes resources of <a href="https://doc.entrecode.de/en/latest/app_manager/">AppManager</a>.</p>
+  
+    <p>The following section describes resources of <a href="https://doc.entrecode.de/en/latest/app_manager/">AppManager</a>.</p>
 
-    
-  </section>
-</div>
+  
+</section></div>
           
         
           
@@ -24013,19 +23999,17 @@ by the options parameter.</p>
           
         
           
-            <div class='keyline-top-not py2'>
-  <section class='py2 clearfix'>
+            <div class='keyline-top-not py2'><section class='py2 clearfix'>
 
-    <h2 id='datamanager-resources' class='mt0'>
-      DataManager Resources
-    </h2>
+  <h2 id='datamanager-resources' class='mt0'>
+    DataManager Resources
+  </h2>
 
-    
-      <p>The following section describes resources of <a href="https://doc.entrecode.de/en/latest/data_manager/">DataManager</a>.</p>
+  
+    <p>The following section describes resources of <a href="https://doc.entrecode.de/en/latest/data_manager/">DataManager</a>.</p>
 
-    
-  </section>
-</div>
+  
+</section></div>
           
         
           
@@ -30506,19 +30490,17 @@ provided. Url otherwise.
           
         
           
-            <div class='keyline-top-not py2'>
-  <section class='py2 clearfix'>
+            <div class='keyline-top-not py2'><section class='py2 clearfix'>
 
-    <h2 id='publicapi-resources' class='mt0'>
-      PublicAPI Resources
-    </h2>
+  <h2 id='publicapi-resources' class='mt0'>
+    PublicAPI Resources
+  </h2>
 
-    
-      <p>The following section describes resources of PublicAPI. You'll find the official API documentation at <code>https://datamanager.entrecode.de/api/doc/&#x3C;shortID></code>.</p>
+  
+    <p>The following section describes resources of PublicAPI. You'll find the official API documentation at <code>https://datamanager.entrecode.de/api/doc/&#x3C;shortID></code>.</p>
 
-    
-  </section>
-</div>
+  
+</section></div>
           
         
           
@@ -34469,15 +34451,14 @@ be the same object but with refreshed data.
           
         
           
-            <div class='keyline-top-not py2'>
-  <section class='py2 clearfix'>
+            <div class='keyline-top-not py2'><section class='py2 clearfix'>
 
-    <h2 id='changelog' class='mt0'>
-      Changelog
-    </h2>
+  <h2 id='changelog' class='mt0'>
+    Changelog
+  </h2>
 
-    
-      <h2><small>0.21.15 (2019-10-11)</small></h2>
+  
+    <h2><small>0.21.15 (2019-10-11)</small></h2>
 <ul>
 <li>release version 0.21.15 (<a href="https://github.com/entrecode/ec.sdk/commit/6845121">6845121</a>)</li>
 <li>fix: fix AssetGroup docs (<a href="https://github.com/entrecode/ec.sdk/commit/4145727">4145727</a>)</li>
@@ -36243,25 +36224,22 @@ accounts.account(…);</pre>
 <li>initial release</li>
 </ul>
 
-    
-  </section>
-</div>
+  
+</section></div>
           
         
           
-            <div class='keyline-top-not py2'>
-  <section class='py2 clearfix'>
+            <div class='keyline-top-not py2'><section class='py2 clearfix'>
 
-    <h2 id='impressum--datenschutz' class='mt0'>
-      Impressum &amp; Datenschutz
-    </h2>
+  <h2 id='impressum--datenschutz' class='mt0'>
+    Impressum &amp; Datenschutz
+  </h2>
 
-    
-      <p><a href="https://entrecode.de/datenschutz">Impressum &#x26; Datenschutz (Privacy)</a></p>
+  
+    <p><a href="https://entrecode.de/datenschutz">Impressum &#x26; Datenschutz (Privacy)</a></p>
 
-    
-  </section>
-</div>
+  
+</section></div>
           
         
       </div>
