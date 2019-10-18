@@ -150,6 +150,7 @@ describe('DMAsset Resource', () => {
     'thumbnails',
     'isUsed',
     'duplicates',
+    '_links',
   ];
   getter.forEach((name) => {
     it(`should call resource.getProperty with ${name}`, () => {

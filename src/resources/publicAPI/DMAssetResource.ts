@@ -146,6 +146,12 @@ class DMAssetResource extends Resource {
           }
         },
       },
+      _links: {
+        enumerable: true,
+        get: () => {
+          return this.getProperty('_links');
+        },
+      },
     });
     this.countProperties();
   }
