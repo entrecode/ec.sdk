@@ -16,7 +16,7 @@ import HistoryEvents from './resources/publicAPI/HistoryEvents';
 
 declare const EventSource: any;
 
-validator.setLoggingFunction(() => {});
+validator.setLoggingFunction(() => { });
 
 const environmentSymbol: any = Symbol.for('environment');
 const relationsSymbol: any = Symbol.for('relations');
@@ -102,7 +102,7 @@ export default class DataManager extends Core {
         }),
       )
       .then(() => this.follow('ec:dm-templates'))
-      .then((request) => post(request, template))
+      .then((request) => post(this[environmentSymbol], request, template))
       .then(([dm, traversal]) => new TemplateResource(dm, this[environmentSymbol], traversal));
   }
 
