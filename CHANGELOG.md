@@ -1,3 +1,10 @@
+## <small>0.21.17 (2019-10-21)</small>
+
+* release version 0.21.17 ([ae86eff](https://github.com/entrecode/ec.sdk/commit/ae86eff))
+* fix: DataManager#createTemplate ([c072efe](https://github.com/entrecode/ec.sdk/commit/c072efe))
+
+
+
 ## <small>0.21.16 (2019-10-18)</small>
 
 * release version 0.21.16 ([81da437](https://github.com/entrecode/ec.sdk/commit/81da437))
