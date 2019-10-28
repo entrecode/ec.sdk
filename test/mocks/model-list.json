@@ -24,7 +24,7 @@
       "href": "https://datamanager.buffalo.entrecode.de/?dataManagerID=cce541dc-cdd8-4f34-b6e4-20f15d3b8314"
     },
     "ec:models/options": {
-      "href": "https://datamanager.buffalo.entrecode.de/model{?dataManagerID,modelID,page,size,sort,title,titleFrom,titleTo,title~}",
+      "href": "https://datamanager.buffalo.entrecode.de/model{?dataManagerID,modelID,page,size,_list,sort,title,titleFrom,titleTo,title~}",
       "templated": true
     }
   },

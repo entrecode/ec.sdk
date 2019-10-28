@@ -20,7 +20,7 @@
       "templated": true
     },
     "ec:app/targets/options": {
-      "href": "https://appserver.entrecode.de/target{?appID,page,size,sort,targetID,targetType,targetType~}",
+      "href": "https://appserver.entrecode.de/target{?appID,page,size,_list,sort,targetID,targetType,targetType~}",
       "templated": true
     }
   },

@@ -54,7 +54,7 @@
     },
     "ec:account/tokens/options": {
       "profile": "https://entrecode.de/schema/account-tokens",
-      "href": "https://accounts.entrecode.de/account/tokens{?accesstokenid,accesstokenid~,accountid,accountid~,ipaddress,ipaddresslocation,ipaddresslocation~,ipaddress~,issued,issuedFrom,issuedTo,issued~,page,size,sort,validuntil,validuntilFrom,validuntilTo,validuntil~}"
+      "href": "https://accounts.entrecode.de/account/tokens{?accesstokenid,accesstokenid~,accountid,accountid~,ipaddress,ipaddresslocation,ipaddresslocation~,ipaddress~,issued,issuedFrom,issuedTo,issued~,page,size,_list,sort,validuntil,validuntilFrom,validuntilTo,validuntil~}"
     },
     "ec:auth": {
       "href": "https://accounts.entrecode.de"

@@ -35,11 +35,11 @@
       "templated": true
     },
     "ec:dm-templates/options": {
-      "href": "https://datamanager.entrecode.de/template{?name,name~,page,parentName,parentName~,parentTemplate,parentVersion,parentVersionFrom,parentVersionTo,size,sort,templateID,version,versionFrom,versionTo}",
+      "href": "https://datamanager.entrecode.de/template{?name,name~,page,parentName,parentName~,parentTemplate,parentVersion,parentVersionFrom,parentVersionTo,size,_list,sort,templateID,version,versionFrom,versionTo}",
       "templated": true
     },
     "ec:datamanagers/options": {
-      "href": "https://datamanager.entrecode.de/{?created,createdFrom,createdTo,created~,datamanagerid,description~,page,size,sort,title,title~}",
+      "href": "https://datamanager.entrecode.de/{?created,createdFrom,createdTo,created~,datamanagerid,description~,page,size,_list,sort,title,title~}",
       "templated": true
     },
     "prev": {
@@ -94,7 +94,7 @@
             "href": "https://datamanager.entrecode.de/asset?dataManagerID=7e2fd960-b8ab-419f-8c8f-90da12b2a9d0"
           },
           "ec:assets/options": {
-            "href": "https://datamanager.entrecode.de/asset{?assetID,created,createdFrom,createdTo,created~,creator,dataManagerID,deleted,deletedFrom,deletedTo,deleted~,page,size,sort,tag,title,title~,type,type~}",
+            "href": "https://datamanager.entrecode.de/asset{?assetID,created,createdFrom,createdTo,created~,creator,dataManagerID,deleted,deletedFrom,deletedTo,deleted~,page,size,_list,sort,tag,title,title~,type,type~}",
             "templated": true
           },
           "ec:models": {
@@ -102,7 +102,7 @@
             "href": "https://datamanager.entrecode.de/model?dataManagerID=7e2fd960-b8ab-419f-8c8f-90da12b2a9d0"
           },
           "ec:models/options": {
-            "href": "https://datamanager.entrecode.de/model{?dataManagerID,modelID,page,size,sort,title,titleFrom,titleTo,title~}",
+            "href": "https://datamanager.entrecode.de/model{?dataManagerID,modelID,page,size,_list,sort,title,titleFrom,titleTo,title~}",
             "templated": true
           },
           "ec:dm-clients": {
@@ -110,7 +110,7 @@
             "href": "https://datamanager.entrecode.de/client?dataManagerID=7e2fd960-b8ab-419f-8c8f-90da12b2a9d0"
           },
           "ec:dm-clients/options": {
-            "href": "https://datamanager.entrecode.de/client{?callbackURL,callbackURL~,clientID,clientID~,dataManagerID,datamanagerid,page,size,sort}",
+            "href": "https://datamanager.entrecode.de/client{?callbackURL,callbackURL~,clientID,clientID~,dataManagerID,datamanagerid,page,size,_list,sort}",
             "templated": true
           },
           "ec:dm-accounts": {
@@ -118,7 +118,7 @@
             "href": "https://datamanager.entrecode.de/account?dataManagerID=7e2fd960-b8ab-419f-8c8f-90da12b2a9d0"
           },
           "ec:dm-accounts/options": {
-            "href": "https://datamanager.entrecode.de/account{?accountID,accountID~,dataManagerID,email,email~,hasPassword,page,roles,size,sort}",
+            "href": "https://datamanager.entrecode.de/account{?accountID,accountID~,dataManagerID,email,email~,hasPassword,page,roles,size,_list,sort}",
             "templated": true
           },
           "ec:dm-roles": {
@@ -130,7 +130,7 @@
             "href": "https://datamanager.entrecode.de/role{?roleID}"
           },
           "ec:dm-roles/options": {
-            "href": "https://datamanager.entrecode.de/role{?accounts,addRegistered,addUnregistered,dataManagerID,label,label~,name,name~,page,roleID,roleID~,size,sort}",
+            "href": "https://datamanager.entrecode.de/role{?accounts,addRegistered,addUnregistered,dataManagerID,label,label~,name,name~,page,roleID,roleID~,size,_list,sort}",
             "templated": true
           },
           "ec:datamanager/export": {
@@ -188,7 +188,7 @@
             "href": "https://datamanager.entrecode.de/asset?dataManagerID=48e18a34-cf64-4f4a-bc47-45323a7f0e44"
           },
           "ec:assets/options": {
-            "href": "https://datamanager.entrecode.de/asset{?assetID,created,createdFrom,createdTo,created~,creator,dataManagerID,deleted,deletedFrom,deletedTo,deleted~,page,size,sort,tag,title,title~,type,type~}",
+            "href": "https://datamanager.entrecode.de/asset{?assetID,created,createdFrom,createdTo,created~,creator,dataManagerID,deleted,deletedFrom,deletedTo,deleted~,page,size,_list,sort,tag,title,title~,type,type~}",
             "templated": true
           },
           "ec:models": {
@@ -196,7 +196,7 @@
             "href": "https://datamanager.entrecode.de/model?dataManagerID=48e18a34-cf64-4f4a-bc47-45323a7f0e44"
           },
           "ec:models/options": {
-            "href": "https://datamanager.entrecode.de/model{?dataManagerID,modelID,page,size,sort,title,titleFrom,titleTo,title~}",
+            "href": "https://datamanager.entrecode.de/model{?dataManagerID,modelID,page,size,_list,sort,title,titleFrom,titleTo,title~}",
             "templated": true
           },
           "ec:dm-clients": {
@@ -204,7 +204,7 @@
             "href": "https://datamanager.entrecode.de/client?dataManagerID=48e18a34-cf64-4f4a-bc47-45323a7f0e44"
           },
           "ec:dm-clients/options": {
-            "href": "https://datamanager.entrecode.de/client{?callbackURL,callbackURL~,clientID,clientID~,dataManagerID,datamanagerid,page,size,sort}",
+            "href": "https://datamanager.entrecode.de/client{?callbackURL,callbackURL~,clientID,clientID~,dataManagerID,datamanagerid,page,size,_list,sort}",
             "templated": true
           },
           "ec:dm-accounts": {
@@ -212,7 +212,7 @@
             "href": "https://datamanager.entrecode.de/account?dataManagerID=48e18a34-cf64-4f4a-bc47-45323a7f0e44"
           },
           "ec:dm-accounts/options": {
-            "href": "https://datamanager.entrecode.de/account{?accountID,accountID~,dataManagerID,email,email~,hasPassword,page,roles,size,sort}",
+            "href": "https://datamanager.entrecode.de/account{?accountID,accountID~,dataManagerID,email,email~,hasPassword,page,roles,size,_list,sort}",
             "templated": true
           },
           "ec:dm-roles": {
@@ -224,7 +224,7 @@
             "href": "https://datamanager.entrecode.de/role{?roleID}"
           },
           "ec:dm-roles/options": {
-            "href": "https://datamanager.entrecode.de/role{?accounts,addRegistered,addUnregistered,dataManagerID,label,label~,name,name~,page,roleID,roleID~,size,sort}",
+            "href": "https://datamanager.entrecode.de/role{?accounts,addRegistered,addUnregistered,dataManagerID,label,label~,name,name~,page,roleID,roleID~,size,_list,sort}",
             "templated": true
           },
           "ec:datamanager/export": {

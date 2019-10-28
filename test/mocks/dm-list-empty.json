@@ -26,7 +26,7 @@
       "href": "https://datamanager.entrecode.de/template"
     },
     "ec:datamanagers/options": {
-      "href": "https://datamanager.entrecode.de/{?created,createdFrom,createdTo,created~,datamanagerid,datamanagerid~,description~,page,size,sort,title,title~}",
+      "href": "https://datamanager.entrecode.de/{?created,createdFrom,createdTo,created~,datamanagerid,datamanagerid~,description~,page,size,_list,sort,title,title~}",
       "templated": true
     }
   }

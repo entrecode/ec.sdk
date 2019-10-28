@@ -21,7 +21,7 @@
     },
     "ec:dm-assets": {
       "profile": "https://entrecode.de/schema/dm-assets",
-      "href": "https://datamanager.entrecode.de/a/beefbeef/test1{?assetID}",
+      "href": "https://datamanager.entrecode.de/a/beefbeef/test1{?_count,_list,assetID,caption,caption~,created,createdFrom,createdTo,created~,creator,duplicates,duplicatesFrom,duplicatesOf,duplicatesTo,isUsed,page,size,sort,tags,title,title~,type,type~}",
       "templated": true
     }
   }

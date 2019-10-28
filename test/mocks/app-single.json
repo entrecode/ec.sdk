@@ -22,7 +22,7 @@
       "href": "https://appserver.entrecode.de/platform{?platformID}"
     },
     "ec:app/platforms/options": {
-      "href": "https://appserver.entrecode.de/platform{?appID,codeSourceID,dataSourceID,page,platformID,platformType,platformType~,size,sort,title,title~}",
+      "href": "https://appserver.entrecode.de/platform{?appID,codeSourceID,dataSourceID,page,platformID,platformType,platformType~,size,_list,sort,title,title~}",
       "templated": true
     },
     "ec:app/codesources": {
@@ -34,7 +34,7 @@
       "href": "https://appserver.entrecode.de/codesourc{?codeSourceID}"
     },
     "ec:app/codesources/options": {
-      "href": "https://appserver.entrecode.de/codesource{?appID,codeSourceID,codeSourceType,codeSourceType~,page,size,sort}",
+      "href": "https://appserver.entrecode.de/codesource{?appID,codeSourceID,codeSourceType,codeSourceType~,page,size,_list,sort}",
       "templated": true
     },
     "ec:app/datasources": {
@@ -46,7 +46,7 @@
       "href": "https://appserver.entrecode.de/datasource{?dataSourceID}"
     },
     "ec:app/datasources/options": {
-      "href": "https://appserver.entrecode.de/datasource{?appID,dataSourceID,dataSourceType,dataSourceType~,page,size,sort}",
+      "href": "https://appserver.entrecode.de/datasource{?appID,dataSourceID,dataSourceType,dataSourceType~,page,size,_list,sort}",
       "templated": true
     },
     "ec:app/targets": {
@@ -58,7 +58,7 @@
       "href": "https://appserver.entrecode.de/target{?targetID}"
     },
     "ec:app/targets/options": {
-      "href": "https://appserver.entrecode.de/target{?appID,page,size,sort,targetID,targetType,targetType~}",
+      "href": "https://appserver.entrecode.de/target{?appID,page,size,_list,sort,targetID,targetType,targetType~}",
       "templated": true
     },
     "ec:app/platform": [

@@ -16,7 +16,7 @@
       "templated": true
     },
     "ec:app/builds/options": {
-      "href": "https://appserver.entrecode.de/platform/build{?buildID,page,platformID,size,sort}",
+      "href": "https://appserver.entrecode.de/platform/build{?buildID,page,platformID,size,_list,sort}",
       "templated": true
     },
     "ec:platform": {

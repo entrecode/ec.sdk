@@ -19,7 +19,7 @@
       "href": "https://accounts.buffalo.entrecode.de"
     },
     "ec:acc/groups/options": {
-      "href": "https://accounts.buffalo.entrecode.de/group{?groupid,groupid~,name,name~,page,size,sort}",
+      "href": "https://accounts.buffalo.entrecode.de/group{?groupid,groupid~,name,name~,page,size,_list,sort}",
       "templated": true
     }
   },

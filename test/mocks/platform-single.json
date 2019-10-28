@@ -45,11 +45,11 @@
       "href": "https://appserver.entrecode.de/platform/build?platformID=229b4384-fcfa-437b-833e-fc779a3f8f4c"
     },
     "ec:app/builds/options": {
-      "href": "https://appserver.entrecode.de/platform/build{?buildID,page,platformID,size,sort}",
+      "href": "https://appserver.entrecode.de/platform/build{?buildID,page,platformID,size,_list,sort}",
       "templated": true
     },
     "ec:app/deployments/options": {
-      "href": "https://appserver.entrecode.de/platform/deployment{?buildID,deploymentID,page,platformID,size,sort,targetID}",
+      "href": "https://appserver.entrecode.de/platform/deployment{?buildID,deploymentID,page,platformID,size,_list,sort,targetID}",
       "templated": true
     }
   }

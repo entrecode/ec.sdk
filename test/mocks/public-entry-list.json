@@ -16,7 +16,7 @@
       "href": "https://datamanager.entrecode.de/api/beefbeef/allFields"
     },
     "beefbeef:allFields/options": {
-      "href": "https://datamanager.entrecode.de/api/beefbeef/allFields{?_created,_createdFrom,_createdTo,_creator,_fields,_id,_levels,_modified,_modifiedFrom,_modifiedTo,_private,account,asset,assets,assets~,boolean,created,createdFrom,createdTo,datetime,datetimeFrom,datetimeTo,decimal,decimalFrom,decimalTo,email,email~,entries,entries~,entry,formattedText~,id,location,locationFrom,locationTo,modified,modifiedFrom,modifiedTo,number,numberFrom,numberTo,page,phone,phone~,private,role,size,sort,text,text~,url,url~}",
+      "href": "https://datamanager.entrecode.de/api/beefbeef/allFields{?_created,_createdFrom,_createdTo,_creator,_fields,_id,_levels,_modified,_modifiedFrom,_modifiedTo,_private,account,asset,assets,assets~,boolean,created,createdFrom,createdTo,datetime,datetimeFrom,datetimeTo,decimal,decimalFrom,decimalTo,email,email~,entries,entries~,entry,formattedText~,id,location,locationFrom,locationTo,modified,modifiedFrom,modifiedTo,number,numberFrom,numberTo,page,phone,phone~,private,role,size,_list,sort,text,text~,url,url~}",
       "templated": true
     }
   },
@@ -206,7 +206,7 @@
               "href": "https://datamanager.entrecode.de/asset/beefbeef"
             },
             "ec:asset/best-file": {
-              "href": "https://datamanager.entrecode.de/files/2bf325a9-c8f9-4e7d-b244-faa1090a479d{?size,thumb}",
+              "href": "https://datamanager.entrecode.de/files/2bf325a9-c8f9-4e7d-b244-faa1090a479d{?size,_list,thumb}",
               "templated": true
             }
           }
@@ -334,7 +334,7 @@
               "href": "https://datamanager.entrecode.de/asset/beefbeef"
             },
             "ec:asset/best-file": {
-              "href": "https://datamanager.entrecode.de/files/2bf325a9-c8f9-4e7d-b244-faa1090a479d{?size,thumb}",
+              "href": "https://datamanager.entrecode.de/files/2bf325a9-c8f9-4e7d-b244-faa1090a479d{?size,_list,thumb}",
               "templated": true
             }
           }

@@ -9,7 +9,7 @@
       "templated": true
     },
     "ec:entries-history": {
-      "href": "https://dm-history.entrecode.de/entries{?dataManagerID,shortID,modelID,entryID,size,fromEventNumber,fromDate,toDate}",
+      "href": "https://dm-history.entrecode.de/entries{?dataManagerID,shortID,modelID,entryID,size,_list,fromEventNumber,fromDate,toDate}",
       "templated": true
     }
   }

@@ -20,7 +20,7 @@
       "href": "https://datamanager.entrecode.de/?dataManagerID=f7bfb69a-56a2-4475-b4ea-58b976eb7618"
     },
     "ec:dm-clients/options": {
-      "href": "https://datamanager.entrecode.de/client{?callbackURL,callbackURL~,clientID,clientID~,dataManagerID,datamanagerid,page,size,sort}",
+      "href": "https://datamanager.entrecode.de/client{?callbackURL,callbackURL~,clientID,clientID~,dataManagerID,datamanagerid,page,size,_list,sort}",
       "templated": true
     }
   },

@@ -15,7 +15,7 @@
       "href": "https://datamanager.entrecode.de/?dataManagerID=48e18a34-cf64-4f4a-bc47-45323a7f0e44"
     },
     "ec:tags/options": {
-      "href": "https://datamanager.entrecode.de/tag{?dataManagerID,page,size,sort,tag,tag~}",
+      "href": "https://datamanager.entrecode.de/tag{?dataManagerID,page,size,_list,sort,tag,tag~}",
       "templated": true
     },
     "self": {

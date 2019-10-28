@@ -20,7 +20,7 @@
       "href": "https://datamanager.entrecode.de/?dataManagerID=fce10016-b486-4738-9f8a-7204095d1f6e"
     },
     "ec:dm-accounts/options": {
-      "href": "https://datamanager.entrecode.de/account{?accountID,accountID~,created,createdFrom,createdTo,created~,dataManagerID,email,email~,hasPassword,page,pending,pendingUpdated,pendingUpdatedFrom,pendingUpdatedTo,pendingUpdated~,roles,size,sort}",
+      "href": "https://datamanager.entrecode.de/account{?accountID,accountID~,created,createdFrom,createdTo,created~,dataManagerID,email,email~,hasPassword,page,pending,pendingUpdated,pendingUpdatedFrom,pendingUpdatedTo,pendingUpdated~,roles,size,_list,sort}",
       "templated": true
     }
   },

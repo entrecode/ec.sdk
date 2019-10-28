@@ -16,7 +16,7 @@
       "templated": true
     },
     "ec:assets/deleted/options": {
-      "href": "https://datamanager.entrecode.de/asset/deleted{?assetID,created,createdFrom,createdTo,created~,dataManagerID,deleted,deletedFrom,deletedTo,deleted~,destroy,page,size,sort,tag,title,title~,type,type~}",
+      "href": "https://datamanager.entrecode.de/asset/deleted{?assetID,created,createdFrom,createdTo,created~,dataManagerID,deleted,deletedFrom,deletedTo,deleted~,destroy,page,size,_list,sort,tag,title,title~,type,type~}",
       "templated": true
     },
     "ec:datamanager": {
@@ -135,7 +135,7 @@
           "href": "https://datamanager.entrecode.de/asset/deleted?dataManagerID=48e18a34-cf64-4f4a-bc47-45323a7f0e44"
         },
         "ec:asset/deleted/best-file": {
-          "href": "https://datamanager.entrecode.de/files/deleted/4d23281a-ea16-4108-8a40-91b710cfae5d{?size,thumb}",
+          "href": "https://datamanager.entrecode.de/files/deleted/4d23281a-ea16-4108-8a40-91b710cfae5d{?size,_list,thumb}",
           "templated": true
         },
         "ec:datamanager": {

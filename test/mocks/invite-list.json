@@ -14,7 +14,7 @@
       "templated": true
     },
     "ec:invites/options": {
-      "href": "https://accounts.entrecode.de/invite{?invite,invite~,page,size,sort}",
+      "href": "https://accounts.entrecode.de/invite{?invite,invite~,page,size,_list,sort}",
       "templated": true
     },
     "ec:invites/by-id": {

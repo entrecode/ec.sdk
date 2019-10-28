@@ -129,7 +129,7 @@
       "href": "https://datamanager.entrecode.de/asset/01bd8e08"
     },
     "ec:asset/best-file": {
-      "href": "https://datamanager.entrecode.de/files/2bf325a9-c8f9-4e7d-b244-faa1090a479d{?size,thumb}",
+      "href": "https://datamanager.entrecode.de/files/2bf325a9-c8f9-4e7d-b244-faa1090a479d{?size,_list,thumb}",
       "templated": true
     },
     "self": {

@@ -11,7 +11,7 @@
       "templated": true
     },
     "ec:accounts/options": {
-      "href": "https://accounts.entrecode.de/account{?accountid,accountid~,created,createdFrom,createdTo,created~,email,email~,isprincess,language,language~,page,size,sort,state}",
+      "href": "https://accounts.entrecode.de/account{?accountid,accountid~,created,createdFrom,createdTo,created~,email,email~,isprincess,language,language~,page,size,_list,sort,state}",
       "templated": true
     },
     "ec:account/by-id": {

@@ -20,7 +20,7 @@
       "href": "https://datamanager.entrecode.de/?dataManagerID=14b7eb12-f099-40ae-8a8a-faf6c5f416b6"
     },
     "ec:dm-assetgroups/options": {
-      "href": "https://datamanager.entrecode.de/assetgroup{?assetGroupID,assetGroupID~,dataManagerID,page,public,size,sort}",
+      "href": "https://datamanager.entrecode.de/assetgroup{?assetGroupID,assetGroupID~,dataManagerID,page,public,size,_list,sort}",
       "templated": true
     }
   },
