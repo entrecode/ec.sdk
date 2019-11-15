@@ -1,3 +1,15 @@
+## <small>0.21.18 (2019-11-15)</small>
+
+* release version 0.21.18 ([8e566a7](https://github.com/entrecode/ec.sdk/commit/8e566a7))
+* fix: doNotSendList ([c0ca71d](https://github.com/entrecode/ec.sdk/commit/c0ca71d))
+* fix: doNotSendList now really ([c28bc75](https://github.com/entrecode/ec.sdk/commit/c28bc75))
+* fix: SDK-152 ([a1c4cf4](https://github.com/entrecode/ec.sdk/commit/a1c4cf4))
+* chore: bump to 21.18-beta2 ([c2cb62f](https://github.com/entrecode/ec.sdk/commit/c2cb62f))
+* chore: bump to beta3 ([2040112](https://github.com/entrecode/ec.sdk/commit/2040112))
+* feat: always return a list SDK-122 ([3df6361](https://github.com/entrecode/ec.sdk/commit/3df6361))
+
+
+
 ## <small>0.21.17 (2019-10-21)</small>
 
 * release version 0.21.17 ([ae86eff](https://github.com/entrecode/ec.sdk/commit/ae86eff))
