@@ -87,6 +87,7 @@ class DataManagerResource extends Resource {
         createRelation: false,
         createTemplateModifier: '',
         id: 'assetID',
+        doNotSendList: true,
         additionalTemplateParam: 'dataManagerID',
         ResourceClass: AssetResource,
         ListClass: AssetList,

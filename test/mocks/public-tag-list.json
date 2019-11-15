@@ -11,7 +11,7 @@
       "href": "https://datamanager.entrecode.de/asset/01bd8e08"
     },
     "ec:api/tags/options": {
-      "href": "https://datamanager.entrecode.de/tag/01bd8e08{?dataManagerID,page,size,sort,tag,tag~}",
+      "href": "https://datamanager.entrecode.de/tag/01bd8e08{?dataManagerID,page,size,_list,sort,tag,tag~}",
       "templated": true
     },
     "self": {

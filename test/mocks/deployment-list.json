@@ -20,7 +20,7 @@
       "href": "https://appserver.entrecode.de/?appID=9f83b67a-cb95-4f60-9d82-7c66d4a81e24"
     },
     "ec:app/deployments/options": {
-      "href": "https://appserver.entrecode.de/platform/deployment{?buildID,deploymentID,page,platformID,size,sort,targetID}",
+      "href": "https://appserver.entrecode.de/platform/deployment{?buildID,deploymentID,page,platformID,size,_list,sort,targetID}",
       "templated": true
     }
   },

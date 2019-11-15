@@ -11,7 +11,7 @@
       "href": "/stats"
     },
     "ec:app-stat/options": {
-      "href": "https://appserver.entrecode.de/stats{?appID,page,size,sort}",
+      "href": "https://appserver.entrecode.de/stats{?appID,page,size,_list,sort}",
       "templated": true
     }
   },

@@ -8,7 +8,7 @@
   "_links": {
     "ec:dm-accounts": {
       "profile": "https://entrecode.de/schema/dm-accounts",
-      "href": "https://datamanager.entrecode.de/account?dataManagerID=fce10016-b486-4738-9f8a-7204095d1f6e&roles=8a811877-8c44-45a2-a806-d8ef5ec28d9e{&size,sort,page}",
+      "href": "https://datamanager.entrecode.de/account?dataManagerID=fce10016-b486-4738-9f8a-7204095d1f6e&roles=8a811877-8c44-45a2-a806-d8ef5ec28d9e{&size,_list,sort,page}",
       "templated": true
     },
     "self": {

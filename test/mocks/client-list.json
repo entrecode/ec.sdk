@@ -19,7 +19,7 @@
       "href": "https://accounts.buffalo.entrecode.de"
     },
     "ec:acc/clients/options": {
-      "href": "https://accounts.buffalo.entrecode.de/client{?callbackurl,callbackurl~,clientid,clientid~,page,size,sort}",
+      "href": "https://accounts.buffalo.entrecode.de/client{?callbackurl,callbackurl~,clientid,clientid~,page,size,_list,sort}",
       "templated": true
     },
     "next": {

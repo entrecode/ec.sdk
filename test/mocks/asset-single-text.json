@@ -25,7 +25,7 @@
       "href": "https://datamanager.entrecode.de/asset?dataManagerID=48e18a34-cf64-4f4a-bc47-45323a7f0e44"
     },
     "ec:asset/best-file": {
-      "href": "https://datamanager.entrecode.de/files/740e08ab-4957-4142-8393-7ef33942fa88{?size,thumb}",
+      "href": "https://datamanager.entrecode.de/files/740e08ab-4957-4142-8393-7ef33942fa88{?size,_list,thumb}",
       "templated": true
     },
     "ec:datamanager": {

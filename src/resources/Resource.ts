@@ -19,7 +19,7 @@ const relationsSymbol: any = Symbol.for('relations');
 const originalSymbol: any = Symbol.for('original');
 
 traverson.registerMediaType(HalAdapter.mediaType, HalAdapter);
-validator.setLoggingFunction(() => {});
+validator.setLoggingFunction(() => { });
 
 interface Resource {
   [key: string]: any;
@@ -155,7 +155,7 @@ class Resource {
           .validate(resource, `${link.profile}${this[relationsSymbol][relation].createTemplateModifier}`)
           .catch((e) => {
             throw new Problem(convertValidationError(e), locale);
-          }),
+          })
       )
       .then(() => this.newRequest().follow(this[relationsSymbol][relation].relation))
       .then((request) => {
@@ -165,7 +165,7 @@ class Resource {
               [this[relationsSymbol][relation].additionalTemplateParam]: this[
                 this[relationsSymbol][relation].additionalTemplateParam
               ],
-            }),
+            })
           );
         }
         return post(this[environmentSymbol], request, resource);
@@ -452,7 +452,7 @@ class Resource {
   resourceList(
     relation: string,
     options: filterOptions | any = {},
-    additionalTemplateParams: any = {},
+    additionalTemplateParams: any = {}
   ): Promise<ListResource> {
     return Promise.resolve()
       .then(() => {
@@ -477,6 +477,14 @@ class Resource {
           throw new Error('_levels on list resources not supported');
         }
 
+        if (!options) {
+          options = {};
+        }
+
+        if (!this[relationsSymbol][relation].doNotSendList) {
+          options._list = true;
+        }
+
         return this.newRequest().follow(this[relationsSymbol][relation].relation);
       })
       .then((request) => {
@@ -490,7 +498,7 @@ class Resource {
         }
         const params = Object.assign({}, additionalTemplateParams, options);
         request.withTemplateParameters(
-          optionsToQuery(params, this.getLink(this[relationsSymbol][relation].relation).href),
+          optionsToQuery(params, this.getLink(this[relationsSymbol][relation].relation).href)
         );
         return get(this[environmentSymbol], request);
       })
@@ -601,9 +609,7 @@ class Resource {
         const keys = Object.keys(this);
         if (this[resourcePropertiesSymbol].length !== keys.length) {
           throw new Error(
-            `Additional properties found: ${keys
-              .filter((k) => !this[resourcePropertiesSymbol].includes(k))
-              .join(', ')}`,
+            `Additional properties found: ${keys.filter((k) => !this[resourcePropertiesSymbol].includes(k)).join(', ')}`
           );
         }
 

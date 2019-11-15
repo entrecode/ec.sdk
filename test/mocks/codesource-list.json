@@ -20,7 +20,7 @@
       "templated": true
     },
     "ec:app/codesources/options": {
-      "href": "https://appserver.entrecode.de/codesource{?appID,codeSourceID,codeSourceType,codeSourceType~,page,size,sort}",
+      "href": "https://appserver.entrecode.de/codesource{?appID,codeSourceID,codeSourceType,codeSourceType~,page,size,_list,sort}",
       "templated": true
     }
   },

@@ -13,7 +13,7 @@
       "href": "https://accounts.entrecode.de/account?accountID=ddd29fd1-7417-4894-a546-5c12b11c0186"
     },
     "ec:account/tokens/options": {
-      "href": "https://accounts.entrecode.de/account/tokens{?accesstokenid,accesstokenid~,accountid,accountid~,ipaddress,ipaddresslocation,ipaddresslocation~,ipaddress~,issued,issuedFrom,issuedTo,issued~,page,size,sort,validuntil,validuntilFrom,validuntilTo,validuntil~}",
+      "href": "https://accounts.entrecode.de/account/tokens{?accesstokenid,accesstokenid~,accountid,accountid~,ipaddress,ipaddresslocation,ipaddresslocation~,ipaddress~,issued,issuedFrom,issuedTo,issued~,page,size,_list,sort,validuntil,validuntilFrom,validuntilTo,validuntil~}",
       "templated": true
     }
   },

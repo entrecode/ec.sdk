@@ -50,7 +50,7 @@
       "href": "https://accounts.entrecode.de/account"
     },
     "ec:accounts/options": {
-      "href": "https://accounts.entrecode.de/account{?accountid,accountid~,created,createdFrom,createdTo,created~,email,email~,isprincess,language,language~,page,size,sort,state}",
+      "href": "https://accounts.entrecode.de/account{?accountid,accountid~,created,createdFrom,createdTo,created~,email,email~,isprincess,language,language~,page,size,_list,sort,state}",
       "templated": true
     },
     "ec:acc/groups": {
@@ -58,7 +58,7 @@
       "href": "https://accounts.entrecode.de/group"
     },
     "ec:acc/groups/options": {
-      "href": "https://accounts.entrecode.de/group{?groupid,groupid~,name,name~,page,size,sort}",
+      "href": "https://accounts.entrecode.de/group{?groupid,groupid~,name,name~,page,size,_list,sort}",
       "templated": true
     },
     "ec:acc/group/by-id": {
@@ -70,7 +70,7 @@
       "href": "https://accounts.entrecode.de/client"
     },
     "ec:acc/clients/options": {
-      "href": "https://accounts.entrecode.de/client{?callbackurl,callbackurl~,clientid,clientid~,page,size,sort}",
+      "href": "https://accounts.entrecode.de/client{?callbackurl,callbackurl~,clientid,clientid~,page,size,_list,sort}",
       "templated": true
     },
     "ec:acc/client/by-id": {
@@ -87,7 +87,7 @@
       "href": "https://accounts.entrecode.de/invite"
     },
     "ec:invites/options": {
-      "href": "https://accounts.entrecode.de/invite{?invite,invite~,page,size,sort}",
+      "href": "https://accounts.entrecode.de/invite{?invite,invite~,page,size,_list,sort}",
       "templated": true
     },
     "ec:invalid-permissions": {

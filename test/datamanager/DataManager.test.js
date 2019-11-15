@@ -361,7 +361,7 @@ describe('DataManager class', () => {
       .getFilterOptions('dataManager')
       .then((options) => {
         options.should.be.an('array');
-        options.length.should.be.equal(11);
+        options.length.should.be.equal(12);
         stub.restore();
       })
       .catch((err) => {
@@ -1014,7 +1014,7 @@ describe('DataManager Resource', () => {
   it('should get filter options', () => {
     return resource.getFilterOptions('model').then((options) => {
       options.should.be.an('array');
-      options.length.should.be.equal(9);
+      options.length.should.be.equal(10);
     });
   });
 

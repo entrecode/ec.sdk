@@ -16,7 +16,7 @@
       "templated": true
     },
     "ec:dm-assets/options": {
-      "href": "https://datamanager.entrecode.de/a/beefbeef/test1{?assetID,caption,caption~,created,createdFrom,createdTo,created~,creator,duplicates,duplicatesFrom,duplicatesOf,duplicatesTo,isUsed,page,size,sort,tag,title,title~,type,type~}",
+      "href": "https://datamanager.entrecode.de/a/beefbeef/test1{?assetID,caption,caption~,created,createdFrom,createdTo,created~,creator,duplicates,duplicatesFrom,duplicatesOf,duplicatesTo,isUsed,page,size,_list,sort,tag,title,title~,type,type~}",
       "templated": true
     },
     "ec:dm-assetgroup": {
