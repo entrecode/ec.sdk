@@ -19,7 +19,7 @@ const relationsSymbol: any = Symbol.for('relations');
 const originalSymbol: any = Symbol.for('original');
 
 traverson.registerMediaType(HalAdapter.mediaType, HalAdapter);
-validator.setLoggingFunction(() => {});
+validator.setLoggingFunction(() => { });
 
 interface Resource {
   [key: string]: any;
@@ -481,7 +481,9 @@ class Resource {
           options = {};
         }
 
-        options._list = true;
+        if (!options.doNotSendList) {
+          options._list = true;
+        }
 
         return this.newRequest().follow(this[relationsSymbol][relation].relation);
       })

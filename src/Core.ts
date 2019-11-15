@@ -25,7 +25,7 @@ const cookieModifierSymbol: any = Symbol.for('cookieModifier');
 
 traverson['registerMediaType'](HalAdapter.mediaType, HalAdapter);
 
-validator.setLoggingFunction(() => {});
+validator.setLoggingFunction(() => { });
 
 /**
  * Each API connector Class inherits directly from Core class. You cannot instantiate Core
@@ -613,9 +613,9 @@ export default class Core {
         if (!options) {
           options = {};
         }
-
-        options._list = true;
-
+        if (!options.doNotSendList) {
+          options._list = true;
+        }
         return this.follow(this[relationsSymbol][relation].relation);
       })
       .then((request) => {
