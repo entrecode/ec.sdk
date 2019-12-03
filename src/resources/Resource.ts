@@ -481,7 +481,7 @@ class Resource {
           options = {};
         }
 
-        if (!options.doNotSendList) {
+        if (!this[relationsSymbol][relation].doNotSendList) {
           options._list = true;
         }
 

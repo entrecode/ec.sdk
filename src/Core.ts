@@ -613,7 +613,7 @@ export default class Core {
         if (!options) {
           options = {};
         }
-        if (!options.doNotSendList) {
+        if (!this[relationsSymbol][relation].doNotSendList) {
           options._list = true;
         }
         return this.follow(this[relationsSymbol][relation].relation);
