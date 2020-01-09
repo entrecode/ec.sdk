@@ -4,6 +4,7 @@ import { environment } from '../../Core';
 interface DeploymentResource {
   buildID: string;
   creator: { email: string; accountID: string };
+  comment: string;
   deploymentID: string;
   events: Array<any>;
   finished: Date;
@@ -41,6 +42,10 @@ class DeploymentResource extends Resource {
       creator: {
         enumerable: true,
         get: () => <{ email: string; accountID: string }>this.getProperty('creator'),
+      },
+      comment: {
+        enumerable: true,
+        get: () => <string>this.getProperty('comment'),
       },
       deploymentID: {
         enumerable: true,
