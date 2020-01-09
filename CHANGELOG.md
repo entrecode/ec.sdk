@@ -1,3 +1,10 @@
+## <small>0.21.20 (2020-01-09)</small>
+
+* release version 0.21.20 ([aa1f160](https://github.com/entrecode/ec.sdk/commit/aa1f160))
+* fix: adds getter for comment APPSITE-1549 ([841f482](https://github.com/entrecode/ec.sdk/commit/841f482))
+
+
+
 ## <small>0.21.19 (2020-01-09)</small>
 
 * release version 0.21.19 ([6d8c1a7](https://github.com/entrecode/ec.sdk/commit/6d8c1a7))
