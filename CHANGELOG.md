@@ -1,3 +1,11 @@
+## <small>0.21.19 (2020-01-09)</small>
+
+* release version 0.21.19 ([6d8c1a7](https://github.com/entrecode/ec.sdk/commit/6d8c1a7))
+* feat: adds comment to deployment and build APPSITE-1549 ([df07ebe](https://github.com/entrecode/ec.sdk/commit/df07ebe))
+* fix: typo in log message ([62d6446](https://github.com/entrecode/ec.sdk/commit/62d6446))
+
+
+
 ## <small>0.21.18 (2019-11-15)</small>
 
 * release version 0.21.18 ([8e566a7](https://github.com/entrecode/ec.sdk/commit/8e566a7))
