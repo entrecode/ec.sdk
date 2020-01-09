@@ -179,7 +179,7 @@ describe('Platform Resource', () => {
     stub.returns(resolver('build-single.json'));
 
     return resource
-      .createBuild()
+      .createBuild('This is a comment')
       .then(() => {
         stub.should.be.calledOnce;
         stub.restore();
@@ -249,7 +249,7 @@ describe('Platform Resource', () => {
     stub.returns(resolver('deployment-single.json'));
 
     return resource
-      .createDeployment('id', 'id')
+      .createDeployment('id', 'id', 'This is a comment')
       .then(() => {
         stub.should.be.calledOnce;
         stub.restore();
