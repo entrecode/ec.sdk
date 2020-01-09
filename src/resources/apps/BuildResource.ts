@@ -5,6 +5,7 @@ interface BuildResource {
   buildID: string;
   buildLocation: any;
   creator: { email: string; accountID: string };
+  comment: string;
   events: Array<any>;
   finished: Date;
   started: Date;
@@ -42,6 +43,10 @@ class BuildResource extends Resource {
       creator: {
         enumerable: true,
         get: () => <{ email: string; accountID: string }>this.getProperty('creator'),
+      },
+      comment: {
+        enumerable: true,
+        get: () => <string>this.getProperty('comment'),
       },
       events: {
         enumerable: true,
