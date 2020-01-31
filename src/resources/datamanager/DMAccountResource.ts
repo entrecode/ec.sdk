@@ -10,9 +10,11 @@ import {
   optionsToQuery,
 } from '../../helper';
 import DMAuthTokenList from '../publicAPI/DMAuthTokenList';
+import DMAuthTokenResource from '../publicAPI/DMAuthTokenResource';
 
 const resourceSymbol: any = Symbol.for('resource');
 const environmentSymbol: any = Symbol.for('environment');
+const relationsSymbol: any = Symbol.for('relations');
 
 interface DMAccountResource {
   title: string;
@@ -52,6 +54,16 @@ class DMAccountResource extends Resource {
    */
   constructor(resource: any, environment: environment, traversal?: any) {
     super(resource, environment, traversal);
+    this[relationsSymbol] = {
+      authTokens: {
+        relation: 'ec:dm-authtokens',
+        createRelation: false,
+        createTemplateModifier: '',
+        id: 'hash',
+        ResourceClass: DMAuthTokenResource,
+        ListClass: DMAuthTokenList,
+      }
+    };
     Object.defineProperties(this, {
       accountID: {
         enumerable: true,
