@@ -1,3 +1,15 @@
+## <small>0.21.21 (2020-01-31)</small>
+
+* release version 0.21.21 ([17eec86](https://github.com/entrecode/ec.sdk/commit/17eec86))
+* chore: added runme script for manual testing ([b6cc1f6](https://github.com/entrecode/ec.sdk/commit/b6cc1f6))
+* chore(package): update lockfile package-lock.json ([5748d99](https://github.com/entrecode/ec.sdk/commit/5748d99))
+* chore(package): update lockfile package-lock.json ([765db48](https://github.com/entrecode/ec.sdk/commit/765db48))
+* chore(package): update mocha to version 7.0.1 ([abd156c](https://github.com/entrecode/ec.sdk/commit/abd156c))
+* chore(package): update sinon to version 8.0.0 ([3fb6838](https://github.com/entrecode/ec.sdk/commit/3fb6838))
+* feat: DMAuthToken API CMS-3159 / DEAL-288 ([e323ebf](https://github.com/entrecode/ec.sdk/commit/e323ebf))
+
+
+
 ## <small>0.21.20 (2020-01-09)</small>
 
 * release version 0.21.20 ([aa1f160](https://github.com/entrecode/ec.sdk/commit/aa1f160))
