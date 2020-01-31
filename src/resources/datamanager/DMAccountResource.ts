@@ -4,6 +4,12 @@ import Resource from '../Resource';
 import { environment } from '../../Core';
 import RoleResource from './RoleResource';
 import LiteRoleResource from '../publicAPI/LiteRoleResource';
+import { filterOptions } from '../ListResource';
+import {
+  get,
+  optionsToQuery,
+} from '../../helper';
+import DMAuthTokenList from '../publicAPI/DMAuthTokenList';
 
 const resourceSymbol: any = Symbol.for('resource');
 const environmentSymbol: any = Symbol.for('environment');
@@ -129,6 +135,31 @@ class DMAccountResource extends Resource {
       get: () => this.email || this.accountID,
     });
     this.countProperties();
+  }
+
+  /**
+   * Load the active sessions for this acccount - the {@link DMAuthTokenList}.
+   *
+   * @example
+   * const tokenList = await account.tokenList();
+   * await tokenList.map((token) => {
+   *    console.log(`${token.created}: ${token.device} (${token.near})`);
+   * });
+   *
+   * @param {filterOptions?} options filter options
+   * @returns {Promise<DMAuthTokenList>} Promise resolving to DMAuthTokenList
+   */
+  tokenList(options?: filterOptions | any): Promise<DMAuthTokenList> {
+    // TODO remove any 
+    return Promise.resolve()
+      .then(() => {
+        return this.follow('ec:dm-authtokens');
+      })
+      .then((request) => {
+        request.withTemplateParameters(optionsToQuery(options, this.getLink('ec:dm-authtokens').href));
+        return this.dispatch(() => get(this[environmentSymbol], request));
+      })
+      .then(([res, traversal]) => new DMAuthTokenList(res, this[environmentSymbol], traversal));
   }
 
   private get dataManagerID() {
