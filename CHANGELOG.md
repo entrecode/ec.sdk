@@ -1,3 +1,10 @@
+## <small>0.21.22 (2020-01-31)</small>
+
+* release version 0.21.22 ([1c1c083](https://github.com/entrecode/ec.sdk/commit/1c1c083))
+* fix: added config for authTokens resource in account ([b2e858f](https://github.com/entrecode/ec.sdk/commit/b2e858f))
+
+
+
 ## <small>0.21.21 (2020-01-31)</small>
 
 * release version 0.21.21 ([17eec86](https://github.com/entrecode/ec.sdk/commit/17eec86))
