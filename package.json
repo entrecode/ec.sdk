@@ -61,7 +61,7 @@
     "ec.cookie-mock": "^1.0.1",
     "eventsource": "^1.0.7",
     "istanbul": "^0.4.5",
-    "mocha": "^6.2.1",
+    "mocha": "^7.0.1",
     "mocha-bamboo-reporter": "^1.1.2",
     "nock": "^11.4.0",
     "sinon": "^8.0.0",
