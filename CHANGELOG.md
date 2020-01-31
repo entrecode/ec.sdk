@@ -1,3 +1,10 @@
+## <small>0.21.23 (2020-01-31)</small>
+
+* release version 0.21.23 ([c1655a5](https://github.com/entrecode/ec.sdk/commit/c1655a5))
+* fix: removed dispatch in dmAccountResource.tokenList ([75e745e](https://github.com/entrecode/ec.sdk/commit/75e745e))
+
+
+
 ## <small>0.21.22 (2020-01-31)</small>
 
 * release version 0.21.22 ([1c1c083](https://github.com/entrecode/ec.sdk/commit/1c1c083))
