@@ -169,7 +169,7 @@ class DMAccountResource extends Resource {
       })
       .then((request) => {
         request.withTemplateParameters(optionsToQuery(options, this.getLink('ec:dm-authtokens').href));
-        return this.dispatch(() => get(this[environmentSymbol], request));
+        return get(this[environmentSymbol], request);
       })
       .then(([res, traversal]) => new DMAuthTokenList(res, this[environmentSymbol], traversal));
   }
