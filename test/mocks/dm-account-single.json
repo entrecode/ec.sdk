@@ -24,6 +24,10 @@
     "ec:datamanager": {
       "profile": "https://entrecode.de/schema/datamanager",
       "href": "https://datamanager.entrecode.de/?dataManagerID=fce10016-b486-4738-9f8a-7204095d1f6e"
+    },
+    "ec:dm-authtokens": {
+      "profile": "https://entrecode.de/schema/dm-authtokens",
+      "href": "https://datamanager.entrecode.de/api/beefbeef/_tokens?accountID=adef4604-43ea-4029-a9b5-fa9ceb1f49cd"
     }
   }
 }

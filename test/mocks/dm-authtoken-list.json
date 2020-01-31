@@ -1,0 +1,38 @@
+{
+  "count": 1,
+  "total": 1,
+  "_links": {
+      "self": {
+          "profile": "https://entrecode.de/schema/dm-authtokens",
+          "href": "https://datamanager.entrecode.de/api/beefbeef/_tokens?accountID=10734a08-143f-4b23-a1e3-21abc7090d3c"
+      },
+      "curies": {
+          "href": "https://doc.entrecode.de/develop/data_manager/#relation-{rel}",
+          "templated": true
+      },
+      "ec:dm-authtokens/by-id": {
+          "profile": "https://entrecode.de/schema/dm-account",
+          "href": "{id}",
+          "templated": true
+      }
+  },
+  "_embedded": {
+      "ec:dm-authtoken": {
+          "created": "2020-01-28T10:15:37.000Z",
+          "validUntil": "2120-01-04T10:15:37.000Z",
+          "near": "",
+          "device": "",
+          "isCurrent": false,
+          "_links": {
+              "self": {
+                  "profile": "https://entrecode.de/schema/dm-authtoken",
+                  "href": "https://datamanager.entrecode.de/api/beefbeef/_tokens?accountID=10734a08-143f-4b23-a1e3-21abc7090d3c&hash=e7YEYOzr5I0LdmpVZz4ycWPquUM="
+              },
+              "collection": {
+                  "profile": "https://entrecode.de/schema/dm-authtokens",
+                  "href": "https://datamanager.entrecode.de/api/beefbeef/_tokens?accountID=10734a08-143f-4b23-a1e3-21abc7090d3c"
+              }
+          }
+      }
+  }
+}

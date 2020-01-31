@@ -34,6 +34,8 @@ import Problem from './Problem';
 import HistoryEvents from './resources/publicAPI/HistoryEvents';
 import PublicTagList from './resources/publicAPI/PublicTagList';
 import PublicTagResource from './resources/publicAPI/PublicTagResource';
+import DMAuthTokenResource from './resources/publicAPI/DMAuthTokenResource';
+import DMAuthTokenList from './resources/publicAPI/DMAuthTokenList';
 
 const resourceSymbol: any = Symbol.for('resource');
 const tokenStoreSymbol: any = Symbol.for('tokenStore');
@@ -1656,6 +1658,14 @@ export default class PublicAPI extends Core {
             ResourceClass: PublicTagResource,
             ListClass: PublicTagList,
           },
+          authTokens: {
+            relation: 'ec:dm-authtokens',
+            createRelation: false,
+            createTemplateModifier: '',
+            id: 'hash',
+            ResourceClass: DMAuthTokenResource,
+            ListClass: DMAuthTokenList,
+          }
         };
         assetGroups.forEach((relation) => {
           const relationName = `dmAsset.${relation.substr(13)}`;
@@ -1821,6 +1831,34 @@ export default class PublicAPI extends Core {
         return this.dispatch(() => get(this[environmentSymbol], request));
       })
       .then(([res, traversal]) => new PublicTagList(res, this[environmentSymbol], traversal));
+  }
+
+  /**
+   * Load the active sessions for the current user - the {@link DMAuthTokenList}.
+   *
+   * @example
+   * const tokenList = await dm.tokenList();
+   * await tokenList.map((token) => {
+   *    // delete all sessions that are not the active one
+   *    if (!token.isCurrent) { 
+   *      await token.delete();
+   *    }
+   * });
+   *
+   * @param {filterOptions?} options filter options
+   * @returns {Promise<DMAuthTokenList>} Promise resolving to DMAuthTokenList
+   */
+  async tokenList(options?: filterOptions | any): Promise<DMAuthTokenList> {
+    // TODO remove any
+    return Promise.resolve()
+      .then(() => {
+        return this.follow('ec:dm-authtokens');
+      })
+      .then((request) => {
+        request.withTemplateParameters(optionsToQuery(options, this.getLink('ec:dm-authtokens').href));
+        return this.dispatch(() => get(this[environmentSymbol], request));
+      })
+      .then(([res, traversal]) => new DMAuthTokenList(res, this[environmentSymbol], traversal));
   }
 
   /**
