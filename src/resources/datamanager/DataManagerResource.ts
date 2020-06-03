@@ -112,7 +112,7 @@ class DataManagerResource extends Resource {
       role: {
         relation: 'ec:dm-roles/options',
         createRelation: 'ec:dm-role/by-id',
-        createTemplateModifier: '-template',
+        createTemplateModifier: '-template-post',
         id: 'roleID',
         additionalTemplateParam: 'dataManagerID',
         ResourceClass: RoleResource,
