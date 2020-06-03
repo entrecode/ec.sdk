@@ -1,3 +1,11 @@
+## <small>0.21.24 (2020-06-03)</small>
+
+* fix create role template ([387b2d8](https://github.com/entrecode/ec.sdk/commit/387b2d8))
+* release version 0.21.24 ([15746dc](https://github.com/entrecode/ec.sdk/commit/15746dc))
+* fix: schema ([83a5a05](https://github.com/entrecode/ec.sdk/commit/83a5a05))
+
+
+
 ## <small>0.21.23 (2020-01-31)</small>
 
 * release version 0.21.23 ([c1655a5](https://github.com/entrecode/ec.sdk/commit/c1655a5))
