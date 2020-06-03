@@ -19,7 +19,7 @@ module.exports = {
       .replyWithFile(200, `${__dirname}/schema/model-template.json`, { 'Content-Type': 'application/json' })
       .get('/dm-template-template')
       .replyWithFile(200, `${__dirname}/schema/dm-template-template.json`, { 'Content-Type': 'application/json' })
-      .get('/dm-role-template')
+      .get('/dm-role-template-post')
       .replyWithFile(200, `${__dirname}/schema/dm-role-template.json`, { 'Content-Type': 'application/json' })
       .get('/dm-client')
       .replyWithFile(200, `${__dirname}/schema/dm-client.json`, { 'Content-Type': 'application/json' })
