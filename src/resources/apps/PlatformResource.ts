@@ -104,7 +104,7 @@ class PlatformResource extends Resource {
 
     if (!link) {
       const baseLink = this.getLink('ec:app').href.split('?')[0];
-      link = { href: `${baseLink}target?${querystring.stringify({ targetID: target })}` };
+      link = { href: `${baseLink}target?${querystring.stringify({ targetID: target as string })}` };
     }
 
     this[resourceSymbol]._links['ec:app/target'].push(link);
@@ -374,7 +374,7 @@ class PlatformResource extends Resource {
 
     if (!link) {
       const baseLink = this.getLink('ec:app').href.split('?')[0];
-      link = { href: `${baseLink}codesource?${querystring.stringify({ codeSourceID: codeSource })}` };
+      link = { href: `${baseLink}codesource?${querystring.stringify({ codeSourceID: codeSource as string })}` };
     }
 
     this[resourceSymbol]._links['ec:app/codesource'] = [link];
@@ -392,7 +392,7 @@ class PlatformResource extends Resource {
 
     if (!link) {
       const baseLink = this.getLink('ec:app').href.split('?')[0];
-      link = { href: `${baseLink}datasource?${querystring.stringify({ dataSourceID: dataSource })}` };
+      link = { href: `${baseLink}datasource?${querystring.stringify({ dataSourceID: dataSource as string })}` };
     }
 
     this[resourceSymbol]._links['ec:app/datasource'] = [link];
@@ -413,7 +413,7 @@ class PlatformResource extends Resource {
       }
 
       const baseLink = this.getLink('ec:app').href.split('?')[0];
-      return { href: `${baseLink}target?${querystring.stringify({ targetID: target })}` };
+      return { href: `${baseLink}target?${querystring.stringify({ targetID: target as string })}` };
     });
 
     this[resourceSymbol]._links['ec:app/target'] = links;

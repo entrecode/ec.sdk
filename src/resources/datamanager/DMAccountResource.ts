@@ -132,7 +132,7 @@ class DMAccountResource extends Resource {
 
             const baseLink = this.getLink('self').href.split('account?')[0];
             return {
-              href: `${baseLink}role?${querystring.stringify({ dataManagerID: this.dataManagerID, roleID: role })}`,
+              href: `${baseLink}role?${querystring.stringify({ dataManagerID: this.dataManagerID, roleID: role as string })}`,
             };
           });
 
