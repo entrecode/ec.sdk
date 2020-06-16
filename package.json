@@ -57,7 +57,7 @@
     "chai-as-promised": "^7.1.1",
     "conventional-changelog-cli": "^2.0.25",
     "coveralls": "^3.0.7",
-    "documentation": "^12.1.2",
+    "documentation": "^13.0.0",
     "ec.cookie-mock": "^1.0.1",
     "eventsource": "^1.0.7",
     "istanbul": "^0.4.5",
