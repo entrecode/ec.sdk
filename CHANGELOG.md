@@ -1,3 +1,14 @@
+## 0.22.0 (2020-06-16)
+
+* release version 0.22.0 ([c047d37](https://github.com/entrecode/ec.sdk/commit/c047d37))
+* fix: typings ([5db98c0](https://github.com/entrecode/ec.sdk/commit/5db98c0))
+* tests: drop node 8 and 10, adds node 14 ([122fc75](https://github.com/entrecode/ec.sdk/commit/122fc75))
+* chore: patchday ([600c592](https://github.com/entrecode/ec.sdk/commit/600c592))
+* chore(package): update documentation to version 13.0.0 ([58c4866](https://github.com/entrecode/ec.sdk/commit/58c4866))
+* chore(package): update lockfile package-lock.json ([74680d3](https://github.com/entrecode/ec.sdk/commit/74680d3))
+
+
+
 ## <small>0.21.24 (2020-06-03)</small>
 
 * fix create role template ([387b2d8](https://github.com/entrecode/ec.sdk/commit/387b2d8))
