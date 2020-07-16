@@ -11,7 +11,7 @@
     "release": "./release.sh $3",
     "build": "npm run buildNode && npm run buildBrowser",
     "buildNode": "tsc",
-    "buildBrowser": "browserify lib/index.js -o dist/ec.sdk.js -s ec --global-transform [ babelify --presets [ es2015 ] ] && uglifyjs dist/ec.sdk.js --screw-ie8 --compress --mangle  -o dist/ec.sdk.min.js",
+    "buildBrowser": "browserify lib/index.js -o dist/ec.sdk.js -s ec --global-transform [ babelify --presets [ es2015 ] ] && uglifyjs dist/ec.sdk.js --compress --mangle  -o dist/ec.sdk.min.js",
     "changelog": "conventional-changelog -i CHANGELOG.md -s",
     "coveralls": "npm run buildNode && istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R dot --exit --recursive && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js",
     "coverage": "npm run buildNode && istanbul cover ./node_modules/mocha/bin/_mocha -- --exit -R dot --recursive && open ./coverage/lcov-report/index.html",
