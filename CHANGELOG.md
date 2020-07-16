@@ -1,3 +1,10 @@
+## <small>0.22.2 (2020-07-16)</small>
+
+* fix browser build ([af434e0](https://github.com/entrecode/ec.sdk/commit/af434e0))
+* release version 0.22.2 ([0bd1af4](https://github.com/entrecode/ec.sdk/commit/0bd1af4))
+
+
+
 ## <small>0.22.1 (2020-07-16)</small>
 
 * adds missing dependency ([29c7837](https://github.com/entrecode/ec.sdk/commit/29c7837))
