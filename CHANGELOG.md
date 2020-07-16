@@ -1,3 +1,11 @@
+## <small>0.22.1 (2020-07-16)</small>
+
+* adds missing dependency ([29c7837](https://github.com/entrecode/ec.sdk/commit/29c7837))
+* release version 0.22.1 ([07b3625](https://github.com/entrecode/ec.sdk/commit/07b3625))
+* remove broken dependencies ([3e271fa](https://github.com/entrecode/ec.sdk/commit/3e271fa))
+
+
+
 ## 0.22.0 (2020-06-16)
 
 * release version 0.22.0 ([c047d37](https://github.com/entrecode/ec.sdk/commit/c047d37))
