@@ -29,7 +29,6 @@
     "@types/shortid": "^0.0.29",
     "@types/superagent": "^4.1.7",
     "@types/traverson": "^2.0.28",
-    "@types/validator": "^13.1.0",
     "browser-cookies": "^1.2.0",
     "deep-equal": "^2.0.3",
     "ec.errors": "^0.2.10",
