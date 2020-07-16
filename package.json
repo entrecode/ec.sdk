@@ -29,6 +29,7 @@
     "@types/shortid": "^0.0.29",
     "@types/superagent": "^4.1.7",
     "@types/traverson": "^2.0.28",
+    "@types/validator": "^13.1.0",
     "browser-cookies": "^1.2.0",
     "deep-equal": "^2.0.3",
     "ec.errors": "^0.2.10",
@@ -42,7 +43,8 @@
     "stream": "^0.0.2",
     "superagent": "^5.2.2",
     "traverson": "7.0.1",
-    "traverson-hal": "^7.0.2"
+    "traverson-hal": "^7.0.2",
+    "validator": "^13.1.1"
   },
   "peerDependencies": {
     "eventsource": "^1.0.7"
