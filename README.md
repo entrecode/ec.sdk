@@ -2,7 +2,7 @@
 
 > This is the SDK for all [ec.APIs](https://doc.entrecode.de) by entrecode. By entrecode.
 
-[![npm version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Coverage Status][cover-image]][cover-url] [![Inline docs][doc-image]][doc-url] [![Greenkeeper badge](https://badges.greenkeeper.io/entrecode/ec.sdk.svg)](https://greenkeeper.io/) [![NSP Status][nsp-image]][nsp-url]
+[![npm version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Coverage Status][cover-image]][cover-url] [![Inline docs][doc-image]][doc-url]
 
 Documentation can be found [here](https://entrecode.github.io/ec.sdk/). If you like to see some code look [here](https://github.com/entrecode/ec.sdk).
 
@@ -146,7 +146,5 @@ Here are two notes on developing ec.sdk:
 [cover-url]: https://coveralls.io/github/entrecode/ec.sdk?branch=master
 [npm-image]: https://badge.fury.io/js/ec.sdk.svg
 [npm-url]: https://www.npmjs.com/package/ec.sdk
-[nsp-image]: https://nodesecurity.io/orgs/entrecode/projects/1cb6afc6-44bf-4cbc-8ea9-b2dcaf599609/badge
-[nsp-url]: https://nodesecurity.io/orgs/entrecode/projects/1cb6afc6-44bf-4cbc-8ea9-b2dcaf599609
 [doc-image]: http://inch-ci.org/github/entrecode/ec.sdk.svg?branch=master
 [doc-url]: http://inch-ci.org/github/entrecode/ec.sdk
