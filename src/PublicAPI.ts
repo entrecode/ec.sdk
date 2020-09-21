@@ -687,10 +687,6 @@ export default class PublicAPI extends Core {
             request.field('ignoreDuplicates', `${options.ignoreDuplicates}`);
           }
 
-          if ('deduplicate' in options) {
-            request.field('deduplicate', `${options.deduplicate}`);
-          }
-
           if ('includeAssetIDInPath' in options) {
             request.field('includeAssetIDInPath', `${options.includeAssetIDInPath}`);
           }
