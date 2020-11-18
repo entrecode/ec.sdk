@@ -1,6 +1,6 @@
 {
   "name": "ec.sdk",
-  "version": "0.22.2",
+  "version": "0.22.3",
   "description": "SDK for ec.api",
   "repository": "entrecode/ec.sdk",
   "author": "Simon Scherzinger <scherzinger@entrecode.de>",
@@ -34,7 +34,7 @@
     "ec.errors": "^0.2.10",
     "es6-symbol": "^3.1.3",
     "halfred": "^2.0.0",
-    "json-schema-remote": "^1.5.1",
+    "json-schema-remote": "^1.6.1",
     "jwt-decode": "^2.2.0",
     "locale": "^0.1.0",
     "shiro-trie": "^0.4.9",

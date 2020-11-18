@@ -1,3 +1,12 @@
+## <small>0.22.3 (2020-11-18)</small>
+
+* release version 0.22.3 ([8dcaa4b](https://github.com/entrecode/ec.sdk/commit/8dcaa4b))
+* remove greenkeeper badge ([004b8ba](https://github.com/entrecode/ec.sdk/commit/004b8ba))
+* chore: json-schema-remote 1.6.1 ([6bbbb3a](https://github.com/entrecode/ec.sdk/commit/6bbbb3a))
+* fix: remove double deduplicate :-D ([0d62d7c](https://github.com/entrecode/ec.sdk/commit/0d62d7c))
+
+
+
 ## <small>0.22.2 (2020-07-16)</small>
 
 * fix browser build ([af434e0](https://github.com/entrecode/ec.sdk/commit/af434e0))
