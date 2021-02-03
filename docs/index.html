@@ -1,5 +1,5 @@
 <!doctype html>
-<html>
+<html lang="en">
 <head>
   <meta charset='utf-8'>
   <title>ec.sdk 0.22.3 | Documentation</title>
@@ -20,6 +20,9 @@
             placeholder='Filter'
             id='filter-input'
             class='col12 block input'
+            spellcheck='false'
+            autocapitalize='off'
+            autocorrect='off'
             type='text' />
           <div id='toc'>
             <ul class='list-reset h5 py1-ul'>
@@ -3325,36 +3328,36 @@
 <p>Add the following in your webpack.config.js.</p>
 <pre class='hljs'><span class="hljs-keyword">const</span> config = {
   <span class="hljs-comment">// …</span>
-  node: {
-    <span class="hljs-attr">fs</span>: <span class="hljs-string">'empty'</span>,
+  <span class="hljs-attr">node</span>: {
+    <span class="hljs-attr">fs</span>: <span class="hljs-string">&#x27;empty&#x27;</span>,
     <span class="hljs-attr">Buffer</span>: <span class="hljs-literal">false</span>,
-    <span class="hljs-attr">net</span>: <span class="hljs-string">'empty'</span>,
-    <span class="hljs-attr">tls</span>: <span class="hljs-string">'empty'</span>,
+    <span class="hljs-attr">net</span>: <span class="hljs-string">&#x27;empty&#x27;</span>,
+    <span class="hljs-attr">tls</span>: <span class="hljs-string">&#x27;empty&#x27;</span>,
   },
 };</pre>
 <p>Then you can start coding:</p>
-<pre class='hljs'><span class="hljs-keyword">import</span> { Session, Accounts, DataManager } <span class="hljs-keyword">from</span> <span class="hljs-string">'ec.sdk'</span>;
-<span class="hljs-keyword">import</span> AccountResource <span class="hljs-keyword">from</span> <span class="hljs-string">'ec.sdk/src/resources/accounts/AccountResource'</span>;
-<span class="hljs-keyword">import</span> DataManagerResource <span class="hljs-keyword">from</span> <span class="hljs-string">'ec.sdk/src/resources/datamanager/DataManagerResource'</span>;
+<pre class='hljs'><span class="hljs-keyword">import</span> { Session, Accounts, DataManager } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;ec.sdk&#x27;</span>;
+<span class="hljs-keyword">import</span> AccountResource <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;ec.sdk/src/resources/accounts/AccountResource&#x27;</span>;
+<span class="hljs-keyword">import</span> DataManagerResource <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;ec.sdk/src/resources/datamanager/DataManagerResource&#x27;</span>;
 
 <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyExample</span> </span>{
-  session: Session;
+  <span class="hljs-attr">session</span>: Session;
   accounts: Accounts;
   dataManager: DataManager;
 
   me: AccountResource;
   dm: DataManagerResource;
 
-  <span class="hljs-keyword">constructor</span>() {
+  <span class="hljs-function"><span class="hljs-title">constructor</span>(<span class="hljs-params"></span>)</span> {
     session = <span class="hljs-keyword">new</span> Session();
     accounts = <span class="hljs-keyword">new</span> Accounts();
 
-    session.setClientID(<span class="hljs-string">'rest'</span>);
+    session.setClientID(<span class="hljs-string">&#x27;rest&#x27;</span>);
     <span class="hljs-comment">// this will also receive events from Accounts and DataManager</span>
-    session.on(<span class="hljs-string">'error'</span>, <span class="hljs-built_in">console</span>.error);
+    session.on(<span class="hljs-string">&#x27;error&#x27;</span>, <span class="hljs-built_in">console</span>.error);
   }
 
-  login(email, password) {
+  <span class="hljs-function"><span class="hljs-title">login</span>(<span class="hljs-params">email, password</span>)</span> {
     session.login(email, password)
     .then(<span class="hljs-function">(<span class="hljs-params">token</span>) =&gt;</span> {
       <span class="hljs-comment">// if you use stand-alone API Connectors (`noCookie` set to true)</span>
@@ -3365,36 +3368,36 @@
     });
   }
 
-  setAccountLanguage(lang) {
+  <span class="hljs-function"><span class="hljs-title">setAccountLanguage</span>(<span class="hljs-params">lang</span>)</span> {
     <span class="hljs-built_in">Promise</span>.resolve()
-    .then(<span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> {
-      <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.me){
-        <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.me;
+    .then(<span class="hljs-function">() =&gt;</span> {
+      <span class="hljs-keyword">if</span> (<span class="hljs-built_in">this</span>.me){
+        <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.me;
       }
-      <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.accounts.me();
+      <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.accounts.me();
     })
     .then(<span class="hljs-function">(<span class="hljs-params">me</span>) =&gt;</span> {
       me.language = lang;
       <span class="hljs-keyword">return</span> me.save();
     })
-    .then(<span class="hljs-function">(<span class="hljs-params">meSaved: AccountResource</span>) =&gt;</span> <span class="hljs-keyword">this</span>.me = meSaved);
+    .then(<span class="hljs-function">(<span class="hljs-params">meSaved: AccountResource</span>) =&gt;</span> <span class="hljs-built_in">this</span>.me = meSaved);
   }
 
-  loadDataManager(id) {
-    <span class="hljs-keyword">if</span> (!<span class="hljs-keyword">this</span>.dataManager){
-      <span class="hljs-keyword">this</span>.dataManager = <span class="hljs-keyword">new</span> DataManager();
+  <span class="hljs-function"><span class="hljs-title">loadDataManager</span>(<span class="hljs-params">id</span>)</span> {
+    <span class="hljs-keyword">if</span> (!<span class="hljs-built_in">this</span>.dataManager){
+      <span class="hljs-built_in">this</span>.dataManager = <span class="hljs-keyword">new</span> DataManager();
     }
 
-    <span class="hljs-keyword">this</span>.dataManager.dataManager(id)
+    <span class="hljs-built_in">this</span>.dataManager.dataManager(id)
     .then(<span class="hljs-function">(<span class="hljs-params">dm</span>) =&gt;</span>{
-      <span class="hljs-keyword">this</span>.dm = dm;
+      <span class="hljs-built_in">this</span>.dm = dm;
     });
   }
 }</pre>
 <h5>Node</h5>
 <p>Require statements are different on node. Also, you probably don't want to share tokens in a node.js environment. You'll need to use <code>noCookie</code> or namespacing via <code>cookieModifier</code>.</p>
-<pre class='hljs'><span class="hljs-keyword">const</span> ec = <span class="hljs-built_in">require</span>(<span class="hljs-string">'ec.sdk'</span>);
-<span class="hljs-keyword">const</span> dataManager = <span class="hljs-keyword">new</span> ec.DataManager({ <span class="hljs-attr">environment</span>: <span class="hljs-string">'live'</span>, <span class="hljs-attr">cookieModifier</span>: <span class="hljs-string">'myScriptName'</span> });
+<pre class='hljs'><span class="hljs-keyword">const</span> ec = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;ec.sdk&#x27;</span>);
+<span class="hljs-keyword">const</span> dataManager = <span class="hljs-keyword">new</span> ec.DataManager({ <span class="hljs-attr">environment</span>: <span class="hljs-string">&#x27;live&#x27;</span>, <span class="hljs-attr">cookieModifier</span>: <span class="hljs-string">&#x27;myScriptName&#x27;</span> });
 dataManager.setToken(accessToken);
 
 dataManager.dataManagerList()
@@ -3404,11 +3407,11 @@ dataManager.dataManagerList()
 <blockquote>
 <p>This is not officially supported. Mainly exists for usage in jsfiddles or similar.</p>
 </blockquote>
-<pre class='hljs'><span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"https://unpkg.com/ec.sdk/dist/ec.sdk.min.js"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+<pre class='hljs'><span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;https://unpkg.com/ec.sdk/dist/ec.sdk.min.js&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="javascript">
-    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'My development stack is old and I should feel old'</span>);
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&#x27;My development stack is old and I should feel old&#x27;</span>);
 
-    <span class="hljs-keyword">var</span> dataManager = <span class="hljs-keyword">new</span> ec.DataManager(<span class="hljs-string">'live'</span>);
+    <span class="hljs-keyword">var</span> dataManager = <span class="hljs-keyword">new</span> ec.DataManager(<span class="hljs-string">&#x27;live&#x27;</span>);
     dataManager.setToken(accessToken);
     dataManager.list()
     .then(<span class="hljs-function"><span class="hljs-params">list</span> =&gt;</span> doSomthingWith(list))
@@ -3436,22 +3439,22 @@ dataManager.dataManagerList()
     <p>This is a quick cheatsheet with the most needed snippets to get started with the <a href="#publicapi">PublicAPI</a>.</p>
 <h3>Setup</h3>
 <p>NodeJS / ec-user-token:</p>
-<pre class='hljs'><span class="hljs-keyword">const</span> { PublicAPI } = <span class="hljs-built_in">require</span>(<span class="hljs-string">'ec.sdk'</span>);
-<span class="hljs-keyword">const</span> api = <span class="hljs-keyword">new</span> PublicAPI(<span class="hljs-string">'beefbeef'</span>, { <span class="hljs-attr">environment</span>: <span class="hljs-string">'live'</span>, <span class="hljs-attr">noCookie</span>: <span class="hljs-literal">true</span> }, <span class="hljs-literal">true</span>); <span class="hljs-comment">// for ec user</span>
+<pre class='hljs'><span class="hljs-keyword">const</span> { PublicAPI } = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;ec.sdk&#x27;</span>);
+<span class="hljs-keyword">const</span> api = <span class="hljs-keyword">new</span> PublicAPI(<span class="hljs-string">&#x27;beefbeef&#x27;</span>, { <span class="hljs-attr">environment</span>: <span class="hljs-string">&#x27;live&#x27;</span>, <span class="hljs-attr">noCookie</span>: <span class="hljs-literal">true</span> }, <span class="hljs-literal">true</span>); <span class="hljs-comment">// for ec user</span>
 api.setToken(config.accessToken);</pre>
 <p>Frontend / public:</p>
-<pre class='hljs'><span class="hljs-keyword">import</span> { PublicAPI } <span class="hljs-keyword">from</span> <span class="hljs-string">'ec.sdk'</span>;
-<span class="hljs-keyword">const</span> api = <span class="hljs-keyword">new</span> PublicAPI(<span class="hljs-string">'beefbeef'</span>, { <span class="hljs-attr">environment</span>: <span class="hljs-string">'live'</span> });</pre>
+<pre class='hljs'><span class="hljs-keyword">import</span> { PublicAPI } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;ec.sdk&#x27;</span>;
+<span class="hljs-keyword">const</span> api = <span class="hljs-keyword">new</span> PublicAPI(<span class="hljs-string">&#x27;beefbeef&#x27;</span>, { <span class="hljs-attr">environment</span>: <span class="hljs-string">&#x27;live&#x27;</span> });</pre>
 <h3>entryList</h3>
-<pre class='hljs'><span class="hljs-keyword">const</span> list = <span class="hljs-keyword">await</span> api.entryList(<span class="hljs-string">'modelTitle'</span>, {
+<pre class='hljs'><span class="hljs-keyword">const</span> list = <span class="hljs-keyword">await</span> api.entryList(<span class="hljs-string">&#x27;modelTitle&#x27;</span>, {
   <span class="hljs-attr">size</span>: <span class="hljs-number">10</span>,
   <span class="hljs-attr">page</span>: <span class="hljs-number">1</span>,
-  <span class="hljs-attr">sort</span>: [<span class="hljs-string">'-_created'</span>],
+  <span class="hljs-attr">sort</span>: [<span class="hljs-string">&#x27;-_created&#x27;</span>],
   <span class="hljs-attr">_levels</span>: <span class="hljs-number">1</span>, <span class="hljs-comment">// only for single entry requests</span>
-  _fields: [<span class="hljs-string">'id'</span>, <span class="hljs-string">'title'</span>],
-  <span class="hljs-attr">myproperty</span>: <span class="hljs-string">'exactValue'</span>,
-  <span class="hljs-attr">email</span>: { <span class="hljs-attr">search</span>: <span class="hljs-string">'andre'</span> },
-  <span class="hljs-attr">prop</span>: { <span class="hljs-attr">any</span>: [<span class="hljs-string">'id1'</span>, <span class="hljs-string">'id2'</span>] },
+  <span class="hljs-attr">_fields</span>: [<span class="hljs-string">&#x27;id&#x27;</span>, <span class="hljs-string">&#x27;title&#x27;</span>],
+  <span class="hljs-attr">myproperty</span>: <span class="hljs-string">&#x27;exactValue&#x27;</span>,
+  <span class="hljs-attr">email</span>: { <span class="hljs-attr">search</span>: <span class="hljs-string">&#x27;andre&#x27;</span> },
+  <span class="hljs-attr">prop</span>: { <span class="hljs-attr">any</span>: [<span class="hljs-string">&#x27;id1&#x27;</span>, <span class="hljs-string">&#x27;id2&#x27;</span>] },
 });</pre>
 <p>Always recommended: <code>size</code> and <code>_fields</code>.</p>
 <p>Properties:</p>
@@ -3459,7 +3462,7 @@ api.setToken(config.accessToken);</pre>
 list.total <span class="hljs-comment">// total</span>
 list.getFirstItem() <span class="hljs-comment">// not really needed anymore:</span></pre>
 <p>Get single entry:</p>
-<pre class='hljs'><span class="hljs-keyword">const</span> entry = <span class="hljs-keyword">await</span> api.entry(<span class="hljs-string">'modelTitle'</span>, { <span class="hljs-attr">uniqueField</span>: <span class="hljs-string">'uniqueValue'</span> });</pre>
+<pre class='hljs'><span class="hljs-keyword">const</span> entry = <span class="hljs-keyword">await</span> api.entry(<span class="hljs-string">&#x27;modelTitle&#x27;</span>, { <span class="hljs-attr">uniqueField</span>: <span class="hljs-string">&#x27;uniqueValue&#x27;</span> });</pre>
 <p>Async Iterator Functions:</p>
 <p><em>Keep in mind that you should sort the entryList after something that does not change, like <code>created</code></em></p>
 <pre class='hljs'><span class="hljs-keyword">await</span> list.map();
@@ -3574,19 +3577,21 @@ directly. Use one of the other API connectors instead.</p>
   
 
   
+
+  
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
-      <pre class='p1 overflow-auto round fill-light'><span class="hljs-comment">// will share token for 'userA'</span>
-<span class="hljs-keyword">const</span> dmUserA = <span class="hljs-keyword">new</span> DataManager({ <span class="hljs-attr">environment</span>: <span class="hljs-string">'live'</span>, <span class="hljs-attr">cookieModifier</span>: <span class="hljs-string">'userA'</span> });
-<span class="hljs-keyword">const</span> apiUserA = <span class="hljs-keyword">new</span> PublicAPI(shortID, { <span class="hljs-attr">environment</span>: <span class="hljs-string">'live'</span>, <span class="hljs-attr">cookieModifier</span>: <span class="hljs-string">'userA'</span> }, <span class="hljs-literal">true</span>);
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-comment">// will share token for &#x27;userA&#x27;</span>
+<span class="hljs-keyword">const</span> dmUserA = <span class="hljs-keyword">new</span> DataManager({ <span class="hljs-attr">environment</span>: <span class="hljs-string">&#x27;live&#x27;</span>, <span class="hljs-attr">cookieModifier</span>: <span class="hljs-string">&#x27;userA&#x27;</span> });
+<span class="hljs-keyword">const</span> apiUserA = <span class="hljs-keyword">new</span> PublicAPI(shortID, { <span class="hljs-attr">environment</span>: <span class="hljs-string">&#x27;live&#x27;</span>, <span class="hljs-attr">cookieModifier</span>: <span class="hljs-string">&#x27;userA&#x27;</span> }, <span class="hljs-literal">true</span>);
 
-<span class="hljs-comment">// will share token for 'userB'</span>
-<span class="hljs-keyword">const</span> dmUserB = <span class="hljs-keyword">new</span> DataManager({ <span class="hljs-attr">environment</span>: <span class="hljs-string">'live'</span>, <span class="hljs-attr">cookieModifier</span>: <span class="hljs-string">'userB'</span> });
-<span class="hljs-keyword">const</span> apiUserB = <span class="hljs-keyword">new</span> PublicAPI(shortID, { <span class="hljs-attr">environment</span>: <span class="hljs-string">'live'</span>, <span class="hljs-attr">cookieModifier</span>: <span class="hljs-string">'userB'</span> }, <span class="hljs-literal">true</span>);
+<span class="hljs-comment">// will share token for &#x27;userB&#x27;</span>
+<span class="hljs-keyword">const</span> dmUserB = <span class="hljs-keyword">new</span> DataManager({ <span class="hljs-attr">environment</span>: <span class="hljs-string">&#x27;live&#x27;</span>, <span class="hljs-attr">cookieModifier</span>: <span class="hljs-string">&#x27;userB&#x27;</span> });
+<span class="hljs-keyword">const</span> apiUserB = <span class="hljs-keyword">new</span> PublicAPI(shortID, { <span class="hljs-attr">environment</span>: <span class="hljs-string">&#x27;live&#x27;</span>, <span class="hljs-attr">cookieModifier</span>: <span class="hljs-string">&#x27;userB&#x27;</span> }, <span class="hljs-literal">true</span>);
 
 <span class="hljs-comment">// will not share token and not save it in cookie as well</span>
-<span class="hljs-keyword">const</span> dmStandAlone = <span class="hljs-keyword">new</span> DataManager({ <span class="hljs-attr">environment</span>: <span class="hljs-string">'live'</span>, <span class="hljs-attr">noCookie</span>: <span class="hljs-literal">true</span> });</pre>
+<span class="hljs-keyword">const</span> dmStandAlone = <span class="hljs-keyword">new</span> DataManager({ <span class="hljs-attr">environment</span>: <span class="hljs-string">&#x27;live&#x27;</span>, <span class="hljs-attr">noCookie</span>: <span class="hljs-literal">true</span> });</pre>
     
   
 
@@ -3642,11 +3647,13 @@ provide 'eventsource/lib/eventsource-polyfill' within your project.</p>
   
 
   
+
+  
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
-      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">import</span> { PublicAPI } <span class="hljs-keyword">from</span> <span class="hljs-string">'ec.sdk'</span>;
-<span class="hljs-keyword">import</span> * <span class="hljs-keyword">as</span> EventSource <span class="hljs-keyword">from</span> <span class="hljs-string">'eventsource/lib/eventsource-polyfill'</span>;
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">import</span> { PublicAPI } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;ec.sdk&#x27;</span>;
+<span class="hljs-keyword">import</span> * <span class="hljs-keyword">as</span> EventSource <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;eventsource/lib/eventsource-polyfill&#x27;</span>;
 
 PublicAPI.enableHistoryEvents(EventSource);
 …</pre>
@@ -3710,6 +3717,8 @@ PublicAPI.enableHistoryEvents(EventSource);
 
       
     
+  
+
   
 
   
@@ -3803,14 +3812,16 @@ PublicAPI.enableHistoryEvents(EventSource);
   
 
   
+
+  
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
-      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">return</span> accounts.create(<span class="hljs-string">'client'</span>, {
-  <span class="hljs-attr">clientID</span>: <span class="hljs-string">'myClient'</span>,
-  <span class="hljs-attr">callbackURL</span>: <span class="hljs-string">'https://example.com/login'</span>,
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">return</span> accounts.create(<span class="hljs-string">&#x27;client&#x27;</span>, {
+  <span class="hljs-attr">clientID</span>: <span class="hljs-string">&#x27;myClient&#x27;</span>,
+  <span class="hljs-attr">callbackURL</span>: <span class="hljs-string">&#x27;https://example.com/login&#x27;</span>,
   <span class="hljs-attr">config</span>: {
-    <span class="hljs-attr">tokenMethod</span>: <span class="hljs-string">'query'</span>,
+    <span class="hljs-attr">tokenMethod</span>: <span class="hljs-string">&#x27;query&#x27;</span>,
   },
 })
 .then(<span class="hljs-function"><span class="hljs-params">client</span> =&gt;</span> show(client));</pre>
@@ -3903,11 +3914,13 @@ PublicAPI.enableHistoryEvents(EventSource);
   
 
   
+
+  
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
-      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">return</span> accounts.deleteResource(<span class="hljs-string">'account'</span>, me.accountID)
-.then(<span class="hljs-function"><span class="hljs-params">()</span>) =&gt;</span> alert(<span class="hljs-string">'Account deleted'</span>));</pre>
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">return</span> accounts.deleteResource(<span class="hljs-string">&#x27;account&#x27;</span>, me.accountID)
+.then(()) =&gt; alert(<span class="hljs-string">&#x27;Account deleted&#x27;</span>));</pre>
     
   
 
@@ -3979,6 +3992,8 @@ PublicAPI.enableHistoryEvents(EventSource);
   
 
   
+
+  
 </section>
 
       </div>
@@ -4021,6 +4036,8 @@ PublicAPI.enableHistoryEvents(EventSource);
 
       
     
+  
+
   
 
   
@@ -4105,6 +4122,8 @@ appear/disappear when login state changes.</p>
   
 
   
+
+  
 </section>
 
       </div>
@@ -4147,6 +4166,8 @@ appear/disappear when login state changes.</p>
 
       
     
+  
+
   
 
   
@@ -4229,6 +4250,8 @@ appear/disappear when login state changes.</p>
   
 
   
+
+  
 </section>
 
       </div>
@@ -4297,6 +4320,8 @@ appear/disappear when login state changes.</p>
   
 
   
+
+  
 </section>
 
       </div>
@@ -4339,6 +4364,8 @@ appear/disappear when login state changes.</p>
 
       
     
+  
+
   
 
   
@@ -4405,6 +4432,8 @@ appear/disappear when login state changes.</p>
   
 
   
+
+  
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
@@ -4466,6 +4495,8 @@ appear/disappear when login state changes.</p>
   
 
   
+
+  
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
@@ -4522,6 +4553,8 @@ appear/disappear when login state changes.</p>
 
       
     
+  
+
   
 
   
@@ -4605,6 +4638,8 @@ will be emitted.</p>
   
 
   
+
+  
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
@@ -4612,9 +4647,9 @@ will be emitted.</p>
   <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`A new token was received: <span class="hljs-subst">${string}</span>`</span>);
 }
 
-session.on(<span class="hljs-string">'login'</span>, myAlertFunc);
+session.on(<span class="hljs-string">&#x27;login&#x27;</span>, myAlertFunc);
 session.login(email, password);
-<span class="hljs-comment">// "A new token was received: &lt;aJwtToken&gt;" will be logged</span></pre>
+<span class="hljs-comment">// &quot;A new token was received: &lt;aJwtToken&gt;&quot; will be logged</span></pre>
     
   
 
@@ -4681,6 +4716,8 @@ session.login(email, password);
 
       
     
+  
+
   
 
   
@@ -4765,14 +4802,16 @@ this function.</p>
   
 
   
+
+  
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
-      <pre class='p1 overflow-auto round fill-light'>session.on(<span class="hljs-string">'login'</span>, myAlertFunc);
+      <pre class='p1 overflow-auto round fill-light'>session.on(<span class="hljs-string">&#x27;login&#x27;</span>, myAlertFunc);
 session.login(email, password)
 .then(<span class="hljs-function"><span class="hljs-params">token</span> =&gt;</span> {  <span class="hljs-comment">// myAlertFunc will be called with token</span>
   <span class="hljs-built_in">console</span>.log(token);
-  session.removeListener(<span class="hljs-string">'login'</span>, myAlertFunc);
+  session.removeListener(<span class="hljs-string">&#x27;login&#x27;</span>, myAlertFunc);
   <span class="hljs-comment">// myAlertFunc will no longer be called.</span>
 });</pre>
     
@@ -4864,10 +4903,12 @@ session.login(email, password)
   
 
   
+
+  
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
-      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">return</span> accounts.resource(<span class="hljs-string">'account'</span>, me.accountID)
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">return</span> accounts.resource(<span class="hljs-string">&#x27;account&#x27;</span>, me.accountID)
 .then(<span class="hljs-function"><span class="hljs-params">account</span> =&gt;</span> show(account.email));</pre>
     
   
@@ -4961,10 +5002,12 @@ options parameter.</p>
   
 
   
+
+  
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
-      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">return</span> accounts.resourceList(<span class="hljs-string">'account'</span>, {
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">return</span> accounts.resourceList(<span class="hljs-string">&#x27;account&#x27;</span>, {
   <span class="hljs-attr">filter</span>: {
     <span class="hljs-attr">created</span>: {
       <span class="hljs-attr">from</span>: <span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>(<span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>.getTime() - <span class="hljs-number">600000</span>).toISOString()),
@@ -5054,11 +5097,13 @@ Authorization header.</p>
   
 
   
+
+  
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
       <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">return</span> accounts.me(); <span class="hljs-comment">// will result in error</span>
-accounts.setToken(<span class="hljs-string">'aJwtToken'</span>);
+accounts.setToken(<span class="hljs-string">&#x27;aJwtToken&#x27;</span>);
 <span class="hljs-keyword">return</span> accounts.mes(); <span class="hljs-comment">// will resolve</span></pre>
     
   
@@ -5132,12 +5177,14 @@ It will be used to get a new token when time comes.</p>
   
 
   
+
+  
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
       <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">return</span> accounts.me(); <span class="hljs-comment">// will result in error</span>
-accounts.setToken(<span class="hljs-string">'aJwtToken'</span>);
-accounts.setRefreshToken(<span class="hljs-string">'anotherJwtToken'</span>);
+accounts.setToken(<span class="hljs-string">&#x27;aJwtToken&#x27;</span>);
+accounts.setRefreshToken(<span class="hljs-string">&#x27;anotherJwtToken&#x27;</span>);
 <span class="hljs-keyword">return</span> accounts.me(); <span class="hljs-comment">// will resolve</span></pre>
     
   
@@ -5211,10 +5258,12 @@ function to add any string.</p>
   
 
   
+
+  
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
-      <pre class='p1 overflow-auto round fill-light'>accounts.setUserAgent(<span class="hljs-string">'editor/0.15.3 (a comment)'</span>);
+      <pre class='p1 overflow-auto round fill-light'>accounts.setUserAgent(<span class="hljs-string">&#x27;editor/0.15.3 (a comment)&#x27;</span>);
 <span class="hljs-comment">// all subsequent requests will use x-user-agent: editor/0.15.3 (a comment) ec.sdk/&lt;version&gt;</span></pre>
     
   
@@ -5287,6 +5336,8 @@ function to add any string.</p>
   
 
   
+
+  
 </section>
 
       </div>
@@ -5329,6 +5380,8 @@ function to add any string.</p>
 
       
     
+  
+
   
 
   
@@ -5424,12 +5477,14 @@ to all other API connectors of the same <a href="#environment">environment</a>.<
   
 
   
+
+  
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
       <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">const</span> session = <span class="hljs-keyword">new</span> Session();
 <span class="hljs-keyword">return</span> session.login(email, password)
-.then(<span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> {
+.then(<span class="hljs-function">() =&gt;</span> {
   <span class="hljs-keyword">const</span> accounts = <span class="hljs-keyword">new</span> Accounts();
   <span class="hljs-keyword">return</span> accounts.me();
 });</pre>
@@ -5493,6 +5548,8 @@ to all other API connectors of the same <a href="#environment">environment</a>.<
 
       
     
+  
+
   
 
   
@@ -5585,6 +5642,8 @@ credentials and tokenMethod <code>body</code>.</p>
   
 
   
+
+  
 </section>
 
       </div>
@@ -5628,6 +5687,8 @@ cookie stored.</p>
 
       
     
+  
+
   
 
   
@@ -5697,6 +5758,8 @@ cookie stored.</p>
 
       
     
+  
+
   
 
   
@@ -5795,13 +5858,15 @@ signup…), permissions, clients, and groups.</p>
   
 
   
+
+  
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
       <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">const</span> accounts = <span class="hljs-keyword">new</span> Accounts();
 <span class="hljs-keyword">return</span> accounts.me()
 .then(<span class="hljs-function">(<span class="hljs-params">me</span>) =&gt;</span> {
-  <span class="hljs-keyword">return</span> me.checkPemission(<span class="hljs-string">'dm-create'</span>);
+  <span class="hljs-keyword">return</span> me.checkPemission(<span class="hljs-string">&#x27;dm-create&#x27;</span>);
 })
 .then(<span class="hljs-function">(<span class="hljs-params">allowed</span>) =&gt;</span> {
   <span class="hljs-keyword">if</span>(!allowed){
@@ -5870,6 +5935,8 @@ signup…), permissions, clients, and groups.</p>
 
       
     
+  
+
   
 
   
@@ -5947,6 +6014,8 @@ by the options parameter.</p>
 
       
     
+  
+
   
 
   
@@ -6034,11 +6103,13 @@ by the options parameter.</p>
   
 
   
+
+  
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
       <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">return</span> accounts.changeEmail(newEmail)
-.then(<span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> show(<span class="hljs-string">`Email change started. Please verify with your new address.`</span>))</pre>
+.then(<span class="hljs-function">() =&gt;</span> show(<span class="hljs-string">`Email change started. Please verify with your new address.`</span>))</pre>
     
   
 
@@ -6110,10 +6181,12 @@ by the options parameter.</p>
   
 
   
+
+  
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
-      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">return</span> accounts.client(<span class="hljs-string">'thisOne'</span>)
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">return</span> accounts.client(<span class="hljs-string">&#x27;thisOne&#x27;</span>)
 .then(<span class="hljs-function"><span class="hljs-params">client</span> =&gt;</span> show(client));</pre>
     
   
@@ -6186,12 +6259,14 @@ by the options parameter.</p>
   
 
   
+
+  
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
       <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">return</span> accounts.clientList({
   <span class="hljs-attr">filter</span>: {
-    <span class="hljs-attr">callbackURL</span>: <span class="hljs-string">'thisOne'</span>, <span class="hljs-comment">// the same as 'callbackURL: { exact: 'thisOne' }'</span>
+    <span class="hljs-attr">callbackURL</span>: <span class="hljs-string">&#x27;thisOne&#x27;</span>, <span class="hljs-comment">// the same as &#x27;callbackURL: { exact: &#x27;thisOne&#x27; }&#x27;</span>
   },
 })
 .then(<span class="hljs-function"><span class="hljs-params">clients</span> =&gt;</span> show(clients.getFirstItem()));</pre>
@@ -6248,6 +6323,8 @@ token response.
 
       
     
+  
+
   
 
   
@@ -6337,6 +6414,8 @@ token response.
   
 
   
+
+  
 </section>
 
       </div>
@@ -6393,6 +6472,8 @@ token response.
 
       
     
+  
+
   
 
   
@@ -6476,6 +6557,8 @@ token response.
   
 
   
+
+  
 </section>
 
       </div>
@@ -6532,6 +6615,8 @@ token response.
 
       
     
+  
+
   
 
   
@@ -6619,12 +6704,14 @@ token response.
   
 
   
+
+  
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
       <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">return</span> accounts.group(groupID)
 .then(<span class="hljs-function">(<span class="hljs-params">group</span>) =&gt;</span> {
-  group.addPermission(<span class="hljs-string">'can-view-stacktrace'</span>);
+  group.addPermission(<span class="hljs-string">&#x27;can-view-stacktrace&#x27;</span>);
   <span class="hljs-keyword">return</span> group.save();
 });</pre>
     
@@ -6698,18 +6785,20 @@ token response.
   
 
   
+
+  
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
       <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">return</span> accounts.groupList({
   <span class="hljs-attr">filter</span>: {
     <span class="hljs-attr">title</span>: {
-      <span class="hljs-attr">search</span>: <span class="hljs-string">'dev'</span>,
+      <span class="hljs-attr">search</span>: <span class="hljs-string">&#x27;dev&#x27;</span>,
     },
   },
 })
 .then(<span class="hljs-function"><span class="hljs-params">groups</span> =&gt;</span> {
-  <span class="hljs-comment">// all groups with 'dev' in the title</span>
+  <span class="hljs-comment">// all groups with &#x27;dev&#x27; in the title</span>
   <span class="hljs-keyword">return</span> show(groups.getAllItems());
 });</pre>
     
@@ -6764,6 +6853,8 @@ token response.
 
       
     
+  
+
   
 
   
@@ -6857,6 +6948,8 @@ token response.
   
 
   
+
+  
 </section>
 
       </div>
@@ -6928,6 +7021,8 @@ token response.
   
 
   
+
+  
 </section>
 
       </div>
@@ -6970,6 +7065,8 @@ token response.
 
       
     
+  
+
   
 
   
@@ -7053,11 +7150,13 @@ token response.
   
 
   
+
+  
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
       <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">return</span> accounts.resetPassword(email)
-.then(<span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> show(<span class="hljs-string">`Password reset link send to <span class="hljs-subst">${email}</span>`</span>))</pre>
+.then(<span class="hljs-function">() =&gt;</span> show(<span class="hljs-string">`Password reset link send to <span class="hljs-subst">${email}</span>`</span>))</pre>
     
   
 
@@ -7124,6 +7223,8 @@ token response.
 
       
     
+  
+
   
 
   
@@ -7216,13 +7317,15 @@ token response.
   
 
   
+
+  
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
       <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">return</span> accounts.signup(email, password, invite)
 .then(<span class="hljs-function">(<span class="hljs-params">token</span>) =&gt;</span> {
   accounts.setToken(token);
-  <span class="hljs-keyword">return</span> show(<span class="hljs-string">'Successfully registered account'</span>);
+  <span class="hljs-keyword">return</span> show(<span class="hljs-string">&#x27;Successfully registered account&#x27;</span>);
 });</pre>
     
   
@@ -7320,6 +7423,8 @@ Plugins, Builds and Deployments.</p>
   
 
   
+
+  
     <div class='py1 quiet mt1 prose-big'>Instance Members</div>
     <div class="clearfix">
   
@@ -7374,6 +7479,8 @@ Plugins, Builds and Deployments.</p>
 
       
     
+  
+
   
 
   
@@ -7456,12 +7563,14 @@ by the options parameter.</p>
   
 
   
+
+  
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
       <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">return</span> apps.appList()
 .then(<span class="hljs-function"><span class="hljs-params">list</span> =&gt;</span> list.map(<span class="hljs-function">(<span class="hljs-params">app</span>) =&gt;</span> {
-  app.name = <span class="hljs-string">'haha all your apps are named the same'</span>;
+  app.name = <span class="hljs-string">&#x27;haha all your apps are named the same&#x27;</span>;
   <span class="hljs-keyword">return</span> app.save();
 }));</pre>
     
@@ -7535,12 +7644,14 @@ by the options parameter.</p>
   
 
   
+
+  
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
       <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">return</span> apps.create({
-  <span class="hljs-attr">title</span>: <span class="hljs-string">'my new app'</span>,
-  <span class="hljs-attr">hexColor</span>: <span class="hljs-string">'#ffffff'</span>,
+  <span class="hljs-attr">title</span>: <span class="hljs-string">&#x27;my new app&#x27;</span>,
+  <span class="hljs-attr">hexColor</span>: <span class="hljs-string">&#x27;#ffffff&#x27;</span>,
 })
 .then(<span class="hljs-function"><span class="hljs-params">app</span> =&gt;</span> show(app));</pre>
     
@@ -7614,6 +7725,8 @@ by the options parameter.</p>
   
 
   
+
+  
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
@@ -7671,6 +7784,8 @@ by the options parameter.</p>
 
       
     
+  
+
   
 
   
@@ -7734,6 +7849,8 @@ types.</p>
 
       
     
+  
+
   
 
   
@@ -7833,6 +7950,8 @@ contains APIs for DataManagers, Models, Fields, Hooks, and Policies.</p>
   
 
   
+
+  
     <div class='py1 quiet mt1 prose-big'>Instance Members</div>
     <div class="clearfix">
   
@@ -7892,10 +8011,12 @@ contains APIs for DataManagers, Models, Fields, Hooks, and Policies.</p>
   
 
   
+
+  
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
-      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">return</span> dm.create({ <span class="hljs-attr">title</span>: <span class="hljs-string">'my new dm'</span> })
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">return</span> dm.create({ <span class="hljs-attr">title</span>: <span class="hljs-string">&#x27;my new dm&#x27;</span> })
 .then(<span class="hljs-function"><span class="hljs-params">dm</span> =&gt;</span> createRequiredModelsFor(dm));</pre>
     
   
@@ -7963,6 +8084,8 @@ contains APIs for DataManagers, Models, Fields, Hooks, and Policies.</p>
 
       
     
+  
+
   
 
   
@@ -8043,6 +8166,8 @@ contains APIs for DataManagers, Models, Fields, Hooks, and Policies.</p>
 
       
     
+  
+
   
 
   
@@ -8133,6 +8258,8 @@ by the options parameter.</p>
   
 
   
+
+  
 </section>
 
       </div>
@@ -8199,6 +8326,8 @@ by the options parameter.</p>
 
       
     
+  
+
   
 
   
@@ -8300,6 +8429,8 @@ by the options parameter.</p>
   
 
   
+
+  
 </section>
 
       </div>
@@ -8388,6 +8519,8 @@ by the options parameter.</p>
   
 
   
+
+  
 </section>
 
       </div>
@@ -8433,6 +8566,8 @@ Note: This Request only has pagination when you load a single modelID.</p>
         </div>
       
     </div>
+  
+
   
 
   
@@ -8511,6 +8646,8 @@ Note: This Request only has pagination when you load a single modelID.</p>
   
 
   
+
+  
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
@@ -8568,6 +8705,8 @@ Note: This Request only has pagination when you load a single modelID.</p>
 
       
     
+  
+
   
 
   
@@ -8649,10 +8788,12 @@ Note: This Request only has pagination when you load a single modelID.</p>
   
 
   
+
+  
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
-      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">return</span> dm.template(<span class="hljs-string">'thisOne'</span>)
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">return</span> dm.template(<span class="hljs-string">&#x27;thisOne&#x27;</span>)
 .then(<span class="hljs-function"><span class="hljs-params">template</span> =&gt;</span> {
   <span class="hljs-keyword">const</span> data = createRandomDataFromSchema(template.dataSchema);
   <span class="hljs-keyword">return</span> template.creatDM(data);
@@ -8728,16 +8869,18 @@ Note: This Request only has pagination when you load a single modelID.</p>
   
 
   
+
+  
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
       <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">return</span> dm.template({
   <span class="hljs-attr">filter</span>: {
     <span class="hljs-attr">name</span>: {
-      <span class="hljs-attr">search</span>: <span class="hljs-string">'clubapp'</span>,
+      <span class="hljs-attr">search</span>: <span class="hljs-string">&#x27;clubapp&#x27;</span>,
     },
   },
-  <span class="hljs-attr">sort</span>: [<span class="hljs-string">'-version'</span>],
+  <span class="hljs-attr">sort</span>: [<span class="hljs-string">&#x27;-version&#x27;</span>],
   <span class="hljs-attr">size</span>: <span class="hljs-number">2</span>,
 })
 .then(<span class="hljs-function"><span class="hljs-params">templates</span> =&gt;</span> );</pre>
@@ -8925,25 +9068,27 @@ idOrUrl.
   
 
   
+
+  
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
       <pre class='p1 overflow-auto round fill-light'><span class="hljs-comment">// node usage:</span>
-<span class="hljs-keyword">const</span> { PublicAPI } = <span class="hljs-built_in">require</span>(<span class="hljs-string">'ec.sdk'</span>);
-<span class="hljs-keyword">const</span> api = <span class="hljs-keyword">new</span> PublicAPI(<span class="hljs-string">'beefbeef'</span>, { <span class="hljs-attr">environment</span>: <span class="hljs-string">'live'</span>, <span class="hljs-attr">noCookie</span>: <span class="hljs-literal">true</span> }, <span class="hljs-literal">true</span>); <span class="hljs-comment">// for ec user</span>
+<span class="hljs-keyword">const</span> { PublicAPI } = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;ec.sdk&#x27;</span>);
+<span class="hljs-keyword">const</span> api = <span class="hljs-keyword">new</span> PublicAPI(<span class="hljs-string">&#x27;beefbeef&#x27;</span>, { <span class="hljs-attr">environment</span>: <span class="hljs-string">&#x27;live&#x27;</span>, <span class="hljs-attr">noCookie</span>: <span class="hljs-literal">true</span> }, <span class="hljs-literal">true</span>); <span class="hljs-comment">// for ec user</span>
 <span class="hljs-comment">// or</span>
-<span class="hljs-keyword">const</span> api = <span class="hljs-keyword">new</span> PublicAPI(<span class="hljs-string">'9062c09a-c2a2-40dd-b1cf-332f497f9bde'</span>); <span class="hljs-comment">// with UUID as well</span>
+<span class="hljs-keyword">const</span> api = <span class="hljs-keyword">new</span> PublicAPI(<span class="hljs-string">&#x27;9062c09a-c2a2-40dd-b1cf-332f497f9bde&#x27;</span>); <span class="hljs-comment">// with UUID as well</span>
 api.setToken(config.accessToken);
 
 <span class="hljs-comment">// frontend usage with session:</span>
 <span class="hljs-keyword">const</span> session <span class="hljs-keyword">new</span> Session();
-<span class="hljs-keyword">let</span> api = <span class="hljs-keyword">new</span> PublicAPI(<span class="hljs-string">'beefbeef'</span>, <span class="hljs-string">'live'</span>, <span class="hljs-literal">true</span>);
+<span class="hljs-keyword">let</span> api = <span class="hljs-keyword">new</span> PublicAPI(<span class="hljs-string">&#x27;beefbeef&#x27;</span>, <span class="hljs-string">&#x27;live&#x27;</span>, <span class="hljs-literal">true</span>);
 <span class="hljs-comment">// same as</span>
-api = <span class="hljs-keyword">new</span> PublicAPI(<span class="hljs-string">'https://datamanager.entrecode.de/api/beefbeef'</span>, <span class="hljs-string">'willBeIgnored'</span>, <span class="hljs-literal">true</span>);
-session.setClientID(<span class="hljs-string">'rest'</span>);
-<span class="hljs-keyword">return</span> session.login(<span class="hljs-string">'me@entrecode.de'</span>, <span class="hljs-string">'letmein'</span>)
-.then(<span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span>
-  api.entryList(<span class="hljs-string">'muffins'</span>, { <span class="hljs-attr">awesome</span>: <span class="hljs-literal">true</span> })
+api = <span class="hljs-keyword">new</span> PublicAPI(<span class="hljs-string">&#x27;https://datamanager.entrecode.de/api/beefbeef&#x27;</span>, <span class="hljs-string">&#x27;willBeIgnored&#x27;</span>, <span class="hljs-literal">true</span>);
+session.setClientID(<span class="hljs-string">&#x27;rest&#x27;</span>);
+<span class="hljs-keyword">return</span> session.login(<span class="hljs-string">&#x27;me@entrecode.de&#x27;</span>, <span class="hljs-string">&#x27;letmein&#x27;</span>)
+.then(<span class="hljs-function">() =&gt;</span>
+  api.entryList(<span class="hljs-string">&#x27;muffins&#x27;</span>, { <span class="hljs-attr">awesome</span>: <span class="hljs-literal">true</span> })
   .then(<span class="hljs-function"><span class="hljs-params">list</span> =&gt;</span> list.map(<span class="hljs-function">(<span class="hljs-params">entry</span>) =&gt;</span> {
     <span class="hljs-keyword">if</span>(isNoLongerAwesome(entry)){
       entry.awesome = <span class="hljs-literal">false</span>;
@@ -9015,6 +9160,8 @@ session.setClientID(<span class="hljs-string">'rest'</span>);
 
       
     
+  
+
   
 
   
@@ -9105,6 +9252,8 @@ session.setClientID(<span class="hljs-string">'rest'</span>);
   
 
   
+
+  
 </section>
 
       </div>
@@ -9166,11 +9315,13 @@ session.setClientID(<span class="hljs-string">'rest'</span>);
   
 
   
+
+  
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
-      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">return</span> api.assetList({ <span class="hljs-attr">filter</span>: { <span class="hljs-attr">type</span>: <span class="hljs-string">'image'</span>} })
-.then(<span class="hljs-function"><span class="hljs-params">assets</span> =&gt;</span> assets.getAllItems().find(<span class="hljs-function"><span class="hljs-params">asset</span> =&gt;</span> asset.title.toLowerCase() === <span class="hljs-string">'favicon'</span> ))
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">return</span> api.assetList({ <span class="hljs-attr">filter</span>: { <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;image&#x27;</span>} })
+.then(<span class="hljs-function"><span class="hljs-params">assets</span> =&gt;</span> assets.getAllItems().find(<span class="hljs-function"><span class="hljs-params">asset</span> =&gt;</span> asset.title.toLowerCase() === <span class="hljs-string">&#x27;favicon&#x27;</span> ))
 .then(<span class="hljs-function"><span class="hljs-params">asset</span> =&gt;</span> show(asset));</pre>
     
   
@@ -9243,11 +9394,13 @@ session.setClientID(<span class="hljs-string">'rest'</span>);
   
 
   
+
+  
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
       <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">return</span> api.changeEmail(newEmail)
-.then(<span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> show(<span class="hljs-string">`Email change started. Please verify with your new address.`</span>))</pre>
+.then(<span class="hljs-function">() =&gt;</span> show(<span class="hljs-string">`Email change started. Please verify with your new address.`</span>))</pre>
     
   
 
@@ -9338,6 +9491,8 @@ with <a href="Sessin#checkPermission">Sessin#checkPermission</a>.</p>
   
 
   
+
+  
 </section>
 
       </div>
@@ -9393,6 +9548,8 @@ with <a href="Sessin#checkPermission">Sessin#checkPermission</a>.</p>
 
       
     
+  
+
   
 
   
@@ -9474,6 +9631,8 @@ with <a href="Sessin#checkPermission">Sessin#checkPermission</a>.</p>
   
 
   
+
+  
 </section>
 
       </div>
@@ -9531,6 +9690,8 @@ token
 
       
     
+  
+
   
 
   
@@ -9635,6 +9796,8 @@ factory which then resolves to the newly created PublicAssetResource
   
 
   
+
+  
 </section>
 
       </div>
@@ -9708,6 +9871,8 @@ factory which then resolves to the newly created assets as AssetList
 
       
     
+  
+
   
 
   
@@ -9817,6 +9982,8 @@ factory which then resolves to the newly created assets as DMAssetList
   
 
   
+
+  
 </section>
 
       </div>
@@ -9904,6 +10071,8 @@ factory which then resolves to the newly created assets as DMAssetList
   
 
   
+
+  
 </section>
 
       </div>
@@ -9965,11 +10134,13 @@ factory which then resolves to the newly created assets as DMAssetList
   
 
   
+
+  
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
       <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">return</span> api.deleteAsset(thisOne)
-.then(<span class="hljs-function"><span class="hljs-params">()</span>) =&gt;</span> alert(<span class="hljs-string">'Asset deleted'</span>));</pre>
+.then(()) =&gt; alert(<span class="hljs-string">&#x27;Asset deleted&#x27;</span>));</pre>
     
   
 
@@ -10050,11 +10221,13 @@ factory which then resolves to the newly created assets as DMAssetList
   
 
   
+
+  
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
-      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">return</span> api.deleteEntry(<span class="hljs-string">'myModel'</span>, <span class="hljs-string">'1234567'</span>)
-.then(<span class="hljs-function"><span class="hljs-params">()</span>) =&gt;</span> alert(<span class="hljs-string">'Entry deleted'</span>));</pre>
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">return</span> api.deleteEntry(<span class="hljs-string">&#x27;myModel&#x27;</span>, <span class="hljs-string">&#x27;1234567&#x27;</span>)
+.then(()) =&gt; alert(<span class="hljs-string">&#x27;Entry deleted&#x27;</span>));</pre>
     
   
 
@@ -10130,6 +10303,8 @@ factory which then resolves to the newly created assets as DMAssetList
 
       
     
+  
+
   
 
   
@@ -10220,11 +10395,13 @@ factory which then resolves to the newly created assets as DMAssetList
   
 
   
+
+  
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
       <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">return</span> api.deleteDmAsset(thisOne)
-.then(<span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> alert(<span class="hljs-string">'Asset deleted'</span>));</pre>
+.then(<span class="hljs-function">() =&gt;</span> alert(<span class="hljs-string">&#x27;Asset deleted&#x27;</span>));</pre>
     
   
 
@@ -10304,11 +10481,13 @@ factory which then resolves to the newly created assets as DMAssetList
   
 
   
+
+  
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
-      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">return</span> api.dmAssetList(<span class="hljs-string">'public'</span>, { <span class="hljs-attr">filter</span>: { <span class="hljs-attr">type</span>: <span class="hljs-string">'image'</span>} })
-.then(<span class="hljs-function"><span class="hljs-params">assets</span> =&gt;</span> assets.getAllItems().find(<span class="hljs-function"><span class="hljs-params">asset</span> =&gt;</span> asset.title.toLowerCase() === <span class="hljs-string">'favicon'</span> ))
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">return</span> api.dmAssetList(<span class="hljs-string">&#x27;public&#x27;</span>, { <span class="hljs-attr">filter</span>: { <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;image&#x27;</span>} })
+.then(<span class="hljs-function"><span class="hljs-params">assets</span> =&gt;</span> assets.getAllItems().find(<span class="hljs-function"><span class="hljs-params">asset</span> =&gt;</span> asset.title.toLowerCase() === <span class="hljs-string">&#x27;favicon&#x27;</span> ))
 .then(<span class="hljs-function"><span class="hljs-params">asset</span> =&gt;</span> show(asset));</pre>
     
   
@@ -10364,6 +10543,8 @@ MUST handle these events.</p>
 
       
     
+  
+
   
 
   
@@ -10433,6 +10614,8 @@ MUST handle these events.</p>
 
       
     
+  
+
   
 
   
@@ -10540,15 +10723,17 @@ levels directly request
   
 
   
+
+  
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
-      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">return</span> api.entry(<span class="hljs-string">'myModel'</span>, <span class="hljs-string">'1234567'</span>)
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">return</span> api.entry(<span class="hljs-string">&#x27;myModel&#x27;</span>, <span class="hljs-string">&#x27;1234567&#x27;</span>)
 .then(<span class="hljs-function"><span class="hljs-params">entry</span> =&gt;</span> {
   <span class="hljs-keyword">return</span> show(entry);
 });
 <span class="hljs-comment">// since 0.17.10</span>
-<span class="hljs-keyword">const</span> entry = <span class="hljs-keyword">await</span> api.entry(<span class="hljs-string">'myModel'</span>, { <span class="hljs-attr">urltitle</span>: <span class="hljs-string">'this-is-unique'</span> });
+<span class="hljs-keyword">const</span> entry = <span class="hljs-keyword">await</span> api.entry(<span class="hljs-string">&#x27;myModel&#x27;</span>, { <span class="hljs-attr">urltitle</span>: <span class="hljs-string">&#x27;this-is-unique&#x27;</span> });
 <span class="hljs-keyword">await</span> show(entry);</pre>
     
   
@@ -10630,12 +10815,14 @@ levels directly request
   
 
   
+
+  
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
-      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">return</span> api.entryList(<span class="hljs-string">'myModel'</span>)
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">return</span> api.entryList(<span class="hljs-string">&#x27;myModel&#x27;</span>)
 .then(<span class="hljs-function"><span class="hljs-params">list</span> =&gt;</span> {
-  <span class="hljs-keyword">return</span> list.getAllItems().find(<span class="hljs-function"><span class="hljs-params">entry</span> =&gt;</span> entry.id === <span class="hljs-string">'1234567'</span>);
+  <span class="hljs-keyword">return</span> list.getAllItems().find(<span class="hljs-function"><span class="hljs-params">entry</span> =&gt;</span> entry.id === <span class="hljs-string">&#x27;1234567&#x27;</span>);
 })
 .then(<span class="hljs-function"><span class="hljs-params">entry</span> =&gt;</span> {
   <span class="hljs-keyword">return</span> show(entry);
@@ -10730,6 +10917,8 @@ levels directly request
   
 
   
+
+  
 </section>
 
       </div>
@@ -10775,6 +10964,8 @@ Note: This Request only has pagination when you load a single modelID.</p>
         </div>
       
     </div>
+  
+
   
 
   
@@ -10861,6 +11052,8 @@ Note: This Request only has pagination when you load a single modelID.</p>
   
 
   
+
+  
 </section>
 
       </div>
@@ -10917,6 +11110,8 @@ Note: This Request only has pagination when you load a single modelID.</p>
 
       
     
+  
+
   
 
   
@@ -11019,6 +11214,8 @@ AssetNeue.
   
 
   
+
+  
 </section>
 
       </div>
@@ -11097,6 +11294,8 @@ AssetNeue.
   
 
   
+
+  
 </section>
 
       </div>
@@ -11162,6 +11361,8 @@ AssetNeue.
 
       
     
+  
+
   
 
   
@@ -11255,6 +11456,8 @@ load.</p>
   
 
   
+
+  
 </section>
 
       </div>
@@ -11299,6 +11502,8 @@ load.</p>
         </div>
       
     </div>
+  
+
   
 
   
@@ -11395,6 +11600,8 @@ credentials and tokenMethod <code>body</code>.</p>
   
 
   
+
+  
 </section>
 
       </div>
@@ -11464,6 +11671,8 @@ credentials and tokenMethod <code>body</code>.</p>
   
 
   
+
+  
 </section>
 
       </div>
@@ -11507,6 +11716,8 @@ cookie stored.</p>
 
       
     
+  
+
   
 
   
@@ -11590,6 +11801,8 @@ cookie stored.</p>
   
 
   
+
+  
 </section>
 
       </div>
@@ -11648,6 +11861,8 @@ value.</p>
 
       
     
+  
+
   
 
   
@@ -11740,10 +11955,12 @@ value.</p>
   
 
   
+
+  
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
-      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">const</span> counts = <span class="hljs-keyword">await</span> api.refCount(<span class="hljs-string">'myModel'</span>, <span class="hljs-string">'myField'</span>, [entryID1, entryID2, ...entryIDn]);
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">const</span> counts = <span class="hljs-keyword">await</span> api.refCount(<span class="hljs-string">&#x27;myModel&#x27;</span>, <span class="hljs-string">&#x27;myField&#x27;</span>, [entryID1, entryID2, ...entryIDn]);
 alert(<span class="hljs-string">`Entry <span class="hljs-subst">${entryID1}</span> has <span class="hljs-subst">${counts[entryID1]}</span> references`</span>);</pre>
     
   
@@ -11816,11 +12033,13 @@ alert(<span class="hljs-string">`Entry <span class="hljs-subst">${entryID1}</spa
   
 
   
+
+  
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
       <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">return</span> api.resetPassword(email)
-.then(<span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> show(<span class="hljs-string">`Password reset link send to <span class="hljs-subst">${email}</span>`</span>))</pre>
+.then(<span class="hljs-function">() =&gt;</span> show(<span class="hljs-string">`Password reset link send to <span class="hljs-subst">${email}</span>`</span>))</pre>
     
   
 
@@ -11901,6 +12120,8 @@ alert(<span class="hljs-string">`Entry <span class="hljs-subst">${entryID1}</spa
   
 
   
+
+  
 </section>
 
       </div>
@@ -11957,6 +12178,8 @@ alert(<span class="hljs-string">`Entry <span class="hljs-subst">${entryID1}</spa
 
       
     
+  
+
   
 
   
@@ -12049,13 +12272,15 @@ alert(<span class="hljs-string">`Entry <span class="hljs-subst">${entryID1}</spa
   
 
   
+
+  
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
       <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">return</span> api.signup(email, password, invite)
 .then(<span class="hljs-function">(<span class="hljs-params">tokenResponse</span>) =&gt;</span> {
   api.setToken(tokenResponse.access_token);
-  <span class="hljs-keyword">return</span> show(<span class="hljs-string">'Successfully registered account'</span>);
+  <span class="hljs-keyword">return</span> show(<span class="hljs-string">&#x27;Successfully registered account&#x27;</span>);
 });</pre>
     
   
@@ -12128,10 +12353,12 @@ alert(<span class="hljs-string">`Entry <span class="hljs-subst">${entryID1}</spa
   
 
   
+
+  
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
-      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">return</span> assetList.tag(<span class="hljs-string">'thisOne'</span>)
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">return</span> assetList.tag(<span class="hljs-string">&#x27;thisOne&#x27;</span>)
 .then(<span class="hljs-function"><span class="hljs-params">tag</span> =&gt;</span> {
   <span class="hljs-keyword">return</span> show(tag);
 });</pre>
@@ -12206,12 +12433,14 @@ alert(<span class="hljs-string">`Entry <span class="hljs-subst">${entryID1}</spa
   
 
   
+
+  
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
       <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">return</span> assetList.tagList()
 .then(<span class="hljs-function"><span class="hljs-params">tags</span> =&gt;</span> {
-  <span class="hljs-keyword">return</span> tags.getAllItems().filter(<span class="hljs-function"><span class="hljs-params">tags</span> =&gt;</span> tag.tag === <span class="hljs-string">'thisOne'</span>);
+  <span class="hljs-keyword">return</span> tags.getAllItems().filter(<span class="hljs-function"><span class="hljs-params">tags</span> =&gt;</span> tag.tag === <span class="hljs-string">&#x27;thisOne&#x27;</span>);
 })
 .then(<span class="hljs-function"><span class="hljs-params">tagsArray</span> =&gt;</span> {
   <span class="hljs-keyword">return</span> show(tagsArray[<span class="hljs-number">0</span>]);
@@ -12220,7 +12449,7 @@ alert(<span class="hljs-string">`Entry <span class="hljs-subst">${entryID1}</spa
 <span class="hljs-comment">// This would actually be better:</span>
 <span class="hljs-keyword">return</span> dm.tagList({
   <span class="hljs-attr">filter</span>: {
-    <span class="hljs-attr">assetID</span>: <span class="hljs-string">'thisOne'</span>,
+    <span class="hljs-attr">assetID</span>: <span class="hljs-string">&#x27;thisOne&#x27;</span>,
   },
 })
 .then(<span class="hljs-function"><span class="hljs-params">tags</span> =&gt;</span> {
@@ -12297,6 +12526,8 @@ alert(<span class="hljs-string">`Entry <span class="hljs-subst">${entryID1}</spa
   
 
   
+
+  
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
@@ -12361,6 +12592,8 @@ alert(<span class="hljs-string">`Entry <span class="hljs-subst">${entryID1}</spa
         </div>
       
     </div>
+  
+
   
 
   
@@ -12448,11 +12681,13 @@ alert(<span class="hljs-string">`Entry <span class="hljs-subst">${entryID1}</spa
   
 
   
+
+  
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
-      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">const</span> values = <span class="hljs-keyword">await</span> api.valueCount(<span class="hljs-string">'myModel'</span>, <span class="hljs-string">'myField'</span>);
-alert(<span class="hljs-string">`Values are: <span class="hljs-subst">${values.map(x =&gt; <span class="hljs-string">`Value: <span class="hljs-subst">${x.value}</span> (<span class="hljs-subst">${x.count}</span>)`</span>).join(<span class="hljs-string">', '</span>)}</span>`</span>);</pre>
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">const</span> values = <span class="hljs-keyword">await</span> api.valueCount(<span class="hljs-string">&#x27;myModel&#x27;</span>, <span class="hljs-string">&#x27;myField&#x27;</span>);
+alert(<span class="hljs-string">`Values are: <span class="hljs-subst">${values.map(x =&gt; <span class="hljs-string">`Value: <span class="hljs-subst">${x.value}</span> (<span class="hljs-subst">${x.count}</span>)`</span>).join(<span class="hljs-string">&#x27;, &#x27;</span>)}</span>`</span>);</pre>
     
   
 
@@ -12522,17 +12757,19 @@ used as key to store tokens into cookies (for browsers).</p>
   
 
   
+
+  
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
       <pre class='p1 overflow-auto round fill-light'><span class="hljs-comment">// will connect to production https://editor.entrecode.de</span>
-<span class="hljs-keyword">const</span> session = <span class="hljs-keyword">new</span> Session(<span class="hljs-string">'live'</span>);
+<span class="hljs-keyword">const</span> session = <span class="hljs-keyword">new</span> Session(<span class="hljs-string">&#x27;live&#x27;</span>);
 <span class="hljs-comment">// will connect to cachena https://editor.cachena.entrecode.de</span>
-<span class="hljs-keyword">const</span> accounts = <span class="hljs-keyword">new</span> Accounts(<span class="hljs-string">'stage'</span>);
+<span class="hljs-keyword">const</span> accounts = <span class="hljs-keyword">new</span> Accounts(<span class="hljs-string">&#x27;stage&#x27;</span>);
 <span class="hljs-comment">// will connect to buffalo https://editor.buffalo.entrecode.de</span>
-<span class="hljs-keyword">const</span> dataManager = <span class="hljs-keyword">new</span> DataManager(<span class="hljs-string">'nightly'</span>);
+<span class="hljs-keyword">const</span> dataManager = <span class="hljs-keyword">new</span> DataManager(<span class="hljs-string">&#x27;nightly&#x27;</span>);
 <span class="hljs-comment">// will connect to your local instances, well maybe</span>
-<span class="hljs-keyword">const</span> accounts = <span class="hljs-keyword">new</span> Accounts(<span class="hljs-string">'develop'</span>);</pre>
+<span class="hljs-keyword">const</span> accounts = <span class="hljs-keyword">new</span> Accounts(<span class="hljs-string">&#x27;develop&#x27;</span>);</pre>
     
   
 
@@ -12624,27 +12861,29 @@ Conenctor you can overwrite the handling.</p>
   
 
   
+
+  
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
       <pre class='p1 overflow-auto round fill-light'><span class="hljs-comment">// will not share any token with other API connectors (token name is appended with a generated shortID)</span>
-<span class="hljs-keyword">new</span> PublicAPI(<span class="hljs-string">'beefbeef'</span>, { <span class="hljs-attr">noCookie</span>: <span class="hljs-literal">true</span> });
+<span class="hljs-keyword">new</span> PublicAPI(<span class="hljs-string">&#x27;beefbeef&#x27;</span>, { <span class="hljs-attr">noCookie</span>: <span class="hljs-literal">true</span> });
 
-<span class="hljs-comment">// will share token with all `userA` PublicAPI Connectors for 'beefbeef'</span>
-<span class="hljs-keyword">new</span> PublicAPI(<span class="hljs-string">'beefbeef'</span>, { <span class="hljs-attr">cookieModifier</span>: <span class="hljs-string">'userA'</span> });
+<span class="hljs-comment">// will share token with all `userA` PublicAPI Connectors for &#x27;beefbeef&#x27;</span>
+<span class="hljs-keyword">new</span> PublicAPI(<span class="hljs-string">&#x27;beefbeef&#x27;</span>, { <span class="hljs-attr">cookieModifier</span>: <span class="hljs-string">&#x27;userA&#x27;</span> });
 
 <span class="hljs-comment">// will share token with all `userA` API Connectors, even DataManager and so on</span>
-<span class="hljs-keyword">new</span> PublicAPI(<span class="hljs-string">'beefbeef'</span>, { <span class="hljs-attr">cookieModifier</span>: <span class="hljs-string">'userA'</span>, <span class="hljs-attr">ecUser</span>: <span class="hljs-literal">true</span> });
+<span class="hljs-keyword">new</span> PublicAPI(<span class="hljs-string">&#x27;beefbeef&#x27;</span>, { <span class="hljs-attr">cookieModifier</span>: <span class="hljs-string">&#x27;userA&#x27;</span>, <span class="hljs-attr">ecUser</span>: <span class="hljs-literal">true</span> });
 <span class="hljs-comment">// same</span>
-<span class="hljs-keyword">new</span> PublicAPI(<span class="hljs-string">'beefbeef'</span>, { <span class="hljs-attr">cookieModifier</span>: <span class="hljs-string">'userA'</span> }, <span class="hljs-literal">true</span>);
+<span class="hljs-keyword">new</span> PublicAPI(<span class="hljs-string">&#x27;beefbeef&#x27;</span>, { <span class="hljs-attr">cookieModifier</span>: <span class="hljs-string">&#x27;userA&#x27;</span> }, <span class="hljs-literal">true</span>);
 
-<span class="hljs-comment">// will share token with all PublicAPI Connectors for 'beefbeef'</span>
-<span class="hljs-keyword">new</span> PublicAPI(<span class="hljs-string">'beefbeef'</span>)
+<span class="hljs-comment">// will share token with all PublicAPI Connectors for &#x27;beefbeef&#x27;</span>
+<span class="hljs-keyword">new</span> PublicAPI(<span class="hljs-string">&#x27;beefbeef&#x27;</span>)
 
 <span class="hljs-comment">// will share token with all API connectors</span>
-<span class="hljs-keyword">new</span> PublicAPI(<span class="hljs-string">'beefbeef'</span>, { <span class="hljs-attr">ecUser</span>: <span class="hljs-literal">true</span> });
+<span class="hljs-keyword">new</span> PublicAPI(<span class="hljs-string">&#x27;beefbeef&#x27;</span>, { <span class="hljs-attr">ecUser</span>: <span class="hljs-literal">true</span> });
 <span class="hljs-comment">// same</span>
-<span class="hljs-keyword">new</span> PublicAPI(<span class="hljs-string">'beefbeef'</span>, <span class="hljs-string">'live'</span>, <span class="hljs-literal">true</span>);</pre>
+<span class="hljs-keyword">new</span> PublicAPI(<span class="hljs-string">&#x27;beefbeef&#x27;</span>, <span class="hljs-string">&#x27;live&#x27;</span>, <span class="hljs-literal">true</span>);</pre>
     
   
 
@@ -12737,10 +12976,12 @@ route of Asset neue.</p>
   
 
   
+
+  
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
-      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">const</span> assetList = <span class="hljs-keyword">await</span> api.createDMAsset(<span class="hljs-string">'myFiles'</span>, filePath, { <span class="hljs-attr">deduplicate</span>: <span class="hljs-literal">true</span> });</pre>
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">const</span> assetList = <span class="hljs-keyword">await</span> api.createDMAsset(<span class="hljs-string">&#x27;myFiles&#x27;</span>, filePath, { <span class="hljs-attr">deduplicate</span>: <span class="hljs-literal">true</span> });</pre>
     
   
 
@@ -12815,6 +13056,8 @@ route of Asset neue.</p>
   
 
   
+
+  
 </section>
 
           
@@ -12864,6 +13107,8 @@ route of Asset neue.</p>
         </div>
       
     </div>
+  
+
   
 
   
@@ -13003,6 +13248,8 @@ route of Asset neue.</p>
   
 
   
+
+  
 </section>
 
           
@@ -13094,6 +13341,8 @@ getLinks).</p>
   
 
   
+
+  
     <div class='py1 quiet mt1 prose-big'>Instance Members</div>
     <div class="clearfix">
   
@@ -13134,6 +13383,8 @@ getLinks).</p>
 
       
     
+  
+
   
 
   
@@ -13189,6 +13440,8 @@ getLinks).</p>
 
       
     
+  
+
   
 
   
@@ -13258,6 +13511,8 @@ errors. Will contain newlines.</p>
   
 
   
+
+  
 </section>
 
       </div>
@@ -13300,6 +13555,8 @@ errors. Will contain newlines.</p>
 
       
     
+  
+
   
 
   
@@ -13356,6 +13613,8 @@ sub error.</p>
 
       
     
+  
+
   
 
   
@@ -13435,6 +13694,8 @@ or <a href="PublicAPI#loginWithCode">PublicAPI#loginWithCode</a>.</p>
   
 
   
+
+  
 </section>
 
           
@@ -13470,6 +13731,8 @@ error with token related error codes. Will either have undefined or <a href="#pr
   
   
   
+  
+
   
 
   
@@ -13542,6 +13805,8 @@ error with token related error codes. Will either have undefined or <a href="#pr
   
 
   
+
+  
 </section>
 
           
@@ -13571,6 +13836,8 @@ error with token related error codes. Will either have undefined or <a href="#pr
   
   
   
+  
+
   
 
   
@@ -13643,6 +13910,8 @@ error with token related error codes. Will either have undefined or <a href="#pr
   
 
   
+
+  
 </section>
 
           
@@ -13677,6 +13946,8 @@ error with token related error codes. Will either have undefined or <a href="#pr
   
   
   
+  
+
   
 
   
@@ -13818,6 +14089,8 @@ error with token related error codes. Will either have undefined or <a href="#pr
   
 
   
+
+  
     <div class='py1 quiet mt1 prose-big'>Instance Members</div>
     <div class="clearfix">
   
@@ -13858,6 +14131,8 @@ error with token related error codes. Will either have undefined or <a href="#pr
 
       
     
+  
+
   
 
   
@@ -13914,6 +14189,8 @@ resource.</p>
 
       
     
+  
+
   
 
   
@@ -14006,14 +14283,16 @@ resource.</p>
   
 
   
+
+  
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
-      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">return</span> accounts.create(<span class="hljs-string">'client'</span>, {
-  <span class="hljs-attr">clientID</span>: <span class="hljs-string">'myClient'</span>,
-  <span class="hljs-attr">callbackURL</span>: <span class="hljs-string">'https://example.com/login'</span>,
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">return</span> accounts.create(<span class="hljs-string">&#x27;client&#x27;</span>, {
+  <span class="hljs-attr">clientID</span>: <span class="hljs-string">&#x27;myClient&#x27;</span>,
+  <span class="hljs-attr">callbackURL</span>: <span class="hljs-string">&#x27;https://example.com/login&#x27;</span>,
   <span class="hljs-attr">config</span>: {
-    <span class="hljs-attr">tokenMethod</span>: <span class="hljs-string">'query'</span>,
+    <span class="hljs-attr">tokenMethod</span>: <span class="hljs-string">&#x27;query&#x27;</span>,
   },
 })
 .then(<span class="hljs-function"><span class="hljs-params">client</span> =&gt;</span> show(client));</pre>
@@ -14082,6 +14361,8 @@ resource.</p>
   
 
   
+
+  
 </section>
 
       </div>
@@ -14110,6 +14391,8 @@ resource.</p>
   
   
   
+  
+
   
 
   
@@ -14231,6 +14514,8 @@ s
   
 
   
+
+  
 </section>
 
       </div>
@@ -14288,6 +14573,8 @@ when properties array is empty or undefined.</p>
 
       
     
+  
+
   
 
   
@@ -14371,6 +14658,8 @@ the given name.</p>
   
 
   
+
+  
 </section>
 
       </div>
@@ -14428,6 +14717,8 @@ the given name.</p>
 
       
     
+  
+
   
 
   
@@ -14510,6 +14801,8 @@ the given name.</p>
   
 
   
+
+  
 </section>
 
       </div>
@@ -14566,6 +14859,8 @@ the given name.</p>
 
       
     
+  
+
   
 
   
@@ -14657,6 +14952,8 @@ the given name.</p>
   
 
   
+
+  
 </section>
 
       </div>
@@ -14713,6 +15010,8 @@ afterwards.</p>
   
 
   
+
+  
 </section>
 
       </div>
@@ -14755,6 +15054,8 @@ afterwards.</p>
 
       
     
+  
+
   
 
   
@@ -14824,6 +15125,8 @@ afterwards.</p>
 
       
     
+  
+
   
 
   
@@ -14916,10 +15219,12 @@ afterwards.</p>
   
 
   
+
+  
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
-      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">return</span> accounts.resource(<span class="hljs-string">'account'</span>, me.accountID)
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">return</span> accounts.resource(<span class="hljs-string">&#x27;account&#x27;</span>, me.accountID)
 .then(<span class="hljs-function"><span class="hljs-params">account</span> =&gt;</span> show(account.email));</pre>
     
   
@@ -15013,10 +15318,12 @@ options parameter.</p>
   
 
   
+
+  
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
-      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">return</span> accounts.resourceList(<span class="hljs-string">'account'</span>, {
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">return</span> accounts.resourceList(<span class="hljs-string">&#x27;account&#x27;</span>, {
   <span class="hljs-attr">filter</span>: {
     <span class="hljs-attr">created</span>: {
       <span class="hljs-attr">from</span>: <span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>(<span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>.getTime() - <span class="hljs-number">600000</span>).toISOString()),
@@ -15117,6 +15424,8 @@ be the same object but with refreshed data.
   
 
   
+
+  
 </section>
 
       </div>
@@ -15173,6 +15482,8 @@ be the same object but with refreshed data.
 
       
     
+  
+
   
 
   
@@ -15264,6 +15575,8 @@ be the same object but with refreshed data.
   
 
   
+
+  
 </section>
 
       </div>
@@ -15324,6 +15637,8 @@ otherwise.
 
       
     
+  
+
   
 
   
@@ -15492,6 +15807,8 @@ with them.</p>
   
 
   
+
+  
     <div class='py1 quiet mt1 prose-big'>Instance Members</div>
     <div class="clearfix">
   
@@ -15560,6 +15877,8 @@ element, false otherwise.
 
       
     
+  
+
   
 
   
@@ -15656,6 +15975,8 @@ element, false otherwise.
   
 
   
+
+  
 </section>
 
       </div>
@@ -15699,6 +16020,8 @@ returns a <a href="#listresource">ListResource</a> with the loaded result.</p>
 
       
     
+  
+
   
 
   
@@ -15768,6 +16091,8 @@ returns a <a href="#listresource">ListResource</a> with the loaded result.</p>
   
 
   
+
+  
 </section>
 
       </div>
@@ -15811,6 +16136,8 @@ returns a <a href="#listresource">ListResource</a> with the loaded result.</p>
 
       
     
+  
+
   
 
   
@@ -15879,6 +16206,8 @@ returns a <a href="#listresource">ListResource</a> with the loaded result.</p>
   
 
   
+
+  
 </section>
 
       </div>
@@ -15921,6 +16250,8 @@ returns a <a href="#listresource">ListResource</a> with the loaded result.</p>
 
       
     
+  
+
   
 
   
@@ -16003,6 +16334,8 @@ returns a <a href="#listresource">ListResource</a> with the loaded result.</p>
   
 
   
+
+  
 </section>
 
       </div>
@@ -16045,6 +16378,8 @@ returns a <a href="#listresource">ListResource</a> with the loaded result.</p>
 
       
     
+  
+
   
 
   
@@ -16113,6 +16448,8 @@ returns a <a href="#listresource">ListResource</a> with the loaded result.</p>
   
 
   
+
+  
 </section>
 
       </div>
@@ -16155,6 +16492,8 @@ returns a <a href="#listresource">ListResource</a> with the loaded result.</p>
 
       
     
+  
+
   
 
   
@@ -16237,6 +16576,8 @@ use on lists sorted by modified and update the entries during the process.</p>
 
       
     
+  
+
   
 
   
@@ -16344,14 +16685,16 @@ sorts of filter to a list request.</p>
   
 
   
+
+  
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
       <pre class='p1 overflow-auto round fill-light'>accounts.accountList({ <span class="hljs-attr">size</span>: <span class="hljs-number">25</span> }); <span class="hljs-comment">// will result in a list with 25 entries</span>
 accounts.accountList({
-  <span class="hljs-attr">sort</span>: [<span class="hljs-string">'email'</span>, <span class="hljs-string">'-created'</span>], <span class="hljs-comment">// sorted by email asc and created desc</span>
-  page: <span class="hljs-number">3</span>, <span class="hljs-comment">// page 3 of a list with 10 entries</span>
-  property: <span class="hljs-string">'exactlyThis'</span>, <span class="hljs-comment">// filter exactly exactlyThis for property property</span>
+  <span class="hljs-attr">sort</span>: [<span class="hljs-string">&#x27;email&#x27;</span>, <span class="hljs-string">&#x27;-created&#x27;</span>], <span class="hljs-comment">// sorted by email asc and created desc</span>
+  <span class="hljs-attr">page</span>: <span class="hljs-number">3</span>, <span class="hljs-comment">// page 3 of a list with 10 entries</span>
+  <span class="hljs-attr">property</span>: <span class="hljs-string">&#x27;exactlyThis&#x27;</span>, <span class="hljs-comment">// filter exactly exactlyThis for property property</span>
 });
 <span class="hljs-comment">// for filter see below</span></pre>
     
@@ -16421,24 +16764,26 @@ object will be applied when loading a <a href="#listresource">ListResource</a>.<
   
 
   
+
+  
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
       <pre class='p1 overflow-auto round fill-light'>accounts.accountList({
   <span class="hljs-attr">email</span>: {
-    <span class="hljs-attr">search</span>: <span class="hljs-string">'andre'</span>, <span class="hljs-comment">// email contains 'andre'</span>
+    <span class="hljs-attr">search</span>: <span class="hljs-string">&#x27;andre&#x27;</span>, <span class="hljs-comment">// email contains &#x27;andre&#x27;</span>
   },
-  <span class="hljs-attr">language</span>: <span class="hljs-string">'de'</span>, <span class="hljs-comment">// language is exactly 'de'</span>
-  active: {
-    <span class="hljs-attr">exact</span>: <span class="hljs-string">'active'</span>, <span class="hljs-comment">// is (exactly) in active state</span>
+  <span class="hljs-attr">language</span>: <span class="hljs-string">&#x27;de&#x27;</span>, <span class="hljs-comment">// language is exactly &#x27;de&#x27;</span>
+  <span class="hljs-attr">active</span>: {
+    <span class="hljs-attr">exact</span>: <span class="hljs-string">&#x27;active&#x27;</span>, <span class="hljs-comment">// is (exactly) in active state</span>
   },
   <span class="hljs-attr">created</span>: {
     <span class="hljs-attr">from</span>: <span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>(<span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>().getTime() - <span class="hljs-number">60000</span>), <span class="hljs-comment">// created 10minutes or less ago</span>
   },
   <span class="hljs-attr">permissions</span>: { <span class="hljs-comment">// has at least one of these permissions</span>
-    any: [
-      <span class="hljs-string">'dm-user'</span>,
-      <span class="hljs-string">'app-user'</span>,
+    <span class="hljs-attr">any</span>: [
+      <span class="hljs-string">&#x27;dm-user&#x27;</span>,
+      <span class="hljs-string">&#x27;app-user&#x27;</span>,
     ],
   },
 });</pre>
@@ -16530,6 +16875,8 @@ object will be applied when loading a <a href="#listresource">ListResource</a>.<
         </div>
       
     </div>
+  
+
   
 
   
@@ -16654,6 +17001,8 @@ object will be applied when loading a <a href="#listresource">ListResource</a>.<
   
 
   
+
+  
     <div class='py1 quiet mt1 prose-big'>Instance Members</div>
     <div class="clearfix">
   
@@ -16694,6 +17043,8 @@ object will be applied when loading a <a href="#listresource">ListResource</a>.<
 
       
     
+  
+
   
 
   
@@ -16749,6 +17100,8 @@ object will be applied when loading a <a href="#listresource">ListResource</a>.<
 
       
     
+  
+
   
 
   
@@ -16899,6 +17252,8 @@ object will be applied when loading a <a href="#listresource">ListResource</a>.<
         </div>
       
     </div>
+  
+
   
 
   
@@ -17089,6 +17444,8 @@ object will be applied when loading a <a href="#listresource">ListResource</a>.<
   
 
   
+
+  
     <div class='py1 quiet mt1 prose-big'>Instance Members</div>
     <div class="clearfix">
   
@@ -17143,6 +17500,8 @@ object will be applied when loading a <a href="#listresource">ListResource</a>.<
 
       
     
+  
+
   
 
   
@@ -17225,6 +17584,8 @@ object will be applied when loading a <a href="#listresource">ListResource</a>.<
   
 
   
+
+  
 </section>
 
       </div>
@@ -17294,6 +17655,8 @@ object will be applied when loading a <a href="#listresource">ListResource</a>.<
   
 
   
+
+  
 </section>
 
       </div>
@@ -17350,6 +17713,8 @@ permissions and all group permissions.</p>
   
 
   
+
+  
 </section>
 
       </div>
@@ -17392,6 +17757,8 @@ permissions and all group permissions.</p>
 
       
     
+  
+
   
 
   
@@ -17487,6 +17854,8 @@ permissions and all group permissions.</p>
         </div>
       
     </div>
+  
+
   
 
   
@@ -17649,6 +18018,8 @@ permissions and all group permissions.</p>
   
 
   
+
+  
 </section>
 
           
@@ -17719,6 +18090,8 @@ permissions and all group permissions.</p>
         </div>
       
     </div>
+  
+
   
 
   
@@ -17849,6 +18222,8 @@ permissions and all group permissions.</p>
   
 
   
+
+  
 </section>
 
           
@@ -17906,6 +18281,8 @@ permissions and all group permissions.</p>
         </div>
       
     </div>
+  
+
   
 
   
@@ -17991,6 +18368,8 @@ permissions and all group permissions.</p>
         </div>
       
     </div>
+  
+
   
 
   
@@ -18117,6 +18496,8 @@ permissions and all group permissions.</p>
   
 
   
+
+  
     <div class='py1 quiet mt1 prose-big'>Instance Members</div>
     <div class="clearfix">
   
@@ -18171,6 +18552,8 @@ permissions and all group permissions.</p>
 
       
     
+  
+
   
 
   
@@ -18253,6 +18636,8 @@ permissions and all group permissions.</p>
   
 
   
+
+  
 </section>
 
       </div>
@@ -18309,6 +18694,8 @@ permissions and all group permissions.</p>
 
       
     
+  
+
   
 
   
@@ -18391,6 +18778,8 @@ permissions and all group permissions.</p>
   
 
   
+
+  
 </section>
 
       </div>
@@ -18433,6 +18822,8 @@ permissions and all group permissions.</p>
 
       
     
+  
+
   
 
   
@@ -18515,6 +18906,8 @@ permissions and all group permissions.</p>
   
 
   
+
+  
 </section>
 
       </div>
@@ -18559,6 +18952,8 @@ permissions and all group permissions.</p>
         </div>
       
     </div>
+  
+
   
 
   
@@ -18632,6 +19027,8 @@ permissions and all group permissions.</p>
 
       
     
+  
+
   
 
   
@@ -18744,6 +19141,8 @@ permissions and all group permissions.</p>
   
 
   
+
+  
 </section>
 
           
@@ -18814,6 +19213,8 @@ permissions and all group permissions.</p>
         </div>
       
     </div>
+  
+
   
 
   
@@ -18972,6 +19373,8 @@ permissions and all group permissions.</p>
   
 
   
+
+  
     <div class='py1 quiet mt1 prose-big'>Instance Members</div>
     <div class="clearfix">
   
@@ -19013,6 +19416,8 @@ be the same object but with refreshed data.
 
       
     
+  
+
   
 
   
@@ -19133,6 +19538,8 @@ be the same object but with refreshed data.
         </div>
       
     </div>
+  
+
   
 
   
@@ -19285,6 +19692,8 @@ be the same object but with refreshed data.
   
 
   
+
+  
     <div class='py1 quiet mt1 prose-big'>Instance Members</div>
     <div class="clearfix">
   
@@ -19339,6 +19748,8 @@ be the same object but with refreshed data.
 
       
     
+  
+
   
 
   
@@ -19422,6 +19833,8 @@ by the options parameter.</p>
   
 
   
+
+  
 </section>
 
       </div>
@@ -19478,6 +19891,8 @@ by the options parameter.</p>
 
       
     
+  
+
   
 
   
@@ -19560,6 +19975,8 @@ by the options parameter.</p>
   
 
   
+
+  
 </section>
 
       </div>
@@ -19625,12 +20042,14 @@ See the example below for details.</p>
   
 
   
+
+  
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
       <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">const</span> platform = {
-  <span class="hljs-attr">title</span>: <span class="hljs-string">'MyAwesomePlatform'</span>,
-  <span class="hljs-attr">platformType</span>: <span class="hljs-string">'website'</span>,
+  <span class="hljs-attr">title</span>: <span class="hljs-string">&#x27;MyAwesomePlatform&#x27;</span>,
+  <span class="hljs-attr">platformType</span>: <span class="hljs-string">&#x27;website&#x27;</span>,
   <span class="hljs-attr">config</span>: {
     <span class="hljs-comment">// …</span>
   },
@@ -19641,20 +20060,20 @@ See the example below for details.</p>
 
 <span class="hljs-comment">// this would be ok as well</span>
 <span class="hljs-keyword">const</span> otherPlatform = {
-  <span class="hljs-attr">title</span>: <span class="hljs-string">'MyAwesomePlatform'</span>,
-  <span class="hljs-attr">platformType</span>: <span class="hljs-string">'website'</span>,
+  <span class="hljs-attr">title</span>: <span class="hljs-string">&#x27;MyAwesomePlatform&#x27;</span>,
+  <span class="hljs-attr">platformType</span>: <span class="hljs-string">&#x27;website&#x27;</span>,
   <span class="hljs-attr">config</span>: {
     <span class="hljs-comment">// …</span>
   },
   <span class="hljs-attr">_links</span>: {
-    <span class="hljs-string">"ec:app/codesource"</span>: {
-       <span class="hljs-attr">href</span>: <span class="hljs-string">"…"</span>,
+    <span class="hljs-string">&quot;ec:app/codesource&quot;</span>: {
+       <span class="hljs-attr">href</span>: <span class="hljs-string">&quot;…&quot;</span>,
     },
-    <span class="hljs-string">"ec:app/datasource"</span>: {
-       <span class="hljs-attr">href</span>: <span class="hljs-string">"…"</span>,
+    <span class="hljs-string">&quot;ec:app/datasource&quot;</span>: {
+       <span class="hljs-attr">href</span>: <span class="hljs-string">&quot;…&quot;</span>,
     },
-    <span class="hljs-string">"ec:app/target"</span>: {
-       <span class="hljs-attr">href</span>: <span class="hljs-string">"…"</span>,
+    <span class="hljs-string">&quot;ec:app/target&quot;</span>: {
+       <span class="hljs-attr">href</span>: <span class="hljs-string">&quot;…&quot;</span>,
     },
   }
 }
@@ -19740,6 +20159,8 @@ app.createPlatform(platform)
   
 
   
+
+  
 </section>
 
       </div>
@@ -19796,6 +20217,8 @@ app.createPlatform(platform)
 
       
     
+  
+
   
 
   
@@ -19879,6 +20302,8 @@ by the options parameter.</p>
   
 
   
+
+  
 </section>
 
       </div>
@@ -19935,6 +20360,8 @@ by the options parameter.</p>
 
       
     
+  
+
   
 
   
@@ -20018,6 +20445,8 @@ by the options parameter.</p>
   
 
   
+
+  
 </section>
 
       </div>
@@ -20074,6 +20503,8 @@ by the options parameter.</p>
 
       
     
+  
+
   
 
   
@@ -20144,6 +20575,8 @@ by the options parameter.</p>
 
       
     
+  
+
   
 
   
@@ -20256,6 +20689,8 @@ by the options parameter.</p>
   
 
   
+
+  
 </section>
 
           
@@ -20339,6 +20774,8 @@ by the options parameter.</p>
   
 
   
+
+  
     <div class='py1 quiet mt1 prose-big'>Instance Members</div>
     <div class="clearfix">
   
@@ -20379,6 +20816,8 @@ by the options parameter.</p>
 
       
     
+  
+
   
 
   
@@ -20447,6 +20886,8 @@ by the options parameter.</p>
   
 
   
+
+  
 </section>
 
       </div>
@@ -20502,6 +20943,8 @@ by the options parameter.</p>
   
 
   
+
+  
 </section>
 
       </div>
@@ -20544,6 +20987,8 @@ by the options parameter.</p>
 
       
     
+  
+
   
 
   
@@ -20626,6 +21071,8 @@ by the options parameter.</p>
   
 
   
+
+  
 </section>
 
       </div>
@@ -20682,6 +21129,8 @@ by the options parameter.</p>
 
       
     
+  
+
   
 
   
@@ -20764,6 +21213,8 @@ by the options parameter.</p>
   
 
   
+
+  
 </section>
 
       </div>
@@ -20820,6 +21271,8 @@ by the options parameter.</p>
 
       
     
+  
+
   
 
   
@@ -20902,6 +21355,8 @@ by the options parameter.</p>
   
 
   
+
+  
 </section>
 
       </div>
@@ -20971,6 +21426,8 @@ by the options parameter.</p>
   
 
   
+
+  
 </section>
 
       </div>
@@ -21027,6 +21484,8 @@ by the options parameter.</p>
 
       
     
+  
+
   
 
   
@@ -21118,6 +21577,8 @@ by the options parameter.</p>
   
 
   
+
+  
 </section>
 
       </div>
@@ -21183,6 +21644,8 @@ by the options parameter.</p>
 
       
     
+  
+
   
 
   
@@ -21265,6 +21728,8 @@ by the options parameter.</p>
   
 
   
+
+  
 </section>
 
       </div>
@@ -21321,6 +21786,8 @@ by the options parameter.</p>
 
       
     
+  
+
   
 
   
@@ -21515,6 +21982,8 @@ by the options parameter.</p>
   
 
   
+
+  
 </section>
 
           
@@ -21585,6 +22054,8 @@ by the options parameter.</p>
         </div>
       
     </div>
+  
+
   
 
   
@@ -21718,6 +22189,8 @@ by the options parameter.</p>
   
 
   
+
+  
     <div class='py1 quiet mt1 prose-big'>Instance Members</div>
     <div class="clearfix">
   
@@ -21760,6 +22233,8 @@ by the options parameter.</p>
         </div>
       
     </div>
+  
+
   
 
   
@@ -21846,6 +22321,8 @@ by the options parameter.</p>
   
 
   
+
+  
 </section>
 
       </div>
@@ -21903,6 +22380,8 @@ by the options parameter.</p>
 
       
     
+  
+
   
 
   
@@ -21983,6 +22462,8 @@ by the options parameter.</p>
 
       
     
+  
+
   
 
   
@@ -22085,6 +22566,8 @@ should be deployed.
   
 
   
+
+  
 </section>
 
       </div>
@@ -22155,6 +22638,8 @@ to which the build should be deployed.
   
 
   
+
+  
 </section>
 
       </div>
@@ -22211,6 +22696,8 @@ to which the build should be deployed.
 
       
     
+  
+
   
 
   
@@ -22294,6 +22781,8 @@ by the options parameter.</p>
   
 
   
+
+  
 </section>
 
       </div>
@@ -22336,6 +22825,8 @@ by the options parameter.</p>
 
       
     
+  
+
   
 
   
@@ -22404,6 +22895,8 @@ by the options parameter.</p>
   
 
   
+
+  
 </section>
 
       </div>
@@ -22446,6 +22939,8 @@ by the options parameter.</p>
 
       
     
+  
+
   
 
   
@@ -22528,6 +23023,8 @@ by the options parameter.</p>
   
 
   
+
+  
 </section>
 
       </div>
@@ -22597,6 +23094,8 @@ by the options parameter.</p>
   
 
   
+
+  
 </section>
 
       </div>
@@ -22639,6 +23138,8 @@ by the options parameter.</p>
 
       
     
+  
+
   
 
   
@@ -22707,6 +23208,8 @@ by the options parameter.</p>
   
 
   
+
+  
 </section>
 
       </div>
@@ -22749,6 +23252,8 @@ by the options parameter.</p>
 
       
     
+  
+
   
 
   
@@ -22817,6 +23322,8 @@ by the options parameter.</p>
   
 
   
+
+  
 </section>
 
       </div>
@@ -22861,6 +23368,8 @@ by the options parameter.</p>
         </div>
       
     </div>
+  
+
   
 
   
@@ -22946,6 +23455,8 @@ by the options parameter.</p>
   
 
   
+
+  
 </section>
 
       </div>
@@ -23014,6 +23525,8 @@ by the options parameter.</p>
   
 
   
+
+  
 </section>
 
       </div>
@@ -23069,6 +23582,8 @@ by the options parameter.</p>
 
       
     
+  
+
   
 
   
@@ -23164,6 +23679,8 @@ by the options parameter.</p>
         </div>
       
     </div>
+  
+
   
 
   
@@ -23294,6 +23811,8 @@ by the options parameter.</p>
   
 
   
+
+  
 </section>
 
           
@@ -23364,6 +23883,8 @@ by the options parameter.</p>
         </div>
       
     </div>
+  
+
   
 
   
@@ -23494,6 +24015,8 @@ by the options parameter.</p>
   
 
   
+
+  
 </section>
 
           
@@ -23564,6 +24087,8 @@ by the options parameter.</p>
         </div>
       
     </div>
+  
+
   
 
   
@@ -23694,6 +24219,8 @@ by the options parameter.</p>
   
 
   
+
+  
 </section>
 
           
@@ -23764,6 +24291,8 @@ by the options parameter.</p>
         </div>
       
     </div>
+  
+
   
 
   
@@ -23880,6 +24409,8 @@ by the options parameter.</p>
   
 
   
+
+  
 </section>
 
           
@@ -23950,6 +24481,8 @@ by the options parameter.</p>
         </div>
       
     </div>
+  
+
   
 
   
@@ -24066,6 +24599,8 @@ by the options parameter.</p>
   
 
   
+
+  
 </section>
 
           
@@ -24136,6 +24671,8 @@ by the options parameter.</p>
         </div>
       
     </div>
+  
+
   
 
   
@@ -24340,6 +24877,8 @@ by the options parameter.</p>
   
 
   
+
+  
     <div class='py1 quiet mt1 prose-big'>Instance Members</div>
     <div class="clearfix">
   
@@ -24394,6 +24933,8 @@ by the options parameter.</p>
 
       
     
+  
+
   
 
   
@@ -24473,6 +25014,8 @@ by the options parameter.</p>
 
       
     
+  
+
   
 
   
@@ -24560,10 +25103,12 @@ by the options parameter.</p>
   
 
   
+
+  
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
-      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">return</span> dm.asset(<span class="hljs-string">'thisOne'</span>)
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">return</span> dm.asset(<span class="hljs-string">&#x27;thisOne&#x27;</span>)
 .then(<span class="hljs-function"><span class="hljs-params">asset</span> =&gt;</span> {
   <span class="hljs-keyword">return</span> show(asset);
 });</pre>
@@ -24638,10 +25183,12 @@ by the options parameter.</p>
   
 
   
+
+  
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
-      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">return</span> dm.asset(<span class="hljs-string">'thisOne'</span>)
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">return</span> dm.asset(<span class="hljs-string">&#x27;thisOne&#x27;</span>)
 .then(<span class="hljs-function"><span class="hljs-params">asset</span> =&gt;</span> {
   <span class="hljs-keyword">return</span> show(asset);
 });</pre>
@@ -24712,6 +25259,8 @@ by the options parameter.</p>
 
       
     
+  
+
   
 
   
@@ -24798,12 +25347,14 @@ by the options parameter.</p>
   
 
   
+
+  
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
       <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">return</span> dm.assetList()
 .then(<span class="hljs-function"><span class="hljs-params">assets</span> =&gt;</span> {
-  <span class="hljs-keyword">return</span> assets.getAllItems().filter(<span class="hljs-function"><span class="hljs-params">asset</span> =&gt;</span> asset.assetID === <span class="hljs-string">'thisOne'</span>);
+  <span class="hljs-keyword">return</span> assets.getAllItems().filter(<span class="hljs-function"><span class="hljs-params">asset</span> =&gt;</span> asset.assetID === <span class="hljs-string">&#x27;thisOne&#x27;</span>);
 })
 .then(<span class="hljs-function"><span class="hljs-params">assetsArray</span> =&gt;</span> {
   <span class="hljs-keyword">return</span> show(assetsArray[<span class="hljs-number">0</span>]);
@@ -24812,7 +25363,7 @@ by the options parameter.</p>
 <span class="hljs-comment">// This would actually be better:</span>
 <span class="hljs-keyword">return</span> dm.assetList({
   <span class="hljs-attr">filter</span>: {
-    <span class="hljs-attr">assetID</span>: <span class="hljs-string">'thisOne'</span>,
+    <span class="hljs-attr">assetID</span>: <span class="hljs-string">&#x27;thisOne&#x27;</span>,
   },
 })
 .then(<span class="hljs-function"><span class="hljs-params">assets</span> =&gt;</span> {
@@ -24889,10 +25440,12 @@ by the options parameter.</p>
   
 
   
+
+  
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
-      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">return</span> dm.client(<span class="hljs-string">'thisOne'</span>)
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">return</span> dm.client(<span class="hljs-string">&#x27;thisOne&#x27;</span>)
 .then(<span class="hljs-function"><span class="hljs-params">client</span> =&gt;</span> {
   <span class="hljs-keyword">return</span> show(client);
 });</pre>
@@ -24967,12 +25520,14 @@ by the options parameter.</p>
   
 
   
+
+  
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
       <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">return</span> dm.clientList()
 .then(<span class="hljs-function"><span class="hljs-params">clients</span> =&gt;</span> {
-  <span class="hljs-keyword">return</span> clients.getAllItems().filter(<span class="hljs-function"><span class="hljs-params">client</span> =&gt;</span> client.clientID === <span class="hljs-string">'thisOne'</span>);
+  <span class="hljs-keyword">return</span> clients.getAllItems().filter(<span class="hljs-function"><span class="hljs-params">client</span> =&gt;</span> client.clientID === <span class="hljs-string">&#x27;thisOne&#x27;</span>);
 })
 .then(<span class="hljs-function"><span class="hljs-params">clientArray</span> =&gt;</span> {
   <span class="hljs-keyword">return</span> show(clientArray[<span class="hljs-number">0</span>]);
@@ -24981,7 +25536,7 @@ by the options parameter.</p>
 <span class="hljs-comment">// This would actually be better:</span>
 <span class="hljs-keyword">return</span> dm.clientList({
   <span class="hljs-attr">filter</span>: {
-    <span class="hljs-attr">clientID</span>: <span class="hljs-string">'thisOne'</span>,
+    <span class="hljs-attr">clientID</span>: <span class="hljs-string">&#x27;thisOne&#x27;</span>,
   },
 })
 .then(<span class="hljs-function"><span class="hljs-params">clients</span> =&gt;</span> {
@@ -25077,6 +25632,8 @@ or a readStream.
   
 
   
+
+  
 </section>
 
       </div>
@@ -25133,6 +25690,8 @@ or a readStream.
 
       
     
+  
+
   
 
   
@@ -25226,6 +25785,8 @@ FormData object, or an array of readStreams.
   
 
   
+
+  
 </section>
 
       </div>
@@ -25282,6 +25843,8 @@ FormData object, or an array of readStreams.
 
       
     
+  
+
   
 
   
@@ -25364,6 +25927,8 @@ FormData object, or an array of readStreams.
   
 
   
+
+  
 </section>
 
       </div>
@@ -25433,6 +25998,8 @@ FormData object, or an array of readStreams.
   
 
   
+
+  
 </section>
 
       </div>
@@ -25488,6 +26055,8 @@ FormData object, or an array of readStreams.
   
 
   
+
+  
 </section>
 
       </div>
@@ -25530,6 +26099,8 @@ FormData object, or an array of readStreams.
 
       
     
+  
+
   
 
   
@@ -25599,6 +26170,8 @@ FormData object, or an array of readStreams.
 
       
     
+  
+
   
 
   
@@ -25683,6 +26256,8 @@ filter options.
   
 
   
+
+  
 </section>
 
       </div>
@@ -25728,6 +26303,8 @@ Note: This Request only has pagination when you load a single modelID.</p>
         </div>
       
     </div>
+  
+
   
 
   
@@ -25806,10 +26383,12 @@ Note: This Request only has pagination when you load a single modelID.</p>
   
 
   
+
+  
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
-      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">return</span> dm.role(<span class="hljs-string">'thisOne'</span>)
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">return</span> dm.role(<span class="hljs-string">&#x27;thisOne&#x27;</span>)
 .then(<span class="hljs-function"><span class="hljs-params">role</span> =&gt;</span> {
   <span class="hljs-keyword">return</span> show(role);
 });</pre>
@@ -25884,12 +26463,14 @@ Note: This Request only has pagination when you load a single modelID.</p>
   
 
   
+
+  
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
       <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">return</span> dm.roleList()
 .then(<span class="hljs-function"><span class="hljs-params">roles</span> =&gt;</span> {
-  <span class="hljs-keyword">return</span> roles.getAllItems().filter(<span class="hljs-function"><span class="hljs-params">client</span> =&gt;</span> client.clientID === <span class="hljs-string">'thisOne'</span>);
+  <span class="hljs-keyword">return</span> roles.getAllItems().filter(<span class="hljs-function"><span class="hljs-params">client</span> =&gt;</span> client.clientID === <span class="hljs-string">&#x27;thisOne&#x27;</span>);
 })
 .then(<span class="hljs-function"><span class="hljs-params">roleArray</span> =&gt;</span> {
   <span class="hljs-keyword">return</span> show(roleArray[<span class="hljs-number">0</span>]);
@@ -25898,7 +26479,7 @@ Note: This Request only has pagination when you load a single modelID.</p>
 <span class="hljs-comment">// This would actually be better:</span>
 <span class="hljs-keyword">return</span> dm.roleList({
   <span class="hljs-attr">filter</span>: {
-    <span class="hljs-attr">roleID</span>: <span class="hljs-string">'thisOne'</span>,
+    <span class="hljs-attr">roleID</span>: <span class="hljs-string">&#x27;thisOne&#x27;</span>,
   },
 })
 .then(<span class="hljs-function"><span class="hljs-params">roles</span> =&gt;</span> {
@@ -25969,6 +26550,8 @@ Note: This Request only has pagination when you load a single modelID.</p>
   
 
   
+
+  
 </section>
 
       </div>
@@ -26016,10 +26599,12 @@ Note: This Request only has pagination when you load a single modelID.</p>
   
 
   
+
+  
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
-      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">return</span> dm.stats(<span class="hljs-string">'id'</span>)
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">return</span> dm.stats(<span class="hljs-string">&#x27;id&#x27;</span>)
 .then(<span class="hljs-function"><span class="hljs-params">stats</span> =&gt;</span> {
   <span class="hljs-keyword">return</span> show(stats);
 });</pre>
@@ -26115,6 +26700,8 @@ Note: This Request only has pagination when you load a single modelID.</p>
         </div>
       
     </div>
+  
+
   
 
   
@@ -26311,6 +26898,8 @@ Note: This Request only has pagination when you load a single modelID.</p>
   
 
   
+
+  
     <div class='py1 quiet mt1 prose-big'>Instance Members</div>
     <div class="clearfix">
   
@@ -26353,6 +26942,8 @@ Note: This Request only has pagination when you load a single modelID.</p>
         </div>
       
     </div>
+  
+
   
 
   
@@ -26453,6 +27044,8 @@ be the same object but with refreshed data.
   
 
   
+
+  
 </section>
 
       </div>
@@ -26508,6 +27101,8 @@ be the same object but with refreshed data.
   
 
   
+
+  
 </section>
 
       </div>
@@ -26550,6 +27145,8 @@ be the same object but with refreshed data.
 
       
     
+  
+
   
 
   
@@ -26645,6 +27242,8 @@ be the same object but with refreshed data.
         </div>
       
     </div>
+  
+
   
 
   
@@ -26767,25 +27366,27 @@ be the same object but with refreshed data.
   
 
   
+
+  
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
       <pre class='p1 overflow-auto round fill-light'>{
-  <span class="hljs-string">"method"</span>: <span class="hljs-string">"put"</span>,
-  <span class="hljs-string">"restrictToFields"</span>: [<span class="hljs-string">"editableField"</span>],
-  <span class="hljs-string">"public"</span>: <span class="hljs-literal">false</span>,
-  <span class="hljs-string">"roles"</span>: [<span class="hljs-string">"anonymous"</span>],
-  <span class="hljs-string">"conditions"</span>: [
+  <span class="hljs-string">&quot;method&quot;</span>: <span class="hljs-string">&quot;put&quot;</span>,
+  <span class="hljs-string">&quot;restrictToFields&quot;</span>: [<span class="hljs-string">&quot;editableField&quot;</span>],
+  <span class="hljs-string">&quot;public&quot;</span>: <span class="hljs-literal">false</span>,
+  <span class="hljs-string">&quot;roles&quot;</span>: [<span class="hljs-string">&quot;anonymous&quot;</span>],
+  <span class="hljs-string">&quot;conditions&quot;</span>: [
     {
-      <span class="hljs-string">"field"</span>: <span class="hljs-string">"_creator"</span>,
-      <span class="hljs-string">"operator"</span>: <span class="hljs-string">"="</span>,
-      <span class="hljs-string">"variable"</span>: <span class="hljs-string">"accountID"</span>
+      <span class="hljs-string">&quot;field&quot;</span>: <span class="hljs-string">&quot;_creator&quot;</span>,
+      <span class="hljs-string">&quot;operator&quot;</span>: <span class="hljs-string">&quot;=&quot;</span>,
+      <span class="hljs-string">&quot;variable&quot;</span>: <span class="hljs-string">&quot;accountID&quot;</span>
     },
-    <span class="hljs-string">"or"</span>,
+    <span class="hljs-string">&quot;or&quot;</span>,
     {
-      <span class="hljs-string">"field"</span>: <span class="hljs-string">"public"</span>,
-      <span class="hljs-string">"operator"</span>: <span class="hljs-string">"="</span>,
-      <span class="hljs-string">"constant"</span>:<span class="hljs-literal">true</span>
+      <span class="hljs-string">&quot;field&quot;</span>: <span class="hljs-string">&quot;public&quot;</span>,
+      <span class="hljs-string">&quot;operator&quot;</span>: <span class="hljs-string">&quot;=&quot;</span>,
+      <span class="hljs-string">&quot;constant&quot;</span>:<span class="hljs-literal">true</span>
     }
   ]
 }</pre>
@@ -26888,6 +27489,8 @@ be the same object but with refreshed data.
   
 
   
+
+  
 </section>
 
           
@@ -26964,6 +27567,8 @@ be the same object but with refreshed data.
   
 
   
+
+  
 </section>
 
           
@@ -26998,6 +27603,8 @@ be the same object but with refreshed data.
   
   
   
+  
+
   
 
   
@@ -27097,6 +27704,8 @@ be the same object but with refreshed data.
         </div>
       
     </div>
+  
+
   
 
   
@@ -27263,6 +27872,8 @@ be the same object but with refreshed data.
   
 
   
+
+  
     <div class='py1 quiet mt1 prose-big'>Instance Members</div>
     <div class="clearfix">
   
@@ -27317,6 +27928,8 @@ be the same object but with refreshed data.
 
       
     
+  
+
   
 
   
@@ -27421,6 +28034,8 @@ be the same object but with refreshed data.
         </div>
       
     </div>
+  
+
   
 
   
@@ -27572,6 +28187,8 @@ be the same object but with refreshed data.
   
 
   
+
+  
 </section>
 
           
@@ -27642,6 +28259,8 @@ be the same object but with refreshed data.
         </div>
       
     </div>
+  
+
   
 
   
@@ -27796,6 +28415,8 @@ be the same object but with refreshed data.
   
 
   
+
+  
     <div class='py1 quiet mt1 prose-big'>Instance Members</div>
     <div class="clearfix">
   
@@ -27850,6 +28471,8 @@ be the same object but with refreshed data.
 
       
     
+  
+
   
 
   
@@ -27958,6 +28581,8 @@ be the same object but with refreshed data.
         </div>
       
     </div>
+  
+
   
 
   
@@ -28098,6 +28723,8 @@ be the same object but with refreshed data.
   
 
   
+
+  
     <div class='py1 quiet mt1 prose-big'>Instance Members</div>
     <div class="clearfix">
   
@@ -28152,6 +28779,8 @@ be the same object but with refreshed data.
 
       
     
+  
+
   
 
   
@@ -28221,6 +28850,8 @@ be the same object but with refreshed data.
 
       
     
+  
+
   
 
   
@@ -28333,6 +28964,8 @@ be the same object but with refreshed data.
   
 
   
+
+  
 </section>
 
           
@@ -28410,6 +29043,8 @@ be the same object but with refreshed data.
         </div>
       
     </div>
+  
+
   
 
   
@@ -28508,6 +29143,8 @@ be the same object but with refreshed data.
   
 
   
+
+  
     <div class='py1 quiet mt1 prose-big'>Instance Members</div>
     <div class="clearfix">
   
@@ -28548,6 +29185,8 @@ be the same object but with refreshed data.
 
       
     
+  
+
   
 
   
@@ -28603,6 +29242,8 @@ be the same object but with refreshed data.
 
       
     
+  
+
   
 
   
@@ -28672,6 +29313,8 @@ be the same object but with refreshed data.
 
       
     
+  
+
   
 
   
@@ -28813,6 +29456,8 @@ be the same object but with refreshed data.
   
 
   
+
+  
     <div class='py1 quiet mt1 prose-big'>Instance Members</div>
     <div class="clearfix">
   
@@ -28867,6 +29512,8 @@ be the same object but with refreshed data.
 
       
     
+  
+
   
 
   
@@ -28937,6 +29584,8 @@ be the same object but with refreshed data.
 
       
     
+  
+
   
 
   
@@ -29032,6 +29681,8 @@ be the same object but with refreshed data.
         </div>
       
     </div>
+  
+
   
 
   
@@ -29179,6 +29830,8 @@ be the same object but with refreshed data.
   
 
   
+
+  
     <div class='py1 quiet mt1 prose-big'>Instance Members</div>
     <div class="clearfix">
   
@@ -29233,6 +29886,8 @@ be the same object but with refreshed data.
 
       
     
+  
+
   
 
   
@@ -29324,6 +29979,8 @@ be the same object but with refreshed data.
   
 
   
+
+  
 </section>
 
       </div>
@@ -29402,6 +30059,8 @@ be the same object but with refreshed data.
   
 
   
+
+  
 </section>
 
       </div>
@@ -29445,6 +30104,8 @@ image for an asset.</p>
 
       
     
+  
+
   
 
   
@@ -29553,6 +30214,8 @@ image for an asset.</p>
   
 
   
+
+  
     <div class='py1 quiet mt1 prose-big'>Instance Members</div>
     <div class="clearfix">
   
@@ -29612,10 +30275,12 @@ image for an asset.</p>
   
 
   
+
+  
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
-      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">return</span> assetList.deletedAsset(<span class="hljs-string">'thisOne'</span>)
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">return</span> assetList.deletedAsset(<span class="hljs-string">&#x27;thisOne&#x27;</span>)
 .then(<span class="hljs-function"><span class="hljs-params">asset</span> =&gt;</span> {
   <span class="hljs-keyword">return</span> show(asset);
 });</pre>
@@ -29690,12 +30355,14 @@ image for an asset.</p>
   
 
   
+
+  
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
       <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">return</span> assetList.deletedAssetList()
 .then(<span class="hljs-function"><span class="hljs-params">assets</span> =&gt;</span> {
-  <span class="hljs-keyword">return</span> assets.getAllItems().filter(<span class="hljs-function"><span class="hljs-params">asset</span> =&gt;</span> asset.assetID === <span class="hljs-string">'thisOne'</span>);
+  <span class="hljs-keyword">return</span> assets.getAllItems().filter(<span class="hljs-function"><span class="hljs-params">asset</span> =&gt;</span> asset.assetID === <span class="hljs-string">&#x27;thisOne&#x27;</span>);
 })
 .then(<span class="hljs-function"><span class="hljs-params">assetsArray</span> =&gt;</span> {
   <span class="hljs-keyword">return</span> show(assetsArray[<span class="hljs-number">0</span>]);
@@ -29704,7 +30371,7 @@ image for an asset.</p>
 <span class="hljs-comment">// This would actually be better:</span>
 <span class="hljs-keyword">return</span> dm.assetList({
   <span class="hljs-attr">filter</span>: {
-    <span class="hljs-attr">assetID</span>: <span class="hljs-string">'thisOne'</span>,
+    <span class="hljs-attr">assetID</span>: <span class="hljs-string">&#x27;thisOne&#x27;</span>,
   },
 })
 .then(<span class="hljs-function"><span class="hljs-params">assets</span> =&gt;</span> {
@@ -29792,6 +30459,8 @@ provided. Url otherwise.
   
 
   
+
+  
 </section>
 
       </div>
@@ -29853,10 +30522,12 @@ provided. Url otherwise.
   
 
   
+
+  
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
-      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">return</span> assetList.tag(<span class="hljs-string">'thisOne'</span>)
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">return</span> assetList.tag(<span class="hljs-string">&#x27;thisOne&#x27;</span>)
 .then(<span class="hljs-function"><span class="hljs-params">tag</span> =&gt;</span> {
   <span class="hljs-keyword">return</span> show(tag);
 });</pre>
@@ -29931,12 +30602,14 @@ provided. Url otherwise.
   
 
   
+
+  
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
       <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">return</span> assetList.tagList()
 .then(<span class="hljs-function"><span class="hljs-params">tags</span> =&gt;</span> {
-  <span class="hljs-keyword">return</span> tags.getAllItems().filter(<span class="hljs-function"><span class="hljs-params">tags</span> =&gt;</span> tag.tag === <span class="hljs-string">'thisOne'</span>);
+  <span class="hljs-keyword">return</span> tags.getAllItems().filter(<span class="hljs-function"><span class="hljs-params">tags</span> =&gt;</span> tag.tag === <span class="hljs-string">&#x27;thisOne&#x27;</span>);
 })
 .then(<span class="hljs-function"><span class="hljs-params">tagsArray</span> =&gt;</span> {
   <span class="hljs-keyword">return</span> show(tagsArray[<span class="hljs-number">0</span>]);
@@ -29945,7 +30618,7 @@ provided. Url otherwise.
 <span class="hljs-comment">// This would actually be better:</span>
 <span class="hljs-keyword">return</span> dm.tagList({
   <span class="hljs-attr">filter</span>: {
-    <span class="hljs-attr">assetID</span>: <span class="hljs-string">'thisOne'</span>,
+    <span class="hljs-attr">assetID</span>: <span class="hljs-string">&#x27;thisOne&#x27;</span>,
   },
 })
 .then(<span class="hljs-function"><span class="hljs-params">tags</span> =&gt;</span> {
@@ -30103,6 +30776,8 @@ provided. Url otherwise.
   
 
   
+
+  
     <div class='py1 quiet mt1 prose-big'>Instance Members</div>
     <div class="clearfix">
   
@@ -30157,6 +30832,8 @@ provided. Url otherwise.
 
       
     
+  
+
   
 
   
@@ -30248,6 +30925,8 @@ provided. Url otherwise.
   
 
   
+
+  
 </section>
 
       </div>
@@ -30326,6 +31005,8 @@ provided. Url otherwise.
   
 
   
+
+  
 </section>
 
       </div>
@@ -30381,6 +31062,8 @@ provided. Url otherwise.
   
 
   
+
+  
 </section>
 
       </div>
@@ -30423,6 +31106,8 @@ provided. Url otherwise.
 
       
     
+  
+
   
 
   
@@ -30518,6 +31203,8 @@ provided. Url otherwise.
         </div>
       
     </div>
+  
+
   
 
   
@@ -30641,6 +31328,8 @@ provided. Url otherwise.
   
 
   
+
+  
 </section>
 
           
@@ -30711,6 +31400,8 @@ provided. Url otherwise.
         </div>
       
     </div>
+  
+
   
 
   
@@ -30849,6 +31540,8 @@ basic functionality useful for showing unresolved (read: not loaded nested) entr
   
 
   
+
+  
     <div class='py1 quiet mt1 prose-big'>Instance Members</div>
     <div class="clearfix">
   
@@ -30889,6 +31582,8 @@ basic functionality useful for showing unresolved (read: not loaded nested) entr
 
       
     
+  
+
   
 
   
@@ -30983,6 +31678,8 @@ basic functionality useful for showing unresolved (read: not loaded nested) entr
   
 
   
+
+  
 </section>
 
       </div>
@@ -31028,6 +31725,8 @@ function. A promise is returned which resolves to the <a href="#entryresource">E
 
       
     
+  
+
   
 
   
@@ -31111,6 +31810,8 @@ be the same object but with refreshed data.
 
       
     
+  
+
   
 
   
@@ -31328,10 +32029,12 @@ required JSON Schemas won't be stored in the cache.</p>
   
 
   
+
+  
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
-      <pre class='p1 overflow-auto round fill-light'>publicAPI.entry(<span class="hljs-string">'muffins'</span>, <span class="hljs-string">'1234567'</span>)
+      <pre class='p1 overflow-auto round fill-light'>publicAPI.entry(<span class="hljs-string">&#x27;muffins&#x27;</span>, <span class="hljs-string">&#x27;1234567&#x27;</span>)
 .then(<span class="hljs-function">(<span class="hljs-params">muffin</span>) =&gt;</span> {
   show(muffin.title, muffin.deliciousness);
 });</pre>
@@ -31395,6 +32098,8 @@ required JSON Schemas won't be stored in the cache.</p>
 
       
     
+  
+
   
 
   
@@ -31473,6 +32178,8 @@ required JSON Schemas won't be stored in the cache.</p>
 
       
     
+  
+
   
 
   
@@ -31573,6 +32280,8 @@ required JSON Schemas won't be stored in the cache.</p>
   
 
   
+
+  
 </section>
 
       </div>
@@ -31660,6 +32369,8 @@ required JSON Schemas won't be stored in the cache.</p>
   
 
   
+
+  
 </section>
 
       </div>
@@ -31702,6 +32413,8 @@ required JSON Schemas won't be stored in the cache.</p>
 
       
     
+  
+
   
 
   
@@ -31770,6 +32483,8 @@ required JSON Schemas won't be stored in the cache.</p>
   
 
   
+
+  
 </section>
 
       </div>
@@ -31812,6 +32527,8 @@ required JSON Schemas won't be stored in the cache.</p>
 
       
     
+  
+
   
 
   
@@ -31907,6 +32624,8 @@ the entry title.
   
 
   
+
+  
 </section>
 
       </div>
@@ -31951,6 +32670,8 @@ the entry title.
         </div>
       
     </div>
+  
+
   
 
   
@@ -32039,6 +32760,8 @@ be the same object but with refreshed data.
   
 
   
+
+  
 </section>
 
       </div>
@@ -32082,6 +32805,8 @@ otherwise.
 
       
     
+  
+
   
 
   
@@ -32165,6 +32890,8 @@ otherwise.
   
 
   
+
+  
 </section>
 
       </div>
@@ -32221,6 +32948,8 @@ otherwise.
 
       
     
+  
+
   
 
   
@@ -32347,6 +33076,8 @@ otherwise.
   
 
   
+
+  
     <div class='py1 quiet mt1 prose-big'>Instance Members</div>
     <div class="clearfix">
   
@@ -32387,6 +33118,8 @@ otherwise.
 
       
     
+  
+
   
 
   
@@ -32442,6 +33175,8 @@ otherwise.
 
       
     
+  
+
   
 
   
@@ -32511,6 +33246,8 @@ otherwise.
 
       
     
+  
+
   
 
   
@@ -32736,6 +33473,8 @@ otherwise.
   
 
   
+
+  
     <div class='py1 quiet mt1 prose-big'>Instance Members</div>
     <div class="clearfix">
   
@@ -32776,6 +33515,8 @@ otherwise.
 
       
     
+  
+
   
 
   
@@ -32868,6 +33609,8 @@ otherwise.
   
 
   
+
+  
 </section>
 
       </div>
@@ -32924,6 +33667,8 @@ otherwise.
 
       
     
+  
+
   
 
   
@@ -33006,6 +33751,8 @@ otherwise.
   
 
   
+
+  
 </section>
 
       </div>
@@ -33049,6 +33796,8 @@ image for an asset.</p>
 
       
     
+  
+
   
 
   
@@ -33161,6 +33910,8 @@ image for an asset.</p>
   
 
   
+
+  
 </section>
 
           
@@ -33244,6 +33995,8 @@ image for an asset.</p>
   
 
   
+
+  
     <div class='py1 quiet mt1 prose-big'>Instance Members</div>
     <div class="clearfix">
   
@@ -33303,10 +34056,12 @@ image for an asset.</p>
   
 
   
+
+  
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
-      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">return</span> assetList.tag(<span class="hljs-string">'thisOne'</span>)
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">return</span> assetList.tag(<span class="hljs-string">&#x27;thisOne&#x27;</span>)
 .then(<span class="hljs-function"><span class="hljs-params">tag</span> =&gt;</span> {
   <span class="hljs-keyword">return</span> show(tag);
 });</pre>
@@ -33381,12 +34136,14 @@ image for an asset.</p>
   
 
   
+
+  
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
       <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">return</span> assetList.tagList()
 .then(<span class="hljs-function"><span class="hljs-params">tags</span> =&gt;</span> {
-  <span class="hljs-keyword">return</span> tags.getAllItems().filter(<span class="hljs-function"><span class="hljs-params">tags</span> =&gt;</span> tag.tag === <span class="hljs-string">'thisOne'</span>);
+  <span class="hljs-keyword">return</span> tags.getAllItems().filter(<span class="hljs-function"><span class="hljs-params">tags</span> =&gt;</span> tag.tag === <span class="hljs-string">&#x27;thisOne&#x27;</span>);
 })
 .then(<span class="hljs-function"><span class="hljs-params">tagsArray</span> =&gt;</span> {
   <span class="hljs-keyword">return</span> show(tagsArray[<span class="hljs-number">0</span>]);
@@ -33395,7 +34152,7 @@ image for an asset.</p>
 <span class="hljs-comment">// This would actually be better:</span>
 <span class="hljs-keyword">return</span> dm.tagList({
   <span class="hljs-attr">filter</span>: {
-    <span class="hljs-attr">assetID</span>: <span class="hljs-string">'thisOne'</span>,
+    <span class="hljs-attr">assetID</span>: <span class="hljs-string">&#x27;thisOne&#x27;</span>,
   },
 })
 .then(<span class="hljs-function"><span class="hljs-params">tags</span> =&gt;</span> {
@@ -33563,6 +34320,8 @@ embedded version of this asset.</p>
   
 
   
+
+  
     <div class='py1 quiet mt1 prose-big'>Instance Members</div>
     <div class="clearfix">
   
@@ -33617,6 +34376,8 @@ embedded version of this asset.</p>
 
       
     
+  
+
   
 
   
@@ -33708,6 +34469,8 @@ embedded version of this asset.</p>
   
 
   
+
+  
 </section>
 
       </div>
@@ -33786,6 +34549,8 @@ embedded version of this asset.</p>
   
 
   
+
+  
 </section>
 
       </div>
@@ -33829,6 +34594,8 @@ image for an asset.</p>
 
       
     
+  
+
   
 
   
@@ -33887,6 +34654,8 @@ function. A promise is returned which resolves to the <a href="#publicassetresou
 
       
     
+  
+
   
 
   
@@ -33982,6 +34751,8 @@ be the same object but with refreshed data.
   
 
   
+
+  
 </section>
 
       </div>
@@ -34064,6 +34835,8 @@ be the same object but with refreshed data.
         </div>
       
     </div>
+  
+
   
 
   
@@ -34187,6 +34960,8 @@ be the same object but with refreshed data.
   
 
   
+
+  
 </section>
 
           
@@ -34287,6 +35062,8 @@ basic functionality useful for showing unresolved (read: not loaded nested) entr
   
 
   
+
+  
     <div class='py1 quiet mt1 prose-big'>Instance Members</div>
     <div class="clearfix">
   
@@ -34330,6 +35107,8 @@ function. A promise is returned which resolves to the <a href="#dmaccountresourc
 
       
     
+  
+
   
 
   
@@ -34413,6 +35192,8 @@ be the same object but with refreshed data.
 
       
     
+  
+
   
 
   
@@ -34538,6 +35319,8 @@ basic functionality useful for showing unresolved (read: not loaded nested) entr
   
 
   
+
+  
     <div class='py1 quiet mt1 prose-big'>Instance Members</div>
     <div class="clearfix">
   
@@ -34581,6 +35364,8 @@ function. A promise is returned which resolves to the <a href="#roleresource">Ro
 
       
     
+  
+
   
 
   
@@ -34664,6 +35449,8 @@ be the same object but with refreshed data.
 
       
     
+  
+
   
 
   
@@ -34977,12 +35764,12 @@ be the same object but with refreshed data.
 <li>response signature changed for PublicAPI#login and PublicAPI#signup</li>
 </ul>
 <p>before:</p>
-<pre class='hljs'><span class="hljs-keyword">const</span> api = <span class="hljs-keyword">new</span> PublicAPI(<span class="hljs-string">'beefbeef'</span>);
+<pre class='hljs'><span class="hljs-keyword">const</span> api = <span class="hljs-keyword">new</span> PublicAPI(<span class="hljs-string">&#x27;beefbeef&#x27;</span>);
 <span class="hljs-comment">// same for api.signup</span>
 <span class="hljs-keyword">const</span> token: string = <span class="hljs-keyword">await</span> api.login(email, password);
 mySecureStore.saveToken(token);</pre>
 <p>after:</p>
-<pre class='hljs'><span class="hljs-keyword">const</span> api = <span class="hljs-keyword">new</span> PublicAPI(<span class="hljs-string">'beefbeef'</span>);
+<pre class='hljs'><span class="hljs-keyword">const</span> api = <span class="hljs-keyword">new</span> PublicAPI(<span class="hljs-string">&#x27;beefbeef&#x27;</span>);
 <span class="hljs-comment">// same for api.signup</span>
 <span class="hljs-keyword">const</span> tokenResponse: {
   <span class="hljs-attr">access_token</span>: string,
@@ -35245,15 +36032,15 @@ accounts.map(<span class="hljs-built_in">console</span>.log) <span class="hljs-c
 inject 'eventsource/lib/eventsource-polyfill' manually in you project.</li>
 </ul>
 <p>before:</p>
-<pre class='hljs'><span class="hljs-keyword">import</span> { DataManager } <span class="hljs-keyword">from</span> <span class="hljs-string">'ec.sdk'</span>;
+<pre class='hljs'><span class="hljs-keyword">import</span> { DataManager } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;ec.sdk&#x27;</span>;
 
 <span class="hljs-keyword">const</span> dmApi = <span class="hljs-keyword">new</span> DataManager();
 
 <span class="hljs-keyword">const</span> dm = <span class="hljs-keyword">await</span> dmApi.dataManager(dmID);
 <span class="hljs-keyword">const</span> history = <span class="hljs-keyword">await</span> dm.newHistory();</pre>
 <p>after:</p>
-<pre class='hljs'><span class="hljs-keyword">import</span> { DataManager } <span class="hljs-keyword">from</span> <span class="hljs-string">'ec.sdk'</span>;
-<span class="hljs-keyword">import</span> * <span class="hljs-keyword">as</span> EventSource <span class="hljs-keyword">from</span>  <span class="hljs-string">'eventsource/lib/eventsource-polyfill'</span>;
+<pre class='hljs'><span class="hljs-keyword">import</span> { DataManager } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;ec.sdk&#x27;</span>;
+<span class="hljs-keyword">import</span> * <span class="hljs-keyword">as</span> EventSource <span class="hljs-keyword">from</span>  <span class="hljs-string">&#x27;eventsource/lib/eventsource-polyfill&#x27;</span>;
 
 DataManager.enableHistoryEvents(EventSource);
 
@@ -35671,13 +36458,13 @@ api.setToken(jwt);</pre>
 </ul>
 <p>Before:</p>
 <pre class='hljs'><span class="hljs-comment">// this will share the token with same shortID API Connectors</span>
-<span class="hljs-keyword">const</span> api = <span class="hljs-keyword">new</span> PublicAPI(shortID, <span class="hljs-string">'live'</span>);
+<span class="hljs-keyword">const</span> api = <span class="hljs-keyword">new</span> PublicAPI(shortID, <span class="hljs-string">&#x27;live&#x27;</span>);
 <span class="hljs-comment">// this will share the token with all API Connectors</span>
-<span class="hljs-keyword">const</span> api = <span class="hljs-keyword">new</span> PublicAPI(shortID, <span class="hljs-string">'live'</span>, <span class="hljs-literal">true</span>);</pre>
+<span class="hljs-keyword">const</span> api = <span class="hljs-keyword">new</span> PublicAPI(shortID, <span class="hljs-string">&#x27;live&#x27;</span>, <span class="hljs-literal">true</span>);</pre>
 <p>After:</p>
 <pre class='hljs'><span class="hljs-comment">// new optional syntax, will not share token with anyone (and will not save as cookie)</span>
 <span class="hljs-keyword">const</span> api = <span class="hljs-keyword">new</span> PublicAPI(shortID, {
-  <span class="hljs-attr">environment</span>: <span class="hljs-string">'live'</span>,
+  <span class="hljs-attr">environment</span>: <span class="hljs-string">&#x27;live&#x27;</span>,
   <span class="hljs-attr">noCookie</span>: <span class="hljs-literal">true</span>,
 });</pre>
 <p><a name="0.12.15"></a></p>
@@ -35834,9 +36621,9 @@ api.setToken(jwt);</pre>
 <li>import for typescript projects changed from <code>src</code> to <code>lib</code>.</li>
 </ul>
 <p>before:</p>
-<pre class='hljs'><span class="hljs-keyword">import</span> { EntryResource } <span class="hljs-keyword">from</span> <span class="hljs-string">'ec.sdk/src/resources/publicAPI/EntryResource'</span>;</pre>
+<pre class='hljs'><span class="hljs-keyword">import</span> { EntryResource } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;ec.sdk/src/resources/publicAPI/EntryResource&#x27;</span>;</pre>
 <p>after:</p>
-<pre class='hljs'><span class="hljs-keyword">import</span> { EntryResource } <span class="hljs-keyword">from</span> <span class="hljs-string">'ec.sdk/lib/resources/publicAPI/EntryResource'</span>;</pre>
+<pre class='hljs'><span class="hljs-keyword">import</span> { EntryResource } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;ec.sdk/lib/resources/publicAPI/EntryResource&#x27;</span>;</pre>
 <p><a name="0.10.2"></a></p>
 <h2>0.10.2 (2017-11-15)</h2>
 <ul>
@@ -36002,11 +36789,11 @@ api.setToken(jwt);</pre>
 </ul>
 <p>Before:</p>
 <pre class='hljs'><span class="hljs-comment">// …</span>
-<span class="hljs-keyword">import</span> { AccountResource } <span class="hljs-keyword">from</span> <span class="hljs-string">'ec.sdk/typings/resources/accounts/AccountResource'</span>;
+<span class="hljs-keyword">import</span> { AccountResource } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;ec.sdk/typings/resources/accounts/AccountResource&#x27;</span>;
 <span class="hljs-comment">// …</span></pre>
 <p>After:</p>
 <pre class='hljs'><span class="hljs-comment">// …</span>
-<span class="hljs-keyword">import</span> AccountResource <span class="hljs-keyword">from</span> <span class="hljs-string">'ec.sdk/src/resources/accounts/AccountResource'</span>;
+<span class="hljs-keyword">import</span> AccountResource <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;ec.sdk/src/resources/accounts/AccountResource&#x27;</span>;
 <span class="hljs-comment">// …</span></pre>
 <p><a name="0.7.1"></a></p>
 <h2>0.7.1 (2017-08-29)</h2>
@@ -36040,12 +36827,12 @@ api.setToken(jwt);</pre>
 <p>  Since version 0.7.0 the ec.sdk supports "Lite" PublicAssetResources. Those are used to better support EntryResources in ec-forms. They are a stripped down versions of PublicAssetResources containing everything but <code>tags</code>. The reason to add this was better support of title handling for linked entries.</p>
 <p>  Migration is straight forward, just add <code>.assetID</code> on all linked entry types when you don't use nested assets.</p>
 <p>  Before:</p>
-<pre class='hljs'>publicAPI.entry(<span class="hljs-string">'myModel'</span>, entryID)
+<pre class='hljs'>publicAPI.entry(<span class="hljs-string">&#x27;myModel&#x27;</span>, entryID)
 .then(<span class="hljs-function">(<span class="hljs-params">entry</span>) =&gt;</span> {
   <span class="hljs-built_in">console</span>.log(entry.asset); <span class="hljs-comment">// would print `assetID`</span>
 });</pre>
 <p>  After:</p>
-<pre class='hljs'>publicAPI.entry(<span class="hljs-string">'myModel'</span>, entryID)
+<pre class='hljs'>publicAPI.entry(<span class="hljs-string">&#x27;myModel&#x27;</span>, entryID)
 .then(<span class="hljs-function">(<span class="hljs-params">entry</span>) =&gt;</span> {
   <span class="hljs-built_in">console</span>.log(entry.asset.assetID); <span class="hljs-comment">// would print `assetID`</span>
 });</pre>
@@ -36055,12 +36842,12 @@ api.setToken(jwt);</pre>
 <p>  Since version 0.7.0 the ec.sdk supports LiteEntryResources. Those are used to better support EntryResources in ec-forms. They are a stripped down versions of EntryResources only containing <code>id</code>, <code>_id</code>, <code>_entryTitle</code>, and <code>getModelTitle()</code>. The reason to add this was better support of title handling for linked entries.</p>
 <p>  Migration is straight forward, just add <code>.id</code> on all linked entry types when you don't use nested entries.</p>
 <p>  Before:</p>
-<pre class='hljs'>publicAPI.entry(<span class="hljs-string">'myModel'</span>, entryID)
+<pre class='hljs'>publicAPI.entry(<span class="hljs-string">&#x27;myModel&#x27;</span>, entryID)
 .then(<span class="hljs-function">(<span class="hljs-params">entry</span>) =&gt;</span> {
   <span class="hljs-built_in">console</span>.log(entry.linkedEntry); <span class="hljs-comment">// would print `entryID`</span>
 });</pre>
 <p>  After:</p>
-<pre class='hljs'>publicAPI.entry(<span class="hljs-string">'myModel'</span>, entryID)
+<pre class='hljs'>publicAPI.entry(<span class="hljs-string">&#x27;myModel&#x27;</span>, entryID)
 .then(<span class="hljs-function">(<span class="hljs-params">entry</span>) =&gt;</span> {
   <span class="hljs-built_in">console</span>.log(entry.linkedEntry.id); <span class="hljs-comment">// would print `entryID`</span>
 });</pre>
@@ -36376,12 +37163,12 @@ api.setToken(jwt);</pre>
 <p>before:</p>
 <pre class='hljs'>{
   <span class="hljs-attr">filter</span>: {
-    <span class="hljs-attr">property</span>: <span class="hljs-string">'exactFilter'</span>
+    <span class="hljs-attr">property</span>: <span class="hljs-string">&#x27;exactFilter&#x27;</span>
   }
 }</pre>
 <p>after:</p>
 <pre class='hljs'>{
-  <span class="hljs-attr">property</span>: <span class="hljs-string">'exactFilter'</span>
+  <span class="hljs-attr">property</span>: <span class="hljs-string">&#x27;exactFilter&#x27;</span>
 }</pre>
 <p><a name="0.2.1"></a></p>
 <h2>0.2.1 (2017-02-21)</h2>
@@ -36693,6 +37480,8 @@ accounts.account(…);</pre>
   
 
   
+
+  
 </section>
 
           
@@ -36763,6 +37552,8 @@ accounts.account(…);</pre>
         </div>
       
     </div>
+  
+
   
 
   
