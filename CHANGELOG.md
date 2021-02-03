@@ -1,3 +1,15 @@
+## <small>0.22.4 (2021-02-03)</small>
+
+* release version 0.22.4 ([830fff5](https://github.com/entrecode/ec.sdk/commit/830fff5))
+* chore: updated documentation.js ([5ad9b20](https://github.com/entrecode/ec.sdk/commit/5ad9b20))
+* chore(deps): bump highlight.js from 9.18.1 to 9.18.5 ([294f5f8](https://github.com/entrecode/ec.sdk/commit/294f5f8))
+* chore(deps): bump ini from 1.3.5 to 1.3.7 ([008994a](https://github.com/entrecode/ec.sdk/commit/008994a))
+* chore(deps): bump lodash from 4.17.15 to 4.17.19 ([23e55bc](https://github.com/entrecode/ec.sdk/commit/23e55bc))
+* test: removed references to stash ([21ec786](https://github.com/entrecode/ec.sdk/commit/21ec786))
+* doc: updated references to dm-history repository ([8cc08b7](https://github.com/entrecode/ec.sdk/commit/8cc08b7))
+
+
+
 ## <small>0.22.3 (2020-11-18)</small>
 
 * release version 0.22.3 ([8dcaa4b](https://github.com/entrecode/ec.sdk/commit/8dcaa4b))
