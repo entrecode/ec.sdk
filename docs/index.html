@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html>
 <head>
   <meta charset='utf-8'>
   <title>ec.sdk 0.22.3 | Documentation</title>
@@ -20,9 +20,6 @@
             placeholder='Filter'
             id='filter-input'
             class='col12 block input'
-            spellcheck='false'
-            autocapitalize='off'
-            autocorrect='off'
             type='text' />
           <div id='toc'>
             <ul class='list-reset h5 py1-ul'>
@@ -3328,7 +3325,7 @@
 <p>Add the following in your webpack.config.js.</p>
 <pre class='hljs'><span class="hljs-keyword">const</span> config = {
   <span class="hljs-comment">// …</span>
-  <span class="hljs-attr">node</span>: {
+  node: {
     <span class="hljs-attr">fs</span>: <span class="hljs-string">'empty'</span>,
     <span class="hljs-attr">Buffer</span>: <span class="hljs-literal">false</span>,
     <span class="hljs-attr">net</span>: <span class="hljs-string">'empty'</span>,
@@ -3341,7 +3338,7 @@
 <span class="hljs-keyword">import</span> DataManagerResource <span class="hljs-keyword">from</span> <span class="hljs-string">'ec.sdk/src/resources/datamanager/DataManagerResource'</span>;
 
 <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyExample</span> </span>{
-  <span class="hljs-attr">session</span>: Session;
+  session: Session;
   accounts: Accounts;
   dataManager: DataManager;
 
@@ -3451,7 +3448,7 @@ api.setToken(config.accessToken);</pre>
   <span class="hljs-attr">page</span>: <span class="hljs-number">1</span>,
   <span class="hljs-attr">sort</span>: [<span class="hljs-string">'-_created'</span>],
   <span class="hljs-attr">_levels</span>: <span class="hljs-number">1</span>, <span class="hljs-comment">// only for single entry requests</span>
-  <span class="hljs-attr">_fields</span>: [<span class="hljs-string">'id'</span>, <span class="hljs-string">'title'</span>],
+  _fields: [<span class="hljs-string">'id'</span>, <span class="hljs-string">'title'</span>],
   <span class="hljs-attr">myproperty</span>: <span class="hljs-string">'exactValue'</span>,
   <span class="hljs-attr">email</span>: { <span class="hljs-attr">search</span>: <span class="hljs-string">'andre'</span> },
   <span class="hljs-attr">prop</span>: { <span class="hljs-attr">any</span>: [<span class="hljs-string">'id1'</span>, <span class="hljs-string">'id2'</span>] },
@@ -3577,8 +3574,6 @@ directly. Use one of the other API connectors instead.</p>
   
 
   
-
-  
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
@@ -3638,8 +3633,6 @@ provide 'eventsource/lib/eventsource-polyfill' within your project.</p>
         </div>
       
     </div>
-  
-
   
 
   
@@ -3730,8 +3723,6 @@ PublicAPI.enableHistoryEvents(EventSource);
   
 
   
-
-  
 </section>
 
       </div>
@@ -3807,8 +3798,6 @@ PublicAPI.enableHistoryEvents(EventSource);
 
       
     
-  
-
   
 
   
@@ -3914,8 +3903,6 @@ PublicAPI.enableHistoryEvents(EventSource);
   
 
   
-
-  
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
@@ -3992,8 +3979,6 @@ PublicAPI.enableHistoryEvents(EventSource);
   
 
   
-
-  
 </section>
 
       </div>
@@ -4036,8 +4021,6 @@ PublicAPI.enableHistoryEvents(EventSource);
 
       
     
-  
-
   
 
   
@@ -4122,8 +4105,6 @@ appear/disappear when login state changes.</p>
   
 
   
-
-  
 </section>
 
       </div>
@@ -4166,8 +4147,6 @@ appear/disappear when login state changes.</p>
 
       
     
-  
-
   
 
   
@@ -4250,8 +4229,6 @@ appear/disappear when login state changes.</p>
   
 
   
-
-  
 </section>
 
       </div>
@@ -4320,8 +4297,6 @@ appear/disappear when login state changes.</p>
   
 
   
-
-  
 </section>
 
       </div>
@@ -4364,8 +4339,6 @@ appear/disappear when login state changes.</p>
 
       
     
-  
-
   
 
   
@@ -4432,8 +4405,6 @@ appear/disappear when login state changes.</p>
   
 
   
-
-  
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
@@ -4495,8 +4466,6 @@ appear/disappear when login state changes.</p>
   
 
   
-
-  
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
@@ -4553,8 +4522,6 @@ appear/disappear when login state changes.</p>
 
       
     
-  
-
   
 
   
@@ -4629,8 +4596,6 @@ will be emitted.</p>
         </div>
       
     </div>
-  
-
   
 
   
@@ -4729,8 +4694,6 @@ session.login(email, password);
   
 
   
-
-  
 </section>
 
       </div>
@@ -4797,8 +4760,6 @@ this function.</p>
 
       
     
-  
-
   
 
   
@@ -4903,8 +4864,6 @@ session.login(email, password)
   
 
   
-
-  
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
@@ -4997,8 +4956,6 @@ options parameter.</p>
 
       
     
-  
-
   
 
   
@@ -5097,8 +5054,6 @@ Authorization header.</p>
   
 
   
-
-  
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
@@ -5172,8 +5127,6 @@ It will be used to get a new token when time comes.</p>
 
       
     
-  
-
   
 
   
@@ -5258,8 +5211,6 @@ function to add any string.</p>
   
 
   
-
-  
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
@@ -5336,8 +5287,6 @@ function to add any string.</p>
   
 
   
-
-  
 </section>
 
       </div>
@@ -5380,8 +5329,6 @@ function to add any string.</p>
 
       
     
-  
-
   
 
   
@@ -5477,8 +5424,6 @@ to all other API connectors of the same <a href="#environment">environment</a>.<
   
 
   
-
-  
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
@@ -5548,8 +5493,6 @@ to all other API connectors of the same <a href="#environment">environment</a>.<
 
       
     
-  
-
   
 
   
@@ -5642,8 +5585,6 @@ credentials and tokenMethod <code>body</code>.</p>
   
 
   
-
-  
 </section>
 
       </div>
@@ -5687,8 +5628,6 @@ cookie stored.</p>
 
       
     
-  
-
   
 
   
@@ -5758,8 +5697,6 @@ cookie stored.</p>
 
       
     
-  
-
   
 
   
@@ -5858,8 +5795,6 @@ signup…), permissions, clients, and groups.</p>
   
 
   
-
-  
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
@@ -5940,8 +5875,6 @@ signup…), permissions, clients, and groups.</p>
   
 
   
-
-  
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
@@ -6014,8 +5947,6 @@ by the options parameter.</p>
 
       
     
-  
-
   
 
   
@@ -6103,8 +6034,6 @@ by the options parameter.</p>
   
 
   
-
-  
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
@@ -6176,8 +6105,6 @@ by the options parameter.</p>
 
       
     
-  
-
   
 
   
@@ -6259,8 +6186,6 @@ by the options parameter.</p>
   
 
   
-
-  
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
@@ -6323,8 +6248,6 @@ token response.
 
       
     
-  
-
   
 
   
@@ -6414,8 +6337,6 @@ token response.
   
 
   
-
-  
 </section>
 
       </div>
@@ -6472,8 +6393,6 @@ token response.
 
       
     
-  
-
   
 
   
@@ -6557,8 +6476,6 @@ token response.
   
 
   
-
-  
 </section>
 
       </div>
@@ -6615,8 +6532,6 @@ token response.
 
       
     
-  
-
   
 
   
@@ -6704,8 +6619,6 @@ token response.
   
 
   
-
-  
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
@@ -6785,8 +6698,6 @@ token response.
   
 
   
-
-  
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
@@ -6853,8 +6764,6 @@ token response.
 
       
     
-  
-
   
 
   
@@ -6948,8 +6857,6 @@ token response.
   
 
   
-
-  
 </section>
 
       </div>
@@ -7021,8 +6928,6 @@ token response.
   
 
   
-
-  
 </section>
 
       </div>
@@ -7065,8 +6970,6 @@ token response.
 
       
     
-  
-
   
 
   
@@ -7145,8 +7048,6 @@ token response.
 
       
     
-  
-
   
 
   
@@ -7236,8 +7137,6 @@ token response.
   
 
   
-
-  
 </section>
 
       </div>
@@ -7312,8 +7211,6 @@ token response.
 
       
     
-  
-
   
 
   
@@ -7423,8 +7320,6 @@ Plugins, Builds and Deployments.</p>
   
 
   
-
-  
     <div class='py1 quiet mt1 prose-big'>Instance Members</div>
     <div class="clearfix">
   
@@ -7479,8 +7374,6 @@ Plugins, Builds and Deployments.</p>
 
       
     
-  
-
   
 
   
@@ -7558,8 +7451,6 @@ by the options parameter.</p>
 
       
     
-  
-
   
 
   
@@ -7644,8 +7535,6 @@ by the options parameter.</p>
   
 
   
-
-  
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
@@ -7725,8 +7614,6 @@ by the options parameter.</p>
   
 
   
-
-  
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
@@ -7784,8 +7671,6 @@ by the options parameter.</p>
 
       
     
-  
-
   
 
   
@@ -7849,8 +7734,6 @@ types.</p>
 
       
     
-  
-
   
 
   
@@ -7950,8 +7833,6 @@ contains APIs for DataManagers, Models, Fields, Hooks, and Policies.</p>
   
 
   
-
-  
     <div class='py1 quiet mt1 prose-big'>Instance Members</div>
     <div class="clearfix">
   
@@ -8006,8 +7887,6 @@ contains APIs for DataManagers, Models, Fields, Hooks, and Policies.</p>
 
       
     
-  
-
   
 
   
@@ -8089,8 +7968,6 @@ contains APIs for DataManagers, Models, Fields, Hooks, and Policies.</p>
   
 
   
-
-  
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
@@ -8166,8 +8043,6 @@ contains APIs for DataManagers, Models, Fields, Hooks, and Policies.</p>
 
       
     
-  
-
   
 
   
@@ -8258,8 +8133,6 @@ by the options parameter.</p>
   
 
   
-
-  
 </section>
 
       </div>
@@ -8326,8 +8199,6 @@ by the options parameter.</p>
 
       
     
-  
-
   
 
   
@@ -8429,8 +8300,6 @@ by the options parameter.</p>
   
 
   
-
-  
 </section>
 
       </div>
@@ -8519,8 +8388,6 @@ by the options parameter.</p>
   
 
   
-
-  
 </section>
 
       </div>
@@ -8566,8 +8433,6 @@ Note: This Request only has pagination when you load a single modelID.</p>
         </div>
       
     </div>
-  
-
   
 
   
@@ -8646,8 +8511,6 @@ Note: This Request only has pagination when you load a single modelID.</p>
   
 
   
-
-  
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
@@ -8705,8 +8568,6 @@ Note: This Request only has pagination when you load a single modelID.</p>
 
       
     
-  
-
   
 
   
@@ -8788,8 +8649,6 @@ Note: This Request only has pagination when you load a single modelID.</p>
   
 
   
-
-  
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
@@ -8864,8 +8723,6 @@ Note: This Request only has pagination when you load a single modelID.</p>
 
       
     
-  
-
   
 
   
@@ -9068,8 +8925,6 @@ idOrUrl.
   
 
   
-
-  
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
@@ -9165,8 +9020,6 @@ session.setClientID(<span class="hljs-string">'rest'</span>);
   
 
   
-
-  
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
@@ -9252,8 +9105,6 @@ session.setClientID(<span class="hljs-string">'rest'</span>);
   
 
   
-
-  
 </section>
 
       </div>
@@ -9310,8 +9161,6 @@ session.setClientID(<span class="hljs-string">'rest'</span>);
 
       
     
-  
-
   
 
   
@@ -9389,8 +9238,6 @@ session.setClientID(<span class="hljs-string">'rest'</span>);
 
       
     
-  
-
   
 
   
@@ -9491,8 +9338,6 @@ with <a href="Sessin#checkPermission">Sessin#checkPermission</a>.</p>
   
 
   
-
-  
 </section>
 
       </div>
@@ -9548,8 +9393,6 @@ with <a href="Sessin#checkPermission">Sessin#checkPermission</a>.</p>
 
       
     
-  
-
   
 
   
@@ -9631,8 +9474,6 @@ with <a href="Sessin#checkPermission">Sessin#checkPermission</a>.</p>
   
 
   
-
-  
 </section>
 
       </div>
@@ -9690,8 +9531,6 @@ token
 
       
     
-  
-
   
 
   
@@ -9796,8 +9635,6 @@ factory which then resolves to the newly created PublicAssetResource
   
 
   
-
-  
 </section>
 
       </div>
@@ -9871,8 +9708,6 @@ factory which then resolves to the newly created assets as AssetList
 
       
     
-  
-
   
 
   
@@ -9982,8 +9817,6 @@ factory which then resolves to the newly created assets as DMAssetList
   
 
   
-
-  
 </section>
 
       </div>
@@ -10071,8 +9904,6 @@ factory which then resolves to the newly created assets as DMAssetList
   
 
   
-
-  
 </section>
 
       </div>
@@ -10129,8 +9960,6 @@ factory which then resolves to the newly created assets as DMAssetList
 
       
     
-  
-
   
 
   
@@ -10221,8 +10050,6 @@ factory which then resolves to the newly created assets as DMAssetList
   
 
   
-
-  
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
@@ -10303,8 +10130,6 @@ factory which then resolves to the newly created assets as DMAssetList
 
       
     
-  
-
   
 
   
@@ -10395,8 +10220,6 @@ factory which then resolves to the newly created assets as DMAssetList
   
 
   
-
-  
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
@@ -10481,8 +10304,6 @@ factory which then resolves to the newly created assets as DMAssetList
   
 
   
-
-  
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
@@ -10556,8 +10377,6 @@ MUST handle these events.</p>
   
 
   
-
-  
 </section>
 
       </div>
@@ -10614,8 +10433,6 @@ MUST handle these events.</p>
 
       
     
-  
-
   
 
   
@@ -10723,8 +10540,6 @@ levels directly request
   
 
   
-
-  
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
@@ -10810,8 +10625,6 @@ levels directly request
 
       
     
-  
-
   
 
   
@@ -10917,8 +10730,6 @@ levels directly request
   
 
   
-
-  
 </section>
 
       </div>
@@ -10964,8 +10775,6 @@ Note: This Request only has pagination when you load a single modelID.</p>
         </div>
       
     </div>
-  
-
   
 
   
@@ -11052,8 +10861,6 @@ Note: This Request only has pagination when you load a single modelID.</p>
   
 
   
-
-  
 </section>
 
       </div>
@@ -11110,8 +10917,6 @@ Note: This Request only has pagination when you load a single modelID.</p>
 
       
     
-  
-
   
 
   
@@ -11214,8 +11019,6 @@ AssetNeue.
   
 
   
-
-  
 </section>
 
       </div>
@@ -11294,8 +11097,6 @@ AssetNeue.
   
 
   
-
-  
 </section>
 
       </div>
@@ -11361,8 +11162,6 @@ AssetNeue.
 
       
     
-  
-
   
 
   
@@ -11456,8 +11255,6 @@ load.</p>
   
 
   
-
-  
 </section>
 
       </div>
@@ -11502,8 +11299,6 @@ load.</p>
         </div>
       
     </div>
-  
-
   
 
   
@@ -11600,8 +11395,6 @@ credentials and tokenMethod <code>body</code>.</p>
   
 
   
-
-  
 </section>
 
       </div>
@@ -11671,8 +11464,6 @@ credentials and tokenMethod <code>body</code>.</p>
   
 
   
-
-  
 </section>
 
       </div>
@@ -11716,8 +11507,6 @@ cookie stored.</p>
 
       
     
-  
-
   
 
   
@@ -11801,8 +11590,6 @@ cookie stored.</p>
   
 
   
-
-  
 </section>
 
       </div>
@@ -11861,8 +11648,6 @@ value.</p>
 
       
     
-  
-
   
 
   
@@ -11955,8 +11740,6 @@ value.</p>
   
 
   
-
-  
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
@@ -12028,8 +11811,6 @@ alert(<span class="hljs-string">`Entry <span class="hljs-subst">${entryID1}</spa
 
       
     
-  
-
   
 
   
@@ -12120,8 +11901,6 @@ alert(<span class="hljs-string">`Entry <span class="hljs-subst">${entryID1}</spa
   
 
   
-
-  
 </section>
 
       </div>
@@ -12178,8 +11957,6 @@ alert(<span class="hljs-string">`Entry <span class="hljs-subst">${entryID1}</spa
 
       
     
-  
-
   
 
   
@@ -12272,8 +12049,6 @@ alert(<span class="hljs-string">`Entry <span class="hljs-subst">${entryID1}</spa
   
 
   
-
-  
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
@@ -12353,8 +12128,6 @@ alert(<span class="hljs-string">`Entry <span class="hljs-subst">${entryID1}</spa
   
 
   
-
-  
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
@@ -12428,8 +12201,6 @@ alert(<span class="hljs-string">`Entry <span class="hljs-subst">${entryID1}</spa
 
       
     
-  
-
   
 
   
@@ -12526,8 +12297,6 @@ alert(<span class="hljs-string">`Entry <span class="hljs-subst">${entryID1}</spa
   
 
   
-
-  
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
@@ -12592,8 +12361,6 @@ alert(<span class="hljs-string">`Entry <span class="hljs-subst">${entryID1}</spa
         </div>
       
     </div>
-  
-
   
 
   
@@ -12681,8 +12448,6 @@ alert(<span class="hljs-string">`Entry <span class="hljs-subst">${entryID1}</spa
   
 
   
-
-  
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
@@ -12746,8 +12511,6 @@ used as key to store tokens into cookies (for browsers).</p>
   
   
   
-  
-
   
 
   
@@ -12854,8 +12617,6 @@ Conenctor you can overwrite the handling.</p>
         </div>
       
     </div>
-  
-
   
 
   
@@ -12976,8 +12737,6 @@ route of Asset neue.</p>
   
 
   
-
-  
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
@@ -13056,8 +12815,6 @@ route of Asset neue.</p>
   
 
   
-
-  
 </section>
 
           
@@ -13107,8 +12864,6 @@ route of Asset neue.</p>
         </div>
       
     </div>
-  
-
   
 
   
@@ -13248,8 +13003,6 @@ route of Asset neue.</p>
   
 
   
-
-  
 </section>
 
           
@@ -13341,8 +13094,6 @@ getLinks).</p>
   
 
   
-
-  
     <div class='py1 quiet mt1 prose-big'>Instance Members</div>
     <div class="clearfix">
   
@@ -13383,8 +13134,6 @@ getLinks).</p>
 
       
     
-  
-
   
 
   
@@ -13440,8 +13189,6 @@ getLinks).</p>
 
       
     
-  
-
   
 
   
@@ -13511,8 +13258,6 @@ errors. Will contain newlines.</p>
   
 
   
-
-  
 </section>
 
       </div>
@@ -13555,8 +13300,6 @@ errors. Will contain newlines.</p>
 
       
     
-  
-
   
 
   
@@ -13613,8 +13356,6 @@ sub error.</p>
 
       
     
-  
-
   
 
   
@@ -13694,8 +13435,6 @@ or <a href="PublicAPI#loginWithCode">PublicAPI#loginWithCode</a>.</p>
   
 
   
-
-  
 </section>
 
           
@@ -13731,8 +13470,6 @@ error with token related error codes. Will either have undefined or <a href="#pr
   
   
   
-  
-
   
 
   
@@ -13805,8 +13542,6 @@ error with token related error codes. Will either have undefined or <a href="#pr
   
 
   
-
-  
 </section>
 
           
@@ -13836,8 +13571,6 @@ error with token related error codes. Will either have undefined or <a href="#pr
   
   
   
-  
-
   
 
   
@@ -13910,8 +13643,6 @@ error with token related error codes. Will either have undefined or <a href="#pr
   
 
   
-
-  
 </section>
 
           
@@ -13946,8 +13677,6 @@ error with token related error codes. Will either have undefined or <a href="#pr
   
   
   
-  
-
   
 
   
@@ -14089,8 +13818,6 @@ error with token related error codes. Will either have undefined or <a href="#pr
   
 
   
-
-  
     <div class='py1 quiet mt1 prose-big'>Instance Members</div>
     <div class="clearfix">
   
@@ -14131,8 +13858,6 @@ error with token related error codes. Will either have undefined or <a href="#pr
 
       
     
-  
-
   
 
   
@@ -14189,8 +13914,6 @@ resource.</p>
 
       
     
-  
-
   
 
   
@@ -14283,8 +14006,6 @@ resource.</p>
   
 
   
-
-  
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
@@ -14361,8 +14082,6 @@ resource.</p>
   
 
   
-
-  
 </section>
 
       </div>
@@ -14391,8 +14110,6 @@ resource.</p>
   
   
   
-  
-
   
 
   
@@ -14514,8 +14231,6 @@ s
   
 
   
-
-  
 </section>
 
       </div>
@@ -14573,8 +14288,6 @@ when properties array is empty or undefined.</p>
 
       
     
-  
-
   
 
   
@@ -14658,8 +14371,6 @@ the given name.</p>
   
 
   
-
-  
 </section>
 
       </div>
@@ -14717,8 +14428,6 @@ the given name.</p>
 
       
     
-  
-
   
 
   
@@ -14801,8 +14510,6 @@ the given name.</p>
   
 
   
-
-  
 </section>
 
       </div>
@@ -14859,8 +14566,6 @@ the given name.</p>
 
       
     
-  
-
   
 
   
@@ -14952,8 +14657,6 @@ the given name.</p>
   
 
   
-
-  
 </section>
 
       </div>
@@ -15010,8 +14713,6 @@ afterwards.</p>
   
 
   
-
-  
 </section>
 
       </div>
@@ -15054,8 +14755,6 @@ afterwards.</p>
 
       
     
-  
-
   
 
   
@@ -15125,8 +14824,6 @@ afterwards.</p>
 
       
     
-  
-
   
 
   
@@ -15214,8 +14911,6 @@ afterwards.</p>
 
       
     
-  
-
   
 
   
@@ -15313,8 +15008,6 @@ options parameter.</p>
 
       
     
-  
-
   
 
   
@@ -15424,8 +15117,6 @@ be the same object but with refreshed data.
   
 
   
-
-  
 </section>
 
       </div>
@@ -15482,8 +15173,6 @@ be the same object but with refreshed data.
 
       
     
-  
-
   
 
   
@@ -15575,8 +15264,6 @@ be the same object but with refreshed data.
   
 
   
-
-  
 </section>
 
       </div>
@@ -15637,8 +15324,6 @@ otherwise.
 
       
     
-  
-
   
 
   
@@ -15807,8 +15492,6 @@ with them.</p>
   
 
   
-
-  
     <div class='py1 quiet mt1 prose-big'>Instance Members</div>
     <div class="clearfix">
   
@@ -15877,8 +15560,6 @@ element, false otherwise.
 
       
     
-  
-
   
 
   
@@ -15975,8 +15656,6 @@ element, false otherwise.
   
 
   
-
-  
 </section>
 
       </div>
@@ -16020,8 +15699,6 @@ returns a <a href="#listresource">ListResource</a> with the loaded result.</p>
 
       
     
-  
-
   
 
   
@@ -16091,8 +15768,6 @@ returns a <a href="#listresource">ListResource</a> with the loaded result.</p>
   
 
   
-
-  
 </section>
 
       </div>
@@ -16136,8 +15811,6 @@ returns a <a href="#listresource">ListResource</a> with the loaded result.</p>
 
       
     
-  
-
   
 
   
@@ -16206,8 +15879,6 @@ returns a <a href="#listresource">ListResource</a> with the loaded result.</p>
   
 
   
-
-  
 </section>
 
       </div>
@@ -16250,8 +15921,6 @@ returns a <a href="#listresource">ListResource</a> with the loaded result.</p>
 
       
     
-  
-
   
 
   
@@ -16334,8 +16003,6 @@ returns a <a href="#listresource">ListResource</a> with the loaded result.</p>
   
 
   
-
-  
 </section>
 
       </div>
@@ -16378,8 +16045,6 @@ returns a <a href="#listresource">ListResource</a> with the loaded result.</p>
 
       
     
-  
-
   
 
   
@@ -16448,8 +16113,6 @@ returns a <a href="#listresource">ListResource</a> with the loaded result.</p>
   
 
   
-
-  
 </section>
 
       </div>
@@ -16492,8 +16155,6 @@ returns a <a href="#listresource">ListResource</a> with the loaded result.</p>
 
       
     
-  
-
   
 
   
@@ -16576,8 +16237,6 @@ use on lists sorted by modified and update the entries during the process.</p>
 
       
     
-  
-
   
 
   
@@ -16685,16 +16344,14 @@ sorts of filter to a list request.</p>
   
 
   
-
-  
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
       <pre class='p1 overflow-auto round fill-light'>accounts.accountList({ <span class="hljs-attr">size</span>: <span class="hljs-number">25</span> }); <span class="hljs-comment">// will result in a list with 25 entries</span>
 accounts.accountList({
   <span class="hljs-attr">sort</span>: [<span class="hljs-string">'email'</span>, <span class="hljs-string">'-created'</span>], <span class="hljs-comment">// sorted by email asc and created desc</span>
-  <span class="hljs-attr">page</span>: <span class="hljs-number">3</span>, <span class="hljs-comment">// page 3 of a list with 10 entries</span>
-  <span class="hljs-attr">property</span>: <span class="hljs-string">'exactlyThis'</span>, <span class="hljs-comment">// filter exactly exactlyThis for property property</span>
+  page: <span class="hljs-number">3</span>, <span class="hljs-comment">// page 3 of a list with 10 entries</span>
+  property: <span class="hljs-string">'exactlyThis'</span>, <span class="hljs-comment">// filter exactly exactlyThis for property property</span>
 });
 <span class="hljs-comment">// for filter see below</span></pre>
     
@@ -16764,8 +16421,6 @@ object will be applied when loading a <a href="#listresource">ListResource</a>.<
   
 
   
-
-  
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
@@ -16774,14 +16429,14 @@ object will be applied when loading a <a href="#listresource">ListResource</a>.<
     <span class="hljs-attr">search</span>: <span class="hljs-string">'andre'</span>, <span class="hljs-comment">// email contains 'andre'</span>
   },
   <span class="hljs-attr">language</span>: <span class="hljs-string">'de'</span>, <span class="hljs-comment">// language is exactly 'de'</span>
-  <span class="hljs-attr">active</span>: {
+  active: {
     <span class="hljs-attr">exact</span>: <span class="hljs-string">'active'</span>, <span class="hljs-comment">// is (exactly) in active state</span>
   },
   <span class="hljs-attr">created</span>: {
     <span class="hljs-attr">from</span>: <span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>(<span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>().getTime() - <span class="hljs-number">60000</span>), <span class="hljs-comment">// created 10minutes or less ago</span>
   },
   <span class="hljs-attr">permissions</span>: { <span class="hljs-comment">// has at least one of these permissions</span>
-    <span class="hljs-attr">any</span>: [
+    any: [
       <span class="hljs-string">'dm-user'</span>,
       <span class="hljs-string">'app-user'</span>,
     ],
@@ -16890,8 +16545,6 @@ object will be applied when loading a <a href="#listresource">ListResource</a>.<
   
 
   
-
-  
 </section>
 
           
@@ -16911,7 +16564,7 @@ object will be applied when loading a <a href="#listresource">ListResource</a>.<
   
 
   <p>HistoryEvents resource class</p>
-<p><a href="https://stash.entrecode.de/projects/CMS/repos/ec.dm-history/browse/data-transform.js?at=develop#33">https://stash.entrecode.de/projects/CMS/repos/ec.dm-history/browse/data-transform.js?at=develop#33</a></p>
+<p><a href="https://github.com/entrecode/ec.dm-history/blob/develop/data-transform.js#L35">https://github.com/entrecode/ec.dm-history/blob/develop/data-transform.js#L35</a></p>
 
     <div class='pre p1 fill-light mt0'>new HistoryEvents(resource: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, environment: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, traversal: any)</div>
   
@@ -17001,8 +16654,6 @@ object will be applied when loading a <a href="#listresource">ListResource</a>.<
   
 
   
-
-  
     <div class='py1 quiet mt1 prose-big'>Instance Members</div>
     <div class="clearfix">
   
@@ -17043,8 +16694,6 @@ object will be applied when loading a <a href="#listresource">ListResource</a>.<
 
       
     
-  
-
   
 
   
@@ -17113,8 +16762,6 @@ object will be applied when loading a <a href="#listresource">ListResource</a>.<
   
 
   
-
-  
 </section>
 
       </div>
@@ -17146,7 +16793,7 @@ object will be applied when loading a <a href="#listresource">ListResource</a>.<
   
 
   <p>HistoryEvent resource class</p>
-<p><a href="https://stash.entrecode.de/projects/CMS/repos/ec.dm-history/browse/data-transform.js?at=develop#33">https://stash.entrecode.de/projects/CMS/repos/ec.dm-history/browse/data-transform.js?at=develop#33</a></p>
+<p><a href="https://github.com/entrecode/ec.dm-history/blob/develop/data-transform.js#L35">https://github.com/entrecode/ec.dm-history/blob/develop/data-transform.js#L35</a></p>
 
     <div class='pre p1 fill-light mt0'>new HistoryEvent(res: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, environment: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</div>
   
@@ -17252,8 +16899,6 @@ object will be applied when loading a <a href="#listresource">ListResource</a>.<
         </div>
       
     </div>
-  
-
   
 
   
@@ -17444,8 +17089,6 @@ object will be applied when loading a <a href="#listresource">ListResource</a>.<
   
 
   
-
-  
     <div class='py1 quiet mt1 prose-big'>Instance Members</div>
     <div class="clearfix">
   
@@ -17500,8 +17143,6 @@ object will be applied when loading a <a href="#listresource">ListResource</a>.<
 
       
     
-  
-
   
 
   
@@ -17584,8 +17225,6 @@ object will be applied when loading a <a href="#listresource">ListResource</a>.<
   
 
   
-
-  
 </section>
 
       </div>
@@ -17655,8 +17294,6 @@ object will be applied when loading a <a href="#listresource">ListResource</a>.<
   
 
   
-
-  
 </section>
 
       </div>
@@ -17713,8 +17350,6 @@ permissions and all group permissions.</p>
   
 
   
-
-  
 </section>
 
       </div>
@@ -17757,8 +17392,6 @@ permissions and all group permissions.</p>
 
       
     
-  
-
   
 
   
@@ -17854,8 +17487,6 @@ permissions and all group permissions.</p>
         </div>
       
     </div>
-  
-
   
 
   
@@ -18018,8 +17649,6 @@ permissions and all group permissions.</p>
   
 
   
-
-  
 </section>
 
           
@@ -18090,8 +17719,6 @@ permissions and all group permissions.</p>
         </div>
       
     </div>
-  
-
   
 
   
@@ -18222,8 +17849,6 @@ permissions and all group permissions.</p>
   
 
   
-
-  
 </section>
 
           
@@ -18281,8 +17906,6 @@ permissions and all group permissions.</p>
         </div>
       
     </div>
-  
-
   
 
   
@@ -18368,8 +17991,6 @@ permissions and all group permissions.</p>
         </div>
       
     </div>
-  
-
   
 
   
@@ -18496,8 +18117,6 @@ permissions and all group permissions.</p>
   
 
   
-
-  
     <div class='py1 quiet mt1 prose-big'>Instance Members</div>
     <div class="clearfix">
   
@@ -18552,8 +18171,6 @@ permissions and all group permissions.</p>
 
       
     
-  
-
   
 
   
@@ -18636,8 +18253,6 @@ permissions and all group permissions.</p>
   
 
   
-
-  
 </section>
 
       </div>
@@ -18694,8 +18309,6 @@ permissions and all group permissions.</p>
 
       
     
-  
-
   
 
   
@@ -18778,8 +18391,6 @@ permissions and all group permissions.</p>
   
 
   
-
-  
 </section>
 
       </div>
@@ -18822,8 +18433,6 @@ permissions and all group permissions.</p>
 
       
     
-  
-
   
 
   
@@ -18906,8 +18515,6 @@ permissions and all group permissions.</p>
   
 
   
-
-  
 </section>
 
       </div>
@@ -18952,8 +18559,6 @@ permissions and all group permissions.</p>
         </div>
       
     </div>
-  
-
   
 
   
@@ -19027,8 +18632,6 @@ permissions and all group permissions.</p>
 
       
     
-  
-
   
 
   
@@ -19141,8 +18744,6 @@ permissions and all group permissions.</p>
   
 
   
-
-  
 </section>
 
           
@@ -19213,8 +18814,6 @@ permissions and all group permissions.</p>
         </div>
       
     </div>
-  
-
   
 
   
@@ -19373,8 +18972,6 @@ permissions and all group permissions.</p>
   
 
   
-
-  
     <div class='py1 quiet mt1 prose-big'>Instance Members</div>
     <div class="clearfix">
   
@@ -19416,8 +19013,6 @@ be the same object but with refreshed data.
 
       
     
-  
-
   
 
   
@@ -19538,8 +19133,6 @@ be the same object but with refreshed data.
         </div>
       
     </div>
-  
-
   
 
   
@@ -19692,8 +19285,6 @@ be the same object but with refreshed data.
   
 
   
-
-  
     <div class='py1 quiet mt1 prose-big'>Instance Members</div>
     <div class="clearfix">
   
@@ -19748,8 +19339,6 @@ be the same object but with refreshed data.
 
       
     
-  
-
   
 
   
@@ -19833,8 +19422,6 @@ by the options parameter.</p>
   
 
   
-
-  
 </section>
 
       </div>
@@ -19891,8 +19478,6 @@ by the options parameter.</p>
 
       
     
-  
-
   
 
   
@@ -19975,8 +19560,6 @@ by the options parameter.</p>
   
 
   
-
-  
 </section>
 
       </div>
@@ -20037,8 +19620,6 @@ See the example below for details.</p>
 
       
     
-  
-
   
 
   
@@ -20159,8 +19740,6 @@ app.createPlatform(platform)
   
 
   
-
-  
 </section>
 
       </div>
@@ -20217,8 +19796,6 @@ app.createPlatform(platform)
 
       
     
-  
-
   
 
   
@@ -20302,8 +19879,6 @@ by the options parameter.</p>
   
 
   
-
-  
 </section>
 
       </div>
@@ -20360,8 +19935,6 @@ by the options parameter.</p>
 
       
     
-  
-
   
 
   
@@ -20445,8 +20018,6 @@ by the options parameter.</p>
   
 
   
-
-  
 </section>
 
       </div>
@@ -20503,8 +20074,6 @@ by the options parameter.</p>
 
       
     
-  
-
   
 
   
@@ -20575,8 +20144,6 @@ by the options parameter.</p>
 
       
     
-  
-
   
 
   
@@ -20689,8 +20256,6 @@ by the options parameter.</p>
   
 
   
-
-  
 </section>
 
           
@@ -20774,8 +20339,6 @@ by the options parameter.</p>
   
 
   
-
-  
     <div class='py1 quiet mt1 prose-big'>Instance Members</div>
     <div class="clearfix">
   
@@ -20816,8 +20379,6 @@ by the options parameter.</p>
 
       
     
-  
-
   
 
   
@@ -20886,8 +20447,6 @@ by the options parameter.</p>
   
 
   
-
-  
 </section>
 
       </div>
@@ -20943,8 +20502,6 @@ by the options parameter.</p>
   
 
   
-
-  
 </section>
 
       </div>
@@ -20987,8 +20544,6 @@ by the options parameter.</p>
 
       
     
-  
-
   
 
   
@@ -21071,8 +20626,6 @@ by the options parameter.</p>
   
 
   
-
-  
 </section>
 
       </div>
@@ -21129,8 +20682,6 @@ by the options parameter.</p>
 
       
     
-  
-
   
 
   
@@ -21213,8 +20764,6 @@ by the options parameter.</p>
   
 
   
-
-  
 </section>
 
       </div>
@@ -21271,8 +20820,6 @@ by the options parameter.</p>
 
       
     
-  
-
   
 
   
@@ -21355,8 +20902,6 @@ by the options parameter.</p>
   
 
   
-
-  
 </section>
 
       </div>
@@ -21426,8 +20971,6 @@ by the options parameter.</p>
   
 
   
-
-  
 </section>
 
       </div>
@@ -21484,8 +21027,6 @@ by the options parameter.</p>
 
       
     
-  
-
   
 
   
@@ -21577,8 +21118,6 @@ by the options parameter.</p>
   
 
   
-
-  
 </section>
 
       </div>
@@ -21644,8 +21183,6 @@ by the options parameter.</p>
 
       
     
-  
-
   
 
   
@@ -21728,8 +21265,6 @@ by the options parameter.</p>
   
 
   
-
-  
 </section>
 
       </div>
@@ -21786,8 +21321,6 @@ by the options parameter.</p>
 
       
     
-  
-
   
 
   
@@ -21982,8 +21515,6 @@ by the options parameter.</p>
   
 
   
-
-  
 </section>
 
           
@@ -22054,8 +21585,6 @@ by the options parameter.</p>
         </div>
       
     </div>
-  
-
   
 
   
@@ -22189,8 +21718,6 @@ by the options parameter.</p>
   
 
   
-
-  
     <div class='py1 quiet mt1 prose-big'>Instance Members</div>
     <div class="clearfix">
   
@@ -22233,8 +21760,6 @@ by the options parameter.</p>
         </div>
       
     </div>
-  
-
   
 
   
@@ -22321,8 +21846,6 @@ by the options parameter.</p>
   
 
   
-
-  
 </section>
 
       </div>
@@ -22380,8 +21903,6 @@ by the options parameter.</p>
 
       
     
-  
-
   
 
   
@@ -22462,8 +21983,6 @@ by the options parameter.</p>
 
       
     
-  
-
   
 
   
@@ -22566,8 +22085,6 @@ should be deployed.
   
 
   
-
-  
 </section>
 
       </div>
@@ -22638,8 +22155,6 @@ to which the build should be deployed.
   
 
   
-
-  
 </section>
 
       </div>
@@ -22696,8 +22211,6 @@ to which the build should be deployed.
 
       
     
-  
-
   
 
   
@@ -22781,8 +22294,6 @@ by the options parameter.</p>
   
 
   
-
-  
 </section>
 
       </div>
@@ -22825,8 +22336,6 @@ by the options parameter.</p>
 
       
     
-  
-
   
 
   
@@ -22895,8 +22404,6 @@ by the options parameter.</p>
   
 
   
-
-  
 </section>
 
       </div>
@@ -22939,8 +22446,6 @@ by the options parameter.</p>
 
       
     
-  
-
   
 
   
@@ -23023,8 +22528,6 @@ by the options parameter.</p>
   
 
   
-
-  
 </section>
 
       </div>
@@ -23094,8 +22597,6 @@ by the options parameter.</p>
   
 
   
-
-  
 </section>
 
       </div>
@@ -23138,8 +22639,6 @@ by the options parameter.</p>
 
       
     
-  
-
   
 
   
@@ -23208,8 +22707,6 @@ by the options parameter.</p>
   
 
   
-
-  
 </section>
 
       </div>
@@ -23252,8 +22749,6 @@ by the options parameter.</p>
 
       
     
-  
-
   
 
   
@@ -23322,8 +22817,6 @@ by the options parameter.</p>
   
 
   
-
-  
 </section>
 
       </div>
@@ -23368,8 +22861,6 @@ by the options parameter.</p>
         </div>
       
     </div>
-  
-
   
 
   
@@ -23455,8 +22946,6 @@ by the options parameter.</p>
   
 
   
-
-  
 </section>
 
       </div>
@@ -23525,8 +23014,6 @@ by the options parameter.</p>
   
 
   
-
-  
 </section>
 
       </div>
@@ -23582,8 +23069,6 @@ by the options parameter.</p>
 
       
     
-  
-
   
 
   
@@ -23679,8 +23164,6 @@ by the options parameter.</p>
         </div>
       
     </div>
-  
-
   
 
   
@@ -23811,8 +23294,6 @@ by the options parameter.</p>
   
 
   
-
-  
 </section>
 
           
@@ -23883,8 +23364,6 @@ by the options parameter.</p>
         </div>
       
     </div>
-  
-
   
 
   
@@ -24015,8 +23494,6 @@ by the options parameter.</p>
   
 
   
-
-  
 </section>
 
           
@@ -24087,8 +23564,6 @@ by the options parameter.</p>
         </div>
       
     </div>
-  
-
   
 
   
@@ -24219,8 +23694,6 @@ by the options parameter.</p>
   
 
   
-
-  
 </section>
 
           
@@ -24291,8 +23764,6 @@ by the options parameter.</p>
         </div>
       
     </div>
-  
-
   
 
   
@@ -24409,8 +23880,6 @@ by the options parameter.</p>
   
 
   
-
-  
 </section>
 
           
@@ -24481,8 +23950,6 @@ by the options parameter.</p>
         </div>
       
     </div>
-  
-
   
 
   
@@ -24599,8 +24066,6 @@ by the options parameter.</p>
   
 
   
-
-  
 </section>
 
           
@@ -24671,8 +24136,6 @@ by the options parameter.</p>
         </div>
       
     </div>
-  
-
   
 
   
@@ -24877,8 +24340,6 @@ by the options parameter.</p>
   
 
   
-
-  
     <div class='py1 quiet mt1 prose-big'>Instance Members</div>
     <div class="clearfix">
   
@@ -24933,8 +24394,6 @@ by the options parameter.</p>
 
       
     
-  
-
   
 
   
@@ -25014,8 +24473,6 @@ by the options parameter.</p>
 
       
     
-  
-
   
 
   
@@ -25103,8 +24560,6 @@ by the options parameter.</p>
   
 
   
-
-  
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
@@ -25178,8 +24633,6 @@ by the options parameter.</p>
 
       
     
-  
-
   
 
   
@@ -25264,8 +24717,6 @@ by the options parameter.</p>
   
 
   
-
-  
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
@@ -25342,8 +24793,6 @@ by the options parameter.</p>
 
       
     
-  
-
   
 
   
@@ -25440,8 +24889,6 @@ by the options parameter.</p>
   
 
   
-
-  
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
@@ -25515,8 +24962,6 @@ by the options parameter.</p>
 
       
     
-  
-
   
 
   
@@ -25632,8 +25077,6 @@ or a readStream.
   
 
   
-
-  
 </section>
 
       </div>
@@ -25690,8 +25133,6 @@ or a readStream.
 
       
     
-  
-
   
 
   
@@ -25785,8 +25226,6 @@ FormData object, or an array of readStreams.
   
 
   
-
-  
 </section>
 
       </div>
@@ -25843,8 +25282,6 @@ FormData object, or an array of readStreams.
 
       
     
-  
-
   
 
   
@@ -25927,8 +25364,6 @@ FormData object, or an array of readStreams.
   
 
   
-
-  
 </section>
 
       </div>
@@ -25998,8 +25433,6 @@ FormData object, or an array of readStreams.
   
 
   
-
-  
 </section>
 
       </div>
@@ -26055,8 +25488,6 @@ FormData object, or an array of readStreams.
   
 
   
-
-  
 </section>
 
       </div>
@@ -26099,8 +25530,6 @@ FormData object, or an array of readStreams.
 
       
     
-  
-
   
 
   
@@ -26170,8 +25599,6 @@ FormData object, or an array of readStreams.
 
       
     
-  
-
   
 
   
@@ -26256,8 +25683,6 @@ filter options.
   
 
   
-
-  
 </section>
 
       </div>
@@ -26303,8 +25728,6 @@ Note: This Request only has pagination when you load a single modelID.</p>
         </div>
       
     </div>
-  
-
   
 
   
@@ -26383,8 +25806,6 @@ Note: This Request only has pagination when you load a single modelID.</p>
   
 
   
-
-  
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
@@ -26458,8 +25879,6 @@ Note: This Request only has pagination when you load a single modelID.</p>
 
       
     
-  
-
   
 
   
@@ -26550,8 +25969,6 @@ Note: This Request only has pagination when you load a single modelID.</p>
   
 
   
-
-  
 </section>
 
       </div>
@@ -26594,8 +26011,6 @@ Note: This Request only has pagination when you load a single modelID.</p>
 
       
     
-  
-
   
 
   
@@ -26700,8 +26115,6 @@ Note: This Request only has pagination when you load a single modelID.</p>
         </div>
       
     </div>
-  
-
   
 
   
@@ -26898,8 +26311,6 @@ Note: This Request only has pagination when you load a single modelID.</p>
   
 
   
-
-  
     <div class='py1 quiet mt1 prose-big'>Instance Members</div>
     <div class="clearfix">
   
@@ -26942,8 +26353,6 @@ Note: This Request only has pagination when you load a single modelID.</p>
         </div>
       
     </div>
-  
-
   
 
   
@@ -27044,8 +26453,6 @@ be the same object but with refreshed data.
   
 
   
-
-  
 </section>
 
       </div>
@@ -27101,8 +26508,6 @@ be the same object but with refreshed data.
   
 
   
-
-  
 </section>
 
       </div>
@@ -27145,8 +26550,6 @@ be the same object but with refreshed data.
 
       
     
-  
-
   
 
   
@@ -27242,8 +26645,6 @@ be the same object but with refreshed data.
         </div>
       
     </div>
-  
-
   
 
   
@@ -27359,8 +26760,6 @@ be the same object but with refreshed data.
         </div>
       
     </div>
-  
-
   
 
   
@@ -27489,8 +26888,6 @@ be the same object but with refreshed data.
   
 
   
-
-  
 </section>
 
           
@@ -27567,8 +26964,6 @@ be the same object but with refreshed data.
   
 
   
-
-  
 </section>
 
           
@@ -27603,8 +26998,6 @@ be the same object but with refreshed data.
   
   
   
-  
-
   
 
   
@@ -27704,8 +27097,6 @@ be the same object but with refreshed data.
         </div>
       
     </div>
-  
-
   
 
   
@@ -27872,8 +27263,6 @@ be the same object but with refreshed data.
   
 
   
-
-  
     <div class='py1 quiet mt1 prose-big'>Instance Members</div>
     <div class="clearfix">
   
@@ -27928,8 +27317,6 @@ be the same object but with refreshed data.
 
       
     
-  
-
   
 
   
@@ -28034,8 +27421,6 @@ be the same object but with refreshed data.
         </div>
       
     </div>
-  
-
   
 
   
@@ -28187,8 +27572,6 @@ be the same object but with refreshed data.
   
 
   
-
-  
 </section>
 
           
@@ -28259,8 +27642,6 @@ be the same object but with refreshed data.
         </div>
       
     </div>
-  
-
   
 
   
@@ -28415,8 +27796,6 @@ be the same object but with refreshed data.
   
 
   
-
-  
     <div class='py1 quiet mt1 prose-big'>Instance Members</div>
     <div class="clearfix">
   
@@ -28471,8 +27850,6 @@ be the same object but with refreshed data.
 
       
     
-  
-
   
 
   
@@ -28581,8 +27958,6 @@ be the same object but with refreshed data.
         </div>
       
     </div>
-  
-
   
 
   
@@ -28723,8 +28098,6 @@ be the same object but with refreshed data.
   
 
   
-
-  
     <div class='py1 quiet mt1 prose-big'>Instance Members</div>
     <div class="clearfix">
   
@@ -28779,8 +28152,6 @@ be the same object but with refreshed data.
 
       
     
-  
-
   
 
   
@@ -28850,8 +28221,6 @@ be the same object but with refreshed data.
 
       
     
-  
-
   
 
   
@@ -28964,8 +28333,6 @@ be the same object but with refreshed data.
   
 
   
-
-  
 </section>
 
           
@@ -29043,8 +28410,6 @@ be the same object but with refreshed data.
         </div>
       
     </div>
-  
-
   
 
   
@@ -29143,8 +28508,6 @@ be the same object but with refreshed data.
   
 
   
-
-  
     <div class='py1 quiet mt1 prose-big'>Instance Members</div>
     <div class="clearfix">
   
@@ -29185,8 +28548,6 @@ be the same object but with refreshed data.
 
       
     
-  
-
   
 
   
@@ -29242,8 +28603,6 @@ be the same object but with refreshed data.
 
       
     
-  
-
   
 
   
@@ -29313,8 +28672,6 @@ be the same object but with refreshed data.
 
       
     
-  
-
   
 
   
@@ -29456,8 +28813,6 @@ be the same object but with refreshed data.
   
 
   
-
-  
     <div class='py1 quiet mt1 prose-big'>Instance Members</div>
     <div class="clearfix">
   
@@ -29512,8 +28867,6 @@ be the same object but with refreshed data.
 
       
     
-  
-
   
 
   
@@ -29584,8 +28937,6 @@ be the same object but with refreshed data.
 
       
     
-  
-
   
 
   
@@ -29681,8 +29032,6 @@ be the same object but with refreshed data.
         </div>
       
     </div>
-  
-
   
 
   
@@ -29830,8 +29179,6 @@ be the same object but with refreshed data.
   
 
   
-
-  
     <div class='py1 quiet mt1 prose-big'>Instance Members</div>
     <div class="clearfix">
   
@@ -29886,8 +29233,6 @@ be the same object but with refreshed data.
 
       
     
-  
-
   
 
   
@@ -29979,8 +29324,6 @@ be the same object but with refreshed data.
   
 
   
-
-  
 </section>
 
       </div>
@@ -30059,8 +29402,6 @@ be the same object but with refreshed data.
   
 
   
-
-  
 </section>
 
       </div>
@@ -30104,8 +29445,6 @@ image for an asset.</p>
 
       
     
-  
-
   
 
   
@@ -30214,8 +29553,6 @@ image for an asset.</p>
   
 
   
-
-  
     <div class='py1 quiet mt1 prose-big'>Instance Members</div>
     <div class="clearfix">
   
@@ -30270,8 +29607,6 @@ image for an asset.</p>
 
       
     
-  
-
   
 
   
@@ -30350,8 +29685,6 @@ image for an asset.</p>
 
       
     
-  
-
   
 
   
@@ -30459,8 +29792,6 @@ provided. Url otherwise.
   
 
   
-
-  
 </section>
 
       </div>
@@ -30517,8 +29848,6 @@ provided. Url otherwise.
 
       
     
-  
-
   
 
   
@@ -30597,8 +29926,6 @@ provided. Url otherwise.
 
       
     
-  
-
   
 
   
@@ -30776,8 +30103,6 @@ provided. Url otherwise.
   
 
   
-
-  
     <div class='py1 quiet mt1 prose-big'>Instance Members</div>
     <div class="clearfix">
   
@@ -30832,8 +30157,6 @@ provided. Url otherwise.
 
       
     
-  
-
   
 
   
@@ -30925,8 +30248,6 @@ provided. Url otherwise.
   
 
   
-
-  
 </section>
 
       </div>
@@ -31005,8 +30326,6 @@ provided. Url otherwise.
   
 
   
-
-  
 </section>
 
       </div>
@@ -31062,8 +30381,6 @@ provided. Url otherwise.
   
 
   
-
-  
 </section>
 
       </div>
@@ -31106,8 +30423,6 @@ provided. Url otherwise.
 
       
     
-  
-
   
 
   
@@ -31203,8 +30518,6 @@ provided. Url otherwise.
         </div>
       
     </div>
-  
-
   
 
   
@@ -31328,8 +30641,6 @@ provided. Url otherwise.
   
 
   
-
-  
 </section>
 
           
@@ -31400,8 +30711,6 @@ provided. Url otherwise.
         </div>
       
     </div>
-  
-
   
 
   
@@ -31540,8 +30849,6 @@ basic functionality useful for showing unresolved (read: not loaded nested) entr
   
 
   
-
-  
     <div class='py1 quiet mt1 prose-big'>Instance Members</div>
     <div class="clearfix">
   
@@ -31582,8 +30889,6 @@ basic functionality useful for showing unresolved (read: not loaded nested) entr
 
       
     
-  
-
   
 
   
@@ -31678,8 +30983,6 @@ basic functionality useful for showing unresolved (read: not loaded nested) entr
   
 
   
-
-  
 </section>
 
       </div>
@@ -31725,8 +31028,6 @@ function. A promise is returned which resolves to the <a href="#entryresource">E
 
       
     
-  
-
   
 
   
@@ -31810,8 +31111,6 @@ be the same object but with refreshed data.
 
       
     
-  
-
   
 
   
@@ -32029,8 +31328,6 @@ required JSON Schemas won't be stored in the cache.</p>
   
 
   
-
-  
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
@@ -32111,8 +31408,6 @@ required JSON Schemas won't be stored in the cache.</p>
   
 
   
-
-  
 </section>
 
       </div>
@@ -32178,8 +31473,6 @@ required JSON Schemas won't be stored in the cache.</p>
 
       
     
-  
-
   
 
   
@@ -32280,8 +31573,6 @@ required JSON Schemas won't be stored in the cache.</p>
   
 
   
-
-  
 </section>
 
       </div>
@@ -32369,8 +31660,6 @@ required JSON Schemas won't be stored in the cache.</p>
   
 
   
-
-  
 </section>
 
       </div>
@@ -32413,8 +31702,6 @@ required JSON Schemas won't be stored in the cache.</p>
 
       
     
-  
-
   
 
   
@@ -32483,8 +31770,6 @@ required JSON Schemas won't be stored in the cache.</p>
   
 
   
-
-  
 </section>
 
       </div>
@@ -32527,8 +31812,6 @@ required JSON Schemas won't be stored in the cache.</p>
 
       
     
-  
-
   
 
   
@@ -32624,8 +31907,6 @@ the entry title.
   
 
   
-
-  
 </section>
 
       </div>
@@ -32670,8 +31951,6 @@ the entry title.
         </div>
       
     </div>
-  
-
   
 
   
@@ -32760,8 +32039,6 @@ be the same object but with refreshed data.
   
 
   
-
-  
 </section>
 
       </div>
@@ -32805,8 +32082,6 @@ otherwise.
 
       
     
-  
-
   
 
   
@@ -32890,8 +32165,6 @@ otherwise.
   
 
   
-
-  
 </section>
 
       </div>
@@ -32948,8 +32221,6 @@ otherwise.
 
       
     
-  
-
   
 
   
@@ -33076,8 +32347,6 @@ otherwise.
   
 
   
-
-  
     <div class='py1 quiet mt1 prose-big'>Instance Members</div>
     <div class="clearfix">
   
@@ -33118,8 +32387,6 @@ otherwise.
 
       
     
-  
-
   
 
   
@@ -33175,8 +32442,6 @@ otherwise.
 
       
     
-  
-
   
 
   
@@ -33246,8 +32511,6 @@ otherwise.
 
       
     
-  
-
   
 
   
@@ -33473,8 +32736,6 @@ otherwise.
   
 
   
-
-  
     <div class='py1 quiet mt1 prose-big'>Instance Members</div>
     <div class="clearfix">
   
@@ -33515,8 +32776,6 @@ otherwise.
 
       
     
-  
-
   
 
   
@@ -33609,8 +32868,6 @@ otherwise.
   
 
   
-
-  
 </section>
 
       </div>
@@ -33667,8 +32924,6 @@ otherwise.
 
       
     
-  
-
   
 
   
@@ -33751,8 +33006,6 @@ otherwise.
   
 
   
-
-  
 </section>
 
       </div>
@@ -33796,8 +33049,6 @@ image for an asset.</p>
 
       
     
-  
-
   
 
   
@@ -33910,8 +33161,6 @@ image for an asset.</p>
   
 
   
-
-  
 </section>
 
           
@@ -33995,8 +33244,6 @@ image for an asset.</p>
   
 
   
-
-  
     <div class='py1 quiet mt1 prose-big'>Instance Members</div>
     <div class="clearfix">
   
@@ -34051,8 +33298,6 @@ image for an asset.</p>
 
       
     
-  
-
   
 
   
@@ -34131,8 +33376,6 @@ image for an asset.</p>
 
       
     
-  
-
   
 
   
@@ -34320,8 +33563,6 @@ embedded version of this asset.</p>
   
 
   
-
-  
     <div class='py1 quiet mt1 prose-big'>Instance Members</div>
     <div class="clearfix">
   
@@ -34376,8 +33617,6 @@ embedded version of this asset.</p>
 
       
     
-  
-
   
 
   
@@ -34469,8 +33708,6 @@ embedded version of this asset.</p>
   
 
   
-
-  
 </section>
 
       </div>
@@ -34549,8 +33786,6 @@ embedded version of this asset.</p>
   
 
   
-
-  
 </section>
 
       </div>
@@ -34594,8 +33829,6 @@ image for an asset.</p>
 
       
     
-  
-
   
 
   
@@ -34654,8 +33887,6 @@ function. A promise is returned which resolves to the <a href="#publicassetresou
 
       
     
-  
-
   
 
   
@@ -34751,8 +33982,6 @@ be the same object but with refreshed data.
   
 
   
-
-  
 </section>
 
       </div>
@@ -34835,8 +34064,6 @@ be the same object but with refreshed data.
         </div>
       
     </div>
-  
-
   
 
   
@@ -34960,8 +34187,6 @@ be the same object but with refreshed data.
   
 
   
-
-  
 </section>
 
           
@@ -35062,8 +34287,6 @@ basic functionality useful for showing unresolved (read: not loaded nested) entr
   
 
   
-
-  
     <div class='py1 quiet mt1 prose-big'>Instance Members</div>
     <div class="clearfix">
   
@@ -35107,8 +34330,6 @@ function. A promise is returned which resolves to the <a href="#dmaccountresourc
 
       
     
-  
-
   
 
   
@@ -35192,8 +34413,6 @@ be the same object but with refreshed data.
 
       
     
-  
-
   
 
   
@@ -35319,8 +34538,6 @@ basic functionality useful for showing unresolved (read: not loaded nested) entr
   
 
   
-
-  
     <div class='py1 quiet mt1 prose-big'>Instance Members</div>
     <div class="clearfix">
   
@@ -35364,8 +34581,6 @@ function. A promise is returned which resolves to the <a href="#roleresource">Ro
 
       
     
-  
-
   
 
   
@@ -35449,8 +34664,6 @@ be the same object but with refreshed data.
 
       
     
-  
-
   
 
   
@@ -37480,8 +36693,6 @@ accounts.account(…);</pre>
   
 
   
-
-  
 </section>
 
           
@@ -37552,8 +36763,6 @@ accounts.account(…);</pre>
         </div>
       
     </div>
-  
-
   
 
   

@@ -14,7 +14,7 @@ interface HistoryEvents {
 /**
  * HistoryEvents resource class
  *
- * https://stash.entrecode.de/projects/CMS/repos/ec.dm-history/browse/data-transform.js?at=develop#33
+ * https://github.com/entrecode/ec.dm-history/blob/develop/data-transform.js#L35
  *
  * @class
  *
