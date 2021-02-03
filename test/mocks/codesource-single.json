@@ -3,7 +3,7 @@
   "codeSourceType": "remoteGit",
   "config": {
     "_title": "ionic-seed",
-    "giturl": "ssh://git@stash.entrecode.de:7999/seed/ec.ionic-seed.git"
+    "giturl": "ssh://git@github.com:entrecode/ec.sdk.git"
   },
   "_links": {
     "self": {
