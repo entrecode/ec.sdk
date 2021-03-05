@@ -1,3 +1,10 @@
+## <small>0.22.6 (2021-03-05)</small>
+
+* release version 0.22.6 ([a813a89](https://github.com/entrecode/ec.sdk/commit/a813a89))
+* fix: wait for request ([948e8fe](https://github.com/entrecode/ec.sdk/commit/948e8fe))
+
+
+
 ## <small>0.22.5 (2021-03-05)</small>
 
 * release version 0.22.5 ([7c8d666](https://github.com/entrecode/ec.sdk/commit/7c8d666))

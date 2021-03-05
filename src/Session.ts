@@ -95,6 +95,7 @@ export default class Session extends Core {
             return undefined;
           });
       }
+      await this[requestCacheSymbol];
     }
 
     return this[meSymbol].queryPermissions(query);
