@@ -1,3 +1,10 @@
+## <small>0.22.5 (2021-03-05)</small>
+
+* release version 0.22.5 ([7c8d666](https://github.com/entrecode/ec.sdk/commit/7c8d666))
+* feat: adds permission query to account and session ([0c6e58c](https://github.com/entrecode/ec.sdk/commit/0c6e58c))
+
+
+
 ## <small>0.22.4 (2021-02-03)</small>
 
 * release version 0.22.4 ([830fff5](https://github.com/entrecode/ec.sdk/commit/830fff5))
