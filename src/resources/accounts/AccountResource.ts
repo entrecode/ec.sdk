@@ -176,13 +176,30 @@ class AccountResource extends Resource {
    */
   checkPermission(permission: string): boolean {
     if (!permission) {
-      throw Error('permission must be defined');
+      throw new Error('permission must be defined');
     }
 
     const trie = ShiroTrie['new']();
     trie.add(this.getAllPermissions());
 
     return trie.check(permission);
+  }
+
+  /**
+   * Queries the Accounts permissions. See [shiro-trie](https://www.npmjs.com/package/shiro-trie).
+   *
+   * @param {string} query the permission string to be queried
+   * @returns {Array<string>} an array of available permissions
+   */
+  queryPermissions(query: String): Array<string> {
+    if (!query) {
+      throw new Error('query musst be defined');
+    }
+
+    const trie = ShiroTrie['new']();
+    trie.add(this.getAllPermissions());
+
+    return trie.permissions(query);
   }
 
   /**

@@ -74,6 +74,33 @@ export default class Session extends Core {
   }
 
   /**
+   * Queries the current users permission trie for granted permissions. See [shiro-trie](https://www.npmjs.com/package/shiro-trie).
+   *
+   * @param {string} query the permission string to be queried
+   * @returns {Promise<Array<string>} an array of available permissions
+   */
+  async permissions(query: string): Promise<Array<String>> {
+    if (!query) {
+      throw new Error('query must be defined');
+    }
+
+    if (!this[meSymbol] || new Date().getTime() - this[meLoadedTimeSymbol] > 300000) {
+      if (!this[requestCacheSymbol]) {
+        this[requestCacheSymbol] = this.follow('ec:account')
+          .then((request) => get(this[environmentSymbol], request))
+          .then(([res, traversal]) => {
+            this[requestCacheSymbol] = undefined;
+            this[meSymbol] = new AccountResource(res, this[environmentSymbol], traversal);
+            this[meLoadedTimeSymbol] = new Date();
+            return undefined;
+          });
+      }
+    }
+
+    return this[meSymbol].queryPermissions(query);
+  }
+
+  /**
    * Login with email and password. Currently only supports `rest` clientID with body post of
    * credentials and tokenMethod `body`.
    *
