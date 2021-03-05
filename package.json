@@ -1,6 +1,6 @@
 {
   "name": "ec.sdk",
-  "version": "0.22.4",
+  "version": "0.22.5",
   "description": "SDK for ec.api",
   "repository": "entrecode/ec.sdk",
   "author": "Simon Scherzinger <scherzinger@entrecode.de>",
