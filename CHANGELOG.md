@@ -1,3 +1,10 @@
+## <small>0.22.7 (2021-03-11)</small>
+
+* release version 0.22.7 ([a1a7702](https://github.com/entrecode/ec.sdk/commit/a1a7702))
+* fix: respect `fileName` in `createDMAssets` [CMS-3343] ([28f4831](https://github.com/entrecode/ec.sdk/commit/28f4831))
+
+
+
 ## <small>0.22.6 (2021-03-05)</small>
 
 * release version 0.22.6 ([a813a89](https://github.com/entrecode/ec.sdk/commit/a813a89))
