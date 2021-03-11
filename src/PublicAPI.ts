@@ -668,7 +668,11 @@ export default class PublicAPI extends Core {
               if (validate.isURL(file)) {
                 request.field('url', file);
               } else {
-                request.attach('file', file);
+                let fileFieldName = 'file';
+                if (options.fileName) {
+                  fileFieldName = options.fileName[index];
+                }
+                request.attach(fileFieldName, file);
               }
             } else {
               throw new Error('Cannot handle input.');
