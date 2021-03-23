@@ -1,3 +1,10 @@
+## <small>0.22.8 (2021-03-23)</small>
+
+* release version 0.22.8 ([8af836d](https://github.com/entrecode/ec.sdk/commit/8af836d))
+* feat: `defaultVariants` for `fileOptions` ([325f8e3](https://github.com/entrecode/ec.sdk/commit/325f8e3))
+
+
+
 ## <small>0.22.7 (2021-03-11)</small>
 
 * release version 0.22.7 ([a1a7702](https://github.com/entrecode/ec.sdk/commit/a1a7702))

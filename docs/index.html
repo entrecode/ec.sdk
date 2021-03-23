@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset='utf-8'>
-  <title>ec.sdk 0.22.7 | Documentation</title>
+  <title>ec.sdk 0.22.8 | Documentation</title>
   <meta name='description' content='SDK for ec.api'>
   <meta name='viewport' content='width=device-width,initial-scale=1'>
   <link href='assets/bass.css' rel='stylesheet'>
@@ -15,7 +15,7 @@
       <div id='split-left' class='overflow-auto fs0 height-viewport-100'>
         <div class='py1 px2'>
           <h3 class='mb0 no-anchor'>ec.sdk</h3>
-          <div class='mb1'><code>0.22.7</code></div>
+          <div class='mb1'><code>0.22.8</code></div>
           <input
             placeholder='Filter'
             id='filter-input'
@@ -10058,7 +10058,7 @@ factory which then resolves to the newly created assets as DMAssetList
   {
     <span class="hljs-attr">fileName</span>: [<span class="hljs-string">&#x27;filename1.png&#x27;</span>, <span class="hljs-string">&#x27;filename2.png&#x27;</span>], <span class="hljs-comment">// omit for default filenames</span>
     <span class="hljs-attr">deduplicate</span>: <span class="hljs-literal">true</span>, <span class="hljs-comment">// you&#x27;ll get back existing assets if duplicates exist</span>
-     <span class="hljs-attr">defaultVariants</span>: [ <span class="hljs-number">256</span> ], <span class="hljs-comment">// will generate a 256px-variant right away instead of on first request. Only use if needed!</span>
+    <span class="hljs-attr">defaultVariants</span>: [ <span class="hljs-number">256</span> ], <span class="hljs-comment">// will generate a 256px-variant right away instead of on first request. Only use if needed!</span>
   }
 );</pre>
     
@@ -35672,7 +35672,12 @@ be the same object but with refreshed data.
   </h2>
 
   
-    <h2><small>0.22.7 (2021-03-11)</small></h2>
+    <h2><small>0.22.8 (2021-03-23)</small></h2>
+<ul>
+<li>release version 0.22.8 (<a href="https://github.com/entrecode/ec.sdk/commit/8af836d">8af836d</a>)</li>
+<li>feat: <code>defaultVariants</code> for <code>fileOptions</code> (<a href="https://github.com/entrecode/ec.sdk/commit/325f8e3">325f8e3</a>)</li>
+</ul>
+<h2><small>0.22.7 (2021-03-11)</small></h2>
 <ul>
 <li>release version 0.22.7 (<a href="https://github.com/entrecode/ec.sdk/commit/a1a7702">a1a7702</a>)</li>
 <li>fix: respect <code>fileName</code> in <code>createDMAssets</code> <a href="%5B28f4831%5D(https://github.com/entrecode/ec.sdk/commit/28f4831)">CMS-3343</a></li>
