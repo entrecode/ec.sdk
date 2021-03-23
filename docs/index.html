@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset='utf-8'>
-  <title>ec.sdk 0.22.7 | Documentation</title>
+  <title>ec.sdk 0.22.8 | Documentation</title>
   <meta name='description' content='SDK for ec.api'>
   <meta name='viewport' content='width=device-width,initial-scale=1'>
   <link href='assets/bass.css' rel='stylesheet'>
@@ -15,7 +15,7 @@
       <div id='split-left' class='overflow-auto fs0 height-viewport-100'>
         <div class='py1 px2'>
           <h3 class='mb0 no-anchor'>ec.sdk</h3>
-          <div class='mb1'><code>0.22.7</code></div>
+          <div class='mb1'><code>0.22.8</code></div>
           <input
             placeholder='Filter'
             id='filter-input'
@@ -9890,9 +9890,7 @@ factory which then resolves to the newly created PublicAssetResource
 
   
 
-  <p>Create multiple new asset. This should handle various input types.</p>
-<p>The most basic type is an array of strings representing a file paths, this can be used on node
-projects.</p>
+  <p>Create a legacy asset.</p>
 <p>For frontend usage you musst provide a
 <a href="https://developer.mozilla.org/de/docs/Web/API/FormData">FormData</a> object containing the
 multiple files in a field with the name 'file'.</p>
@@ -9978,7 +9976,7 @@ factory which then resolves to the newly created assets as AssetList
 
   
 
-  <p>Create multiple new asset. This should handle various input types.</p>
+  <p>Create one or multiple new assets. This should handle various input types.</p>
 <p>The most basic type is a string representing a file path, this can be used on node
 projects.</p>
 <p>For frontend usage you must provide a
@@ -10024,7 +10022,7 @@ paths, a FormData object, an array of readStreams, or a string.
           <div>
             <span class='code bold'>options</span> <code class='quiet'>(<a href="#fileoptions">fileOptions</a>
             = <code>{}</code>)</code>
-	    options for creating an asset.
+	    options for creating the assets.
 
           </div>
           
@@ -10050,6 +10048,20 @@ factory which then resolves to the newly created assets as DMAssetList
 
   
 
+  
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">const</span> createdAssets = <span class="hljs-keyword">await</span> api.createDMAssets(
+  <span class="hljs-string">&#x27;myAssetGroup&#x27;</span>,
+  [<span class="hljs-string">&#x27;/path/to/file1&#x27;</span>, <span class="hljs-string">&#x27;/path/to/file2&#x27;</span>],
+  {
+    <span class="hljs-attr">fileName</span>: [<span class="hljs-string">&#x27;filename1.png&#x27;</span>, <span class="hljs-string">&#x27;filename2.png&#x27;</span>], <span class="hljs-comment">// omit for default filenames</span>
+    <span class="hljs-attr">deduplicate</span>: <span class="hljs-literal">true</span>, <span class="hljs-comment">// you&#x27;ll get back existing assets if duplicates exist</span>
+    <span class="hljs-attr">defaultVariants</span>: [ <span class="hljs-number">256</span> ], <span class="hljs-comment">// will generate a 256px-variant right away instead of on first request. Only use if needed!</span>
+  }
+);</pre>
+    
   
 
   
@@ -12987,9 +12999,9 @@ Conenctor you can overwrite the handling.</p>
   </div>
   
 
-  <p>When creating Assets neue you can provide some options like fileName and
-others. These are directly mapped to DataManager options in create Asset
-route of Asset neue.</p>
+  <p>When creating assets, you can provide some options like fileName and
+others. These are directly mapped to DataManager options in the create Asset route.
+Use them to influence fileNames, duplicate handling and generation of default image variants.</p>
 
     <div class='pre p1 fill-light mt0'>fileOptions</div>
   
@@ -13015,31 +13027,57 @@ route of Asset neue.</p>
       
         <div class='space-bottom0'>
           <span class='code bold'>fileName</span> <code class='quiet'>((<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a> | <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>>))</code>
-          
-          
-        </div>
-      
-        <div class='space-bottom0'>
-          <span class='code bold'>preserveFilenames</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>)</code>
-          
+          : By default, a filename is generated using the original file's filename. Use this property to overwrite the filename – even sub-paths are possible this way. File extension has to be included, if desired. String Array if you upload multiple files at once.
+
           
         </div>
       
         <div class='space-bottom0'>
-          <span class='code bold'>ignoreDuplicates</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>)</code>
-          
+          <span class='code bold'>preserveFilenames</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>?)</code>
+          : set to 
+<code>false</code>
+ if you want a randomly generated filename. This way it is safe to set 
+<code>includeAssetIDInPath</code>
+ to 
+<code>false</code>
+ and get shorter URLs.
+
           
         </div>
       
         <div class='space-bottom0'>
-          <span class='code bold'>includeAssetIDInPath</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>)</code>
-          
+          <span class='code bold'>includeAssetIDInPath</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>?)</code>
+          : set to 
+<code>false</code>
+ if you want shorter URls. If you have a conflicting filename, you'll get an error. Should therefore usually have the same value as 
+<code>preserveFilenames</code>
+.
+
           
         </div>
       
         <div class='space-bottom0'>
-          <span class='code bold'>deduplicate</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>)</code>
+          <span class='code bold'>deduplicate</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>?)</code>
+          : set to 
+<code>true</code>
+ to get back an already uploaded duplicate asset instead of an error, when the file already exists.
+
           
+        </div>
+      
+        <div class='space-bottom0'>
+          <span class='code bold'>ignoreDuplicates</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>?)</code>
+          : use if you don't want deduplication and you don't want to trigger an error if the file already exists. Normally it is better to just use the 
+<code>deduplicate</code>
+ flag instead.
+
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <span class='code bold'>defaultVariants</span> <code class='quiet'>((<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a> | <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>>)?)</code>
+          : provide pixel value to generate an image variant right on upload. You'll get it back directly in the response, instead of after the first call.
+
           
         </div>
       
@@ -35634,7 +35672,12 @@ be the same object but with refreshed data.
   </h2>
 
   
-    <h2><small>0.22.7 (2021-03-11)</small></h2>
+    <h2><small>0.22.8 (2021-03-23)</small></h2>
+<ul>
+<li>release version 0.22.8 (<a href="https://github.com/entrecode/ec.sdk/commit/8af836d">8af836d</a>)</li>
+<li>feat: <code>defaultVariants</code> for <code>fileOptions</code> (<a href="https://github.com/entrecode/ec.sdk/commit/325f8e3">325f8e3</a>)</li>
+</ul>
+<h2><small>0.22.7 (2021-03-11)</small></h2>
 <ul>
 <li>release version 0.22.7 (<a href="https://github.com/entrecode/ec.sdk/commit/a1a7702">a1a7702</a>)</li>
 <li>fix: respect <code>fileName</code> in <code>createDMAssets</code> <a href="%5B28f4831%5D(https://github.com/entrecode/ec.sdk/commit/28f4831)">CMS-3343</a></li>

@@ -162,7 +162,7 @@ export default class PublicAPI extends Core {
       id = shortenUUID(idOrURL, 2);
     } else {
       const result = /^https?:\/\/(datamanager\.(?:(?:cachena|buffalo)\.)?entrecode\.de|localhost:7471)\/api\/([a-f0-9]{8})\/?$/.exec(
-        idOrURL,
+        idOrURL
       );
       if (!result) {
         throw new Error('could not parse idOrURL');
@@ -268,9 +268,7 @@ export default class PublicAPI extends Core {
         if (!assetID) {
           throw new Error('assetID must be defined');
         }
-        const request = this.newRequest()
-          .follow('ec:api/assets')
-          .withTemplateParameters({ assetID });
+        const request = this.newRequest().follow('ec:api/assets').withTemplateParameters({ assetID });
         return this.dispatch(() => get(this[environmentSymbol], request));
       })
       .then(([res, traversal]) => new PublicAssetResource(res, this[environmentSymbol], traversal));
@@ -293,7 +291,7 @@ export default class PublicAPI extends Core {
 
           return result[1];
         })
-        .filter((x) => !!x),
+        .filter((x) => !!x)
     );
   }
 
@@ -540,10 +538,7 @@ export default class PublicAPI extends Core {
   }
 
   /**
-   * Create multiple new asset. This should handle various input types.
-   *
-   * The most basic type is an array of strings representing a file paths, this can be used on node
-   * projects.
+   * Create a legacy asset.
    *
    * For frontend usage you musst provide a
    * {@link https://developer.mozilla.org/de/docs/Web/API/FormData|FormData} object containing the
@@ -610,7 +605,7 @@ export default class PublicAPI extends Core {
   }
 
   /**
-   * Create multiple new asset. This should handle various input types.
+   * Create one or multiple new assets. This should handle various input types.
    *
    * The most basic type is a string representing a file path, this can be used on node
    * projects.
@@ -621,10 +616,21 @@ export default class PublicAPI extends Core {
    *
    * In both cases you can add a string representing an url. DataManager will then create the assets from this url.
    *
+   * @example
+   * const createdAssets = await api.createDMAssets(
+   *   'myAssetGroup',
+   *   ['/path/to/file1', '/path/to/file2'],
+   *   {
+   *     fileName: ['filename1.png', 'filename2.png'], // omit for default filenames
+   *     deduplicate: true, // you'll get back existing assets if duplicates exist
+   *     defaultVariants: [ 256 ], // will generate a 256px-variant right away instead of on first request. Only use if needed!
+   *   }
+   * );
+   * 
    * @param {string} assetGroupID the asset group in which the asset should be created.
    * @param {object|array<object|string>|string} input representing the asset, either an array of
    *   paths, a FormData object, an array of readStreams, or a string.
-   * @param {fileOptions} options options for creating an asset.
+   * @param {fileOptions} options options for creating the assets.
    * @returns {Promise<function<Promise<DMAssetList>>>}  Promise resolving to a Promise
    *   factory which then resolves to the newly created assets as DMAssetList
    */
@@ -694,6 +700,10 @@ export default class PublicAPI extends Core {
           if ('includeAssetIDInPath' in options) {
             request.field('includeAssetIDInPath', `${options.includeAssetIDInPath}`);
           }
+
+          if ('defaultVariants' in options) {
+            request.field('defaultVariants', JSON.stringify(options.defaultVariants));
+          }
         }
 
         // TODO dispatch for superagent
@@ -742,7 +752,7 @@ export default class PublicAPI extends Core {
       .then((link) =>
         validator.validate(e, `${link.profile}?template=post`).catch((e) => {
           throw new Problem(convertValidationError(e), locale);
-        }),
+        })
       )
       .then(() => this.follow(`${this[shortIDSymbol]}:${model}`))
       .then((request) => {
@@ -751,14 +761,12 @@ export default class PublicAPI extends Core {
         }
         return this.dispatch(() => post(this[environmentSymbol], request, e));
       })
-      .then(
-        ([res, traversal]): any => {
-          if (!res || Object.keys(res).length === 0) {
-            return undefined;
-          }
-          return createEntry(res, this[environmentSymbol], traversal);
-        },
-      );
+      .then(([res, traversal]): any => {
+        if (!res || Object.keys(res).length === 0) {
+          return undefined;
+        }
+        return createEntry(res, this[environmentSymbol], traversal);
+      });
   }
 
   /**
@@ -775,9 +783,7 @@ export default class PublicAPI extends Core {
     if (!assetID) {
       throw new Error('assetID must be defined');
     }
-    const request = this.newRequest()
-      .follow('ec:api/assets')
-      .withTemplateParameters({ assetID });
+    const request = this.newRequest().follow('ec:api/assets').withTemplateParameters({ assetID });
     await this.dispatch(() => del(this[environmentSymbol], request));
   }
 
@@ -807,7 +813,7 @@ export default class PublicAPI extends Core {
 
     const request = await this.follow(`${this[shortIDSymbol]}:${model}`);
     request.withTemplateParameters(
-      optionsToQuery({ id } as filterOptions, this.getLink(`${this[shortIDSymbol]}:${model}`).href, true),
+      optionsToQuery({ id } as filterOptions, this.getLink(`${this[shortIDSymbol]}:${model}`).href, true)
     );
     await this.dispatch(() => del(this[environmentSymbol], request));
   }
@@ -1033,7 +1039,7 @@ export default class PublicAPI extends Core {
       })
       .then((request) => {
         request.withTemplateParameters(
-          optionsToQuery(options as filterOptions, this.getLink(`${this[shortIDSymbol]}:${model}`).href, true),
+          optionsToQuery(options as filterOptions, this.getLink(`${this[shortIDSymbol]}:${model}`).href, true)
         );
         return this.dispatch(() => get(this[environmentSymbol], request));
       })
@@ -1045,7 +1051,7 @@ export default class PublicAPI extends Core {
           }
 
           return createList(res, this[environmentSymbol], traversal, `${this[shortIDSymbol]}:${model}`).then((list) =>
-            list.getFirstItem(),
+            list.getFirstItem()
           );
         }
 
@@ -1091,7 +1097,7 @@ export default class PublicAPI extends Core {
       })
       .then((request) => {
         request.withTemplateParameters(
-          optionsToQuery(options, this.getLink(`${this[shortIDSymbol]}:${model}`).href, true),
+          optionsToQuery(options, this.getLink(`${this[shortIDSymbol]}:${model}`).href, true)
         );
         return this.dispatch(() => get(this[environmentSymbol], request));
       })
@@ -1316,7 +1322,7 @@ export default class PublicAPI extends Core {
             }
 
             return link;
-          }),
+          })
         );
       })
       .then((link) => {
@@ -1638,7 +1644,7 @@ export default class PublicAPI extends Core {
         this[traversalSymbol] = traversal;
 
         const assetGroups = Object.keys(this[resourceSymbol].allLinks()).filter(
-          (x) => x.indexOf(`ec:dm-assets/`) !== -1,
+          (x) => x.indexOf(`ec:dm-assets/`) !== -1
         );
 
         const relations = {
@@ -1665,7 +1671,7 @@ export default class PublicAPI extends Core {
             id: 'hash',
             ResourceClass: DMAuthTokenResource,
             ListClass: DMAuthTokenList,
-          }
+          },
         };
         assetGroups.forEach((relation) => {
           const relationName = `dmAsset.${relation.substr(13)}`;
@@ -1692,7 +1698,7 @@ export default class PublicAPI extends Core {
         this[relationsSymbol] = relations;
 
         return this;
-      }),
+      })
     );
   }
 
@@ -1840,7 +1846,7 @@ export default class PublicAPI extends Core {
    * const tokenList = await dm.tokenList();
    * await tokenList.map((token) => {
    *    // delete all sessions that are not the active one
-   *    if (!token.isCurrent) { 
+   *    if (!token.isCurrent) {
    *      await token.delete();
    *    }
    * });
@@ -1867,7 +1873,7 @@ export default class PublicAPI extends Core {
    * @param {string} validationToken Single-use token.
    */
   async validateValidationToken(
-    validationToken: string,
+    validationToken: string
   ): Promise<{
     accountID: string;
     email: string;
@@ -1943,6 +1949,7 @@ export type fileOptions = {
   ignoreDuplicates?: boolean;
   includeAssetIDInPath?: boolean;
   deduplicate?: boolean;
+  defaultVariants?: number | Array<number>;
 };
 
 export type jwtResponse = {
@@ -1959,19 +1966,20 @@ export type assetOptions = {
 };
 
 /**
- * When creating Assets neue you can provide some options like fileName and
- * others. These are directly mapped to DataManager options in create Asset
- * route of Asset neue.
+ * When creating assets, you can provide some options like fileName and
+ * others. These are directly mapped to DataManager options in the create Asset route.
+ * Use them to influence fileNames, duplicate handling and generation of default image variants.
  *
  * @example
  * const assetList = await api.createDMAsset('myFiles', filePath, { deduplicate: true });
  *
  * @typedef {Object} fileOptions
- * @property {string | Array<string>} fileName
- * @property {boolean} preserveFilenames
- * @property {boolean} ignoreDuplicates
- * @property {boolean} includeAssetIDInPath
- * @property {boolean} deduplicate
+ * @property {string | Array<string>} fileName - By default, a filename is generated using the original file's filename. Use this property to overwrite the filename – even sub-paths are possible this way. File extension has to be included, if desired. String Array if you upload multiple files at once.
+ * @property {boolean=} preserveFilenames - set to `false` if you want a randomly generated filename. This way it is safe to set `includeAssetIDInPath` to `false` and get shorter URLs.
+ * @property {boolean=} includeAssetIDInPath - set to `false` if you want shorter URls. If you have a conflicting filename, you'll get an error. Should therefore usually have the same value as `preserveFilenames`.
+ * @property {boolean=} deduplicate - set to `true` to get back an already uploaded duplicate asset instead of an error, when the file already exists.
+ * @property {boolean=} ignoreDuplicates - use if you don't want deduplication and you don't want to trigger an error if the file already exists. Normally it is better to just use the `deduplicate` flag instead.
+ * @property {(number | Array<number>)=} defaultVariants - provide pixel value to generate an image variant right on upload. You'll get it back directly in the response, instead of after the first call.
  *
  */
 
