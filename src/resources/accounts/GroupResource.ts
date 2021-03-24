@@ -1,5 +1,6 @@
 import Resource from '../Resource';
 import { environment } from '../../Core';
+import * as validate from 'validator';
 import { isRegExp } from 'util';
 
 const resourceSymbol: any = Symbol.for('resource');
@@ -134,18 +135,24 @@ class GroupResource extends Resource {
 
   /**
    * Add an account to this group.
+   * You can add by `accountID` or by `email`. 
+   * Note that email addings are only validated after you called `.save()` on your group.
    *
-   * @param {string|{accountID: string}} account Account which should be added
+   * @param {string|{accountID: string}} account Account which should be added (email address, accountID or account object)
    * @returns {GroupResource} returns this group resource
    */
-  addAccount(account: string | { accountID: string }): GroupResource {
+  addAccount(account: string | { accountID?: string; email?: string }): GroupResource {
     if (!account) {
       throw new Error('account must be defined');
     }
 
-    if (typeof account === 'string') {
-      account = { accountID: account };
-    } else if (typeof account !== 'object' || !('accountID' in account)) {
+    if (typeof account === 'string' && (validate.isUUID(account, 4) || validate.isEmail(account))) {
+      if (validate.isUUID(account, 4)) {
+        account = { accountID: account };
+      } else {
+        account = { email: account };
+      }
+    } else if (typeof account !== 'object' || (!('accountID' in account) && !('email' in account))) {
       throw new Error('account must either be string or account like object');
     }
 
@@ -158,6 +165,8 @@ class GroupResource extends Resource {
 
   /**
    * Replace all accounts in this GroupResource with a new array.
+   * You can add by `accountID` or by `email`. 
+   * Note that email addings are only validated after you called `.save()` on your group.
    *
    * @param accounts The array of accounts you want to contain in this group.
    */
@@ -171,12 +180,20 @@ class GroupResource extends Resource {
     }
 
     accounts.forEach((a) => {
-      if (typeof a !== 'string' && !(typeof a === 'object' && 'accountID' in a)) {
+      if (typeof a !== 'string' && !(typeof a === 'object' && ('accountID' in a || 'email' in a))) {
         throw new Error('account items must be string or account like object');
       }
     });
 
-    this[resourceSymbol]._embedded['ec:account'] = accounts.map((a) => (typeof a === 'string' ? { accountID: a } : a));
+    this[resourceSymbol]._embedded['ec:account'] = accounts.map((a) => {
+      if (typeof a !== 'string') {
+        return a;
+      }
+      if (validate.isUUID(a, 4)) {
+        return { accountID: a };
+      }
+      return { email: a };
+    });
 
     return this;
   }
