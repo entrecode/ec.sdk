@@ -1,3 +1,10 @@
+## <small>0.22.9 (2021-03-25)</small>
+
+* release version 0.22.9 ([d026613](https://github.com/entrecode/ec.sdk/commit/d026613))
+* feat: add account to group by email ([2207538](https://github.com/entrecode/ec.sdk/commit/2207538))
+
+
+
 ## <small>0.22.8 (2021-03-23)</small>
 
 * release version 0.22.8 ([8af836d](https://github.com/entrecode/ec.sdk/commit/8af836d))

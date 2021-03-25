@@ -152,12 +152,12 @@ describe('Group Resource', () => {
 
   it('should add account, string', () => {
     resource.getAccounts().should.have.property('length', 2);
-    resource.addAccount('uuid');
+    resource.addAccount('2ecd4e74-19ae-4291-92ab-4f7d0435a577');
     resource.getAccounts().should.have.property('length', 3);
   });
   it('should add account, object', () => {
     resource.getAccounts().should.have.property('length', 2);
-    resource.addAccount({ accountID: 'uuid' });
+    resource.addAccount({ accountID: '2ecd4e74-19ae-4291-92ab-4f7d0435a577' });
     resource.getAccounts().should.have.property('length', 3);
   });
   it('should throw on undefined account', () => {
