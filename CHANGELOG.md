@@ -1,3 +1,10 @@
+## <small>0.22.10 (2021-04-20)</small>
+
+* release version 0.22.10 ([2e715ff](https://github.com/entrecode/ec.sdk/commit/2e715ff))
+* fix: Use file.url in DMAssetResource#getFileUrl ([2685818](https://github.com/entrecode/ec.sdk/commit/2685818))
+
+
+
 ## <small>0.22.9 (2021-03-25)</small>
 
 * release version 0.22.9 ([d026613](https://github.com/entrecode/ec.sdk/commit/d026613))
