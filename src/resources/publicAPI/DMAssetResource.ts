@@ -121,7 +121,10 @@ class DMAssetResource extends Resource {
         enumerable: true,
         get: () => <Array<string>>this.getProperty('tags'),
         set: (value: Array<string | any>) => {
-          return this.setProperty('tags', value.map((x) => (typeof x === 'string' ? x : x.tag)));
+          return this.setProperty(
+            'tags',
+            value.map((x) => (typeof x === 'string' ? x : x.tag))
+          );
         },
       },
       thumbnails: {
@@ -162,7 +165,7 @@ class DMAssetResource extends Resource {
    * @returns {string} URL to the file
    */
   getFileUrl(): string {
-    return this.getLink('ec:dm-asset/file').href;
+    return this.file ? this.file.url : this.getLink('ec:dm-asset/file').href;
   }
 
   /**
