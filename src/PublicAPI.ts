@@ -432,7 +432,7 @@ export default class PublicAPI extends Core {
   /**
    * Programatically complete a signup with a single use validationToken, mostly used for special register flows using legacy users or magic link login.
    *
-   * @param {{validationToken: string, useragent?: string ip?: string, password?: string, pending?: string}} body Request body containing configuration options.
+   * @param {{validationToken: string, useragent?: string ip?: string, password?: string, pending?: boolean}} body Request body containing configuration options.
    * @returns {Promise<{access_token: string, refresh_token: string}>} Promise resolving to the issued token
    */
   async configurableSignupEdit(body: {
@@ -440,7 +440,7 @@ export default class PublicAPI extends Core {
     useragent?: string;
     ip?: string;
     password?: string;
-    pending?: string;
+    pending?: boolean;
     clientID?: string;
   }): Promise<{ access_token: string; refresh_token: string }> {
     if (!body || typeof body !== 'object') {
