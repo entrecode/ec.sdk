@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset='utf-8'>
-  <title>ec.sdk 0.22.10 | Documentation</title>
+  <title>ec.sdk 0.22.11 | Documentation</title>
   <meta name='description' content='SDK for ec.api'>
   <meta name='viewport' content='width=device-width,initial-scale=1'>
   <link href='assets/bass.css' rel='stylesheet'>
@@ -15,7 +15,7 @@
       <div id='split-left' class='overflow-auto fs0 height-viewport-100'>
         <div class='py1 px2'>
           <h3 class='mb0 no-anchor'>ec.sdk</h3>
-          <div class='mb1'><code>0.22.10</code></div>
+          <div class='mb1'><code>0.22.11</code></div>
           <input
             placeholder='Filter'
             id='filter-input'
@@ -9504,7 +9504,7 @@ session.setClientID(<span class="hljs-string">&#x27;rest&#x27;</span>);
   
 
   <p>Checks a permission for the currently logged in public user. ec.users check their permission
-with <a href="Sessin#checkPermission">Sessin#checkPermission</a>.</p>
+with <a href="#sessioncheckpermission">Session#checkPermission</a>.</p>
 
     <div class='pre p1 fill-light mt0'>checkPermission(permission: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, refresh: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>></div>
   
@@ -9629,6 +9629,21 @@ with <a href="Sessin#checkPermission">Sessin#checkPermission</a>.</p>
 
   
 
+  
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">const</span> createdAccount = <span class="hljs-keyword">await</span> api.configurableSignup({
+  <span class="hljs-attr">email</span>: <span class="hljs-string">&#x27;test@entrecode.de&#x27;</span>,
+  <span class="hljs-attr">password</span>: <span class="hljs-string">&#x27;CorrectHorseBatteryStaple&#x27;</span>, <span class="hljs-comment">// optional</span>
+  <span class="hljs-attr">invite</span>: <span class="hljs-literal">null</span>, <span class="hljs-comment">// optional</span>
+  <span class="hljs-attr">pending</span>: <span class="hljs-literal">true</span>, <span class="hljs-comment">// optional</span>
+  <span class="hljs-attr">sendWelcomeMail</span>: <span class="hljs-literal">false</span>, <span class="hljs-comment">// optional</span>
+  <span class="hljs-attr">anonymousToken</span>: <span class="hljs-string">&#x27;eyasldfaslfkelaewjflejf...&#x27;</span>, <span class="hljs-comment">// optional</span>
+});
+
+<span class="hljs-keyword">const</span> { accountID, email, hasPassword, pending } = createdAccount;</pre>
+    
   
 
   
@@ -35676,7 +35691,16 @@ be the same object but with refreshed data.
   </h2>
 
   
-    <h2><small>0.22.10 (2021-04-20)</small></h2>
+    <h2><small>0.22.11 (2021-05-27)</small></h2>
+<ul>
+<li>added <code>configurableSignup</code> example (<a href="https://github.com/entrecode/ec.sdk/commit/226a204">226a204</a>)</li>
+<li>release version 0.22.11 (<a href="https://github.com/entrecode/ec.sdk/commit/3fd256f">3fd256f</a>)</li>
+<li>Update package.json (<a href="https://github.com/entrecode/ec.sdk/commit/b7b5eef">b7b5eef</a>)</li>
+<li>chore: updated release.sh (<a href="https://github.com/entrecode/ec.sdk/commit/8fe141a">8fe141a</a>)</li>
+<li>feat: setter for email in DMAccountResource (<a href="https://github.com/entrecode/ec.sdk/commit/00f2c29">00f2c29</a>)</li>
+<li>fix: configurableSignupEdit pending type (<a href="https://github.com/entrecode/ec.sdk/commit/6dd8e24">6dd8e24</a>)</li>
+</ul>
+<h2><small>0.22.10 (2021-04-20)</small></h2>
 <ul>
 <li>release version 0.22.10 (<a href="https://github.com/entrecode/ec.sdk/commit/2e715ff">2e715ff</a>)</li>
 <li>fix: Use file.url in DMAssetResource#getFileUrl (<a href="https://github.com/entrecode/ec.sdk/commit/2685818">2685818</a>)</li>
