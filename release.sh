@@ -4,6 +4,7 @@ set -e
 
 git diff-index --quiet HEAD --
 git checkout develop
+git pull
 npm test
 git checkout -b release/$1
 npm version --no-git-tag-version $1
@@ -12,6 +13,7 @@ npm run docs
 git add docs/* package.json package-lock.json
 git commit --no-verify  -m "release version $1"
 git checkout master
+git pull
 git merge --no-ff --no-verify  -m "merge release/$1 into master" release/$1
 npm run changelog
 git add CHANGELOG.md

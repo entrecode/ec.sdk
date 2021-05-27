@@ -72,6 +72,10 @@ class DMAccountResource extends Resource {
       email: {
         enumerable: true,
         get: () => <string>this.getProperty('email'),
+        set: (email: boolean) => {
+          this.setProperty('email', email);
+          return email;
+        },
       },
       hasPassword: {
         enumerable: true,
