@@ -1,3 +1,10 @@
+## <small>0.22.12 (2021-09-10)</small>
+
+* release version 0.22.12 ([364ed2f](https://github.com/entrecode/ec.sdk/commit/364ed2f))
+* feat: createApiToken options ([3b20378](https://github.com/entrecode/ec.sdk/commit/3b20378))
+
+
+
 ## <small>0.22.11 (2021-05-27)</small>
 
 * added `configurableSignup` example ([226a204](https://github.com/entrecode/ec.sdk/commit/226a204))
