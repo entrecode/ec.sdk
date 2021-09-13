@@ -1,3 +1,10 @@
+## <small>0.22.14 (2021-09-13)</small>
+
+* release version 0.22.14 ([dc032f2](https://github.com/entrecode/ec.sdk/commit/dc032f2))
+* Update npm-publish.yml ([dd708f5](https://github.com/entrecode/ec.sdk/commit/dd708f5))
+
+
+
 ## <small>0.22.13 (2021-09-13)</small>
 
 * Create npm-publish.yml ([4b3f9b5](https://github.com/entrecode/ec.sdk/commit/4b3f9b5))
