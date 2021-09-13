@@ -140,8 +140,8 @@ Here are two notes on developing ec.sdk:
 * Please use [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0-beta.2/)
 * When releasing a new version use `npm run release <semver-version>` – This will build docs and changelog etc, `npm publish` is handled by travis.
 
-[travis-image]: https://travis-ci.org/entrecode/ec.sdk.svg?branch=master
-[travis-url]: https://travis-ci.org/entrecode/ec.sdk
+[travis-image]: https://github.com/entrecode/ec.sdk/actions/workflows/npm-publish.yml/badge.svg
+[travis-url]: https://github.com/entrecode/ec.sdk/actions/workflows/npm-publish.yml
 [cover-image]: https://coveralls.io/repos/github/entrecode/ec.sdk/badge.svg?branch=master
 [cover-url]: https://coveralls.io/github/entrecode/ec.sdk?branch=master
 [npm-image]: https://badge.fury.io/js/ec.sdk.svg
