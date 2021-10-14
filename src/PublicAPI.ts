@@ -350,7 +350,7 @@ export default class PublicAPI extends Core {
 
   /**
    * Checks a permission for the currently logged in public user. ec.users check their permission
-   * with {@link Sessin#checkPermission}.
+   * with {@link Session#checkPermission}.
    *
    * @param {string} permission the permission to check
    * @param {boolean} refresh whether or not it should use a cached response
@@ -388,6 +388,19 @@ export default class PublicAPI extends Core {
   /**
    * Programatically signup a user, mostly used for special register flows using legacy users or magic link login.
    *
+   * @example
+   * 
+   * const createdAccount = await api.configurableSignup({
+   *   email: 'test@entrecode.de',
+   *   password: 'CorrectHorseBatteryStaple', // optional
+   *   invite: null, // optional
+   *   pending: true, // optional
+   *   sendWelcomeMail: false, // optional
+   *   anonymousToken: 'eyasldfaslfkelaewjflejf...', // optional
+   * });
+   * 
+   * const { accountID, email, hasPassword, pending } = createdAccount;
+   *
    * @param {{email: string, password?: string, invite?: string, pending?: boolean, sendWelcomeMail?: boolean, anonymousToken?: string }} body Request body containing configuration options.
    * @returns {Promise<{accountID: string, email: string, hasPassword: boolean, pending: boolean}>} Promise resolving to the created account
    */
@@ -419,7 +432,7 @@ export default class PublicAPI extends Core {
   /**
    * Programatically complete a signup with a single use validationToken, mostly used for special register flows using legacy users or magic link login.
    *
-   * @param {{validationToken: string, useragent?: string ip?: string, password?: string, pending?: string}} body Request body containing configuration options.
+   * @param {{validationToken: string, useragent?: string ip?: string, password?: string, pending?: boolean}} body Request body containing configuration options.
    * @returns {Promise<{access_token: string, refresh_token: string}>} Promise resolving to the issued token
    */
   async configurableSignupEdit(body: {
@@ -427,7 +440,7 @@ export default class PublicAPI extends Core {
     useragent?: string;
     ip?: string;
     password?: string;
-    pending?: string;
+    pending?: boolean;
     clientID?: string;
   }): Promise<{ access_token: string; refresh_token: string }> {
     if (!body || typeof body !== 'object') {

@@ -1,6 +1,6 @@
 {
   "name": "ec.sdk",
-  "version": "0.22.10",
+  "version": "0.22.14",
   "description": "SDK for ec.api",
   "repository": "entrecode/ec.sdk",
   "author": "Simon Scherzinger <scherzinger@entrecode.de>",
@@ -21,6 +21,12 @@
     "pretestTravis": "npm run build",
     "testTravis": "mocha -R dot --recursive --exit",
     "webpack": "webpack --config webpack.config.js"
+  },
+  "browser": {
+    "crypto": false,
+    "fs": false,
+    "http": false,
+    "https": false
   },
   "dependencies": {
     "@types/halfred": "^1.0.2",

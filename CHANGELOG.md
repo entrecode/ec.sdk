@@ -1,3 +1,37 @@
+## <small>0.22.14 (2021-09-13)</small>
+
+* release version 0.22.14 ([dc032f2](https://github.com/entrecode/ec.sdk/commit/dc032f2))
+* Update npm-publish.yml ([dd708f5](https://github.com/entrecode/ec.sdk/commit/dd708f5))
+
+
+
+## <small>0.22.13 (2021-09-13)</small>
+
+* Create npm-publish.yml ([4b3f9b5](https://github.com/entrecode/ec.sdk/commit/4b3f9b5))
+* release version 0.22.13 ([3f23934](https://github.com/entrecode/ec.sdk/commit/3f23934))
+* Update README.md ([6f8aaa5](https://github.com/entrecode/ec.sdk/commit/6f8aaa5))
+* updated github action ([57e9aa3](https://github.com/entrecode/ec.sdk/commit/57e9aa3))
+
+
+
+## <small>0.22.12 (2021-09-10)</small>
+
+* release version 0.22.12 ([364ed2f](https://github.com/entrecode/ec.sdk/commit/364ed2f))
+* feat: createApiToken options ([3b20378](https://github.com/entrecode/ec.sdk/commit/3b20378))
+
+
+
+## <small>0.22.11 (2021-05-27)</small>
+
+* added `configurableSignup` example ([226a204](https://github.com/entrecode/ec.sdk/commit/226a204))
+* release version 0.22.11 ([3fd256f](https://github.com/entrecode/ec.sdk/commit/3fd256f))
+* Update package.json ([b7b5eef](https://github.com/entrecode/ec.sdk/commit/b7b5eef))
+* chore: updated release.sh ([8fe141a](https://github.com/entrecode/ec.sdk/commit/8fe141a))
+* feat: setter for email in DMAccountResource ([00f2c29](https://github.com/entrecode/ec.sdk/commit/00f2c29))
+* fix: configurableSignupEdit pending type ([6dd8e24](https://github.com/entrecode/ec.sdk/commit/6dd8e24))
+
+
+
 ## <small>0.22.10 (2021-04-20)</small>
 
 * release version 0.22.10 ([2e715ff](https://github.com/entrecode/ec.sdk/commit/2e715ff))

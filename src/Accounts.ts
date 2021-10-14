@@ -181,19 +181,29 @@ export default class Accounts extends Core {
   }
 
   /**
-   * Creates a new API token with 100 years validity.
+   * Creates a new API token with 100 years validity (or how long you want).
    *
    * @example
-   * return accounts.createAPIToken()
-   * .then(token => show(token));
+   * return accounts.createAPIToken({ // all options are optional
+   *   name: 'my-api-key', // PLEASE use a good identifier for the account
+   *   validUntil: 1440, // token validity in minutes, leave blank for "distant future" (1440 = 24h)
+   *   permissions: ['my:permission-string'], // directly attach permission. You need the right to do that!
+   *   groups: [{ groupID: '...' }], // directly add account to group. You need the right to do that!
+   * })
+   * .then(({ jwt, accountID, iat, exp}) => { 
+   *   // do something with `jwt` because it is not accessable later
+   * });
+   * 
+   * @param {apiTokenOptions?} options
    *
    * @returns {Promise<{jwt: string, accountID: string, iat: number, exp: number}>} the created api
    *   token response.
    */
-  createApiToken(): Promise<tokenResponse> {
+  createApiToken({ name, validUntil, permissions, groups }: apiTokenOptions = {}): Promise<tokenResponse> {
     // TODO advanced type
     return this.follow('ec:auth/create-anonymous')
-      .then((request) => post(this[environmentSymbol], request, {}))
+      .then((request) => validUntil ? request.withTemplateParameters({ validUntil }) : request)
+      .then((request) => post(this[environmentSymbol], request, { name, permissions, groups }))
       .then(([tokenResponse]) => tokenResponse);
   }
 
@@ -463,3 +473,5 @@ export type inviteCreateGroupObject = {
   groupID: string;
   name: string;
 };
+
+export type apiTokenOptions = { name?: string, validUntil?: number, permissions?: Array<string>, groups?: Array<GroupResource | { groupID: string }> }

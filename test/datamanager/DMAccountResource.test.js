@@ -105,7 +105,7 @@ describe('DMAccount Resource', () => {
     });
   });
 
-  const setter = ['blocked'];
+  const setter = ['blocked', 'email'];
   setter.forEach((name) => {
     it(`should call resource.setProperty with ${name}`, () => {
       const spy = sinon.spy(resource, 'setProperty');
