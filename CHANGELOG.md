@@ -1,3 +1,11 @@
+## 0.23.0 (2021-10-19)
+
+* release version 0.23.0 ([fef6593](https://github.com/entrecode/ec.sdk/commit/fef6593))
+* feat: add parenthesis for exact and multiple exact filter ([d7fd95c](https://github.com/entrecode/ec.sdk/commit/d7fd95c))
+* freat: do not allow levels on single entry with filter requesst ([0ec61c4](https://github.com/entrecode/ec.sdk/commit/0ec61c4))
+
+
+
 ## <small>0.22.14 (2021-09-13)</small>
 
 * release version 0.22.14 ([dc032f2](https://github.com/entrecode/ec.sdk/commit/dc032f2))
