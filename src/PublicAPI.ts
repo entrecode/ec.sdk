@@ -639,7 +639,7 @@ export default class PublicAPI extends Core {
    *     defaultVariants: [ 256 ], // will generate a 256px-variant right away instead of on first request. Only use if needed!
    *   }
    * );
-   * 
+   *
    * @param {string} assetGroupID the asset group in which the asset should be created.
    * @param {object|array<object|string>|string} input representing the asset, either an array of
    *   paths, a FormData object, an array of readStreams, or a string.
@@ -1042,6 +1042,9 @@ export default class PublicAPI extends Core {
 
         if (typeof id === 'object') {
           Object.assign(options, id);
+          if ('_levels' in (options as filterOptions)) {
+            throw new Error('Levels not allowed on single Entry request with filters');
+          }
         } else if (typeof id === 'string') {
           (options as filterOptions)._id = id;
         } else {
