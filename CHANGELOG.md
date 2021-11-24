@@ -1,3 +1,11 @@
+## <small>0.23.1 (2021-11-24)</small>
+
+* release version 0.23.1 ([0ea0f77](https://github.com/entrecode/ec.sdk/commit/0ea0f77))
+* chore: update package-lock ([3bc836e](https://github.com/entrecode/ec.sdk/commit/3bc836e))
+* fix: setUserAgent false negative ([0570c9a](https://github.com/entrecode/ec.sdk/commit/0570c9a))
+
+
+
 ## 0.23.0 (2021-10-19)
 
 * release version 0.23.0 ([fef6593](https://github.com/entrecode/ec.sdk/commit/fef6593))
