@@ -6,8 +6,6 @@ import * as validator from 'json-schema-remote';
 import * as validate from 'validator';
 import * as shortID from 'shortid';
 
-const { convertValidationError, newError } = require('ec.errors')();
-
 import Core, { environment, options } from './Core';
 import EntryList, { createList } from './resources/publicAPI/EntryList';
 import EntryResource, { createEntry } from './resources/publicAPI/EntryResource';
@@ -37,6 +35,8 @@ import PublicTagResource from './resources/publicAPI/PublicTagResource';
 import DMAuthTokenResource from './resources/publicAPI/DMAuthTokenResource';
 import DMAuthTokenList from './resources/publicAPI/DMAuthTokenList';
 
+const { convertValidationError, newError } = require('ec.errors')();
+
 const resourceSymbol: any = Symbol.for('resource');
 const tokenStoreSymbol: any = Symbol.for('tokenStore');
 const traversalSymbol: any = Symbol.for('traversal');
@@ -64,7 +64,7 @@ const urls = {
 
 function chunk(array, size) {
   const chunked_arr: Array<any> = [];
-  let copied = [...array]; // ES6 destructuring
+  const copied = [...array]; // ES6 destructuring
   const numOfChild = Math.ceil(copied.length / size); // Round up to the nearest integer
   for (let i = 0; i < numOfChild; i++) {
     chunked_arr.push(copied.splice(0, size));
@@ -161,9 +161,10 @@ export default class PublicAPI extends Core {
     } else if (/[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$/.test(idOrURL)) {
       id = shortenUUID(idOrURL, 2);
     } else {
-      const result = /^https?:\/\/(datamanager\.(?:(?:cachena|buffalo)\.)?entrecode\.de|localhost:7471)\/api\/([a-f0-9]{8})\/?$/.exec(
-        idOrURL
-      );
+      const result =
+        /^https?:\/\/(datamanager\.(?:(?:cachena|buffalo)\.)?entrecode\.de|localhost:7471)\/api\/([a-f0-9]{8})\/?$/.exec(
+          idOrURL
+        );
       if (!result) {
         throw new Error('could not parse idOrURL');
       }
@@ -217,38 +218,65 @@ export default class PublicAPI extends Core {
   }
 
   get account() {
+    if (!this[resourceSymbol]) {
+      throw new Error('SDK not initialized, please call `await PublicAPI#resolve()`.');
+    }
     return <any>this[resourceSymbol].account;
   }
 
   get config() {
+    if (!this[resourceSymbol]) {
+      throw new Error('SDK not initialized, please call `await PublicAPI#resolve()`.');
+    }
     return <any>this[resourceSymbol].config;
   }
 
   get dataManagerID() {
+    if (!this[resourceSymbol]) {
+      throw new Error('SDK not initialized, please call `await PublicAPI#resolve()`.');
+    }
     return <string>this[resourceSymbol].dataManagerID;
   }
 
   get defaultLocale() {
+    if (!this[resourceSymbol]) {
+      throw new Error('SDK not initialized, please call `await PublicAPI#resolve()`.');
+    }
     return <string>this[resourceSymbol].defaultLocale;
   }
 
   get description() {
+    if (!this[resourceSymbol]) {
+      throw new Error('SDK not initialized, please call `await PublicAPI#resolve()`.');
+    }
     return <string>this[resourceSymbol].description;
   }
 
   get locales() {
+    if (!this[resourceSymbol]) {
+      throw new Error('SDK not initialized, please call `await PublicAPI#resolve()`.');
+    }
     return <Array<string>>this[resourceSymbol].locales;
   }
 
   get models() {
+    if (!this[resourceSymbol]) {
+      throw new Error('SDK not initialized, please call `await PublicAPI#resolve()`.');
+    }
     return <Array<any>>this[resourceSymbol].models;
   }
 
   get shortID() {
+    if (!this[resourceSymbol]) {
+      throw new Error('SDK not initialized, please call `await PublicAPI#resolve()`.');
+    }
     return <string>this[shortIDSymbol];
   }
 
   get title() {
+    if (!this[resourceSymbol]) {
+      throw new Error('SDK not initialized, please call `await PublicAPI#resolve()`.');
+    }
     return <string>this[resourceSymbol].title;
   }
 
@@ -389,7 +417,7 @@ export default class PublicAPI extends Core {
    * Programatically signup a user, mostly used for special register flows using legacy users or magic link login.
    *
    * @example
-   * 
+   *
    * const createdAccount = await api.configurableSignup({
    *   email: 'test@entrecode.de',
    *   password: 'CorrectHorseBatteryStaple', // optional
@@ -398,7 +426,7 @@ export default class PublicAPI extends Core {
    *   sendWelcomeMail: false, // optional
    *   anonymousToken: 'eyasldfaslfkelaewjflejf...', // optional
    * });
-   * 
+   *
    * const { accountID, email, hasPassword, pending } = createdAccount;
    *
    * @param {{email: string, password?: string, invite?: string, pending?: boolean, sendWelcomeMail?: boolean, anonymousToken?: string }} body Request body containing configuration options.
@@ -1180,9 +1208,8 @@ export default class PublicAPI extends Core {
 
         if (cachedResult.timestamp > new Date().getTime() - 1000 * 60 * 5) {
           return cachedResult.result;
-        } else {
-          this[fieldConfigCacheSymbol].delete(cacheKey);
         }
+        this[fieldConfigCacheSymbol].delete(cacheKey);
       }
 
       const request = this.follow(`${this[shortIDSymbol]}:_fieldConfig`)
@@ -1486,7 +1513,7 @@ export default class PublicAPI extends Core {
    * @returns {Promise<any>} Object account info
    */
   me(reload: boolean = true): Promise<any> {
-    //TODO advanced type
+    // TODO advanced type
     return Promise.resolve().then(() => {
       if (this[resourceSymbol] && this.account) {
         return this.account;
@@ -1660,7 +1687,7 @@ export default class PublicAPI extends Core {
         this[traversalSymbol] = traversal;
 
         const assetGroups = Object.keys(this[resourceSymbol].allLinks()).filter(
-          (x) => x.indexOf(`ec:dm-assets/`) !== -1
+          (x) => x.indexOf('ec:dm-assets/') !== -1
         );
 
         const relations = {
@@ -1692,7 +1719,7 @@ export default class PublicAPI extends Core {
         assetGroups.forEach((relation) => {
           const relationName = `dmAsset.${relation.substr(13)}`;
           relations[relationName] = {
-            relation: relation,
+            relation,
             createRelation: false,
             createTemplateModifier: '',
             id: 'assetID',
@@ -1888,9 +1915,7 @@ export default class PublicAPI extends Core {
    *
    * @param {string} validationToken Single-use token.
    */
-  async validateValidationToken(
-    validationToken: string
-  ): Promise<{
+  async validateValidationToken(validationToken: string): Promise<{
     accountID: string;
     email: string;
     hasPassword: boolean;
