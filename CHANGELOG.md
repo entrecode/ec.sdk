@@ -1,3 +1,16 @@
+## <small>0.23.2 (2022-04-20)</small>
+
+* release version 0.23.2 ([e334758](https://github.com/entrecode/ec.sdk/commit/e334758))
+* SDK-161 type for file helper ([e55687d](https://github.com/entrecode/ec.sdk/commit/e55687d))
+* chore: dependency update ([87af953](https://github.com/entrecode/ec.sdk/commit/87af953))
+* chore: manual fix for package-lock ([ef277d7](https://github.com/entrecode/ec.sdk/commit/ef277d7))
+* chore: package-lock update ([19d217c](https://github.com/entrecode/ec.sdk/commit/19d217c))
+* test: remove wrongfully committed .only ([6a5a332](https://github.com/entrecode/ec.sdk/commit/6a5a332))
+* fix: throw proper error in PublicAPI members when not initialized ([0749ca9](https://github.com/entrecode/ec.sdk/commit/0749ca9))
+* fix: wrong throw in shortID getter ([8689e71](https://github.com/entrecode/ec.sdk/commit/8689e71))
+
+
+
 ## <small>0.23.1 (2021-11-24)</small>
 
 * release version 0.23.1 ([0ea0f77](https://github.com/entrecode/ec.sdk/commit/0ea0f77))
