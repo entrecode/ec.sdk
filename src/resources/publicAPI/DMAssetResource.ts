@@ -123,7 +123,7 @@ class DMAssetResource extends Resource {
         set: (value: Array<string | any>) => {
           return this.setProperty(
             'tags',
-            value.map((x) => (typeof x === 'string' ? x : x.tag))
+            value.map((x) => (typeof x === 'string' ? x : x.tag)),
           );
         },
       },
@@ -173,9 +173,10 @@ class DMAssetResource extends Resource {
    *
    * @param {number} size - the minimum size of the image
    * @param {boolean} thumb - true when image should be a thumbnail
+   * @param {imageType?} type - the format of the image
    * @returns {Promise<string>} the url string of the requested image
    */
-  getFileVariant(size?: number, thumb: boolean = false): Promise<string> {
+  getFileVariant(size?: number, thumb: boolean = false, type?: imageType): Promise<string> {
     return Promise.resolve().then(async () => {
       if (!size && !thumb) {
         return this.file.url;
@@ -194,17 +195,34 @@ class DMAssetResource extends Resource {
 
       let file;
       if (thumb) {
-        file = this.thumbnails.find((t) => t.dimension === size);
+        file = this.thumbnails.filter((t) => t.dimension === size);
       } else {
-        file = this.fileVariants.find((v) => Math.max(v.resolution.width, v.resolution.height) === size);
+        file = this.fileVariants.filter((v) => Math.max(v.resolution.width, v.resolution.height) === size);
       }
-      if (file) {
-        return file.url;
+      if (file.length === 1) {
+        return file[0].url;
+      }
+      if (file.length > 1) {
+        if (type) {
+          const typedFile = file.filter((f) => f.mimetype.includes(type));
+          if (typedFile && typedFile.length === 1) {
+            return typedFile[0].url;
+          }
+        }
+        const sameTypeFile = file.filter((f) => f.mimetype === this.mimetype);
+        if (sameTypeFile && sameTypeFile.length === 1) {
+          return sameTypeFile[0].url;
+        }
+
+        return file[0].url;
       }
 
       const templateParams: any = {};
       if (size) {
         templateParams.size = size;
+      }
+      if (type) {
+        templateParams.type = type;
       }
 
       let request;
@@ -234,10 +252,11 @@ class DMAssetResource extends Resource {
    * Best file helper for images.
    *
    * @param {number?} size - the minimum size of the image
+   * @param {imageType?} type - the format of the image
    * @returns {Promise<string>} URL to the file
    */
-  getImageUrl(size?: number): Promise<string> {
-    return this.getFileVariant(size);
+  getImageUrl(size?: number, type?: imageType): Promise<string> {
+    return this.getFileVariant(size, false, type);
   }
 
   /**
@@ -249,6 +268,12 @@ class DMAssetResource extends Resource {
   getOriginalFile(): any {
     return this.file;
   }
+}
+
+export enum imageType {
+  PNG = 'png',
+  JPEG = 'jpeg',
+  WEBP = 'webp',
 }
 
 export default DMAssetResource;

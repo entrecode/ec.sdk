@@ -1262,8 +1262,8 @@ export default class PublicAPI extends Core {
    * @param {string} assetID - assetID of the file requested. Can be legacy Asset (uuid v4) or
    *   AssetNeue.
    * @param {boolean} thumb - true when image should be a thumbnail
-   * @param {number} size - the minimum size of the image
-   * @param {imageType} type - the format of the image
+   * @param {number?} size - the minimum size of the image
+   * @param {imageType?} type - the format of the image
    * @returns {Promise<string>} the url string of the requested image
    */
   getFileVariant(assetID: string, thumb: boolean = false, size?: number, type?: imageType) {
@@ -1306,11 +1306,10 @@ export default class PublicAPI extends Core {
    *
    * @param {string} assetID - the assetID
    * @param {number?} size - the minimum size of the image
-   * @param {imageType} type - the format of the image
    * @returns {Promise<string>} URL to the file
    */
-  getImageThumbUrl(assetID: string, size: number, type: imageType): Promise<string> {
-    return <Promise<string>>this.getFileVariant(assetID, true, size, type);
+  getImageThumbUrl(assetID: string, size: number): Promise<string> {
+    return <Promise<string>>this.getFileVariant(assetID, true, size);
   }
 
   /**
@@ -1318,7 +1317,7 @@ export default class PublicAPI extends Core {
    *
    * @param {string} assetID - the assetID
    * @param {number?} size - the minimum size of the image
-   * @param {imageType} type - the format of the image
+   * @param {imageType?} type - the format of the image
    * @returns {Promise<string>} URL to the file
    */
   getImageUrl(assetID: string, size: number, type: imageType): Promise<string> {
@@ -1391,7 +1390,7 @@ export default class PublicAPI extends Core {
   /**
    * Create a single-use validation token for a user. The token should then be send to the user via mail and MUST NOT be displayed to her.
    *
-   * @param {stirng} email The users email.
+   * @param {string} email The users email.
    */
   async getValidationToken(email: string): Promise<string> {
     if (!email) {

@@ -102,6 +102,21 @@ describe('DMAsset Resource', () => {
       .getImageUrl(700)
       .should.eventually.equal('https://cdn1.entrecode.de/beefbeef/test1/7mGEhlUXvdxuoCf0vQWtLNQW_700.jpg');
   });
+  it.only('should get image variant, local match, jpeg', () => {
+    return resource
+      .getImageUrl(700, 'jpeg')
+      .should.eventually.equal('https://cdn1.entrecode.de/beefbeef/test1/7mGEhlUXvdxuoCf0vQWtLNQW_700.jpg');
+  });
+  it.only('should get image variant, local match, webp', () => {
+    return resource
+      .getImageUrl(700, 'webp')
+      .should.eventually.equal('https://cdn1.entrecode.de/beefbeef/test1/7mGEhlUXvdxuoCf0vQWtLNQW_700.webp');
+  });
+  it.only('should get image variant, local match, type mismatch fallback to same type', () => {
+    return resource
+      .getImageUrl(700, 'png')
+      .should.eventually.equal('https://cdn1.entrecode.de/beefbeef/test1/7mGEhlUXvdxuoCf0vQWtLNQW_700.jpg');
+  });
   it('should get thumbnail', () => {
     const stub = sinon.stub(helper, 'get');
     stub.returns(resolver('dm-asset-bestfile.json'));
