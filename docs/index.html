@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset='utf-8'>
-  <title>ec.sdk 0.23.1 | Documentation</title>
+  <title>ec.sdk 0.23.2 | Documentation</title>
   <meta name='description' content='SDK for ec.api'>
   <meta name='viewport' content='width=device-width,initial-scale=1'>
   <link href='assets/bass.css' rel='stylesheet'>
@@ -15,7 +15,7 @@
       <div id='split-left' class='overflow-auto fs0 height-viewport-100'>
         <div class='py1 px2'>
           <h3 class='mb0 no-anchor'>ec.sdk</h3>
-          <div class='mb1'><code>0.23.1</code></div>
+          <div class='mb1'><code>0.23.2</code></div>
           <input
             placeholder='Filter'
             id='filter-input'
@@ -3335,100 +3335,15 @@
 <p>Since version 0.13.0 you can create a stand-alone API Connector. By calling the constructor with <code>new Session({ noCookie: true });</code> the API Connector won't share its token with other API Connectors.</p>
 <p>Every action you take in the ec.sdk will be validated before it will be sent as a request to ec.APIs. This means that the provided json schemas are used.</p>
 <h5>Installation</h5>
-<pre class='hljs'>npm i --save ec.sdk</pre>
 <h5>ES6 / Webpack</h5>
 <p>Add the following in your webpack.config.js.</p>
-<pre class='hljs'><span class="hljs-keyword">const</span> config = {
-  <span class="hljs-comment">// …</span>
-  <span class="hljs-attr">node</span>: {
-    <span class="hljs-attr">fs</span>: <span class="hljs-string">&#x27;empty&#x27;</span>,
-    <span class="hljs-attr">Buffer</span>: <span class="hljs-literal">false</span>,
-    <span class="hljs-attr">net</span>: <span class="hljs-string">&#x27;empty&#x27;</span>,
-    <span class="hljs-attr">tls</span>: <span class="hljs-string">&#x27;empty&#x27;</span>,
-  },
-};</pre>
 <p>Then you can start coding:</p>
-<pre class='hljs'><span class="hljs-keyword">import</span> { Session, Accounts, DataManager } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;ec.sdk&#x27;</span>;
-<span class="hljs-keyword">import</span> AccountResource <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;ec.sdk/src/resources/accounts/AccountResource&#x27;</span>;
-<span class="hljs-keyword">import</span> DataManagerResource <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;ec.sdk/src/resources/datamanager/DataManagerResource&#x27;</span>;
-
-<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyExample</span> </span>{
-  <span class="hljs-attr">session</span>: Session;
-  accounts: Accounts;
-  dataManager: DataManager;
-
-  me: AccountResource;
-  dm: DataManagerResource;
-
-  <span class="hljs-function"><span class="hljs-title">constructor</span>(<span class="hljs-params"></span>)</span> {
-    session = <span class="hljs-keyword">new</span> Session();
-    accounts = <span class="hljs-keyword">new</span> Accounts();
-
-    session.setClientID(<span class="hljs-string">&#x27;rest&#x27;</span>);
-    <span class="hljs-comment">// this will also receive events from Accounts and DataManager</span>
-    session.on(<span class="hljs-string">&#x27;error&#x27;</span>, <span class="hljs-built_in">console</span>.error);
-  }
-
-  <span class="hljs-function"><span class="hljs-title">login</span>(<span class="hljs-params">email, password</span>)</span> {
-    session.login(email, password)
-    .then(<span class="hljs-function">(<span class="hljs-params">token</span>) =&gt;</span> {
-      <span class="hljs-comment">// if you use stand-alone API Connectors (`noCookie` set to true)</span>
-      accounts.setToken(token);
-
-      <span class="hljs-comment">// or anywhere in the code</span>
-      dataManager.setToken(session.getToken());
-    });
-  }
-
-  <span class="hljs-function"><span class="hljs-title">setAccountLanguage</span>(<span class="hljs-params">lang</span>)</span> {
-    <span class="hljs-built_in">Promise</span>.resolve()
-    .then(<span class="hljs-function">() =&gt;</span> {
-      <span class="hljs-keyword">if</span> (<span class="hljs-built_in">this</span>.me){
-        <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.me;
-      }
-      <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.accounts.me();
-    })
-    .then(<span class="hljs-function">(<span class="hljs-params">me</span>) =&gt;</span> {
-      me.language = lang;
-      <span class="hljs-keyword">return</span> me.save();
-    })
-    .then(<span class="hljs-function">(<span class="hljs-params">meSaved: AccountResource</span>) =&gt;</span> <span class="hljs-built_in">this</span>.me = meSaved);
-  }
-
-  <span class="hljs-function"><span class="hljs-title">loadDataManager</span>(<span class="hljs-params">id</span>)</span> {
-    <span class="hljs-keyword">if</span> (!<span class="hljs-built_in">this</span>.dataManager){
-      <span class="hljs-built_in">this</span>.dataManager = <span class="hljs-keyword">new</span> DataManager();
-    }
-
-    <span class="hljs-built_in">this</span>.dataManager.dataManager(id)
-    .then(<span class="hljs-function">(<span class="hljs-params">dm</span>) =&gt;</span>{
-      <span class="hljs-built_in">this</span>.dm = dm;
-    });
-  }
-}</pre>
 <h5>Node</h5>
 <p>Require statements are different on node. Also, you probably don't want to share tokens in a node.js environment. You'll need to use <code>noCookie</code> or namespacing via <code>cookieModifier</code>.</p>
-<pre class='hljs'><span class="hljs-keyword">const</span> ec = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;ec.sdk&#x27;</span>);
-<span class="hljs-keyword">const</span> dataManager = <span class="hljs-keyword">new</span> ec.DataManager({ <span class="hljs-attr">environment</span>: <span class="hljs-string">&#x27;live&#x27;</span>, <span class="hljs-attr">cookieModifier</span>: <span class="hljs-string">&#x27;myScriptName&#x27;</span> });
-dataManager.setToken(accessToken);
-
-dataManager.dataManagerList()
-.then(<span class="hljs-function"><span class="hljs-params">list</span> =&gt;</span> doSomthingWith(list))
-.catch(<span class="hljs-built_in">console</span>.log);</pre>
 <h6>Browsers</h6>
 <blockquote>
 <p>This is not officially supported. Mainly exists for usage in jsfiddles or similar.</p>
 </blockquote>
-<pre class='hljs'><span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;https://unpkg.com/ec.sdk/dist/ec.sdk.min.js&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="javascript">
-    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&#x27;My development stack is old and I should feel old&#x27;</span>);
-
-    <span class="hljs-keyword">var</span> dataManager = <span class="hljs-keyword">new</span> ec.DataManager(<span class="hljs-string">&#x27;live&#x27;</span>);
-    dataManager.setToken(accessToken);
-    dataManager.list()
-    .then(<span class="hljs-function"><span class="hljs-params">list</span> =&gt;</span> doSomthingWith(list))
-    .catch(<span class="hljs-built_in">console</span>.log);
-</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></pre>
 <h2>Development</h2>
 <p>Here are two notes on developing ec.sdk:</p>
 <ul>
@@ -3451,44 +3366,17 @@ dataManager.dataManagerList()
     <p>This is a quick cheatsheet with the most needed snippets to get started with the <a href="#publicapi">PublicAPI</a>.</p>
 <h3>Setup</h3>
 <p>NodeJS / ec-user-token:</p>
-<pre class='hljs'><span class="hljs-keyword">const</span> { PublicAPI } = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;ec.sdk&#x27;</span>);
-<span class="hljs-keyword">const</span> api = <span class="hljs-keyword">new</span> PublicAPI(<span class="hljs-string">&#x27;beefbeef&#x27;</span>, { <span class="hljs-attr">environment</span>: <span class="hljs-string">&#x27;live&#x27;</span>, <span class="hljs-attr">noCookie</span>: <span class="hljs-literal">true</span> }, <span class="hljs-literal">true</span>); <span class="hljs-comment">// for ec user</span>
-api.setToken(config.accessToken);</pre>
 <p>Frontend / public:</p>
-<pre class='hljs'><span class="hljs-keyword">import</span> { PublicAPI } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;ec.sdk&#x27;</span>;
-<span class="hljs-keyword">const</span> api = <span class="hljs-keyword">new</span> PublicAPI(<span class="hljs-string">&#x27;beefbeef&#x27;</span>, { <span class="hljs-attr">environment</span>: <span class="hljs-string">&#x27;live&#x27;</span> });</pre>
 <h3>entryList</h3>
-<pre class='hljs'><span class="hljs-keyword">const</span> list = <span class="hljs-keyword">await</span> api.entryList(<span class="hljs-string">&#x27;modelTitle&#x27;</span>, {
-  <span class="hljs-attr">size</span>: <span class="hljs-number">10</span>,
-  <span class="hljs-attr">page</span>: <span class="hljs-number">1</span>,
-  <span class="hljs-attr">sort</span>: [<span class="hljs-string">&#x27;-_created&#x27;</span>],
-  <span class="hljs-attr">_levels</span>: <span class="hljs-number">1</span>, <span class="hljs-comment">// only for single entry requests</span>
-  <span class="hljs-attr">_fields</span>: [<span class="hljs-string">&#x27;id&#x27;</span>, <span class="hljs-string">&#x27;title&#x27;</span>],
-  <span class="hljs-attr">myproperty</span>: <span class="hljs-string">&#x27;exactValue&#x27;</span>,
-  <span class="hljs-attr">email</span>: { <span class="hljs-attr">search</span>: <span class="hljs-string">&#x27;andre&#x27;</span> },
-  <span class="hljs-attr">prop</span>: { <span class="hljs-attr">any</span>: [<span class="hljs-string">&#x27;id1&#x27;</span>, <span class="hljs-string">&#x27;id2&#x27;</span>] },
-});</pre>
 <p>Always recommended: <code>size</code> and <code>_fields</code>.</p>
 <p>Properties:</p>
-<pre class='hljs'>list.count <span class="hljs-comment">// results in this response</span>
-list.total <span class="hljs-comment">// total</span>
-list.getFirstItem() <span class="hljs-comment">// not really needed anymore:</span></pre>
 <p>Get single entry:</p>
-<pre class='hljs'><span class="hljs-keyword">const</span> entry = <span class="hljs-keyword">await</span> api.entry(<span class="hljs-string">&#x27;modelTitle&#x27;</span>, { <span class="hljs-attr">uniqueField</span>: <span class="hljs-string">&#x27;uniqueValue&#x27;</span> });</pre>
 <p>Async Iterator Functions:</p>
 <p><em>Keep in mind that you should sort the entryList after something that does not change, like <code>created</code></em></p>
-<pre class='hljs'><span class="hljs-keyword">await</span> list.map();
-<span class="hljs-keyword">await</span> list.filter();
-<span class="hljs-keyword">await</span> list.find();</pre>
 <h3>liteEntry</h3>
-<pre class='hljs'>liteEntry._entryTitle;
-<span class="hljs-keyword">await</span> liteEntry.resolve();</pre>
 <h3>entry</h3>
 <p>Properties:</p>
-<pre class='hljs'>entry.isDirty; <span class="hljs-comment">// boolean</span></pre>
 <p>Saving/Deleting:</p>
-<pre class='hljs'><span class="hljs-keyword">await</span> entry.del();
-<span class="hljs-keyword">await</span> entry.save(<span class="hljs-literal">true</span>); <span class="hljs-comment">// save PUT</span></pre>
 
   
 </section></div>
@@ -11072,7 +10960,6 @@ levels directly request
       <div class='py1 quiet mt1 prose-big'>Returns</div>
       <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>></code>:
         
-
       
     
   
@@ -11305,7 +11192,7 @@ Note: This Request only has pagination when you load a single modelID.</p>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>getFileVariant(assetID, thumb, size)</span>
+            <span class='code strong strong truncate'>getFileVariant(assetID, thumb, size, type)</span>
         </div>
       </div>
       <div class="clearfix display-none toggle-target">
@@ -11315,7 +11202,7 @@ Note: This Request only has pagination when you load a single modelID.</p>
 
   <p>Generic file helper for images and thumbnails.</p>
 
-    <div class='pre p1 fill-light mt0'>getFileVariant(assetID: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, thumb: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>, size: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>></div>
+    <div class='pre p1 fill-light mt0'>getFileVariant(assetID: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, thumb: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>, size: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>?, type: imageType?): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>></div>
   
   
 
@@ -11352,8 +11239,17 @@ AssetNeue.
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>size</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>)</code>
+            <span class='code bold'>size</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>?)</code>
 	    the minimum size of the image
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>type</span> <code class='quiet'>(imageType?)</code>
+	    the format of the image
 
           </div>
           
@@ -11476,7 +11372,7 @@ AssetNeue.
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>getImageUrl(assetID, size)</span>
+            <span class='code strong strong truncate'>getImageUrl(assetID, size, type)</span>
         </div>
       </div>
       <div class="clearfix display-none toggle-target">
@@ -11486,7 +11382,7 @@ AssetNeue.
 
   <p>Best file helper for images.</p>
 
-    <div class='pre p1 fill-light mt0'>getImageUrl(assetID: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, size: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>?): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>></div>
+    <div class='pre p1 fill-light mt0'>getImageUrl(assetID: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, size: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>?, type: imageType?): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>></div>
   
   
 
@@ -11514,6 +11410,15 @@ AssetNeue.
           <div>
             <span class='code bold'>size</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>?)</code>
 	    the minimum size of the image
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>type</span> <code class='quiet'>(imageType?)</code>
+	    the format of the image
 
           </div>
           
@@ -11648,7 +11553,7 @@ load.</p>
 
   <p>Create a single-use validation token for a user. The token should then be send to the user via mail and MUST NOT be displayed to her.</p>
 
-    <div class='pre p1 fill-light mt0'>getValidationToken(email: stirng)</div>
+    <div class='pre p1 fill-light mt0'>getValidationToken(email: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</div>
   
   
 
@@ -11665,7 +11570,7 @@ load.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>email</span> <code class='quiet'>(stirng)</code>
+            <span class='code bold'>email</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
 	    The users email.
 
           </div>
@@ -13480,8 +13385,10 @@ Use them to influence fileNames, duplicate handling and generation of default im
   </div>
   
 
-  <p>Class representing Errors sent by all entrecode APIs. Complies to <a href="https://tools.ietf.org/html/draft-nottingham-http-problem-07">Problem Details for HTTP APIs</a>.
-Problems also comply to <a href="https://tools.ietf.org/html/draft-kelly-json-hal-08%20HAL">resources</a> but this class won't include any special hal implementation (like getEmbedded or
+  <p>Class representing Errors sent by all entrecode APIs. Complies to {@link
+<a href="https://tools.ietf.org/html/draft-nottingham-http-problem-07">https://tools.ietf.org/html/draft-nottingham-http-problem-07</a> Problem Details for HTTP APIs}.
+Problems also comply to {@link <a href="https://tools.ietf.org/html/draft-kelly-json-hal-08">https://tools.ietf.org/html/draft-kelly-json-hal-08</a> HAL
+resources} but this class won't include any special hal implementation (like getEmbedded or
 getLinks).</p>
 
     <div class='pre p1 fill-light mt0'>new Problem(error: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, locale: any)</div>
@@ -14199,7 +14106,8 @@ error with token related error codes. Will either have undefined or <a href="#pr
   </div>
   
 
-  <p>Generic resource class. Represents <a href="https://tools.ietf.org/html/draft-kelly-json-hal-08">HAL resources</a>.</p>
+  <p>Generic resource class. Represents {@link <a href="https://tools.ietf.org/html/draft-kelly-json-hal-08">https://tools.ietf.org/html/draft-kelly-json-hal-08</a>
+HAL resources}.</p>
 
     <div class='pre p1 fill-light mt0'>new Resource(resource: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, environment: <a href="#environment">environment</a>, traversal: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?, name: any, schema: any)</div>
   
@@ -15017,7 +14925,9 @@ the given name.</p>
 
   
 
-  <p>Checks if this <a href="#resource">Resource</a> has at least one <a href="https://tools.ietf.org/html/draft-kelly-json-hal-08#section-5">link</a>  with the given name.</p>
+  <p>Checks if this <a href="#resource">Resource</a> has at least one {@link
+<a href="https://tools.ietf.org/html/draft-kelly-json-hal-08#section-5">https://tools.ietf.org/html/draft-kelly-json-hal-08#section-5</a>
+link}  with the given name.</p>
 
     <div class='pre p1 fill-light mt0'>hasLink(link: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></div>
   
@@ -15191,7 +15101,6 @@ afterwards.</p>
       <div class='py1 quiet mt1 prose-big'>Returns</div>
       <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/undefined">undefined</a></code>:
         
-
       
     
   
@@ -15879,7 +15788,8 @@ otherwise.
   </div>
   
 
-  <p>Generic list resource class. Represents <a href="https://tools.ietf.org/html/draft-kelly-json-hal-08">HAL resources</a> with added support for
+  <p>Generic list resource class. Represents {@link
+<a href="https://tools.ietf.org/html/draft-kelly-json-hal-08">https://tools.ietf.org/html/draft-kelly-json-hal-08</a> HAL resources} with added support for
 lists.</p>
 <p>Since version 0.8.1 ListResources are iterable, so you can use spread operator or for … of loops
 with them.</p>
@@ -16365,7 +16275,8 @@ returns a <a href="#listresource">ListResource</a> with the loaded result.</p>
 
   
 
-  <p>Get all list items <a href="https://tools.ietf.org/html/draft-kelly-json-hal-08#section-4.1.2">embedded</a> into this <a href="#listresource">ListResource</a>.</p>
+  <p>Get all list items {@link <a href="https://tools.ietf.org/html/draft-kelly-json-hal-08#section-4.1.2">https://tools.ietf.org/html/draft-kelly-json-hal-08#section-4.1.2</a>
+embedded} into this <a href="#listresource">ListResource</a>.</p>
 
     <div class='pre p1 fill-light mt0'>getAllItems(): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;(<a href="#resource">Resource</a> | ResourceClass)></div>
   
@@ -16422,7 +16333,8 @@ returns a <a href="#listresource">ListResource</a> with the loaded result.</p>
 
   
 
-  <p>Get the first <a href="https://tools.ietf.org/html/draft-kelly-json-hal-08#section-4.1.2">embedded</a> item from the list</p>
+  <p>Get the first {@link <a href="https://tools.ietf.org/html/draft-kelly-json-hal-08#section-4.1.2">https://tools.ietf.org/html/draft-kelly-json-hal-08#section-4.1.2</a>
+embedded} item from the list</p>
 
     <div class='pre p1 fill-light mt0'>getFirstItem(): (<a href="#resource">Resource</a> | ResourceClass)</div>
   
@@ -16479,7 +16391,8 @@ returns a <a href="#listresource">ListResource</a> with the loaded result.</p>
 
   
 
-  <p>Get the n'th <a href="https://tools.ietf.org/html/draft-kelly-json-hal-08#section-4.1.2">embedded</a> item from the list</p>
+  <p>Get the n'th {@link <a href="https://tools.ietf.org/html/draft-kelly-json-hal-08#section-4.1.2">https://tools.ietf.org/html/draft-kelly-json-hal-08#section-4.1.2</a>
+embedded} item from the list</p>
 
     <div class='pre p1 fill-light mt0'>getItem(n: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>): (<a href="#resource">Resource</a> | ResourceClass)</div>
   
@@ -16550,7 +16463,9 @@ returns a <a href="#listresource">ListResource</a> with the loaded result.</p>
 
   
 
-  <p>Checks if this <a href="#resource">Resource</a> has at least one <a href="https://tools.ietf.org/html/draft-kelly-json-hal-08#section-5">link</a>  with the name 'first'.</p>
+  <p>Checks if this <a href="#resource">Resource</a> has at least one {@link
+<a href="https://tools.ietf.org/html/draft-kelly-json-hal-08#section-5">https://tools.ietf.org/html/draft-kelly-json-hal-08#section-5</a>
+link}  with the name 'first'.</p>
 
     <div class='pre p1 fill-light mt0'>hasFirstLink(): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></div>
   
@@ -16607,7 +16522,9 @@ returns a <a href="#listresource">ListResource</a> with the loaded result.</p>
 
   
 
-  <p>Checks if this <a href="#resource">Resource</a> has at least one <a href="https://tools.ietf.org/html/draft-kelly-json-hal-08#section-5">link</a>  with the name 'next'.</p>
+  <p>Checks if this <a href="#resource">Resource</a> has at least one {@link
+<a href="https://tools.ietf.org/html/draft-kelly-json-hal-08#section-5">https://tools.ietf.org/html/draft-kelly-json-hal-08#section-5</a>
+link}  with the name 'next'.</p>
 
     <div class='pre p1 fill-light mt0'>hasNextLink(): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></div>
   
@@ -16664,7 +16581,9 @@ returns a <a href="#listresource">ListResource</a> with the loaded result.</p>
 
   
 
-  <p>Checks if this <a href="#resource">Resource</a> has at least one <a href="https://tools.ietf.org/html/draft-kelly-json-hal-08#section-5">link</a>  with the name 'prev'.</p>
+  <p>Checks if this <a href="#resource">Resource</a> has at least one {@link
+<a href="https://tools.ietf.org/html/draft-kelly-json-hal-08#section-5">https://tools.ietf.org/html/draft-kelly-json-hal-08#section-5</a>
+link}  with the name 'prev'.</p>
 
     <div class='pre p1 fill-light mt0'>hasPrevLink(): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></div>
   
@@ -20306,7 +20225,6 @@ See the example below for details.</p>
       <div class='py1 quiet mt1 prose-big'>Returns</div>
       <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#platformresource">PlatformResource</a>></code>:
         
-
       
     
   
@@ -29432,7 +29350,8 @@ be the same object but with refreshed data.
 
   
 
-  <p>Get all list items <a href="https://tools.ietf.org/html/draft-kelly-json-hal-08#section-4.1.2">embedded</a> into this <a href="#listresource">ListResource</a>.</p>
+  <p>Get all list items {@link <a href="https://tools.ietf.org/html/draft-kelly-json-hal-08#section-4.1.2">https://tools.ietf.org/html/draft-kelly-json-hal-08#section-4.1.2</a>
+embedded} into this <a href="#listresource">ListResource</a>.</p>
 
     <div class='pre p1 fill-light mt0'>getAllItems(): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;(<a href="#resource">Resource</a> | ResourceClass)></div>
   
@@ -29489,7 +29408,8 @@ be the same object but with refreshed data.
 
   
 
-  <p>Get the first <a href="https://tools.ietf.org/html/draft-kelly-json-hal-08#section-4.1.2">embedded</a> item from the list</p>
+  <p>Get the first {@link <a href="https://tools.ietf.org/html/draft-kelly-json-hal-08#section-4.1.2">https://tools.ietf.org/html/draft-kelly-json-hal-08#section-4.1.2</a>
+embedded} item from the list</p>
 
     <div class='pre p1 fill-light mt0'>getFirstItem(): (<a href="#resource">Resource</a> | ResourceClass)</div>
   
@@ -29546,7 +29466,8 @@ be the same object but with refreshed data.
 
   
 
-  <p>Get the n'th <a href="https://tools.ietf.org/html/draft-kelly-json-hal-08#section-4.1.2">embedded</a> item from the list</p>
+  <p>Get the n'th {@link <a href="https://tools.ietf.org/html/draft-kelly-json-hal-08#section-4.1.2">https://tools.ietf.org/html/draft-kelly-json-hal-08#section-4.1.2</a>
+embedded} item from the list</p>
 
     <div class='pre p1 fill-light mt0'>getItem(n: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>): (<a href="#resource">Resource</a> | ResourceClass)</div>
   
@@ -32029,7 +31950,7 @@ function. A promise is returned which resolves to the <a href="#entryresource">E
 
   
 
-  <p>Saves this <a href="#entryresource">EntryResource</a>. Does not work on {@linkt LiteEntryResource}s. Those must be
+  <p>Saves this <a href="#entryresource">EntryResource</a>. Does not work on <a href="#liteentryresource">LiteEntryResource</a>s. Those must be
 resolved first.</p>
 
     <div class='pre p1 fill-light mt0'>save(safePut: any, overwriteSchemaUrl: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#entryresource">EntryResource</a>></div>
@@ -33365,7 +33286,8 @@ otherwise.
 
   
 
-  <p>Get all list items <a href="https://tools.ietf.org/html/draft-kelly-json-hal-08#section-4.1.2">embedded</a> into this <a href="EntryListResource">EntryListResource</a>.</p>
+  <p>Get all list items {@link <a href="https://tools.ietf.org/html/draft-kelly-json-hal-08#section-4.1.2">https://tools.ietf.org/html/draft-kelly-json-hal-08#section-4.1.2</a>
+embedded} into this <a href="EntryListResource">EntryListResource</a>.</p>
 
     <div class='pre p1 fill-light mt0'>getAllItems(): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="#entryresource">EntryResource</a>></div>
   
@@ -33422,7 +33344,8 @@ otherwise.
 
   
 
-  <p>Get the first <a href="https://tools.ietf.org/html/draft-kelly-json-hal-08#section-4.1.2">embedded</a> item from the list</p>
+  <p>Get the first {@link <a href="https://tools.ietf.org/html/draft-kelly-json-hal-08#section-4.1.2">https://tools.ietf.org/html/draft-kelly-json-hal-08#section-4.1.2</a>
+embedded} item from the list</p>
 
     <div class='pre p1 fill-light mt0'>getFirstItem(): <a href="#entryresource">EntryResource</a></div>
   
@@ -33479,7 +33402,8 @@ otherwise.
 
   
 
-  <p>Get the n'th <a href="https://tools.ietf.org/html/draft-kelly-json-hal-08#section-4.1.2">embedded</a> item from the list</p>
+  <p>Get the n'th {@link <a href="https://tools.ietf.org/html/draft-kelly-json-hal-08#section-4.1.2">https://tools.ietf.org/html/draft-kelly-json-hal-08#section-4.1.2</a>
+embedded} item from the list</p>
 
     <div class='pre p1 fill-light mt0'>getItem(n: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>): <a href="#entryresource">EntryResource</a></div>
   
@@ -33811,7 +33735,7 @@ otherwise.
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>getFileVariant(size, thumb)</span>
+            <span class='code strong strong truncate'>getFileVariant(size, thumb, type)</span>
         </div>
       </div>
       <div class="clearfix display-none toggle-target">
@@ -33821,7 +33745,7 @@ otherwise.
 
   <p>Generic file helper for images and thumbnails.</p>
 
-    <div class='pre p1 fill-light mt0'>getFileVariant(size: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>, thumb: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>></div>
+    <div class='pre p1 fill-light mt0'>getFileVariant(size: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>, thumb: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>, type: imageType?): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>></div>
   
   
 
@@ -33850,6 +33774,15 @@ otherwise.
             <span class='code bold'>thumb</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>
             = <code>false</code>)</code>
 	    true when image should be a thumbnail
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>type</span> <code class='quiet'>(imageType?)</code>
+	    the format of the image
 
           </div>
           
@@ -33963,7 +33896,7 @@ otherwise.
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>getImageUrl(size)</span>
+            <span class='code strong strong truncate'>getImageUrl(size, type)</span>
         </div>
       </div>
       <div class="clearfix display-none toggle-target">
@@ -33973,7 +33906,7 @@ otherwise.
 
   <p>Best file helper for images.</p>
 
-    <div class='pre p1 fill-light mt0'>getImageUrl(size: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>?): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>></div>
+    <div class='pre p1 fill-light mt0'>getImageUrl(size: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>?, type: imageType?): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>></div>
   
   
 
@@ -33992,6 +33925,15 @@ otherwise.
           <div>
             <span class='code bold'>size</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>?)</code>
 	    the minimum size of the image
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>type</span> <code class='quiet'>(imageType?)</code>
+	    the format of the image
 
           </div>
           
@@ -35411,7 +35353,7 @@ function. A promise is returned which resolves to the <a href="#dmaccountresourc
 
   
 
-  <p>Saves this <a href="#dmaccountresource">DMAccountResource</a>. Does not work on {@linkt LiteDMAccountResource}s. Those must be
+  <p>Saves this <a href="#dmaccountresource">DMAccountResource</a>. Does not work on <a href="#litedmaccountresource">LiteDMAccountResource</a>s. Those must be
 resolved first.</p>
 
     <div class='pre p1 fill-light mt0'>save(safePut: any, overwriteSchemaUrl: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#entryresource">EntryResource</a>></div>
@@ -35668,7 +35610,7 @@ function. A promise is returned which resolves to the <a href="#roleresource">Ro
 
   
 
-  <p>Saves this <a href="#roleresource">RoleResource</a>. Does not work on {@linkt LiteRoleResource}s. Those must be
+  <p>Saves this <a href="#roleresource">RoleResource</a>. Does not work on <a href="#literoleresource">LiteRoleResource</a>s. Those must be
 resolved first.</p>
 
     <div class='pre p1 fill-light mt0'>save(safePut: any, overwriteSchemaUrl: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#roleresource">RoleResource</a>></div>
@@ -35760,7 +35702,7 @@ be the same object but with refreshed data.
   </h2>
 
   
-    <h2><small>0.23.1 (2021-11-24)</small></h2>
+    <h2>0.23.1 (2021-11-24)</h2>
 <ul>
 <li>release version 0.23.1 (<a href="https://github.com/entrecode/ec.sdk/commit/0ea0f77">0ea0f77</a>)</li>
 <li>chore: update package-lock (<a href="https://github.com/entrecode/ec.sdk/commit/3bc836e">3bc836e</a>)</li>
@@ -35772,24 +35714,24 @@ be the same object but with refreshed data.
 <li>feat: add parenthesis for exact and multiple exact filter (<a href="https://github.com/entrecode/ec.sdk/commit/d7fd95c">d7fd95c</a>)</li>
 <li>freat: do not allow levels on single entry with filter requesst (<a href="https://github.com/entrecode/ec.sdk/commit/0ec61c4">0ec61c4</a>)</li>
 </ul>
-<h2><small>0.22.14 (2021-09-13)</small></h2>
+<h2>0.22.14 (2021-09-13)</h2>
 <ul>
 <li>release version 0.22.14 (<a href="https://github.com/entrecode/ec.sdk/commit/dc032f2">dc032f2</a>)</li>
 <li>Update npm-publish.yml (<a href="https://github.com/entrecode/ec.sdk/commit/dd708f5">dd708f5</a>)</li>
 </ul>
-<h2><small>0.22.13 (2021-09-13)</small></h2>
+<h2>0.22.13 (2021-09-13)</h2>
 <ul>
 <li>Create npm-publish.yml (<a href="https://github.com/entrecode/ec.sdk/commit/4b3f9b5">4b3f9b5</a>)</li>
 <li>release version 0.22.13 (<a href="https://github.com/entrecode/ec.sdk/commit/3f23934">3f23934</a>)</li>
 <li>Update README.md (<a href="https://github.com/entrecode/ec.sdk/commit/6f8aaa5">6f8aaa5</a>)</li>
 <li>updated github action (<a href="https://github.com/entrecode/ec.sdk/commit/57e9aa3">57e9aa3</a>)</li>
 </ul>
-<h2><small>0.22.12 (2021-09-10)</small></h2>
+<h2>0.22.12 (2021-09-10)</h2>
 <ul>
 <li>release version 0.22.12 (<a href="https://github.com/entrecode/ec.sdk/commit/364ed2f">364ed2f</a>)</li>
 <li>feat: createApiToken options (<a href="https://github.com/entrecode/ec.sdk/commit/3b20378">3b20378</a>)</li>
 </ul>
-<h2><small>0.22.11 (2021-05-27)</small></h2>
+<h2>0.22.11 (2021-05-27)</h2>
 <ul>
 <li>added <code>configurableSignup</code> example (<a href="https://github.com/entrecode/ec.sdk/commit/226a204">226a204</a>)</li>
 <li>release version 0.22.11 (<a href="https://github.com/entrecode/ec.sdk/commit/3fd256f">3fd256f</a>)</li>
@@ -35798,37 +35740,37 @@ be the same object but with refreshed data.
 <li>feat: setter for email in DMAccountResource (<a href="https://github.com/entrecode/ec.sdk/commit/00f2c29">00f2c29</a>)</li>
 <li>fix: configurableSignupEdit pending type (<a href="https://github.com/entrecode/ec.sdk/commit/6dd8e24">6dd8e24</a>)</li>
 </ul>
-<h2><small>0.22.10 (2021-04-20)</small></h2>
+<h2>0.22.10 (2021-04-20)</h2>
 <ul>
 <li>release version 0.22.10 (<a href="https://github.com/entrecode/ec.sdk/commit/2e715ff">2e715ff</a>)</li>
 <li>fix: Use file.url in DMAssetResource#getFileUrl (<a href="https://github.com/entrecode/ec.sdk/commit/2685818">2685818</a>)</li>
 </ul>
-<h2><small>0.22.9 (2021-03-25)</small></h2>
+<h2>0.22.9 (2021-03-25)</h2>
 <ul>
 <li>release version 0.22.9 (<a href="https://github.com/entrecode/ec.sdk/commit/d026613">d026613</a>)</li>
 <li>feat: add account to group by email (<a href="https://github.com/entrecode/ec.sdk/commit/2207538">2207538</a>)</li>
 </ul>
-<h2><small>0.22.8 (2021-03-23)</small></h2>
+<h2>0.22.8 (2021-03-23)</h2>
 <ul>
 <li>release version 0.22.8 (<a href="https://github.com/entrecode/ec.sdk/commit/8af836d">8af836d</a>)</li>
 <li>feat: <code>defaultVariants</code> for <code>fileOptions</code> (<a href="https://github.com/entrecode/ec.sdk/commit/325f8e3">325f8e3</a>)</li>
 </ul>
-<h2><small>0.22.7 (2021-03-11)</small></h2>
+<h2>0.22.7 (2021-03-11)</h2>
 <ul>
 <li>release version 0.22.7 (<a href="https://github.com/entrecode/ec.sdk/commit/a1a7702">a1a7702</a>)</li>
-<li>fix: respect <code>fileName</code> in <code>createDMAssets</code> <a href="%5B28f4831%5D(https://github.com/entrecode/ec.sdk/commit/28f4831)">CMS-3343</a></li>
+<li>fix: respect <code>fileName</code> in <code>createDMAssets</code> [CMS-3343] (<a href="https://github.com/entrecode/ec.sdk/commit/28f4831">28f4831</a>)</li>
 </ul>
-<h2><small>0.22.6 (2021-03-05)</small></h2>
+<h2>0.22.6 (2021-03-05)</h2>
 <ul>
 <li>release version 0.22.6 (<a href="https://github.com/entrecode/ec.sdk/commit/a813a89">a813a89</a>)</li>
 <li>fix: wait for request (<a href="https://github.com/entrecode/ec.sdk/commit/948e8fe">948e8fe</a>)</li>
 </ul>
-<h2><small>0.22.5 (2021-03-05)</small></h2>
+<h2>0.22.5 (2021-03-05)</h2>
 <ul>
 <li>release version 0.22.5 (<a href="https://github.com/entrecode/ec.sdk/commit/7c8d666">7c8d666</a>)</li>
 <li>feat: adds permission query to account and session (<a href="https://github.com/entrecode/ec.sdk/commit/0c6e58c">0c6e58c</a>)</li>
 </ul>
-<h2><small>0.22.4 (2021-02-03)</small></h2>
+<h2>0.22.4 (2021-02-03)</h2>
 <ul>
 <li>release version 0.22.4 (<a href="https://github.com/entrecode/ec.sdk/commit/830fff5">830fff5</a>)</li>
 <li>chore: updated documentation.js (<a href="https://github.com/entrecode/ec.sdk/commit/5ad9b20">5ad9b20</a>)</li>
@@ -35838,19 +35780,19 @@ be the same object but with refreshed data.
 <li>test: removed references to stash (<a href="https://github.com/entrecode/ec.sdk/commit/21ec786">21ec786</a>)</li>
 <li>doc: updated references to dm-history repository (<a href="https://github.com/entrecode/ec.sdk/commit/8cc08b7">8cc08b7</a>)</li>
 </ul>
-<h2><small>0.22.3 (2020-11-18)</small></h2>
+<h2>0.22.3 (2020-11-18)</h2>
 <ul>
 <li>release version 0.22.3 (<a href="https://github.com/entrecode/ec.sdk/commit/8dcaa4b">8dcaa4b</a>)</li>
 <li>remove greenkeeper badge (<a href="https://github.com/entrecode/ec.sdk/commit/004b8ba">004b8ba</a>)</li>
 <li>chore: json-schema-remote 1.6.1 (<a href="https://github.com/entrecode/ec.sdk/commit/6bbbb3a">6bbbb3a</a>)</li>
 <li>fix: remove double deduplicate :-D (<a href="https://github.com/entrecode/ec.sdk/commit/0d62d7c">0d62d7c</a>)</li>
 </ul>
-<h2><small>0.22.2 (2020-07-16)</small></h2>
+<h2>0.22.2 (2020-07-16)</h2>
 <ul>
 <li>fix browser build (<a href="https://github.com/entrecode/ec.sdk/commit/af434e0">af434e0</a>)</li>
 <li>release version 0.22.2 (<a href="https://github.com/entrecode/ec.sdk/commit/0bd1af4">0bd1af4</a>)</li>
 </ul>
-<h2><small>0.22.1 (2020-07-16)</small></h2>
+<h2>0.22.1 (2020-07-16)</h2>
 <ul>
 <li>adds missing dependency (<a href="https://github.com/entrecode/ec.sdk/commit/29c7837">29c7837</a>)</li>
 <li>release version 0.22.1 (<a href="https://github.com/entrecode/ec.sdk/commit/07b3625">07b3625</a>)</li>
@@ -35865,23 +35807,23 @@ be the same object but with refreshed data.
 <li>chore(package): update documentation to version 13.0.0 (<a href="https://github.com/entrecode/ec.sdk/commit/58c4866">58c4866</a>)</li>
 <li>chore(package): update lockfile package-lock.json (<a href="https://github.com/entrecode/ec.sdk/commit/74680d3">74680d3</a>)</li>
 </ul>
-<h2><small>0.21.24 (2020-06-03)</small></h2>
+<h2>0.21.24 (2020-06-03)</h2>
 <ul>
 <li>fix create role template (<a href="https://github.com/entrecode/ec.sdk/commit/387b2d8">387b2d8</a>)</li>
 <li>release version 0.21.24 (<a href="https://github.com/entrecode/ec.sdk/commit/15746dc">15746dc</a>)</li>
 <li>fix: schema (<a href="https://github.com/entrecode/ec.sdk/commit/83a5a05">83a5a05</a>)</li>
 </ul>
-<h2><small>0.21.23 (2020-01-31)</small></h2>
+<h2>0.21.23 (2020-01-31)</h2>
 <ul>
 <li>release version 0.21.23 (<a href="https://github.com/entrecode/ec.sdk/commit/c1655a5">c1655a5</a>)</li>
 <li>fix: removed dispatch in dmAccountResource.tokenList (<a href="https://github.com/entrecode/ec.sdk/commit/75e745e">75e745e</a>)</li>
 </ul>
-<h2><small>0.21.22 (2020-01-31)</small></h2>
+<h2>0.21.22 (2020-01-31)</h2>
 <ul>
 <li>release version 0.21.22 (<a href="https://github.com/entrecode/ec.sdk/commit/1c1c083">1c1c083</a>)</li>
 <li>fix: added config for authTokens resource in account (<a href="https://github.com/entrecode/ec.sdk/commit/b2e858f">b2e858f</a>)</li>
 </ul>
-<h2><small>0.21.21 (2020-01-31)</small></h2>
+<h2>0.21.21 (2020-01-31)</h2>
 <ul>
 <li>release version 0.21.21 (<a href="https://github.com/entrecode/ec.sdk/commit/17eec86">17eec86</a>)</li>
 <li>chore: added runme script for manual testing (<a href="https://github.com/entrecode/ec.sdk/commit/b6cc1f6">b6cc1f6</a>)</li>
@@ -35891,18 +35833,18 @@ be the same object but with refreshed data.
 <li>chore(package): update sinon to version 8.0.0 (<a href="https://github.com/entrecode/ec.sdk/commit/3fb6838">3fb6838</a>)</li>
 <li>feat: DMAuthToken API CMS-3159 / DEAL-288 (<a href="https://github.com/entrecode/ec.sdk/commit/e323ebf">e323ebf</a>)</li>
 </ul>
-<h2><small>0.21.20 (2020-01-09)</small></h2>
+<h2>0.21.20 (2020-01-09)</h2>
 <ul>
 <li>release version 0.21.20 (<a href="https://github.com/entrecode/ec.sdk/commit/aa1f160">aa1f160</a>)</li>
 <li>fix: adds getter for comment APPSITE-1549 (<a href="https://github.com/entrecode/ec.sdk/commit/841f482">841f482</a>)</li>
 </ul>
-<h2><small>0.21.19 (2020-01-09)</small></h2>
+<h2>0.21.19 (2020-01-09)</h2>
 <ul>
 <li>release version 0.21.19 (<a href="https://github.com/entrecode/ec.sdk/commit/6d8c1a7">6d8c1a7</a>)</li>
 <li>feat: adds comment to deployment and build APPSITE-1549 (<a href="https://github.com/entrecode/ec.sdk/commit/df07ebe">df07ebe</a>)</li>
 <li>fix: typo in log message (<a href="https://github.com/entrecode/ec.sdk/commit/62d6446">62d6446</a>)</li>
 </ul>
-<h2><small>0.21.18 (2019-11-15)</small></h2>
+<h2>0.21.18 (2019-11-15)</h2>
 <ul>
 <li>release version 0.21.18 (<a href="https://github.com/entrecode/ec.sdk/commit/8e566a7">8e566a7</a>)</li>
 <li>fix: doNotSendList (<a href="https://github.com/entrecode/ec.sdk/commit/c0ca71d">c0ca71d</a>)</li>
@@ -35912,18 +35854,18 @@ be the same object but with refreshed data.
 <li>chore: bump to beta3 (<a href="https://github.com/entrecode/ec.sdk/commit/2040112">2040112</a>)</li>
 <li>feat: always return a list SDK-122 (<a href="https://github.com/entrecode/ec.sdk/commit/3df6361">3df6361</a>)</li>
 </ul>
-<h2><small>0.21.17 (2019-10-21)</small></h2>
+<h2>0.21.17 (2019-10-21)</h2>
 <ul>
 <li>release version 0.21.17 (<a href="https://github.com/entrecode/ec.sdk/commit/ae86eff">ae86eff</a>)</li>
 <li>fix: DataManager#createTemplate (<a href="https://github.com/entrecode/ec.sdk/commit/c072efe">c072efe</a>)</li>
 </ul>
-<h2><small>0.21.16 (2019-10-18)</small></h2>
+<h2>0.21.16 (2019-10-18)</h2>
 <ul>
 <li>release version 0.21.16 (<a href="https://github.com/entrecode/ec.sdk/commit/81da437">81da437</a>)</li>
 <li>fix: fix error in ec.errors and json-schema-remote SDK-148 (<a href="https://github.com/entrecode/ec.sdk/commit/1568d43">1568d43</a>)</li>
 <li>feat: _links enumerable in DMAssetResource for asset helper SDK-147 (<a href="https://github.com/entrecode/ec.sdk/commit/9e0c4cf">9e0c4cf</a>)</li>
 </ul>
-<h2><small>0.21.15 (2019-10-11)</small></h2>
+<h2>0.21.15 (2019-10-11)</h2>
 <ul>
 <li>release version 0.21.15 (<a href="https://github.com/entrecode/ec.sdk/commit/6845121">6845121</a>)</li>
 <li>fix: fix AssetGroup docs (<a href="https://github.com/entrecode/ec.sdk/commit/4145727">4145727</a>)</li>
@@ -35931,38 +35873,38 @@ be the same object but with refreshed data.
 <li>doc: add notes for development (<a href="https://github.com/entrecode/ec.sdk/commit/6755c15">6755c15</a>)</li>
 <li>chore: updates package-lock (<a href="https://github.com/entrecode/ec.sdk/commit/064dcc4">064dcc4</a>)</li>
 </ul>
-<h2><small>0.21.14 (2019-08-29)</small></h2>
+<h2>0.21.14 (2019-08-29)</h2>
 <ul>
 <li>release version 0.21.14 (<a href="https://github.com/entrecode/ec.sdk/commit/5545325">5545325</a>)</li>
 <li>fix: create group in Accounts now supports accounts (<a href="https://github.com/entrecode/ec.sdk/commit/207acac">207acac</a>)</li>
 </ul>
-<h2><small>0.21.13 (2019-08-16)</small></h2>
+<h2>0.21.13 (2019-08-16)</h2>
 <ul>
 <li>release version 0.21.13 (<a href="https://github.com/entrecode/ec.sdk/commit/2695d00">2695d00</a>)</li>
 <li>feat: updates dm stats resource SDK-143 (<a href="https://github.com/entrecode/ec.sdk/commit/1d288ba">1d288ba</a>)</li>
 </ul>
-<h2><small>0.21.12 (2019-08-13)</small></h2>
+<h2>0.21.12 (2019-08-13)</h2>
 <ul>
 <li>release version 0.21.12 (<a href="https://github.com/entrecode/ec.sdk/commit/e793cdc">e793cdc</a>)</li>
 <li>feat: creator for Build and Deployment APPADMIN-934 (<a href="https://github.com/entrecode/ec.sdk/commit/458bcbd">458bcbd</a>)</li>
 </ul>
-<h2><small>0.21.11 (2019-08-01)</small></h2>
+<h2>0.21.11 (2019-08-01)</h2>
 <ul>
 <li>release version 0.21.11 (<a href="https://github.com/entrecode/ec.sdk/commit/01bb812">01bb812</a>)</li>
 <li>fix: remove title setter for plugin resources (<a href="https://github.com/entrecode/ec.sdk/commit/6bb8bb4">6bb8bb4</a>)</li>
 </ul>
-<h2><small>0.21.10 (2019-08-01)</small></h2>
+<h2>0.21.10 (2019-08-01)</h2>
 <ul>
 <li>release version 0.21.10 (<a href="https://github.com/entrecode/ec.sdk/commit/d6d498f">d6d498f</a>)</li>
 <li>feat: plugin type when title is empty (<a href="https://github.com/entrecode/ec.sdk/commit/4675445">4675445</a>)</li>
 <li>fix: pin to json-schema-remote 1.4.0 (<a href="https://github.com/entrecode/ec.sdk/commit/4616336">4616336</a>)</li>
 </ul>
-<h2><small>0.21.9 (2019-08-01)</small></h2>
+<h2>0.21.9 (2019-08-01)</h2>
 <ul>
 <li>release version 0.21.9 (<a href="https://github.com/entrecode/ec.sdk/commit/59c0316">59c0316</a>)</li>
 <li>feat: add title (from config._title) as property to plugin Resoruces (<a href="https://github.com/entrecode/ec.sdk/commit/1f4a686">1f4a686</a>)</li>
 </ul>
-<h2><small>0.21.8 (2019-07-15)</small></h2>
+<h2>0.21.8 (2019-07-15)</h2>
 <ul>
 <li>release version 0.21.8 (<a href="https://github.com/entrecode/ec.sdk/commit/b957f98">b957f98</a>)</li>
 <li>fix: fix loading single DMAssetResource from Group SDK-142 (<a href="https://github.com/entrecode/ec.sdk/commit/5a2b6a1">5a2b6a1</a>)</li>
@@ -35972,40 +35914,40 @@ be the same object but with refreshed data.
 <li>feat: requst cache for getFieldConfig SDK-139 (<a href="https://github.com/entrecode/ec.sdk/commit/03150b4">03150b4</a>)</li>
 <li>test: Test for SDK-140 still dirty after save (<a href="https://github.com/entrecode/ec.sdk/commit/56c6648">56c6648</a>)</li>
 </ul>
-<h2><small>0.21.7 (2019-07-05)</small></h2>
+<h2>0.21.7 (2019-07-05)</h2>
 <ul>
 <li>release version 0.21.7 (<a href="https://github.com/entrecode/ec.sdk/commit/55103d3">55103d3</a>)</li>
 <li>feat: add template param to DataManagerResource (<a href="https://github.com/entrecode/ec.sdk/commit/5fdc4e5">5fdc4e5</a>)</li>
 </ul>
-<h2><small>0.21.6 (2019-06-14)</small></h2>
+<h2>0.21.6 (2019-06-14)</h2>
 <ul>
 <li>release version 0.21.6 (<a href="https://github.com/entrecode/ec.sdk/commit/81bce26">81bce26</a>)</li>
 <li>feat: delete Asset/Entry/Resource by id SDK-130 (<a href="https://github.com/entrecode/ec.sdk/commit/af84d14">af84d14</a>)</li>
 <li>chore: eslint fixes in test file (<a href="https://github.com/entrecode/ec.sdk/commit/f6ddfd0">f6ddfd0</a>)</li>
 <li>doc: fixed docs for createAnonymous SDK-137 (<a href="https://github.com/entrecode/ec.sdk/commit/11d94dd">11d94dd</a>)</li>
 </ul>
-<h2><small>0.21.5 (2019-06-13)</small></h2>
+<h2>0.21.5 (2019-06-13)</h2>
 <ul>
 <li>release version 0.21.5 (<a href="https://github.com/entrecode/ec.sdk/commit/c28313a">c28313a</a>)</li>
 <li>feat: removed mandatory logout befor new login (<a href="https://github.com/entrecode/ec.sdk/commit/c85591d">c85591d</a>)</li>
 </ul>
-<h2><small>0.21.4 (2019-05-22)</small></h2>
+<h2>0.21.4 (2019-05-22)</h2>
 <ul>
 <li>release version 0.21.4 (<a href="https://github.com/entrecode/ec.sdk/commit/84cb5de">84cb5de</a>)</li>
 <li>feat: chunking refCount when > 500 ids SDK-135 (<a href="https://github.com/entrecode/ec.sdk/commit/3e68a54">3e68a54</a>)</li>
 </ul>
-<h2><small>0.21.3 (2019-05-22)</small></h2>
+<h2>0.21.3 (2019-05-22)</h2>
 <ul>
 <li>release version 0.21.3 (<a href="https://github.com/entrecode/ec.sdk/commit/b37557b">b37557b</a>)</li>
 <li>feat: valueCount in PublicAPI for DEAL-1217 (<a href="https://github.com/entrecode/ec.sdk/commit/e11fcc7">e11fcc7</a>)</li>
 <li>fix: typings for envOrOptions in API Conector constructor (<a href="https://github.com/entrecode/ec.sdk/commit/407e2aa">407e2aa</a>)</li>
 </ul>
-<h2><small>0.21.2 (2019-05-17)</small></h2>
+<h2>0.21.2 (2019-05-17)</h2>
 <ul>
 <li>release version 0.21.2 (<a href="https://github.com/entrecode/ec.sdk/commit/3553b4b">3553b4b</a>)</li>
 <li>fix: invalid uri / error in traverson.from SDK-134 (<a href="https://github.com/entrecode/ec.sdk/commit/11cdd49">11cdd49</a>)</li>
 </ul>
-<h2><small>0.21.1 (2019-05-16)</small></h2>
+<h2>0.21.1 (2019-05-16)</h2>
 <ul>
 <li>release version 0.21.1 (<a href="https://github.com/entrecode/ec.sdk/commit/6261728">6261728</a>)</li>
 <li>fix: asset negotiation with template params (<a href="https://github.com/entrecode/ec.sdk/commit/d7797ee">d7797ee</a>)</li>
@@ -36033,14 +35975,14 @@ be the same object but with refreshed data.
 </ul>
 <p>Before 0.21.0 you could upload assets via Buffer (eg. loaded with fs.readFile or loaded by url). This was dropped because it was hardly used and assets neue are capable of uploading via url which should be sufficient.</p>
 <p>If are using asset upload via Buffer, you should be capable of migrating by yourself. Possible solutions are saving the file to disc and upload with path string or uploading directly with an url.</p>
-<h2><small>0.20.11 (2019-05-03)</small></h2>
+<h2>0.20.11 (2019-05-03)</h2>
 <ul>
 <li>merge release/0.20.10 into master (<a href="https://github.com/entrecode/ec.sdk/commit/5605797">5605797</a>)</li>
 <li>release version 0.20.11 (<a href="https://github.com/entrecode/ec.sdk/commit/67b86cc">67b86cc</a>)</li>
 <li>feat: retry flag for ListResource#map/find/filter SDK-120 (<a href="https://github.com/entrecode/ec.sdk/commit/cbf6039">cbf6039</a>)</li>
 <li>doc: sort documentation SDK-127 (<a href="https://github.com/entrecode/ec.sdk/commit/725bf79">725bf79</a>)</li>
 </ul>
-<h2><small>0.20.10 (2019-04-26)</small></h2>
+<h2>0.20.10 (2019-04-26)</h2>
 <ul>
 <li>release version 0.20.10 (<a href="https://github.com/entrecode/ec.sdk/commit/2c201ec">2c201ec</a>)</li>
 <li>fix: invalid environment error in DataManager#getPublicAPI() SDK-121 (<a href="https://github.com/entrecode/ec.sdk/commit/0c6cced">0c6cced</a>)</li>
@@ -36048,40 +35990,40 @@ be the same object but with refreshed data.
 <li>chore(package): update documentation to version 10.0.0 (<a href="https://github.com/entrecode/ec.sdk/commit/4d2e228">4d2e228</a>)</li>
 <li>chore(package): update lockfile package-lock.json (<a href="https://github.com/entrecode/ec.sdk/commit/2ff3994">2ff3994</a>)</li>
 </ul>
-<h2><small>0.20.9 (2019-04-17)</small></h2>
+<h2>0.20.9 (2019-04-17)</h2>
 <ul>
 <li>release version 0.20.9 (<a href="https://github.com/entrecode/ec.sdk/commit/ed45c9e">ed45c9e</a>)</li>
 <li>fix: only perform refresh is dispatch if token is set (<a href="https://github.com/entrecode/ec.sdk/commit/9edf52e">9edf52e</a>)</li>
 </ul>
-<h2><small>0.20.8 (2019-04-16)</small></h2>
+<h2>0.20.8 (2019-04-16)</h2>
 <ul>
 <li>merge release/0.20.7 into develop (<a href="https://github.com/entrecode/ec.sdk/commit/21d573c">21d573c</a>)</li>
 <li>release version 0.20.8 (<a href="https://github.com/entrecode/ec.sdk/commit/8d3738d">8d3738d</a>)</li>
 <li>fix: wrong cookie on refresh token (<a href="https://github.com/entrecode/ec.sdk/commit/4c0a2fe">4c0a2fe</a>)</li>
 </ul>
-<h2><small>0.20.7 (2019-04-16)</small></h2>
+<h2>0.20.7 (2019-04-16)</h2>
 <ul>
 <li>release version 0.20.7 (<a href="https://github.com/entrecode/ec.sdk/commit/28e0cdb">28e0cdb</a>)</li>
 <li>feat: add Core#get/hasRefreshToken() (<a href="https://github.com/entrecode/ec.sdk/commit/ca4f262">ca4f262</a>)</li>
 </ul>
-<h2><small>0.20.6 (2019-04-16)</small></h2>
+<h2>0.20.6 (2019-04-16)</h2>
 <ul>
 <li>only set clientID if not set (<a href="https://github.com/entrecode/ec.sdk/commit/a7ec5ae">a7ec5ae</a>)</li>
 <li>release version 0.20.6 (<a href="https://github.com/entrecode/ec.sdk/commit/8314873">8314873</a>)</li>
 <li>feat: overwrite clientID on PublicAPI auth api (<a href="https://github.com/entrecode/ec.sdk/commit/5b95fed">5b95fed</a>)</li>
 <li>fix: inner error typo in Core#dispatch (<a href="https://github.com/entrecode/ec.sdk/commit/468137e">468137e</a>)</li>
 </ul>
-<h2><small>0.20.5 (2019-04-16)</small></h2>
+<h2>0.20.5 (2019-04-16)</h2>
 <ul>
 <li>release version 0.20.5 (<a href="https://github.com/entrecode/ec.sdk/commit/44fc98d">44fc98d</a>)</li>
 <li>fix: do not save tokens in PublicAPI#loginWithToken (<a href="https://github.com/entrecode/ec.sdk/commit/4a87f3e">4a87f3e</a>)</li>
 </ul>
-<h2><small>0.20.4 (2019-04-15)</small></h2>
+<h2>0.20.4 (2019-04-15)</h2>
 <ul>
 <li>release version 0.20.4 (<a href="https://github.com/entrecode/ec.sdk/commit/97ef4b8">97ef4b8</a>)</li>
 <li>feat: clientID on configurableSignupEdit and loginWithToken SDK-123 (<a href="https://github.com/entrecode/ec.sdk/commit/eef12d9">eef12d9</a>)</li>
 </ul>
-<h2><small>0.20.3 (2019-04-15)</small></h2>
+<h2>0.20.3 (2019-04-15)</h2>
 <ul>
 <li>release version 0.20.3 (<a href="https://github.com/entrecode/ec.sdk/commit/d4ba001">d4ba001</a>)</li>
 <li>feat: changed configurableSignupEdit return signature (<a href="https://github.com/entrecode/ec.sdk/commit/bd12d1b">bd12d1b</a>)</li>
@@ -36091,12 +36033,12 @@ be the same object but with refreshed data.
 <ul>
 <li>method signature changed – same as with 0.20.0</li>
 </ul>
-<h2><small>0.20.2 (2019-04-15)</small></h2>
+<h2>0.20.2 (2019-04-15)</h2>
 <ul>
 <li>release version 0.20.2 (<a href="https://github.com/entrecode/ec.sdk/commit/a9ff97d">a9ff97d</a>)</li>
 <li>feat: grantTypes in DMClientResource editable SDK-125 (<a href="https://github.com/entrecode/ec.sdk/commit/ba45bf2">ba45bf2</a>)</li>
 </ul>
-<h2><small>0.20.1 (2019-04-15)</small></h2>
+<h2>0.20.1 (2019-04-15)</h2>
 <ul>
 <li>release version 0.20.1 (<a href="https://github.com/entrecode/ec.sdk/commit/4db330c">4db330c</a>)</li>
 <li>feat: change error stacktrace (<a href="https://github.com/entrecode/ec.sdk/commit/f6955c6">f6955c6</a>)</li>
@@ -36114,40 +36056,28 @@ be the same object but with refreshed data.
 <li>response signature changed for PublicAPI#login and PublicAPI#signup</li>
 </ul>
 <p>before:</p>
-<pre class='hljs'><span class="hljs-keyword">const</span> api = <span class="hljs-keyword">new</span> PublicAPI(<span class="hljs-string">&#x27;beefbeef&#x27;</span>);
-<span class="hljs-comment">// same for api.signup</span>
-<span class="hljs-keyword">const</span> token: string = <span class="hljs-keyword">await</span> api.login(email, password);
-mySecureStore.saveToken(token);</pre>
 <p>after:</p>
-<pre class='hljs'><span class="hljs-keyword">const</span> api = <span class="hljs-keyword">new</span> PublicAPI(<span class="hljs-string">&#x27;beefbeef&#x27;</span>);
-<span class="hljs-comment">// same for api.signup</span>
-<span class="hljs-keyword">const</span> tokenResponse: {
-  <span class="hljs-attr">access_token</span>: string,
-  <span class="hljs-attr">refresh_token</span>: string
-} = <span class="hljs-keyword">await</span> api.login(email, password);
-mySecureStore.saveToken(tokenResponse.access_token);
-mySecureStore.saveRefreshToken(tokenResponse.refresh_token);</pre>
-<h2><small>0.19.4 (2019-04-04)</small></h2>
+<h2>0.19.4 (2019-04-04)</h2>
 <ul>
 <li>release version 0.19.4 (<a href="https://github.com/entrecode/ec.sdk/commit/9a54f45">9a54f45</a>)</li>
 <li>fix: thow on PublicAPI#me without account (<a href="https://github.com/entrecode/ec.sdk/commit/c06d1d4">c06d1d4</a>)</li>
 <li>fix(package): update superagent to version 5.0.2 (<a href="https://github.com/entrecode/ec.sdk/commit/76c073b">76c073b</a>)</li>
 <li>chore(package): update lockfile package-lock.json (<a href="https://github.com/entrecode/ec.sdk/commit/f534ec8">f534ec8</a>)</li>
 </ul>
-<h2><small>0.19.3 (2019-03-29)</small></h2>
+<h2>0.19.3 (2019-03-29)</h2>
 <ul>
 <li>release version 0.19.3 (<a href="https://github.com/entrecode/ec.sdk/commit/8dca5f7">8dca5f7</a>)</li>
 <li>feat: possibly more vebose 5xx errors (<a href="https://github.com/entrecode/ec.sdk/commit/3ef912c">3ef912c</a>)</li>
 <li>test: remove node 6 from travis (<a href="https://github.com/entrecode/ec.sdk/commit/f28ac94">f28ac94</a>)</li>
 </ul>
-<h2><small>0.19.2 (2019-03-26)</small></h2>
+<h2>0.19.2 (2019-03-26)</h2>
 <ul>
 <li>release version 0.19.2 (<a href="https://github.com/entrecode/ec.sdk/commit/a69caf6">a69caf6</a>)</li>
 <li>feat: add method and path to non json errors (<a href="https://github.com/entrecode/ec.sdk/commit/b159ae5">b159ae5</a>)</li>
 <li>feat: update ec.errors with new error 002 (<a href="https://github.com/entrecode/ec.sdk/commit/f077970">f077970</a>)</li>
 <li>chore: prettier applied to all files (<a href="https://github.com/entrecode/ec.sdk/commit/788af11">788af11</a>)</li>
 </ul>
-<h2><small>0.19.1 (2019-03-25)</small></h2>
+<h2>0.19.1 (2019-03-25)</h2>
 <ul>
 <li>release version 0.19.1 (<a href="https://github.com/entrecode/ec.sdk/commit/27de743">27de743</a>)</li>
 <li>feat: memory only fieldConfig cache SDK-96 (<a href="https://github.com/entrecode/ec.sdk/commit/ee955df">ee955df</a>)</li>
@@ -36163,42 +36093,42 @@ mySecureStore.saveRefreshToken(tokenResponse.refresh_token);</pre>
 <li>PublicAPI#entryList will send <code>_list=true</code> with all requests.</li>
 </ul>
 <p>This will only work with DataManager <code>^0.20.0</code>. There is no change in your code needed, but this will fail on DataMAnager <code>&#x3C;0.20.0</code>.</p>
-<h2><small>0.18.7 (2019-03-22)</small></h2>
+<h2>0.18.7 (2019-03-22)</h2>
 <ul>
 <li>release version 0.18.7 (<a href="https://github.com/entrecode/ec.sdk/commit/8e86e91">8e86e91</a>)</li>
 <li>Revert "feat: getFieldConfig caching SDK-94" (<a href="https://github.com/entrecode/ec.sdk/commit/a445e84">a445e84</a>)</li>
 </ul>
-<h2><small>0.18.6 (2019-03-18)</small></h2>
+<h2>0.18.6 (2019-03-18)</h2>
 <ul>
 <li>release version 0.18.6 (<a href="https://github.com/entrecode/ec.sdk/commit/6adc2f9">6adc2f9</a>)</li>
 <li>feat: adds pagination for HistoryEvents SDK-116 (<a href="https://github.com/entrecode/ec.sdk/commit/93ad07d">93ad07d</a>)</li>
 <li>feat: create PublicAPI from uuid SDK-107 (<a href="https://github.com/entrecode/ec.sdk/commit/010c89c">010c89c</a>)</li>
 <li>feat: getFieldConfig caching SDK-94 (<a href="https://github.com/entrecode/ec.sdk/commit/3d0dd39">3d0dd39</a>)</li>
 </ul>
-<h2><small>0.18.5 (2019-03-14)</small></h2>
+<h2>0.18.5 (2019-03-14)</h2>
 <ul>
 <li>release version 0.18.5 (<a href="https://github.com/entrecode/ec.sdk/commit/c51f376">c51f376</a>)</li>
 <li>fix: EDITOR-285 roles should use title in lite resource (<a href="https://github.com/entrecode/ec.sdk/commit/9697829">9697829</a>)</li>
 </ul>
-<h2><small>0.18.4 (2019-03-11)</small></h2>
+<h2>0.18.4 (2019-03-11)</h2>
 <ul>
 <li>release version 0.18.4 (<a href="https://github.com/entrecode/ec.sdk/commit/bb20e49">bb20e49</a>)</li>
 <li>feat: edit of blocked state in DMAccountResource (<a href="https://github.com/entrecode/ec.sdk/commit/647c62b">647c62b</a>)</li>
 <li>chore: fix changelog (<a href="https://github.com/entrecode/ec.sdk/commit/d95a498">d95a498</a>)</li>
 </ul>
-<h2><small>0.18.3 (2019-03-08)</small></h2>
+<h2>0.18.3 (2019-03-08)</h2>
 <ul>
 <li>release version 0.18.3 (<a href="https://github.com/entrecode/ec.sdk/commit/8a75281">8a75281</a>)</li>
 <li>feat: SDK-115 adds name to group mock (<a href="https://github.com/entrecode/ec.sdk/commit/5d359dc">5d359dc</a>)</li>
 <li>feat: SDK-117 support blocked in dm accounts (<a href="https://github.com/entrecode/ec.sdk/commit/c042e78">c042e78</a>)</li>
 <li>test: SDK-115 adds tests to group for name property (<a href="https://github.com/entrecode/ec.sdk/commit/33bc0d7">33bc0d7</a>)</li>
 </ul>
-<h2><small>0.18.2 (2019-02-18)</small></h2>
+<h2>0.18.2 (2019-02-18)</h2>
 <ul>
 <li>release version 0.18.2 (<a href="https://github.com/entrecode/ec.sdk/commit/80cd2de">80cd2de</a>)</li>
 <li>fix: adds missing property accountsCount to RoleResource (<a href="https://github.com/entrecode/ec.sdk/commit/95840f6">95840f6</a>)</li>
 </ul>
-<h2><small>0.18.1 (2019-02-15)</small></h2>
+<h2>0.18.1 (2019-02-15)</h2>
 <ul>
 <li>release version 0.18.1 (<a href="https://github.com/entrecode/ec.sdk/commit/bcecb68">bcecb68</a>)</li>
 <li>fix: name of LiteRoleResource (<a href="https://github.com/entrecode/ec.sdk/commit/0cf9403">0cf9403</a>)</li>
@@ -36218,22 +36148,13 @@ mySecureStore.saveRefreshToken(tokenResponse.refresh_token);</pre>
 </ul>
 <p>You will need to use #getEvents() instead of #getPastEvents(). The signature of HistoryEvents and HistoryEvent has changed! Support for EventSource is currently disabled.</p>
 <p>Before:</p>
-<pre class='hljs'><span class="hljs-keyword">const</span> history = <span class="hljs-keyword">await</span> dataManager.getPastEvents();
-history.map(<span class="hljs-built_in">console</span>.log);</pre>
 <p>After:</p>
-<pre class='hljs'><span class="hljs-keyword">const</span> history = <span class="hljs-keyword">await</span> dataManager.getEvents();
-history.items.map(<span class="hljs-built_in">console</span>.log);</pre>
 <ul>
 <li>RoleResource does not have a account property anymore. Must use RoleResource#accountList() or roleResource#resourceList('dmAccount', options).</li>
 </ul>
 <p>Before:</p>
-<pre class='hljs'><span class="hljs-keyword">const</span> role = <span class="hljs-keyword">await</span> dm.role(id);
-role.accounts.map(<span class="hljs-built_in">console</span>.log);</pre>
 <p>After:</p>
-<pre class='hljs'><span class="hljs-keyword">const</span> role = <span class="hljs-keyword">await</span> dm.role(id);
-<span class="hljs-keyword">const</span> accounts = <span class="hljs-keyword">await</span> role.accountList();
-accounts.map(<span class="hljs-built_in">console</span>.log) <span class="hljs-comment">// Note: This is ListResource#map() not Array#map()</span></pre>
-<h2><small>0.17.21 (2019-02-04)</small></h2>
+<h2>0.17.21 (2019-02-04)</h2>
 <ul>
 <li>release version 0.17.21 (<a href="https://github.com/entrecode/ec.sdk/commit/f29fb66">f29fb66</a>)</li>
 <li>fix: TokenList in AccountResource with filter (<a href="https://github.com/entrecode/ec.sdk/commit/3e9a0ad">3e9a0ad</a>)</li>
@@ -36242,14 +36163,14 @@ accounts.map(<span class="hljs-built_in">console</span>.log) <span class="hljs-c
 <li>chore(package): update lockfile package-lock.json (<a href="https://github.com/entrecode/ec.sdk/commit/030f6b4">030f6b4</a>)</li>
 <li>chore(package): update sinon to version 7.2.3 (<a href="https://github.com/entrecode/ec.sdk/commit/74049b5">74049b5</a>)</li>
 </ul>
-<h2><small>0.17.20 (2019-02-01)</small></h2>
+<h2>0.17.20 (2019-02-01)</h2>
 <ul>
 <li>release version 0.17.20 (<a href="https://github.com/entrecode/ec.sdk/commit/6e23487">6e23487</a>)</li>
 <li>chore: remove direct highlight dependency (<a href="https://github.com/entrecode/ec.sdk/commit/6e15f0d">6e15f0d</a>)</li>
 <li>feat: add token list to resources in AccountResource SDK-111 (<a href="https://github.com/entrecode/ec.sdk/commit/e3d2e43">e3d2e43</a>)</li>
 <li>feat: getter and setter for GroupResource#account (<a href="https://github.com/entrecode/ec.sdk/commit/560cbf8">560cbf8</a>)</li>
 </ul>
-<h2><small>0.17.19 (2019-01-29)</small></h2>
+<h2>0.17.19 (2019-01-29)</h2>
 <ul>
 <li>added cheatsheet (<a href="https://github.com/entrecode/ec.sdk/commit/9ff3a6e">9ff3a6e</a>)</li>
 <li>CMS-3178: adds method and url to Problem (<a href="https://github.com/entrecode/ec.sdk/commit/dcbac06">dcbac06</a>)</li>
@@ -36260,12 +36181,12 @@ accounts.map(<span class="hljs-built_in">console</span>.log) <span class="hljs-c
 <li>fix: typings on PublicAPI#entry (<a href="https://github.com/entrecode/ec.sdk/commit/24c8270">24c8270</a>)</li>
 <li>chore: update dependencies (<a href="https://github.com/entrecode/ec.sdk/commit/ae89328">ae89328</a>)</li>
 </ul>
-<h2><small>0.17.18 (2018-11-30)</small></h2>
+<h2>0.17.18 (2018-11-30)</h2>
 <ul>
 <li>release version 0.17.18 (<a href="https://github.com/entrecode/ec.sdk/commit/063f9c7">063f9c7</a>)</li>
 <li>fix: resource loading with additional params (<a href="https://github.com/entrecode/ec.sdk/commit/deb68de">deb68de</a>)</li>
 </ul>
-<h2><small>0.17.17 (2018-11-30)</small></h2>
+<h2>0.17.17 (2018-11-30)</h2>
 <ul>
 <li>release version 0.17.17 (<a href="https://github.com/entrecode/ec.sdk/commit/a2dfcdc">a2dfcdc</a>)</li>
 <li>fix: adds wildcard type to fieldDefinition (<a href="https://github.com/entrecode/ec.sdk/commit/4befdb8">4befdb8</a>)</li>
@@ -36275,35 +36196,35 @@ accounts.map(<span class="hljs-built_in">console</span>.log) <span class="hljs-c
 <li>chore(package): update lockfile package-lock.json (<a href="https://github.com/entrecode/ec.sdk/commit/b623dd4">b623dd4</a>)</li>
 <li>chore(package): update lockfile package-lock.json (<a href="https://github.com/entrecode/ec.sdk/commit/250bc0c">250bc0c</a>)</li>
 </ul>
-<h2><small>0.17.16 (2018-11-27)</small></h2>
+<h2>0.17.16 (2018-11-27)</h2>
 <ul>
 <li>release version 0.17.16 (<a href="https://github.com/entrecode/ec.sdk/commit/cfb25fc">cfb25fc</a>)</li>
 <li>fix: typings of getFieldConfig fixed SDK-101 (<a href="https://github.com/entrecode/ec.sdk/commit/6dc914d">6dc914d</a>)</li>
 <li>doc: optimized type docs, SDK-90 and CMS-3153 (<a href="https://github.com/entrecode/ec.sdk/commit/343f59e">343f59e</a>)</li>
 <li>docs: adds missing type to PublicAPI#entry (<a href="https://github.com/entrecode/ec.sdk/commit/92d4833">92d4833</a>)</li>
 </ul>
-<h2><small>0.17.15 (2018-11-26)</small></h2>
+<h2>0.17.15 (2018-11-26)</h2>
 <ul>
 <li>release version 0.17.15 (<a href="https://github.com/entrecode/ec.sdk/commit/016bfc8">016bfc8</a>)</li>
 <li>refactor: optimized bugfix of fex and ruben (<a href="https://github.com/entrecode/ec.sdk/commit/84c848e">84c848e</a>)</li>
 <li>fix: resourceList filter with id.search SDK-102 (<a href="https://github.com/entrecode/ec.sdk/commit/c2098ad">c2098ad</a>)</li>
 </ul>
-<h2><small>0.17.14 (2018-11-23)</small></h2>
+<h2>0.17.14 (2018-11-23)</h2>
 <ul>
 <li>changed hard coded publicTagList relation (<a href="https://github.com/entrecode/ec.sdk/commit/d55a082">d55a082</a>)</li>
 <li>release version 0.17.14 (<a href="https://github.com/entrecode/ec.sdk/commit/73ea530">73ea530</a>)</li>
 </ul>
-<h2><small>0.17.13 (2018-11-23)</small></h2>
+<h2>0.17.13 (2018-11-23)</h2>
 <ul>
 <li>fixed tag list relation (ec:api/tags -> ec:tag) (<a href="https://github.com/entrecode/ec.sdk/commit/51d0f43">51d0f43</a>)</li>
 <li>release version 0.17.13 (<a href="https://github.com/entrecode/ec.sdk/commit/d97b5f2">d97b5f2</a>)</li>
 </ul>
-<h2><small>0.17.12 (2018-11-15)</small></h2>
+<h2>0.17.12 (2018-11-15)</h2>
 <ul>
 <li>release version 0.17.12 (<a href="https://github.com/entrecode/ec.sdk/commit/f8dc626">f8dc626</a>)</li>
 <li>chore: updated package-lock (<a href="https://github.com/entrecode/ec.sdk/commit/8425fda">8425fda</a>)</li>
 </ul>
-<h2><small>0.17.11 (2018-11-15)</small></h2>
+<h2>0.17.11 (2018-11-15)</h2>
 <ul>
 <li>adds tags to available resources in public api (<a href="https://github.com/entrecode/ec.sdk/commit/583b416">583b416</a>)</li>
 <li>release version 0.17.11 (<a href="https://github.com/entrecode/ec.sdk/commit/bf5d853">bf5d853</a>)</li>
@@ -36311,52 +36232,52 @@ accounts.map(<span class="hljs-built_in">console</span>.log) <span class="hljs-c
 <li>chore: use npm install not npm ci in travis builds (<a href="https://github.com/entrecode/ec.sdk/commit/671ff15">671ff15</a>)</li>
 <li>feat: tag and tag list on PublicAPI SDK-98 (<a href="https://github.com/entrecode/ec.sdk/commit/d1580fe">d1580fe</a>)</li>
 </ul>
-<h2><small>0.17.10 (2018-11-08)</small></h2>
+<h2>0.17.10 (2018-11-08)</h2>
 <ul>
 <li>release version 0.17.10 (<a href="https://github.com/entrecode/ec.sdk/commit/92281e2">92281e2</a>)</li>
 <li>feakt: support for auth api aka. magic link login DEAL-441 (<a href="https://github.com/entrecode/ec.sdk/commit/e5e4a05">e5e4a05</a>)</li>
 <li>feat: SDK-95 typings for field definition (<a href="https://github.com/entrecode/ec.sdk/commit/2bde2f8">2bde2f8</a>)</li>
 <li>feat: SDK-97 get single entry with filter (<a href="https://github.com/entrecode/ec.sdk/commit/0220234">0220234</a>)</li>
 </ul>
-<h2><small>0.17.9 (2018-10-16)</small></h2>
+<h2>0.17.9 (2018-10-16)</h2>
 <ul>
 <li>release version 0.17.9 (<a href="https://github.com/entrecode/ec.sdk/commit/7dbbfd6">7dbbfd6</a>)</li>
 <li>chore: fix doc build with highlight.js (<a href="https://github.com/entrecode/ec.sdk/commit/2e2d2f1">2e2d2f1</a>)</li>
 <li>chore: updated dependencies (<a href="https://github.com/entrecode/ec.sdk/commit/4f7e0cc">4f7e0cc</a>)</li>
 <li>chore: updates json-schema-remote (<a href="https://github.com/entrecode/ec.sdk/commit/64046dc">64046dc</a>)</li>
 </ul>
-<h2><small>0.17.8 (2018-10-05)</small></h2>
+<h2>0.17.8 (2018-10-05)</h2>
 <ul>
 <li>release version 0.17.8 (<a href="https://github.com/entrecode/ec.sdk/commit/1028d0a">1028d0a</a>)</li>
 <li>SDK-93 locale optional in PublicAssetResource (<a href="https://github.com/entrecode/ec.sdk/commit/db77ce9">db77ce9</a>)</li>
 </ul>
-<h2><small>0.17.7 (2018-09-28)</small></h2>
+<h2>0.17.7 (2018-09-28)</h2>
 <ul>
 <li>release version 0.17.7 (<a href="https://github.com/entrecode/ec.sdk/commit/735e981">735e981</a>)</li>
 <li>fix: dirty detection on JSON fields SDK-92 (<a href="https://github.com/entrecode/ec.sdk/commit/646fa72">646fa72</a>)</li>
 <li>chore: patchday (<a href="https://github.com/entrecode/ec.sdk/commit/cb81cd1">cb81cd1</a>)</li>
 </ul>
-<h2><small>0.17.6 (2018-09-14)</small></h2>
+<h2>0.17.6 (2018-09-14)</h2>
 <ul>
 <li>release version 0.17.6 (<a href="https://github.com/entrecode/ec.sdk/commit/810bfa6">810bfa6</a>)</li>
 <li>chore: updated traverson with react support (<a href="https://github.com/entrecode/ec.sdk/commit/69ff5c3">69ff5c3</a>)</li>
 </ul>
-<h2><small>0.17.5 (2018-09-10)</small></h2>
+<h2>0.17.5 (2018-09-10)</h2>
 <ul>
 <li>release version 0.17.5 (<a href="https://github.com/entrecode/ec.sdk/commit/2511de3">2511de3</a>)</li>
 <li>chore: use babelify@8 (<a href="https://github.com/entrecode/ec.sdk/commit/4f15d8a">4f15d8a</a>)</li>
 </ul>
-<h2><small>0.17.4 (2018-09-10)</small></h2>
+<h2>0.17.4 (2018-09-10)</h2>
 <ul>
 <li>release version 0.17.4 (<a href="https://github.com/entrecode/ec.sdk/commit/249944a">249944a</a>)</li>
 <li>fix: typescript strict option fixes (<a href="https://github.com/entrecode/ec.sdk/commit/873be28">873be28</a>)</li>
 </ul>
-<h2><small>0.17.3 (2018-09-06)</small></h2>
+<h2>0.17.3 (2018-09-06)</h2>
 <ul>
 <li>release version 0.17.3 (<a href="https://github.com/entrecode/ec.sdk/commit/6afb9ee">6afb9ee</a>)</li>
 <li>fix: also import Symbol polyfill in Resources (<a href="https://github.com/entrecode/ec.sdk/commit/d36067f">d36067f</a>)</li>
 </ul>
-<h2><small>0.17.2 (2018-09-03)</small></h2>
+<h2>0.17.2 (2018-09-03)</h2>
 <ul>
 <li>release version 0.17.2 (<a href="https://github.com/entrecode/ec.sdk/commit/de7a6d5">de7a6d5</a>)</li>
 <li>fix: handling of DMAsset and PublicAsset Resources (<a href="https://github.com/entrecode/ec.sdk/commit/9fac177">9fac177</a>)</li>
@@ -36364,7 +36285,7 @@ accounts.map(<span class="hljs-built_in">console</span>.log) <span class="hljs-c
 <li>chore: move npm to correct location (<a href="https://github.com/entrecode/ec.sdk/commit/f77ae0e">f77ae0e</a>)</li>
 <li>chore: updated package-lock (<a href="https://github.com/entrecode/ec.sdk/commit/f650051">f650051</a>)</li>
 </ul>
-<h2><small>0.17.1 (2018-09-03)</small></h2>
+<h2>0.17.1 (2018-09-03)</h2>
 <ul>
 <li>release version 0.17.1 (<a href="https://github.com/entrecode/ec.sdk/commit/b305810">b305810</a>)</li>
 <li>fix: adds Symbol polyfill for react (<a href="https://github.com/entrecode/ec.sdk/commit/a82a03b">a82a03b</a>)</li>
@@ -36378,59 +36299,44 @@ accounts.map(<span class="hljs-built_in">console</span>.log) <span class="hljs-c
 </ul>
 <h3>BREAKING CHANGE</h3>
 <ul>
-<li>This change will break usage when using HistoryEvents. You will need to
-inject 'eventsource/lib/eventsource-polyfill' manually in you project.</li>
+<li>This change will break usage when using HistoryEvents. You will need to</li>
 </ul>
+<p>inject 'eventsource/lib/eventsource-polyfill' manually in you project.</p>
 <p>before:</p>
-<pre class='hljs'><span class="hljs-keyword">import</span> { DataManager } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;ec.sdk&#x27;</span>;
-
-<span class="hljs-keyword">const</span> dmApi = <span class="hljs-keyword">new</span> DataManager();
-
-<span class="hljs-keyword">const</span> dm = <span class="hljs-keyword">await</span> dmApi.dataManager(dmID);
-<span class="hljs-keyword">const</span> history = <span class="hljs-keyword">await</span> dm.newHistory();</pre>
 <p>after:</p>
-<pre class='hljs'><span class="hljs-keyword">import</span> { DataManager } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;ec.sdk&#x27;</span>;
-<span class="hljs-keyword">import</span> * <span class="hljs-keyword">as</span> EventSource <span class="hljs-keyword">from</span>  <span class="hljs-string">&#x27;eventsource/lib/eventsource-polyfill&#x27;</span>;
-
-DataManager.enableHistoryEvents(EventSource);
-
-<span class="hljs-keyword">const</span> dmApi = <span class="hljs-keyword">new</span> DataManager();
-
-<span class="hljs-keyword">const</span> dm = <span class="hljs-keyword">await</span> dmApi.dataManager(dmID);
-<span class="hljs-keyword">const</span> history = <span class="hljs-keyword">await</span> dm.newHistory();</pre>
-<h2><small>0.16.28 (2018-08-27)</small></h2>
+<h2>0.16.28 (2018-08-27)</h2>
 <ul>
 <li>release version 0.16.28 (<a href="https://github.com/entrecode/ec.sdk/commit/99f72ea">99f72ea</a>)</li>
 <li>fix: do not use assert from node, use deep-equal instead (<a href="https://github.com/entrecode/ec.sdk/commit/3772680">3772680</a>)</li>
 <li>chore: updated npm access key in travis (<a href="https://github.com/entrecode/ec.sdk/commit/8000fcd">8000fcd</a>)</li>
 </ul>
-<h2><small>0.16.26 (2018-08-03)</small></h2>
+<h2>0.16.26 (2018-08-03)</h2>
 <ul>
 <li>release version 0.16.26 (<a href="https://github.com/entrecode/ec.sdk/commit/4b1493c">4b1493c</a>)</li>
 <li>fix: safe put header names (<a href="https://github.com/entrecode/ec.sdk/commit/c119745">c119745</a>)</li>
 </ul>
-<h2><small>0.16.25 (2018-07-31)</small></h2>
+<h2>0.16.25 (2018-07-31)</h2>
 <ul>
 <li>release version 0.16.25 (<a href="https://github.com/entrecode/ec.sdk/commit/29e6e96">29e6e96</a>)</li>
 <li>fix: use templated schema in invite resource (<a href="https://github.com/entrecode/ec.sdk/commit/2a22622">2a22622</a>)</li>
 </ul>
-<h2><small>0.16.24 (2018-07-27)</small></h2>
+<h2>0.16.24 (2018-07-27)</h2>
 <ul>
 <li>release version 0.16.24 (<a href="https://github.com/entrecode/ec.sdk/commit/a074176">a074176</a>)</li>
 <li>feat: setAccounts in GroupResource to replace all accounts SDK-83 (<a href="https://github.com/entrecode/ec.sdk/commit/0d59faa">0d59faa</a>)</li>
 </ul>
-<h2><small>0.16.23 (2018-07-24)</small></h2>
+<h2>0.16.23 (2018-07-24)</h2>
 <ul>
 <li>release version 0.16.23 (<a href="https://github.com/entrecode/ec.sdk/commit/6937973">6937973</a>)</li>
 <li>feat: deduplicate flag in DMAsset upload (<a href="https://github.com/entrecode/ec.sdk/commit/c8de97d">c8de97d</a>)</li>
 <li>chore: adds new npm token token to travis deploy (<a href="https://github.com/entrecode/ec.sdk/commit/ef52f68">ef52f68</a>)</li>
 </ul>
-<h2><small>0.16.22 (2018-07-13)</small></h2>
+<h2>0.16.22 (2018-07-13)</h2>
 <ul>
 <li>release version 0.16.22 (<a href="https://github.com/entrecode/ec.sdk/commit/2563116">2563116</a>)</li>
 <li>feat: uri encode publicAPI query strings SDK-81 (<a href="https://github.com/entrecode/ec.sdk/commit/2006fb2">2006fb2</a>)</li>
 </ul>
-<h2><small>0.16.21 (2018-07-09)</small></h2>
+<h2>0.16.21 (2018-07-09)</h2>
 <ul>
 <li>release version 0.16.21 (<a href="https://github.com/entrecode/ec.sdk/commit/33e9e9e">33e9e9e</a>)</li>
 <li>feat: add/remove Accounts and removePermission(s) from Group SDK-78 (<a href="https://github.com/entrecode/ec.sdk/commit/a0846f4">a0846f4</a>)</li>
@@ -36438,81 +36344,81 @@ DataManager.enableHistoryEvents(EventSource);
 <li>test: tests for proper invite resource (<a href="https://github.com/entrecode/ec.sdk/commit/1d2f366">1d2f366</a>)</li>
 <li>doc: sorting of invites resources (<a href="https://github.com/entrecode/ec.sdk/commit/1ac55b5">1ac55b5</a>)</li>
 </ul>
-<h2><small>0.16.20 (2018-07-06)</small></h2>
+<h2>0.16.20 (2018-07-06)</h2>
 <ul>
 <li>release version 0.16.20 (<a href="https://github.com/entrecode/ec.sdk/commit/5497ab6">5497ab6</a>)</li>
 <li>fix: invite creation (<a href="https://github.com/entrecode/ec.sdk/commit/d5202bb">d5202bb</a>)</li>
 </ul>
-<h2><small>0.16.19 (2018-07-06)</small></h2>
+<h2>0.16.19 (2018-07-06)</h2>
 <ul>
 <li>release version 0.16.19 (<a href="https://github.com/entrecode/ec.sdk/commit/509d3b6">509d3b6</a>)</li>
 <li>feat: invites as proper resources SDK-79 (<a href="https://github.com/entrecode/ec.sdk/commit/9c2f97b">9c2f97b</a>)</li>
 </ul>
-<h2><small>0.16.18 (2018-07-04)</small></h2>
+<h2>0.16.18 (2018-07-04)</h2>
 <ul>
 <li>release version 0.16.18 (<a href="https://github.com/entrecode/ec.sdk/commit/b457c25">b457c25</a>)</li>
 <li>fix: create resolved entry with levels with schemas (<a href="https://github.com/entrecode/ec.sdk/commit/79bb10c">79bb10c</a>)</li>
 </ul>
-<h2><small>0.16.17 (2018-07-04)</small></h2>
+<h2>0.16.17 (2018-07-04)</h2>
 <ul>
 <li>release version 0.16.17 (<a href="https://github.com/entrecode/ec.sdk/commit/ce78bc7">ce78bc7</a>)</li>
 <li>fix: level reload of EntryResources (<a href="https://github.com/entrecode/ec.sdk/commit/1fe4a46">1fe4a46</a>)</li>
 <li>fix: typings for list map, find, filter (<a href="https://github.com/entrecode/ec.sdk/commit/c9e94b0">c9e94b0</a>)</li>
 <li>feat: fieldConfig in PublicAPI SDK-77 (<a href="https://github.com/entrecode/ec.sdk/commit/28e42db">28e42db</a>)</li>
 </ul>
-<h2><small>0.16.16 (2018-06-22)</small></h2>
+<h2>0.16.16 (2018-06-22)</h2>
 <ul>
 <li>release version 0.16.16 (<a href="https://github.com/entrecode/ec.sdk/commit/cfcee62">cfcee62</a>)</li>
 <li>fix: token response handling in signup (<a href="https://github.com/entrecode/ec.sdk/commit/017b881">017b881</a>)</li>
 </ul>
-<h2><small>0.16.15 (2018-06-22)</small></h2>
+<h2>0.16.15 (2018-06-22)</h2>
 <ul>
 <li>release version 0.16.15 (<a href="https://github.com/entrecode/ec.sdk/commit/03bd576">03bd576</a>)</li>
 <li>fix: signup with clientID rest should use json posts (<a href="https://github.com/entrecode/ec.sdk/commit/7e31b5d">7e31b5d</a>)</li>
 </ul>
-<h2><small>0.16.14 (2018-06-19)</small></h2>
+<h2>0.16.14 (2018-06-19)</h2>
 <ul>
 <li>release version 0.16.14 (<a href="https://github.com/entrecode/ec.sdk/commit/89e486e">89e486e</a>)</li>
 <li>feat: entry reload with levels support (<a href="https://github.com/entrecode/ec.sdk/commit/cf03985">cf03985</a>)</li>
 </ul>
-<h2><small>0.16.13 (2018-06-15)</small></h2>
+<h2>0.16.13 (2018-06-15)</h2>
 <ul>
 <li>release version 0.16.13 (<a href="https://github.com/entrecode/ec.sdk/commit/c85eef4">c85eef4</a>)</li>
 <li>fix: remove additional properties from toOriginal, in validate now (<a href="https://github.com/entrecode/ec.sdk/commit/cd84a4a">cd84a4a</a>)</li>
 </ul>
-<h2><small>0.16.12 (2018-06-14)</small></h2>
+<h2>0.16.12 (2018-06-14)</h2>
 <ul>
 <li>release version 0.16.12 (<a href="https://github.com/entrecode/ec.sdk/commit/3358558">3358558</a>)</li>
 <li>fix: all filter with space instead of + (<a href="https://github.com/entrecode/ec.sdk/commit/67b5746">67b5746</a>)</li>
 <li>chore: updated package-lock (<a href="https://github.com/entrecode/ec.sdk/commit/1957474">1957474</a>)</li>
 <li>chore(package): update sinon to version 6.0.0 (<a href="https://github.com/entrecode/ec.sdk/commit/c5dadfb">c5dadfb</a>)</li>
 </ul>
-<h2><small>0.16.11 (2018-06-08)</small></h2>
+<h2>0.16.11 (2018-06-08)</h2>
 <ul>
 <li>release version 0.16.11 (<a href="https://github.com/entrecode/ec.sdk/commit/4dee7c0">4dee7c0</a>)</li>
 <li>fix: history in entries linkt not found SDK-61 (<a href="https://github.com/entrecode/ec.sdk/commit/a8f6f60">a8f6f60</a>)</li>
 </ul>
-<h2><small>0.16.10 (2018-06-07)</small></h2>
+<h2>0.16.10 (2018-06-07)</h2>
 <ul>
 <li>release version 0.16.10 (<a href="https://github.com/entrecode/ec.sdk/commit/fb78a4e">fb78a4e</a>)</li>
 <li>doc: more doc for cookie handling (<a href="https://github.com/entrecode/ec.sdk/commit/1380f2a">1380f2a</a>)</li>
 <li>chore: updated package and package-lock (<a href="https://github.com/entrecode/ec.sdk/commit/2f09fe7">2f09fe7</a>)</li>
 <li>fix: compatibility with typescript 2.9.x SDK-75 (<a href="https://github.com/entrecode/ec.sdk/commit/24c8824">24c8824</a>)</li>
 </ul>
-<h2><small>0.16.9 (2018-06-04)</small></h2>
+<h2>0.16.9 (2018-06-04)</h2>
 <ul>
 <li>release version 0.16.9 (<a href="https://github.com/entrecode/ec.sdk/commit/dd42b00">dd42b00</a>)</li>
 <li>chore: patches, pin to typescript 2.8.x for now (<a href="https://github.com/entrecode/ec.sdk/commit/a4d2bfe">a4d2bfe</a>)</li>
 </ul>
-<p><a name="0.16.8"></a></p>
-<h2><small>0.16.8 (2018-06-04)</small></h2>
+<p></p>
+<h2>0.16.8 (2018-06-04)</h2>
 <ul>
 <li>release version 0.16.8 (<a href="https://github.com/entrecode/ec.sdk/commit/633f74d">633f74d</a>)</li>
 <li>updated doc (<a href="https://github.com/entrecode/ec.sdk/commit/592eec3">592eec3</a>)</li>
 <li>fix: should fix typecast errors SDK-74 (<a href="https://github.com/entrecode/ec.sdk/commit/477fd9b">477fd9b</a>)</li>
 </ul>
-<p><a name="0.16.7"></a></p>
-<h2><small>0.16.7 (2018-05-29)</small></h2>
+<p></p>
+<h2>0.16.7 (2018-05-29)</h2>
 <ul>
 <li>release version 0.16.7 (<a href="https://github.com/entrecode/ec.sdk/commit/c4a543b">c4a543b</a>)</li>
 <li>feat: add delete alias for Resource#del (<a href="https://github.com/entrecode/ec.sdk/commit/fe477b1">fe477b1</a>)</li>
@@ -36523,20 +36429,20 @@ DataManager.enableHistoryEvents(EventSource);
 <li>feat: rebuildDoc und DataManagerResource (<a href="https://github.com/entrecode/ec.sdk/commit/b6a7d32">b6a7d32</a>)</li>
 <li>fix: spare request in PublicAPI#me() SDK-24 (<a href="https://github.com/entrecode/ec.sdk/commit/eac533d">eac533d</a>)</li>
 </ul>
-<p><a name="0.16.6"></a></p>
-<h2><small>0.16.6 (2018-05-28)</small></h2>
+<p></p>
+<h2>0.16.6 (2018-05-28)</h2>
 <ul>
 <li>release version 0.16.6 (<a href="https://github.com/entrecode/ec.sdk/commit/3711bbc">3711bbc</a>)</li>
 <li>feat: add url upload option for dmAssets (<a href="https://github.com/entrecode/ec.sdk/commit/3716c3d">3716c3d</a>)</li>
 </ul>
-<p><a name="0.16.5"></a></p>
-<h2><small>0.16.5 (2018-05-28)</small></h2>
+<p></p>
+<h2>0.16.5 (2018-05-28)</h2>
 <ul>
 <li>release version 0.16.5 (<a href="https://github.com/entrecode/ec.sdk/commit/a2cf4cb">a2cf4cb</a>)</li>
 <li>feat: assetGroupID property for DMAssets (<a href="https://github.com/entrecode/ec.sdk/commit/de8e969">de8e969</a>)</li>
 </ul>
-<p><a name="0.16.4"></a></p>
-<h2><small>0.16.4 (2018-05-25)</small></h2>
+<p></p>
+<h2>0.16.4 (2018-05-25)</h2>
 <ul>
 <li>release version 0.16.4 (<a href="https://github.com/entrecode/ec.sdk/commit/be2d5fd">be2d5fd</a>)</li>
 <li>feat: assetGroupList on PublicAPI root SDK-71 (<a href="https://github.com/entrecode/ec.sdk/commit/4484792">4484792</a>)</li>
@@ -36550,18 +36456,15 @@ DataManager.enableHistoryEvents(EventSource);
 <li>removed duplicate function</li>
 </ul>
 <p>before:</p>
-<pre class='hljs'><span class="hljs-keyword">const</span> jwt = <span class="hljs-keyword">await</span> accounts.createAPIKey();</pre>
 <p>after:</p>
-<pre class='hljs'><span class="hljs-keyword">const</span> jwt = (<span class="hljs-keyword">await</span> accounts.createApiToken()).jwt;
-<span class="hljs-comment">// has iat, exp and, accountID as well</span></pre>
-<p><a name="0.16.3"></a></p>
-<h2><small>0.16.3 (2018-05-22)</small></h2>
+<p></p>
+<h2>0.16.3 (2018-05-22)</h2>
 <ul>
 <li>release version 0.16.3 (<a href="https://github.com/entrecode/ec.sdk/commit/614fda7">614fda7</a>)</li>
 <li>feat: adds pending, pendingUpdated, and created to DMAccountResource (<a href="https://github.com/entrecode/ec.sdk/commit/9fdae17">9fdae17</a>)</li>
 </ul>
-<p><a name="0.16.2"></a></p>
-<h2><small>0.16.2 (2018-05-17)</small></h2>
+<p></p>
+<h2>0.16.2 (2018-05-17)</h2>
 <ul>
 <li>added privacy link to docs (<a href="https://github.com/entrecode/ec.sdk/commit/84159f7">84159f7</a>)</li>
 <li>release version 0.16.2 (<a href="https://github.com/entrecode/ec.sdk/commit/bfac202">bfac202</a>)</li>
@@ -36575,9 +36478,9 @@ DataManager.enableHistoryEvents(EventSource);
 <li>fix(package): update validator to version 10.0.0 (<a href="https://github.com/entrecode/ec.sdk/commit/ba3d20a">ba3d20a</a>)</li>
 <li>feat: standart error format for 5xx errors SDK-56 (<a href="https://github.com/entrecode/ec.sdk/commit/002b768">002b768</a>)</li>
 </ul>
-<p><a name="0.16.1"></a></p>
-<h2><small>0.16.1 (2018-04-27)</small></h2>
-<p><a name="0.16.0"></a></p>
+<p></p>
+<h2>0.16.1 (2018-04-27)</h2>
+<p></p>
 <h2>0.16.0 (2018-04-20)</h2>
 <ul>
 <li>feat: title property in DMAccountResource and LiteDMAccountResource (<a href="https://github.com/entrecode/ec.sdk/commit/2be7671">2be7671</a>)</li>
@@ -36588,12 +36491,8 @@ DataManager.enableHistoryEvents(EventSource);
 <h3>BREAKING CHANGE:</h3>
 <p>RoleResource's accounts field now has an array of LiteDMAccountResources not strings</p>
 <p>before:</p>
-<pre class='hljs'><span class="hljs-keyword">const</span> role = <span class="hljs-keyword">await</span> dm.role(roleID);
-<span class="hljs-built_in">console</span>.info(role.accounts[<span class="hljs-number">0</span>]); <span class="hljs-comment">// logs uuid string</span></pre>
 <p>after:</p>
-<pre class='hljs'><span class="hljs-keyword">const</span> role = <span class="hljs-keyword">await</span> dm.role(roleID);
-<span class="hljs-built_in">console</span>.info(role.accounts[<span class="hljs-number">0</span>].accountID); <span class="hljs-comment">// logs uuid string</span></pre>
-<p><a name="0.15.0"></a></p>
+<p></p>
 <h2>0.15.0 (2018-04-18)</h2>
 <ul>
 <li>release version 0.15.0 (<a href="https://github.com/entrecode/ec.sdk/commit/de10b42">de10b42</a>)</li>
@@ -36605,27 +36504,21 @@ DataManager.enableHistoryEvents(EventSource);
 <li>introducing LiteDMAccountResource and LiteRoleResource, will break existing account/role fields</li>
 </ul>
 <p>before:</p>
-<pre class='hljs'><span class="hljs-keyword">const</span> entry: EntryResource = <span class="hljs-keyword">await</span> loadEntry();
-<span class="hljs-built_in">console</span>.log(entry.account); <span class="hljs-comment">// will log accountID</span>
-<span class="hljs-built_in">console</span>.log(entry.role); <span class="hljs-comment">// will log roleID</span></pre>
-<pre class='hljs'><span class="hljs-keyword">const</span> entry: EntryResource = <span class="hljs-keyword">await</span> loadEntry();
-<span class="hljs-built_in">console</span>.log(entry.account.accountID); <span class="hljs-comment">// will log accountID</span>
-<span class="hljs-built_in">console</span>.log(entry.role.roleID); <span class="hljs-comment">// will log roleID</span></pre>
-<p><a name="0.14.2"></a></p>
-<h2><small>0.14.2 (2018-04-18)</small></h2>
+<p></p>
+<h2>0.14.2 (2018-04-18)</h2>
 <ul>
 <li>release version 0.14.2 (<a href="https://github.com/entrecode/ec.sdk/commit/8a647b0">8a647b0</a>)</li>
 <li>feat: HistoryEvents resource for past events (<a href="https://github.com/entrecode/ec.sdk/commit/29c86b6">29c86b6</a>)</li>
 <li>fix: body parsing of empty error responses SDK-55 (<a href="https://github.com/entrecode/ec.sdk/commit/d6b5820">d6b5820</a>)</li>
 </ul>
-<p><a name="0.14.1"></a></p>
-<h2><small>0.14.1 (2018-04-16)</small></h2>
+<p></p>
+<h2>0.14.1 (2018-04-16)</h2>
 <ul>
 <li>release version 0.14.1 (<a href="https://github.com/entrecode/ec.sdk/commit/981fc00">981fc00</a>)</li>
 <li>fix: DMClientResource getter and setter wrong (<a href="https://github.com/entrecode/ec.sdk/commit/123841d">123841d</a>)</li>
 <li>fix: when saving a resource only change object internals on !==204 response (<a href="https://github.com/entrecode/ec.sdk/commit/9574a60">9574a60</a>)</li>
 </ul>
-<p><a name="0.14.0"></a></p>
+<p></p>
 <h2>0.14.0 (2018-04-16)</h2>
 <ul>
 <li>release version 0.14.0 (<a href="https://github.com/entrecode/ec.sdk/commit/0a34e00">0a34e00</a>)</li>
@@ -36637,25 +36530,21 @@ DataManager.enableHistoryEvents(EventSource);
 <li>removed <code>signupAnonymous()</code> use <code>createAnonymous(validUntil)</code>.</li>
 </ul>
 <p>before:</p>
-<pre class='hljs'><span class="hljs-keyword">const</span> anon = <span class="hljs-keyword">await</span> api.signupAnonymous();
-api.setToken(anon);</pre>
 <p>after:</p>
-<pre class='hljs'><span class="hljs-keyword">const</span> {jwt} = <span class="hljs-keyword">await</span> api.createAnonymous();
-api.setToken(jwt);</pre>
-<p><a name="0.13.19"></a></p>
-<h2><small>0.13.19 (2018-04-13)</small></h2>
+<p></p>
+<h2>0.13.19 (2018-04-13)</h2>
 <ul>
 <li>release version 0.13.19 (<a href="https://github.com/entrecode/ec.sdk/commit/67e6bbf">67e6bbf</a>)</li>
 <li>feat: convert schema validation errors into entrecode error format SDK-4 SDK-6 (<a href="https://github.com/entrecode/ec.sdk/commit/5ca8d2c">5ca8d2c</a>)</li>
 </ul>
-<p><a name="0.13.18"></a></p>
-<h2><small>0.13.18 (2018-04-10)</small></h2>
+<p></p>
+<h2>0.13.18 (2018-04-10)</h2>
 <ul>
 <li>release version 0.13.18 (<a href="https://github.com/entrecode/ec.sdk/commit/e1310aa">e1310aa</a>)</li>
 <li>fix: toOriginal in EntryResource when values are undefined (<a href="https://github.com/entrecode/ec.sdk/commit/3e8163b">3e8163b</a>)</li>
 </ul>
-<p><a name="0.13.17"></a></p>
-<h2><small>0.13.17 (2018-04-06)</small></h2>
+<p></p>
+<h2>0.13.17 (2018-04-06)</h2>
 <ul>
 <li>release version 0.13.17 (<a href="https://github.com/entrecode/ec.sdk/commit/55bea2c">55bea2c</a>)</li>
 <li>feat: drop schemas on ModelResource#save (<a href="https://github.com/entrecode/ec.sdk/commit/9f6d007">9f6d007</a>)</li>
@@ -36664,22 +36553,22 @@ api.setToken(jwt);</pre>
 <li>fix: call super instead of this (<a href="https://github.com/entrecode/ec.sdk/commit/5133fe8">5133fe8</a>)</li>
 <li>fix: fixed isDirty detection when linked type gettes were called (<a href="https://github.com/entrecode/ec.sdk/commit/8ac7b5d">8ac7b5d</a>)</li>
 </ul>
-<p><a name="0.13.15"></a></p>
-<h2><small>0.13.15 (2018-03-28)</small></h2>
+<p></p>
+<h2>0.13.15 (2018-03-28)</h2>
 <ul>
 <li>release version 0.13.15 (<a href="https://github.com/entrecode/ec.sdk/commit/0ee4a47">0ee4a47</a>)</li>
 <li>fix: fixed wrong imports (<a href="https://github.com/entrecode/ec.sdk/commit/2aae4f9">2aae4f9</a>)</li>
 </ul>
-<p><a name="0.13.14"></a></p>
-<h2><small>0.13.14 (2018-03-28)</small></h2>
+<p></p>
+<h2>0.13.14 (2018-03-28)</h2>
 <ul>
 <li>release version 0.13.14 (<a href="https://github.com/entrecode/ec.sdk/commit/6f1fb02">6f1fb02</a>)</li>
 <li>feat: newHistory for DataManagerResource, ModelResource, EntryResource, and PublicAPI (<a href="https://github.com/entrecode/ec.sdk/commit/6dfb8dd">6dfb8dd</a>)</li>
 <li>chore: applied new codestyle &#x3C;3 (<a href="https://github.com/entrecode/ec.sdk/commit/fdd14bc">fdd14bc</a>)</li>
 <li>fix: removes dummy resource in Resources (<a href="https://github.com/entrecode/ec.sdk/commit/0352921">0352921</a>)</li>
 </ul>
-<p><a name="0.13.13"></a></p>
-<h2><small>0.13.13 (2018-03-23)</small></h2>
+<p></p>
+<h2>0.13.13 (2018-03-23)</h2>
 <ul>
 <li>refactor: prepared history helper for usage in other resources than DataManager API Connector (<a href="https://github.com/entrecode/ec.sdk/commit/26051e5">26051e5</a>)</li>
 <li>0.13.13 beta (<a href="https://github.com/entrecode/ec.sdk/commit/de14f3f">de14f3f</a>)</li>
@@ -36695,8 +36584,8 @@ api.setToken(jwt);</pre>
 <li>refactor: renamed generic asset into dmAsset (<a href="https://github.com/entrecode/ec.sdk/commit/c69e70e">c69e70e</a>)</li>
 <li>fix: relation for generic model list (<a href="https://github.com/entrecode/ec.sdk/commit/04266d2">04266d2</a>)</li>
 </ul>
-<p><a name="0.13.12"></a></p>
-<h2><small>0.13.12 (2018-03-23)</small></h2>
+<p></p>
+<h2>0.13.12 (2018-03-23)</h2>
 <ul>
 <li>release version 0.13.12 (<a href="https://github.com/entrecode/ec.sdk/commit/6898f1c">6898f1c</a>)</li>
 <li>fix: getting schema in PublicAPI of newly created model (<a href="https://github.com/entrecode/ec.sdk/commit/f42be81">f42be81</a>)</li>
@@ -36705,40 +36594,40 @@ api.setToken(jwt);</pre>
 <li>refactor: applied markdownlint (<a href="https://github.com/entrecode/ec.sdk/commit/ee2c38b">ee2c38b</a>)</li>
 <li>refactor: removed dummy relation, only add in tests (<a href="https://github.com/entrecode/ec.sdk/commit/e31e668">e31e668</a>)</li>
 </ul>
-<p><a name="0.13.11"></a></p>
-<h2><small>0.13.11 (2018-03-23)</small></h2>
+<p></p>
+<h2>0.13.11 (2018-03-23)</h2>
 <ul>
 <li>fixed regex in recognizing new assets (<a href="https://github.com/entrecode/ec.sdk/commit/c6ad916">c6ad916</a>)</li>
 <li>release version 0.13.11 (<a href="https://github.com/entrecode/ec.sdk/commit/e1da441">e1da441</a>)</li>
 </ul>
-<p><a name="0.13.10"></a></p>
-<h2><small>0.13.10 (2018-03-22)</small></h2>
+<p></p>
+<h2>0.13.10 (2018-03-22)</h2>
 <ul>
 <li>release version 0.13.10 (<a href="https://github.com/entrecode/ec.sdk/commit/7625c90">7625c90</a>)</li>
 <li>fix: DMAssetResource import (<a href="https://github.com/entrecode/ec.sdk/commit/88decbf">88decbf</a>)</li>
 <li>feat: dm-assets in assets getter for EntryResource (<a href="https://github.com/entrecode/ec.sdk/commit/614e492">614e492</a>)</li>
 </ul>
-<p><a name="0.13.9"></a></p>
-<h2><small>0.13.9 (2018-03-22)</small></h2>
+<p></p>
+<h2>0.13.9 (2018-03-22)</h2>
 <ul>
 <li>release version 0.13.9 (<a href="https://github.com/entrecode/ec.sdk/commit/43be39d">43be39d</a>)</li>
 <li>fix: options in createDmAsset must be string (<a href="https://github.com/entrecode/ec.sdk/commit/2390de8">2390de8</a>)</li>
 </ul>
-<p><a name="0.13.8"></a></p>
-<h2><small>0.13.8 (2018-03-22)</small></h2>
+<p></p>
+<h2>0.13.8 (2018-03-22)</h2>
 <ul>
 <li>release version 0.13.8 (<a href="https://github.com/entrecode/ec.sdk/commit/83587df">83587df</a>)</li>
 <li>feat: options in createDmAssets (<a href="https://github.com/entrecode/ec.sdk/commit/34a85f6">34a85f6</a>)</li>
 <li>chore: new package-lock (<a href="https://github.com/entrecode/ec.sdk/commit/e64031f">e64031f</a>)</li>
 </ul>
-<p><a name="0.13.7"></a></p>
-<h2><small>0.13.7 (2018-03-21)</small></h2>
+<p></p>
+<h2>0.13.7 (2018-03-21)</h2>
 <ul>
 <li>release version 0.13.7 (<a href="https://github.com/entrecode/ec.sdk/commit/ddc74f8">ddc74f8</a>)</li>
 <li>fix: travis build, missing --exit mocha option for coverage (<a href="https://github.com/entrecode/ec.sdk/commit/40e7db0">40e7db0</a>)</li>
 </ul>
-<p><a name="0.13.6"></a></p>
-<h2><small>0.13.6 (2018-03-21)</small></h2>
+<p></p>
+<h2>0.13.6 (2018-03-21)</h2>
 <ul>
 <li>release version 0.13.6 (<a href="https://github.com/entrecode/ec.sdk/commit/32124fc">32124fc</a>)</li>
 <li>fix: destructuring of getUrl response in newHistory (<a href="https://github.com/entrecode/ec.sdk/commit/d121bd4">d121bd4</a>)</li>
@@ -36748,14 +36637,14 @@ api.setToken(jwt);</pre>
 <li>chore: add --exit flag to test scripts (<a href="https://github.com/entrecode/ec.sdk/commit/e4d22ca">e4d22ca</a>)</li>
 <li>feat: create History from DataManager Source (<a href="https://github.com/entrecode/ec.sdk/commit/3f1793e">3f1793e</a>)</li>
 </ul>
-<p><a name="0.13.5"></a></p>
-<h2><small>0.13.5 (2018-03-12)</small></h2>
+<p></p>
+<h2>0.13.5 (2018-03-12)</h2>
 <ul>
 <li>release version 0.13.5 (<a href="https://github.com/entrecode/ec.sdk/commit/4070efe">4070efe</a>)</li>
 <li>fix: renamed resource client to dmClients in DataManagerResource (<a href="https://github.com/entrecode/ec.sdk/commit/af9bfac">af9bfac</a>)</li>
 </ul>
-<p><a name="0.13.4"></a></p>
-<h2><small>0.13.4 (2018-03-08)</small></h2>
+<p></p>
+<h2>0.13.4 (2018-03-08)</h2>
 <ul>
 <li>release version 0.13.4 (<a href="https://github.com/entrecode/ec.sdk/commit/4331b16">4331b16</a>)</li>
 <li>feat: create API key in Accounts Connector (<a href="https://github.com/entrecode/ec.sdk/commit/624c1d3">624c1d3</a>)</li>
@@ -36769,26 +36658,26 @@ api.setToken(jwt);</pre>
 <li>fix: renamed DataManagerResource accounts relation to dmAccounts SDK-8 (<a href="https://github.com/entrecode/ec.sdk/commit/3db5a6e">3db5a6e</a>)</li>
 <li>fix: throw proper error when using invalid model name SDK-18 (<a href="https://github.com/entrecode/ec.sdk/commit/5e61fa9">5e61fa9</a>)</li>
 </ul>
-<p><a name="0.13.3"></a></p>
-<h2><small>0.13.3 (2018-03-07)</small></h2>
+<p></p>
+<h2>0.13.3 (2018-03-07)</h2>
 <ul>
 <li>release version 0.13.3 (<a href="https://github.com/entrecode/ec.sdk/commit/87561eb">87561eb</a>)</li>
 <li>feat: PublicAPI#getDataManagerResource to obtain a DataManagerResource for this PublicAPI (<a href="https://github.com/entrecode/ec.sdk/commit/647caa4">647caa4</a>)</li>
 </ul>
-<p><a name="0.13.2"></a></p>
-<h2><small>0.13.2 (2018-03-06)</small></h2>
+<p></p>
+<h2>0.13.2 (2018-03-06)</h2>
 <ul>
 <li>release version 0.13.2 (<a href="https://github.com/entrecode/ec.sdk/commit/2359424">2359424</a>)</li>
 <li>fix: typo for datamanager export relation (<a href="https://github.com/entrecode/ec.sdk/commit/b4ae143">b4ae143</a>)</li>
 </ul>
-<p><a name="0.13.1"></a></p>
-<h2><small>0.13.1 (2018-03-05)</small></h2>
+<p></p>
+<h2>0.13.1 (2018-03-05)</h2>
 <ul>
 <li>release version 0.13.1 (<a href="https://github.com/entrecode/ec.sdk/commit/f22ec8a">f22ec8a</a>)</li>
 <li>fix: adds model config (<a href="https://github.com/entrecode/ec.sdk/commit/5faa70b">5faa70b</a>)</li>
 <li>doc: fixed filter example in DataManagerResource#accountList (<a href="https://github.com/entrecode/ec.sdk/commit/5b894f7">5b894f7</a>)</li>
 </ul>
-<p><a name="0.13.0"></a></p>
+<p></p>
 <h2>0.13.0 (2018-02-15)</h2>
 <ul>
 <li>release version 0.13.0 (<a href="https://github.com/entrecode/ec.sdk/commit/2f05f98">2f05f98</a>)</li>
@@ -36807,58 +36696,49 @@ api.setToken(jwt);</pre>
 <li>Should not be a breaking change. But better save than sorry. ;-)</li>
 </ul>
 <p>Before:</p>
-<pre class='hljs'><span class="hljs-comment">// this will share the token with same shortID API Connectors</span>
-<span class="hljs-keyword">const</span> api = <span class="hljs-keyword">new</span> PublicAPI(shortID, <span class="hljs-string">&#x27;live&#x27;</span>);
-<span class="hljs-comment">// this will share the token with all API Connectors</span>
-<span class="hljs-keyword">const</span> api = <span class="hljs-keyword">new</span> PublicAPI(shortID, <span class="hljs-string">&#x27;live&#x27;</span>, <span class="hljs-literal">true</span>);</pre>
 <p>After:</p>
-<pre class='hljs'><span class="hljs-comment">// new optional syntax, will not share token with anyone (and will not save as cookie)</span>
-<span class="hljs-keyword">const</span> api = <span class="hljs-keyword">new</span> PublicAPI(shortID, {
-  <span class="hljs-attr">environment</span>: <span class="hljs-string">&#x27;live&#x27;</span>,
-  <span class="hljs-attr">noCookie</span>: <span class="hljs-literal">true</span>,
-});</pre>
-<p><a name="0.12.15"></a></p>
-<h2><small>0.12.15 (2018-02-02)</small></h2>
+<p></p>
+<h2>0.12.15 (2018-02-02)</h2>
 <ul>
 <li>release version 0.12.15 (<a href="https://github.com/entrecode/ec.sdk/commit/c3d21a6">c3d21a6</a>)</li>
 <li>fix: create relation with additional template param (<a href="https://github.com/entrecode/ec.sdk/commit/f888b2e">f888b2e</a>)</li>
 <li>fix: typo in createRelation of asset groups (<a href="https://github.com/entrecode/ec.sdk/commit/b1ac01f">b1ac01f</a>)</li>
 </ul>
-<p><a name="0.12.14"></a></p>
-<h2><small>0.12.14 (2018-02-02)</small></h2>
+<p></p>
+<h2>0.12.14 (2018-02-02)</h2>
 <ul>
 <li>fixed client resource name (<a href="https://github.com/entrecode/ec.sdk/commit/b630c6e">b630c6e</a>)</li>
 <li>fixed datasource and group links (<a href="https://github.com/entrecode/ec.sdk/commit/a8b9cc7">a8b9cc7</a>)</li>
 <li>release version 0.12.14 (<a href="https://github.com/entrecode/ec.sdk/commit/b978a99">b978a99</a>)</li>
 <li>fix: getAllPermissions when user has no groups (<a href="https://github.com/entrecode/ec.sdk/commit/fa69f80">fa69f80</a>)</li>
 </ul>
-<p><a name="0.12.13"></a></p>
-<h2><small>0.12.13 (2018-02-02)</small></h2>
+<p></p>
+<h2>0.12.13 (2018-02-02)</h2>
 <ul>
 <li>release version 0.12.13 (<a href="https://github.com/entrecode/ec.sdk/commit/9d5381e">9d5381e</a>)</li>
 <li>chore: package update (<a href="https://github.com/entrecode/ec.sdk/commit/22d9a43">22d9a43</a>)</li>
 <li>fix: added additionalTemplateParam to client and role (<a href="https://github.com/entrecode/ec.sdk/commit/c4363a8">c4363a8</a>)</li>
 </ul>
-<p><a name="0.12.12"></a></p>
-<h2><small>0.12.12 (2018-02-01)</small></h2>
+<p></p>
+<h2>0.12.12 (2018-02-01)</h2>
 <ul>
 <li>release version 0.12.12 (<a href="https://github.com/entrecode/ec.sdk/commit/455503d">455503d</a>)</li>
 <li>feat: safePut for EntryResources (<a href="https://github.com/entrecode/ec.sdk/commit/c05d060">c05d060</a>)</li>
 <li>fix: reset deprecation warning in sinon (<a href="https://github.com/entrecode/ec.sdk/commit/bc9577b">bc9577b</a>)</li>
 </ul>
-<p><a name="0.12.11"></a></p>
+<p></p>
 <h2>0.12.11 (2018-01-22)</h2>
 <ul>
 <li>release version 0.12.11 (<a href="https://github.com/entrecode/ec.sdk/commit/455e535">455e535</a>)</li>
 <li>fix: destructuring of response in upload of AssetsNeue (<a href="https://github.com/entrecode/ec.sdk/commit/eb1ae0f">eb1ae0f</a>)</li>
 </ul>
-<p><a name="0.12.10"></a></p>
+<p></p>
 <h2>0.12.10 (2018-01-19)</h2>
 <ul>
 <li>release version 0.12.10 (<a href="https://github.com/entrecode/ec.sdk/commit/d057d9a">d057d9a</a>)</li>
 <li>fix: additional template param handling on undefined options (<a href="https://github.com/entrecode/ec.sdk/commit/726ad97">726ad97</a>)</li>
 </ul>
-<p><a name="0.12.9"></a></p>
+<p></p>
 <h2>0.12.9 (2018-01-19)</h2>
 <ul>
 <li>release version 0.12.9 (<a href="https://github.com/entrecode/ec.sdk/commit/c7f3d2c">c7f3d2c</a>)</li>
@@ -36869,45 +36749,45 @@ api.setToken(jwt);</pre>
 <li>doc: fixed typo in doc (<a href="https://github.com/entrecode/ec.sdk/commit/d87c3b7">d87c3b7</a>)</li>
 <li>fix: prefilled dataManagerID for DataManagerResource#assetList (<a href="https://github.com/entrecode/ec.sdk/commit/cff5c8a">cff5c8a</a>)</li>
 </ul>
-<p><a name="0.12.8"></a></p>
+<p></p>
 <h2>0.12.8 (2018-01-15)</h2>
 <ul>
 <li>release version 0.12.8 (<a href="https://github.com/entrecode/ec.sdk/commit/ecd92a5">ecd92a5</a>)</li>
 <li>feat: also handle accepted answerf (ModelResource#purge) (<a href="https://github.com/entrecode/ec.sdk/commit/d4bfca5">d4bfca5</a>)</li>
 </ul>
-<p><a name="0.12.7"></a></p>
+<p></p>
 <h2>0.12.7 (2018-01-12)</h2>
 <ul>
 <li>release version 0.12.7 (<a href="https://github.com/entrecode/ec.sdk/commit/8da7310">8da7310</a>)</li>
 <li>fix: additionalTemplateParam for DataManagerResource#resourceList('accounts'); (<a href="https://github.com/entrecode/ec.sdk/commit/7cc4410">7cc4410</a>)</li>
 </ul>
-<p><a name="0.12.6"></a></p>
+<p></p>
 <h2>0.12.6 (2018-01-12)</h2>
 <ul>
 <li>release version 0.12.6 (<a href="https://github.com/entrecode/ec.sdk/commit/b606b03">b606b03</a>)</li>
 <li>fix: additional template properties for DataManagerResource#accountList (<a href="https://github.com/entrecode/ec.sdk/commit/3bb2d0f">3bb2d0f</a>)</li>
 <li>chore(package): update browserify to version 15.0.0 (<a href="https://github.com/entrecode/ec.sdk/commit/bd956c3">bd956c3</a>)</li>
 </ul>
-<p><a name="0.12.5"></a></p>
+<p></p>
 <h2>0.12.5 (2018-01-12)</h2>
 <ul>
 <li>release version 0.12.5 (<a href="https://github.com/entrecode/ec.sdk/commit/807288a">807288a</a>)</li>
 <li>feat: model purge (<a href="https://github.com/entrecode/ec.sdk/commit/67c77ea">67c77ea</a>)</li>
 </ul>
-<p><a name="0.12.4"></a></p>
+<p></p>
 <h2>0.12.4 (2018-01-04)</h2>
 <ul>
 <li>release version 0.12.4 (<a href="https://github.com/entrecode/ec.sdk/commit/a834a40">a834a40</a>)</li>
 <li>fix: handle 204 creation on entries and assets neue CMS-3030 (<a href="https://github.com/entrecode/ec.sdk/commit/22f4c0c">22f4c0c</a>)</li>
 </ul>
-<p><a name="0.12.3"></a></p>
+<p></p>
 <h2>0.12.3 (2017-12-21)</h2>
 <ul>
 <li>release version 0.12.3 (<a href="https://github.com/entrecode/ec.sdk/commit/eab54b5">eab54b5</a>)</li>
 <li>refactor: dataManagerID in DataManager API Connector (<a href="https://github.com/entrecode/ec.sdk/commit/f585af7">f585af7</a>)</li>
 <li>refactor: improved regex for validating query params from template (<a href="https://github.com/entrecode/ec.sdk/commit/516ac57">516ac57</a>)</li>
 </ul>
-<p><a name="0.12.2"></a></p>
+<p></p>
 <h2>0.12.2 (2017-12-08)</h2>
 <ul>
 <li>release version 0.12.2 (<a href="https://github.com/entrecode/ec.sdk/commit/f4d5ae3">f4d5ae3</a>)</li>
@@ -36916,19 +36796,19 @@ api.setToken(jwt);</pre>
 <li>fix: use list-buster to create a list in PlatformResource#loadTargets() CMS-3018 (<a href="https://github.com/entrecode/ec.sdk/commit/58159b7">58159b7</a>)</li>
 <li>test: test for fields vs. unique vs. save bug, cannot reproduce :-( CMS-2994 (<a href="https://github.com/entrecode/ec.sdk/commit/292c07b">292c07b</a>)</li>
 </ul>
-<p><a name="0.12.1"></a></p>
+<p></p>
 <h2>0.12.1 (2017-11-30)</h2>
 <ul>
 <li>release version 0.12.1 (<a href="https://github.com/entrecode/ec.sdk/commit/debe2d5">debe2d5</a>)</li>
 <li>fix: enumerable all the things (<a href="https://github.com/entrecode/ec.sdk/commit/0edd58b">0edd58b</a>)</li>
 </ul>
-<p><a name="0.12.0"></a></p>
+<p></p>
 <h1>0.12.0 (2017-11-30)</h1>
 <ul>
 <li>release version 0.12.0 (<a href="https://github.com/entrecode/ec.sdk/commit/e2d1fa3">e2d1fa3</a>)</li>
 <li>feat: ListResource#find and ListResource#filter. CMS-3002 (<a href="https://github.com/entrecode/ec.sdk/commit/3286415">3286415</a>)</li>
 </ul>
-<p><a name="0.11.5"></a></p>
+<p></p>
 <h2>0.11.5 (2017-11-28)</h2>
 <ul>
 <li>release version 0.11.5 (<a href="https://github.com/entrecode/ec.sdk/commit/55e8509">55e8509</a>)</li>
@@ -36936,30 +36816,30 @@ api.setToken(jwt);</pre>
 <li>feat: initialize PublicAPI with url similar to old sdk CMS-3009 (<a href="https://github.com/entrecode/ec.sdk/commit/0100a72">0100a72</a>)</li>
 <li>docs: sort parameter for asset neue relations (<a href="https://github.com/entrecode/ec.sdk/commit/5a8d152">5a8d152</a>)</li>
 </ul>
-<p><a name="0.11.4"></a></p>
+<p></p>
 <h2>0.11.4 (2017-11-28)</h2>
 <ul>
 <li>release version 0.11.4 (<a href="https://github.com/entrecode/ec.sdk/commit/573cd6e">573cd6e</a>)</li>
 <li>refactor: reworked all resources to use interface/class with defineProperties, should make all nice  (<a href="https://github.com/entrecode/ec.sdk/commit/0b4187a">0b4187a</a>)</li>
 </ul>
-<p><a name="0.11.3"></a></p>
+<p></p>
 <h2>0.11.3 (2017-11-27)</h2>
 <ul>
 <li>release version 0.11.3 (<a href="https://github.com/entrecode/ec.sdk/commit/98d8950">98d8950</a>)</li>
 <li>fix: remove power-assert warnings from webpack builds (<a href="https://github.com/entrecode/ec.sdk/commit/c825822">c825822</a>)</li>
 </ul>
-<p><a name="0.11.2"></a></p>
+<p></p>
 <h2>0.11.2 (2017-11-21)</h2>
 <ul>
 <li>release version 0.11.2 (<a href="https://github.com/entrecode/ec.sdk/commit/c218c62">c218c62</a>)</li>
 <li>feat: make list resources stringifyable, adds items property (<a href="https://github.com/entrecode/ec.sdk/commit/ad40192">ad40192</a>)</li>
 </ul>
-<p><a name="0.11.1"></a></p>
+<p></p>
 <h2>0.11.1 (2017-11-15)</h2>
 <ul>
 <li>release version 0.11.1 (<a href="https://github.com/entrecode/ec.sdk/commit/8a0ac32">8a0ac32</a>)</li>
 </ul>
-<p><a name="0.11.0"></a></p>
+<p></p>
 <h1>0.11.0 (2017-11-15)</h1>
 <ul>
 <li>release version 0.11.0 (<a href="https://github.com/entrecode/ec.sdk/commit/4bd537b">4bd537b</a>)</li>
@@ -36971,10 +36851,8 @@ api.setToken(jwt);</pre>
 <li>import for typescript projects changed from <code>src</code> to <code>lib</code>.</li>
 </ul>
 <p>before:</p>
-<pre class='hljs'><span class="hljs-keyword">import</span> { EntryResource } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;ec.sdk/src/resources/publicAPI/EntryResource&#x27;</span>;</pre>
 <p>after:</p>
-<pre class='hljs'><span class="hljs-keyword">import</span> { EntryResource } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;ec.sdk/lib/resources/publicAPI/EntryResource&#x27;</span>;</pre>
-<p><a name="0.10.2"></a></p>
+<p></p>
 <h2>0.10.2 (2017-11-15)</h2>
 <ul>
 <li>release version 0.10.2 (<a href="https://github.com/entrecode/ec.sdk/commit/3633aea">3633aea</a>)</li>
@@ -36983,13 +36861,13 @@ api.setToken(jwt);</pre>
 <li>tests: tests for filterOptions not an object, response not a json (<a href="https://github.com/entrecode/ec.sdk/commit/957abe4">957abe4</a>)</li>
 <li>refactor: reduce duplicate code in helper (<a href="https://github.com/entrecode/ec.sdk/commit/cf5d4f2">cf5d4f2</a>)</li>
 </ul>
-<p><a name="0.10.1"></a></p>
+<p></p>
 <h2>0.10.1 (2017-11-10)</h2>
 <ul>
 <li>release version 0.10.1 (<a href="https://github.com/entrecode/ec.sdk/commit/61fd0f4">61fd0f4</a>)</li>
 <li>feat: handle weird responses which are not a json (<a href="https://github.com/entrecode/ec.sdk/commit/33567eb">33567eb</a>)</li>
 </ul>
-<p><a name="0.10.0"></a></p>
+<p></p>
 <h1>0.10.0 (2017-11-09)</h1>
 <ul>
 <li>release version 0.10.0 (<a href="https://github.com/entrecode/ec.sdk/commit/cd724b9">cd724b9</a>)</li>
@@ -37007,14 +36885,14 @@ api.setToken(jwt);</pre>
 <li>feat: DMAssetResource and AssetGroupResource CMS-2971 CMS-2972 (<a href="https://github.com/entrecode/ec.sdk/commit/292f74c">292f74c</a>)</li>
 <li>feat: file helper for DMAssetResource (<a href="https://github.com/entrecode/ec.sdk/commit/1e804ce">1e804ce</a>)</li>
 </ul>
-<p><a name="0.9.1"></a></p>
+<p></p>
 <h2>0.9.1 (2017-10-30)</h2>
 <ul>
 <li>release version 0.9.1 (<a href="https://github.com/entrecode/ec.sdk/commit/8e9d81d">8e9d81d</a>)</li>
 <li>fix: fixed querystring typings (<a href="https://github.com/entrecode/ec.sdk/commit/2b46291">2b46291</a>)</li>
 <li>chore: patchday (<a href="https://github.com/entrecode/ec.sdk/commit/ecb6186">ecb6186</a>)</li>
 </ul>
-<p><a name="0.9.0"></a></p>
+<p></p>
 <h1>0.9.0 (2017-10-12)</h1>
 <ul>
 <li>release version 0.9.0 (<a href="https://github.com/entrecode/ec.sdk/commit/1f55373">1f55373</a>)</li>
@@ -37042,20 +36920,20 @@ api.setToken(jwt);</pre>
 <li>doc: use a hack to add filter/filterOptions to docs (<a href="https://github.com/entrecode/ec.sdk/commit/db0eb1a">db0eb1a</a>)</li>
 <li>test: fix typo in tests (<a href="https://github.com/entrecode/ec.sdk/commit/8131fb4">8131fb4</a>)</li>
 </ul>
-<p><a name="0.8.9"></a></p>
+<p></p>
 <h2>0.8.9 (2017-09-11)</h2>
 <ul>
 <li>docs: hide private createEntry and createList in docs (<a href="https://github.com/entrecode/ec.sdk/commit/88597d3">88597d3</a>)</li>
 <li>release version 0.8.9 (<a href="https://github.com/entrecode/ec.sdk/commit/8a0be83">8a0be83</a>)</li>
 <li>fix: adds typing for packageJson in helper.ts (<a href="https://github.com/entrecode/ec.sdk/commit/b6a4f39">b6a4f39</a>)</li>
 </ul>
-<p><a name="0.8.8"></a></p>
+<p></p>
 <h2>0.8.8 (2017-09-11)</h2>
 <ul>
 <li>release version 0.8.8 (<a href="https://github.com/entrecode/ec.sdk/commit/5067bef">5067bef</a>)</li>
 <li>fix: define properties even if they are "missing" in EntryResource (<a href="https://github.com/entrecode/ec.sdk/commit/8947b00">8947b00</a>)</li>
 </ul>
-<p><a name="0.8.7"></a></p>
+<p></p>
 <h2>0.8.7 (2017-09-09)</h2>
 <ul>
 <li>add caret to dependecy, update some, tested doc build (<a href="https://github.com/entrecode/ec.sdk/commit/a59ee77">a59ee77</a>)</li>
@@ -37069,19 +36947,19 @@ api.setToken(jwt);</pre>
 <li>chore(package): update documentation to version 5.3.1 (<a href="https://github.com/entrecode/ec.sdk/commit/8cf49eb">8cf49eb</a>)</li>
 <li>doc: fix filter object in PublicAPI example (<a href="https://github.com/entrecode/ec.sdk/commit/1788a73">1788a73</a>)</li>
 </ul>
-<p><a name="0.8.6"></a></p>
+<p></p>
 <h2>0.8.6 (2017-09-08)</h2>
 <ul>
 <li>release version 0.8.6 (<a href="https://github.com/entrecode/ec.sdk/commit/4557528">4557528</a>)</li>
 <li>fix: cookieModifier handling of undefined values (<a href="https://github.com/entrecode/ec.sdk/commit/13c513d">13c513d</a>)</li>
 </ul>
-<p><a name="0.8.5"></a></p>
+<p></p>
 <h2>0.8.5 (2017-09-06)</h2>
 <ul>
 <li>release version 0.8.5 (<a href="https://github.com/entrecode/ec.sdk/commit/3b232f6">3b232f6</a>)</li>
 <li>fix: unexported aliases (<a href="https://github.com/entrecode/ec.sdk/commit/0b91795">0b91795</a>)</li>
 </ul>
-<p><a name="0.8.4"></a></p>
+<p></p>
 <h2>0.8.4 (2017-09-06)</h2>
 <ul>
 <li>release version 0.8.4 (<a href="https://github.com/entrecode/ec.sdk/commit/09aecc4">09aecc4</a>)</li>
@@ -37090,14 +36968,14 @@ api.setToken(jwt);</pre>
 <li>doc: reworked doc introduction and API connectors CMS-2923 (<a href="https://github.com/entrecode/ec.sdk/commit/9493512">9493512</a>)</li>
 <li>feat: getOriginal() for [Public]AssetResources (<a href="https://github.com/entrecode/ec.sdk/commit/3aeb51b">3aeb51b</a>)</li>
 </ul>
-<p><a name="0.8.3"></a></p>
+<p></p>
 <h2>0.8.3 (2017-09-04)</h2>
 <ul>
 <li>release version 0.8.3 (<a href="https://github.com/entrecode/ec.sdk/commit/4258ea0">4258ea0</a>)</li>
 <li>chore: release script back to working version (<a href="https://github.com/entrecode/ec.sdk/commit/675d1a8">675d1a8</a>)</li>
 <li>feat: DataManagerResource#getPublicAPI() for creating a PublicAPI from Data Manager CMS-2933 (<a href="https://github.com/entrecode/ec.sdk/commit/62df352">62df352</a>)</li>
 </ul>
-<p><a name="0.8.2"></a></p>
+<p></p>
 <h2>0.8.2 (2017-09-04)</h2>
 <ul>
 <li>chore: dot reporter for tests (<a href="https://github.com/entrecode/ec.sdk/commit/66b552c">66b552c</a>)</li>
@@ -37111,7 +36989,7 @@ api.setToken(jwt);</pre>
 <li>refactor: moved index into root directory (<a href="https://github.com/entrecode/ec.sdk/commit/5df4f1e">5df4f1e</a>)</li>
 <li>refactor: switch to proper getter/setter CMS-2932 (<a href="https://github.com/entrecode/ec.sdk/commit/ca04bc0">ca04bc0</a>)</li>
 </ul>
-<p><a name="0.8.1"></a></p>
+<p></p>
 <h2>0.8.1 (2017-09-01)</h2>
 <ul>
 <li>refactor: do not export Symbols use Symbol.for(…) (<a href="https://github.com/entrecode/ec.sdk/commit/aef1353">aef1353</a>)</li>
@@ -37122,7 +37000,7 @@ api.setToken(jwt);</pre>
 <li>chore: updated release script for improved conventional changelog version (<a href="https://github.com/entrecode/ec.sdk/commit/45eed87">45eed87</a>)</li>
 <li>release version 0.8.0 (<a href="https://github.com/entrecode/ec.sdk/commit/b72fb46">b72fb46</a>)</li>
 </ul>
-<p><a name="0.8.0"></a></p>
+<p></p>
 <h1>0.8.0 (2017-09-01)</h1>
 <ul>
 <li>refactor: major refactor. switched sources to typescript to get rid of extra typings files. (<a href="https://github.com/entrecode/ec.sdk/commit/cfc9a4e">cfc9a4e</a>)</li>
@@ -37138,14 +37016,8 @@ api.setToken(jwt);</pre>
 <li>All import statements will change with this update. Also note that some bug were fixed during the refactor. Those also include some typos in function names, but only of functions I'm certain nobody is using. :-D</li>
 </ul>
 <p>Before:</p>
-<pre class='hljs'><span class="hljs-comment">// …</span>
-<span class="hljs-keyword">import</span> { AccountResource } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;ec.sdk/typings/resources/accounts/AccountResource&#x27;</span>;
-<span class="hljs-comment">// …</span></pre>
 <p>After:</p>
-<pre class='hljs'><span class="hljs-comment">// …</span>
-<span class="hljs-keyword">import</span> AccountResource <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;ec.sdk/src/resources/accounts/AccountResource&#x27;</span>;
-<span class="hljs-comment">// …</span></pre>
-<p><a name="0.7.1"></a></p>
+<p></p>
 <h2>0.7.1 (2017-08-29)</h2>
 <ul>
 <li>release version 0.7.1 (<a href="https://github.com/entrecode/ec.sdk/commit/91387e4">91387e4</a>)</li>
@@ -37155,7 +37027,7 @@ api.setToken(jwt);</pre>
 <li>chore: changelog fix for breaking change (<a href="https://github.com/entrecode/ec.sdk/commit/527c7d8">527c7d8</a>)</li>
 <li>chore: documentation alphabetically CMS-2922 (<a href="https://github.com/entrecode/ec.sdk/commit/14d29cd">14d29cd</a>)</li>
 </ul>
-<p><a name="0.7.0"></a></p>
+<p></p>
 <h1>0.7.0 (2017-08-29)</h1>
 <ul>
 <li>feat: allow createEntry with direct loading of nested elements CMS-2905 (<a href="https://github.com/entrecode/ec.sdk/commit/b7e0cd6">b7e0cd6</a>)</li>
@@ -37174,43 +37046,27 @@ api.setToken(jwt);</pre>
 <ul>
 <li>
 <p>feat: "Lite" PublicAssetResource for better handling of entries. Used for ec-form.</p>
-<p>  Since version 0.7.0 the ec.sdk supports "Lite" PublicAssetResources. Those are used to better support EntryResources in ec-forms. They are a stripped down versions of PublicAssetResources containing everything but <code>tags</code>. The reason to add this was better support of title handling for linked entries.</p>
-<p>  Migration is straight forward, just add <code>.assetID</code> on all linked entry types when you don't use nested assets.</p>
-<p>  Before:</p>
-<pre class='hljs'>publicAPI.entry(<span class="hljs-string">&#x27;myModel&#x27;</span>, entryID)
-.then(<span class="hljs-function">(<span class="hljs-params">entry</span>) =&gt;</span> {
-  <span class="hljs-built_in">console</span>.log(entry.asset); <span class="hljs-comment">// would print `assetID`</span>
-});</pre>
-<p>  After:</p>
-<pre class='hljs'>publicAPI.entry(<span class="hljs-string">&#x27;myModel&#x27;</span>, entryID)
-.then(<span class="hljs-function">(<span class="hljs-params">entry</span>) =&gt;</span> {
-  <span class="hljs-built_in">console</span>.log(entry.asset.assetID); <span class="hljs-comment">// would print `assetID`</span>
-});</pre>
+<p>Since version 0.7.0 the ec.sdk supports "Lite" PublicAssetResources. Those are used to better support EntryResources in ec-forms. They are a stripped down versions of PublicAssetResources containing everything but <code>tags</code>. The reason to add this was better support of title handling for linked entries.</p>
+<p>Migration is straight forward, just add <code>.assetID</code> on all linked entry types when you don't use nested assets.</p>
+<p>Before:</p>
+<p>After:</p>
 </li>
 <li>
 <p>feat: LiteEntryResource for better handling of entry title. Used for ec-form.</p>
-<p>  Since version 0.7.0 the ec.sdk supports LiteEntryResources. Those are used to better support EntryResources in ec-forms. They are a stripped down versions of EntryResources only containing <code>id</code>, <code>_id</code>, <code>_entryTitle</code>, and <code>getModelTitle()</code>. The reason to add this was better support of title handling for linked entries.</p>
-<p>  Migration is straight forward, just add <code>.id</code> on all linked entry types when you don't use nested entries.</p>
-<p>  Before:</p>
-<pre class='hljs'>publicAPI.entry(<span class="hljs-string">&#x27;myModel&#x27;</span>, entryID)
-.then(<span class="hljs-function">(<span class="hljs-params">entry</span>) =&gt;</span> {
-  <span class="hljs-built_in">console</span>.log(entry.linkedEntry); <span class="hljs-comment">// would print `entryID`</span>
-});</pre>
-<p>  After:</p>
-<pre class='hljs'>publicAPI.entry(<span class="hljs-string">&#x27;myModel&#x27;</span>, entryID)
-.then(<span class="hljs-function">(<span class="hljs-params">entry</span>) =&gt;</span> {
-  <span class="hljs-built_in">console</span>.log(entry.linkedEntry.id); <span class="hljs-comment">// would print `entryID`</span>
-});</pre>
+<p>Since version 0.7.0 the ec.sdk supports LiteEntryResources. Those are used to better support EntryResources in ec-forms. They are a stripped down versions of EntryResources only containing <code>id</code>, <code>_id</code>, <code>_entryTitle</code>, and <code>getModelTitle()</code>. The reason to add this was better support of title handling for linked entries.</p>
+<p>Migration is straight forward, just add <code>.id</code> on all linked entry types when you don't use nested entries.</p>
+<p>Before:</p>
+<p>After:</p>
 </li>
 </ul>
-<p><a name="0.6.13"></a></p>
+<p></p>
 <h2>0.6.13 (2017-08-25)</h2>
 <ul>
 <li>release version 0.6.13 (<a href="https://github.com/entrecode/ec.sdk/commit/393d5fa">393d5fa</a>)</li>
 <li>fix: null value handling in EntryResource CMS-2909, CMS-2910 (<a href="https://github.com/entrecode/ec.sdk/commit/7cc4986">7cc4986</a>)</li>
 <li>fix: token handling for publicAPIs with logged in ecUser (via Session) CMS-2916 (<a href="https://github.com/entrecode/ec.sdk/commit/514d4f0">514d4f0</a>)</li>
 </ul>
-<p><a name="0.6.12"></a></p>
+<p></p>
 <h2>0.6.12 (2017-08-24)</h2>
 <ul>
 <li>release version 0.6.12 (<a href="https://github.com/entrecode/ec.sdk/commit/63ed1a8">63ed1a8</a>)</li>
@@ -37218,7 +37074,7 @@ api.setToken(jwt);</pre>
 <li>chore: updated package-lock (<a href="https://github.com/entrecode/ec.sdk/commit/42c43a9">42c43a9</a>)</li>
 <li>chore(package): update documentation to version 5.2.2 (<a href="https://github.com/entrecode/ec.sdk/commit/7cd070a">7cd070a</a>)</li>
 </ul>
-<p><a name="0.6.11"></a></p>
+<p></p>
 <h2>0.6.11 (2017-08-22)</h2>
 <ul>
 <li>release version 0.6.11 (<a href="https://github.com/entrecode/ec.sdk/commit/8c374e8">8c374e8</a>)</li>
@@ -37233,19 +37089,19 @@ api.setToken(jwt);</pre>
 <li>fix: getter for date time fields returned 1.1.1970 for null dates (<a href="https://github.com/entrecode/ec.sdk/commit/01f4071">01f4071</a>)</li>
 <li>fix: typings fixes for public assets CMS-2906 (<a href="https://github.com/entrecode/ec.sdk/commit/65f59bd">65f59bd</a>)</li>
 </ul>
-<p><a name="0.6.10"></a></p>
+<p></p>
 <h2>0.6.10 (2017-08-09)</h2>
 <ul>
 <li>release version 0.6.10 (<a href="https://github.com/entrecode/ec.sdk/commit/6673a9f">6673a9f</a>)</li>
 <li>feat: template parameter on PublicAPI#getAuthLink (<a href="https://github.com/entrecode/ec.sdk/commit/0ec07c8">0ec07c8</a>)</li>
 </ul>
-<p><a name="0.6.9"></a></p>
+<p></p>
 <h2>0.6.9 (2017-08-09)</h2>
 <ul>
 <li>release version 0.6.9 (<a href="https://github.com/entrecode/ec.sdk/commit/9f44937">9f44937</a>)</li>
 <li>feat: PublicAPI#getAuthLink for auth link retrieval (<a href="https://github.com/entrecode/ec.sdk/commit/3625690">3625690</a>)</li>
 </ul>
-<p><a name="0.6.8"></a></p>
+<p></p>
 <h2>0.6.8 (2017-08-08)</h2>
 <ul>
 <li>release version 0.6.8 (<a href="https://github.com/entrecode/ec.sdk/commit/582af4f">582af4f</a>)</li>
@@ -37253,7 +37109,7 @@ api.setToken(jwt);</pre>
 <li>fix: more types allowed on filter CMS-2882 (<a href="https://github.com/entrecode/ec.sdk/commit/8013ec8">8013ec8</a>)</li>
 <li>chore(package): update documentation to version 5.1.1 (<a href="https://github.com/entrecode/ec.sdk/commit/c390e54">c390e54</a>)</li>
 </ul>
-<p><a name="0.6.7"></a></p>
+<p></p>
 <h2>0.6.7 (2017-08-04)</h2>
 <ul>
 <li>release version 0.6.7 (<a href="https://github.com/entrecode/ec.sdk/commit/331a0fc">331a0fc</a>)</li>
@@ -37263,13 +37119,13 @@ api.setToken(jwt);</pre>
 <li>fix: PublicAPI#createEntry follow link (<a href="https://github.com/entrecode/ec.sdk/commit/5f1d983">5f1d983</a>)</li>
 <li>doc: fixed typo in doc (<a href="https://github.com/entrecode/ec.sdk/commit/1562f34">1562f34</a>)</li>
 </ul>
-<p><a name="0.6.6"></a></p>
+<p></p>
 <h2>0.6.6 (2017-07-21)</h2>
 <ul>
 <li>release version 0.6.6 (<a href="https://github.com/entrecode/ec.sdk/commit/35a01c2">35a01c2</a>)</li>
 <li>chore: adds new npm auth token, hopefully fix deployment builds (<a href="https://github.com/entrecode/ec.sdk/commit/807b7bc">807b7bc</a>)</li>
 </ul>
-<p><a name="0.6.5"></a></p>
+<p></p>
 <h2>0.6.5 (2017-07-21)</h2>
 <ul>
 <li>release version 0.6.5 (<a href="https://github.com/entrecode/ec.sdk/commit/27c544c">27c544c</a>)</li>
@@ -37279,7 +37135,7 @@ api.setToken(jwt);</pre>
 <li>docs(readme): add Greenkeeper badge (<a href="https://github.com/entrecode/ec.sdk/commit/c8033ec">c8033ec</a>)</li>
 <li>chore(package): update dependencies (<a href="https://github.com/entrecode/ec.sdk/commit/518d29b">518d29b</a>)</li>
 </ul>
-<p><a name="0.6.4"></a></p>
+<p></p>
 <h2>0.6.4 (2017-07-20)</h2>
 <ul>
 <li>release version 0.6.4 (<a href="https://github.com/entrecode/ec.sdk/commit/0f92878">0f92878</a>)</li>
@@ -37289,7 +37145,7 @@ api.setToken(jwt);</pre>
 <li>doc: fixed some doc issues (<a href="https://github.com/entrecode/ec.sdk/commit/fb84f5b">fb84f5b</a>)</li>
 <li>chore: new path to node and eslint, editor config (<a href="https://github.com/entrecode/ec.sdk/commit/a9ac9fa">a9ac9fa</a>)</li>
 </ul>
-<p><a name="0.6.3"></a></p>
+<p></p>
 <h2>0.6.3 (2017-07-18)</h2>
 <ul>
 <li>release version 0.6.3 (<a href="https://github.com/entrecode/ec.sdk/commit/03feb29">03feb29</a>)</li>
@@ -37297,7 +37153,7 @@ api.setToken(jwt);</pre>
 <li>fix: schema handling for EntryResource#save() CMS-2844 (<a href="https://github.com/entrecode/ec.sdk/commit/1f9ce99">1f9ce99</a>)</li>
 <li>chore: new editor config (<a href="https://github.com/entrecode/ec.sdk/commit/2caf81c">2caf81c</a>)</li>
 </ul>
-<p><a name="0.6.2"></a></p>
+<p></p>
 <h2>0.6.2 (2017-07-12)</h2>
 <ul>
 <li>release version 0.6.2 (<a href="https://github.com/entrecode/ec.sdk/commit/9bd2ac2">9bd2ac2</a>)</li>
@@ -37305,14 +37161,14 @@ api.setToken(jwt);</pre>
 <li>fix: response handling of superagentGet responses (<a href="https://github.com/entrecode/ec.sdk/commit/41a68e2">41a68e2</a>)</li>
 <li>fix: undefined locale header in file api of publicAPI (<a href="https://github.com/entrecode/ec.sdk/commit/6597b83">6597b83</a>)</li>
 </ul>
-<p><a name="0.6.1"></a></p>
+<p></p>
 <h2>0.6.1 (2017-07-10)</h2>
 <ul>
 <li>release version 0.6.1 (<a href="https://github.com/entrecode/ec.sdk/commit/86983ec">86983ec</a>)</li>
 <li>feat: handle null values on entries/assets fields (<a href="https://github.com/entrecode/ec.sdk/commit/4b984e1">4b984e1</a>)</li>
 <li>chore: add node 8 to travis config (<a href="https://github.com/entrecode/ec.sdk/commit/9533d9a">9533d9a</a>)</li>
 </ul>
-<p><a name="0.6.0"></a></p>
+<p></p>
 <h1>0.6.0 (2017-07-06)</h1>
 <ul>
 <li>release version 0.6.0 (<a href="https://github.com/entrecode/ec.sdk/commit/d730046">d730046</a>)</li>
@@ -37320,19 +37176,19 @@ api.setToken(jwt);</pre>
 <li>feat: tokens separated by Data Manager CMS-2828 (<a href="https://github.com/entrecode/ec.sdk/commit/ad920af">ad920af</a>)</li>
 <li>refactor: more resilient filterOptions typings (<a href="https://github.com/entrecode/ec.sdk/commit/293557d">293557d</a>)</li>
 </ul>
-<p><a name="0.5.7"></a></p>
+<p></p>
 <h2>0.5.7 (2017-07-06)</h2>
 <ul>
 <li>release version 0.5.7 (<a href="https://github.com/entrecode/ec.sdk/commit/97d8c7d">97d8c7d</a>)</li>
 <li>feat: checkPermission with force refresh MYC-628 (<a href="https://github.com/entrecode/ec.sdk/commit/9e7b052">9e7b052</a>)</li>
 </ul>
-<p><a name="0.5.6"></a></p>
+<p></p>
 <h2>0.5.6 (2017-07-04)</h2>
 <ul>
 <li>release version 0.5.6 (<a href="https://github.com/entrecode/ec.sdk/commit/779c54b">779c54b</a>)</li>
 <li>fix: nestedEntry support for null values (<a href="https://github.com/entrecode/ec.sdk/commit/a4c7544">a4c7544</a>)</li>
 </ul>
-<p><a name="0.5.5"></a></p>
+<p></p>
 <h2>0.5.5 (2017-06-29)</h2>
 <ul>
 <li>release version 0.5.5 (<a href="https://github.com/entrecode/ec.sdk/commit/95e2ba4">95e2ba4</a>)</li>
@@ -37343,13 +37199,13 @@ api.setToken(jwt);</pre>
 <li>fix: more resilient detection of traversons continue in Resource (<a href="https://github.com/entrecode/ec.sdk/commit/5dda38e">5dda38e</a>)</li>
 <li>fix: typings in PublicAPI invite property optional in signup (<a href="https://github.com/entrecode/ec.sdk/commit/54cf9b8">54cf9b8</a>)</li>
 </ul>
-<p><a name="0.5.4"></a></p>
+<p></p>
 <h2>0.5.4 (2017-06-21)</h2>
 <ul>
 <li>release version 0.5.4 (<a href="https://github.com/entrecode/ec.sdk/commit/2a1f4e3">2a1f4e3</a>)</li>
 <li>fix: parsing of already parsed resources (<a href="https://github.com/entrecode/ec.sdk/commit/86a1d35">86a1d35</a>)</li>
 </ul>
-<p><a name="0.5.3"></a></p>
+<p></p>
 <h2>0.5.3 (2017-06-21)</h2>
 <ul>
 <li>release version 0.5.3 (<a href="https://github.com/entrecode/ec.sdk/commit/6044b03">6044b03</a>)</li>
@@ -37357,14 +37213,14 @@ api.setToken(jwt);</pre>
 <li>fix: detection of Promblem in superagent helper CMS-2813 (<a href="https://github.com/entrecode/ec.sdk/commit/7dfa398">7dfa398</a>)</li>
 <li>feat: only available properties in EntryResource CMS-2817 (<a href="https://github.com/entrecode/ec.sdk/commit/c1b0959">c1b0959</a>)</li>
 </ul>
-<p><a name="0.5.2"></a></p>
+<p></p>
 <h2>0.5.2 (2017-06-14)</h2>
 <ul>
 <li>release version 0.5.2 (<a href="https://github.com/entrecode/ec.sdk/commit/f5828b1">f5828b1</a>)</li>
 <li>chore: no git hooks in release script (<a href="https://github.com/entrecode/ec.sdk/commit/4285ddf">4285ddf</a>)</li>
 <li>fix: handling of _fields property in filter (<a href="https://github.com/entrecode/ec.sdk/commit/b6df5b6">b6df5b6</a>)</li>
 </ul>
-<p><a name="0.5.1"></a></p>
+<p></p>
 <h2>0.5.1 (2017-06-14)</h2>
 <ul>
 <li>release version 0.5.1 (<a href="https://github.com/entrecode/ec.sdk/commit/05785c3">05785c3</a>)</li>
@@ -37373,7 +37229,7 @@ api.setToken(jwt);</pre>
 <li>feat: preloadSchemas CMS-2815 (<a href="https://github.com/entrecode/ec.sdk/commit/0be491f">0be491f</a>)</li>
 <li>doc: fixes typo in docs (<a href="https://github.com/entrecode/ec.sdk/commit/b2a86c4">b2a86c4</a>)</li>
 </ul>
-<p><a name="0.5.0"></a></p>
+<p></p>
 <h1>0.5.0 (2017-06-06)</h1>
 <ul>
 <li>release version 0.5.0 (<a href="https://github.com/entrecode/ec.sdk/commit/e9c9f2c">e9c9f2c</a>)</li>
@@ -37402,7 +37258,7 @@ api.setToken(jwt);</pre>
 <li>feat: typings for ListResource#map() CMS-2609 (<a href="https://github.com/entrecode/ec.sdk/commit/237dcd9">237dcd9</a>)</li>
 <li>refactor: removed duplicate tests of cliendID (<a href="https://github.com/entrecode/ec.sdk/commit/3cf2fa5">3cf2fa5</a>)</li>
 </ul>
-<p><a name="0.4.0"></a></p>
+<p></p>
 <h1>0.4.0 (2017-05-19)</h1>
 <ul>
 <li>release version 0.4.0 (<a href="https://github.com/entrecode/ec.sdk/commit/5f76e86">5f76e86</a>)</li>
@@ -37442,7 +37298,7 @@ api.setToken(jwt);</pre>
 <li>chore: build before coverage tasks (<a href="https://github.com/entrecode/ec.sdk/commit/f893a15">f893a15</a>)</li>
 <li>chore: fixed typo in changelog (<a href="https://github.com/entrecode/ec.sdk/commit/c86672e">c86672e</a>)</li>
 </ul>
-<p><a name="0.3.0"></a></p>
+<p></p>
 <h1>0.3.0 (2017-05-03)</h1>
 <ul>
 <li>release version 0.3.0 (<a href="https://github.com/entrecode/ec.sdk/commit/c6a1b59">c6a1b59</a>)</li>
@@ -37511,16 +37367,8 @@ api.setToken(jwt);</pre>
 <li>filter objects do not contain <code>filter</code> anymore</li>
 </ul>
 <p>before:</p>
-<pre class='hljs'>{
-  <span class="hljs-attr">filter</span>: {
-    <span class="hljs-attr">property</span>: <span class="hljs-string">&#x27;exactFilter&#x27;</span>
-  }
-}</pre>
 <p>after:</p>
-<pre class='hljs'>{
-  <span class="hljs-attr">property</span>: <span class="hljs-string">&#x27;exactFilter&#x27;</span>
-}</pre>
-<p><a name="0.2.1"></a></p>
+<p></p>
 <h2>0.2.1 (2017-02-21)</h2>
 <ul>
 <li>refactor: renamed list and single functions in DataManager and Accounts (<a href="https://github.com/entrecode/ec.sdk/commit/b502aa4">b502aa4</a>)</li>
@@ -37536,16 +37384,8 @@ api.setToken(jwt);</pre>
 <li>refactor: renamed list and single functions in DataManager and Accounts</li>
 </ul>
 <p>before:</p>
-<pre class='hljs'>dataManager.list(…);
-dataManager.get(…);
-accounts.list(…);
-accounts.get(…);</pre>
 <p>after:</p>
-<pre class='hljs'>dataManager.dataManageList(…);
-dataManager.dataManager(…);
-accounts.accountList(…);
-accounts.account(…);</pre>
-<p><a name="0.2.0"></a></p>
+<p></p>
 <h1>0.2.0 (2017-02-17)</h1>
 <ul>
 <li>release version 0.2.0 (<a href="https://github.com/entrecode/ec.sdk/commit/75ffbd6">75ffbd6</a>)</li>
@@ -37604,7 +37444,7 @@ accounts.account(…);</pre>
 <li>test: missing return statements in chai-as-promise tests (<a href="https://github.com/entrecode/ec.sdk/commit/486b5ec">486b5ec</a>)</li>
 <li>test: throws on undefined permission in GroupResource#addPermission (<a href="https://github.com/entrecode/ec.sdk/commit/c3a9960">c3a9960</a>)</li>
 </ul>
-<p><a name="0.1.5"></a></p>
+<p></p>
 <h2>0.1.5 (2017-02-02)</h2>
 <ul>
 <li>release version 0.1.5 (<a href="https://github.com/entrecode/ec.sdk/commit/c7d994e">c7d994e</a>)</li>
@@ -37634,7 +37474,7 @@ accounts.account(…);</pre>
 <li>chore: updated browserify dependency (<a href="https://github.com/entrecode/ec.sdk/commit/d7ea240">d7ea240</a>)</li>
 <li>test: additional EventEmitter tests (<a href="https://github.com/entrecode/ec.sdk/commit/19703d9">19703d9</a>)</li>
 </ul>
-<p><a name="0.1.4"></a></p>
+<p></p>
 <h2>0.1.4 (2017-01-24)</h2>
 <ul>
 <li>release version 0.1.4 (<a href="https://github.com/entrecode/ec.sdk/commit/7c8f40e">7c8f40e</a>)</li>
@@ -37643,7 +37483,7 @@ accounts.account(…);</pre>
 <li>fix: comma dangle in method call throws in browser (<a href="https://github.com/entrecode/ec.sdk/commit/39c7403">39c7403</a>)</li>
 <li>fix: updated typings for ListResource (<a href="https://github.com/entrecode/ec.sdk/commit/2e07a3c">2e07a3c</a>)</li>
 </ul>
-<p><a name="0.1.3"></a></p>
+<p></p>
 <h2>0.1.3 (2017-01-24)</h2>
 <ul>
 <li>release version 0.1.3 (<a href="https://github.com/entrecode/ec.sdk/commit/ee05477">ee05477</a>)</li>
@@ -37658,7 +37498,7 @@ accounts.account(…);</pre>
 <li>refactor: removed use strict (<a href="https://github.com/entrecode/ec.sdk/commit/79691b7">79691b7</a>)</li>
 <li>refactor: setToken now function of Core instead of constructor option (<a href="https://github.com/entrecode/ec.sdk/commit/dce46dd">dce46dd</a>)</li>
 </ul>
-<p><a name="0.1.2"></a></p>
+<p></p>
 <h2>0.1.2 (2017-01-23)</h2>
 <ul>
 <li>release version 0.1.2 (<a href="https://github.com/entrecode/ec.sdk/commit/9003f46">9003f46</a>)</li>
@@ -37674,7 +37514,7 @@ accounts.account(…);</pre>
 <li>refactor: use traversonWrapper for getUrl (<a href="https://github.com/entrecode/ec.sdk/commit/db9923b">db9923b</a>)</li>
 <li>test: adds test for invalid filter (<a href="https://github.com/entrecode/ec.sdk/commit/7de4d61">7de4d61</a>)</li>
 </ul>
-<p><a name="0.1.1"></a></p>
+<p></p>
 <h2>0.1.1 (2017-01-20)</h2>
 <ul>
 <li>release version 0.1.1 (<a href="https://github.com/entrecode/ec.sdk/commit/7c5d4e8">7c5d4e8</a>)</li>
@@ -37683,7 +37523,7 @@ accounts.account(…);</pre>
 <li>chore: reworked release script for changelog (<a href="https://github.com/entrecode/ec.sdk/commit/b3b89a0">b3b89a0</a>)</li>
 <li>chore: tag with vX.X.X so travis recognises the version (<a href="https://github.com/entrecode/ec.sdk/commit/657a304">657a304</a>)</li>
 </ul>
-<p><a name="0.1.0"></a></p>
+<p></p>
 <h2>0.1.0 (2017-01-19)</h2>
 <ul>
 <li>initial release</li>
