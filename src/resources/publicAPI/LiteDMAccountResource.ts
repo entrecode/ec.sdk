@@ -69,7 +69,7 @@ class LiteDMAccountResource extends Resource {
   }
 
   /**
-   * Saves this {@link DMAccountResource}. Does not work on {@linkt LiteDMAccountResource}s. Those must be
+   * Saves this {@link DMAccountResource}. Does not work on {@link LiteDMAccountResource}s. Those must be
    * resolved first.
    *
    * @param {string?} overwriteSchemaUrl Other schema url to overwrite the one in

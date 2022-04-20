@@ -85,7 +85,7 @@ class LiteEntryResource extends Resource {
   }
 
   /**
-   * Saves this {@link EntryResource}. Does not work on {@linkt LiteEntryResource}s. Those must be
+   * Saves this {@link EntryResource}. Does not work on {@link LiteEntryResource}s. Those must be
    * resolved first.
    *
    * @param {string?} overwriteSchemaUrl Other schema url to overwrite the one in

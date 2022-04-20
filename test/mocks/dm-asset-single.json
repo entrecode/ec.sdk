@@ -20,6 +20,16 @@
   "fileVariants": [
     {
       "url": "https://cdn1.entrecode.de/beefbeef/test1/7mGEhlUXvdxuoCf0vQWtLNQW_700.jpg",
+      "mimetype": "image/jpeg",
+      "size": 26661,
+      "resolution": {
+        "width": 394,
+        "height": 700
+      }
+    },
+    {
+      "url": "https://cdn1.entrecode.de/beefbeef/test1/7mGEhlUXvdxuoCf0vQWtLNQW_700.webp",
+      "mimetype": "image/webp",
       "size": 26661,
       "resolution": {
         "width": 394,
@@ -28,6 +38,7 @@
     },
     {
       "url": "https://cdn1.entrecode.de/beefbeef/test1/7mGEhlUXvdxuoCf0vQWtLNQW_1020.jpg",
+      "mimetype": "image/jpeg",
       "size": 49976,
       "resolution": {
         "width": 574,
@@ -36,6 +47,7 @@
     },
     {
       "url": "https://cdn1.entrecode.de/beefbeef/test1/7mGEhlUXvdxuoCf0vQWtLNQW_350.jpg",
+      "mimetype": "image/jpeg",
       "size": 8892,
       "resolution": {
         "width": 197,
