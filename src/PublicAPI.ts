@@ -163,7 +163,7 @@ export default class PublicAPI extends Core {
     } else {
       const result =
         /^https?:\/\/(datamanager\.(?:(?:cachena|buffalo)\.)?entrecode\.de|localhost:7471)\/api\/([a-f0-9]{8})\/?$/.exec(
-          idOrURL
+          idOrURL,
         );
       if (!result) {
         throw new Error('could not parse idOrURL');
@@ -267,9 +267,6 @@ export default class PublicAPI extends Core {
   }
 
   get shortID() {
-    if (!this[resourceSymbol]) {
-      throw new Error('SDK not initialized, please call `await PublicAPI#resolve()`.');
-    }
     return <string>this[shortIDSymbol];
   }
 
@@ -319,7 +316,7 @@ export default class PublicAPI extends Core {
 
           return result[1];
         })
-        .filter((x) => !!x)
+        .filter((x) => !!x),
     );
   }
 
@@ -793,7 +790,7 @@ export default class PublicAPI extends Core {
       .then((link) =>
         validator.validate(e, `${link.profile}?template=post`).catch((e) => {
           throw new Problem(convertValidationError(e), locale);
-        })
+        }),
       )
       .then(() => this.follow(`${this[shortIDSymbol]}:${model}`))
       .then((request) => {
@@ -854,7 +851,7 @@ export default class PublicAPI extends Core {
 
     const request = await this.follow(`${this[shortIDSymbol]}:${model}`);
     request.withTemplateParameters(
-      optionsToQuery({ id } as filterOptions, this.getLink(`${this[shortIDSymbol]}:${model}`).href, true)
+      optionsToQuery({ id } as filterOptions, this.getLink(`${this[shortIDSymbol]}:${model}`).href, true),
     );
     await this.dispatch(() => del(this[environmentSymbol], request));
   }
@@ -1083,7 +1080,7 @@ export default class PublicAPI extends Core {
       })
       .then((request) => {
         request.withTemplateParameters(
-          optionsToQuery(options as filterOptions, this.getLink(`${this[shortIDSymbol]}:${model}`).href, true)
+          optionsToQuery(options as filterOptions, this.getLink(`${this[shortIDSymbol]}:${model}`).href, true),
         );
         return this.dispatch(() => get(this[environmentSymbol], request));
       })
@@ -1095,7 +1092,7 @@ export default class PublicAPI extends Core {
           }
 
           return createList(res, this[environmentSymbol], traversal, `${this[shortIDSymbol]}:${model}`).then((list) =>
-            list.getFirstItem()
+            list.getFirstItem(),
           );
         }
 
@@ -1141,7 +1138,7 @@ export default class PublicAPI extends Core {
       })
       .then((request) => {
         request.withTemplateParameters(
-          optionsToQuery(options, this.getLink(`${this[shortIDSymbol]}:${model}`).href, true)
+          optionsToQuery(options, this.getLink(`${this[shortIDSymbol]}:${model}`).href, true),
         );
         return this.dispatch(() => get(this[environmentSymbol], request));
       })
@@ -1266,9 +1263,10 @@ export default class PublicAPI extends Core {
    *   AssetNeue.
    * @param {boolean} thumb - true when image should be a thumbnail
    * @param {number} size - the minimum size of the image
+   * @param {imageType} type - the format of the image
    * @returns {Promise<string>} the url string of the requested image
    */
-  getFileVariant(assetID: string, thumb: boolean = false, size?: number) {
+  getFileVariant(assetID: string, thumb: boolean = false, size?: number, type?: imageType) {
     return Promise.resolve()
       .then(() => {
         if (!assetID) {
@@ -1281,6 +1279,9 @@ export default class PublicAPI extends Core {
         params.assetID = assetID;
         if (size) {
           params.size = size;
+        }
+        if (type) {
+          params.type = type;
         }
 
         if (validate.isUUID(assetID, 4)) {
@@ -1305,10 +1306,11 @@ export default class PublicAPI extends Core {
    *
    * @param {string} assetID - the assetID
    * @param {number?} size - the minimum size of the image
+   * @param {imageType} type - the format of the image
    * @returns {Promise<string>} URL to the file
    */
-  getImageThumbUrl(assetID: string, size: number): Promise<string> {
-    return <Promise<string>>this.getFileVariant(assetID, true, size);
+  getImageThumbUrl(assetID: string, size: number, type: imageType): Promise<string> {
+    return <Promise<string>>this.getFileVariant(assetID, true, size, type);
   }
 
   /**
@@ -1316,10 +1318,11 @@ export default class PublicAPI extends Core {
    *
    * @param {string} assetID - the assetID
    * @param {number?} size - the minimum size of the image
+   * @param {imageType} type - the format of the image
    * @returns {Promise<string>} URL to the file
    */
-  getImageUrl(assetID: string, size: number): Promise<string> {
-    return <Promise<string>>this.getFileVariant(assetID, false, size);
+  getImageUrl(assetID: string, size: number, type: imageType): Promise<string> {
+    return <Promise<string>>this.getFileVariant(assetID, false, size, type);
   }
 
   /**
@@ -1365,7 +1368,7 @@ export default class PublicAPI extends Core {
             }
 
             return link;
-          })
+          }),
         );
       })
       .then((link) => {
@@ -1687,7 +1690,7 @@ export default class PublicAPI extends Core {
         this[traversalSymbol] = traversal;
 
         const assetGroups = Object.keys(this[resourceSymbol].allLinks()).filter(
-          (x) => x.indexOf('ec:dm-assets/') !== -1
+          (x) => x.indexOf('ec:dm-assets/') !== -1,
         );
 
         const relations = {
@@ -1741,7 +1744,7 @@ export default class PublicAPI extends Core {
         this[relationsSymbol] = relations;
 
         return this;
-      })
+      }),
     );
   }
 
@@ -2005,6 +2008,12 @@ export type assetOptions = {
   title?: string;
   tags?: Array<string>;
 };
+
+export enum imageType {
+  PNG = 'png',
+  JPEG = 'jpeg',
+  WEBP = 'webp',
+}
 
 /**
  * When creating assets, you can provide some options like fileName and
