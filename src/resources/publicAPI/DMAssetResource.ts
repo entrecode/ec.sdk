@@ -178,42 +178,50 @@ class DMAssetResource extends Resource {
    */
   getFileVariant(size?: number, thumb: boolean = false, type?: imageType): Promise<string> {
     return Promise.resolve().then(async () => {
-      if (!size && !thumb) {
+      let mimeType;
+      switch (type) {
+        case 'jpeg':
+        //case 'jpg': // not allowed in imageType
+          mimeType = 'image/jpeg';
+          break;
+        case 'png':
+          mimeType = 'image/png';
+          break;
+        case 'webp':
+          mimeType = 'image/webp';
+          break;
+        default:
+          mimeType = this.mimetype;
+      }
+
+      const otherTypeRequested = mimeType !== this.mimetype;
+
+      if (!size && !thumb && !otherTypeRequested) {
         return this.file.url;
       }
 
-      if (!thumb && !this.file.resolution) {
+      if (!thumb && !this.file.resolution && !otherTypeRequested) {
         return this.file.url;
       }
 
+      let sizeRequested = size;
       if (!thumb && this.file.resolution) {
         const biggestDimension = Math.max(this.file.resolution.width, this.file.resolution.height);
-        if (!size || biggestDimension <= size) {
+        if (!otherTypeRequested && (!size || biggestDimension <= size)) {
           return this.file.url;
+        }
+        if (!size) {
+          sizeRequested = biggestDimension;
         }
       }
 
       let file;
       if (thumb) {
-        file = this.thumbnails.filter((t) => t.dimension === size);
+        file = this.thumbnails.filter((t) => t.dimension === sizeRequested);
       } else {
-        file = this.fileVariants.filter((v) => Math.max(v.resolution.width, v.resolution.height) === size);
+        file = this.fileVariants.filter((v) => mimeType === v.mimetype && Math.max(v.resolution.width, v.resolution.height) === sizeRequested);
       }
-      if (file.length === 1) {
-        return file[0].url;
-      }
-      if (file.length > 1) {
-        if (type) {
-          const typedFile = file.filter((f) => f.mimetype.includes(type));
-          if (typedFile && typedFile.length === 1) {
-            return typedFile[0].url;
-          }
-        }
-        const sameTypeFile = file.filter((f) => f.mimetype === this.mimetype);
-        if (sameTypeFile && sameTypeFile.length === 1) {
-          return sameTypeFile[0].url;
-        }
-
+      if (file.length > 0) {
         return file[0].url;
       }
 
