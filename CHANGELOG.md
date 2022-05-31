@@ -1,3 +1,10 @@
+## <small>0.23.5 (2022-05-31)</small>
+
+* release version 0.23.5 ([29938d4](https://github.com/entrecode/ec.sdk/commit/29938d4))
+* chore: dependency fix ([8b91853](https://github.com/entrecode/ec.sdk/commit/8b91853))
+
+
+
 ## <small>0.23.4 (2022-05-31)</small>
 
 * release version 0.23.4 ([d72a410](https://github.com/entrecode/ec.sdk/commit/d72a410))
