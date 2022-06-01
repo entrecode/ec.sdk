@@ -287,15 +287,16 @@ class Resource {
    * @returns {Promise<any>} Promise resolving to traverson request builder
    */
   async follow(link: string, templateParams?: any) {
+    let req;
     if (typeof this[traversalSymbol].continue !== 'function' && this.hasLink(link)) {
-      const req = traverson.from(this.getLink(link).href).jsonHal();
-      if (templateParams) {
-        req.withTemplateParameters(templateParams);
-      }
-      return req;
+      req = traverson.from(this.getLink(link).href).jsonHal();
+    } else {
+      req = this.newRequest().follow(link);
     }
-
-    return this.newRequest().follow(link);
+    if (templateParams) {
+      req.withTemplateParameters(templateParams);
+    }
+    return req;
   }
 
   /**

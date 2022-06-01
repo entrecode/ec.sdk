@@ -62,6 +62,7 @@
     }
   ],
   "isUsed": false,
+  "isIncomplete": false,
   "duplicates": 0,
   "_links": {
     "self": {

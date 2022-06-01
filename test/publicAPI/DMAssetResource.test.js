@@ -159,6 +159,7 @@ describe('DMAsset Resource', () => {
     'fileVariants',
     'thumbnails',
     'isUsed',
+    'isIncomplete',
     'duplicates',
     '_links',
   ];

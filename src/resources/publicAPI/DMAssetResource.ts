@@ -14,6 +14,7 @@ interface DMAssetResource {
   file: any;
   fileVariants: Array<any>;
   isUsed: boolean;
+  isIncomplete: boolean;
   mimetype: string;
   modified: Date;
   tags: Array<string | any>;
@@ -42,6 +43,7 @@ interface DMAssetResource {
  * @prop {Array<object>} fileVariants - Array of all other file variants (not thumbs)
  * @prop {Array<object>} thumbnails - Array of all thumbnails
  * @prop {Boolean} isUsed - Whether or not this asses is used in any entry
+ * @prop {Boolean} isIncomplete - Whether or not this asset has unrendered, but required variants
  * @prop {string} mimetype - Mimetype of the assets file
  * @prop {Array<string|object>} tags - Array of tags
  */
@@ -102,6 +104,10 @@ class DMAssetResource extends Resource {
       isUsed: {
         enumerable: true,
         get: () => <Boolean>this.getProperty('isUsed'),
+      },
+      isIncomplete: {
+        enumerable: true,
+        get: () => <Boolean>this.getProperty('isIncomplete'),
       },
       mimetype: {
         enumerable: true,
