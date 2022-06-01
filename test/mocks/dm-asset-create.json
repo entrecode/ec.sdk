@@ -55,6 +55,7 @@
         }
       ],
       "isUsed": false,
+      "isIncomplete": false,
       "duplicates": null,
       "_links": {
         "self": {
