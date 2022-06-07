@@ -1,3 +1,11 @@
+## <small>0.23.7 (2022-06-07)</small>
+
+* release version 0.23.7 ([bc1b956](https://github.com/entrecode/ec.sdk/commit/bc1b956))
+* chore: changed browser field in package.json ([dd18c5b](https://github.com/entrecode/ec.sdk/commit/dd18c5b))
+* chore: update buildBrowser command ([3264fa9](https://github.com/entrecode/ec.sdk/commit/3264fa9))
+
+
+
 ## <small>0.23.5 (2022-05-31)</small>
 
 * release version 0.23.5 ([29938d4](https://github.com/entrecode/ec.sdk/commit/29938d4))

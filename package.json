@@ -1,17 +1,18 @@
 {
   "name": "ec.sdk",
-  "version": "0.23.6",
+  "version": "0.23.7",
   "description": "SDK for ec.api",
   "repository": "entrecode/ec.sdk",
   "author": "Simon Scherzinger <scherzinger@entrecode.de>",
   "license": "ISC",
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
+  "browser": "./dist/ec.sdk.min.js",
   "scripts": {
     "release": "./release.sh $3",
     "build": "npm run buildNode && npm run buildBrowser",
     "buildNode": "tsc",
-    "buildBrowser": "browserify lib/index.js -o dist/ec.sdk.js -s ec --global-transform [ babelify --presets [ es2015 ] ] && uglifyjs dist/ec.sdk.js --compress --mangle  -o dist/ec.sdk.min.js",
+    "buildBrowser": "cp lib/index.js lib/browser.js && browserify lib/browser.js -o dist/ec.sdk.js -s ec --global-transform [ babelify --presets [ es2015 ] ] && uglifyjs dist/ec.sdk.js --compress --mangle  -o dist/ec.sdk.min.js",
     "changelog": "conventional-changelog -i CHANGELOG.md -s",
     "coveralls": "npm run buildNode && istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R dot --exit --recursive && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js",
     "coverage": "npm run buildNode && istanbul cover ./node_modules/mocha/bin/_mocha -- --exit -R dot --recursive && open ./coverage/lcov-report/index.html",
@@ -21,12 +22,6 @@
     "pretestTravis": "npm run build",
     "testTravis": "mocha -R dot --recursive --exit",
     "webpack": "webpack --config webpack.config.js"
-  },
-  "browser": {
-    "crypto": false,
-    "fs": false,
-    "http": false,
-    "https": false
   },
   "dependencies": {
     "@types/halfred": "^2.0.1",
