@@ -22,12 +22,7 @@
     "testTravis": "mocha -R dot --recursive --exit",
     "webpack": "webpack --config webpack.config.js"
   },
-  "browser": {
-    "crypto": false,
-    "fs": false,
-    "http": false,
-    "https": false
-  },
+  "browser": "./dist/ec.sdk.min.js",
   "dependencies": {
     "@types/halfred": "^2.0.1",
     "@types/jwt-decode": "^3.1.0",
