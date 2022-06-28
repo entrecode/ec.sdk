@@ -1320,7 +1320,7 @@ export default class PublicAPI extends Core {
    * @param {imageType?} type - the format of the image
    * @returns {Promise<string>} URL to the file
    */
-  getImageUrl(assetID: string, size: number, type: imageType): Promise<string> {
+  getImageUrl(assetID: string, size: number, type?: imageType): Promise<string> {
     return <Promise<string>>this.getFileVariant(assetID, false, size, type);
   }
 
