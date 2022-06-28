@@ -1,3 +1,10 @@
+## <small>0.23.8 (2022-06-28)</small>
+
+* release version 0.23.8 ([4f3331f](https://github.com/entrecode/ec.sdk/commit/4f3331f))
+* fix: type optional on PublicAPI#getImageUrl ([ef7759b](https://github.com/entrecode/ec.sdk/commit/ef7759b))
+
+
+
 ## <small>0.23.7 (2022-06-07)</small>
 
 * release version 0.23.7 ([bc1b956](https://github.com/entrecode/ec.sdk/commit/bc1b956))
