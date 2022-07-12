@@ -4,8 +4,11 @@ import Resource from '../Resource';
 import TokenList from './TokenList';
 import { environment } from '../../Core';
 import TokenResource from './TokenResource';
+import { tokenResponse } from '../../Accounts';
+import { post } from '../../helper';
 
 const relationsSymbol: any = Symbol.for('relations');
+const environmentSymbol: any = Symbol.for('environment');
 
 interface AccountResource {
   accountID: string;
@@ -221,6 +224,29 @@ class AccountResource extends Resource {
    */
   tokenList(): Promise<TokenList> {
     return <Promise<TokenList>>this.resourceList('token');
+  }
+
+  /**
+   * Create an additional access token {@link tokenResponse} for this account.
+   * Only supported for API Keys.
+   * 
+   * @example
+   * return account.createToken()
+   * .then(({ jwt, accountID, iat, exp}) => { 
+   *   // do something with `jwt` because it is not accessable later
+   * });
+   * 
+   * @returns {Promise<{jwt: string, accountID: string, iat: number, exp: number}>} the created api
+   *   token response.
+   * @throws {Error} if the account is not an API Key
+   */
+  createToken(): Promise<tokenResponse> {
+    if (this.email || this.hasPassword || this.state !== 'active') {
+      throw new Error('Cannot create token for this account. Only API Token Accounts can get an addtional token.');
+    }
+    return this.follow('ec:account/tokens')
+      .then((request) => post(this[environmentSymbol], request))
+      .then(([tokenResponse]) => tokenResponse);
   }
 
   // TODO remove permission
