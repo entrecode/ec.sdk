@@ -1,3 +1,10 @@
+## <small>0.23.9 (2022-07-12)</small>
+
+* release version 0.23.9 ([4cdce9b](https://github.com/entrecode/ec.sdk/commit/4cdce9b))
+* feat: account.createToken() ([b7a71f9](https://github.com/entrecode/ec.sdk/commit/b7a71f9))
+
+
+
 ## <small>0.23.8 (2022-06-28)</small>
 
 * release version 0.23.8 ([4f3331f](https://github.com/entrecode/ec.sdk/commit/4f3331f))
