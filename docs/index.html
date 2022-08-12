@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset='utf-8'>
-  <title>ec.sdk 0.23.9 | Documentation</title>
+  <title>ec.sdk 0.24.0 | Documentation</title>
   <meta name='description' content='SDK for ec.api'>
   <meta name='viewport' content='width=device-width,initial-scale=1'>
   <link href='assets/bass.css' rel='stylesheet'>
@@ -15,7 +15,7 @@
       <div id='split-left' class='overflow-auto fs0 height-viewport-100'>
         <div class='py1 px2'>
           <h3 class='mb0 no-anchor'>ec.sdk</h3>
-          <div class='mb1'><code>0.23.9</code></div>
+          <div class='mb1'><code>0.24.0</code></div>
           <input
             placeholder='Filter'
             id='filter-input'
@@ -18753,6 +18753,20 @@ token response.
           
         </div>
       
+        <div class='space-bottom0'>
+          <span class='code bold'>customAuthDomain</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+          : Domain from wich users in this group receive auth mails
+
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <span class='code bold'>customAuthDomainPriority</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+          : Priority of the custom auth domain
+
+          
+        </div>
+      
     </div>
   
 
@@ -19582,54 +19596,29 @@ Note that email addings are only validated after you called <code>.save()</code>
     <div>
       
         <div class='space-bottom0'>
-          <span class='code bold'>tokenID</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
-          : The id of this token
+          <span class='code bold'>invite</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+          : The invite
 
           
         </div>
       
         <div class='space-bottom0'>
-          <span class='code bold'>device</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
-          : Object containing device information
+          <span class='code bold'>permissions</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">array</a>)</code>
+          : Permissions added to the invite
 
           
         </div>
       
         <div class='space-bottom0'>
-          <span class='code bold'>ipAddress</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
-          : The IP address
+          <span class='code bold'>groups</span> <code class='quiet'>(arry)</code>
+          : Groups added to the invite
 
           
         </div>
       
         <div class='space-bottom0'>
-          <span class='code bold'>ipAddressLocation</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
-          : The location of the IP
-
-          
-        </div>
-      
-        <div class='space-bottom0'>
-          <span class='code bold'>isCurrent</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>)</code>
-          : True if this is the current token
-
-          
-        </div>
-      
-        <div class='space-bottom0'>
-          <span class='code bold'>issued</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Date">Date</a>)</code>
-          : The 
-<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Date">Date</a>
- on which this token was issued
-
-          
-        </div>
-      
-        <div class='space-bottom0'>
-          <span class='code bold'>validUntil</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Date">Date</a>)</code>
-          : The 
-<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Date">Date</a>
- this token is valid until
+          <span class='code bold'>email</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+          : The email address of the invite
 
           
         </div>
