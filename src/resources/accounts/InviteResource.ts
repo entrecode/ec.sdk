@@ -12,14 +12,11 @@ interface InviteResource {
  *
  * @class
  *
- * @prop {string}   tokenID             - The id of this token
+ * @prop {string} invite      - The invite
  *
- * @prop {object}   device              - Object containing device information
- * @prop {string}   ipAddress           - The IP address
- * @prop {string}   ipAddressLocation   - The location of the IP
- * @prop {boolean}  isCurrent           - True if this is the current token
- * @prop {Date}     issued              - The {@link Date} on which this token was issued
- * @prop {Date}     validUntil          - The {@link Date} this token is valid until
+ * @prop {array}  permissions - Permissions added to the invite
+ * @prop {arry}   groups      - Groups added to the invite
+ * @prop {string} email       - The email address of the invite
  */
 class InviteResource extends Resource {
   /**
@@ -47,6 +44,11 @@ class InviteResource extends Resource {
         enumerable: true,
         get: () => <Array<any>>this.getProperty('groups'),
         set: (value: Array<any>) => this.setProperty('groups', value),
+      },
+      email: {
+        enumerable: true,
+        get: () => <string>this.getProperty('email'),
+        set: (value: string) => this.setProperty('email', value),
       },
     });
     this.countProperties();

@@ -1,3 +1,16 @@
+## 0.24.0 (2022-08-12)
+
+* release version 0.24.0 ([ab23c1c](https://github.com/entrecode/ec.sdk/commit/ab23c1c))
+* feat: add customAuthDomain to GroupResource ([155b64f](https://github.com/entrecode/ec.sdk/commit/155b64f))
+* feat: Adds email property to InviteRessource ([71f0807](https://github.com/entrecode/ec.sdk/commit/71f0807))
+
+
+### BREAKING CHANGE
+
+* Adds the new customAuthDomain and customAuthDomainProperty to GroupResource
+* Adds the new email property to InviteRessource
+
+
 ## <small>0.23.9 (2022-07-12)</small>
 
 * release version 0.23.9 ([4cdce9b](https://github.com/entrecode/ec.sdk/commit/4cdce9b))
