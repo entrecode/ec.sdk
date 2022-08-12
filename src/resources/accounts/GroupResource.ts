@@ -17,9 +17,11 @@ interface GroupResource {
  *
  * @class
  *
- * @prop {string}         groupID     - The id of the group
- * @prop {string}         name        - The group name
- * @prop {Array<string>}  permissions - Array of permissions
+ * @prop {string}         groupID                  - The id of the group
+ * @prop {string}         name                     - The group name
+ * @prop {Array<string>}  permissions              - Array of permissions
+ * @prop {string}         customAuthDomain         - Domain from wich users in this group receive auth mails
+ * @prop {string}         customAuthDomainPriority - Priority of the custom auth domain
  */
 class GroupResource extends Resource {
   /**
@@ -57,6 +59,16 @@ class GroupResource extends Resource {
           this.setAccounts(accounts);
           return accounts;
         },
+      },
+      customAuthDomain: {
+        enumerable: true,
+        get: () => <string>this.getProperty('customAuthDomain'),
+        set: (value: string) => this.setProperty('customAuthDomain', value),
+      },
+      customAuthDomainPriority: {
+        enumerable: true,
+        get: () => <string>this.getProperty('customAuthDomainPriority'),
+        set: (value: string) => this.setProperty('customAuthDomainPriority', value),
       },
     });
     this.countProperties();
@@ -135,7 +147,7 @@ class GroupResource extends Resource {
 
   /**
    * Add an account to this group.
-   * You can add by `accountID` or by `email`. 
+   * You can add by `accountID` or by `email`.
    * Note that email addings are only validated after you called `.save()` on your group.
    *
    * @param {string|{accountID: string}} account Account which should be added (email address, accountID or account object)
@@ -165,7 +177,7 @@ class GroupResource extends Resource {
 
   /**
    * Replace all accounts in this GroupResource with a new array.
-   * You can add by `accountID` or by `email`. 
+   * You can add by `accountID` or by `email`.
    * Note that email addings are only validated after you called `.save()` on your group.
    *
    * @param accounts The array of accounts you want to contain in this group.
