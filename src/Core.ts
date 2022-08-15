@@ -266,9 +266,9 @@ export default class Core {
   /**
    * `Abstract interface` for PublicAPI#doRefreshToken. Exists until Accountserver has token refreshal of its own.
    *
-   * @returns {{access_token: string, refresh_token: string}} Returns the new token response on successful refresh
+   * @returns {{access_token: string, refresh_token?: string, token_type: string, expires_in: number}} Returns the new token response on successful refresh
    */
-  async doRefreshToken(): Promise<{ access_token: string; refresh_token: string } | undefined> {
+  async doRefreshToken(): Promise<{ access_token: string; refresh_token?: string; token_type: string; expires_in: number } | undefined> {
     throw new Error('only supported on PublicAPI');
   }
 

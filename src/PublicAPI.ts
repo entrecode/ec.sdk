@@ -458,7 +458,7 @@ export default class PublicAPI extends Core {
    * Programatically complete a signup with a single use validationToken, mostly used for special register flows using legacy users or magic link login.
    *
    * @param {{validationToken: string, useragent?: string ip?: string, password?: string, pending?: boolean}} body Request body containing configuration options.
-   * @returns {Promise<{access_token: string, refresh_token: string}>} Promise resolving to the issued token
+   * @returns {Promise<{access_token: string, refresh_token?: string, token_type: string, expires_in: number}>} Promise resolving to the issued token
    */
   async configurableSignupEdit(body: {
     validationToken: string;
@@ -467,7 +467,7 @@ export default class PublicAPI extends Core {
     password?: string;
     pending?: boolean;
     clientID?: string;
-  }): Promise<{ access_token: string; refresh_token: string }> {
+  }): Promise<{ access_token: string; refresh_token?: string; token_type: string; expires_in: number }> {
     if (!body || typeof body !== 'object') {
       throw new Error('body must be defined');
     }
@@ -960,9 +960,9 @@ export default class PublicAPI extends Core {
    * refreshal PublicAPI will emmit the event `refresh`, if it failes it will emmit `refreshError`. You
    * MUST handle these events.
    *
-   * @returns {{access_token: string, refresh_token: string}} Returns the new token response on successful refresh
+   * @returns {{access_token: string, refresh_token?: string, token_type: string, expires_in: number}} Returns the new token response on successful refresh
    */
-  doRefreshToken(): Promise<{ access_token: string; refresh_token: string }> {
+  doRefreshToken(): Promise<{ access_token: string; refresh_token?: string; token_type: string, expires_in: number }> {
     if (!this[refreshRequestSymbol]) {
       this[refreshRequestSymbol] = Promise.resolve().then(async () => {
         if (!this[tokenStoreSymbol].getClientID()) {
@@ -1409,9 +1409,9 @@ export default class PublicAPI extends Core {
    *
    * @param {string} email email address of the user
    * @param {string} password password of the user
-   * @returns {Promise<{access_token: string, refresh_token: string}>} Promise resolving to the issued token
+   * @returns {Promise<{access_token: string, refresh_token?: string, token_type: string, expires_in: number}>} Promise resolving to the issued token
    */
-  login(email: string, password: string): Promise<{ access_token: string; refresh_token: string }> {
+  login(email: string, password: string): Promise<{ access_token: string; refresh_token?: string, token_type: string, expires_in: number }> {
     return Promise.resolve()
       .then(() => {
         if (!this[tokenStoreSymbol].hasClientID()) {
@@ -1444,14 +1444,14 @@ export default class PublicAPI extends Core {
    * Login with token from magic link
    *
    * @param {{validationToken: string, useragent: stirng, ip: string}} body Login request body.
-   * @returns {Promise<{access_token: string, refresh_token: string}>} Promise resolving to the issued token
+   * @returns {Promise<{access_token: string, refresh_token?: string, token_type: string, expires_in: number}>} Promise resolving to the issued token
    */
   async loginWithToken(body: {
     validationToken: string;
     userAgent?: string;
     ip?: string;
     clientID?: string;
-  }): Promise<{ access_token: string; refresh_token: string }> {
+  }): Promise<{ access_token: string; refresh_token?: string; token_type: string; expires_in: number }> {
     if (!body || typeof body !== 'object') {
       throw new Error('body must be defined');
     }
@@ -1775,9 +1775,9 @@ export default class PublicAPI extends Core {
    * @param {string} email email for the new account
    * @param {string} password password for the new account
    * @param {string?} invite optional invite. signup can be declined without invite.
-   * @returns {Promise<{access_token: string, refresh_token: string}>} Promise resolving with the token
+   * @returns {Promise<{access_token: string, refresh_token?: string, token_type: string, expires_in: number}>} Promise resolving with the token
    */
-  signup(email: string, password: string, invite?: string): Promise<{ access_token: string; refresh_token: string }> {
+  signup(email: string, password: string, invite?: string): Promise<{ access_token: string; refresh_token?: string; token_type: string; expires_in: number }> {
     return Promise.resolve()
       .then(() => {
         if (!email) {
