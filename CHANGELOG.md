@@ -1,3 +1,11 @@
+## <small>0.24.1 (2022-08-15)</small>
+
+* release version 0.24.1 ([354290d](https://github.com/entrecode/ec.sdk/commit/354290d))
+* feat: adds expires and created date to InviteResource ([ea72960](https://github.com/entrecode/ec.sdk/commit/ea72960))
+* fix: typing for tokenResponse ([fefba1c](https://github.com/entrecode/ec.sdk/commit/fefba1c))
+
+
+
 ## 0.24.0 (2022-08-12)
 
 * release version 0.24.0 ([ab23c1c](https://github.com/entrecode/ec.sdk/commit/ab23c1c))

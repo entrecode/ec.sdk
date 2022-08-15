@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset='utf-8'>
-  <title>ec.sdk 0.24.0 | Documentation</title>
+  <title>ec.sdk 0.24.1 | Documentation</title>
   <meta name='description' content='SDK for ec.api'>
   <meta name='viewport' content='width=device-width,initial-scale=1'>
   <link href='assets/bass.css' rel='stylesheet'>
@@ -15,7 +15,7 @@
       <div id='split-left' class='overflow-auto fs0 height-viewport-100'>
         <div class='py1 px2'>
           <h3 class='mb0 no-anchor'>ec.sdk</h3>
-          <div class='mb1'><code>0.24.0</code></div>
+          <div class='mb1'><code>0.24.1</code></div>
           <input
             placeholder='Filter'
             id='filter-input'
@@ -3919,7 +3919,7 @@ PublicAPI.enableHistoryEvents(EventSource);
 
   <p><code>Abstract interface</code> for PublicAPI#doRefreshToken. Exists until Accountserver has token refreshal of its own.</p>
 
-    <div class='pre p1 fill-light mt0'>doRefreshToken(): {access_token: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, refresh_token: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>}</div>
+    <div class='pre p1 fill-light mt0'>doRefreshToken()</div>
   
   
 
@@ -3934,14 +3934,6 @@ PublicAPI.enableHistoryEvents(EventSource);
 
   
 
-  
-    
-      <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code>{access_token: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, refresh_token: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>}</code>:
-        Returns the new token response on successful refresh
-
-      
-    
   
 
   
@@ -9635,7 +9627,7 @@ with <a href="#sessioncheckpermission">Session#checkPermission</a>.</p>
 
   <p>Programatically complete a signup with a single use validationToken, mostly used for special register flows using legacy users or magic link login.</p>
 
-    <div class='pre p1 fill-light mt0'>configurableSignupEdit(body: any): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;{access_token: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, refresh_token: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>}></div>
+    <div class='pre p1 fill-light mt0'>configurableSignupEdit(body: any)</div>
   
   
 
@@ -9663,14 +9655,6 @@ with <a href="#sessioncheckpermission">Session#checkPermission</a>.</p>
 
   
 
-  
-    
-      <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;{access_token: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, refresh_token: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>}></code>:
-        Promise resolving to the issued token
-
-      
-    
   
 
   
@@ -10585,7 +10569,7 @@ factory which then resolves to the newly created assets as DMAssetList
 refreshal PublicAPI will emmit the event <code>refresh</code>, if it failes it will emmit <code>refreshError</code>. You
 MUST handle these events.</p>
 
-    <div class='pre p1 fill-light mt0'>doRefreshToken(): {access_token: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, refresh_token: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>}</div>
+    <div class='pre p1 fill-light mt0'>doRefreshToken()</div>
   
   
 
@@ -10600,14 +10584,6 @@ MUST handle these events.</p>
 
   
 
-  
-    
-      <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code>{access_token: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, refresh_token: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>}</code>:
-        Returns the new token response on successful refresh
-
-      
-    
   
 
   
@@ -11623,7 +11599,7 @@ load.</p>
   <p>Login with email and password. Currently only supports <code>rest</code> clientID with body post of
 credentials and tokenMethod <code>body</code>.</p>
 
-    <div class='pre p1 fill-light mt0'>login(email: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, password: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;{access_token: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, refresh_token: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>}></div>
+    <div class='pre p1 fill-light mt0'>login(email: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, password: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</div>
   
   
 
@@ -11662,14 +11638,6 @@ credentials and tokenMethod <code>body</code>.</p>
   
 
   
-    
-      <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;{access_token: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, refresh_token: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>}></code>:
-        Promise resolving to the issued token
-
-      
-    
-  
 
   
 
@@ -11703,7 +11671,7 @@ credentials and tokenMethod <code>body</code>.</p>
 
   <p>Login with token from magic link</p>
 
-    <div class='pre p1 fill-light mt0'>loginWithToken(body: {validationToken: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, useragent: stirng, ip: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>}): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;{access_token: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, refresh_token: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>}></div>
+    <div class='pre p1 fill-light mt0'>loginWithToken(body: {validationToken: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, useragent: stirng, ip: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>})</div>
   
   
 
@@ -11732,14 +11700,6 @@ credentials and tokenMethod <code>body</code>.</p>
 
   
 
-  
-    
-      <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;{access_token: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, refresh_token: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>}></code>:
-        Promise resolving to the issued token
-
-      
-    
   
 
   
@@ -12294,7 +12254,7 @@ alert(<span class="hljs-string">`Entry <span class="hljs-subst">${entryID1}</spa
 
   <p>Signup a new account. Invite may be required.</p>
 
-    <div class='pre p1 fill-light mt0'>signup(email: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, password: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, invite: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;{access_token: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, refresh_token: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>}></div>
+    <div class='pre p1 fill-light mt0'>signup(email: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, password: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, invite: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?)</div>
   
   
 
@@ -12341,14 +12301,6 @@ alert(<span class="hljs-string">`Entry <span class="hljs-subst">${entryID1}</spa
 
   
 
-  
-    
-      <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;{access_token: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, refresh_token: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>}></code>:
-        Promise resolving with the token
-
-      
-    
   
 
   
@@ -13773,11 +13725,6 @@ or <a href="PublicAPI#loginWithCode">PublicAPI#loginWithCode</a>.</p>
 
     <div class='pre p1 fill-light mt0'>Event#login</div>
   
-    <p>
-      Type:
-      {access_token: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, refresh_token: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>}
-    </p>
-  
   
 
   
@@ -13884,11 +13831,6 @@ error with token related error codes. Will either have undefined or <a href="#pr
 
     <div class='pre p1 fill-light mt0'>Event#signup</div>
   
-    <p>
-      Type:
-      {access_token: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, refresh_token: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>}
-    </p>
-  
   
 
   
@@ -13988,11 +13930,6 @@ error with token related error codes. Will either have undefined or <a href="#pr
   <p>Refresh event is emitted when a token is automatically refreshed.</p>
 
     <div class='pre p1 fill-light mt0'>Event#refresh</div>
-  
-    <p>
-      Type:
-      {access_token: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, refresh_token: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>}
-    </p>
   
   
 
@@ -19619,6 +19556,13 @@ Note that email addings are only validated after you called <code>.save()</code>
         <div class='space-bottom0'>
           <span class='code bold'>email</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
           : The email address of the invite
+
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <span class='code bold'>expires</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Date">Date</a>)</code>
+          : The date the invite expires
 
           
         </div>
@@ -35780,7 +35724,13 @@ be the same object but with refreshed data.
   </h2>
 
   
-    <h2>0.24.0 (2022-08-12)</h2>
+    <h2>0.24.1 (2022-08-15)</h2>
+<ul>
+<li>release version 0.24.1 (<a href="https://github.com/entrecode/ec.sdk/commit/354290d">354290d</a>)</li>
+<li>feat: adds expires and created date to InviteResource (<a href="https://github.com/entrecode/ec.sdk/commit/ea72960">ea72960</a>)</li>
+<li>fix: typing for tokenResponse (<a href="https://github.com/entrecode/ec.sdk/commit/fefba1c">fefba1c</a>)</li>
+</ul>
+<h2>0.24.0 (2022-08-12)</h2>
 <ul>
 <li>release version 0.24.0 (<a href="https://github.com/entrecode/ec.sdk/commit/ab23c1c">ab23c1c</a>)</li>
 <li>feat: add customAuthDomain to GroupResource (<a href="https://github.com/entrecode/ec.sdk/commit/155b64f">155b64f</a>)</li>
