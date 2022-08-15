@@ -5,21 +5,21 @@ import { environment } from './Core';
  * or {@link PublicAPI#loginWithCode}.
  *
  * @event Event#login
- * @type {{access_token: string, refresh_token: string}}
+ * @type {{access_token: string, refresh_token?: string, token_type: string, expires_in: number}}
  */
 
 /**
  * Signup event is emitted when a login succeeds with {@link PublicAPI#signup}.
  *
  * @event Event#signup
- * @type {{access_token: string, refresh_token: string}}
+ * @type {{access_token: string, refresh_token?: string, token_type: string, expires_in: number}}
  */
 
 /**
  * Refresh event is emitted when a token is automatically refreshed.
  *
  * @event Event#refresh
- * @type {{access_token: string, refresh_token: string}}
+ * @type {{access_token: string, refresh_token?: string, token_type: string, expires_in: number}}
  */
 
 /**

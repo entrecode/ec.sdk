@@ -17,6 +17,8 @@ interface InviteResource {
  * @prop {array}  permissions - Permissions added to the invite
  * @prop {arry}   groups      - Groups added to the invite
  * @prop {string} email       - The email address of the invite
+ * @prop {Date}   expires     - The date the invite expires
+ * @pros {Date}   created     - The date the invite was created
  */
 class InviteResource extends Resource {
   /**
@@ -49,6 +51,16 @@ class InviteResource extends Resource {
         enumerable: true,
         get: () => <string>this.getProperty('email'),
         set: (value: string) => this.setProperty('email', value),
+      },
+      expires: {
+        enumerable: true,
+        get: () => new Date(this.getProperty('expires')),
+        set: (value: Date) => this.setProperty('expires', value.toISOString()),
+      },
+      created: {
+        enumerable: true,
+        get: () => new Date(this.getProperty('created')),
+        set: (value: Date) => this.setProperty('created', value.toISOString()),
       },
     });
     this.countProperties();
