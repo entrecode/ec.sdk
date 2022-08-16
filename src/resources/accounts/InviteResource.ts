@@ -1,11 +1,14 @@
 import Resource from '../Resource';
 import { environment } from '../../Core';
+import { post } from '../../helper';
 
 interface InviteResource {
   invite: string;
   permissions: Array<any>;
   groups: Array<any>;
 }
+
+const environmentSymbol: any = Symbol.for('environment');
 
 /**
  * InviteResource class
@@ -74,6 +77,13 @@ class InviteResource extends Resource {
    */
   save(): Promise<InviteResource> {
     return <Promise<InviteResource>>super.save(false, `${this.getLink('self').profile}-template-put`);
+  }
+
+  async resendInvite(): Promise<void> {
+    if (!this.email) {
+      throw new Error('Cannot resend invite without an email address');
+    }
+    await post(this[environmentSymbol], await this.newRequest().follow('sendByMail'));
   }
 }
 

@@ -1,3 +1,10 @@
+## <small>0.24.2 (2022-08-16)</small>
+
+* release version 0.24.2 ([24d3389](https://github.com/entrecode/ec.sdk/commit/24d3389))
+* feat: Adds InviteResource#resendInvite ([11f7297](https://github.com/entrecode/ec.sdk/commit/11f7297))
+
+
+
 ## <small>0.24.1 (2022-08-15)</small>
 
 * release version 0.24.1 ([354290d](https://github.com/entrecode/ec.sdk/commit/354290d))
