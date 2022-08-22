@@ -1,3 +1,10 @@
+## <small>0.24.3 (2022-08-22)</small>
+
+* release version 0.24.3 ([fa1336d](https://github.com/entrecode/ec.sdk/commit/fa1336d))
+* feat: validation token type support ([e1a5ef7](https://github.com/entrecode/ec.sdk/commit/e1a5ef7))
+
+
+
 ## <small>0.24.2 (2022-08-16)</small>
 
 * release version 0.24.2 ([24d3389](https://github.com/entrecode/ec.sdk/commit/24d3389))
