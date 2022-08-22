@@ -1391,14 +1391,19 @@ export default class PublicAPI extends Core {
    * Create a single-use validation token for a user. The token should then be send to the user via mail and MUST NOT be displayed to her.
    *
    * @param {string} email The users email.
+   * @param {string} [type] The type of token to create, like 'genericValidationToken' - optional
    */
-  async getValidationToken(email: string): Promise<string> {
+  async getValidationToken(email: string, type?: string): Promise<string> {
     if (!email) {
       throw new Error('email must be defined');
     }
 
+    if (type && !(/^[a-zA-Z0-9]{1,64}$/.test(type))) {
+      throw new Error('validation token type invalid, must match /^[a-zA-Z0-9]{1,64}$/');
+    }
+
     const request = await this.follow(`${this[shortIDSymbol]}:_auth/api/validation-token`);
-    request.withTemplateParameters({ email });
+    request.withTemplateParameters({ email, type });
     const [response] = await this.dispatch(() => get(this[environmentSymbol], request));
     return response.validationToken;
   }
@@ -1916,8 +1921,9 @@ export default class PublicAPI extends Core {
    * Validates a single-use token from a user. Checks if the token is valid and responds with user information.
    *
    * @param {string} validationToken Single-use token.
+   * @param {string} [type] The token type, like 'genericValidationToken' - must be set if set when creating token.
    */
-  async validateValidationToken(validationToken: string): Promise<{
+  async validateValidationToken(validationToken: string, type?: string): Promise<{
     accountID: string;
     email: string;
     hasPassword: boolean;
@@ -1926,9 +1932,12 @@ export default class PublicAPI extends Core {
     if (!validationToken) {
       throw new Error('validationToken must be defined');
     }
+    if (type && !(/^[a-zA-Z0-9]{1,64}$/.test(type))) {
+      throw new Error('validation token type invalid, must match /^[a-zA-Z0-9]{1,64}$/');
+    }
 
     const request = await this.follow(`${this[shortIDSymbol]}:_auth/api/validate-token`);
-    request.withTemplateParameters({ validationToken });
+    request.withTemplateParameters({ validationToken, type });
     const [response] = await this.dispatch(() => get(this[environmentSymbol], request));
     return response;
   }

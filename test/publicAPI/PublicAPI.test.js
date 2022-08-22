@@ -1387,6 +1387,9 @@ describe('PublicAPI', () => {
     it('should be rejected on getValidationToken no email', () => {
       return api.getValidationToken().should.be.rejectedWith('email must be defined');
     });
+    it('should be rejected on getValidationToken illegal type', () => {
+      return api.getValidationToken('andre@entrecode.de', 'not_allowed').should.be.rejectedWith('validation token type invalid, must match /^[a-zA-Z0-9]{1,64}$/');
+    });
     it('should call getValidationToken', () => {
       const stub = sinon.stub(helper, 'get');
       stub.onFirstCall().returns(resolver('public-dm-root.json'));
@@ -1408,6 +1411,9 @@ describe('PublicAPI', () => {
 
     it('should be rejected on validateValidationToken no validationToken', () => {
       return api.validateValidationToken().should.be.rejectedWith('validationToken must be defined');
+    });
+    it('should be rejected on getValidationToken illegal type', () => {
+      return api.validateValidationToken('validatioNToken', 'not_allowed').should.be.rejectedWith('validation token type invalid, must match /^[a-zA-Z0-9]{1,64}$/');
     });
     it('should call validateValidationToken', () => {
       const stub = sinon.stub(helper, 'get');
