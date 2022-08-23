@@ -462,6 +462,7 @@ export default class PublicAPI extends Core {
    */
   async configurableSignupEdit(body: {
     validationToken: string;
+    validationTokenType?: string;
     useragent?: string;
     ip?: string;
     password?: string;
