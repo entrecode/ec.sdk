@@ -462,6 +462,7 @@ export default class PublicAPI extends Core {
    */
   async configurableSignupEdit(body: {
     validationToken: string;
+    validationTokenType?: string;
     useragent?: string;
     ip?: string;
     password?: string;
@@ -1408,6 +1409,48 @@ export default class PublicAPI extends Core {
     return response.validationToken;
   }
 
+  /**
+   * Create validation tokens for a user to change the email address. The tokens should then be send to the old and new email address and MUST NOT be displayed to the user. Validating with the new address updates the email. Aborting via the old email address resets to the old address and invalidates the token to change it.
+   *
+   * @param {string} currentEmail The users current email address
+   * @param {string} newEmail The new email address
+   * @returns {Promise<{verifyEmailChangeToken: string, abortEmailChangeToken: string}>} Promise resolving to the two tokens for old and new email address
+   */
+   async getChangeEmailTokens(currentEmail: string, newEmail: string): Promise<{verifyEmailChangeToken: string, abortEmailChangeToken: string}> {
+    if (!currentEmail) {
+      throw new Error('currentEmail must be defined');
+    }
+
+    if (!newEmail) {
+      throw new Error('newEmail must be defined');
+    }
+    
+    const request = await this.follow(`${this[shortIDSymbol]}:_auth/api/change-email-tokens`);
+    request.withTemplateParameters({ currentEmail, newEmail });
+    const [response] = await this.dispatch(() => get(this[environmentSymbol], request));
+    return response;
+  }
+
+  /**
+   * Validate and perform a email change request. Depending on the token type (`changeEmail` or `revokeEmail`), the email address is changed or reset to the old address (with invalidation of the `changeEmail`-Token).
+   *
+   * @param {string} validationToken The change or revoke token
+   * @returns {Promise<{accountID: string, email: string, hasPassword: boolean, pending: boolean}>} Promise resolving to account info including potentially changed email address
+   */
+   async postChangeEmailToken(validationToken: string): Promise<{
+    accountID: string;
+    email: string;
+    hasPassword: boolean;
+    pending: boolean;
+  }> {
+    if (!validationToken) {
+      throw new Error('validationToken must be defined');
+    }
+    
+    const request = await this.follow(`${this[shortIDSymbol]}:_auth/api/change-email`);
+    const [response] = await this.dispatch(() => post(this[environmentSymbol], request, { validationToken }));
+    return response;
+  }
   /**
    * Login with email and password. Currently only supports `rest` clientID with body post of
    * credentials and tokenMethod `body`.

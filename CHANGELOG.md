@@ -1,3 +1,11 @@
+## <small>0.24.4 (2022-08-24)</small>
+
+* release version v0.24.4 ([64655ce](https://github.com/entrecode/ec.sdk/commit/64655ce))
+* feat: change dmAccount email via api ([70fd2c1](https://github.com/entrecode/ec.sdk/commit/70fd2c1))
+* feat: configurableSignupEdit with validationTokenType ([62ea441](https://github.com/entrecode/ec.sdk/commit/62ea441))
+
+
+
 ## <small>0.24.3 (2022-08-22)</small>
 
 * release version 0.24.3 ([fa1336d](https://github.com/entrecode/ec.sdk/commit/fa1336d))
