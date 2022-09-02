@@ -1,3 +1,13 @@
+## <small>0.24.5 (2022-09-02)</small>
+
+* APPSITE-4227 adds lastLogin to AccountResource ([52cc0b2](https://github.com/entrecode/ec.sdk/commit/52cc0b2))
+* release version 0.24.5 ([afd19a2](https://github.com/entrecode/ec.sdk/commit/afd19a2))
+* release version v0.24.4 ([64655ce](https://github.com/entrecode/ec.sdk/commit/64655ce))
+* feat: change dmAccount email via api ([70fd2c1](https://github.com/entrecode/ec.sdk/commit/70fd2c1))
+* feat: configurableSignupEdit with validationTokenType ([62ea441](https://github.com/entrecode/ec.sdk/commit/62ea441))
+
+
+
 ## <small>0.24.4 (2022-08-24)</small>
 
 * release version v0.24.4 ([64655ce](https://github.com/entrecode/ec.sdk/commit/64655ce))

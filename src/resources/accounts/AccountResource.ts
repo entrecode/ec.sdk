@@ -22,6 +22,7 @@ interface AccountResource {
   openID: Array<any>;
   permissions: Array<string>;
   state: string;
+  lastLogin: Date;
 }
 
 /**
@@ -41,6 +42,7 @@ interface AccountResource {
  *                        openID            - Array of connected openID accounts
  * @prop {Array<string>}  permissions       - Array of permissions
  * @prop {string}         state             - State of the account.
+ * @prop {Date}           lastLogin         - The {@link Date} on which this account was last logged in
  */
 class AccountResource extends Resource {
   /**
@@ -132,6 +134,10 @@ class AccountResource extends Resource {
           this.setProperty('state', value);
           return value;
         },
+      },
+      lastLogin: {
+        enumerable: true,
+        get: () => new Date(this.getProperty('lastLogin')),
       },
     });
     this.countProperties();
@@ -229,13 +235,13 @@ class AccountResource extends Resource {
   /**
    * Create an additional access token {@link tokenResponse} for this account.
    * Only supported for API Keys.
-   * 
+   *
    * @example
    * return account.createToken()
-   * .then(({ jwt, accountID, iat, exp}) => { 
+   * .then(({ jwt, accountID, iat, exp}) => {
    *   // do something with `jwt` because it is not accessable later
    * });
-   * 
+   *
    * @returns {Promise<{jwt: string, accountID: string, iat: number, exp: number}>} the created api
    *   token response.
    * @throws {Error} if the account is not an API Key
