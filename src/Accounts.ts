@@ -467,6 +467,7 @@ export type inviteCreateObject = {
   count: number;
   permissions?: Array<string>;
   groups?: Array<inviteCreateGroupObject>;
+  email?: string;
 };
 
 export type inviteCreateGroupObject = {

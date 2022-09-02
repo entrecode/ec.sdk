@@ -1,3 +1,10 @@
+## <small>0.24.6 (2022-09-02)</small>
+
+* release version 0.24.6 ([2b98d6d](https://github.com/entrecode/ec.sdk/commit/2b98d6d))
+* feat: adds email to createInvite ([fdecda2](https://github.com/entrecode/ec.sdk/commit/fdecda2))
+
+
+
 ## <small>0.24.5 (2022-09-02)</small>
 
 * APPSITE-4227 adds lastLogin to AccountResource ([52cc0b2](https://github.com/entrecode/ec.sdk/commit/52cc0b2))
