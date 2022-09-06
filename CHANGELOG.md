@@ -1,3 +1,14 @@
+## 0.25.0 (2022-09-06)
+
+* release version 0.25.0 ([40a92ef](https://github.com/entrecode/ec.sdk/commit/40a92ef))
+* chore: Typescript target ES2017 ([0e15e5d](https://github.com/entrecode/ec.sdk/commit/0e15e5d))
+
+
+### BREAKING CHANGE
+
+* Typescript target was changed to support ES2017 to avoid the usage of generator functions for async-await.
+
+
 ## <small>0.24.6 (2022-09-02)</small>
 
 * release version 0.24.6 ([2b98d6d](https://github.com/entrecode/ec.sdk/commit/2b98d6d))
