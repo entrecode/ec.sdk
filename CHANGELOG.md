@@ -1,3 +1,10 @@
+## <small>0.25.1 (2022-12-19)</small>
+
+* bump superagent ([dec4506](https://github.com/entrecode/ec.sdk/commit/dec4506))
+* release version 0.25.1 ([a00a19e](https://github.com/entrecode/ec.sdk/commit/a00a19e))
+
+
+
 ## 0.25.0 (2022-09-06)
 
 * release version 0.25.0 ([40a92ef](https://github.com/entrecode/ec.sdk/commit/40a92ef))
