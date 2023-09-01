@@ -83,6 +83,8 @@ toc:
   - hook
   - DMAccountResource
   - DMAccountList
+  - DMAuthTokenResource
+  - DMAuthTokenList
   - DMClientResource
   - DMClientList
   - RoleResource

@@ -2472,6 +2472,26 @@
               
                 
                 <li><a
+                  href='#dmauthtokenresource'
+                  class="">
+                  DMAuthTokenResource
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#dmauthtokenlist'
+                  class="">
+                  DMAuthTokenList
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
                   href='#dmclientresource'
                   class="">
                   DMClientResource
@@ -3299,26 +3319,6 @@
                   href='#impressum--datenschutz'
                   class="h5 bold black caps">
                   Impressum &amp; Datenschutz
-                  
-                </a>
-                
-                </li>
-              
-                
-                <li><a
-                  href='#dmauthtokenresource'
-                  class="">
-                  DMAuthTokenResource
-                  
-                </a>
-                
-                </li>
-              
-                
-                <li><a
-                  href='#dmauthtokenlist'
-                  class="">
-                  DMAuthTokenList
                   
                 </a>
                 
@@ -6449,6 +6449,43 @@ token response.
 
   
 
+  
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">const</span> accounts = <span class="hljs-keyword">new</span> Accounts();
+
+<span class="hljs-keyword">const</span> publicClient = <span class="hljs-keyword">await</span> accounts.createClient({
+  <span class="hljs-attr">clientID</span>: <span class="hljs-string">&#x27;my-public-client&#x27;</span>,
+  <span class="hljs-attr">clientName</span>: <span class="hljs-string">&#x27;A public client for web applications&#x27;</span>,
+  <span class="hljs-attr">grantTypes</span>: [<span class="hljs-string">&#x27;authorization_code&#x27;</span>, <span class="hljs-string">&#x27;refresh_token&#x27;</span>],
+  <span class="hljs-attr">tokenEndpointAuthMethod</span>: <span class="hljs-string">&#x27;none&#x27;</span>,
+  <span class="hljs-attr">redirectURIs</span>: [<span class="hljs-string">&#x27;https://my.app.com/redirect&#x27;</span>],
+  <span class="hljs-attr">postLogoutRedirectURIs</span>: [<span class="hljs-string">&#x27;https://my.app.com/logout&#x27;</span>],
+  <span class="hljs-attr">authUIOrigin</span>: <span class="hljs-string">&#x27;https://login.entrecode.de&#x27;</span>,
+  <span class="hljs-attr">logoURI</span>: <span class="hljs-string">&#x27;https://entrecode.de/de/assets/ec-logo.svg&#x27;</span>
+});
+
+<span class="hljs-keyword">const</span> confidentialClient = <span class="hljs-keyword">await</span> accounts.createClient({
+  <span class="hljs-attr">clientID</span>: <span class="hljs-string">&#x27;my-private-client&#x27;</span>,
+  <span class="hljs-attr">clientName</span>: <span class="hljs-string">&#x27;A confidential client for server side applications&#x27;</span>,
+  <span class="hljs-attr">grantTypes</span>: [<span class="hljs-string">&#x27;authorization_code&#x27;</span>, <span class="hljs-string">&#x27;refresh_token&#x27;</span>],
+  <span class="hljs-attr">tokenEndpointAuthMethod</span>: <span class="hljs-string">&#x27;client_secret_basic&#x27;</span>,
+  <span class="hljs-attr">clientSecret</span>: <span class="hljs-string">&#x27;my-secret&#x27;</span>,
+  <span class="hljs-attr">redirectURIs</span>: [<span class="hljs-string">&#x27;https://my.app.com/redirect&#x27;</span>],
+  <span class="hljs-attr">postLogoutRedirectURIs</span>: [<span class="hljs-string">&#x27;https://my.app.com/logout&#x27;</span>],
+  <span class="hljs-attr">authUIOrigin</span>: <span class="hljs-string">&#x27;https://login.entrecode.de&#x27;</span>,
+  <span class="hljs-attr">logoURI</span>: <span class="hljs-string">&#x27;https://entrecode.de/de/assets/ec-logo.svg&#x27;</span>
+});
+
+<span class="hljs-keyword">const</span> apiClient = <span class="hljs-keyword">await</span> accounts.createClient({
+  <span class="hljs-attr">clientID</span>: <span class="hljs-string">&#x27;my-api-client&#x27;</span>,
+  <span class="hljs-attr">clientName</span>: <span class="hljs-string">&#x27;A client for API access&#x27;</span>,
+  <span class="hljs-attr">grantTypes</span>: [<span class="hljs-string">&#x27;client_credentials&#x27;</span>],
+  <span class="hljs-attr">tokenEndpointAuthMethod</span>: <span class="hljs-string">&#x27;client_secret_basic&#x27;</span>,
+  <span class="hljs-attr">clientSecret</span>: <span class="hljs-string">&#x27;my-secret&#x27;</span>,
+});</pre>
+    
   
 
   
@@ -18589,15 +18626,96 @@ token response.
         </div>
       
         <div class='space-bottom0'>
+          <span class='code bold'>created</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Date">Date</a>)</code>
+          : The 
+<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Date">Date</a>
+ on which this client was created, is set on creation
+
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <span class='code bold'>modified</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Date">Date</a>)</code>
+          : The 
+<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Date">Date</a>
+ on which this client was last modified, is set on updates
+
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <span class='code bold'>clientName</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+          : The name of the client (human readable)
+
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <span class='code bold'>clientType</span> <code class='quiet'>((<code>"Public Client"</code> | <code>"Private Client"</code> | <code>"API Client"</code> | <code>"Legacy Client"</code> | <code>"Unknown Client"</code>))</code>
+          : The type of the client, computed depending on settings
+
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <span class='code bold'>grantTypes</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;(<code>"authorization_code"</code> | <code>"refresh_token"</code> | <code>"client_credentials"</code>)>)</code>
+          : The grant types of the client
+
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <span class='code bold'>tokenEndpointAuthMethod</span> <code class='quiet'>((<code>"client_secret_basic"</code> | <code>"none"</code>))</code>
+          : The token endpoint authentication method of the client
+
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <span class='code bold'>clientSecret</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+          : The client secret - set only if grantTypes contains 'client_credentials'
+
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <span class='code bold'>redirectURIs</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>>)</code>
+          : The redirect URIs of the client
+
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <span class='code bold'>postLogoutRedirectURIs</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>>)</code>
+          : The post logout redirect URIs of the client
+
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <span class='code bold'>authUIOrigin</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+          : The auth UI origin of the client
+
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <span class='code bold'>logoURI</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+          : The logo URI of the client
+
+          
+        </div>
+      
+        <div class='space-bottom0'>
           <span class='code bold'>callbackURL</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
-          : callback URL
+          : The legacy client callback URL
 
           
         </div>
       
         <div class='space-bottom0'>
           <span class='code bold'>config</span> <code class='quiet'>(<a href="#clientconfig">clientConfig</a>)</code>
-          : The config
+          : The legacy client config
 
           
         </div>
@@ -18638,7 +18756,7 @@ token response.
   </div>
   
 
-  <p>Configuration of a client</p>
+  <p>Configuration of a legacy client</p>
 
     <div class='pre p1 fill-light mt0'>clientConfig</div>
   
@@ -28458,6 +28576,224 @@ be the same object but with refreshed data.
   
   <div class='clearfix'>
     
+    <h3 class='fl m0' id='dmauthtokenresource'>
+      DMAuthTokenResource
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>DMAuthToken resource class</p>
+
+    <div class='pre p1 fill-light mt0'>new DMAuthTokenResource(resource: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, environment: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, traversal: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</div>
+  
+  
+    <p>
+      Extends
+      
+        Resource_1.default
+      
+    </p>
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>resource</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    resource loaded from the API.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>environment</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    the environment this resource is associated to.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>traversal</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</code>
+	    traversal from which traverson can continue.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Properties</div>
+    <div>
+      
+        <div class='space-bottom0'>
+          <span class='code bold'>created</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Date">Date</a>)</code>
+          : "issued at" date
+
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <span class='code bold'>validUntil</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Date">Date</a>)</code>
+          : expiration date of the token
+
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <span class='code bold'>near</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+          : IP Address Location
+
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <span class='code bold'>device</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+          : Device Information
+
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <span class='code bold'>isCurrent</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>)</code>
+          : true if this is the currently active token
+
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='dmauthtokenlist'>
+      DMAuthTokenList
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Tag list resource class.</p>
+
+    <div class='pre p1 fill-light mt0'>new DMAuthTokenList(resource: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, environment: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, traversal: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</div>
+  
+  
+    <p>
+      Extends
+      
+        ListResource_1.default
+      
+    </p>
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>resource</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    resource loaded from the API.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>environment</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    the environment this resource is associated to.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>traversal</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</code>
+	    traversal from which traverson can continue.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
     <h3 class='fl m0' id='dmclientresource'>
       DMClientResource
     </h3>
@@ -37867,224 +38203,6 @@ be the same object but with refreshed data.
 
   
 </section></div>
-          
-        
-          
-          <section class='p2 mb2 clearfix bg-white minishadow'>
-
-  
-  <div class='clearfix'>
-    
-    <h3 class='fl m0' id='dmauthtokenresource'>
-      DMAuthTokenResource
-    </h3>
-    
-    
-  </div>
-  
-
-  <p>DMAuthToken resource class</p>
-
-    <div class='pre p1 fill-light mt0'>new DMAuthTokenResource(resource: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, environment: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, traversal: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</div>
-  
-  
-    <p>
-      Extends
-      
-        Resource_1.default
-      
-    </p>
-  
-
-  
-  
-  
-  
-  
-  
-
-  
-    <div class='py1 quiet mt1 prose-big'>Parameters</div>
-    <div class='prose'>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>resource</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
-	    resource loaded from the API.
-
-          </div>
-          
-        </div>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>environment</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
-	    the environment this resource is associated to.
-
-          </div>
-          
-        </div>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>traversal</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</code>
-	    traversal from which traverson can continue.
-
-          </div>
-          
-        </div>
-      
-    </div>
-  
-
-  
-    <div class='py1 quiet mt1 prose-big'>Properties</div>
-    <div>
-      
-        <div class='space-bottom0'>
-          <span class='code bold'>created</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Date">Date</a>)</code>
-          : "issued at" date
-
-          
-        </div>
-      
-        <div class='space-bottom0'>
-          <span class='code bold'>validUntil</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Date">Date</a>)</code>
-          : expiration date of the token
-
-          
-        </div>
-      
-        <div class='space-bottom0'>
-          <span class='code bold'>near</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
-          : IP Address Location
-
-          
-        </div>
-      
-        <div class='space-bottom0'>
-          <span class='code bold'>device</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
-          : Device Information
-
-          
-        </div>
-      
-        <div class='space-bottom0'>
-          <span class='code bold'>isCurrent</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>)</code>
-          : true if this is the currently active token
-
-          
-        </div>
-      
-    </div>
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-</section>
-
-          
-        
-          
-          <section class='p2 mb2 clearfix bg-white minishadow'>
-
-  
-  <div class='clearfix'>
-    
-    <h3 class='fl m0' id='dmauthtokenlist'>
-      DMAuthTokenList
-    </h3>
-    
-    
-  </div>
-  
-
-  <p>Tag list resource class.</p>
-
-    <div class='pre p1 fill-light mt0'>new DMAuthTokenList(resource: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, environment: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, traversal: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</div>
-  
-  
-    <p>
-      Extends
-      
-        ListResource_1.default
-      
-    </p>
-  
-
-  
-  
-  
-  
-  
-  
-
-  
-    <div class='py1 quiet mt1 prose-big'>Parameters</div>
-    <div class='prose'>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>resource</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
-	    resource loaded from the API.
-
-          </div>
-          
-        </div>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>environment</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
-	    the environment this resource is associated to.
-
-          </div>
-          
-        </div>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>traversal</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</code>
-	    traversal from which traverson can continue.
-
-          </div>
-          
-        </div>
-      
-    </div>
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-</section>
-
           
         
       </div>
