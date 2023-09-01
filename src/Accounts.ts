@@ -210,6 +210,40 @@ export default class Accounts extends Core {
   /**
    * Create a new Client.
    *
+   * @example
+   * const accounts = new Accounts();
+   * 
+   * const publicClient = await accounts.createClient({
+   *   clientID: 'my-public-client',
+   *   clientName: 'A public client for web applications',
+   *   grantTypes: ['authorization_code', 'refresh_token'],
+   *   tokenEndpointAuthMethod: 'none',
+   *   redirectURIs: ['https://my.app.com/redirect'],
+   *   postLogoutRedirectURIs: ['https://my.app.com/logout'],
+   *   authUIOrigin: 'https://login.entrecode.de',
+   *   logoURI: 'https://entrecode.de/de/assets/ec-logo.svg'
+   * });
+   * 
+   * const confidentialClient = await accounts.createClient({
+   *   clientID: 'my-private-client',
+   *   clientName: 'A confidential client for server side applications',
+   *   grantTypes: ['authorization_code', 'refresh_token'],
+   *   tokenEndpointAuthMethod: 'client_secret_basic',
+   *   clientSecret: 'my-secret',
+   *   redirectURIs: ['https://my.app.com/redirect'],
+   *   postLogoutRedirectURIs: ['https://my.app.com/logout'],
+   *   authUIOrigin: 'https://login.entrecode.de',
+   *   logoURI: 'https://entrecode.de/de/assets/ec-logo.svg'
+   * });
+   * 
+   * const apiClient = await accounts.createClient({
+   *   clientID: 'my-api-client',
+   *   clientName: 'A client for API access',
+   *   grantTypes: ['client_credentials'],
+   *   tokenEndpointAuthMethod: 'client_secret_basic',
+   *   clientSecret: 'my-secret',
+   * });
+   * 
    * @param {object} client object representing the client
    * @returns {Promise<ClientResource>} the newly created ClientResource
    */
