@@ -1,3 +1,10 @@
+## 0.26.0 (2023-09-01)
+
+* release version 0.26.0 ([6da1291](https://github.com/entrecode/ec.sdk/commit/6da1291))
+* feat: account clients with new properties ([346831f](https://github.com/entrecode/ec.sdk/commit/346831f))
+
+
+
 ## <small>0.25.1 (2022-12-19)</small>
 
 * bump superagent ([dec4506](https://github.com/entrecode/ec.sdk/commit/dec4506))
