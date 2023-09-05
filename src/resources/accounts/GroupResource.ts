@@ -10,6 +10,13 @@ interface GroupResource {
   name: string;
   permissions: Array<string>;
   accounts: Array<string | any>;
+  customAuthDomain: string | null;
+  customAuthDomainPriority: string | null;
+  groupSettings: {
+    mfaRequired: boolean;
+    authenticatorRequires2FA: boolean;
+    legacyLoginDisabled: boolean;
+  };
 }
 
 /**
@@ -22,6 +29,7 @@ interface GroupResource {
  * @prop {Array<string>}  permissions              - Array of permissions
  * @prop {string}         customAuthDomain         - Domain from wich users in this group receive auth mails
  * @prop {string}         customAuthDomainPriority - Priority of the custom auth domain
+ * @prop {Object}         groupSettings            - Group settings  
  */
 class GroupResource extends Resource {
   /**
@@ -69,6 +77,11 @@ class GroupResource extends Resource {
         enumerable: true,
         get: () => <string>this.getProperty('customAuthDomainPriority'),
         set: (value: string) => this.setProperty('customAuthDomainPriority', value),
+      },
+      groupSettings: {
+        enumerable: true,
+        get: () => <object>this.getProperty('groupSettings'),
+        set: (value: object) => this.setProperty('groupSettings', value),
       },
     });
     this.countProperties();

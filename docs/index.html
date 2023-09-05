@@ -17644,6 +17644,13 @@ object will be applied when loading a <a href="#listresource">ListResource</a>.<
         </div>
       
         <div class='space-bottom0'>
+          <span class='code bold'>type</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+          : The type of the account
+
+          
+        </div>
+      
+        <div class='space-bottom0'>
           <span class='code bold'>created</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Date">Date</a>)</code>
           : The 
 <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Date">Date</a>
@@ -17661,29 +17668,196 @@ object will be applied when loading a <a href="#listresource">ListResource</a>.<
         </div>
       
         <div class='space-bottom0'>
-          <span class='code bold'>groups</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>>)</code>
-          : Array of groups this account is member of
+          <span class='code bold'>name</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+          : The current name.
 
           
         </div>
       
         <div class='space-bottom0'>
-          <span class='code bold'>hasPassword</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>)</code>
-          : Whether or not this account has a password
+          <span class='code bold'>company</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+          : The current company.
 
           
         </div>
       
         <div class='space-bottom0'>
-          <span class='code bold'>hasPendingEmail</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>)</code>
-          : Whether or not this account has a pending email
+          <span class='code bold'>preferredUsername</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+          : The current preferredUsername.
 
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <span class='code bold'>givenName</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+          : The current givenName.
+
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <span class='code bold'>middleName</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+          : The current middleName.
+
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <span class='code bold'>familyName</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+          : The current familyName.
+
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <span class='code bold'>nickname</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+          : The current nickname.
+
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <span class='code bold'>birthdate</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Date">Date</a>)</code>
+          : The current birthdate.
+
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <span class='code bold'>gender</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+          : The current gender (f|m|d)
+
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <span class='code bold'>picture</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+          : The current picture url
+
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <span class='code bold'>phoneNumber</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+          : The current phoneNumber
+
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <span class='code bold'>phoneNumberVerified</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>)</code>
+          : Whether or not the phoneNumber is verified
+
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <span class='code bold'>address</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+          : The current address
+
+          
+            <ul>
+              
+                <li><code>address.streetAddress</code> <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>
+                  
+                  <p>The current streetAddress</p>
+</li>
+              
+                <li><code>address.locality</code> <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>
+                  
+                  <p>The current locality</p>
+</li>
+              
+                <li><code>address.postalCode</code> <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>
+                  
+                  <p>The current postalCode</p>
+</li>
+              
+                <li><code>address.region</code> <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>
+                  
+                  <p>The current region</p>
+</li>
+              
+                <li><code>address.country</code> <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>
+                  
+                  <p>The current country</p>
+</li>
+              
+                <li><code>address.formatted</code> <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>
+                  
+                  <p>The current formatted address</p>
+</li>
+              
+            </ul>
           
         </div>
       
         <div class='space-bottom0'>
           <span class='code bold'>language</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
           : The language for frontend usage
+
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <span class='code bold'>locale</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+          : The locale for frontend usage
+
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <span class='code bold'>zoneInfo</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+          : The zoneInfo for frontend usage
+
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <span class='code bold'>state</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+          : State of the account.
+
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <span class='code bold'>hasTOTP</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>)</code>
+          : Whether or not this account has TOTP enabled
+
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <span class='code bold'>hasAuthenticators</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>>)</code>
+          : Array of authenticators this account has enabled
+
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <span class='code bold'>hasFallbackCodes</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>)</code>
+          : Number of fallback codes this account has
+
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <span class='code bold'>mfaRequired</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>)</code>
+          : Whether or not this account requires MFA
+
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <span class='code bold'>authenticatorRequires2FA</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>)</code>
+          : Whether or not this account requires 2FA
+
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <span class='code bold'>legacyLoginDisabled</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>)</code>
+          : Whether or not this account has legacy login disabled
 
           
         </div>
@@ -17703,8 +17877,8 @@ object will be applied when loading a <a href="#listresource">ListResource</a>.<
         </div>
       
         <div class='space-bottom0'>
-          <span class='code bold'>state</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
-          : State of the account.
+          <span class='code bold'>groups</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>>)</code>
+          : Array of groups this account is member of
 
           
         </div>
@@ -19008,6 +19182,13 @@ token response.
         <div class='space-bottom0'>
           <span class='code bold'>customAuthDomainPriority</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
           : Priority of the custom auth domain
+
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <span class='code bold'>groupSettings</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>)</code>
+          : Group settings
 
           
         </div>
