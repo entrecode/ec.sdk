@@ -1,3 +1,10 @@
+## <small>0.26.1 (2023-09-05)</small>
+
+* release version 0.26.1 ([7464028](https://github.com/entrecode/ec.sdk/commit/7464028))
+* feat: new fields for accounts and groups ([30252ad](https://github.com/entrecode/ec.sdk/commit/30252ad))
+
+
+
 ## 0.26.0 (2023-09-01)
 
 * release version 0.26.0 ([6da1291](https://github.com/entrecode/ec.sdk/commit/6da1291))

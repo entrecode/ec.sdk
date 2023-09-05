@@ -10,18 +10,48 @@ import { post } from '../../helper';
 const relationsSymbol: any = Symbol.for('relations');
 const environmentSymbol: any = Symbol.for('environment');
 
+export type accountType = 'Person' | 'Client' | 'API Key';
+
 interface AccountResource {
   accountID: string;
+  type: accountType | null;
   created: Date;
   email: string;
-  groups: Array<any>;
-  hasPassword: boolean;
-  hasPendingEmail: boolean;
-  language: string;
   name: string;
+  company: string | null;
+  preferredUsername: string | null;
+  givenName: string | null;
+  middleName: string | null;
+  familyName: string | null;
+  nickname: string | null;
+  birthdate: Date | null;
+  gender: string | null;
+  picture: string | null;
+  phoneNumber: string | null;
+  phoneNumberVerified: boolean;
+  address: {
+    streetAddress: string | null;
+    locality: string | null;
+    postalCode: string | null;
+    region: string | null;
+    country: string | null;
+    formatted: string | null;
+  };
+  language: string;
+  locale: string | null;
+  zoneInfo: string | null;
+  state: string;
+  hasPassword: boolean;
+  hasTOTP: boolean;
+  hasAuthenticators: Array<{id: string, type: string}>;
+  hasFallbackCodes: number;
+  hasPendingEmail: boolean;
+  mfaRequired: boolean;
+  authenticatorRequires2FA: boolean;
+  legacyLoginDisabled: boolean;
   openID: Array<any>;
   permissions: Array<string>;
-  state: string;
+  groups: Array<any>;
   lastLogin: Date;
 }
 
@@ -31,17 +61,43 @@ interface AccountResource {
  * @class
  *
  * @prop {string}         accountID         - The id of the Account
+ * @prop {string}         type              - The type of the account
  * @prop {Date}           created           - The {@link Date} on which this account was created
  * @prop {string}         email             - The current email. Can be changed with {@link
  *   Accounts#changeEmail}
- * @prop {Array<object>}  groups            - Array of groups this account is member of
- * @prop {boolean}        hasPassword       - Whether or not this account has a password
- * @prop {boolean}        hasPendingEmail   - Whether or not this account has a pending email
+ * @prop {string}         name              - The current name. 
+ * @prop {string}         company           - The current company.
+ * @prop {string}         preferredUsername - The current preferredUsername.
+ * @prop {string}         givenName         - The current givenName.
+ * @prop {string}         middleName        - The current middleName.
+ * @prop {string}         familyName        - The current familyName.
+ * @prop {string}         nickname          - The current nickname.
+ * @prop {Date}           birthdate         - The current birthdate.
+ * @prop {string}         gender            - The current gender (f|m|d)
+ * @prop {string}         picture           - The current picture url
+ * @prop {string}         phoneNumber       - The current phoneNumber
+ * @prop {boolean}        phoneNumberVerified - Whether or not the phoneNumber is verified
+ * @prop {object}         address           - The current address
+ * @prop {string}         address.streetAddress - The current streetAddress
+ * @prop {string}         address.locality  - The current locality
+ * @prop {string}         address.postalCode - The current postalCode
+ * @prop {string}         address.region    - The current region
+ * @prop {string}         address.country   - The current country
+ * @prop {string}         address.formatted - The current formatted address
  * @prop {string}         language          - The language for frontend usage
+ * @prop {string}         locale            - The locale for frontend usage
+ * @prop {string}         zoneInfo          - The zoneInfo for frontend usage
+ * @prop {string}         state             - State of the account.
+ * @prop {boolean}        hasTOTP           - Whether or not this account has TOTP enabled
+ * @prop {Array<object>}  hasAuthenticators - Array of authenticators this account has enabled
+ * @prop {number}         hasFallbackCodes  - Number of fallback codes this account has
+ * @prop {boolean}        mfaRequired       - Whether or not this account requires MFA
+ * @prop {boolean}        authenticatorRequires2FA - Whether or not this account requires 2FA
+ * @prop {boolean}        legacyLoginDisabled - Whether or not this account has legacy login disabled
  * @prop {Array<{sub: string, iss: string, pending: boolean, email: string, name: string}>}
  *                        openID            - Array of connected openID accounts
  * @prop {Array<string>}  permissions       - Array of permissions
- * @prop {string}         state             - State of the account.
+ * @prop {Array<object>}  groups            - Array of groups this account is member of
  * @prop {Date}           lastLogin         - The {@link Date} on which this account was last logged in
  */
 class AccountResource extends Resource {
@@ -74,7 +130,10 @@ class AccountResource extends Resource {
         enumerable: true,
         get: () => <string>this.getProperty('accountID'),
       },
-
+      type: {
+        enumerable: true,
+        get: () => this.getProperty('type'),
+      },
       created: {
         enumerable: true,
         get: () => new Date(this.getProperty('created')),
@@ -83,17 +142,101 @@ class AccountResource extends Resource {
         enumerable: true,
         get: () => this.getProperty('email'),
       },
-      groups: {
-        enumerable: false,
-        get: () => this.getProperty('groups'),
-      },
-      hasPassword: {
+      name: {
         enumerable: true,
-        get: () => this.getProperty('hasPassword'),
+        get: () => this.getProperty('name'),
+        set: (value) => {
+          this.setProperty('name', value);
+          return value;
+        },
       },
-      hasPendingEmail: {
+      company: {
         enumerable: true,
-        get: () => this.getProperty('hasPendingEmail'),
+        get: () => this.getProperty('company'),
+        set: (value) => {
+          this.setProperty('company', value);
+          return value;
+        },
+      },
+      preferredUsername: {
+        enumerable: true,
+        get: () => this.getProperty('preferredUsername'),
+        set: (value) => {
+          this.setProperty('preferredUsername', value);
+          return value;
+        },
+      },
+      givenName: {
+        enumerable: true,
+        get: () => this.getProperty('givenName'),
+        set: (value) => {
+          this.setProperty('givenName', value);
+          return value;
+        },
+      },
+      middleName: {
+        enumerable: true,
+        get: () => this.getProperty('middleName'),
+        set: (value) => {
+          this.setProperty('middleName', value);
+          return value;
+        },
+      },
+      familyName: {
+        enumerable: true,
+        get: () => this.getProperty('familyName'),
+        set: (value) => {
+          this.setProperty('familyName', value);
+          return value;
+        },
+      },
+      nickname: {
+        enumerable: true,
+        get: () => this.getProperty('nickname'),
+        set: (value) => {
+          this.setProperty('nickname', value);
+          return value;
+        },
+      },
+      birthdate: {
+        enumerable: true,
+        get: () => new Date(this.getProperty('birthdate')),
+        set: (value) => {
+          this.setProperty('birthdate', value);
+          return value;
+        },
+      },
+      gender: {
+        enumerable: true,
+        get: () => this.getProperty('gender'),
+        set: (value) => {
+          this.setProperty('gender', value);
+          return value;
+        },
+      },
+      picture: {
+        enumerable: true,
+        get: () => this.getProperty('picture'),
+        set: (value) => {
+          this.setProperty('picture', value);
+          return value;
+        },
+      },
+      phoneNumber: {
+        enumerable: true,
+        get: () => this.getProperty('phoneNumber'),
+        set: (value) => {
+          this.setProperty('phoneNumber', value);
+          return value;
+        },
+      },
+      address: {
+        enumerable: true,
+        get: () => this.getProperty('address'),
+        set: (value) => {
+          this.setProperty('address', value);
+          return value;
+        },
       },
       language: {
         enumerable: true,
@@ -103,13 +246,61 @@ class AccountResource extends Resource {
           return value;
         },
       },
-      name: {
+      locale: {
         enumerable: true,
-        get: () => this.getProperty('name'),
+        get: () => this.getProperty('locale'),
         set: (value) => {
-          this.setProperty('name', value);
+          this.setProperty('locale', value);
           return value;
         },
+      },
+      zoneInfo: {
+        enumerable: true,
+        get: () => this.getProperty('zoneInfo'),
+        set: (value) => {
+          this.setProperty('zoneInfo', value);
+          return value;
+        },
+      },
+      state: {
+        enumerable: true,
+        get: () => this.getProperty('state'),
+        set: (value) => {
+          this.setProperty('state', value);
+          return value;
+        },
+      },
+      hasPassword: {
+        enumerable: true,
+        get: () => this.getProperty('hasPassword'),
+      },
+      hasTOTP: {
+        enumerable: true,
+        get: () => this.getProperty('hasTOTP'),
+      },
+      hasAuthenticators: {
+        enumerable: true,
+        get: () => this.getProperty('hasAuthenticators'),
+      },
+      hasFallbackCodes: {
+        enumerable: true,
+        get: () => this.getProperty('hasFallbackCodes'),
+      },
+      hasPendingEmail: {
+        enumerable: true,
+        get: () => this.getProperty('hasPendingEmail'),
+      },
+      mfaRequired: {
+        enumerable: true,
+        get: () => this.getProperty('mfaRequired'),
+      },
+      authenticatorRequires2FA: {
+        enumerable: true,
+        get: () => this.getProperty('authenticatorRequires2FA'),
+      },
+      legacyLoginDisabled: {
+        enumerable: true,
+        get: () => this.getProperty('legacyLoginDisabled'),
       },
       openID: {
         enumerable: true,
@@ -127,13 +318,9 @@ class AccountResource extends Resource {
           return value;
         },
       },
-      state: {
-        enumerable: true,
-        get: () => this.getProperty('state'),
-        set: (value) => {
-          this.setProperty('state', value);
-          return value;
-        },
+      groups: {
+        enumerable: false,
+        get: () => this.getProperty('groups'),
       },
       lastLogin: {
         enumerable: true,
