@@ -200,7 +200,7 @@ class AccountResource extends Resource {
       },
       birthdate: {
         enumerable: true,
-        get: () => new Date(this.getProperty('birthdate')),
+        get: () => this.getProperty('birthdate'),
         set: (value) => {
           this.setProperty('birthdate', value);
           return value;
