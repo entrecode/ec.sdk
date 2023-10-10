@@ -1,3 +1,12 @@
+## <small>0.26.2 (2023-10-10)</small>
+
+* new package lock ([c1f4762](https://github.com/entrecode/ec.sdk/commit/c1f4762))
+* release version 0.26.2 ([656b6f7](https://github.com/entrecode/ec.sdk/commit/656b6f7))
+* fix: birthday in ec.account should be string ([00fac02](https://github.com/entrecode/ec.sdk/commit/00fac02))
+* fix: zoneinfo casing ([b6cd0ca](https://github.com/entrecode/ec.sdk/commit/b6cd0ca))
+
+
+
 ## <small>0.26.1 (2023-09-05)</small>
 
 * release version 0.26.1 ([7464028](https://github.com/entrecode/ec.sdk/commit/7464028))
