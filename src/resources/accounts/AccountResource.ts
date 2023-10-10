@@ -39,7 +39,7 @@ interface AccountResource {
   };
   language: string;
   locale: string | null;
-  zoneInfo: string | null;
+  zoneinfo: string | null;
   state: string;
   hasPassword: boolean;
   hasTOTP: boolean;
@@ -86,7 +86,7 @@ interface AccountResource {
  * @prop {string}         address.formatted - The current formatted address
  * @prop {string}         language          - The language for frontend usage
  * @prop {string}         locale            - The locale for frontend usage
- * @prop {string}         zoneInfo          - The zoneInfo for frontend usage
+ * @prop {string}         zoneinfo          - The zoneinfo for frontend usage
  * @prop {string}         state             - State of the account.
  * @prop {boolean}        hasTOTP           - Whether or not this account has TOTP enabled
  * @prop {Array<object>}  hasAuthenticators - Array of authenticators this account has enabled
@@ -254,11 +254,11 @@ class AccountResource extends Resource {
           return value;
         },
       },
-      zoneInfo: {
+      zoneinfo: {
         enumerable: true,
-        get: () => this.getProperty('zoneInfo'),
+        get: () => this.getProperty('zoneinfo'),
         set: (value) => {
-          this.setProperty('zoneInfo', value);
+          this.setProperty('zoneinfo', value);
           return value;
         },
       },
