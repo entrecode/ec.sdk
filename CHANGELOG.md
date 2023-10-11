@@ -1,3 +1,10 @@
+## <small>0.26.3 (2023-10-11)</small>
+
+* release version 0.26.3 ([e2cd883](https://github.com/entrecode/ec.sdk/commit/e2cd883))
+* chore: node 18 for gh action ([e49da3c](https://github.com/entrecode/ec.sdk/commit/e49da3c))
+
+
+
 ## <small>0.26.2 (2023-10-10)</small>
 
 * new package lock ([c1f4762](https://github.com/entrecode/ec.sdk/commit/c1f4762))
