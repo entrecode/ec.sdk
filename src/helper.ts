@@ -643,7 +643,7 @@ export function optionsToQuery(
                 if (Array.isArray(value[searchKey])) {
                   throw new Error(`${key}.${searchKey} must not be of type Array`);
                 }
-                if (value[searchKey] instanceof Boolean) {
+                if (typeof value[searchKey] === 'boolean') {
                   out[`${key}${modifier[searchKey]}`] = '';
                 } else if (value[searchKey] instanceof Date) {
                   out[`${key}${modifier[searchKey]}`] = value[searchKey].toISOString();
