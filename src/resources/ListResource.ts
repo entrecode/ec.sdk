@@ -481,6 +481,9 @@ export type filterType = Array<string> | number | string | filter | object | und
 /**
  * @typedef {Object} filterObject
  * @property {string} exact
+ * @property {string} not
+ * @property {boolean} null
+ * @property {boolean} notNull
  * @property {string} search
  * @property {string} from
  * @property {string} to
