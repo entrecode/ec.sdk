@@ -1,3 +1,13 @@
+## 0.27.0 (2023-11-27)
+
+* [feat] Adds null, not, and notNull filter ([a0817be](https://github.com/entrecode/ec.sdk/commit/a0817be))
+* release version 0.27.0 ([4ed6a18](https://github.com/entrecode/ec.sdk/commit/4ed6a18))
+* doc: adds not, null, and notNull to doc ([6723f84](https://github.com/entrecode/ec.sdk/commit/6723f84))
+* fix: null filter boolean check fixed ([44a92f6](https://github.com/entrecode/ec.sdk/commit/44a92f6))
+* chore: remove expired token ([5a5aec7](https://github.com/entrecode/ec.sdk/commit/5a5aec7))
+
+
+
 ## <small>0.26.3 (2023-10-11)</small>
 
 * release version 0.26.3 ([e2cd883](https://github.com/entrecode/ec.sdk/commit/e2cd883))

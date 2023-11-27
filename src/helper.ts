@@ -67,7 +67,7 @@ function jsonHandler(callback) {
 
       if (!res.body || res.body.length === 0) {
         return callback(
-          new Problem(newError(code, `ec.sdk: empty body on unsuccessful status: ${res.statusCode}`), locale)
+          new Problem(newError(code, `ec.sdk: empty body on unsuccessful status: ${res.statusCode}`), locale),
         );
       }
 
@@ -96,7 +96,7 @@ function jsonHandler(callback) {
 
       return callback(
         new Problem(newError(code || '000', `ec.sdk: unable to parse body ${additional}: ${res.body}`)),
-        locale
+        locale,
       );
     }
   };
@@ -552,6 +552,9 @@ function addHeaderToSuperagent(request: any, environment: environment) {
  */
 const modifier = {
   exact: '',
+  null: '',
+  not: '!',
+  notNull: '!',
   search: '~',
   from: 'From',
   to: 'To',
@@ -574,7 +577,7 @@ export function optionsToQuery(
   options: filterOptions,
   templateURL?: string,
   encode: boolean = false,
-  retry: boolean = false
+  retry: boolean = false,
 ): any {
   const out: any = {};
 
@@ -634,10 +637,15 @@ export function optionsToQuery(
               case 'search':
               case 'from':
               case 'to':
+              case 'null':
+              case 'not':
+              case 'notNull':
                 if (Array.isArray(value[searchKey])) {
                   throw new Error(`${key}.${searchKey} must not be of type Array`);
                 }
-                if (value[searchKey] instanceof Date) {
+                if (typeof value[searchKey] === 'boolean') {
+                  out[`${key}${modifier[searchKey]}`] = '';
+                } else if (value[searchKey] instanceof Date) {
                   out[`${key}${modifier[searchKey]}`] = value[searchKey].toISOString();
                 } else if (typeof value[searchKey] === 'string') {
                   out[`${key}${modifier[searchKey]}`] = value[searchKey];
@@ -723,19 +731,19 @@ export function optionsToQuery(
           error = newError(
             212,
             `Cannot apply 'search' filter to '${missing.substr(0, missing.indexOf('~'))}'`,
-            missing.substr(0, missing.indexOf('~'))
+            missing.substr(0, missing.indexOf('~')),
           );
         } else if (missing.indexOf('From') !== -1) {
           error = newError(
             212,
             `Cannot apply 'from' filter to '${missing.substr(0, missing.indexOf('From'))}'`,
-            missing.substr(0, missing.indexOf('From'))
+            missing.substr(0, missing.indexOf('From')),
           );
         } else if (missing.indexOf('To') !== -1) {
           error = newError(
             212,
             `Cannot apply 'to' filter to '${missing.substr(0, missing.indexOf('To'))}'`,
-            missing.substr(0, missing.indexOf('To'))
+            missing.substr(0, missing.indexOf('To')),
           );
         } else if (['page', 'size', 'sort'].indexOf(missing) !== -1) {
           // TODO was array.includes
@@ -784,9 +792,11 @@ export function shortenUUID(uuid: string, factor: number) {
   }
   shortUUID = uuid.replace(/-/g, ''); // strip the dashes out of the UUID
   shortUUID = shortUUID.split(''); // turn into Array
-  shortUUID = shortUUID.map((
-    element // parse Integer value out of hex value
-  ) => parseInt(element, 16));
+  shortUUID = shortUUID.map(
+    (
+      element, // parse Integer value out of hex value
+    ) => parseInt(element, 16),
+  );
   let j;
   let l;
 
@@ -800,9 +810,11 @@ export function shortenUUID(uuid: string, factor: number) {
     l = shortUUID.length;
     shortUUID = shortUUID.slice(0, l / 2).map(xor);
   }
-  shortUUID = shortUUID.map((
-    element // turn back into hex value
-  ) => element.toString(16));
+  shortUUID = shortUUID.map(
+    (
+      element, // turn back into hex value
+    ) => element.toString(16),
+  );
   shortUUID = shortUUID.join(''); // make array to string
   return shortUUID;
 }
@@ -824,14 +836,14 @@ export function fileNegotiate(
   image: boolean,
   thumb: boolean,
   size: number,
-  requestedLocale?: string
+  requestedLocale?: string,
 ): string {
   let f = JSON.parse(JSON.stringify(asset.files));
 
   if (requestedLocale) {
     const supportedLocales = new localeLib['Locales'](
       Array.from(new Set(f.map((e) => e.locale))) // unique
-        .filter((a) => !!a)
+        .filter((a) => !!a),
     ); // remove falsy values
     let bestLocale = new localeLib['Locales'](requestedLocale).best(supportedLocales).toString();
     const res = /^([^.]+)/.exec(bestLocale);

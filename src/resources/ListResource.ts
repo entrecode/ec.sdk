@@ -31,18 +31,19 @@ function map(
 ): Promise<Array<any>> {
   return list
     .getAllItems()
-    .map((entry) => (res) =>
-      Promise.resolve()
-        .then(() => {
-          if (retryFlag) {
-            return retry(entry, iterator);
-          }
-          return iterator(entry);
-        })
-        .then((result) => {
-          res.push(result);
-          return res;
-        }),
+    .map(
+      (entry) => (res) =>
+        Promise.resolve()
+          .then(() => {
+            if (retryFlag) {
+              return retry(entry, iterator);
+            }
+            return iterator(entry);
+          })
+          .then((result) => {
+            res.push(result);
+            return res;
+          }),
     )
     .reduce((current, next) => current.then(next), Promise.resolve(results))
     .then((res: Array<Resource>) => {
@@ -64,20 +65,21 @@ function filter(
 ): Promise<Array<Resource>> {
   return list
     .getAllItems()
-    .map((entry) => (res) =>
-      Promise.resolve()
-        .then(() => {
-          if (retryFlag) {
-            return retry(entry, iterator);
-          }
-          return iterator(entry);
-        })
-        .then((add) => {
-          if (add) {
-            res.push(entry);
-          }
-          return res;
-        }),
+    .map(
+      (entry) => (res) =>
+        Promise.resolve()
+          .then(() => {
+            if (retryFlag) {
+              return retry(entry, iterator);
+            }
+            return iterator(entry);
+          })
+          .then((add) => {
+            if (add) {
+              res.push(entry);
+            }
+            return res;
+          }),
     )
     .reduce((current, next) => current.then(next), Promise.resolve(results))
     .then((res) => {
@@ -98,20 +100,21 @@ function find(
 ): Promise<Resource | undefined> {
   return list
     .getAllItems()
-    .map((entry) => () =>
-      Promise.resolve()
-        .then(() => {
-          if (retryFlag) {
-            return retry(entry, iterator);
-          }
-          return iterator(entry);
-        })
-        .then((found) => {
-          if (!found) {
-            return undefined;
-          }
-          return entry;
-        }),
+    .map(
+      (entry) => () =>
+        Promise.resolve()
+          .then(() => {
+            if (retryFlag) {
+              return retry(entry, iterator);
+            }
+            return iterator(entry);
+          })
+          .then((found) => {
+            if (!found) {
+              return undefined;
+            }
+            return entry;
+          }),
     )
     .reduce(
       (current, next) =>
@@ -410,6 +413,9 @@ export type filterOptions = {
 
 export type filter = {
   exact?: string;
+  not?: string;
+  null?: boolean;
+  notNull: boolean;
   search?: string;
   from?: any;
   to?: any;
@@ -419,7 +425,7 @@ export type filter = {
 
 export default ListResource;
 
-export type filterType = Array<string> | number | string | filter | undefined;
+export type filterType = Array<string> | number | string | filter | object | undefined;
 
 /**
  * List filter options with pagination, sorting, and {@link filter}. This can be used to apply all
@@ -475,6 +481,9 @@ export type filterType = Array<string> | number | string | filter | undefined;
 /**
  * @typedef {Object} filterObject
  * @property {string} exact
+ * @property {string} not
+ * @property {boolean} null
+ * @property {boolean} notNull
  * @property {string} search
  * @property {string} from
  * @property {string} to
