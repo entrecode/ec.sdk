@@ -240,7 +240,7 @@ export class TokenStore {
       throw new Error('agent cannot be undefined');
     }
 
-    if (!/^(?:\w+\/[\w.+-]+(?: \([\w,; ]+\))? ?)+$/.test(agent)) {
+    if (!/^(?:[\w ]+\/[\w\.+-]+(?: \([\w,;\./ ]+\))? ?)+/.test(agent)) {
       throw new Error('agent is malformed');
     }
 

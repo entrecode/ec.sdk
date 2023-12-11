@@ -1,3 +1,11 @@
+## <small>0.27.1 (2023-12-11)</small>
+
+* release version 0.27.1 ([724de1d](https://github.com/entrecode/ec.sdk/commit/724de1d))
+* fix: allow more user agent formats ([d59eed3](https://github.com/entrecode/ec.sdk/commit/d59eed3))
+* fix: better user agent check ([070c9fb](https://github.com/entrecode/ec.sdk/commit/070c9fb))
+
+
+
 ## 0.27.0 (2023-11-27)
 
 * [feat] Adds null, not, and notNull filter ([a0817be](https://github.com/entrecode/ec.sdk/commit/a0817be))
