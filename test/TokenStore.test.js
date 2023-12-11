@@ -116,6 +116,10 @@ describe('Token handling', () => {
     store.setUserAgent('agent/1.0.0');
     store.agent.should.be.equal('agent/1.0.0');
   });
+  it('should set fancy user agent', () => {
+    store.setUserAgent('Mozilla/5.0 (Linux; Android 11; M2101K6G Build/RKQ1.200826.002; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/119.0.6045.193 Mobile Safari/537.36');
+    store.agent.should.be.equal('Mozilla/5.0 (Linux; Android 11; M2101K6G Build/RKQ1.200826.002; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/119.0.6045.193 Mobile Safari/537.36');
+  });
   it('should throw on undefined user agent', () => {
     const throws = () => store.setUserAgent();
     throws.should.throw('agent cannot be undefined');
