@@ -538,7 +538,7 @@ class Resource {
               'If-Unmodified-Since': date.toUTCString(),
             },
           });
-        } else if (!safePut && request.requestOptions.headers['If-Unmodified-Since']) {
+        } else if (!safePut && request.requestOptions?.headers?.['If-Unmodified-Since']) {
           delete request.requestOptions.headers['If-Unmodified-Since'];
         }
 
