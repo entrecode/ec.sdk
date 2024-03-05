@@ -1,3 +1,11 @@
+## <small>0.27.2 (2024-03-05)</small>
+
+* release version 0.27.2 ([9d07bac](https://github.com/entrecode/ec.sdk/commit/9d07bac))
+* fix: header handling on undefined headers ([2d3b75f](https://github.com/entrecode/ec.sdk/commit/2d3b75f))
+* fix: unsafe put after safe put ([9477f62](https://github.com/entrecode/ec.sdk/commit/9477f62))
+
+
+
 ## <small>0.27.1 (2023-12-11)</small>
 
 * release version 0.27.1 ([724de1d](https://github.com/entrecode/ec.sdk/commit/724de1d))

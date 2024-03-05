@@ -19,7 +19,7 @@ const relationsSymbol: any = Symbol.for('relations');
 const originalSymbol: any = Symbol.for('original');
 
 traverson.registerMediaType(HalAdapter.mediaType, HalAdapter);
-validator.setLoggingFunction(() => { });
+validator.setLoggingFunction(() => {});
 
 interface Resource {
   [key: string]: any;
@@ -155,17 +155,16 @@ class Resource {
           .validate(resource, `${link.profile}${this[relationsSymbol][relation].createTemplateModifier}`)
           .catch((e) => {
             throw new Problem(convertValidationError(e), locale);
-          })
+          }),
       )
       .then(() => this.newRequest().follow(this[relationsSymbol][relation].relation))
       .then((request) => {
         if (this[relationsSymbol][relation].additionalTemplateParam) {
           request.withTemplateParameters(
             optionsToQuery({
-              [this[relationsSymbol][relation].additionalTemplateParam]: this[
-                this[relationsSymbol][relation].additionalTemplateParam
-              ],
-            })
+              [this[relationsSymbol][relation].additionalTemplateParam]:
+                this[this[relationsSymbol][relation].additionalTemplateParam],
+            }),
           );
         }
         return post(this[environmentSymbol], request, resource);
@@ -408,9 +407,8 @@ class Resource {
           this[relationsSymbol][relation].additionalTemplateParam &&
           !(this[relationsSymbol][relation].additionalTemplateParam in additionalTemplateParams)
         ) {
-          additionalTemplateParams[this[relationsSymbol][relation].additionalTemplateParam] = this[
-            this[relationsSymbol][relation].additionalTemplateParam
-          ];
+          additionalTemplateParams[this[relationsSymbol][relation].additionalTemplateParam] =
+            this[this[relationsSymbol][relation].additionalTemplateParam];
         }
         const params = Object.assign({}, additionalTemplateParams, {
           [this[relationsSymbol][relation].id]: resourceID,
@@ -453,7 +451,7 @@ class Resource {
   resourceList(
     relation: string,
     options: filterOptions | any = {},
-    additionalTemplateParams: any = {}
+    additionalTemplateParams: any = {},
   ): Promise<ListResource> {
     return Promise.resolve()
       .then(() => {
@@ -493,13 +491,12 @@ class Resource {
           this[relationsSymbol][relation].additionalTemplateParam &&
           !(this[relationsSymbol][relation].additionalTemplateParam in additionalTemplateParams)
         ) {
-          additionalTemplateParams[this[relationsSymbol][relation].additionalTemplateParam] = this[
-            this[relationsSymbol][relation].additionalTemplateParam
-          ];
+          additionalTemplateParams[this[relationsSymbol][relation].additionalTemplateParam] =
+            this[this[relationsSymbol][relation].additionalTemplateParam];
         }
         const params = Object.assign({}, additionalTemplateParams, options);
         request.withTemplateParameters(
-          optionsToQuery(params, this.getLink(this[relationsSymbol][relation].relation).href)
+          optionsToQuery(params, this.getLink(this[relationsSymbol][relation].relation).href),
         );
         return get(this[environmentSymbol], request);
       })
@@ -541,6 +538,8 @@ class Resource {
               'If-Unmodified-Since': date.toUTCString(),
             },
           });
+        } else if (!safePut && request.requestOptions?.headers?.['If-Unmodified-Since']) {
+          delete request.requestOptions.headers['If-Unmodified-Since'];
         }
 
         return put(this[environmentSymbol], request, out);
@@ -610,7 +609,9 @@ class Resource {
         const keys = Object.keys(this);
         if (this[resourcePropertiesSymbol].length !== keys.length) {
           throw new Error(
-            `Additional properties found: ${keys.filter((k) => !this[resourcePropertiesSymbol].includes(k)).join(', ')}`
+            `Additional properties found: ${keys
+              .filter((k) => !this[resourcePropertiesSymbol].includes(k))
+              .join(', ')}`,
           );
         }
 
