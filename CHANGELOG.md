@@ -1,3 +1,10 @@
+## <small>0.27.3 (2024-04-09)</small>
+
+* release version 0.27.3 ([360d63d](https://github.com/entrecode/ec.sdk/commit/360d63d))
+* fix: Use account template when saving account ([3fdc83c](https://github.com/entrecode/ec.sdk/commit/3fdc83c))
+
+
+
 ## <small>0.27.2 (2024-03-05)</small>
 
 * release version 0.27.2 ([9d07bac](https://github.com/entrecode/ec.sdk/commit/9d07bac))

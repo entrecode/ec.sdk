@@ -43,7 +43,7 @@ interface AccountResource {
   state: string;
   hasPassword: boolean;
   hasTOTP: boolean;
-  hasAuthenticators: Array<{id: string, type: string}>;
+  hasAuthenticators: Array<{ id: string; type: string }>;
   hasFallbackCodes: number;
   hasPendingEmail: boolean;
   mfaRequired: boolean;
@@ -65,7 +65,7 @@ interface AccountResource {
  * @prop {Date}           created           - The {@link Date} on which this account was created
  * @prop {string}         email             - The current email. Can be changed with {@link
  *   Accounts#changeEmail}
- * @prop {string}         name              - The current name. 
+ * @prop {string}         name              - The current name.
  * @prop {string}         company           - The current company.
  * @prop {string}         preferredUsername - The current preferredUsername.
  * @prop {string}         givenName         - The current givenName.
@@ -440,6 +440,16 @@ class AccountResource extends Resource {
     return this.follow('ec:account/tokens')
       .then((request) => post(this[environmentSymbol], request))
       .then(([tokenResponse]) => tokenResponse);
+  }
+
+  /**
+   * Saves this {@link AccountResource}.
+   *
+   * @returns {Promise<AccountResource>} Promise will resolve to the saved AccountResource. Will
+   *   be the same object but with refreshed data.
+   */
+  save(): Promise<AccountResource> {
+    return <Promise<AccountResource>>super.save(false, `${this.getLink('self').profile}-template`);
   }
 
   // TODO remove permission
