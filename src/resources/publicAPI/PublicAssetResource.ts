@@ -67,7 +67,10 @@ class PublicAssetResource extends Resource {
         enumerable: true,
         get: () => <Array<string>>this.getProperty('tags'),
         set: (value: Array<string | any>) => {
-          return this.setProperty('tags', value.map((x) => (typeof x === 'string' ? x : x.tag)));
+          return this.setProperty(
+            'tags',
+            value.map((x) => (typeof x === 'string' ? x : x.tag)),
+          );
         },
       },
       title: {

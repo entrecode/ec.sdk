@@ -5,10 +5,7 @@ import { environment } from '../../Core';
 import RoleResource from './RoleResource';
 import LiteRoleResource from '../publicAPI/LiteRoleResource';
 import { filterOptions } from '../ListResource';
-import {
-  get,
-  optionsToQuery,
-} from '../../helper';
+import { get, optionsToQuery } from '../../helper';
 import DMAuthTokenList from '../publicAPI/DMAuthTokenList';
 import DMAuthTokenResource from '../publicAPI/DMAuthTokenResource';
 
@@ -62,7 +59,7 @@ class DMAccountResource extends Resource {
         id: 'hash',
         ResourceClass: DMAuthTokenResource,
         ListClass: DMAuthTokenList,
-      }
+      },
     };
     Object.defineProperties(this, {
       accountID: {
@@ -136,7 +133,10 @@ class DMAccountResource extends Resource {
 
             const baseLink = this.getLink('self').href.split('account?')[0];
             return {
-              href: `${baseLink}role?${querystring.stringify({ dataManagerID: this.dataManagerID, roleID: role as string })}`,
+              href: `${baseLink}role?${querystring.stringify({
+                dataManagerID: this.dataManagerID,
+                roleID: role as string,
+              })}`,
             };
           });
 
@@ -166,7 +166,7 @@ class DMAccountResource extends Resource {
    * @returns {Promise<DMAuthTokenList>} Promise resolving to DMAuthTokenList
    */
   tokenList(options?: filterOptions | any): Promise<DMAuthTokenList> {
-    // TODO remove any 
+    // TODO remove any
     return Promise.resolve()
       .then(() => {
         return this.follow('ec:dm-authtokens');

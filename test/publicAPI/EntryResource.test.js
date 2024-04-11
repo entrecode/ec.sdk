@@ -393,8 +393,7 @@ describe('Entry Resource', () => {
   it('should set account field, LiteDMAccountResource', () => {
     const account = new LiteDMAccountResource({
       profile: 'https://entrecode.de/schema/dm-account',
-      href:
-        'https://datamanager.entrecode.de/account?dataManagerID=48e18a34-cf64-4f4a-bc47-45323a7f0e44&accountID=49518e7d-a8b0-444a-b829-7fe3c86810ab',
+      href: 'https://datamanager.entrecode.de/account?dataManagerID=48e18a34-cf64-4f4a-bc47-45323a7f0e44&accountID=49518e7d-a8b0-444a-b829-7fe3c86810ab',
       title: null,
     });
     resource.account = account;
@@ -427,8 +426,7 @@ describe('Entry Resource', () => {
   it('should set role field, LiteRoleResource', () => {
     const role = new LiteRoleResource({
       profile: 'https://entrecode.de/schema/dm-role',
-      href:
-        'https://datamanager.entrecode.de/role?dataManagerID=48e18a34-cf64-4f4a-bc47-45323a7f0e44&roleID=3779d1ee-ce4f-4081-b2a7-6245e8540b18',
+      href: 'https://datamanager.entrecode.de/role?dataManagerID=48e18a34-cf64-4f4a-bc47-45323a7f0e44&roleID=3779d1ee-ce4f-4081-b2a7-6245e8540b18',
       title: 'Registered Users',
     });
     resource.role = role;

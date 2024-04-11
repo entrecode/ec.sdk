@@ -18,6 +18,7 @@ const api = new PublicAPI('beefbeef', { environment: 'live' });
 ```
 
 ### entryList
+
 ```js
 const list = await api.entryList('modelTitle', {
   size: 10,
@@ -30,15 +31,17 @@ const list = await api.entryList('modelTitle', {
   prop: { any: ['id1', 'id2'] },
 });
 ```
+
 Always recommended: `size` and `_fields`.
 
 Properties:
 
 ```js
-list.count // results in this response
-list.total // total
-list.getFirstItem() // not really needed anymore:
+list.count; // results in this response
+list.total; // total
+list.getFirstItem(); // not really needed anymore:
 ```
+
 Get single entry:
 
 ```js
@@ -47,13 +50,14 @@ const entry = await api.entry('modelTitle', { uniqueField: 'uniqueValue' });
 
 Async Iterator Functions:
 
-*Keep in mind that you should sort the entryList after something that does not change, like `created`*
+_Keep in mind that you should sort the entryList after something that does not change, like `created`_
 
 ```js
 await list.map();
 await list.filter();
 await list.find();
 ```
+
 ### liteEntry
 
 ```js
@@ -62,6 +66,7 @@ await liteEntry.resolve();
 ```
 
 ### entry
+
 Properties:
 
 ```js
@@ -74,4 +79,3 @@ Saving/Deleting:
 await entry.del();
 await entry.save(true); // save PUT
 ```
-

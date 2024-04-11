@@ -42,9 +42,7 @@ export default class PublicAssetList extends ListResource {
         if (!tag) {
           throw new Error('tag must be defined');
         }
-        const request = this.newRequest()
-          .follow('ec:api/tags')
-          .withTemplateParameters({ tag });
+        const request = this.newRequest().follow('ec:api/tags').withTemplateParameters({ tag });
         return get(this[environmentSymbol], request);
       })
       .then(([res, traversal]) => new PublicTagResource(res, this[environmentSymbol], traversal));

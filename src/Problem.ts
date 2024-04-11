@@ -120,10 +120,7 @@ ${this.detail}${this.verbose ? ` - ${this.verbose}` : ''}${this.requestID ? ` ($
   private sub(): string {
     let out = '\nSubErrors:\n';
     this.subErrors.forEach((e) => {
-      out += `  ${e
-        .short()
-        .split('\n')
-        .join('  \n')}\n`;
+      out += `  ${e.short().split('\n').join('  \n')}\n`;
     });
     return out;
   }

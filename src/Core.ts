@@ -25,7 +25,7 @@ const cookieModifierSymbol: any = Symbol.for('cookieModifier');
 
 traverson['registerMediaType'](HalAdapter.mediaType, HalAdapter);
 
-validator.setLoggingFunction(() => { });
+validator.setLoggingFunction(() => {});
 
 /**
  * Each API connector Class inherits directly from Core class. You cannot instantiate Core
@@ -161,17 +161,16 @@ export default class Core {
           .validate(resource, `${link.profile}${this[relationsSymbol][relation].createTemplateModifier}`)
           .catch((e) => {
             throw new Problem(convertValidationError(e), locale);
-          })
+          }),
       )
       .then(() => this.follow(this[relationsSymbol][relation].relation))
       .then((request) => {
         if (this[relationsSymbol][relation].additionalTemplateParam) {
           request.withTemplateParameters(
             optionsToQuery({
-              [this[relationsSymbol][relation].additionalTemplateParam]: this[
-                this[relationsSymbol][relation].additionalTemplateParam
-              ],
-            })
+              [this[relationsSymbol][relation].additionalTemplateParam]:
+                this[this[relationsSymbol][relation].additionalTemplateParam],
+            }),
           );
         }
         return post(this[environmentSymbol], request, resource);
@@ -214,9 +213,8 @@ export default class Core {
       this[relationsSymbol][relation].additionalTemplateParam &&
       !(this[relationsSymbol][relation].additionalTemplateParam in additionalTemplateParams)
     ) {
-      additionalTemplateParams[this[relationsSymbol][relation].additionalTemplateParam] = this[
-        this[relationsSymbol][relation].additionalTemplateParam
-      ];
+      additionalTemplateParams[this[relationsSymbol][relation].additionalTemplateParam] =
+        this[this[relationsSymbol][relation].additionalTemplateParam];
     }
     const params = Object.assign({}, additionalTemplateParams, {
       [this[relationsSymbol][relation].id]: resourceID,
@@ -268,7 +266,9 @@ export default class Core {
    *
    * @returns {{access_token: string, refresh_token?: string, token_type: string, expires_in: number}} Returns the new token response on successful refresh
    */
-  async doRefreshToken(): Promise<{ access_token: string; refresh_token?: string; token_type: string; expires_in: number } | undefined> {
+  async doRefreshToken(): Promise<
+    { access_token: string; refresh_token?: string; token_type: string; expires_in: number } | undefined
+  > {
     throw new Error('only supported on PublicAPI');
   }
 
@@ -540,9 +540,8 @@ export default class Core {
           this[relationsSymbol][relation].additionalTemplateParam &&
           !(this[relationsSymbol][relation].additionalTemplateParam in additionalTemplateParams)
         ) {
-          additionalTemplateParams[this[relationsSymbol][relation].additionalTemplateParam] = this[
-            this[relationsSymbol][relation].additionalTemplateParam
-          ];
+          additionalTemplateParams[this[relationsSymbol][relation].additionalTemplateParam] =
+            this[this[relationsSymbol][relation].additionalTemplateParam];
         }
         const params = Object.assign({}, additionalTemplateParams, {
           [this[relationsSymbol][relation].id]: resourceID,
@@ -585,7 +584,7 @@ export default class Core {
   resourceList(
     relation: string,
     options: filterOptions | any = {},
-    additionalTemplateParams: any = {}
+    additionalTemplateParams: any = {},
   ): Promise<ListResource> {
     return Promise.resolve()
       .then(() => {
@@ -623,13 +622,12 @@ export default class Core {
           this[relationsSymbol][relation].additionalTemplateParam &&
           !(this[relationsSymbol][relation].additionalTemplateParam in additionalTemplateParams)
         ) {
-          additionalTemplateParams[this[relationsSymbol][relation].additionalTemplateParam] = this[
-            this[relationsSymbol][relation].additionalTemplateParam
-          ];
+          additionalTemplateParams[this[relationsSymbol][relation].additionalTemplateParam] =
+            this[this[relationsSymbol][relation].additionalTemplateParam];
         }
         const params = Object.assign({}, additionalTemplateParams, options);
         request.withTemplateParameters(
-          optionsToQuery(params, this.getLink(this[relationsSymbol][relation].relation).href)
+          optionsToQuery(params, this.getLink(this[relationsSymbol][relation].relation).href),
         );
         return get(this[environmentSymbol], request);
       })

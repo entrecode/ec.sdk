@@ -37,7 +37,7 @@ interface ClientResource {
  * ClientResource class
  *
  * @class
- * 
+ *
  * @prop {string} clientID      - The id of the client
  * @prop {Date}   created       - The {@link Date} on which this client was created, is set on creation
  * @prop {Date}   modified      - The {@link Date} on which this client was last modified, is set on updates

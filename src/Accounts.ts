@@ -190,10 +190,10 @@ export default class Accounts extends Core {
    *   permissions: ['my:permission-string'], // directly attach permission. You need the right to do that!
    *   groups: [{ groupID: '...' }], // directly add account to group. You need the right to do that!
    * })
-   * .then(({ jwt, accountID, iat, exp}) => { 
+   * .then(({ jwt, accountID, iat, exp}) => {
    *   // do something with `jwt` because it is not accessable later
    * });
-   * 
+   *
    * @param {apiTokenOptions?} options
    *
    * @returns {Promise<{jwt: string, accountID: string, iat: number, exp: number}>} the created api
@@ -202,7 +202,7 @@ export default class Accounts extends Core {
   createApiToken({ name, validUntil, permissions, groups }: apiTokenOptions = {}): Promise<tokenResponse> {
     // TODO advanced type
     return this.follow('ec:auth/create-anonymous')
-      .then((request) => validUntil ? request.withTemplateParameters({ validUntil }) : request)
+      .then((request) => (validUntil ? request.withTemplateParameters({ validUntil }) : request))
       .then((request) => post(this[environmentSymbol], request, { name, permissions, groups }))
       .then(([tokenResponse]) => tokenResponse);
   }
@@ -212,7 +212,7 @@ export default class Accounts extends Core {
    *
    * @example
    * const accounts = new Accounts();
-   * 
+   *
    * const publicClient = await accounts.createClient({
    *   clientID: 'my-public-client',
    *   clientName: 'A public client for web applications',
@@ -223,7 +223,7 @@ export default class Accounts extends Core {
    *   authUIOrigin: 'https://login.entrecode.de',
    *   logoURI: 'https://entrecode.de/de/assets/ec-logo.svg'
    * });
-   * 
+   *
    * const confidentialClient = await accounts.createClient({
    *   clientID: 'my-private-client',
    *   clientName: 'A confidential client for server side applications',
@@ -235,7 +235,7 @@ export default class Accounts extends Core {
    *   authUIOrigin: 'https://login.entrecode.de',
    *   logoURI: 'https://entrecode.de/de/assets/ec-logo.svg'
    * });
-   * 
+   *
    * const apiClient = await accounts.createClient({
    *   clientID: 'my-api-client',
    *   clientName: 'A client for API access',
@@ -243,7 +243,7 @@ export default class Accounts extends Core {
    *   tokenEndpointAuthMethod: 'client_secret_basic',
    *   clientSecret: 'my-secret',
    * });
-   * 
+   *
    * @param {object} client object representing the client
    * @returns {Promise<ClientResource>} the newly created ClientResource
    */
@@ -509,4 +509,9 @@ export type inviteCreateGroupObject = {
   name: string;
 };
 
-export type apiTokenOptions = { name?: string, validUntil?: number, permissions?: Array<string>, groups?: Array<GroupResource | { groupID: string }> }
+export type apiTokenOptions = {
+  name?: string;
+  validUntil?: number;
+  permissions?: Array<string>;
+  groups?: Array<GroupResource | { groupID: string }>;
+};

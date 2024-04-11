@@ -187,7 +187,7 @@ class DMAssetResource extends Resource {
       let mimeType;
       switch (type) {
         case 'jpeg':
-        //case 'jpg': // not allowed in imageType
+          //case 'jpg': // not allowed in imageType
           mimeType = 'image/jpeg';
           break;
         case 'png':
@@ -225,7 +225,9 @@ class DMAssetResource extends Resource {
       if (thumb) {
         file = this.thumbnails.filter((t) => t.dimension === sizeRequested);
       } else {
-        file = this.fileVariants.filter((v) => mimeType === v.mimetype && Math.max(v.resolution.width, v.resolution.height) === sizeRequested);
+        file = this.fileVariants.filter(
+          (v) => mimeType === v.mimetype && Math.max(v.resolution.width, v.resolution.height) === sizeRequested,
+        );
       }
       if (file.length > 0) {
         return file[0].url;

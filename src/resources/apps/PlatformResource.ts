@@ -139,7 +139,7 @@ class PlatformResource extends Resource {
    */
   createBuild(comment?: string): Promise<BuildResource> {
     return post(this[environmentSymbol], this.newRequest().follow('ec:app/builds'), { comment }).then(
-      ([res, traversal]) => new BuildResource(res, this[environmentSymbol], traversal)
+      ([res, traversal]) => new BuildResource(res, this[environmentSymbol], traversal),
     );
   }
 
@@ -156,7 +156,7 @@ class PlatformResource extends Resource {
   createDeployment(
     targetIDs: string | TargetResource | TargetList | Array<string | TargetResource>,
     buildID: string | BuildResource | BuildList | Array<string | BuildResource>,
-    comment?: string
+    comment?: string,
   ): Promise<DeploymentResource> {
     return Promise.resolve()
       .then(() => {
@@ -176,7 +176,7 @@ class PlatformResource extends Resource {
         }
 
         targetIDs = (<Array<string | TargetResource>>targetIDs).map((target) =>
-          target instanceof TargetResource ? target.targetID : target
+          target instanceof TargetResource ? target.targetID : target,
         );
 
         const request = this.newRequest()
@@ -200,7 +200,7 @@ class PlatformResource extends Resource {
    * @returns {Promise<DeploymentResource>} The created deployment, probably in running state.
    */
   deployLatestBuild(
-    targetIDs: string | TargetResource | TargetList | Array<string | TargetResource>
+    targetIDs: string | TargetResource | TargetList | Array<string | TargetResource>,
   ): Promise<DeploymentResource> {
     return Promise.resolve().then(() => {
       const link = this.getLink('ec:app/build/latest');
@@ -312,7 +312,7 @@ class PlatformResource extends Resource {
    */
   loadCodeSource(): Promise<CodeSourceResource> {
     return get(this[environmentSymbol], this.newRequest().follow('ec:app/codesource')).then(
-      ([res, traversal]) => new CodeSourceResource(res, this[environmentSymbol], traversal)
+      ([res, traversal]) => new CodeSourceResource(res, this[environmentSymbol], traversal),
     );
   }
 
@@ -323,7 +323,7 @@ class PlatformResource extends Resource {
    */
   loadDataSource(): Promise<DataSourceResource> {
     return get(this[environmentSymbol], this.newRequest().follow('ec:app/datasource')).then(
-      ([res, traversal]) => new DataSourceResource(res, this[environmentSymbol], traversal)
+      ([res, traversal]) => new DataSourceResource(res, this[environmentSymbol], traversal),
     );
   }
 
@@ -337,7 +337,7 @@ class PlatformResource extends Resource {
       .then(() => {
         const qs: any = {};
         const targetIDs = this.getLinks('ec:app/target').map(
-          (l: any) => querystring.parse(l.href.split('?')[1]).targetID
+          (l: any) => querystring.parse(l.href.split('?')[1]).targetID,
         );
         if (targetIDs.length === 1) {
           targetIDs.push(targetIDs[0]);
