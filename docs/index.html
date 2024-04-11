@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset='utf-8'>
-  <title>ec.sdk 0.27.3 | Documentation</title>
+  <title>ec.sdk 0.28.0 | Documentation</title>
   <meta name='description' content='SDK for ec.api'>
   <meta name='viewport' content='width=device-width,initial-scale=1'>
   <link href='assets/bass.css' rel='stylesheet'>
@@ -15,7 +15,7 @@
       <div id='split-left' class='overflow-auto fs0 height-viewport-100'>
         <div class='py1 px2'>
           <h3 class='mb0 no-anchor'>ec.sdk</h3>
-          <div class='mb1'><code>0.27.3</code></div>
+          <div class='mb1'><code>0.28.0</code></div>
           <input
             placeholder='Filter'
             id='filter-input'
@@ -9822,7 +9822,9 @@ token
   
 
   <p>Create a new asset. This should handle various input types.</p>
-<p>The most basic type is a string representing a file path, this can be used on node projects.</p>
+<p>The most basic type is a string representing a file path, this can be used on node projects.
+Another option for node is providing a Buffer object (eg. fs.readFile, …). When providing a
+Buffer you must specify 'fileName' in options object.</p>
 <p>For frontend usage you musst provide a
 <a href="https://developer.mozilla.org/de/docs/Web/API/FormData">FormData</a> object containing the
 file in a field with the name 'file'.</p>
@@ -9845,7 +9847,8 @@ file in a field with the name 'file'.</p>
         <div class='space-bottom0'>
           <div>
             <span class='code bold'>input</span> <code class='quiet'>((<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a> | <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>))</code>
-	    representing the asset, either a path, or a FormData object.
+	    representing the asset, either a path, a FormData object, or an
+object containing a buffer.
 
           </div>
           
@@ -9907,7 +9910,10 @@ factory which then resolves to the newly created PublicAssetResource
 
   
 
-  <p>Create a legacy asset.</p>
+  <p>Create a legacy asset. This should handle various input types.</p>
+<p>The most basic type is an array of strings representing a file paths, this can be used on node
+projects. Another option for node is providing an array of Buffer objects (eg. fs.readFile,
+…). When providing a Buffer you must specify 'fileName' in options object.</p>
 <p>For frontend usage you musst provide a
 <a href="https://developer.mozilla.org/de/docs/Web/API/FormData">FormData</a> object containing the
 multiple files in a field with the name 'file'.</p>
@@ -9931,7 +9937,7 @@ multiple files in a field with the name 'file'.</p>
           <div>
             <span class='code bold'>input</span> <code class='quiet'>((<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a> | <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">array</a>&#x3C;(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a> | <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)>))</code>
 	    representing the asset, either an array of paths, a
-FormData object, or an array of readStreams.
+FormData object, a array of readStreams, or an array containing buffers.
 
           </div>
           
@@ -9995,7 +10001,8 @@ factory which then resolves to the newly created assets as AssetList
 
   <p>Create one or multiple new assets. This should handle various input types.</p>
 <p>The most basic type is a string representing a file path, this can be used on node
-projects.</p>
+projects. Another option for node is providing a Buffer object (eg. fs.readFile,
+…). When providing a Buffer you must specify 'fileName' in options object.</p>
 <p>For frontend usage you must provide a
 <a href="https://developer.mozilla.org/de/docs/Web/API/FormData">FormData</a> object containing the
 multiple files in a field with the name 'file'.</p>
@@ -10029,7 +10036,7 @@ multiple files in a field with the name 'file'.</p>
           <div>
             <span class='code bold'>input</span> <code class='quiet'>((<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a> | <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">array</a>&#x3C;(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a> | <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)> | <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>))</code>
 	    representing the asset, either an array of
-paths, a FormData object, an array of readStreams, or a string.
+paths, a FormData object, a array of readStreams, an array containing buffers, or a string.
 
           </div>
           
@@ -10039,7 +10046,7 @@ paths, a FormData object, an array of readStreams, or a string.
           <div>
             <span class='code bold'>options</span> <code class='quiet'>(<a href="#fileoptions">fileOptions</a>
             = <code>{}</code>)</code>
-	    options for creating the assets.
+	    options for creating an asset.
 
           </div>
           
@@ -26366,7 +26373,7 @@ by the options parameter.</p>
           <div>
             <span class='code bold'>input</span> <code class='quiet'>((<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a> | <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>))</code>
 	    representing the asset, either a path, a FormData object,
-or a readStream.
+a readStream, or an object containing a buffer.
 
           </div>
           
@@ -26519,7 +26526,7 @@ or a readStream.
           <div>
             <span class='code bold'>input</span> <code class='quiet'>((<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a> | <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">array</a>&#x3C;(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a> | <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)>))</code>
 	    representing the asset, either an array of paths, a
-FormData object, or an array of readStreams.
+FormData object, a array of readStreams, or an array containing buffers.
 
           </div>
           
