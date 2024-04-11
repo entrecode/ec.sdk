@@ -29,7 +29,7 @@ interface GroupResource {
  * @prop {Array<string>}  permissions              - Array of permissions
  * @prop {string}         customAuthDomain         - Domain from wich users in this group receive auth mails
  * @prop {string}         customAuthDomainPriority - Priority of the custom auth domain
- * @prop {Object}         groupSettings            - Group settings  
+ * @prop {Object}         groupSettings            - Group settings
  */
 class GroupResource extends Resource {
   /**

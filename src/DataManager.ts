@@ -3,20 +3,20 @@ import * as validator from 'json-schema-remote';
 const { convertValidationError } = require('ec.errors')();
 
 import Core, { environment, options } from './Core';
-import DataManagerResource from './resources/datamanager/DataManagerResource';
-import DataManagerList from './resources/datamanager/DataManagerList';
+import Problem from './Problem';
+import { get, locale, optionsToQuery, post, superagentGet } from './helper';
+import { filterOptions } from './resources/ListResource';
 import DMStatsList from './resources/datamanager/DMStatsList';
 import DMStatsResource from './resources/datamanager/DMStatsResource';
+import DataManagerList from './resources/datamanager/DataManagerList';
+import DataManagerResource from './resources/datamanager/DataManagerResource';
 import TemplateList from './resources/datamanager/TemplateList';
 import TemplateResource from './resources/datamanager/TemplateResource';
-import { filterOptions } from './resources/ListResource';
-import { locale, get, getHistory, optionsToQuery, post, superagentGet } from './helper';
-import Problem from './Problem';
 import HistoryEvents from './resources/publicAPI/HistoryEvents';
 
 declare const EventSource: any;
 
-validator.setLoggingFunction(() => { });
+validator.setLoggingFunction(() => {});
 
 const environmentSymbol: any = Symbol.for('environment');
 const relationsSymbol: any = Symbol.for('relations');

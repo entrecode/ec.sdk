@@ -1,3 +1,11 @@
+## 0.28.0 (2024-04-11)
+
+* release version 0.28.0 ([90f08f5](https://github.com/entrecode/ec.sdk/commit/90f08f5))
+* chore: codeStyle ([b269ffc](https://github.com/entrecode/ec.sdk/commit/b269ffc))
+* feat: added support for buffer again ([ea915fe](https://github.com/entrecode/ec.sdk/commit/ea915fe))
+
+
+
 ## <small>0.27.3 (2024-04-09)</small>
 
 * release version 0.27.3 ([360d63d](https://github.com/entrecode/ec.sdk/commit/360d63d))

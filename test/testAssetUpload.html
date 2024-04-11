@@ -15,8 +15,8 @@
     <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
     <script src="../dist/ec.sdk.js"></script>
     <script>
-      $(document).ready(function() {
-        $('form').submit(function(e) {
+      $(document).ready(function () {
+        $('form').submit(function (e) {
           e.preventDefault();
           var data;
 
@@ -34,14 +34,14 @@
             .then((dm) => {
               return dm.createAsset(data);
             })
-            .then(function(asset) {
+            .then(function (asset) {
               console.log('success!');
               return asset();
             })
             .then((asset) => {
               console.log(asset.assetID);
             })
-            .catch(function(err) {
+            .catch(function (err) {
               console.error(err);
             });
           e.preventDefault();

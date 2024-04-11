@@ -64,10 +64,7 @@ describe('Session class', () => {
     const session = new Session();
     session[tokenStoreSymbol].deleteToken();
     session.setClientID('rest');
-    return session
-      .setClientID('rest')
-      .login('user', null)
-      .should.be.rejectedWith('password must be defined');
+    return session.setClientID('rest').login('user', null).should.be.rejectedWith('password must be defined');
   });
   it('should logout successfully', () => {
     const session = new Session();
