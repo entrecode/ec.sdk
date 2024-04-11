@@ -1,6 +1,14 @@
 import * as qs from 'querystring';
 import * as superagent from 'superagent';
 
+import { environment } from '../../Core';
+import PublicAPI from '../../PublicAPI';
+import { get, getUrl, optionsToQuery, superagentPost } from '../../helper';
+import { filterOptions } from '../ListResource';
+import Resource from '../Resource';
+import HistoryEvents from '../publicAPI/HistoryEvents';
+import AssetGroupList from './AssetGroupList';
+import AssetGroupResource from './AssetGroupResource';
 import AssetList from './AssetList';
 import AssetResource from './AssetResource';
 import DMAccountList from './DMAccountList';
@@ -11,16 +19,8 @@ import DMStatsList from './DMStatsList';
 import DMStatsResource from './DMStatsResource';
 import ModelList from './ModelList';
 import ModelResource from './ModelResource';
-import Resource from '../Resource';
 import RoleList from './RoleList';
 import RoleResource from './RoleResource';
-import { filterOptions } from '../ListResource';
-import { get, getUrl, superagentPost, optionsToQuery } from '../../helper';
-import { environment } from '../../Core';
-import PublicAPI from '../../PublicAPI';
-import AssetGroupResource from './AssetGroupResource';
-import AssetGroupList from './AssetGroupList';
-import HistoryEvents from '../publicAPI/HistoryEvents';
 
 const environmentSymbol: any = Symbol.for('environment');
 const apiSymbol: any = Symbol('api');
@@ -357,7 +357,7 @@ class DataManagerResource extends Resource {
    * Create a new asset.
    *
    * @param {object|string} input representing the asset, either a path, a FormData object,
-   *  or a readStream.
+   *  a readStream, or an object containing a buffer.
    * @param {object?} options options for creating an asset.
    * @returns {Promise<Promise<AssetResource>>} the newly created AssetResource
    */
@@ -375,6 +375,11 @@ class DataManagerResource extends Resource {
           superagentRequest.send(input);
         } else if (typeof input === 'string') {
           superagentRequest.attach('file', input);
+        } else if (input?.byteLength) {
+          if (!('fileName' in options)) {
+            throw new Error('When using buffer file input you must provide options.fileName.');
+          }
+          superagentRequest.attach('file', input, <string>options.fileName);
         } else {
           throw new Error('Cannot handle input.');
         }
@@ -420,7 +425,7 @@ class DataManagerResource extends Resource {
    * Create multiple new asset.
    *
    * @param {object|array<object|string>} input representing the asset, either an array of paths, a
-   *   FormData object, or an array of readStreams.
+   *   FormData object, a array of readStreams, or an array containing buffers.
    * @param {object?} options options for creating an asset.
    * @returns {Promise<Promise<AssetList>>} the newly created assets as AssetList
    */
@@ -441,6 +446,11 @@ class DataManagerResource extends Resource {
           input.forEach((file, index) => {
             if (typeof file === 'string') {
               superagentRequest.attach('file', file);
+            } else if (file?.byteLength) {
+              if (!('fileName' in options) || !Array.isArray(options.fileName) || !options.fileName[index]) {
+                throw new Error('When using buffer file input you must provide options.fileName.');
+              }
+              superagentRequest.attach('file', file, options.fileName[index]);
             } else {
               throw new Error('Cannot handle input.');
             }

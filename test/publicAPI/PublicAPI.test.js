@@ -13,7 +13,6 @@ const Api = require('../../lib/PublicAPI');
 const helper = require('../../lib/helper');
 
 const mock = require('../mocks/nock');
-const fdMock = require('./../mocks/formData.mock.js');
 
 const publicSchema = require('../mocks/public-schema');
 const EntryList = require('../../lib/resources/publicAPI/EntryList').default;
@@ -269,10 +268,7 @@ describe('PublicAPI', () => {
   it('should be rejected on undefined password', () => {
     api[tokenStoreSymbol].deleteToken();
     api.setClientID('rest');
-    return api
-      .setClientID('rest')
-      .login('user', null)
-      .should.be.rejectedWith('password must be defined');
+    return api.setClientID('rest').login('user', null).should.be.rejectedWith('password must be defined');
   });
   it('should logout successfully', () => {
     api.setClientID('rest');
@@ -869,8 +865,64 @@ describe('PublicAPI', () => {
         throw err;
       });
   });
-  it('should create asset, FormData (mock), title and tags', () => {
-    global.FormData = fdMock;
+  it('should create asset, buffer, title and tags', () => {
+    const stubGetUrl = sinon.stub(helper, 'getUrl');
+    stubGetUrl.returns(Promise.resolve('https://datamanager.entrecode.de/asset/beefbeef'));
+    const stubSuperagentPost = sinon.stub(helper, 'superagentPost');
+    stubSuperagentPost.returns(
+      Promise.resolve({
+        _links: {
+          'ec:asset': {
+            href: 'https://datamanager.entrecode.de/asset/beefbeef?assetID=d845a328-0ea4-475a-b593-bae9df92a11a',
+          },
+        },
+      }),
+    );
+
+    return new Promise((resolve, reject) => {
+      fs.readFile(`${__dirname}/../mocks/test.png`, (err, file) => {
+        if (err) {
+          return reject(err);
+        }
+        return resolve(file);
+      });
+    })
+      .then((file) =>
+        api.createAsset(file, {
+          fileName: 'test.png',
+          title: 'hello',
+          tags: ['helloTag'],
+        }),
+      )
+      .then((response) => {
+        response.should.be.a('function');
+        stubGetUrl.restore();
+        stubSuperagentPost.restore();
+      })
+      .catch((err) => {
+        stubGetUrl.restore();
+        stubSuperagentPost.restore();
+        throw err;
+      });
+  });
+  it('should be rejected on create with buffer and no file name', () => {
+    const stubGetUrl = sinon.stub(helper, 'getUrl');
+    stubGetUrl.returns(Promise.resolve('https://datamanager.entrecode.de/asset/beefbeef'));
+
+    return api
+      .createAsset(Buffer.alloc(1))
+      .then(() => {
+        throw new Error('Unexpectedly resolved');
+      })
+      .catch((err) => {
+        if (err.message === 'Unexpectedly resolved') {
+          throw err;
+        }
+        err.message.should.be.equal('When using buffer file input you must provide options.fileName.');
+      })
+      .finally(() => stubGetUrl.restore());
+  });
+  it('should create asset, FormData, title and tags', () => {
     const stubGetUrl = sinon.stub(helper, 'getUrl');
     stubGetUrl.returns(Promise.resolve('https://datamanager.entrecode.de/asset/beefbeef'));
     const stubSuperagentPost = sinon.stub(helper, 'superagentPost');
@@ -890,17 +942,10 @@ describe('PublicAPI', () => {
         title: 'hello',
         tags: ['whatwhat'],
       })
-      .then((response) => {
-        response.should.be.a('function');
+      .then((response) => response.should.be.a('function'))
+      .finally(() => {
         stubGetUrl.restore();
         stubSuperagentPost.restore();
-        global.FormData = undefined;
-      })
-      .catch((err) => {
-        stubGetUrl.restore();
-        stubSuperagentPost.restore();
-        global.FormData = undefined;
-        throw err;
       });
   });
   it('should be rejected on create asset with undefined value', () => {
@@ -940,21 +985,105 @@ describe('PublicAPI', () => {
     return api
       .createAssets([`${__dirname}/../mocks/test.png`, `${__dirname}/../mocks/test.png`])
       .then((response) => response())
-      .then((response) => {
-        response.should.be.instanceof(PublicAssetList);
+      .then((response) => response.should.be.instanceof(PublicAssetList))
+      .finally(() => {
         stubGetUrl.restore();
         stubSuperagentPost.restore();
         stubGet.restore();
-      })
-      .catch((err) => {
-        stubGetUrl.restore();
-        stubSuperagentPost.restore();
-        stubGet.restore();
-        throw err;
       });
   });
-  it('should create assets, FormData (mock), title and tags', () => {
-    global.FormData = fdMock;
+  it('should create assets, buffer, title and tags', () => {
+    const stubGetUrl = sinon.stub(helper, 'getUrl');
+    stubGetUrl.returns(Promise.resolve('https://datamanager.entrecode.de/asset/beefbeef'));
+    const stubSuperagentPost = sinon.stub(helper, 'superagentPost');
+    stubSuperagentPost.returns(
+      Promise.resolve({
+        _links: {
+          'ec:asset': [
+            {
+              href: 'https://datamanager.entrecode.de/asset/beefbeef?assetID=d845a328-0ea4-475a-b593-bae9df92a11a',
+            },
+            {
+              href: 'https://datamanager.entrecode.de/asset/beefbeef?assetID=d845a328-0ea4-475a-b593-bae9df92a11a',
+            },
+          ],
+        },
+      }),
+    );
+
+    return new Promise((resolve, reject) => {
+      fs.readFile(`${__dirname}/../mocks/test.png`, (err, file) => {
+        if (err) {
+          return reject(err);
+        }
+        return resolve(file);
+      });
+    })
+      .then((file) =>
+        api.createAssets([file, file], {
+          fileName: ['test.png', 'test.png'],
+          title: 'hello',
+          tags: ['helloTag'],
+        }),
+      )
+      .then((response) => response.should.be.a('function'))
+      .finally(() => {
+        stubGetUrl.restore();
+        stubSuperagentPost.restore();
+      });
+  });
+  it('should be rejected on create assets with buffer and no file name #1', () => {
+    const stubGetUrl = sinon.stub(helper, 'getUrl');
+    stubGetUrl.returns(Promise.resolve('https://datamanager.entrecode.de/asset/beefbeef'));
+
+    return api
+      .createAssets([Buffer.alloc(1)])
+      .then(() => {
+        throw new Error('Unexpectedly resolved');
+      })
+      .catch((err) => {
+        if (err.message === 'Unexpectedly resolved') {
+          throw err;
+        }
+        err.message.should.be.equal('When using buffer file input you must provide options.fileName.');
+      })
+      .finally(() => stubGetUrl.restore());
+  });
+  it('should be rejected on create assets with buffer and no file name #2', () => {
+    const stubGetUrl = sinon.stub(helper, 'getUrl');
+    stubGetUrl.returns(Promise.resolve('https://datamanager.entrecode.de/asset/beefbeef'));
+
+    return api
+      .createAssets([Buffer.alloc(1)], { fileName: 'string' })
+      .then(() => {
+        throw new Error('Unexpectedly resolved');
+      })
+      .catch((err) => {
+        if (err.message === 'Unexpectedly resolved') {
+          throw err;
+        }
+        err.message.should.be.equal('When using buffer file input you must provide options.fileName.');
+      })
+      .finally(() => stubGetUrl.restore());
+  });
+  it('should be rejected on create assets with buffer and no file name #3', () => {
+    const stubGetUrl = sinon.stub(helper, 'getUrl');
+    stubGetUrl.returns(Promise.resolve('https://datamanager.entrecode.de/asset/beefbeef'));
+
+    return api
+      .createAssets([Buffer.alloc(1)], { fileName: [] })
+      .then(() => {
+        throw new Error('Unexpectedly resolved');
+      })
+      .catch((err) => {
+        if (err.message === 'Unexpectedly resolved') {
+          throw err;
+        }
+        err.message.should.be.equal('When using buffer file input you must provide options.fileName.');
+      })
+      .finally(() => stubGetUrl.restore());
+  });
+  it('should create assets, FormData, title and tags', () => {
     const stubGetUrl = sinon.stub(helper, 'getUrl');
     stubGetUrl.returns(Promise.resolve('hhttps://datamanager.entrecode.de/asset/beefbeef'));
     const stubSuperagentPost = sinon.stub(helper, 'superagentPost');
@@ -979,17 +1108,10 @@ describe('PublicAPI', () => {
         title: 'hello',
         tags: ['whatwhat'],
       })
-      .then((response) => {
-        response.should.be.a('function');
+      .then((response) => response.should.be.a('function'))
+      .finally(() => {
         stubGetUrl.restore();
         stubSuperagentPost.restore();
-        global.FormData = undefined;
-      })
-      .catch((err) => {
-        stubGetUrl.restore();
-        stubSuperagentPost.restore();
-        global.FormData = undefined;
-        throw err;
       });
   });
   it('should be rejected on create assets with undefined value', () => {
@@ -1118,14 +1240,8 @@ describe('PublicAPI', () => {
 
     return api
       .dmAssetList('test1')
-      .then((list) => {
-        list.should.be.instanceof(DMAssetList);
-        stub.restore();
-      })
-      .catch((err) => {
-        stub.restore();
-        throw err;
-      });
+      .then((list) => list.should.be.instanceof(DMAssetList))
+      .finally(() => stub.restore());
   });
   it('should be rejected on undefined assetGroupID', () => {
     return api.dmAssetList().should.be.rejectedWith('assetGroupID must be defined');
@@ -1145,14 +1261,8 @@ describe('PublicAPI', () => {
 
     return api
       .dmAsset('test1', 'id')
-      .then((model) => {
-        model.should.be.instanceof(DMAssetResource);
-        stub.restore();
-      })
-      .catch((err) => {
-        stub.restore();
-        throw err;
-      });
+      .then((model) => model.should.be.instanceof(DMAssetResource))
+      .finally(() => stub.restore());
   });
   it('should be rejected on undefined assetID', () => {
     return api.dmAsset('test1').should.be.rejectedWith('assetID must be defined');
@@ -1168,14 +1278,8 @@ describe('PublicAPI', () => {
 
     return api
       .getFieldConfig('child')
-      .then((fieldConfig) => {
-        fieldConfig.should.have.property('title');
-        stub.restore();
-      })
-      .catch((err) => {
-        stub.restore();
-        throw err;
-      });
+      .then((fieldConfig) => fieldConfig.should.have.property('title'))
+      .finally(() => stub.restore());
   });
   it('should load fieldConfig - multiple model', () => {
     const stub = sinon.stub(helper, 'get');
@@ -1187,12 +1291,8 @@ describe('PublicAPI', () => {
       .then((fieldConfig) => {
         fieldConfig.should.have.property('child');
         fieldConfig.should.have.property('parent');
-        stub.restore();
       })
-      .catch((err) => {
-        stub.restore();
-        throw err;
-      });
+      .finally(() => stub.restore());
   });
   it('should throw on fieldConfig without modelTitle', () => {
     return api.getFieldConfig().should.be.rejectedWith('modelTitle must be defined');
@@ -1208,15 +1308,10 @@ describe('PublicAPI', () => {
 
       return api
         .createDMAssets('test1', `${__dirname}/../mocks/test.png`)
-        .then((response) => {
-          response.should.be.instanceof(DMAssetList);
+        .then((response) => response.should.be.instanceof(DMAssetList))
+        .finally(() => {
           stubGetUrl.restore();
           stubSuperagentPost.restore();
-        })
-        .catch((err) => {
-          stubGetUrl.restore();
-          stubSuperagentPost.restore();
-          throw err;
         });
     });
     it('should create dmAssets, 204', () => {
@@ -1228,15 +1323,10 @@ describe('PublicAPI', () => {
 
       return api
         .createDMAssets('test1', `${__dirname}/../mocks/test.png`)
-        .then((response) => {
-          should.equal(response, undefined);
+        .then((response) => should.equal(response, undefined))
+        .finally(() => {
           stubGetUrl.restore();
           stubSuperagentPost.restore();
-        })
-        .catch((err) => {
-          stubGetUrl.restore();
-          stubSuperagentPost.restore();
-          throw err;
         });
     });
     it('should create dmAssets, path #2', () => {
@@ -1248,15 +1338,10 @@ describe('PublicAPI', () => {
 
       return api
         .createDMAssets('test1', `${__dirname}/../mocks/test.png`, { fileName: 'name' })
-        .then((response) => {
-          response.should.be.instanceof(DMAssetList);
+        .then((response) => response.should.be.instanceof(DMAssetList))
+        .finally(() => {
           stubGetUrl.restore();
           stubSuperagentPost.restore();
-        })
-        .catch((err) => {
-          stubGetUrl.restore();
-          stubSuperagentPost.restore();
-          throw err;
         });
     });
     it('should create dmAssets, path array', () => {
@@ -1268,20 +1353,96 @@ describe('PublicAPI', () => {
 
       return api
         .createDMAssets('test1', [`${__dirname}/../mocks/test.png`, `${__dirname}/../mocks/test.png`])
-        .then((response) => {
-          response.should.be.instanceof(DMAssetList);
+        .then((response) => response.should.be.instanceof(DMAssetList))
+        .finally(() => {
           stubGetUrl.restore();
           stubSuperagentPost.restore();
-        })
-        .catch((err) => {
-          stubGetUrl.restore();
-          stubSuperagentPost.restore();
-          throw err;
         });
     });
-    it('should create dmAssets, FormData (mock), title and tags', () => {
+    it('should create dmAssets, buffer, title and tags', () => {
       mock.reset();
-      global.FormData = fdMock;
+      const stubGetUrl = sinon.stub(helper, 'getUrl');
+      stubGetUrl.returns(Promise.resolve('https://datamanager.entrecode.de/a/beefbeef/test1'));
+      const stubSuperagentPost = sinon.stub(helper, 'superagentPost');
+      stubSuperagentPost.returns(resolver('dm-asset-create.json', null, true));
+
+      return new Promise((resolve, reject) => {
+        fs.readFile(`${__dirname}/../mocks/test.png`, (err, file) => {
+          if (err) {
+            return reject(err);
+          }
+          return resolve(file);
+        });
+      })
+        .then((file) =>
+          api.createDMAssets('test1', [file, file], {
+            fileName: ['test.png', 'test.png'],
+            title: 'hello',
+            tags: ['helloTag'],
+          }),
+        )
+        .then((response) => response.should.be.instanceof(DMAssetList))
+        .finally(() => {
+          stubGetUrl.restore();
+          stubSuperagentPost.restore();
+        });
+    });
+    it('should be rejected on create dmAssets with buffer and no file name #1', () => {
+      mock.reset();
+      const stubGetUrl = sinon.stub(helper, 'getUrl');
+      stubGetUrl.returns(Promise.resolve('https://datamanager.entrecode.de/a/beefbeef/test1'));
+
+      return api
+        .createDMAssets('test1', [Buffer.alloc(1)])
+        .then(() => {
+          throw new Error('Unexpectedly resolved');
+        })
+        .catch((err) => {
+          if (err.message === 'Unexpectedly resolved') {
+            throw err;
+          }
+          err.message.should.be.equal('When using buffer file input you must provide options.fileName.');
+        })
+        .finally(() => stubGetUrl.restore());
+    });
+    it('should be rejected on create dmAssets with buffer and no file name #2', () => {
+      mock.reset();
+      const stubGetUrl = sinon.stub(helper, 'getUrl');
+      stubGetUrl.returns(Promise.resolve('https://datamanager.entrecode.de/a/beefbeef/test1'));
+
+      return api
+        .createDMAssets('test1', [Buffer.alloc(1)], { fileName: 'string' })
+        .then(() => {
+          throw new Error('Unexpectedly resolved');
+        })
+        .catch((err) => {
+          if (err.message === 'Unexpectedly resolved') {
+            throw err;
+          }
+          err.message.should.be.equal('When using buffer file input you must provide options.fileName.');
+        })
+        .finally(() => stubGetUrl.restore());
+    });
+    it('should be rejected on create dmAssets with buffer and no file name #3', () => {
+      mock.reset();
+      const stubGetUrl = sinon.stub(helper, 'getUrl');
+      stubGetUrl.returns(Promise.resolve('https://datamanager.entrecode.de/a/beefbeef/test1'));
+
+      return api
+        .createDMAssets('test1', [Buffer.alloc(1)], { fileName: [] })
+        .then(() => {
+          throw new Error('Unexpectedly resolved');
+        })
+        .catch((err) => {
+          if (err.message === 'Unexpectedly resolved') {
+            throw err;
+          }
+          err.message.should.be.equal('When using buffer file input you must provide options.fileName.');
+        })
+        .finally(() => stubGetUrl.restore());
+    });
+    it('should create dmAssets, FormData, title and tags', () => {
+      mock.reset();
       const stubGetUrl = sinon.stub(helper, 'getUrl');
       stubGetUrl.returns(Promise.resolve('https://datamanager.entrecode.de/a/beefbeef/test1'));
       const stubSuperagentPost = sinon.stub(helper, 'superagentPost');
@@ -1293,17 +1454,10 @@ describe('PublicAPI', () => {
           title: 'hello',
           tags: ['whatwhat'],
         })
-        .then((response) => {
-          response.should.be.instanceof(DMAssetList);
+        .then((response) => response.should.be.instanceof(DMAssetList))
+        .finally(() => {
           stubGetUrl.restore();
           stubSuperagentPost.restore();
-          global.FormData = undefined;
-        })
-        .catch((err) => {
-          stubGetUrl.restore();
-          stubSuperagentPost.restore();
-          global.FormData = undefined;
-          throw err;
         });
     });
     it('should be rejected on create dmAssets with undefined assetGroupID', () => {
@@ -1388,7 +1542,9 @@ describe('PublicAPI', () => {
       return api.getValidationToken().should.be.rejectedWith('email must be defined');
     });
     it('should be rejected on getValidationToken illegal type', () => {
-      return api.getValidationToken('andre@entrecode.de', 'not_allowed').should.be.rejectedWith('validation token type invalid, must match /^[a-zA-Z0-9]{1,64}$/');
+      return api
+        .getValidationToken('andre@entrecode.de', 'not_allowed')
+        .should.be.rejectedWith('validation token type invalid, must match /^[a-zA-Z0-9]{1,64}$/');
     });
     it('should call getValidationToken', () => {
       const stub = sinon.stub(helper, 'get');
@@ -1413,7 +1569,9 @@ describe('PublicAPI', () => {
       return api.validateValidationToken().should.be.rejectedWith('validationToken must be defined');
     });
     it('should be rejected on getValidationToken illegal type', () => {
-      return api.validateValidationToken('validatioNToken', 'not_allowed').should.be.rejectedWith('validation token type invalid, must match /^[a-zA-Z0-9]{1,64}$/');
+      return api
+        .validateValidationToken('validatioNToken', 'not_allowed')
+        .should.be.rejectedWith('validation token type invalid, must match /^[a-zA-Z0-9]{1,64}$/');
     });
     it('should call validateValidationToken', () => {
       const stub = sinon.stub(helper, 'get');

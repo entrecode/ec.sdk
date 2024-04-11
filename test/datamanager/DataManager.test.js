@@ -7,8 +7,6 @@ const sinonChai = require('sinon-chai');
 const chaiAsPromised = require('chai-as-promised');
 
 const resolver = require('./../mocks/resolver');
-const fdMock = require('./../mocks/formData.mock.js');
-
 const helper = require('../../lib/helper');
 const DataManager = require('../../lib/DataManager').default;
 const ListResource = require('../../lib/resources/ListResource').default;
@@ -773,14 +771,8 @@ describe('DataManager Resource', () => {
 
     return resource
       .assetList()
-      .then((list) => {
-        list.should.be.instanceof(AssetList);
-        stub.restore();
-      })
-      .catch((err) => {
-        stub.restore();
-        throw err;
-      });
+      .then((list) => list.should.be.instanceof(AssetList))
+      .finally(() => stub.restore());
   });
   it('should throw on asset list filtered with assetID', () => {
     return resource
@@ -793,14 +785,8 @@ describe('DataManager Resource', () => {
 
     return resource
       .asset('id')
-      .then((model) => {
-        model.should.be.instanceof(AssetResource);
-        stub.restore();
-      })
-      .catch((err) => {
-        stub.restore();
-        throw err;
-      });
+      .then((model) => model.should.be.instanceof(AssetResource))
+      .finally(() => stub.restore());
   });
   it('should be rejected on undefined assetID', () => {
     return resource.asset().should.be.rejectedWith('resourceID must be defined');
@@ -827,21 +813,70 @@ describe('DataManager Resource', () => {
     return resource
       .createAsset(`${__dirname}/../mocks/test.png`)
       .then((response) => response())
-      .then((response) => {
-        response.should.be.instanceof(AssetResource);
+      .then((response) => response.should.be.instanceof(AssetResource))
+      .finally(() => {
         stubGetUrl.restore();
         stubSuperagentPost.restore();
         stubGet.restore();
-      })
-      .catch((err) => {
-        stubGetUrl.restore();
-        stubSuperagentPost.restore();
-        stubGet.restore();
-        throw err;
       });
   });
+  it('should create asset, buffer, title and tags', () => {
+    const stubGetUrl = sinon.stub(helper, 'getUrl');
+    stubGetUrl.returns(
+      Promise.resolve('https://datamanager.entrecode.de/asset?dataManagerID=48e18a34-cf64-4f4a-bc47-45323a7f0e44'),
+    );
+    const stubSuperagentPost = sinon.stub(helper, 'superagentPost');
+    stubSuperagentPost.returns(
+      Promise.resolve({
+        _links: {
+          'ec:asset': {
+            href: 'https://datamanager.entrecode.de/asset?assetID=03685901-8bbe-40a2-89f2-a7c9a5db5bf8',
+          },
+        },
+      }),
+    );
+
+    return new Promise((resolve, reject) => {
+      fs.readFile(`${__dirname}/../mocks/test.png`, (err, file) => {
+        if (err) {
+          return reject(err);
+        }
+        return resolve(file);
+      });
+    })
+      .then((file) =>
+        resource.createAsset(file, {
+          fileName: 'test.png',
+          title: 'hello',
+          tags: ['helloTag'],
+        }),
+      )
+      .then((response) => response.should.be.a('function'))
+      .finally((err) => {
+        stubGetUrl.restore();
+        stubSuperagentPost.restore();
+      });
+  });
+  it('should be rejected on create with buffer and no file name', () => {
+    const stubGetUrl = sinon.stub(helper, 'getUrl');
+    stubGetUrl.returns(
+      Promise.resolve('https://datamanager.entrecode.de/asset?dataManagerID=48e18a34-cf64-4f4a-bc47-45323a7f0e44'),
+    );
+
+    return resource
+      .createAsset(Buffer.alloc(1))
+      .then(() => {
+        throw new Error('Unexpectedly resolved');
+      })
+      .catch((err) => {
+        if (err.message === 'Unexpectedly resolved') {
+          throw err;
+        }
+        err.message.should.be.equal('When using buffer file input you must provide options.fileName.');
+      })
+      .finally(() => stubGetUrl.restore());
+  });
   it('should create asset, FormData (mock), title and tags', () => {
-    global.FormData = fdMock;
     const stubGetUrl = sinon.stub(helper, 'getUrl');
     stubGetUrl.returns(
       Promise.resolve('https://datamanager.entrecode.de/asset?dataManagerID=48e18a34-cf64-4f4a-bc47-45323a7f0e44'),
@@ -863,17 +898,10 @@ describe('DataManager Resource', () => {
         title: 'hello',
         tags: ['whatwhat'],
       })
-      .then((response) => {
-        response.should.be.a('function');
+      .then((response) => response.should.be.a('function'))
+      .finally(() => {
         stubGetUrl.restore();
         stubSuperagentPost.restore();
-        global.FormData = undefined;
-      })
-      .catch((err) => {
-        stubGetUrl.restore();
-        stubSuperagentPost.restore();
-        global.FormData = undefined;
-        throw err;
       });
   });
   it('should be rejected on create asset with undefined value', () => {
@@ -916,21 +944,113 @@ describe('DataManager Resource', () => {
     return resource
       .createAssets([`${__dirname}/../mocks/test.png`, `${__dirname}/../mocks/test.png`])
       .then((response) => response())
-      .then((response) => {
-        response.should.be.instanceof(AssetList);
+      .then((response) => response.should.be.instanceof(AssetList))
+      .finally(() => {
         stubGetUrl.restore();
         stubSuperagentPost.restore();
         stubGet.restore();
-      })
-      .catch((err) => {
-        stubGetUrl.restore();
-        stubSuperagentPost.restore();
-        stubGet.restore();
-        throw err;
       });
   });
+  it('should create assets, buffer, title and tags', () => {
+    const stubGetUrl = sinon.stub(helper, 'getUrl');
+    stubGetUrl.returns(
+      Promise.resolve('https://datamanager.entrecode.de/asset?dataManagerID=48e18a34-cf64-4f4a-bc47-45323a7f0e44'),
+    );
+    const stubSuperagentPost = sinon.stub(helper, 'superagentPost');
+    stubSuperagentPost.returns(
+      Promise.resolve({
+        _links: {
+          'ec:asset': [
+            {
+              href: 'https://datamanager.entrecode.de/asset?assetID=03685901-8bbe-40a2-89f2-a7c9a5db5bf8',
+            },
+            {
+              href: 'https://datamanager.entrecode.de/asset?assetID=48e18a34-cf64-4f4a-bc47-45323a7f0e44',
+            },
+          ],
+        },
+      }),
+    );
+
+    return new Promise((resolve, reject) => {
+      fs.readFile(`${__dirname}/../mocks/test.png`, (err, file) => {
+        if (err) {
+          return reject(err);
+        }
+        return resolve(file);
+      });
+    })
+      .then((file) =>
+        resource.createAssets([file, file], {
+          fileName: ['test.png', 'test.png'],
+          title: 'hello',
+          tags: ['helloTag'],
+        }),
+      )
+      .then((response) => response.should.be.a('function'))
+      .finally(() => {
+        stubGetUrl.restore();
+        stubSuperagentPost.restore();
+      });
+  });
+  it('should be rejected on create assets with buffer and no file name #1', () => {
+    const stubGetUrl = sinon.stub(helper, 'getUrl');
+    stubGetUrl.returns(
+      Promise.resolve('https://datamanager.entrecode.de/asset?dataManagerID=48e18a34-cf64-4f4a-bc47-45323a7f0e44'),
+    );
+
+    return resource
+      .createAssets([Buffer.alloc(1)])
+      .then(() => {
+        throw new Error('Unexpectedly resolved');
+      })
+      .catch((err) => {
+        if (err.message === 'Unexpectedly resolved') {
+          throw err;
+        }
+        err.message.should.be.equal('When using buffer file input you must provide options.fileName.');
+      })
+      .finally(() => stubGetUrl.restore());
+  });
+  it('should be rejected on create assets with buffer and no file name #2', () => {
+    const stubGetUrl = sinon.stub(helper, 'getUrl');
+    stubGetUrl.returns(
+      Promise.resolve('https://datamanager.entrecode.de/asset?dataManagerID=48e18a34-cf64-4f4a-bc47-45323a7f0e44'),
+    );
+
+    return resource
+      .createAssets([Buffer.alloc(1)], { fileName: 'string' })
+      .then(() => {
+        throw new Error('Unexpectedly resolved');
+      })
+      .catch((err) => {
+        if (err.message === 'Unexpectedly resolved') {
+          throw err;
+        }
+        err.message.should.be.equal('When using buffer file input you must provide options.fileName.');
+      })
+      .finally(() => stubGetUrl.restore());
+  });
+  it('should be rejected on create assets with buffer and no file name #3', () => {
+    const stubGetUrl = sinon.stub(helper, 'getUrl');
+    stubGetUrl.returns(
+      Promise.resolve('https://datamanager.entrecode.de/asset?dataManagerID=48e18a34-cf64-4f4a-bc47-45323a7f0e44'),
+    );
+
+    return resource
+      .createAssets([Buffer.alloc(1)], { fileName: [] })
+      .then(() => {
+        throw new Error('Unexpectedly resolved');
+      })
+      .catch((err) => {
+        if (err.message === 'Unexpectedly resolved') {
+          throw err;
+        }
+        err.message.should.be.equal('When using buffer file input you must provide options.fileName.');
+      })
+      .finally(() => stubGetUrl.restore());
+  });
   it('should create assets, FormData (mock), title and tags', () => {
-    global.FormData = fdMock;
     const stubGetUrl = sinon.stub(helper, 'getUrl');
     stubGetUrl.returns(
       Promise.resolve('https://datamanager.entrecode.de/asset?dataManagerID=48e18a34-cf64-4f4a-bc47-45323a7f0e44'),
@@ -957,17 +1077,10 @@ describe('DataManager Resource', () => {
         title: 'hello',
         tags: ['whatwhat'],
       })
-      .then((response) => {
-        response.should.be.a('function');
+      .then((response) => response.should.be.a('function'))
+      .finally(() => {
         stubGetUrl.restore();
         stubSuperagentPost.restore();
-        global.FormData = undefined;
-      })
-      .catch((err) => {
-        stubGetUrl.restore();
-        stubSuperagentPost.restore();
-        global.FormData = undefined;
-        throw err;
       });
   });
   it('should be rejected on create assets with undefined value', () => {

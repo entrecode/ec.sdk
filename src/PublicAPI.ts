@@ -1,39 +1,39 @@
 import * as halfred from 'halfred';
+import * as validator from 'json-schema-remote';
 import * as qs from 'querystring';
 import * as ShiroTrie from 'shiro-trie';
-import * as superagent from 'superagent';
-import * as validator from 'json-schema-remote';
-import * as validate from 'validator';
 import * as shortID from 'shortid';
+import * as superagent from 'superagent';
+import * as validate from 'validator';
 
 import Core, { environment, options } from './Core';
-import EntryList, { createList } from './resources/publicAPI/EntryList';
-import EntryResource, { createEntry } from './resources/publicAPI/EntryResource';
-import PublicAssetList from './resources/publicAPI/PublicAssetList';
-import PublicAssetResource from './resources/publicAPI/PublicAssetResource';
-import { filterOptions } from './resources/ListResource';
+import Problem from './Problem';
 import {
+  del,
   get,
   getEmpty,
   getSchema,
   getUrl,
+  locale,
   optionsToQuery,
   post,
   postEmpty,
-  superagentPost,
-  locale,
   put,
   shortenUUID,
-  del,
+  superagentPost,
 } from './helper';
-import DMAssetResource from './resources/publicAPI/DMAssetResource';
+import { filterOptions } from './resources/ListResource';
 import DMAssetList from './resources/publicAPI/DMAssetList';
-import Problem from './Problem';
+import DMAssetResource from './resources/publicAPI/DMAssetResource';
+import DMAuthTokenList from './resources/publicAPI/DMAuthTokenList';
+import DMAuthTokenResource from './resources/publicAPI/DMAuthTokenResource';
+import EntryList, { createList } from './resources/publicAPI/EntryList';
+import EntryResource, { createEntry } from './resources/publicAPI/EntryResource';
 import HistoryEvents from './resources/publicAPI/HistoryEvents';
+import PublicAssetList from './resources/publicAPI/PublicAssetList';
+import PublicAssetResource from './resources/publicAPI/PublicAssetResource';
 import PublicTagList from './resources/publicAPI/PublicTagList';
 import PublicTagResource from './resources/publicAPI/PublicTagResource';
-import DMAuthTokenResource from './resources/publicAPI/DMAuthTokenResource';
-import DMAuthTokenList from './resources/publicAPI/DMAuthTokenList';
 
 const { convertValidationError, newError } = require('ec.errors')();
 
@@ -518,12 +518,15 @@ export default class PublicAPI extends Core {
    * Create a new asset. This should handle various input types.
    *
    * The most basic type is a string representing a file path, this can be used on node projects.
+   * Another option for node is providing a Buffer object (eg. fs.readFile, …). When providing a
+   * Buffer you must specify 'fileName' in options object.
    *
    * For frontend usage you musst provide a
    * {@link https://developer.mozilla.org/de/docs/Web/API/FormData|FormData} object containing the
    * file in a field with the name 'file'.
    *
-   * @param {object|string} input representing the asset, either a path, or a FormData object.
+   * @param {object|string} input representing the asset, either a path, a FormData object, or an
+   *   object containing a buffer.
    * @param {object} options options for creating an asset.
    * @returns {Promise<function<Promise<PublicAssetResource>>>} Promise resolving to a Promise
    *   factory which then resolves to the newly created PublicAssetResource
@@ -544,6 +547,11 @@ export default class PublicAPI extends Core {
           superagentRequest.send(input);
         } else if (typeof input === 'string') {
           superagentRequest.attach('file', input);
+        } else if (input?.byteLength) {
+          if (!('fileName' in options)) {
+            throw new Error('When using buffer file input you must provide options.fileName.');
+          }
+          superagentRequest.attach('file', input, <string>options.fileName);
         } else {
           throw new Error('Cannot handle input.');
         }
@@ -577,14 +585,18 @@ export default class PublicAPI extends Core {
   }
 
   /**
-   * Create a legacy asset.
+   * Create a legacy asset. This should handle various input types.
+   *
+   * The most basic type is an array of strings representing a file paths, this can be used on node
+   * projects. Another option for node is providing an array of Buffer objects (eg. fs.readFile,
+   * …). When providing a Buffer you must specify 'fileName' in options object.
    *
    * For frontend usage you musst provide a
    * {@link https://developer.mozilla.org/de/docs/Web/API/FormData|FormData} object containing the
    * multiple files in a field with the name 'file'.
    *
    * @param {object|array<object|string>} input representing the asset, either an array of paths, a
-   *   FormData object, or an array of readStreams.
+   *   FormData object, a array of readStreams, or an array containing buffers.
    * @param {object} options options for creating an asset.
    * @returns {Promise<function<Promise<AssetList>>>}  Promise resolving to a Promise
    *   factory which then resolves to the newly created assets as AssetList
@@ -607,6 +619,11 @@ export default class PublicAPI extends Core {
           input.forEach((file, index) => {
             if (typeof file === 'string') {
               superagentRequest.attach('file', file);
+            } else if (file?.byteLength) {
+              if (!('fileName' in options) || !Array.isArray(options.fileName) || !options.fileName[index]) {
+                throw new Error('When using buffer file input you must provide options.fileName.');
+              }
+              superagentRequest.attach('file', file, options.fileName[index]);
             } else {
               throw new Error('Cannot handle input.');
             }
@@ -647,7 +664,8 @@ export default class PublicAPI extends Core {
    * Create one or multiple new assets. This should handle various input types.
    *
    * The most basic type is a string representing a file path, this can be used on node
-   * projects.
+   * projects. Another option for node is providing a Buffer object (eg. fs.readFile,
+   * …). When providing a Buffer you must specify 'fileName' in options object.
    *
    * For frontend usage you must provide a
    * {@link https://developer.mozilla.org/de/docs/Web/API/FormData|FormData} object containing the
@@ -668,8 +686,8 @@ export default class PublicAPI extends Core {
    *
    * @param {string} assetGroupID the asset group in which the asset should be created.
    * @param {object|array<object|string>|string} input representing the asset, either an array of
-   *   paths, a FormData object, an array of readStreams, or a string.
-   * @param {fileOptions} options options for creating the assets.
+   *   paths, a FormData object, a array of readStreams, an array containing buffers, or a string.
+   * @param {fileOptions} options options for creating an asset.
    * @returns {Promise<function<Promise<DMAssetList>>>}  Promise resolving to a Promise
    *   factory which then resolves to the newly created assets as DMAssetList
    */
@@ -719,6 +737,11 @@ export default class PublicAPI extends Core {
                 }
                 request.attach(fileFieldName, file);
               }
+            } else if (file?.byteLength) {
+              if (!('fileName' in options) || !Array.isArray(options.fileName) || !options.fileName[index]) {
+                throw new Error('When using buffer file input you must provide options.fileName.');
+              }
+              request.attach('file', file, options.fileName[index]);
             } else {
               throw new Error('Cannot handle input.');
             }
@@ -963,7 +986,7 @@ export default class PublicAPI extends Core {
    *
    * @returns {{access_token: string, refresh_token?: string, token_type: string, expires_in: number}} Returns the new token response on successful refresh
    */
-  doRefreshToken(): Promise<{ access_token: string; refresh_token?: string; token_type: string, expires_in: number }> {
+  doRefreshToken(): Promise<{ access_token: string; refresh_token?: string; token_type: string; expires_in: number }> {
     if (!this[refreshRequestSymbol]) {
       this[refreshRequestSymbol] = Promise.resolve().then(async () => {
         if (!this[tokenStoreSymbol].getClientID()) {
@@ -1399,7 +1422,7 @@ export default class PublicAPI extends Core {
       throw new Error('email must be defined');
     }
 
-    if (type && !(/^[a-zA-Z0-9]{1,64}$/.test(type))) {
+    if (type && !/^[a-zA-Z0-9]{1,64}$/.test(type)) {
       throw new Error('validation token type invalid, must match /^[a-zA-Z0-9]{1,64}$/');
     }
 
@@ -1416,7 +1439,10 @@ export default class PublicAPI extends Core {
    * @param {string} newEmail The new email address
    * @returns {Promise<{verifyEmailChangeToken: string, abortEmailChangeToken: string}>} Promise resolving to the two tokens for old and new email address
    */
-   async getChangeEmailTokens(currentEmail: string, newEmail: string): Promise<{verifyEmailChangeToken: string, abortEmailChangeToken: string}> {
+  async getChangeEmailTokens(
+    currentEmail: string,
+    newEmail: string,
+  ): Promise<{ verifyEmailChangeToken: string; abortEmailChangeToken: string }> {
     if (!currentEmail) {
       throw new Error('currentEmail must be defined');
     }
@@ -1424,7 +1450,7 @@ export default class PublicAPI extends Core {
     if (!newEmail) {
       throw new Error('newEmail must be defined');
     }
-    
+
     const request = await this.follow(`${this[shortIDSymbol]}:_auth/api/change-email-tokens`);
     request.withTemplateParameters({ currentEmail, newEmail });
     const [response] = await this.dispatch(() => get(this[environmentSymbol], request));
@@ -1437,7 +1463,7 @@ export default class PublicAPI extends Core {
    * @param {string} validationToken The change or revoke token
    * @returns {Promise<{accountID: string, email: string, hasPassword: boolean, pending: boolean}>} Promise resolving to account info including potentially changed email address
    */
-   async postChangeEmailToken(validationToken: string): Promise<{
+  async postChangeEmailToken(validationToken: string): Promise<{
     accountID: string;
     email: string;
     hasPassword: boolean;
@@ -1446,7 +1472,7 @@ export default class PublicAPI extends Core {
     if (!validationToken) {
       throw new Error('validationToken must be defined');
     }
-    
+
     const request = await this.follow(`${this[shortIDSymbol]}:_auth/api/change-email`);
     const [response] = await this.dispatch(() => post(this[environmentSymbol], request, { validationToken }));
     return response;
@@ -1459,7 +1485,10 @@ export default class PublicAPI extends Core {
    * @param {string} password password of the user
    * @returns {Promise<{access_token: string, refresh_token?: string, token_type: string, expires_in: number}>} Promise resolving to the issued token
    */
-  login(email: string, password: string): Promise<{ access_token: string; refresh_token?: string, token_type: string, expires_in: number }> {
+  login(
+    email: string,
+    password: string,
+  ): Promise<{ access_token: string; refresh_token?: string; token_type: string; expires_in: number }> {
     return Promise.resolve()
       .then(() => {
         if (!this[tokenStoreSymbol].hasClientID()) {
@@ -1825,7 +1854,11 @@ export default class PublicAPI extends Core {
    * @param {string?} invite optional invite. signup can be declined without invite.
    * @returns {Promise<{access_token: string, refresh_token?: string, token_type: string, expires_in: number}>} Promise resolving with the token
    */
-  signup(email: string, password: string, invite?: string): Promise<{ access_token: string; refresh_token?: string; token_type: string; expires_in: number }> {
+  signup(
+    email: string,
+    password: string,
+    invite?: string,
+  ): Promise<{ access_token: string; refresh_token?: string; token_type: string; expires_in: number }> {
     return Promise.resolve()
       .then(() => {
         if (!email) {
@@ -1966,7 +1999,10 @@ export default class PublicAPI extends Core {
    * @param {string} validationToken Single-use token.
    * @param {string} [type] The token type, like 'genericValidationToken' - must be set if set when creating token.
    */
-  async validateValidationToken(validationToken: string, type?: string): Promise<{
+  async validateValidationToken(
+    validationToken: string,
+    type?: string,
+  ): Promise<{
     accountID: string;
     email: string;
     hasPassword: boolean;
@@ -1975,7 +2011,7 @@ export default class PublicAPI extends Core {
     if (!validationToken) {
       throw new Error('validationToken must be defined');
     }
-    if (type && !(/^[a-zA-Z0-9]{1,64}$/.test(type))) {
+    if (type && !/^[a-zA-Z0-9]{1,64}$/.test(type)) {
       throw new Error('validation token type invalid, must match /^[a-zA-Z0-9]{1,64}$/');
     }
 
