@@ -1,3 +1,15 @@
+## <small>0.29.1 (2024-04-26)</small>
+
+* release version 0.29.1 ([41623a3](https://github.com/entrecode/ec.sdk/commit/41623a3))
+* feat: Drop TagResource and TagList ([b8f56b2](https://github.com/entrecode/ec.sdk/commit/b8f56b2))
+* doc: remove deleted resources from doc sorting ([aa19e44](https://github.com/entrecode/ec.sdk/commit/aa19e44))
+
+
+### BREAKING CHANGE
+
+* Dropps TagResource and TagList since those were only used by Legacy Assets.
+
+
 ## 0.29.0 (2024-04-26)
 
 * release version 0.29.0 ([2f25a68](https://github.com/entrecode/ec.sdk/commit/2f25a68))
