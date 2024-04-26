@@ -30,8 +30,6 @@ import DMAuthTokenResource from './resources/publicAPI/DMAuthTokenResource';
 import EntryList, { createList } from './resources/publicAPI/EntryList';
 import EntryResource, { createEntry } from './resources/publicAPI/EntryResource';
 import HistoryEvents from './resources/publicAPI/HistoryEvents';
-import PublicAssetList from './resources/publicAPI/PublicAssetList';
-import PublicAssetResource from './resources/publicAPI/PublicAssetResource';
 import PublicTagList from './resources/publicAPI/PublicTagList';
 import PublicTagResource from './resources/publicAPI/PublicTagResource';
 
@@ -63,13 +61,13 @@ const urls = {
 };
 
 function chunk(array, size) {
-  const chunked_arr: Array<any> = [];
+  const chunkedArr: Array<any> = [];
   const copied = [...array]; // ES6 destructuring
   const numOfChild = Math.ceil(copied.length / size); // Round up to the nearest integer
-  for (let i = 0; i < numOfChild; i++) {
-    chunked_arr.push(copied.splice(0, size));
+  for (let i = 0; i < numOfChild; i += 1) {
+    chunkedArr.push(copied.splice(0, size));
   }
-  return chunked_arr;
+  return chunkedArr;
 }
 /**
  * API connector for public APIs. This is the successor of
@@ -135,6 +133,7 @@ export default class PublicAPI extends Core {
     let env;
 
     if (envOrOptions === null) {
+      // eslint-disable-next-line no-param-reassign
       envOrOptions = 'live';
     }
 
@@ -151,6 +150,7 @@ export default class PublicAPI extends Core {
     }
 
     if (env.ecUser) {
+      // eslint-disable-next-line no-param-reassign
       ecUser = env.ecUser;
     }
 
@@ -278,28 +278,6 @@ export default class PublicAPI extends Core {
   }
 
   /**
-   * Load a single {@link PublicAssetResource}.
-   *
-   * @example
-   * return api.asset(thisOne)
-   * .then(asset => show(asset));
-   *
-   * @param {string} assetID the assetID
-   * @returns {Promise<PublicAssetResource>} Promise resolving to PublicAssetResource
-   */
-  asset(assetID: string): Promise<PublicAssetResource> {
-    return Promise.resolve()
-      .then(() => {
-        if (!assetID) {
-          throw new Error('assetID must be defined');
-        }
-        const request = this.newRequest().follow('ec:api/assets').withTemplateParameters({ assetID });
-        return this.dispatch(() => get(this[environmentSymbol], request));
-      })
-      .then(([res, traversal]) => new PublicAssetResource(res, this[environmentSymbol], traversal));
-  }
-
-  /**
    * Load the list of assetGroupIDs.
    *
    * @param {boolean?} reload whether or not to force reload
@@ -318,38 +296,6 @@ export default class PublicAPI extends Core {
         })
         .filter((x) => !!x),
     );
-  }
-
-  /**
-   * Load the {@link PublicAssetList}.
-   *
-   * @example
-   * return api.assetList({ filter: { type: 'image'} })
-   * .then(assets => assets.getAllItems().find(asset => asset.title.toLowerCase() === 'favicon' ))
-   * .then(asset => show(asset));
-   *
-   * @param {filterOptions?} options filter options
-   * @returns {Promise<PublicAssetList>} Promise resolving to PublicAssetList
-   */
-  assetList(options?: filterOptions | any): Promise<PublicAssetList> {
-    return Promise.resolve()
-      .then(() => {
-        if (
-          options &&
-          Object.keys(options).length === 1 &&
-          'assetID' in options &&
-          (typeof options.assetID === 'string' || (!('any' in options.assetID) && !('all' in options.assetID)))
-        ) {
-          throw new Error('Cannot filter assetList only by assetID. Use PublicAPI#asset() instead');
-        }
-
-        return this.follow('ec:api/assets');
-      })
-      .then((request) => {
-        request.withTemplateParameters(optionsToQuery(options, this.getLink('ec:api/assets').href));
-        return this.dispatch(() => get(this[environmentSymbol], request));
-      })
-      .then(([res, traversal]) => new PublicAssetList(res, this[environmentSymbol], traversal));
   }
 
   /**
@@ -512,152 +458,6 @@ export default class PublicAPI extends Core {
         return this.dispatch(() => post(this[environmentSymbol], request, {}));
       })
       .then(([tokenResponse]) => tokenResponse);
-  }
-
-  /**
-   * Create a new asset. This should handle various input types.
-   *
-   * The most basic type is a string representing a file path, this can be used on node projects.
-   * Another option for node is providing a Buffer object (eg. fs.readFile, …). When providing a
-   * Buffer you must specify 'fileName' in options object.
-   *
-   * For frontend usage you musst provide a
-   * {@link https://developer.mozilla.org/de/docs/Web/API/FormData|FormData} object containing the
-   * file in a field with the name 'file'.
-   *
-   * @param {object|string} input representing the asset, either a path, a FormData object, or an
-   *   object containing a buffer.
-   * @param {object} options options for creating an asset.
-   * @returns {Promise<function<Promise<PublicAssetResource>>>} Promise resolving to a Promise
-   *   factory which then resolves to the newly created PublicAssetResource
-   */
-  createAsset(input: string | any, options: assetOptions = {}): Promise<() => Promise<PublicAssetResource>> {
-    if (!input) {
-      return Promise.reject(new Error('Cannot create resource with undefined object.'));
-    }
-
-    return this.follow('ec:api/assets')
-      .then((request) => this.dispatch(() => getUrl(this[environmentSymbol], request)))
-      .then((url) => {
-        const superagentRequest = superagent.post(url);
-
-        const isFormData = typeof FormData === 'function' && input instanceof FormData; // eslint-disable-line
-        // no-undef
-        if (isFormData) {
-          superagentRequest.send(input);
-        } else if (typeof input === 'string') {
-          superagentRequest.attach('file', input);
-        } else if (input?.byteLength) {
-          if (!('fileName' in options)) {
-            throw new Error('When using buffer file input you must provide options.fileName.');
-          }
-          superagentRequest.attach('file', input, <string>options.fileName);
-        } else {
-          throw new Error('Cannot handle input.');
-        }
-
-        if (options.title) {
-          if (isFormData) {
-            input.set('title', options.title);
-          } else {
-            superagentRequest.field('title', options.title);
-          }
-        }
-
-        if (options.tags) {
-          if (isFormData) {
-            input.set('tags', options.tags);
-          } else {
-            options.tags.forEach((tag) => {
-              superagentRequest.field('tags', tag);
-            });
-          }
-        }
-
-        // THIS dispatch for superagent? test if request is submittable n times?
-        return superagentPost(this[environmentSymbol], superagentRequest);
-      })
-      .then((response) => {
-        const url = response._links['ec:asset'].href;
-        const queryStrings = qs.parse(url.substr(url.indexOf('?') + 1));
-        return () => this.asset(<string>queryStrings.assetID);
-      });
-  }
-
-  /**
-   * Create a legacy asset. This should handle various input types.
-   *
-   * The most basic type is an array of strings representing a file paths, this can be used on node
-   * projects. Another option for node is providing an array of Buffer objects (eg. fs.readFile,
-   * …). When providing a Buffer you must specify 'fileName' in options object.
-   *
-   * For frontend usage you musst provide a
-   * {@link https://developer.mozilla.org/de/docs/Web/API/FormData|FormData} object containing the
-   * multiple files in a field with the name 'file'.
-   *
-   * @param {object|array<object|string>} input representing the asset, either an array of paths, a
-   *   FormData object, a array of readStreams, or an array containing buffers.
-   * @param {object} options options for creating an asset.
-   * @returns {Promise<function<Promise<AssetList>>>}  Promise resolving to a Promise
-   *   factory which then resolves to the newly created assets as AssetList
-   */
-  createAssets(input: string | any, options: assetOptions = {}): Promise<() => Promise<PublicAssetList>> {
-    if (!input) {
-      return Promise.reject(new Error('Cannot create resource with undefined object.'));
-    }
-
-    return this.follow('ec:api/assets')
-      .then((request) => this.dispatch(() => getUrl(this[environmentSymbol], request)))
-      .then((url) => {
-        const superagentRequest = superagent.post(url);
-
-        const isFormData = typeof FormData === 'function' && input instanceof FormData; // eslint-disable-line
-        // no-undef
-        if (isFormData) {
-          superagentRequest.send(input);
-        } else {
-          input.forEach((file, index) => {
-            if (typeof file === 'string') {
-              superagentRequest.attach('file', file);
-            } else if (file?.byteLength) {
-              if (!('fileName' in options) || !Array.isArray(options.fileName) || !options.fileName[index]) {
-                throw new Error('When using buffer file input you must provide options.fileName.');
-              }
-              superagentRequest.attach('file', file, options.fileName[index]);
-            } else {
-              throw new Error('Cannot handle input.');
-            }
-          });
-        }
-        if (options.title) {
-          if (isFormData) {
-            input.set('title', options.title);
-          } else {
-            superagentRequest.field('title', options.title);
-          }
-        }
-
-        if (options.tags) {
-          if (isFormData) {
-            input.set('tags', options.tags);
-          } else {
-            options.tags.forEach((tag) => {
-              superagentRequest.field('tags', tag);
-            });
-          }
-        }
-
-        // THIS dispatch for superagent? test if request is submittable n times?
-        return superagentPost(this[environmentSymbol], superagentRequest);
-      })
-      .then((response) => {
-        const urls = response._links['ec:asset'].map((link) => {
-          const queryStrings = qs.parse(link.href.substr(link.href.indexOf('?') + 1));
-          return queryStrings.assetID;
-        });
-
-        return () => this.assetList({ assetID: { any: urls } });
-      });
   }
 
   /**
@@ -829,24 +629,6 @@ export default class PublicAPI extends Core {
         }
         return createEntry(res, this[environmentSymbol], traversal);
       });
-  }
-
-  /**
-   * Delete a single {@link PublicAssetResource}.
-   *
-   * @example
-   * return api.deleteAsset(thisOne)
-   * .then(()) => alert('Asset deleted'));
-   *
-   * @param {string} assetID the assetID
-   * @returns {Promise<undefined>} Promise resolving when Asset got deleted
-   */
-  async deleteAsset(assetID: string): Promise<void> {
-    if (!assetID) {
-      throw new Error('assetID must be defined');
-    }
-    const request = this.newRequest().follow('ec:api/assets').withTemplateParameters({ assetID });
-    await this.dispatch(() => del(this[environmentSymbol], request));
   }
 
   /**
@@ -1283,8 +1065,7 @@ export default class PublicAPI extends Core {
   /**
    * Generic file helper for images and thumbnails.
    *
-   * @param {string} assetID - assetID of the file requested. Can be legacy Asset (uuid v4) or
-   *   AssetNeue.
+   * @param {string} assetID - assetID of the file requested.
    * @param {boolean} thumb - true when image should be a thumbnail
    * @param {number?} size - the minimum size of the image
    * @param {imageType?} type - the format of the image
@@ -1308,10 +1089,7 @@ export default class PublicAPI extends Core {
           params.type = type;
         }
 
-        if (validate.isUUID(assetID, 4)) {
-          relation = 'ec:api/assets/bestFile';
-          params.thumb = thumb;
-        } else if (thumb) {
+        if (thumb) {
           relation = 'ec:dm-asset/thumbnail';
         } else {
           relation = 'ec:dm-asset/file';
@@ -1477,6 +1255,7 @@ export default class PublicAPI extends Core {
     const [response] = await this.dispatch(() => post(this[environmentSymbol], request, { validationToken }));
     return response;
   }
+
   /**
    * Login with email and password. Currently only supports `rest` clientID with body post of
    * credentials and tokenMethod `body`.
@@ -1770,14 +1549,6 @@ export default class PublicAPI extends Core {
         );
 
         const relations = {
-          legacyAsset: {
-            relation: 'ec:api/assets',
-            createRelation: false,
-            createTemplateModifier: '',
-            id: 'assetID',
-            ResourceClass: PublicAssetResource,
-            ListClass: PublicAssetList,
-          },
           tags: {
             relation: 'ec:api/tags',
             createRelation: false,

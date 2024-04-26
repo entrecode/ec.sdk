@@ -35,7 +35,38 @@
       {
         "assetID": "2bf325a9-c8f9-4e7d-b244-faa1090a479d",
         "created": "2017-05-15T12:56:07.546Z",
-        "files": [
+        "file": {
+          "url": "https://cdn2.entrecode.de/files/beefbeef/wFG3Al80jXjH06NIw3UWM2x0.png",
+          "mimetype": "image/png",
+          "size": 67381,
+          "resolution": {
+            "width": 1030,
+            "height": 1034
+          },
+          "locale": null,
+          "created": "2017-05-15T12:56:07.54+00:00",
+          "modified": "2017-05-15T12:56:07.54+00:00",
+          "assetID": "2bf325a9-c8f9-4e7d-b244-faa1090a479d"
+        },
+        "thumbnails": [
+          {
+            "url": "https://cdn2.entrecode.de/files/beefbeef/wFG3Al80jXjH06NIw3UWM2x0_400_thumb.png",
+            "dimension": 400
+          },
+          {
+            "url": "https://cdn2.entrecode.de/files/beefbeef/wFG3Al80jXjH06NIw3UWM2x0_200_thumb.png",
+            "dimension": 200
+          },
+          {
+            "url": "https://cdn2.entrecode.de/files/beefbeef/wFG3Al80jXjH06NIw3UWM2x0_50_thumb.png",
+            "dimension": 50
+          },
+          {
+            "url": "https://cdn2.entrecode.de/files/beefbeef/wFG3Al80jXjH06NIw3UWM2x0_100_thumb.png",
+            "dimension": 100
+          }
+        ],
+        "fileVariants": [
           {
             "url": "https://cdn2.entrecode.de/files/beefbeef/wFG3Al80jXjH06NIw3UWM2x0.png",
             "mimetype": "image/png",
@@ -47,19 +78,6 @@
             "locale": null,
             "created": "2017-05-15T12:56:07.54+00:00",
             "modified": "2017-05-15T12:56:07.54+00:00",
-            "assetID": "2bf325a9-c8f9-4e7d-b244-faa1090a479d"
-          },
-          {
-            "url": "https://cdn2.entrecode.de/files/beefbeef/wFG3Al80jXjH06NIw3UWM2x0_400_thumb.png",
-            "mimetype": "image/png",
-            "size": 19366,
-            "resolution": {
-              "width": 400,
-              "height": 400
-            },
-            "locale": null,
-            "created": "2017-05-15T12:56:08.576+00:00",
-            "modified": "2017-05-15T12:56:08.576+00:00",
             "assetID": "2bf325a9-c8f9-4e7d-b244-faa1090a479d"
           },
           {
@@ -89,19 +107,6 @@
             "assetID": "2bf325a9-c8f9-4e7d-b244-faa1090a479d"
           },
           {
-            "url": "https://cdn2.entrecode.de/files/beefbeef/wFG3Al80jXjH06NIw3UWM2x0_200_thumb.png",
-            "mimetype": "image/png",
-            "size": 8787,
-            "resolution": {
-              "width": 200,
-              "height": 200
-            },
-            "locale": null,
-            "created": "2017-05-15T12:56:08.618+00:00",
-            "modified": "2017-05-15T12:56:08.618+00:00",
-            "assetID": "2bf325a9-c8f9-4e7d-b244-faa1090a479d"
-          },
-          {
             "url": "https://cdn2.entrecode.de/files/beefbeef/wFG3Al80jXjH06NIw3UWM2x0_1024.png",
             "mimetype": "image/png",
             "size": 59591,
@@ -112,32 +117,6 @@
             "locale": null,
             "created": "2017-05-15T12:56:08.652+00:00",
             "modified": "2017-05-15T12:56:08.652+00:00",
-            "assetID": "2bf325a9-c8f9-4e7d-b244-faa1090a479d"
-          },
-          {
-            "url": "https://cdn2.entrecode.de/files/beefbeef/wFG3Al80jXjH06NIw3UWM2x0_50_thumb.png",
-            "mimetype": "image/png",
-            "size": 2382,
-            "resolution": {
-              "width": 50,
-              "height": 50
-            },
-            "locale": null,
-            "created": "2017-05-15T12:56:08.657+00:00",
-            "modified": "2017-05-15T12:56:08.657+00:00",
-            "assetID": "2bf325a9-c8f9-4e7d-b244-faa1090a479d"
-          },
-          {
-            "url": "https://cdn2.entrecode.de/files/beefbeef/wFG3Al80jXjH06NIw3UWM2x0_100_thumb.png",
-            "mimetype": "image/png",
-            "size": 4354,
-            "resolution": {
-              "width": 100,
-              "height": 100
-            },
-            "locale": null,
-            "created": "2017-05-15T12:56:08.689+00:00",
-            "modified": "2017-05-15T12:56:08.689+00:00",
             "assetID": "2bf325a9-c8f9-4e7d-b244-faa1090a479d"
           }
         ],
@@ -157,27 +136,31 @@
             "profile": "https://entrecode.de/schema/asset",
             "href": "https://datamanager.entrecode.de/asset/beefbeef?assetID=2bf325a9-c8f9-4e7d-b244-faa1090a479d",
             "title": "Bildschirmfoto 2017-05-15 um 14.56.02"
+          },
+          "curies": {
+            "href": "https://doc.entrecode.de/data_manager/#relation-{rel}",
+            "templated": true
           }
         }
       },
       {
         "assetID": "03685901-8bbe-40a2-89f2-a7c9a5db5bf8",
         "created": "2017-04-05T11:29:22.974Z",
-        "files": [
-          {
-            "url": "https://cdn2.entrecode.de/files/beefbeef/PdQoDSKVaujMjvCm9j4G3fEF.gif",
-            "mimetype": "image/gif",
-            "size": 121190,
-            "resolution": {
-              "width": 784,
-              "height": 487
-            },
-            "locale": null,
-            "created": "2017-04-05T11:29:22.968+00:00",
-            "modified": "2017-04-05T11:29:22.968+00:00",
-            "assetID": "03685901-8bbe-40a2-89f2-a7c9a5db5bf8"
-          }
-        ],
+        "file": {
+          "url": "https://cdn2.entrecode.de/files/beefbeef/PdQoDSKVaujMjvCm9j4G3fEF.gif",
+          "mimetype": "image/gif",
+          "size": 121190,
+          "resolution": {
+            "width": 784,
+            "height": 487
+          },
+          "locale": null,
+          "created": "2017-04-05T11:29:22.968+00:00",
+          "modified": "2017-04-05T11:29:22.968+00:00",
+          "assetID": "03685901-8bbe-40a2-89f2-a7c9a5db5bf8"
+        },
+        "thumbnails": [],
+        "fileVariants": [],
         "tags": [],
         "title": "dafuq",
         "type": "image",

@@ -15,7 +15,6 @@ const EntryResource = require('../../lib/resources/publicAPI/EntryResource');
 const LiteEntryResource = require('../../lib/resources/publicAPI/LiteEntryResource');
 const LiteDMAccountResource = require('../../lib/resources/publicAPI/LiteDMAccountResource').default;
 const LiteRoleResource = require('../../lib/resources/publicAPI/LiteRoleResource').default;
-const PublicAssetResource = require('../../lib/resources/publicAPI/PublicAssetResource').default;
 
 const should = chai.should();
 chai.use(sinonChai);
@@ -61,7 +60,6 @@ describe('Entry Resource', () => {
   let resource;
   let getSpy;
   let setSpy;
-  let asset;
   before(() =>
     new Promise((resolve, reject) => {
       fs.readFile(`${__dirname}/../mocks/public-entry.json`, 'utf-8', (err, res) => {
@@ -70,21 +68,9 @@ describe('Entry Resource', () => {
         }
         return resolve(JSON.parse(res));
       });
-    })
-      .then((json) => {
-        resourceJson = json;
-        return new Promise((resolve, reject) => {
-          fs.readFile(`${__dirname}/../mocks/public-asset.json`, 'utf-8', (err, res) => {
-            if (err) {
-              return reject(err);
-            }
-            return resolve(JSON.parse(res));
-          });
-        });
-      })
-      .then((json) => {
-        asset = new PublicAssetResource(json);
-      }),
+    }).then((json) => {
+      resourceJson = json;
+    }),
   );
   beforeEach(() => {
     mock.reset();
@@ -328,11 +314,6 @@ describe('Entry Resource', () => {
     resource.asset = { assetID: 'df96ce29-d5a1-4a6f-9094-62506b708378' };
     setSpy.should.have.been.calledWith('asset', { assetID: 'df96ce29-d5a1-4a6f-9094-62506b708378' });
   });
-  it('should set asset field, AssetResource', () => {
-    const original = asset.toOriginal();
-    resource.asset = asset;
-    setSpy.should.have.been.calledWith('asset', original);
-  });
   it('should set asset field, null', () => {
     resource.asset = null;
     setSpy.should.have.been.calledWith('asset', null);
@@ -341,7 +322,7 @@ describe('Entry Resource', () => {
     const throws = () => {
       resource.asset = { invalid: 'object' };
     };
-    throws.should.throw('only string, object/AssetResource/DMAssetResource, and null supported as input type');
+    throws.should.throw('only string, object/DMAssetResource, and null supported as input type');
   });
 
   it('should get assets field', () => {
@@ -359,11 +340,6 @@ describe('Entry Resource', () => {
     resource.assets = [{ assetID: 'df96ce29-d5a1-4a6f-9094-62506b708378' }];
     setSpy.should.have.been.calledWith('assets', [{ assetID: 'df96ce29-d5a1-4a6f-9094-62506b708378' }]);
   });
-  it('should set assets field, AssetResource', () => {
-    const original = asset.toOriginal();
-    resource.assets = [asset];
-    setSpy.should.have.been.calledWith('assets', [original]);
-  });
   it('should throw on set assets field, not an array', () => {
     const throws = () => {
       resource.assets = {};
@@ -374,7 +350,7 @@ describe('Entry Resource', () => {
     const throws = () => {
       resource.assets = [{ invalid: 'object' }];
     };
-    throws.should.throw('only string and object/AssetResource/DMAssetResource supported as input type');
+    throws.should.throw('only string and object/DMAssetResource supported as input type');
   });
 
   it('should get account field', () => {
@@ -480,7 +456,7 @@ describe('Entry Resource', () => {
   });
   it('should get image url, asset', () => {
     resource
-      .getImageUrl('asset', 500)
+      .getImageUrl('asset', 512)
       .should.be.equal('https://cdn2.entrecode.de/files/beefbeef/wFG3Al80jXjH06NIw3UWM2x0_512.png');
   });
   it('should be undefined, asset', () => {
@@ -488,7 +464,7 @@ describe('Entry Resource', () => {
   });
   it('should get image url, assets', () => {
     resource
-      .getImageUrl('assets', 500)
+      .getImageUrl('assets', 512)
       .should.be.deep.equal(['https://cdn2.entrecode.de/files/beefbeef/wFG3Al80jXjH06NIw3UWM2x0_512.png']);
   });
   it('should be empty array, assets', () => {
@@ -635,22 +611,11 @@ describe('Entry Resource with nested', () => {
       r.entries.should.have.property('length', 0);
     });
   });
-  it('should get nested asset, asset', () => {
-    res.asset.should.be.instanceOf(PublicAssetResource);
-  });
   it('should get null on asset', () => {
     const nullJson = Object.assign({}, resJson);
     nullJson.asset = null;
     return EntryResource.createEntry(nullJson).then((r) => {
       should.equal(r.asset, null);
-    });
-  });
-  it('should get nested asset, assets', () => {
-    res.assets.forEach((asset) => {
-      asset.should.be.instanceOf(PublicAssetResource);
-    });
-    res.assets.forEach((asset) => {
-      asset.should.be.instanceOf(PublicAssetResource);
     });
   });
   it('should get empty array, assets', () => {
@@ -698,17 +663,6 @@ describe('Entry Resource with nested and array links', () => {
       entry.should.be.instanceOf(EntryResource.default);
     });
   });
-  it('should get nested asset, asset', () => {
-    res.asset.should.be.instanceOf(PublicAssetResource);
-  });
-  it('should get nested asset, assets', () => {
-    res.assets.forEach((asset) => {
-      asset.should.be.instanceOf(PublicAssetResource);
-    });
-    res.assets.forEach((asset) => {
-      asset.should.be.instanceOf(PublicAssetResource);
-    });
-  });
 });
 
 describe('LiteEntry Resource', () => {
@@ -723,21 +677,9 @@ describe('LiteEntry Resource', () => {
         }
         return resolve(JSON.parse(res));
       });
-    })
-      .then((json) => {
-        resourceJson = json;
-        return new Promise((resolve, reject) => {
-          fs.readFile(`${__dirname}/../mocks/public-asset.json`, 'utf-8', (err, res) => {
-            if (err) {
-              return reject(err);
-            }
-            return resolve(JSON.parse(res));
-          });
-        });
-      })
-      .then((json) => {
-        asset = new PublicAssetResource(json);
-      }),
+    }).then((json) => {
+      resourceJson = json;
+    }),
   );
   beforeEach(() => {
     mock.reset();

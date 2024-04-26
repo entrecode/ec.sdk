@@ -8,15 +8,15 @@
     },
     "ec:api/assets": {
       "profile": "https://entrecode.de/schema/assets",
-      "href": "https://datamanager.entrecode.de/asset/01bd8e08"
+      "href": "https://datamanager.entrecode.de/asset/beefbeef"
     },
     "ec:api/tags/options": {
-      "href": "https://datamanager.entrecode.de/tag/01bd8e08{?dataManagerID,page,size,_list,sort,tag,tag~}",
+      "href": "https://datamanager.entrecode.de/tag/beefbeef{?dataManagerID,page,size,_list,sort,tag,tag~}",
       "templated": true
     },
     "self": {
       "profile": "https://entrecode.de/schema/tag",
-      "href": "https://datamanager.entrecode.de/tag/01bd8e08"
+      "href": "https://datamanager.entrecode.de/tag/beefbeef"
     }
   },
   "_embedded": {
@@ -27,15 +27,15 @@
         "_links": {
           "collection": {
             "profile": "https://entrecode.de/schema/tags",
-            "href": "https://datamanager.entrecode.de/tag/01bd8e08"
+            "href": "https://datamanager.entrecode.de/tag/beefbeef"
           },
           "ec:api/assets/with-tag": {
             "profile": "https://entrecode.de/schema/assets",
-            "href": "https://datamanager.entrecode.de/asset/01bd8e08?tag=one"
+            "href": "https://datamanager.entrecode.de/asset/beefbeef?tag=one"
           },
           "self": {
             "profile": "https://entrecode.de/schema/tag",
-            "href": "https://datamanager.entrecode.de/tag/01bd8e08?tag=one"
+            "href": "https://datamanager.entrecode.de/tag/beefbeef?tag=one"
           }
         }
       },
@@ -45,15 +45,15 @@
         "_links": {
           "collection": {
             "profile": "https://entrecode.de/schema/tags",
-            "href": "https://datamanager.entrecode.de/tag/01bd8e08"
+            "href": "https://datamanager.entrecode.de/tag/beefbeef"
           },
           "ec:api/assets/with-tag": {
             "profile": "https://entrecode.de/schema/assets",
-            "href": "https://datamanager.entrecode.de/asset/01bd8e08?tag=test"
+            "href": "https://datamanager.entrecode.de/asset/beefbeef?tag=test"
           },
           "self": {
             "profile": "https://entrecode.de/schema/tag",
-            "href": "https://datamanager.entrecode.de/tag/01bd8e08?tag=test"
+            "href": "https://datamanager.entrecode.de/tag/beefbeef?tag=test"
           }
         }
       },
@@ -63,15 +63,15 @@
         "_links": {
           "collection": {
             "profile": "https://entrecode.de/schema/tags",
-            "href": "https://datamanager.entrecode.de/tag/01bd8e08"
+            "href": "https://datamanager.entrecode.de/tag/beefbeef"
           },
           "ec:api/assets/with-tag": {
             "profile": "https://entrecode.de/schema/assets",
-            "href": "https://datamanager.entrecode.de/asset/01bd8e08?tag=two"
+            "href": "https://datamanager.entrecode.de/asset/beefbeef?tag=two"
           },
           "self": {
             "profile": "https://entrecode.de/schema/tag",
-            "href": "https://datamanager.entrecode.de/tag/01bd8e08?tag=two"
+            "href": "https://datamanager.entrecode.de/tag/beefbeef?tag=two"
           }
         }
       }

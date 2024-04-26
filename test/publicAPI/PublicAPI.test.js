@@ -17,8 +17,6 @@ const mock = require('../mocks/nock');
 const publicSchema = require('../mocks/public-schema');
 const EntryList = require('../../lib/resources/publicAPI/EntryList').default;
 const EntryResource = require('../../lib/resources/publicAPI/EntryResource').default;
-const PublicAssetList = require('../../lib/resources/publicAPI/PublicAssetList').default;
-const PublicAssetResource = require('../../lib/resources/publicAPI/PublicAssetResource').default;
 const DMAssetList = require('../../lib/resources/publicAPI/DMAssetList').default;
 const DMAssetResource = require('../../lib/resources/publicAPI/DMAssetResource').default;
 const PublicTagList = require('../../lib/resources/publicAPI/PublicTagList').default;
@@ -792,350 +790,6 @@ describe('PublicAPI', () => {
     return api.createEntry('allFields', {}, 6).should.be.rejectedWith('levels must be between 1 and 5');
   });
 
-  it('should load asset list', () => {
-    const stub = sinon.stub(helper, 'get');
-    stub.onFirstCall().returns(resolver('public-dm-root.json'));
-    stub.onSecondCall().returns(resolver('asset-list.json'));
-
-    return api
-      .assetList()
-      .then((list) => {
-        list.should.be.instanceof(PublicAssetList);
-        stub.restore();
-      })
-      .catch((err) => {
-        stub.restore();
-        throw err;
-      });
-  });
-  it('should throw on asset list filtered with assetID', () => {
-    return api
-      .assetList({ assetID: 'id' })
-      .should.be.rejectedWith('Cannot filter assetList only by assetID. Use PublicAPI#asset() instead');
-  });
-  it('should load asset resource', () => {
-    const stub = sinon.stub(helper, 'get');
-    stub.returns(resolver('asset-single.json'));
-
-    return api
-      .asset('id')
-      .then((model) => {
-        model.should.be.instanceof(PublicAssetResource);
-        stub.restore();
-      })
-      .catch((err) => {
-        stub.restore();
-        throw err;
-      });
-  });
-  it('should be rejected on undefined assetID', () => {
-    return api.asset().should.be.rejectedWith('assetID must be defined');
-  });
-
-  it('should create asset, path', () => {
-    const stubGetUrl = sinon.stub(helper, 'getUrl');
-    stubGetUrl.returns(Promise.resolve('https://datamanager.entrecode.de/asset/beefbeef'));
-    const stubSuperagentPost = sinon.stub(helper, 'superagentPost');
-    stubSuperagentPost.returns(
-      Promise.resolve({
-        _links: {
-          'ec:asset': {
-            href: 'https://datamanager.entrecode.de/asset/beefbeef?assetID=d845a328-0ea4-475a-b593-bae9df92a11a',
-          },
-        },
-      }),
-    );
-    const stubGet = sinon.stub(helper, 'get');
-    stubGet.onFirstCall().returns(resolver('public-dm-root.json'));
-    stubGet.onSecondCall().returns(resolver('public-asset.json'));
-
-    return api
-      .createAsset(`${__dirname}/../mocks/test.png`)
-      .then((response) => response())
-      .then((response) => {
-        response.should.be.instanceof(PublicAssetResource);
-        stubGetUrl.restore();
-        stubSuperagentPost.restore();
-        stubGet.restore();
-      })
-      .catch((err) => {
-        stubGetUrl.restore();
-        stubSuperagentPost.restore();
-        stubGet.restore();
-        throw err;
-      });
-  });
-  it('should create asset, buffer, title and tags', () => {
-    const stubGetUrl = sinon.stub(helper, 'getUrl');
-    stubGetUrl.returns(Promise.resolve('https://datamanager.entrecode.de/asset/beefbeef'));
-    const stubSuperagentPost = sinon.stub(helper, 'superagentPost');
-    stubSuperagentPost.returns(
-      Promise.resolve({
-        _links: {
-          'ec:asset': {
-            href: 'https://datamanager.entrecode.de/asset/beefbeef?assetID=d845a328-0ea4-475a-b593-bae9df92a11a',
-          },
-        },
-      }),
-    );
-
-    return new Promise((resolve, reject) => {
-      fs.readFile(`${__dirname}/../mocks/test.png`, (err, file) => {
-        if (err) {
-          return reject(err);
-        }
-        return resolve(file);
-      });
-    })
-      .then((file) =>
-        api.createAsset(file, {
-          fileName: 'test.png',
-          title: 'hello',
-          tags: ['helloTag'],
-        }),
-      )
-      .then((response) => {
-        response.should.be.a('function');
-        stubGetUrl.restore();
-        stubSuperagentPost.restore();
-      })
-      .catch((err) => {
-        stubGetUrl.restore();
-        stubSuperagentPost.restore();
-        throw err;
-      });
-  });
-  it('should be rejected on create with buffer and no file name', () => {
-    const stubGetUrl = sinon.stub(helper, 'getUrl');
-    stubGetUrl.returns(Promise.resolve('https://datamanager.entrecode.de/asset/beefbeef'));
-
-    return api
-      .createAsset(Buffer.alloc(1))
-      .then(() => {
-        throw new Error('Unexpectedly resolved');
-      })
-      .catch((err) => {
-        if (err.message === 'Unexpectedly resolved') {
-          throw err;
-        }
-        err.message.should.be.equal('When using buffer file input you must provide options.fileName.');
-      })
-      .finally(() => stubGetUrl.restore());
-  });
-  it('should create asset, FormData, title and tags', () => {
-    const stubGetUrl = sinon.stub(helper, 'getUrl');
-    stubGetUrl.returns(Promise.resolve('https://datamanager.entrecode.de/asset/beefbeef'));
-    const stubSuperagentPost = sinon.stub(helper, 'superagentPost');
-    stubSuperagentPost.returns(
-      Promise.resolve({
-        _links: {
-          'ec:asset': {
-            href: 'https://datamanager.entrecode.de/asset/beefbeef?assetID=d845a328-0ea4-475a-b593-bae9df92a11a',
-          },
-        },
-      }),
-    );
-
-    return api
-      .createAsset(new FormData(), {
-        // eslint-disable-line no-undef
-        title: 'hello',
-        tags: ['whatwhat'],
-      })
-      .then((response) => response.should.be.a('function'))
-      .finally(() => {
-        stubGetUrl.restore();
-        stubSuperagentPost.restore();
-      });
-  });
-  it('should be rejected on create asset with undefined value', () => {
-    return api.createAsset().should.be.rejectedWith('Cannot create resource with undefined object.');
-  });
-  it('should be rejected on create asset with unsupported value', () => {
-    const stubGetUrl = sinon.stub(helper, 'getUrl');
-    stubGetUrl.returns(Promise.resolve('https://datamanager.entrecode.de/asset/beefbeef'));
-    return api
-      .createAsset([])
-      .should.be.rejectedWith('Cannot handle input.')
-      .notify(() => stubGetUrl.restore());
-  });
-
-  it('should create assets, path', () => {
-    const stubGetUrl = sinon.stub(helper, 'getUrl');
-    stubGetUrl.returns(Promise.resolve('https://datamanager.entrecode.de/asset/beefbeef'));
-    const stubSuperagentPost = sinon.stub(helper, 'superagentPost');
-    stubSuperagentPost.returns(
-      Promise.resolve({
-        _links: {
-          'ec:asset': [
-            {
-              href: 'https://datamanager.entrecode.de/asset/beefbeef?assetID=d845a328-0ea4-475a-b593-bae9df92a11a',
-            },
-            {
-              href: 'https://datamanager.entrecode.de/asset/beefbeef?assetID=d845a328-0ea4-475a-b593-bae9df92a11a',
-            },
-          ],
-        },
-      }),
-    );
-    const stubGet = sinon.stub(helper, 'get');
-    stubGet.onFirstCall().returns(resolver('public-dm-root.json'));
-    stubGet.onSecondCall().returns(resolver('public-asset-list.json'));
-
-    return api
-      .createAssets([`${__dirname}/../mocks/test.png`, `${__dirname}/../mocks/test.png`])
-      .then((response) => response())
-      .then((response) => response.should.be.instanceof(PublicAssetList))
-      .finally(() => {
-        stubGetUrl.restore();
-        stubSuperagentPost.restore();
-        stubGet.restore();
-      });
-  });
-  it('should create assets, buffer, title and tags', () => {
-    const stubGetUrl = sinon.stub(helper, 'getUrl');
-    stubGetUrl.returns(Promise.resolve('https://datamanager.entrecode.de/asset/beefbeef'));
-    const stubSuperagentPost = sinon.stub(helper, 'superagentPost');
-    stubSuperagentPost.returns(
-      Promise.resolve({
-        _links: {
-          'ec:asset': [
-            {
-              href: 'https://datamanager.entrecode.de/asset/beefbeef?assetID=d845a328-0ea4-475a-b593-bae9df92a11a',
-            },
-            {
-              href: 'https://datamanager.entrecode.de/asset/beefbeef?assetID=d845a328-0ea4-475a-b593-bae9df92a11a',
-            },
-          ],
-        },
-      }),
-    );
-
-    return new Promise((resolve, reject) => {
-      fs.readFile(`${__dirname}/../mocks/test.png`, (err, file) => {
-        if (err) {
-          return reject(err);
-        }
-        return resolve(file);
-      });
-    })
-      .then((file) =>
-        api.createAssets([file, file], {
-          fileName: ['test.png', 'test.png'],
-          title: 'hello',
-          tags: ['helloTag'],
-        }),
-      )
-      .then((response) => response.should.be.a('function'))
-      .finally(() => {
-        stubGetUrl.restore();
-        stubSuperagentPost.restore();
-      });
-  });
-  it('should be rejected on create assets with buffer and no file name #1', () => {
-    const stubGetUrl = sinon.stub(helper, 'getUrl');
-    stubGetUrl.returns(Promise.resolve('https://datamanager.entrecode.de/asset/beefbeef'));
-
-    return api
-      .createAssets([Buffer.alloc(1)])
-      .then(() => {
-        throw new Error('Unexpectedly resolved');
-      })
-      .catch((err) => {
-        if (err.message === 'Unexpectedly resolved') {
-          throw err;
-        }
-        err.message.should.be.equal('When using buffer file input you must provide options.fileName.');
-      })
-      .finally(() => stubGetUrl.restore());
-  });
-  it('should be rejected on create assets with buffer and no file name #2', () => {
-    const stubGetUrl = sinon.stub(helper, 'getUrl');
-    stubGetUrl.returns(Promise.resolve('https://datamanager.entrecode.de/asset/beefbeef'));
-
-    return api
-      .createAssets([Buffer.alloc(1)], { fileName: 'string' })
-      .then(() => {
-        throw new Error('Unexpectedly resolved');
-      })
-      .catch((err) => {
-        if (err.message === 'Unexpectedly resolved') {
-          throw err;
-        }
-        err.message.should.be.equal('When using buffer file input you must provide options.fileName.');
-      })
-      .finally(() => stubGetUrl.restore());
-  });
-  it('should be rejected on create assets with buffer and no file name #3', () => {
-    const stubGetUrl = sinon.stub(helper, 'getUrl');
-    stubGetUrl.returns(Promise.resolve('https://datamanager.entrecode.de/asset/beefbeef'));
-
-    return api
-      .createAssets([Buffer.alloc(1)], { fileName: [] })
-      .then(() => {
-        throw new Error('Unexpectedly resolved');
-      })
-      .catch((err) => {
-        if (err.message === 'Unexpectedly resolved') {
-          throw err;
-        }
-        err.message.should.be.equal('When using buffer file input you must provide options.fileName.');
-      })
-      .finally(() => stubGetUrl.restore());
-  });
-  it('should create assets, FormData, title and tags', () => {
-    const stubGetUrl = sinon.stub(helper, 'getUrl');
-    stubGetUrl.returns(Promise.resolve('hhttps://datamanager.entrecode.de/asset/beefbeef'));
-    const stubSuperagentPost = sinon.stub(helper, 'superagentPost');
-    stubSuperagentPost.returns(
-      Promise.resolve({
-        _links: {
-          'ec:asset': [
-            {
-              href: 'https://datamanager.entrecode.de/asset/beefbeef?assetID=d845a328-0ea4-475a-b593-bae9df92a11a',
-            },
-            {
-              href: 'https://datamanager.entrecode.de/asset/beefbeef?assetID=d845a328-0ea4-475a-b593-bae9df92a11a',
-            },
-          ],
-        },
-      }),
-    );
-
-    return api
-      .createAssets(new FormData(), {
-        // eslint-disable-line no-undef
-        title: 'hello',
-        tags: ['whatwhat'],
-      })
-      .then((response) => response.should.be.a('function'))
-      .finally(() => {
-        stubGetUrl.restore();
-        stubSuperagentPost.restore();
-      });
-  });
-  it('should be rejected on create assets with undefined value', () => {
-    return api.createAssets().should.be.rejectedWith('Cannot create resource with undefined object.');
-  });
-  it('should be rejected on create assets with unsupported value', () => {
-    const stubGetUrl = sinon.stub(helper, 'getUrl');
-    stubGetUrl.returns(Promise.resolve('https://datamanager.entrecode.de/asset/beefbeef'));
-    return api
-      .createAssets([[]])
-      .should.be.rejectedWith('Cannot handle input.')
-      .notify(() => stubGetUrl.restore());
-  });
-
-  it('should get best file', () => {
-    const stub = sinon.stub(helper, 'get');
-    stub.onFirstCall().returns(resolver('public-dm-root.json'));
-    stub.onSecondCall().returns(resolver('best-file.json'));
-
-    return api
-      .getFileUrl('e766d956-6f43-49fa-8f30-023e4cd29779')
-      .should.eventually.be.equal('https://cdn2.entrecode.de/files/01bd8e08/J2DJfjfEVby3KcxGNrJyFdEz_512.png')
-      .notify(() => stub.restore());
-  });
   it('should get best file assetNeue', () => {
     const stub = sinon.stub(helper, 'get');
     stub.onFirstCall().returns(resolver('public-dm-root.json'));
@@ -1143,7 +797,7 @@ describe('PublicAPI', () => {
 
     return api
       .getFileUrl('notUUID')
-      .should.eventually.be.equal('https://cdn2.entrecode.de/files/01bd8e08/J2DJfjfEVby3KcxGNrJyFdEz_512.png')
+      .should.eventually.be.equal('https://cdn2.entrecode.de/files/beefbeef/J2DJfjfEVby3KcxGNrJyFdEz_512.png')
       .notify(() => stub.restore());
   });
   it('should get error on 404', () => {
@@ -1162,7 +816,7 @@ describe('PublicAPI', () => {
 
     return api
       .getImageUrl('e766d956-6f43-49fa-8f30-023e4cd29779')
-      .should.eventually.be.equal('https://cdn2.entrecode.de/files/01bd8e08/J2DJfjfEVby3KcxGNrJyFdEz_512.png')
+      .should.eventually.be.equal('https://cdn2.entrecode.de/files/beefbeef/J2DJfjfEVby3KcxGNrJyFdEz_512.png')
       .notify(() => stub.restore());
   });
   it('should get best image with size', () => {
@@ -1172,21 +826,11 @@ describe('PublicAPI', () => {
 
     return api
       .getImageUrl('e766d956-6f43-49fa-8f30-023e4cd29779', 2)
-      .should.eventually.be.equal('https://cdn2.entrecode.de/files/01bd8e08/J2DJfjfEVby3KcxGNrJyFdEz_512.png')
+      .should.eventually.be.equal('https://cdn2.entrecode.de/files/beefbeef/J2DJfjfEVby3KcxGNrJyFdEz_512.png')
       .notify(() => stub.restore());
   });
   it('should be rejected on undefined assetID', () => {
     return api.getImageUrl().should.be.rejectedWith('assetID must be defined');
-  });
-  it('should get best thumb', () => {
-    const stub = sinon.stub(helper, 'get');
-    stub.onFirstCall().returns(resolver('public-dm-root.json'));
-    stub.onSecondCall().returns(resolver('best-file.json'));
-
-    return api
-      .getImageThumbUrl('e766d956-6f43-49fa-8f30-023e4cd29779')
-      .should.eventually.be.equal('https://cdn2.entrecode.de/files/01bd8e08/J2DJfjfEVby3KcxGNrJyFdEz_512.png')
-      .notify(() => stub.restore());
   });
   it('should get best thumb assetNeue', () => {
     const stub = sinon.stub(helper, 'get');
@@ -1195,7 +839,7 @@ describe('PublicAPI', () => {
 
     return api
       .getImageThumbUrl('notUUID')
-      .should.eventually.be.equal('https://cdn2.entrecode.de/files/01bd8e08/J2DJfjfEVby3KcxGNrJyFdEz_512.png')
+      .should.eventually.be.equal('https://cdn2.entrecode.de/files/beefbeef/J2DJfjfEVby3KcxGNrJyFdEz_512.png')
       .notify(() => stub.restore());
   });
   it('should get best thumb with size', () => {
@@ -1205,7 +849,7 @@ describe('PublicAPI', () => {
 
     return api
       .getImageThumbUrl('e766d956-6f43-49fa-8f30-023e4cd29779', 2)
-      .should.eventually.be.equal('https://cdn2.entrecode.de/files/01bd8e08/J2DJfjfEVby3KcxGNrJyFdEz_512.png')
+      .should.eventually.be.equal('https://cdn2.entrecode.de/files/beefbeef/J2DJfjfEVby3KcxGNrJyFdEz_512.png')
       .notify(() => stub.restore());
   });
   it('should be rejected on undefined assetID', () => {
