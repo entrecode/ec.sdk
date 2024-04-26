@@ -1,3 +1,35 @@
+## 0.29.0 (2024-04-26)
+
+* release version 0.29.0 ([2f25a68](https://github.com/entrecode/ec.sdk/commit/2f25a68))
+* feat: drop support for legacy Assets ([bdf0ace](https://github.com/entrecode/ec.sdk/commit/bdf0ace))
+
+
+### BREAKING CHANGE
+
+* This commit dropps support for legacy Assets. You must have migrated to Assets Neue by now.
+
+The following types have been removed:
+AssetList
+AssetResource
+DeletedAssetList
+DeletedAssetResource
+PublicAssetList
+PublicAssetResource
+
+Fhe following methods have been removed:
+DataManager#getFileUrl
+DataManager#getImageThumbUrl
+DataManager#getImageUrl
+DataManagerResource#asset
+DataManagerResource#assetList
+DataManagerResource#createAsset
+DataManagerResource#createAssets
+PublicAPI#asset
+PublicAPI#assetList
+PublicAPI#createAsset
+PublicAPI#deleteAsset
+
+
 ## 0.28.0 (2024-04-11)
 
 * release version 0.28.0 ([90f08f5](https://github.com/entrecode/ec.sdk/commit/90f08f5))
