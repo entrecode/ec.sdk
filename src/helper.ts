@@ -1,4 +1,3 @@
-import * as localeLib from 'locale';
 import * as superagent from 'superagent';
 import * as validator from 'json-schema-remote';
 
@@ -7,9 +6,6 @@ import Problem from './Problem';
 import TokenStoreFactory, { TokenStore } from './TokenStore';
 import { filterOptions } from './resources/ListResource';
 
-import AssetResource from './resources/datamanager/AssetResource';
-import DeletedAssetResource from './resources/datamanager/DeletedAssetResource';
-import PublicAssetResource from './resources/publicAPI/PublicAssetResource';
 import { environment } from './Core';
 
 const { newError } = require('ec.errors')();
@@ -21,6 +17,13 @@ const historyMap = new Map();
 let EventSource: boolean | any = false;
 
 validator.setLoggingFunction(() => {});
+
+// eslint-disable-next-line import/no-mutable-exports
+export let locale = 'en';
+
+export function setLocale(globalLocale: string = 'en') {
+  locale = globalLocale;
+}
 
 /**
  * Creates a callback which wraps a traverson repsonse from `get`, `post`, `put`, `delete` and
@@ -85,7 +88,7 @@ function jsonHandler(callback) {
             }
           }
         }
-      } catch (e) {
+      } catch (_e) {
         // we don't care about errors here
         if (res.request) {
           additional = `for request ${res.request.method} ${res.request.path}`;
@@ -820,92 +823,6 @@ export function shortenUUID(uuid: string, factor: number) {
 }
 
 /**
- * Helper for negotiating files from assets.
- *
- * @private
- *
- * @param {AssetResource} asset - The asset from which negotiation should occur.
- * @param {boolean} image - true if it is an image negotiation.
- * @param {boolean} thumb - true if it is a thumbnail negotiation.
- * @param {number?} size - the minimum size to request.
- * @param {string?} requestedLocale - locale to request.
- * @returns {string} url for the requested asset.
- */
-export function fileNegotiate(
-  asset: AssetResource | DeletedAssetResource | PublicAssetResource,
-  image: boolean,
-  thumb: boolean,
-  size: number,
-  requestedLocale?: string,
-): string {
-  let f = JSON.parse(JSON.stringify(asset.files));
-
-  if (requestedLocale) {
-    const supportedLocales = new localeLib['Locales'](
-      Array.from(new Set(f.map((e) => e.locale))) // unique
-        .filter((a) => !!a),
-    ); // remove falsy values
-    let bestLocale = new localeLib['Locales'](requestedLocale).best(supportedLocales).toString();
-    const res = /^([^.]+)/.exec(bestLocale);
-    if (res) {
-      bestLocale = res[1]; // remove charset
-    }
-    const filesWithLocale = f.filter((file) => file.locale === bestLocale);
-    if (filesWithLocale && filesWithLocale.length > 0) {
-      f = filesWithLocale;
-    }
-  }
-  if (!image && !thumb && asset.type !== 'image') {
-    // for getFileUrl pic fist file and return - not for images
-    return f[0].url;
-  }
-
-  const first = f[0];
-  // remove image files we have no resolution for (image/svg+xml; fix for CMS-1091)
-  f = f.filter((file) => file.resolution);
-  if (f.length === 0) {
-    // if no file is left pick first of original data
-    return first.url;
-  }
-  f.sort((left, right) => {
-    // sort by size descending
-    const leftMax = Math.max(left.resolution.height, left.resolution.width);
-    const rightMax = Math.max(right.resolution.height, right.resolution.width);
-    if (leftMax < rightMax) {
-      return 1;
-    }
-    if (leftMax > rightMax) {
-      return -1;
-    }
-    return 0;
-  });
-  let imageFiles = f.filter((file) => {
-    if (thumb) {
-      return file.url.indexOf('_thumb') !== -1; // is thumbnail
-    }
-    return file.url.indexOf('_thumb') === -1; // is not a thumbnail
-  });
-  if (!imageFiles || imageFiles.length === 0) {
-    imageFiles = f;
-  }
-  const largest = imageFiles[0];
-  if (size) {
-    // remove all image resolutions that are too small
-    imageFiles = imageFiles
-      .filter((file) => file.resolution.height >= size || file.resolution.width >= size)
-      // choose smallest image of all that are greater than size parameter
-      .slice(-1);
-  }
-
-  if (imageFiles.length > 0) {
-    // if all is good, we have an image now
-    return imageFiles[0].url;
-  }
-  // if the requested size is larger than the original image, we take the largest possible one
-  return largest.url;
-}
-
-/**
  * Load a schema identified by link and store it in json-schema-remote
  *
  * @private
@@ -924,10 +841,4 @@ export function getSchema(link: string): any {
       return loadedSchema;
     });
   });
-}
-
-export let locale = 'en';
-
-export function setLocale(globalLocale: string = 'en') {
-  locale = globalLocale;
 }

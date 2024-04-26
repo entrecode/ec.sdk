@@ -1,10 +1,8 @@
 import * as validator from 'json-schema-remote';
 
-const { convertValidationError } = require('ec.errors')();
-
 import Core, { environment, options } from './Core';
 import Problem from './Problem';
-import { get, locale, optionsToQuery, post, superagentGet } from './helper';
+import { get, locale, optionsToQuery, post } from './helper';
 import { filterOptions } from './resources/ListResource';
 import DMStatsList from './resources/datamanager/DMStatsList';
 import DMStatsResource from './resources/datamanager/DMStatsResource';
@@ -14,7 +12,7 @@ import TemplateList from './resources/datamanager/TemplateList';
 import TemplateResource from './resources/datamanager/TemplateResource';
 import HistoryEvents from './resources/publicAPI/HistoryEvents';
 
-declare const EventSource: any;
+const { convertValidationError } = require('ec.errors')();
 
 validator.setLoggingFunction(() => {});
 
@@ -132,59 +130,6 @@ export default class DataManager extends Core {
   }
 
   /**
-   * Best file helper for files.
-   *
-   * @deprecated
-   * @param {string} assetID - the assetID
-   * @param {string?} locale - the locale
-   * @returns {Promise<string>} Promise resolving the URL to the file
-   */
-  getFileUrl(assetID: string, locale?: string): Promise<string> {
-    if (!assetID) {
-      return Promise.reject(new Error('assetID must be defined'));
-    }
-
-    const url = `${urls[this[environmentSymbol]]}files/${assetID}/url`;
-    return superagentGet(url, locale ? { 'Accept-Language': locale } : {}).then((res) => res.url);
-  }
-
-  /**
-   * Best file helper for image thumbnails.
-   *
-   * @deprecated
-   * @param {string} assetID - the assetID
-   * @param {number?} size - the minimum size of the image
-   * @param {string?} locale - the locale
-   * @returns {Promise<string>} Promise resolving the URL to the file
-   */
-  getImageThumbUrl(assetID: string, size?: number, locale?: string): Promise<string> {
-    if (!assetID) {
-      return Promise.reject(new Error('assetID must be defined'));
-    }
-
-    const url = `${urls[this[environmentSymbol]]}files/${assetID}/url?thumb${size ? `&size=${size}` : ''}`;
-    return superagentGet(url, locale ? { 'Accept-Language': locale } : {}).then((res) => res.url);
-  }
-
-  /**
-   * Best file helper for images.
-   *
-   * @deprecated
-   * @param {string} assetID - the assetID
-   * @param {number?} size - the minimum size of the image
-   * @param {string?} locale - the locale
-   * @returns {Promise<string>} Promise resolving the URL to the file
-   */
-  getImageUrl(assetID: string, size?: number, locale?: string): Promise<string> {
-    if (!assetID) {
-      return Promise.reject(new Error('assetID must be defined'));
-    }
-
-    const url = `${urls[this[environmentSymbol]]}files/${assetID}/url${size ? `?size=${size}` : ''}`;
-    return superagentGet(url, locale ? { 'Accept-Language': locale } : {}).then((res) => res.url);
-  }
-
-  /**
    * Load the HistoryEvents for this DataManager from v3 API.
    * Note: This Request only has pagination when you load a single modelID.
    *
@@ -205,51 +150,6 @@ export default class DataManager extends Core {
       })
       .then(([res, traversal]) => new HistoryEvents(res, this[environmentSymbol], traversal));
   }
-
-  /*
-  /**
-   * Creates a new History EventSource with the given filter options.
-   *
-   * @param {filterOptions | any} options The filter options
-   * @return {Promise<EventSource>} The created EventSource.
-   */
-  /*
-  newHistory(options?: filterOptions): Promise<any> {
-    return Promise.resolve()
-      .then(() => this.follow('ec:history'))
-      .then((request) => {
-        request.follow('ec:entry-history');
-
-        if (options) {
-          request.withTemplateParameters(optionsToQuery(options));
-        }
-
-        return getHistory(this[environmentSymbol], request);
-      });
-  }
-
-  /**
-   * Creates a new HistoryEventsResource with past events.
-   *
-   * @param {filterOptions?} options The filter options.
-   * @returns {Promise<HistoryEventsResource} Event list of past events.
-   */
-  /*
-  getPastEvents(options?: filterOptions): Promise<any> {
-    return Promise.resolve()
-      .then(() => this.follow('ec:history'))
-      .then((request) => {
-        request.follow('ec:entry-history');
-
-        if (options) {
-          request.withTemplateParameters(optionsToQuery(options));
-        }
-
-        return get(this[environmentSymbol], request);
-      })
-      .then(([res]) => new HistoryEvents(res, this[environmentSymbol]));
-  }
-  */
 
   /**
    * Load a single {@link DMStatsResource}.

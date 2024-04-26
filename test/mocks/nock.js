@@ -81,7 +81,7 @@ module.exports = {
       .replyWithFile(200, `${__dirname}/schema/dm-model-put.json`, { 'Content-Type': 'application/json' })
       .get('/api/schema/beefbeef/allFields?template=post')
       .replyWithFile(200, `${__dirname}/schema/dm-model-post.json`, { 'Content-Type': 'application/json' })
-      .get('/files/8e2ef37e-68f8-46c7-b4ba-e9f44bc00257/url?thumb=false')
+      .get('/f/beefbeef/8e2ef37e-68f8-46c7-b4ba-e9f44bc00257/')
       .reply(404);
   },
 };

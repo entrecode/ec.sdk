@@ -4,15 +4,15 @@
   "_links": {
     "collection": {
       "profile": "https://entrecode.de/schema/tags",
-      "href": "https://datamanager.entrecode.de/tag/01bd8e08"
+      "href": "https://datamanager.entrecode.de/tag/beefbeef"
     },
     "ec:api/assets/with-tag": {
       "profile": "https://entrecode.de/schema/assets",
-      "href": "https://datamanager.entrecode.de/asset/01bd8e08?tag=test"
+      "href": "https://datamanager.entrecode.de/asset/beefbeef?tag=test"
     },
     "self": {
       "profile": "https://entrecode.de/schema/tag",
-      "href": "https://datamanager.entrecode.de/tag/01bd8e08?tag=test"
+      "href": "https://datamanager.entrecode.de/tag/beefbeef?tag=test"
     },
     "curies": {
       "href": "https://doc.entrecode.de/data_manager/#relation-{rel}",

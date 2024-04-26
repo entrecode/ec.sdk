@@ -1,16 +1,11 @@
-import * as qs from 'querystring';
-import * as superagent from 'superagent';
-
 import { environment } from '../../Core';
 import PublicAPI from '../../PublicAPI';
-import { get, getUrl, optionsToQuery, superagentPost } from '../../helper';
+import { get, optionsToQuery } from '../../helper';
 import { filterOptions } from '../ListResource';
 import Resource from '../Resource';
 import HistoryEvents from '../publicAPI/HistoryEvents';
 import AssetGroupList from './AssetGroupList';
 import AssetGroupResource from './AssetGroupResource';
-import AssetList from './AssetList';
-import AssetResource from './AssetResource';
 import DMAccountList from './DMAccountList';
 import DMAccountResource from './DMAccountResource';
 import DMClientList from './DMClientList';
@@ -81,16 +76,6 @@ class DataManagerResource extends Resource {
         additionalTemplateParam: 'dataManagerID',
         ResourceClass: DMAccountResource,
         ListClass: DMAccountList,
-      },
-      asset: {
-        relation: 'ec:assets/options',
-        createRelation: false,
-        createTemplateModifier: '',
-        id: 'assetID',
-        doNotSendList: true,
-        additionalTemplateParam: 'dataManagerID',
-        ResourceClass: AssetResource,
-        ListClass: AssetList,
       },
       dmClient: {
         relation: 'ec:dm-clients/options',
@@ -227,22 +212,6 @@ class DataManagerResource extends Resource {
   }
 
   /**
-   * Load a single {@link AssetResource}.
-   *
-   * @example
-   * return dm.asset('thisOne')
-   * .then(asset => {
-   *   return show(asset);
-   * });
-   *
-   * @param {string} assetID the assetID
-   * @returns {Promise<AssetResource>} Promise resolving to AssetResource
-   */
-  asset(assetID: string): Promise<AssetResource> {
-    return <Promise<AssetResource>>this.resource('asset', assetID);
-  }
-
-  /**
    * Load a single {@link AssetGroupResource}.
    *
    * @example
@@ -277,35 +246,6 @@ class DataManagerResource extends Resource {
     return Promise.resolve().then(() => {
       return <Promise<AssetGroupList>>this.resourceList('assetGroup', options);
     });
-  }
-
-  /**
-   * Load the {@link AssetList}.
-   *
-   * @example
-   * return dm.assetList()
-   * .then(assets => {
-   *   return assets.getAllItems().filter(asset => asset.assetID === 'thisOne');
-   * })
-   * .then(assetsArray => {
-   *   return show(assetsArray[0]);
-   * });
-   *
-   * // This would actually be better:
-   * return dm.assetList({
-   *   filter: {
-   *     assetID: 'thisOne',
-   *   },
-   * })
-   * .then(assets => {
-   *   return show(assets.getFirstItem());
-   * });
-   *
-   * @param {filterOptions?} options filter options
-   * @returns {Promise<AssetList>} Promise resolving to AssetList
-   */
-  assetList(options?: filterOptions): Promise<AssetList> {
-    return <Promise<AssetList>>this.resourceList('asset', options);
   }
 
   /**
@@ -354,64 +294,6 @@ class DataManagerResource extends Resource {
   }
 
   /**
-   * Create a new asset.
-   *
-   * @param {object|string} input representing the asset, either a path, a FormData object,
-   *  a readStream, or an object containing a buffer.
-   * @param {object?} options options for creating an asset.
-   * @returns {Promise<Promise<AssetResource>>} the newly created AssetResource
-   */
-  createAsset(input: string | any, options: assetOptions = {}) {
-    if (!input) {
-      return Promise.reject(new Error('Cannot create resource with undefined object.'));
-    }
-
-    return getUrl(this[environmentSymbol], this.newRequest().follow('ec:assets'))
-      .then((url) => {
-        const superagentRequest = superagent.post(url);
-
-        const isFormData = typeof FormData === 'function' && input instanceof FormData; // eslint-disable-line no-undef
-        if (isFormData) {
-          superagentRequest.send(input);
-        } else if (typeof input === 'string') {
-          superagentRequest.attach('file', input);
-        } else if (input?.byteLength) {
-          if (!('fileName' in options)) {
-            throw new Error('When using buffer file input you must provide options.fileName.');
-          }
-          superagentRequest.attach('file', input, <string>options.fileName);
-        } else {
-          throw new Error('Cannot handle input.');
-        }
-
-        if (options.title) {
-          if (isFormData) {
-            input.set('title', options.title);
-          } else {
-            superagentRequest.field('title', options.title);
-          }
-        }
-
-        if (options.tags) {
-          if (isFormData) {
-            input.set('tags', options.tags);
-          } else {
-            options.tags.forEach((tag) => {
-              superagentRequest.field('tags', tag);
-            });
-          }
-        }
-
-        return superagentPost(this[environmentSymbol], superagentRequest);
-      })
-      .then((response) => {
-        const url = response._links['ec:asset'].href;
-        const queryStrings = qs.parse(url.substr(url.indexOf('?') + 1));
-        return () => this.asset(<string>queryStrings.assetID);
-      });
-  }
-
-  /**
    * Create a new asset group.
    *
    * @param {object} group object representing the group.
@@ -419,71 +301,6 @@ class DataManagerResource extends Resource {
    */
   createAssetGroup(group: any): Promise<AssetGroupResource> {
     return <Promise<AssetGroupResource>>this.create('assetGroup', group);
-  }
-
-  /**
-   * Create multiple new asset.
-   *
-   * @param {object|array<object|string>} input representing the asset, either an array of paths, a
-   *   FormData object, a array of readStreams, or an array containing buffers.
-   * @param {object?} options options for creating an asset.
-   * @returns {Promise<Promise<AssetList>>} the newly created assets as AssetList
-   */
-  createAssets(input: Array<string | any> | any, options: assetOptions = {}) {
-    if (!input) {
-      return Promise.reject(new Error('Cannot create resource with undefined object.'));
-    }
-
-    return getUrl(this[environmentSymbol], this.newRequest().follow('ec:assets'))
-      .then((url) => {
-        const superagentRequest = superagent.post(url);
-
-        const isFormData = typeof FormData === 'function' && input instanceof FormData; // eslint-disable-line
-        // no-undef
-        if (isFormData) {
-          superagentRequest.send(input);
-        } else {
-          input.forEach((file, index) => {
-            if (typeof file === 'string') {
-              superagentRequest.attach('file', file);
-            } else if (file?.byteLength) {
-              if (!('fileName' in options) || !Array.isArray(options.fileName) || !options.fileName[index]) {
-                throw new Error('When using buffer file input you must provide options.fileName.');
-              }
-              superagentRequest.attach('file', file, options.fileName[index]);
-            } else {
-              throw new Error('Cannot handle input.');
-            }
-          });
-        }
-        if (options.title) {
-          if (isFormData) {
-            input.set('title', options.title);
-          } else {
-            superagentRequest.field('title', options.title);
-          }
-        }
-
-        if (options.tags) {
-          if (isFormData) {
-            input.set('tags', options.tags);
-          } else {
-            options.tags.forEach((tag) => {
-              superagentRequest.field('tags', tag);
-            });
-          }
-        }
-
-        return superagentPost(this[environmentSymbol], superagentRequest);
-      })
-      .then((response) => {
-        const urls = response._links['ec:asset'].map((link) => {
-          const queryStrings = qs.parse(link.href.substr(link.href.indexOf('?') + 1));
-          return queryStrings.assetID;
-        });
-
-        return () => this.assetList({ assetID: { any: urls } });
-      });
   }
 
   /**

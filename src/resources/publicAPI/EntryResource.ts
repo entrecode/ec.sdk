@@ -3,18 +3,17 @@ import * as validator from 'json-schema-remote';
 import * as traverson from 'traverson';
 import * as qs from 'querystring';
 
-const { convertValidationError } = require('ec.errors')();
-
 import LiteEntryResource from './LiteEntryResource';
 import LiteDMAccountResource from './LiteDMAccountResource';
 import LiteRoleResource from './LiteRoleResource';
-import PublicAssetResource from './PublicAssetResource';
-import { get, fileNegotiate, getSchema, optionsToQuery, locale, getUrl } from '../../helper';
+import { get, getSchema, optionsToQuery, locale, getUrl } from '../../helper';
 import { environment } from '../../Core';
 import DMAssetResource from './DMAssetResource';
 import { filterOptions } from '../ListResource';
 import Problem from '../../Problem';
 import HistoryEvents from './HistoryEvents';
+
+const { convertValidationError } = require('ec.errors')();
 
 const environmentSymbol: any = Symbol.for('environment');
 const resourceSymbol: any = Symbol.for('resource');
@@ -23,7 +22,6 @@ validator.setLoggingFunction(() => {});
 
 const schemaSymbol: any = Symbol('_schema');
 const shortIDSymbol: any = Symbol('_shortID');
-const traversalSymbol: any = Symbol.for('traversal');
 
 const datetimeRegex =
   /^(?:[1-9]\d{3}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1\d|2[0-8])|(?:0[13-9]|1[0-2])-(?:29|30)|(?:0[13578]|1[02])-31)|(?:[1-9]\d(?:0[48]|[2468][048]|[13579][26])|(?:[2468][048]|[13579][26])00)-02-29)T(?:[01]\d|2[0-3]):[0-5]\d:[0-5]\d(?:\.\d{3})?(?:Z|[+-][01]\d:[0-5]\d)$/;
@@ -79,11 +77,7 @@ function loadSchemaForResource(resource: any): any {
   );
 }
 
-function negotiater(asset, image, thumb, size, locale) {
-  if (!/^[a-zA-Z0-9\-_]{22}$/.test(asset.assetID)) {
-    return fileNegotiate(asset, image, thumb, size, locale);
-  }
-
+function negotiater(asset, image, thumb, size) {
   if (!image || (!size && !thumb)) {
     return asset.file.url;
   }
@@ -101,7 +95,7 @@ function negotiater(asset, image, thumb, size, locale) {
     return file.url;
   }
 
-  return undefined;
+  return asset.file.url;
 }
 
 interface EntryResource {
@@ -146,8 +140,8 @@ interface EntryResource {
  * @prop {Date|string} datetime fields with type datetime
  * @prop {EntryResource|LiteEntryResource} entry fields with type entry
  * @prop {Array<EntryResource|LiteEntryResource>} entries fields with type entries
- * @prop {AssetResource} asset fields with type asset
- * @prop {Array<AssetResource>} assets fields with type assets
+ * @prop {DMAssetResource} asset fields with type asset
+ * @prop {Array<DMAssetResource>} assets fields with type assets
  * @prop {DMAccountResource|object|string} account fields with type account
  * @prop {RoleResource|object|string} role fields with type role
  * @prop {string|object|array|number} other field with all other types
@@ -307,25 +301,14 @@ class EntryResource extends LiteEntryResource {
               if (!asset) {
                 return asset;
               }
-              if (
-                typeof asset === 'object' &&
-                !(asset instanceof PublicAssetResource || asset instanceof DMAssetResource)
-              ) {
-                if (/^[a-zA-Z0-9\-_]{22}$/.test(asset.assetID)) {
-                  this[resourceSymbol][key] = new DMAssetResource(asset, environment);
-                } else {
-                  this[resourceSymbol][key] = new PublicAssetResource(asset, environment);
-                }
+              if (typeof asset === 'object' && !(asset instanceof DMAssetResource)) {
+                this[resourceSymbol][key] = new DMAssetResource(asset, environment);
               } else if (typeof asset !== 'object') {
                 const embedded = this[resourceSymbol].embeddedResource(
                   `${this[shortIDSymbol]}:${this.getModelTitle()}/${key}/asset`,
                 );
                 if (embedded) {
-                  if (/^[a-zA-Z0-9\-_]{22}$/.test(embedded.assetID)) {
-                    this[resourceSymbol][key] = new DMAssetResource(embedded, environment);
-                  } else {
-                    this[resourceSymbol][key] = new PublicAssetResource(embedded, environment);
-                  }
+                  this[resourceSymbol][key] = new DMAssetResource(embedded, environment);
                 }
               }
 
@@ -335,12 +318,12 @@ class EntryResource extends LiteEntryResource {
               let value;
               if (val === null || typeof val === 'string') {
                 value = val;
-              } else if (val instanceof PublicAssetResource || val instanceof DMAssetResource) {
+              } else if (val instanceof DMAssetResource) {
                 value = val.toOriginal();
               } else if (typeof val === 'object' && 'assetID' in val) {
                 value = val;
               } else {
-                throw new Error('only string, object/AssetResource/DMAssetResource, and null supported as input type');
+                throw new Error('only string, object/DMAssetResource, and null supported as input type');
               }
 
               this.setProperty(key, value);
@@ -351,30 +334,22 @@ class EntryResource extends LiteEntryResource {
               const assets = this.getProperty(key) || [];
               this[resourceSymbol][key] = assets.map((asset) => {
                 if (typeof asset === 'object') {
-                  if (asset instanceof PublicAssetResource || asset instanceof DMAssetResource) {
+                  if (asset instanceof DMAssetResource) {
                     return asset;
                   }
 
-                  if (/^[a-zA-Z0-9\-_]{22}$/.test(asset.assetID)) {
-                    return new DMAssetResource(asset, environment);
-                  }
-
-                  return new PublicAssetResource(asset, environment);
-                } else {
-                  const embeds = this[resourceSymbol].embeddedArray(
-                    `${this[shortIDSymbol]}:${this.getModelTitle()}/${key}/asset`,
-                  );
-                  if (embeds) {
-                    const embed = embeds.find((embed) => embed.assetID === asset);
-                    if (embed) {
-                      if (/^[a-zA-Z0-9\-_]{22}$/.test(embed.assetID)) {
-                        return new DMAssetResource(embed, environment);
-                      }
-                      return new PublicAssetResource(embed, environment);
-                    }
-                  }
-                  return asset;
+                  return new DMAssetResource(asset, environment);
                 }
+                const embeds = this[resourceSymbol].embeddedArray(
+                  `${this[shortIDSymbol]}:${this.getModelTitle()}/${key}/asset`,
+                );
+                if (embeds) {
+                  const embed = embeds.find((embed) => embed.assetID === asset);
+                  if (embed) {
+                    return new DMAssetResource(embed, environment);
+                  }
+                }
+                return asset;
               });
               return this.getProperty(key);
             };
@@ -387,13 +362,13 @@ class EntryResource extends LiteEntryResource {
                 if (typeof v === 'string') {
                   return v;
                 }
-                if (v instanceof PublicAssetResource || v instanceof DMAssetResource) {
+                if (v instanceof DMAssetResource) {
                   return v.toOriginal();
                 }
                 if (typeof v === 'object' && 'assetID' in v) {
                   return v;
                 }
-                throw new Error('only string and object/AssetResource/DMAssetResource supported as input type');
+                throw new Error('only string and object/DMAssetResource supported as input type');
               });
 
               this.setProperty(key, value);
@@ -483,10 +458,9 @@ class EntryResource extends LiteEntryResource {
    * Best file helper for embedded assets files. For AssetsNeue it will only negotiate with already rendered file variants.
    *
    * @param {string} field the asset field name
-   * @param {string?} locale - the locale
    * @returns {string} URL to the file
    */
-  getFileUrl(field: string, locale: string): string | Array<string> | undefined {
+  getFileUrl(field: string): string | Array<string> | undefined {
     const assets = this[resourceSymbol].embeddedArray(`${this[shortIDSymbol]}:${this.getModelTitle()}/${field}/asset`);
     const isAssets = this.getFieldType(field) === 'assets';
 
@@ -497,7 +471,7 @@ class EntryResource extends LiteEntryResource {
       return undefined;
     }
 
-    const results = assets.map((asset) => negotiater(asset, false, false, null, locale));
+    const results = assets.map((asset) => negotiater(asset, false, false, null));
 
     if (!isAssets) {
       return results[0];
@@ -510,10 +484,9 @@ class EntryResource extends LiteEntryResource {
    *
    * @param {string} field the asset field name
    * @param {number?} size - the minimum size of the image
-   * @param {string?} locale - the locale
    * @returns {string} URL to the file
    */
-  getImageThumbUrl(field: string, size: number, locale: string): string | Array<string> | undefined {
+  getImageThumbUrl(field: string, size: number): string | Array<string> | undefined {
     const assets = this[resourceSymbol].embeddedArray(`${this[shortIDSymbol]}:${this.getModelTitle()}/${field}/asset`);
     const isAssets = this.getFieldType(field) === 'assets';
 
@@ -524,7 +497,7 @@ class EntryResource extends LiteEntryResource {
       return undefined;
     }
 
-    const results = assets.map((asset) => negotiater(asset, true, true, size, locale));
+    const results = assets.map((asset) => negotiater(asset, true, true, size));
 
     if (!isAssets) {
       return results[0];
@@ -537,10 +510,9 @@ class EntryResource extends LiteEntryResource {
    *
    * @param {string} field the asset field name
    * @param {number?} size - the minimum size of the image
-   * @param {string?} locale - the locale
    * @returns {string} URL to the file
    */
-  getImageUrl(field: string, size: number, locale: string): string | Array<string> | undefined {
+  getImageUrl(field: string, size: number): string | Array<string> | undefined {
     const assets = this[resourceSymbol].embeddedArray(`${this[shortIDSymbol]}:${this.getModelTitle()}/${field}/asset`);
     const isAssets = this.getFieldType(field) === 'assets';
 
@@ -551,7 +523,7 @@ class EntryResource extends LiteEntryResource {
       return undefined;
     }
 
-    const results = assets.map((asset) => negotiater(asset, true, false, size, locale));
+    const results = assets.map((asset) => negotiater(asset, true, false, size));
 
     if (!isAssets) {
       return results[0];

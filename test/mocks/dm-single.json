@@ -29,10 +29,10 @@
       "href": "https://datamanager.entrecode.de"
     },
     "ec:api": {
-      "href": "https://datamanager.entrecode.de/api/01bd8e08"
+      "href": "https://datamanager.entrecode.de/api/beefbeef"
     },
     "ec:api-doc": {
-      "href": "https://datamanager.entrecode.de/api/doc/01bd8e08"
+      "href": "https://datamanager.entrecode.de/api/doc/beefbeef"
     },
     "ec:assets": {
       "profile": "https://entrecode.de/schema/assets",
