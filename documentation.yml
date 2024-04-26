@@ -95,12 +95,6 @@ toc:
   - DMStatsList
   - AssetGroupResource
   - AssetGroupList
-  - AssetResource
-  - AssetList
-  - DeletedAssetResource
-  - DeletedAssetList
-  - TagResource
-  - TagList
   - name: PublicAPI Resources
     file: ./src/doc/8-public-api-resources.md
   - LiteEntryResource
@@ -108,8 +102,6 @@ toc:
   - EntryList
   - DMAssetResource
   - DMAssetList
-  - PublicAssetList
-  - PublicAssetResource
   - PublicTagList
   - PublicTagResource
   - LiteDMAccountResource
