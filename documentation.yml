@@ -95,8 +95,6 @@ toc:
   - DMStatsList
   - AssetGroupResource
   - AssetGroupList
-  - TagResource
-  - TagList
   - name: PublicAPI Resources
     file: ./src/doc/8-public-api-resources.md
   - LiteEntryResource
