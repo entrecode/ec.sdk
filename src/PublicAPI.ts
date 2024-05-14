@@ -1856,7 +1856,7 @@ export type fileOptions = {
   includeAssetIDInPath?: boolean;
   deduplicate?: boolean;
   defaultVariants?: number | Array<number>;
-  tags: Array<string>;
+  tags?: Array<string>;
 };
 
 export type jwtResponse = {
