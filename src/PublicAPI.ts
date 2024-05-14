@@ -566,6 +566,10 @@ export default class PublicAPI extends Core {
           if ('defaultVariants' in options) {
             request.field('defaultVariants', JSON.stringify(options.defaultVariants));
           }
+
+          if ('tags' in options) {
+            request.field('tags', JSON.stringify(options.tags));
+          }
         }
 
         // TODO dispatch for superagent
@@ -1852,6 +1856,7 @@ export type fileOptions = {
   includeAssetIDInPath?: boolean;
   deduplicate?: boolean;
   defaultVariants?: number | Array<number>;
+  tags: Array<string>;
 };
 
 export type jwtResponse = {
