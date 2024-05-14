@@ -1893,6 +1893,7 @@ export enum imageType {
  * @property {boolean=} deduplicate - set to `true` to get back an already uploaded duplicate asset instead of an error, when the file already exists.
  * @property {boolean=} ignoreDuplicates - use if you don't want deduplication and you don't want to trigger an error if the file already exists. Normally it is better to just use the `deduplicate` flag instead.
  * @property {(number | Array<number>)=} defaultVariants - provide pixel value to generate an image variant right on upload. You'll get it back directly in the response, instead of after the first call.
+ * @property {Array<string>} tags - tags to add to the asset
  *
  */
 
