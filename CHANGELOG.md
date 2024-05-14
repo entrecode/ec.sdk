@@ -1,3 +1,12 @@
+## <small>0.29.2 (2024-05-14)</small>
+
+* fix typings for fileOptions ([b6d80b8](https://github.com/entrecode/ec.sdk/commit/b6d80b8))
+* release version 0.29.2 ([a80401a](https://github.com/entrecode/ec.sdk/commit/a80401a))
+* fix: typings for fileOptions #2 ([e1d890d](https://github.com/entrecode/ec.sdk/commit/e1d890d)), closes [#2](https://github.com/entrecode/ec.sdk/issues/2)
+* feat: support tags in fileOptions ([68f8410](https://github.com/entrecode/ec.sdk/commit/68f8410))
+
+
+
 ## <small>0.29.1 (2024-04-26)</small>
 
 * release version 0.29.1 ([41623a3](https://github.com/entrecode/ec.sdk/commit/41623a3))

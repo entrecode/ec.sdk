@@ -566,6 +566,10 @@ export default class PublicAPI extends Core {
           if ('defaultVariants' in options) {
             request.field('defaultVariants', JSON.stringify(options.defaultVariants));
           }
+
+          if ('tags' in options) {
+            request.field('tags', JSON.stringify(options.tags));
+          }
         }
 
         // TODO dispatch for superagent
@@ -1852,6 +1856,7 @@ export type fileOptions = {
   includeAssetIDInPath?: boolean;
   deduplicate?: boolean;
   defaultVariants?: number | Array<number>;
+  tags?: Array<string>;
 };
 
 export type jwtResponse = {
@@ -1888,6 +1893,7 @@ export enum imageType {
  * @property {boolean=} deduplicate - set to `true` to get back an already uploaded duplicate asset instead of an error, when the file already exists.
  * @property {boolean=} ignoreDuplicates - use if you don't want deduplication and you don't want to trigger an error if the file already exists. Normally it is better to just use the `deduplicate` flag instead.
  * @property {(number | Array<number>)=} defaultVariants - provide pixel value to generate an image variant right on upload. You'll get it back directly in the response, instead of after the first call.
+ * @property {Array<string>} tags - tags to add to the asset
  *
  */
 
