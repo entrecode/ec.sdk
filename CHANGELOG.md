@@ -1,3 +1,26 @@
+## 0.30.0 (2024-05-23)
+
+* release version 0.30.0 ([c75d7f0](https://github.com/entrecode/ec.sdk/commit/c75d7f0))
+* feat: nativePermissions support in GroupResource and AccountResource ([4f6c11d](https://github.com/entrecode/ec.sdk/commit/4f6c11d))
+
+
+### BREAKING CHANGE
+
+* This commit adds support for nativePermissions property. The setter for previously used permissions property has been removed.
+
+before:
+```js
+const account = await api.account(id);
+account.permissions = generateNewPermissionArray();
+```
+
+after:
+```js
+const account = await api.account(id);
+account.nativePermissions = generateNewPermissionArray();
+```
+
+
 ## <small>0.29.2 (2024-05-14)</small>
 
 * fix typings for fileOptions ([b6d80b8](https://github.com/entrecode/ec.sdk/commit/b6d80b8))
