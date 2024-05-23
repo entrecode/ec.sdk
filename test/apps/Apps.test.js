@@ -142,25 +142,6 @@ describe('Apps class', () => {
       });
   });
 
-  it.skip('should load stats list', () => {
-    // TODO fix SDK-103
-    const apps = new Apps('live');
-    const stub = sinon.stub(helper, 'get');
-    stub.returns(resolver('app-stats-list.json'));
-    const follow = sinon.stub(apps, 'follow');
-    follow.returns(Promise.resolve(apps.newRequest()));
-
-    return apps
-      .statsList()
-      .then((list) => {
-        list.should.be.instanceof(AppStatsList);
-        stub.restore();
-      })
-      .catch((err) => {
-        stub.restore();
-        throw err;
-      });
-  });
   it('should load stats resource', () => {
     const apps = new Apps('live');
     const stub = sinon.stub(helper, 'get');

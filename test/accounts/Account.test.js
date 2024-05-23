@@ -534,18 +534,18 @@ describe('Account Resource', () => {
     resource.hasPassword.should.be.true;
   });
   it('should add single permission', () => {
-    resource.permissions.should.have.property('length', 1);
+    resource.nativePermissions.should.have.property('length', 1);
     resource.addPermission('acc:something');
-    resource.permissions.should.have.property('length', 2);
+    resource.nativePermissions.should.have.property('length', 2);
   });
   it('should throw on invalid single permission', () => {
     const throws = () => resource.addPermission();
     throws.should.throw(Error);
   });
   it('should add multiple permission', () => {
-    resource.permissions.should.have.property('length', 1);
+    resource.nativePermissions.should.have.property('length', 1);
     resource.addPermissions(['acc:something', 'acc:anything']);
-    resource.permissions.should.have.property('length', 3);
+    resource.nativePermissions.should.have.property('length', 3);
   });
   it('should throw on undefined permissions', () => {
     const throws = () => resource.addPermissions();
@@ -599,7 +599,7 @@ describe('Account Resource', () => {
     });
   });
 
-  const setter = ['name', 'language', 'state', 'openID', 'permissions'];
+  const setter = ['name', 'language', 'state', 'openID', 'nativePermissions'];
   setter.forEach((name) => {
     it(`should call resource.setProperty with ${name}`, () => {
       const spy = sinon.spy(resource, 'setProperty');

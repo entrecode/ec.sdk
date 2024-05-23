@@ -4,17 +4,18 @@ import Resource from '../Resource';
 import TokenList from './TokenList';
 import { environment } from '../../Core';
 import TokenResource from './TokenResource';
+// eslint-disable-next-line import/no-cycle
 import { tokenResponse } from '../../Accounts';
 import { post } from '../../helper';
 
 const relationsSymbol: any = Symbol.for('relations');
 const environmentSymbol: any = Symbol.for('environment');
 
-export type accountType = 'Person' | 'Client' | 'API Key';
+export type AccountType = 'Person' | 'Client' | 'API Key';
 
 interface AccountResource {
   accountID: string;
-  type: accountType | null;
+  type: AccountType | null;
   created: Date;
   email: string;
   name: string;
@@ -51,6 +52,7 @@ interface AccountResource {
   legacyLoginDisabled: boolean;
   openID: Array<any>;
   permissions: Array<string>;
+  nativePermissions: Array<string>;
   groups: Array<any>;
   lastLogin: Date;
 }
@@ -96,7 +98,8 @@ interface AccountResource {
  * @prop {boolean}        legacyLoginDisabled - Whether or not this account has legacy login disabled
  * @prop {Array<{sub: string, iss: string, pending: boolean, email: string, name: string}>}
  *                        openID            - Array of connected openID accounts
- * @prop {Array<string>}  permissions       - Array of permissions
+ * @prop {Array<string>}  permissions       - Array of all permissions
+ * @prop {Array<string>}  nativePermissions - Array of native permissions
  * @prop {Array<object>}  groups            - Array of groups this account is member of
  * @prop {Date}           lastLogin         - The {@link Date} on which this account was last logged in
  */
@@ -313,8 +316,18 @@ class AccountResource extends Resource {
       permissions: {
         enumerable: true,
         get: () => <Array<string>>this.getProperty('permissions'),
-        set: (value) => {
-          this.setProperty('permissions', value);
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        set: (_value: Array<string>) => {
+          console.warn(
+            'set on AccountResource#permissions is deprecated. Use AccountResource#nativePermissions instead.',
+          );
+        },
+      },
+      nativePermissions: {
+        enumerable: true,
+        get: () => <Array<string>>this.getProperty('nativePermissions'),
+        set: (value: Array<string>) => {
+          this.setProperty('nativePermissions', value);
           return value;
         },
       },
@@ -341,10 +354,7 @@ class AccountResource extends Resource {
       throw new Error('permission must be defined');
     }
 
-    const current = this.permissions;
-    current.push(value);
-    this.permissions = current;
-    return this;
+    return this.addPermissions([value]);
   }
 
   /**
@@ -358,9 +368,40 @@ class AccountResource extends Resource {
       throw new Error('permission must be defined');
     }
 
-    let current = this.permissions;
+    let current = this.nativePermissions;
     current = current.concat(value);
-    this.permissions = current;
+    this.nativePermissions = current;
+    return this;
+  }
+
+  /**
+   * Remove a single permission from this account.
+   *
+   * @param {string} value the permission to remove
+   * @returns {AccountResource} returns this account resource
+   */
+  removePermission(value: string): AccountResource {
+    if (!value) {
+      throw new Error('permission must be defined');
+    }
+
+    return this.removePermissions([value]);
+  }
+
+  /**
+   * Remove multiple permissions from this account.
+   *
+   * @param {Array<string>} value the permissions to remove
+   * @returns {AccountResource} returns this account resource
+   */
+  removePermissions(value: Array<string>) {
+    if (!value || !Array.isArray(value)) {
+      throw new Error('permission must be defined and an array');
+    }
+
+    let current = this.nativePermissions;
+    current = current.filter((permission) => value.indexOf(permission) !== -1);
+    this.nativePermissions = current;
     return this;
   }
 
@@ -375,8 +416,9 @@ class AccountResource extends Resource {
       throw new Error('permission must be defined');
     }
 
+    // eslint-disable-next-line @typescript-eslint/dot-notation
     const trie = ShiroTrie['new']();
-    trie.add(this.getAllPermissions());
+    trie.add(this.permissions);
 
     return trie.check(permission);
   }
@@ -392,8 +434,9 @@ class AccountResource extends Resource {
       throw new Error('query musst be defined');
     }
 
+    // eslint-disable-next-line @typescript-eslint/dot-notation
     const trie = ShiroTrie['new']();
-    trie.add(this.getAllPermissions());
+    trie.add(this.permissions);
 
     return trie.permissions(query);
   }
@@ -402,12 +445,12 @@ class AccountResource extends Resource {
    * Returns an array of all permissions of this account. The array will contain the account
    * permissions and all group permissions.
    *
+   * @deprecated Since Account Server 1.2.0 this is the same as {@link AccountResource#permissions}
+   *
    * @returns {array<string>} All permissions.
    */
   getAllPermissions(): Array<string> {
-    return (this.groups ? this.groups : [{ permissions: [] }])
-      .map((g) => g.permissions)
-      .reduce((all, current) => all.concat(current), this.permissions);
+    return this.permissions;
   }
 
   /**
@@ -439,7 +482,7 @@ class AccountResource extends Resource {
     }
     return this.follow('ec:account/tokens')
       .then((request) => post(this[environmentSymbol], request))
-      .then(([tokenResponse]) => tokenResponse);
+      .then(([r]) => r);
   }
 
   /**

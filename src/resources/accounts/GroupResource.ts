@@ -1,7 +1,7 @@
+import * as validate from 'validator';
+
 import Resource from '../Resource';
 import { environment } from '../../Core';
-import * as validate from 'validator';
-import { isRegExp } from 'util';
 
 const resourceSymbol: any = Symbol.for('resource');
 
@@ -9,6 +9,8 @@ interface GroupResource {
   groupID: string;
   name: string;
   permissions: Array<string>;
+  subgroups: Array<string>;
+  nativePermissions: Array<string>;
   accounts: Array<string | any>;
   customAuthDomain: string | null;
   customAuthDomainPriority: string | null;
@@ -26,7 +28,9 @@ interface GroupResource {
  *
  * @prop {string}         groupID                  - The id of the group
  * @prop {string}         name                     - The group name
- * @prop {Array<string>}  permissions              - Array of permissions
+ * @prop {Array<string>}  permissions              - Array of all permissions
+ * @prop {Array<string>}  subgroups                - Array of all subgroups
+ * @prop {Array<string>}  nativePermissions        - Array of native permissions
  * @prop {string}         customAuthDomain         - Domain from wich users in this group receive auth mails
  * @prop {string}         customAuthDomainPriority - Priority of the custom auth domain
  * @prop {Object}         groupSettings            - Group settings
@@ -56,7 +60,20 @@ class GroupResource extends Resource {
       permissions: {
         enumerable: true,
         get: () => <Array<string>>this.getProperty('permissions'),
-        set: (value: Array<string>) => this.setProperty('permissions', value),
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        set: (_value: Array<string>) => {
+          console.warn('set on GroupResource#permissions is deprecated. Use GroupResource#nativePermissions instead.');
+        },
+      },
+      nativePermissions: {
+        enumerable: true,
+        get: () => <Array<string>>this.getProperty('nativePermissions'),
+        set: (value: Array<string>) => this.setProperty('nativePermissions', value),
+      },
+      subgroups: {
+        enumerable: true,
+        get: () => <Array<string>>this.getProperty('subgroups'),
+        set: (value: Array<string>) => this.setProperty('subgroups', value),
       },
       accounts: {
         enumerable: true,
@@ -112,9 +129,9 @@ class GroupResource extends Resource {
       throw new Error('permission must be defined and an array');
     }
 
-    let current = this.permissions;
+    let current = this.nativePermissions;
     current = current.concat(value);
-    this.permissions = current;
+    this.nativePermissions = current;
     return this;
   }
 
@@ -143,9 +160,9 @@ class GroupResource extends Resource {
       throw new Error('permission must be defined and an array');
     }
 
-    let current = this.permissions;
+    let current = this.nativePermissions;
     current = current.filter((permission) => value.indexOf(permission) !== -1);
-    this.permissions = current;
+    this.nativePermissions = current;
     return this;
   }
 
