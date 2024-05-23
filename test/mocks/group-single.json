@@ -2,6 +2,8 @@
   "name": "AppManager-User",
   "groupID": "c7df5f26-3fa2-4bd5-8a9a-47087d69ab29",
   "permissions": ["app-create", "app:codesource,datasource,target,platform"],
+  "nativePermissions": ["app-create", "app:codesource,datasource,target,platform"],
+  "subgroups": [],
   "_embedded": {
     "ec:account": [
       {

@@ -74,18 +74,18 @@ describe('Group Resource', () => {
     resource.should.be.instanceOf(GroupResource);
   });
   it('should add single permission', () => {
-    resource.permissions.should.have.property('length', 2);
+    resource.nativePermissions.should.have.property('length', 2);
     resource.addPermission('acc:something');
-    resource.permissions.should.have.property('length', 3);
+    resource.nativePermissions.should.have.property('length', 3);
   });
   it('should throw on undefined permission', () => {
     const throws = () => resource.addPermission();
     throws.should.throw(Error);
   });
   it('should add multiple permission', () => {
-    resource.permissions.should.have.property('length', 2);
+    resource.nativePermissions.should.have.property('length', 2);
     resource.addPermissions(['acc:something', 'acc:anything']);
-    resource.permissions.should.have.property('length', 4);
+    resource.nativePermissions.should.have.property('length', 4);
   });
   it('should throw on undefined permissions', () => {
     const throws = () => resource.addPermissions();
@@ -96,18 +96,18 @@ describe('Group Resource', () => {
     throws.should.throw(Error);
   });
   it('should remove single permission', () => {
-    resource.permissions.should.have.property('length', 2);
+    resource.nativePermissions.should.have.property('length', 2);
     resource.removePermission('app-create');
-    resource.permissions.should.have.property('length', 1);
+    resource.nativePermissions.should.have.property('length', 1);
   });
   it('should throw on undefined permission', () => {
     const throws = () => resource.removePermission();
     throws.should.throw(Error);
   });
   it('should remove multiple permissions', () => {
-    resource.permissions.should.have.property('length', 2);
+    resource.nativePermissions.should.have.property('length', 2);
     resource.removePermission(['app-create', 'app:codesource,datasource,target,platform']);
-    resource.permissions.should.have.property('length', 0);
+    resource.nativePermissions.should.have.property('length', 0);
   });
   it('should throw on undefined permissions', () => {
     const throws = () => resource.removePermission();
@@ -201,7 +201,7 @@ describe('Group Resource', () => {
     });
   });
 
-  const setter = ['name', 'permissions'];
+  const setter = ['name', 'nativePermissions'];
   setter.forEach((name) => {
     it(`should call resource.setProperty with ${name}`, () => {
       const spy = sinon.spy(resource, 'setProperty');

@@ -57,7 +57,17 @@
           }
         ],
         "state": "active",
-        "permissions": ["acc:permissions:dm:5510a8f9-67ce-4d4d-b5a1-a9fe6b7d8d72"],
+        "permissions": [
+          "acc:permissions:dm:5510a8f9-67ce-4d4d-b5a1-a9fe6b7d8d72",
+          "acc:list,view,group,group-create,permissions,set-permissions,invite",
+          "dm:35b4f503-f361-4198-a11a-b2f24113731f",
+          "dm-stats,app-stats",
+          "dm-template-create,dm-template",
+          "acc:invalid-permissions",
+          "acc:client,client-create",
+          "mail"
+        ],
+        "nativePermissions": ["acc:permissions:dm:5510a8f9-67ce-4d4d-b5a1-a9fe6b7d8d72"],
         "groups": [
           {
             "groupID": "260cb6b2-4fef-40e1-866a-659f2feb2500",
@@ -120,7 +130,17 @@
           }
         ],
         "state": "active",
-        "permissions": ["acc:permissions:dm:5510a8f9-67ce-4d4d-b5a1-a9fe6b7d8d72"],
+        "nativePermissions": ["acc:permissions:dm:5510a8f9-67ce-4d4d-b5a1-a9fe6b7d8d72"],
+        "permissions": [
+          "acc:permissions:dm:5510a8f9-67ce-4d4d-b5a1-a9fe6b7d8d72",
+          "acc:list,view,group,group-create,permissions,set-permissions,invite",
+          "dm:35b4f503-f361-4198-a11a-b2f24113731f",
+          "dm-stats,app-stats",
+          "dm-template-create,dm-template",
+          "acc:invalid-permissions",
+          "acc:client,client-create",
+          "mail"
+        ],
         "groups": [
           {
             "groupID": "260cb6b2-4fef-40e1-866a-659f2feb2500",
