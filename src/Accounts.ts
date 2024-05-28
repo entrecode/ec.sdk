@@ -254,6 +254,27 @@ export default class Accounts extends Core {
   /**
    * Create a new Group.
    *
+   * @example
+   * const accounts = new Accounts();
+   *
+   * const newGroup = await accounts.createGroup({
+   *   name: 'A new group',
+   *   nativePermissions: ['xyz:create,edit,delete'],
+   *   subgroups: ['group:basic-api-access'],
+   *   accounts: ['4f6e6f6e-6c79-6f75-72e4-6e6f6e6f6e6f', '8f6e6f6e-6c79-6f75-72e4-6e6f6e6f6e6f'],
+   * });
+   *
+   * // variant with explicit group id, group settings and accounts via e-Mails:
+   *
+   * const newGroup1 = await accounts.createGroup({
+   *   name: 'Another new group',
+   *   groupID: 'group:another-new-group',
+   *   groupSettings: {
+   *     mfaRequired: true
+   *   },
+   *   addAccountsByEmail: ['test@entrecode.de']
+   * });
+   *
    * @param {object} group object representing the group
    * @returns {Promise<GroupResource>} the newly created GroupResource
    */
