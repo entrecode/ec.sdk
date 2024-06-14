@@ -425,7 +425,7 @@ export type filter = {
 
 export default ListResource;
 
-export type filterType = Array<string> | number | string | filter | object | undefined;
+export type filterType = Array<string> | number | string | filter | object | boolean | undefined;
 
 /**
  * List filter options with pagination, sorting, and {@link filter}. This can be used to apply all
