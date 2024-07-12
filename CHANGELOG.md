@@ -1,3 +1,13 @@
+## <small>0.30.1 (2024-07-12)</small>
+
+* release version 0.30.1 ([200f591](https://github.com/entrecode/ec.sdk/commit/200f591))
+* feat: do not send permissions in account edit ([62066ab](https://github.com/entrecode/ec.sdk/commit/62066ab))
+* fix: adds boolean to filter ([ae2cf01](https://github.com/entrecode/ec.sdk/commit/ae2cf01))
+* doc: example for createGroup ([c2d3643](https://github.com/entrecode/ec.sdk/commit/c2d3643))
+* chore: updates gh actions dependencies ([efa0025](https://github.com/entrecode/ec.sdk/commit/efa0025))
+
+
+
 ## 0.30.0 (2024-05-23)
 
 * release version 0.30.0 ([c75d7f0](https://github.com/entrecode/ec.sdk/commit/c75d7f0))

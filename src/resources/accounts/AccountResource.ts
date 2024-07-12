@@ -492,6 +492,7 @@ class AccountResource extends Resource {
    *   be the same object but with refreshed data.
    */
   save(): Promise<AccountResource> {
+    this.setProperty('permissions', undefined);
     return <Promise<AccountResource>>super.save(false, `${this.getLink('self').profile}-template`);
   }
 
