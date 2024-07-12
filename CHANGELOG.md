@@ -1,3 +1,10 @@
+## <small>0.30.2 (2024-07-12)</small>
+
+* release version 0.30.2 ([e02d426](https://github.com/entrecode/ec.sdk/commit/e02d426))
+* fix: do not include undefined values in toOriginal ([599ac1f](https://github.com/entrecode/ec.sdk/commit/599ac1f))
+
+
+
 ## <small>0.30.1 (2024-07-12)</small>
 
 * release version 0.30.1 ([200f591](https://github.com/entrecode/ec.sdk/commit/200f591))
