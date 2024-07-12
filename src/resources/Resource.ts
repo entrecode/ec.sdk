@@ -589,7 +589,9 @@ class Resource {
     const out = {};
 
     Object.keys(this[originalSymbol]).forEach((key) => {
-      out[key] = this[resourceSymbol][key];
+      if (this[resourceSymbol][key] !== undefined) {
+        out[key] = this[resourceSymbol][key];
+      }
     });
 
     return out;
