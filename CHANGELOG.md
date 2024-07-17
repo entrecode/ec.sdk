@@ -1,3 +1,10 @@
+## <small>0.30.3 (2024-07-17)</small>
+
+* release version 0.30.3 ([bc47847](https://github.com/entrecode/ec.sdk/commit/bc47847))
+* feat: do not send permissions in group edit ([496423e](https://github.com/entrecode/ec.sdk/commit/496423e))
+
+
+
 ## <small>0.30.2 (2024-07-12)</small>
 
 * release version 0.30.2 ([e02d426](https://github.com/entrecode/ec.sdk/commit/e02d426))
