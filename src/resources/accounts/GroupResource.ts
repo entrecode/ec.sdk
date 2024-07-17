@@ -274,7 +274,7 @@ class GroupResource extends Resource {
    */
   save(): Promise<GroupResource> {
     this.setProperty('permissions', undefined);
-    return <Promise<GroupResource>>super.save(false);
+    return <Promise<GroupResource>>super.save(false, `${this.getLink('self').profile}-template`);
   }
 
   static createTransform(group) {
