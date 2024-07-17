@@ -1,3 +1,10 @@
+## <small>0.30.4 (2024-07-17)</small>
+
+* release version 0.30.4 ([0d32893](https://github.com/entrecode/ec.sdk/commit/0d32893))
+* feat: use template schema in GroupResource#save() ([07b241c](https://github.com/entrecode/ec.sdk/commit/07b241c))
+
+
+
 ## <small>0.30.3 (2024-07-17)</small>
 
 * release version 0.30.3 ([bc47847](https://github.com/entrecode/ec.sdk/commit/bc47847))
