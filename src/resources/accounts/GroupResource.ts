@@ -267,6 +267,16 @@ class GroupResource extends Resource {
     return this;
   }
 
+  /**
+   * Saves this {@link GroupResource}.
+   *
+   * @returns {Promise<GroupResource>} returns this group resource
+   */
+  save(): Promise<GroupResource> {
+    this.setProperty('permissions', undefined);
+    return <Promise<GroupResource>>super.save(false);
+  }
+
   static createTransform(group) {
     if ('accounts' in group) {
       if (!('_embedded' in group)) {
