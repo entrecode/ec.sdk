@@ -1,3 +1,33 @@
+## 0.31.0 (2025-02-04)
+
+* release version 0.31.0 ([d077208](https://github.com/entrecode/ec.sdk/commit/d077208))
+* feat: support undefined in AccountResource when loaded from Lists ([85cc61f](https://github.com/entrecode/ec.sdk/commit/85cc61f))
+
+
+### BREAKING CHANGE
+
+* Since Accountserver >= 1.5.0 accounts embedded in account list won't include `nativePermissions`, `permissions` and `openID`. When using these properties make sure to have a resolved AccountResource
+
+before:
+```js
+const list = await accounts.accountList();
+await list.map(async (account) => {
+  account.addPermission('some:permission');
+  await account.save();
+});
+```
+
+after:
+```js
+const list = await accounts.accountList();
+await list.map(async (account) => {
+  await account.resolve();
+  account.addPermission('some:permission');
+  await account.save();
+});
+```
+
+
 ## <small>0.30.4 (2024-07-17)</small>
 
 * release version 0.30.4 ([0d32893](https://github.com/entrecode/ec.sdk/commit/0d32893))
