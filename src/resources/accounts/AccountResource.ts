@@ -50,9 +50,9 @@ interface AccountResource {
   mfaRequired: boolean;
   authenticatorRequires2FA: boolean;
   legacyLoginDisabled: boolean;
-  openID: Array<any>;
-  permissions: Array<string>;
-  nativePermissions: Array<string>;
+  openID: Array<any> | undefined;
+  permissions: Array<string> | undefined;
+  nativePermissions: Array<string> | undefined;
   groups: Array<any>;
   lastLogin: Date;
 }
@@ -65,8 +65,7 @@ interface AccountResource {
  * @prop {string}         accountID         - The id of the Account
  * @prop {string}         type              - The type of the account
  * @prop {Date}           created           - The {@link Date} on which this account was created
- * @prop {string}         email             - The current email. Can be changed with {@link
- *   Accounts#changeEmail}
+ * @prop {string}         email             - The current email. Can be changed with {@link Accounts#changeEmail}
  * @prop {string}         name              - The current name.
  * @prop {string}         company           - The current company.
  * @prop {string}         preferredUsername - The current preferredUsername.
@@ -96,10 +95,9 @@ interface AccountResource {
  * @prop {boolean}        mfaRequired       - Whether or not this account requires MFA
  * @prop {boolean}        authenticatorRequires2FA - Whether or not this account requires 2FA
  * @prop {boolean}        legacyLoginDisabled - Whether or not this account has legacy login disabled
- * @prop {Array<{sub: string, iss: string, pending: boolean, email: string, name: string}>}
- *                        openID            - Array of connected openID accounts
- * @prop {Array<string>}  permissions       - Array of all permissions
- * @prop {Array<string>}  nativePermissions - Array of native permissions
+ * @prop {Array<object> | undefined} openID            - Array of connected openID accounts
+ * @prop {Array<string> | undefined}  permissions       - Array of all permissions
+ * @prop {Array<string> | undefined}  nativePermissions - Array of native permissions
  * @prop {Array<object>}  groups            - Array of groups this account is member of
  * @prop {Date}           lastLogin         - The {@link Date} on which this account was last logged in
  */
@@ -368,6 +366,10 @@ class AccountResource extends Resource {
       throw new Error('permission must be defined');
     }
 
+    if (!this.nativePermissions) {
+      throw new Error('AccountResource loaded from AccountList, please call `await AccountResource#resolve()`.');
+    }
+
     let current = this.nativePermissions;
     current = current.concat(value);
     this.nativePermissions = current;
@@ -399,6 +401,10 @@ class AccountResource extends Resource {
       throw new Error('permission must be defined and an array');
     }
 
+    if (!this.nativePermissions) {
+      throw new Error('AccountResource loaded from AccountList, please call `await AccountResource#resolve()`.');
+    }
+
     let current = this.nativePermissions;
     current = current.filter((permission) => value.indexOf(permission) !== -1);
     this.nativePermissions = current;
@@ -414,6 +420,10 @@ class AccountResource extends Resource {
   checkPermission(permission: string): boolean {
     if (!permission) {
       throw new Error('permission must be defined');
+    }
+
+    if (!this.nativePermissions) {
+      throw new Error('AccountResource loaded from AccountList, please call `await AccountResource#resolve()`.');
     }
 
     // eslint-disable-next-line @typescript-eslint/dot-notation
@@ -434,6 +444,10 @@ class AccountResource extends Resource {
       throw new Error('query musst be defined');
     }
 
+    if (!this.nativePermissions) {
+      throw new Error('AccountResource loaded from AccountList, please call `await AccountResource#resolve()`.');
+    }
+
     // eslint-disable-next-line @typescript-eslint/dot-notation
     const trie = ShiroTrie['new']();
     trie.add(this.permissions);
@@ -450,7 +464,11 @@ class AccountResource extends Resource {
    * @returns {array<string>} All permissions.
    */
   getAllPermissions(): Array<string> {
-    return this.permissions;
+    if (!this.permissions) {
+      throw new Error('AccountResource loaded from AccountList, please call `await AccountResource#resolve()`.');
+    }
+
+    return this.permissions as Array<string>;
   }
 
   /**
@@ -492,11 +510,13 @@ class AccountResource extends Resource {
    *   be the same object but with refreshed data.
    */
   save(): Promise<AccountResource> {
+    if (!this.nativePermissions) {
+      throw new Error('AccountResource loaded from AccountList, please call `await AccountResource#resolve()`.');
+    }
+
     this.setProperty('permissions', undefined);
     return <Promise<AccountResource>>super.save(false, `${this.getLink('self').profile}-template`);
   }
-
-  // TODO remove permission
 }
 
 export default AccountResource;
