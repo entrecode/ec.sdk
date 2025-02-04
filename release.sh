@@ -20,7 +20,7 @@ git add CHANGELOG.md
 npm run docs
 git add docs/index.html
 git commit --amend --no-verify  -m "merge release/$1 into master"
-git tag v$1
+git tag v$1 --no-sign
 git push --no-verify
 git push origin --no-verify v$1
 git checkout develop
