@@ -1,3 +1,12 @@
+## <small>0.31.1 (2025-02-05)</small>
+
+* release version 0.31.1 ([36c5bfa](https://github.com/entrecode/ec.sdk/commit/36c5bfa))
+* fix: update test spies ([50970ef](https://github.com/entrecode/ec.sdk/commit/50970ef))
+* feat: throw error in getter of permissions, nativePermissions, and openID ([62cab9c](https://github.com/entrecode/ec.sdk/commit/62cab9c))
+* chore: updates release script for unsigned tags ([e75aa6c](https://github.com/entrecode/ec.sdk/commit/e75aa6c))
+
+
+
 ## 0.31.0 (2025-02-04)
 
 * release version 0.31.0 ([d077208](https://github.com/entrecode/ec.sdk/commit/d077208))
