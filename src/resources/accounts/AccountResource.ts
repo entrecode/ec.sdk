@@ -305,7 +305,13 @@ class AccountResource extends Resource {
       },
       openID: {
         enumerable: true,
-        get: () => this.getProperty('openID'),
+        get: () => {
+          if (!this.getProperty('openID')) {
+            throw new Error('AccountResource loaded from AccountList, please call `await AccountResource#resolve()`.');
+          }
+
+          return this.getProperty('openID');
+        },
         set: (value) => {
           this.setProperty('openID', value);
           return value;
@@ -313,9 +319,16 @@ class AccountResource extends Resource {
       },
       permissions: {
         enumerable: true,
-        get: () => <Array<string>>this.getProperty('permissions'),
+        get: () => {
+          if (!this.getProperty('permissions')) {
+            throw new Error('AccountResource loaded from AccountList, please call `await AccountResource#resolve()`.');
+          }
+
+          return <Array<string>>this.getProperty('permissions');
+        },
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         set: (_value: Array<string>) => {
+          // eslint-disable-next-line no-console
           console.warn(
             'set on AccountResource#permissions is deprecated. Use AccountResource#nativePermissions instead.',
           );
@@ -323,7 +336,13 @@ class AccountResource extends Resource {
       },
       nativePermissions: {
         enumerable: true,
-        get: () => <Array<string>>this.getProperty('nativePermissions'),
+        get: () => {
+          if (!this.getProperty('nativePermissions')) {
+            throw new Error('AccountResource loaded from AccountList, please call `await AccountResource#resolve()`.');
+          }
+
+          return <Array<string>>this.getProperty('nativePermissions');
+        },
         set: (value: Array<string>) => {
           this.setProperty('nativePermissions', value);
           return value;
@@ -366,11 +385,7 @@ class AccountResource extends Resource {
       throw new Error('permission must be defined');
     }
 
-    if (!this.nativePermissions) {
-      throw new Error('AccountResource loaded from AccountList, please call `await AccountResource#resolve()`.');
-    }
-
-    let current = this.nativePermissions;
+    let current = this.nativePermissions as Array<string>;
     current = current.concat(value);
     this.nativePermissions = current;
     return this;
@@ -401,11 +416,7 @@ class AccountResource extends Resource {
       throw new Error('permission must be defined and an array');
     }
 
-    if (!this.nativePermissions) {
-      throw new Error('AccountResource loaded from AccountList, please call `await AccountResource#resolve()`.');
-    }
-
-    let current = this.nativePermissions;
+    let current = this.nativePermissions as Array<string>;
     current = current.filter((permission) => value.indexOf(permission) !== -1);
     this.nativePermissions = current;
     return this;
@@ -444,10 +455,6 @@ class AccountResource extends Resource {
       throw new Error('query musst be defined');
     }
 
-    if (!this.nativePermissions) {
-      throw new Error('AccountResource loaded from AccountList, please call `await AccountResource#resolve()`.');
-    }
-
     // eslint-disable-next-line @typescript-eslint/dot-notation
     const trie = ShiroTrie['new']();
     trie.add(this.permissions);
@@ -464,10 +471,6 @@ class AccountResource extends Resource {
    * @returns {array<string>} All permissions.
    */
   getAllPermissions(): Array<string> {
-    if (!this.permissions) {
-      throw new Error('AccountResource loaded from AccountList, please call `await AccountResource#resolve()`.');
-    }
-
     return this.permissions as Array<string>;
   }
 
@@ -510,7 +513,7 @@ class AccountResource extends Resource {
    *   be the same object but with refreshed data.
    */
   save(): Promise<AccountResource> {
-    if (!this.nativePermissions) {
+    if (!this.getProperty('nativePermissions')) {
       throw new Error('AccountResource loaded from AccountList, please call `await AccountResource#resolve()`.');
     }
 
