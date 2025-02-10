@@ -2,7 +2,7 @@ import * as ShiroTrie from 'shiro-trie';
 
 import Resource from '../Resource';
 import TokenList from './TokenList';
-import { environment } from '../../Core';
+import { environment as e } from '../../Core';
 import TokenResource from './TokenResource';
 // eslint-disable-next-line import/no-cycle
 import { tokenResponse } from '../../Accounts';
@@ -111,7 +111,7 @@ class AccountResource extends Resource {
    * @param {string} environment the environment this resource is associated to.
    * @param {?object} traversal traversal from which traverson can continue.
    */
-  constructor(resource: any, environment: environment, traversal?: any) {
+  constructor(resource: any, environment: e, traversal?: any) {
     super(resource, environment, traversal);
 
     this[relationsSymbol] = {
@@ -306,10 +306,6 @@ class AccountResource extends Resource {
       openID: {
         enumerable: true,
         get: () => {
-          if (!this.getProperty('openID')) {
-            throw new Error('AccountResource loaded from AccountList, please call `await AccountResource#resolve()`.');
-          }
-
           return this.getProperty('openID');
         },
         set: (value) => {
@@ -320,10 +316,6 @@ class AccountResource extends Resource {
       permissions: {
         enumerable: true,
         get: () => {
-          if (!this.getProperty('permissions')) {
-            throw new Error('AccountResource loaded from AccountList, please call `await AccountResource#resolve()`.');
-          }
-
           return <Array<string>>this.getProperty('permissions');
         },
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -337,10 +329,6 @@ class AccountResource extends Resource {
       nativePermissions: {
         enumerable: true,
         get: () => {
-          if (!this.getProperty('nativePermissions')) {
-            throw new Error('AccountResource loaded from AccountList, please call `await AccountResource#resolve()`.');
-          }
-
           return <Array<string>>this.getProperty('nativePermissions');
         },
         set: (value: Array<string>) => {
@@ -385,6 +373,10 @@ class AccountResource extends Resource {
       throw new Error('permission must be defined');
     }
 
+    if (!this.nativePermissions) {
+      throw new Error('AccountResource loaded from AccountList, please call `await AccountResource#resolve()`.');
+    }
+
     let current = this.nativePermissions as Array<string>;
     current = current.concat(value);
     this.nativePermissions = current;
@@ -414,6 +406,10 @@ class AccountResource extends Resource {
   removePermissions(value: Array<string>) {
     if (!value || !Array.isArray(value)) {
       throw new Error('permission must be defined and an array');
+    }
+
+    if (!this.nativePermissions) {
+      throw new Error('AccountResource loaded from AccountList, please call `await AccountResource#resolve()`.');
     }
 
     let current = this.nativePermissions as Array<string>;
@@ -455,6 +451,10 @@ class AccountResource extends Resource {
       throw new Error('query musst be defined');
     }
 
+    if (!this.nativePermissions) {
+      throw new Error('AccountResource loaded from AccountList, please call `await AccountResource#resolve()`.');
+    }
+
     // eslint-disable-next-line @typescript-eslint/dot-notation
     const trie = ShiroTrie['new']();
     trie.add(this.permissions);
@@ -471,6 +471,9 @@ class AccountResource extends Resource {
    * @returns {array<string>} All permissions.
    */
   getAllPermissions(): Array<string> {
+    if (!this.permissions) {
+      throw new Error('AccountResource loaded from AccountList, please call `await AccountResource#resolve()`.');
+    }
     return this.permissions as Array<string>;
   }
 
