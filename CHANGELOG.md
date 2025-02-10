@@ -1,3 +1,10 @@
+## <small>0.31.2 (2025-02-10)</small>
+
+* release version 0.31.2 ([851a7ba](https://github.com/entrecode/ec.sdk/commit/851a7ba))
+* fix: do not throw in getters, weird things are happening ([8c2cde8](https://github.com/entrecode/ec.sdk/commit/8c2cde8))
+
+
+
 ## <small>0.31.1 (2025-02-05)</small>
 
 * release version 0.31.1 ([36c5bfa](https://github.com/entrecode/ec.sdk/commit/36c5bfa))
