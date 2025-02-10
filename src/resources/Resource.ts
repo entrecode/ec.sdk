@@ -341,6 +341,7 @@ class Resource {
   resolve(): Promise<Resource> {
     return get(this[environmentSymbol], this.newRequest().follow('self')).then(([res, traversal]) => {
       this[resourceSymbol] = halfred.parse(res);
+      this[originalSymbol] = JSON.parse(JSON.stringify(res));
       this[traversalSymbol] = traversal;
       return this;
     });
