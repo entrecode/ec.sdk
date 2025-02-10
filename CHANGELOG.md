@@ -1,3 +1,10 @@
+## <small>0.31.3 (2025-02-10)</small>
+
+* release version 0.31.3 ([4dde0b6](https://github.com/entrecode/ec.sdk/commit/4dde0b6))
+* fix: update original after calling Resource#resolve() ([44ccf22](https://github.com/entrecode/ec.sdk/commit/44ccf22))
+
+
+
 ## <small>0.31.2 (2025-02-10)</small>
 
 * release version 0.31.2 ([851a7ba](https://github.com/entrecode/ec.sdk/commit/851a7ba))
