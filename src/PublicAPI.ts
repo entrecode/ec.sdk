@@ -69,6 +69,12 @@ function chunk(array, size) {
   }
   return chunkedArr;
 }
+
+export type OIDCConfig = Array<{
+  issuer: string;
+  button: string;
+}>;
+
 /**
  * API connector for public APIs. This is the successor of
  * [ec.datamanager.js](https://github.com/entrecode/ec.datamanager.js).
@@ -123,6 +129,7 @@ function chunk(array, size) {
  *   idOrUrl.
  * @param {boolean?} ecUser if you are an ecUser it is best to set this to true
  */
+
 export default class PublicAPI extends Core {
   // constructor(idOrURL: string, environment: environment = 'live', ecUser: boolean = false) {
   constructor(idOrURL: string, envOrOptions: options | environment = 'live', ecUser: boolean = false) {
@@ -1257,6 +1264,83 @@ export default class PublicAPI extends Core {
 
     const request = await this.follow(`${this[shortIDSymbol]}:_auth/api/change-email`);
     const [response] = await this.dispatch(() => post(this[environmentSymbol], request, { validationToken }));
+    return response;
+  }
+
+  /**
+   * Get the third party OpenID Connect options for a client
+   *
+   * For a given clientID, this will return the third party OpenID Connect options consisting of the issuer (URL)
+   * and the button label text.
+   *
+   * @param {string} clientID The client ID to get the configuration for
+   * @returns {Promise<OIDCConfig>} Promise resolving to the OIDC configuration
+   */
+  async getOIDCConfig(clientID: string): Promise<OIDCConfig> {
+    const request = await this.follow(`${this[shortIDSymbol]}:_auth/api/oidc-config`);
+    request.withTemplateParameters({ clientID });
+    const [response] = await this.dispatch(() => get(this[environmentSymbol], request));
+    return response;
+  }
+
+  /**
+   * Initiate third party OpenID Connect login
+   *
+   * @param {string} clientID The client ID to get the URL for
+   * @param {string} issuer The issuer URL
+   * @param {string} state The state parameter
+   * @param {string} nonce The nonce parameter
+   * @returns {Promise<string>} Promise resolving to the URL for the third party OpenID Connect login
+   */
+  async getURLForThirdPartyOIDC(clientID: string, issuer: string, state: string, nonce: string) {
+    const request = await this.follow(`${this[shortIDSymbol]}:_auth/api/oidc`);
+    request.withTemplateParameters({ clientID, issuer, state, nonce });
+    const [response] = await this.dispatch(() => get(this[environmentSymbol], request));
+    return response;
+  }
+
+  /**
+   * Exchange a third party OpenID Connect code for a token
+   *
+   * @param {string} clientID The client ID to get the URL for
+   * @param {string} issuer The issuer URL
+   * @param {string} code The code from third party
+   * @param {string} nonce The nonce parameter
+   * @returns {Promise<{access_token: string, refresh_token?: string, token_type: string, expires_in: number}>}
+   */
+  async tokenExchangeForThirdPartyOIDC(clientID: string, issuer: string, code: string, nonce: string) {
+    const request = await this.follow(`${this[shortIDSymbol]}:_auth/api/oidc`);
+    const [tokenResponse] = await this.dispatch(() =>
+      post(this[environmentSymbol], request, { clientID, issuer, code, nonce }),
+    );
+    if (tokenResponse.refresh_token) {
+      this[tokenStoreSymbol].setRefreshToken(tokenResponse.refresh_token);
+    }
+    this[tokenStoreSymbol].setToken(tokenResponse.access_token || tokenResponse.token);
+    this[eventsSymbol].emit('login', tokenResponse);
+    return tokenResponse;
+  }
+
+  /**
+   * Add an OIDC identity to an account
+   * When an ID token from another flow should be added to an account, this can be used.
+   *
+   * @param {string} accountID The account ID to add the OIDC identity to
+   * @param {object} idToken The ID token from the third party
+   * @returns {Promise<void>} Promise resolving on success
+   */
+  async addOIDCIdenitityToAccount(
+    accountID: string,
+    idToken: {
+      iss: string;
+      sub: string;
+      exp: number;
+      iat: number;
+    },
+  ) {
+    const request = await this.follow(`${this[shortIDSymbol]}:_auth/api/oidc-identities`);
+    request.withTemplateParameters({ accountID });
+    const [response] = await this.dispatch(() => post(this[environmentSymbol], request, { idToken }));
     return response;
   }
 
