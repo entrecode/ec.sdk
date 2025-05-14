@@ -1,3 +1,11 @@
+## <small>0.31.4 (2025-05-14)</small>
+
+* release version 0.31.4 ([812dbf3](https://github.com/entrecode/ec.sdk/commit/812dbf3))
+* fix: support text responses ([8d600cf](https://github.com/entrecode/ec.sdk/commit/8d600cf))
+* feat: add oidc functions ([ec49195](https://github.com/entrecode/ec.sdk/commit/ec49195))
+
+
+
 ## <small>0.31.3 (2025-02-10)</small>
 
 * release version 0.31.3 ([4dde0b6](https://github.com/entrecode/ec.sdk/commit/4dde0b6))

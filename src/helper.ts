@@ -47,7 +47,9 @@ function jsonHandler(callback) {
         // no content or accepted
         return callback(null, []);
       }
-
+      if (res.headers['content-type'] && res.headers['content-type'].startsWith('text') && res.body) {
+        return callback(null, [res.body]);
+      }
       return callback(null, [res.body ? JSON.parse(res.body) : {}, traversal]);
     }
 
