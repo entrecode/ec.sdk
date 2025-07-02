@@ -5,6 +5,7 @@
   "grantTypes": ["refresh_token"],
   "disableStrategies": ["facebook", "google"],
   "hexColor": "#FD9727",
+  "federatedOIDC": [],
   "_links": {
     "self": {
       "profile": "https://entrecode.de/schema/dm-client",
