@@ -1,3 +1,10 @@
+## <small>0.31.5 (2025-07-03)</small>
+
+* release version 0.31.5 ([9b937e5](https://github.com/entrecode/ec.sdk/commit/9b937e5))
+* feat: federatedOIDC config in dm clients ([02d0526](https://github.com/entrecode/ec.sdk/commit/02d0526))
+
+
+
 ## <small>0.31.4 (2025-05-14)</small>
 
 * release version 0.31.4 ([812dbf3](https://github.com/entrecode/ec.sdk/commit/812dbf3))

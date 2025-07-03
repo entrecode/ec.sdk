@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset='utf-8'>
-  <title>ec.sdk 0.31.4 | Documentation</title>
+  <title>ec.sdk 0.31.5 | Documentation</title>
   <meta name='description' content='SDK for ec.api'>
   <meta name='viewport' content='width=device-width,initial-scale=1'>
   <link href='assets/bass.css' rel='stylesheet'>
@@ -15,7 +15,7 @@
       <div id='split-left' class='overflow-auto fs0 height-viewport-100'>
         <div class='py1 px2'>
           <h3 class='mb0 no-anchor'>ec.sdk</h3>
-          <div class='mb1'><code>0.31.4</code></div>
+          <div class='mb1'><code>0.31.5</code></div>
           <input
             placeholder='Filter'
             id='filter-input'
@@ -28355,7 +28355,7 @@ be the same object but with refreshed data.
 
   <p>DMClientResource class</p>
 
-    <div class='pre p1 fill-light mt0'>new DMClientResource(resource: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, environment: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, traversal: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</div>
+    <div class='pre p1 fill-light mt0'>new DMClientResource(resource: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, env: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, traversal: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</div>
   
   
     <p>
@@ -28388,7 +28388,7 @@ be the same object but with refreshed data.
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>environment</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+            <span class='code bold'>env</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
 	    the environment this resource is associated to.
 
           </div>
@@ -28449,6 +28449,13 @@ be the same object but with refreshed data.
         <div class='space-bottom0'>
           <span class='code bold'>hexColor</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
           : hex color for this client.
+
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <span class='code bold'>federatedOIDC</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;FederatedOIDC>)</code>
+          : list of federated OIDC providers.
 
           
         </div>
@@ -33202,7 +33209,12 @@ be the same object but with refreshed data.
   </h2>
 
   
-    <h2>0.31.4 (2025-05-14)</h2>
+    <h2>0.31.5 (2025-07-03)</h2>
+<ul>
+<li>release version 0.31.5 (<a href="https://github.com/entrecode/ec.sdk/commit/9b937e5">9b937e5</a>)</li>
+<li>feat: federatedOIDC config in dm clients (<a href="https://github.com/entrecode/ec.sdk/commit/02d0526">02d0526</a>)</li>
+</ul>
+<h2>0.31.4 (2025-05-14)</h2>
 <ul>
 <li>release version 0.31.4 (<a href="https://github.com/entrecode/ec.sdk/commit/812dbf3">812dbf3</a>)</li>
 <li>fix: support text responses (<a href="https://github.com/entrecode/ec.sdk/commit/8d600cf">8d600cf</a>)</li>
