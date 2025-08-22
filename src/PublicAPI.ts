@@ -22,7 +22,7 @@ import {
   shortenUUID,
   superagentPost,
 } from './helper';
-import { filterOptions } from './resources/ListResource';
+import { FilterOptions } from './resources/ListResource';
 import DMAssetList from './resources/publicAPI/DMAssetList';
 import DMAssetResource from './resources/publicAPI/DMAssetResource';
 import DMAuthTokenList from './resources/publicAPI/DMAuthTokenList';
@@ -668,7 +668,7 @@ export default class PublicAPI extends Core {
 
     const request = await this.follow(`${this[shortIDSymbol]}:${model}`);
     request.withTemplateParameters(
-      optionsToQuery({ id } as filterOptions, this.getLink(`${this[shortIDSymbol]}:${model}`).href, true),
+      optionsToQuery({ id } as FilterOptions, this.getLink(`${this[shortIDSymbol]}:${model}`).href, true),
     );
     await this.dispatch(() => del(this[environmentSymbol], request));
   }
@@ -740,7 +740,7 @@ export default class PublicAPI extends Core {
    * @param {filterOptions?} options filter options
    * @returns {Promise<DMAssetList>} Promise resolving to DMAssetList
    */
-  dmAssetList(assetGroupID: string, options?: filterOptions | any): Promise<DMAssetList> {
+  dmAssetList(assetGroupID: string, options?: FilterOptions | any): Promise<DMAssetList> {
     return Promise.resolve()
       .then(() => {
         if (!assetGroupID) {
@@ -867,7 +867,7 @@ export default class PublicAPI extends Core {
    *   levels directly request
    * @returns {Promise<EntryResource>} Promise resolving to EntryResource
    */
-  entry(model: string, id: string | filterOptions, options: number | filterOptions = {}): Promise<EntryResource> {
+  entry(model: string, id: string | FilterOptions, options: number | FilterOptions = {}): Promise<EntryResource> {
     return Promise.resolve()
       .then(() => {
         if (!model) {
@@ -879,16 +879,16 @@ export default class PublicAPI extends Core {
         }
 
         if (Number.isInteger(options as number)) {
-          options = { _levels: options } as filterOptions;
+          options = { _levels: options } as FilterOptions;
         }
 
         if (typeof id === 'object') {
           Object.assign(options, id);
-          if ('_levels' in (options as filterOptions)) {
+          if ('_levels' in (options as FilterOptions)) {
             throw new Error('Levels not allowed on single Entry request with filters');
           }
         } else if (typeof id === 'string') {
-          (options as filterOptions)._id = id;
+          (options as FilterOptions)._id = id;
         } else {
           throw new Error('invalid format for id');
         }
@@ -897,7 +897,7 @@ export default class PublicAPI extends Core {
       })
       .then((request) => {
         request.withTemplateParameters(
-          optionsToQuery(options as filterOptions, this.getLink(`${this[shortIDSymbol]}:${model}`).href, true),
+          optionsToQuery(options as FilterOptions, this.getLink(`${this[shortIDSymbol]}:${model}`).href, true),
         );
         return this.dispatch(() => get(this[environmentSymbol], request));
       })
@@ -933,7 +933,7 @@ export default class PublicAPI extends Core {
    * @param {filterOptions?} options filter options
    * @returns {Promise<EntryList>} Promise resolving to EntryList
    */
-  entryList(model: string, options?: filterOptions | any): Promise<EntryList> {
+  entryList(model: string, options?: FilterOptions | any): Promise<EntryList> {
     // remove any
     return Promise.resolve()
       .then(() => {
@@ -987,7 +987,7 @@ export default class PublicAPI extends Core {
    * @param {filterOptions | any} options The filter options
    * @returns {Promise<HistoryEvents} The filtered HistoryEvents
    */
-  getEvents(options?: filterOptions): Promise<any> {
+  getEvents(options?: FilterOptions): Promise<any> {
     return Promise.resolve()
       .then(() => this.follow('ec:api/history'))
       .then((request) => {
@@ -1802,7 +1802,7 @@ export default class PublicAPI extends Core {
    * @param {filterOptions?} options filter options
    * @returns {Promise<PublicTagList>} Promise resolving to PublicTagList
    */
-  tagList(options?: filterOptions | any): Promise<PublicTagList> {
+  tagList(options?: FilterOptions | any): Promise<PublicTagList> {
     // TODO remove any
     return Promise.resolve()
       .then(() => {
@@ -1839,7 +1839,7 @@ export default class PublicAPI extends Core {
    * @param {filterOptions?} options filter options
    * @returns {Promise<DMAuthTokenList>} Promise resolving to DMAuthTokenList
    */
-  async tokenList(options?: filterOptions | any): Promise<DMAuthTokenList> {
+  async tokenList(options?: FilterOptions | any): Promise<DMAuthTokenList> {
     // TODO remove any
     return Promise.resolve()
       .then(() => {

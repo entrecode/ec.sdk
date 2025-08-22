@@ -3,7 +3,7 @@ import { environment } from '../../Core';
 import DMAccountResource from './DMAccountResource';
 import DMAccountList from './DMAccountList';
 import LiteDMAccountResource from '../publicAPI/LiteDMAccountResource';
-import { filterOptions } from '../ListResource';
+import { FilterOptions } from '../ListResource';
 
 const relationsSymbol: any = Symbol.for('relations');
 
@@ -104,7 +104,7 @@ class RoleResource extends Resource {
    * @param {filterOptions?} options the filter options.
    * @returns {Promise<DMAccountList>} resolves to account list with applied filters.
    */
-  accountList(options?: filterOptions): Promise<DMAccountList> {
+  accountList(options?: FilterOptions): Promise<DMAccountList> {
     return <Promise<DMAccountList>>this.resourceList('dmAccount', options);
   }
 }

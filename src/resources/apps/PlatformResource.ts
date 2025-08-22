@@ -13,7 +13,7 @@ import DataSourceResource from './DataSourceResource';
 import TargetList from './TargetList';
 import TargetResource from './TargetResource';
 import { environment } from '../../Core';
-import { filterOptions } from '../ListResource';
+import { FilterOptions } from '../ListResource';
 
 const resourceSymbol: any = Symbol.for('resource');
 const environmentSymbol: any = Symbol.for('environment');
@@ -127,7 +127,7 @@ class PlatformResource extends Resource {
    * @param {filterOptions?} options the filter options.
    * @returns {Promise<BuildList>} resolves to app list with applied filters.
    */
-  buildList(options?: filterOptions): Promise<BuildList> {
+  buildList(options?: FilterOptions): Promise<BuildList> {
     return <Promise<BuildList>>this.resourceList('build', options);
   }
 
@@ -230,7 +230,7 @@ class PlatformResource extends Resource {
    * @param {filterOptions?} options the filter options.
    * @returns {Promise<DeploymentList>} resolves to app list with applied filters.
    */
-  deploymentList(options?: filterOptions): Promise<DeploymentList> {
+  deploymentList(options?: FilterOptions): Promise<DeploymentList> {
     return <Promise<DeploymentList>>this.resourceList('deployment', options);
   }
 

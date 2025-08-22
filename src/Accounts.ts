@@ -8,7 +8,7 @@ import InviteResource from './resources/accounts/InviteResource';
 import InviteList from './resources/accounts/InviteList';
 import GroupList from './resources/accounts/GroupList';
 import GroupResource from './resources/accounts/GroupResource';
-import { filterOptions, filter } from './resources/ListResource';
+import { FilterOptions, Filter } from './resources/ListResource';
 import { get, getEmpty, post, postEmpty } from './helper';
 
 const tokenStoreSymbol: any = Symbol.for('tokenStore');
@@ -118,7 +118,7 @@ export default class Accounts extends Core {
    * @param {filterOptions?} options the filter options
    * @returns {Promise<AccountList>} resolves to account list with applied filters
    */
-  accountList(options?: filterOptions | any): Promise<AccountList> {
+  accountList(options?: FilterOptions | any): Promise<AccountList> {
     return <Promise<AccountList>>this.resourceList('account', options);
   }
 
@@ -176,7 +176,7 @@ export default class Accounts extends Core {
    * @param {filterOptions?} options filter options
    * @returns {Promise<ClientList>} Promise resolving to ClientList
    */
-  clientList(options?: filterOptions | any): Promise<ClientList> {
+  clientList(options?: FilterOptions | any): Promise<ClientList> {
     return <Promise<ClientList>>this.resourceList('client', options);
   }
 
@@ -360,7 +360,7 @@ export default class Accounts extends Core {
    * @param {filterOptions?} options filter options
    * @returns {Promise<GroupList>} Promise resolving group list
    */
-  groupList(options?: filterOptions | any): Promise<GroupList> {
+  groupList(options?: FilterOptions | any): Promise<GroupList> {
     // TODO remove any
     return <Promise<GroupList>>this.resourceList('group', options);
   }
@@ -399,7 +399,7 @@ export default class Accounts extends Core {
    * @param {filterOptions} options filter options you want to have applied
    * @returns {Promise<InviteList>} the requested {@link InviteList}.
    */
-  inviteList(options?: filterOptions): Promise<InviteList> {
+  inviteList(options?: FilterOptions): Promise<InviteList> {
     return <Promise<InviteList>>this.resourceList('invite', options);
   }
 

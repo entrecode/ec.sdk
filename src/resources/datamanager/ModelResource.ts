@@ -2,7 +2,7 @@ import * as validator from 'json-schema-remote';
 import Resource from '../Resource';
 import { environment } from '../../Core';
 import { get, del, post, optionsToQuery } from '../../helper';
-import { filterOptions } from '../ListResource';
+import { FilterOptions } from '../ListResource';
 import HistoryEvents from '../publicAPI/HistoryEvents';
 
 const environmentSymbol: any = Symbol.for('environment');
@@ -126,7 +126,7 @@ class ModelResource extends Resource {
    * @param {filterOptions | any} options The filter options
    * @returns {Promise<HistoryEvents} The filtered HistoryEvents
    */
-  getEvents(options?: filterOptions): Promise<any> {
+  getEvents(options?: FilterOptions): Promise<any> {
     return Promise.resolve()
       .then(() => this.newRequest().follow('ec:model/history'))
       .then((request) => {
@@ -149,7 +149,7 @@ class ModelResource extends Resource {
    * @return {Promise<EventSource>} The created EventSource.
    */
   /*
-  newHistory(options?: filterOptions): Promise<any> {
+  newHistory(options?: FilterOptions): Promise<any> {
     return Promise.resolve()
       .then(() => this.newRequest().follow('ec:model/dm-entryHistory'))
       .then((request) => {
@@ -170,7 +170,7 @@ class ModelResource extends Resource {
    * @returns {Promise<HistoryEventsResource} Event list of past events.
    */
   /*
-  getPastEvents(options?: filterOptions): Promise<any> {
+  getPastEvents(options?: FilterOptions): Promise<any> {
     return Promise.resolve()
       .then(() => this.newRequest().follow('ec:model/dm-entryHistory'))
       .then((request) => {

@@ -4,7 +4,7 @@ import * as validator from 'json-schema-remote';
 import { EventEmitterFactory } from './EventEmitter';
 import Problem from './Problem';
 import TokenStoreFactory, { TokenStore } from './TokenStore';
-import { filterOptions } from './resources/ListResource';
+import { FilterOptions } from './resources/ListResource';
 
 import { environment } from './Core';
 
@@ -579,7 +579,7 @@ const modifier = {
  * @returns {object} translated querystring object
  */
 export function optionsToQuery(
-  options: filterOptions,
+  options: FilterOptions,
   templateURL?: string,
   encode: boolean = false,
   retry: boolean = false,

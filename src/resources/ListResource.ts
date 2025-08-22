@@ -401,17 +401,17 @@ class ListResource extends Resource {
  * @access private
  */
 
-export type filterOptions = {
+export type FilterOptions = {
   size?: number;
   page?: number;
   sort?: Array<string>;
   _levels?: number;
   _fields?: Array<string>;
 
-  [key: string]: filterType;
+  [key: string]: FilterType;
 };
 
-export type filter = {
+export type Filter = {
   exact?: string;
   not?: string;
   null?: boolean;
@@ -425,7 +425,7 @@ export type filter = {
 
 export default ListResource;
 
-export type filterType = Array<string> | number | string | filter | object | boolean | undefined;
+export type FilterType = Array<string> | number | string | Filter | object | boolean | undefined;
 
 /**
  * List filter options with pagination, sorting, and {@link filter}. This can be used to apply all

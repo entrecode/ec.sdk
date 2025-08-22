@@ -3,7 +3,7 @@ import * as validator from 'json-schema-remote';
 import Core, { environment, options } from './Core';
 import Problem from './Problem';
 import { get, locale, optionsToQuery, post } from './helper';
-import { filterOptions } from './resources/ListResource';
+import { FilterOptions } from './resources/ListResource';
 import DMStatsList from './resources/datamanager/DMStatsList';
 import DMStatsResource from './resources/datamanager/DMStatsResource';
 import DataManagerList from './resources/datamanager/DataManagerList';
@@ -125,7 +125,7 @@ export default class DataManager extends Core {
    * @param {filterOptions?} options the filter options
    * @returns {Promise<DataManagerList>} resolves to datamanager list with applied filters
    */
-  dataManagerList(options?: filterOptions | any): Promise<DataManagerList> {
+  dataManagerList(options?: FilterOptions | any): Promise<DataManagerList> {
     return <Promise<DataManagerList>>this.resourceList('dataManager', options);
   }
 
@@ -136,7 +136,7 @@ export default class DataManager extends Core {
    * @param {filterOptions | any} options The filter options
    * @returns {Promise<HistoryEvents} The filtered HistoryEvents
    */
-  getEvents(options?: filterOptions): Promise<any> {
+  getEvents(options?: FilterOptions): Promise<any> {
     return Promise.resolve()
       .then(() => this.follow('ec:history'))
       .then((request) => {
@@ -224,7 +224,7 @@ export default class DataManager extends Core {
    * @param {filterOptions?} options filter options
    * @returns {Promise<TemplateList>} Promise resolving to TemplateList
    */
-  templateList(options?: filterOptions | any): Promise<TemplateList> {
+  templateList(options?: FilterOptions | any): Promise<TemplateList> {
     return <Promise<TemplateList>>this.resourceList('template', options);
   }
 }
