@@ -1,3 +1,25 @@
+## 0.32.0 (2025-08-22)
+
+* release version 0.32.0 ([1db4fd2](https://github.com/entrecode/ec.sdk/commit/1db4fd2))
+* feat: support for multiple not filter ([90a0733](https://github.com/entrecode/ec.sdk/commit/90a0733))
+* refactor: rename types FilterOptions Filter and FilterTypes for pascal case ([9db6db5](https://github.com/entrecode/ec.sdk/commit/9db6db5))
+
+
+### BREAKING CHANGE
+
+* Update your imports according to the new naming.
+
+before:
+```js
+import { filterOptions, filter, filterType } from '../ListResource';
+````
+
+after:
+```js
+import { FilterOptions, Filter, FilterType } from '../ListResource';
+```
+
+
 ## <small>0.31.5 (2025-07-03)</small>
 
 * release version 0.31.5 ([9b937e5](https://github.com/entrecode/ec.sdk/commit/9b937e5))
