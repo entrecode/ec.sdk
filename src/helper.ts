@@ -564,6 +564,7 @@ const modifier = {
   from: 'From',
   to: 'To',
   any: ',',
+  notAny: ',',
   all: ' ',
 };
 
@@ -666,21 +667,25 @@ export function optionsToQuery(
                 break;
               case 'any':
               case 'all':
+              case 'notAny':
                 if (!Array.isArray(value[searchKey])) {
                   throw new Error(`${key}.${searchKey} must be an Array.`);
                 }
+                // eslint-disable-next-line no-case-declarations
                 const invalid = value[searchKey].filter((val) => !(typeof val === 'string' || typeof val === 'number'));
                 if (invalid.length > 0) {
                   throw new Error(`${key}.${searchKey} array must contain only strings or numbers`);
                 }
-                out[key] = [...value[searchKey]];
-                if (out[key].some((value) => /[ ,]/.test(value))) {
-                  out[key] = out[key].map((value) => `(${value})`);
+                // eslint-disable-next-line no-case-declarations
+                const k = searchKey === 'notAny' ? `${key}!` : key;
+                out[k] = [...value[searchKey]];
+                if (out[k].some((v) => /[ ,]/.test(v))) {
+                  out[k] = out[k].map((v) => `(${v})`);
                 }
                 if (encode) {
-                  out[key] = out[key].map((value) => encodeURIComponent(value));
+                  out[k] = out[k].map((v) => encodeURIComponent(v));
                 }
-                out[key] = out[key].join(modifier[searchKey]);
+                out[k] = out[k].join(modifier[searchKey]);
                 break;
               default:
                 throw new Error(`No handling of ${key}.${searchKey} filter supported.`);

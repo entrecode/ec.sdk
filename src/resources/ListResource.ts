@@ -416,6 +416,7 @@ export type Filter = {
   not?: string;
   null?: boolean;
   notNull: boolean;
+  notAny?: Array<string>;
   search?: string;
   from?: any;
   to?: any;
