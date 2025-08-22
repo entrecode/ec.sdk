@@ -9,7 +9,7 @@ import LiteRoleResource from './LiteRoleResource';
 import { get, getSchema, optionsToQuery, locale, getUrl } from '../../helper';
 import { environment } from '../../Core';
 import DMAssetResource from './DMAssetResource';
-import { filterOptions } from '../ListResource';
+import { FilterOptions } from '../ListResource';
 import Problem from '../../Problem';
 import HistoryEvents from './HistoryEvents';
 
@@ -593,10 +593,10 @@ class EntryResource extends LiteEntryResource {
   /**
    * Load the HistoryEvents for this Entry from v3 API.
    *
-   * @param {filterOptions | any} options The filter options
+   * @param {FilterOptions | any} options The filter options
    * @returns {Promise<HistoryEvents} The filtered HistoryEvents
    */
-  getEvents(options?: filterOptions): Promise<any> {
+  getEvents(options?: FilterOptions): Promise<any> {
     return Promise.resolve()
       .then(() => this.newRequest().follow('ec:entry/history'))
       .then((request) => {
@@ -615,11 +615,11 @@ class EntryResource extends LiteEntryResource {
    *
    * @deprecated
    * 
-   * @param {filterOptions | any} options The filter options
+   * @param {FilterOptions | any} options The filter options
    * @return {Promise<EventSource>} The created EventSource.
    */
   /*
-  newHistory(options?: filterOptions): Promise<any> {
+  newHistory(options?: FilterOptions): Promise<any> {
     return Promise.resolve()
       .then(() => this.newRequest().follow('ec:entry/dm-entryHistory'))
       .then((request) => {
@@ -636,11 +636,11 @@ class EntryResource extends LiteEntryResource {
    *
    * @deprecated
    * 
-   * @param {filterOptions?} options The filter options.
+   * @param {FilterOptions?} options The filter options.
    * @returns {Promise<HistoryEventsResource} Event list of past events.
    */
   /*
-  getPastEvents(options?: filterOptions): Promise<any> {
+  getPastEvents(options?: FilterOptions): Promise<any> {
     return Promise.resolve()
       .then(() => this.newRequest().follow('ec:entry/dm-entryHistory'))
       .then((request) => {

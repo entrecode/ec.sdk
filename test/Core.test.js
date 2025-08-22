@@ -905,6 +905,10 @@ describe('optionsToQuery', () => {
     const obj = { property: { any: ['hallo, michi', 'hallo, berni'] } };
     helper.optionsToQuery(obj, null, true).should.have.property('property', '(hallo%2C%20michi),(hallo%2C%20berni)');
   });
+  it("should have multiple not filter", () => {
+    const obj = { property: { notAny: ['value1', 'value2'] } };
+    helper.optionsToQuery(obj, null, true).should.have.property('property!', 'value1,value2');
+  });
   describe('template validation', () => {
     it('valid, all types', () => {
       const obj = {

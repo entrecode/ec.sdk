@@ -12,7 +12,7 @@ import { EventEmitterFactory } from './EventEmitter';
 import TokenStoreFactory from './TokenStore';
 import { locale, setLocale, get, getSchema, optionsToQuery, post, enableHistoryEvents, del } from './helper';
 import Resource from './resources/Resource';
-import ListResource, { filterOptions } from './resources/ListResource';
+import ListResource, { FilterOptions } from './resources/ListResource';
 import Problem from './Problem';
 
 const resourceSymbol: any = Symbol.for('resource');
@@ -583,7 +583,7 @@ export default class Core {
    */
   resourceList(
     relation: string,
-    options: filterOptions | any = {},
+    options: FilterOptions | any = {},
     additionalTemplateParams: any = {},
   ): Promise<ListResource> {
     return Promise.resolve()

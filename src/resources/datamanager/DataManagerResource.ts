@@ -1,7 +1,7 @@
 import { environment } from '../../Core';
 import PublicAPI from '../../PublicAPI';
 import { get, optionsToQuery } from '../../helper';
-import { filterOptions } from '../ListResource';
+import { FilterOptions } from '../ListResource';
 import Resource from '../Resource';
 import HistoryEvents from '../publicAPI/HistoryEvents';
 import AssetGroupList from './AssetGroupList';
@@ -207,7 +207,7 @@ class DataManagerResource extends Resource {
    * @param {filterOptions?} options the filter options.
    * @returns {Promise<DMAccountList>} resolves to account list with applied filters.
    */
-  accountList(options?: filterOptions): Promise<DMAccountList> {
+  accountList(options?: FilterOptions): Promise<DMAccountList> {
     return <Promise<DMAccountList>>this.resourceList('dmAccount', options, { dataManagerID: this.dataManagerID });
   }
 
@@ -242,7 +242,7 @@ class DataManagerResource extends Resource {
    * @param {filterOptions?} options filter options
    * @returns {Promise<AssetGroupList>} Promise resolving to AssetGroupList
    */
-  assetGroupList(options: filterOptions | any = {}): Promise<AssetGroupList> {
+  assetGroupList(options: FilterOptions | any = {}): Promise<AssetGroupList> {
     return Promise.resolve().then(() => {
       return <Promise<AssetGroupList>>this.resourceList('assetGroup', options);
     });
@@ -289,7 +289,7 @@ class DataManagerResource extends Resource {
    * @param {filterOptions?} options filter options
    * @returns {Promise<DMClientList>} Promise resolving to DMClientList
    */
-  clientList(options?: filterOptions): Promise<DMClientList> {
+  clientList(options?: FilterOptions): Promise<DMClientList> {
     return <Promise<DMClientList>>this.resourceList('dmClient', options);
   }
 
@@ -378,7 +378,7 @@ class DataManagerResource extends Resource {
    *   filter options.
    * @returns {Promise<ModelList>} resolves to model list with applied filters.
    */
-  modelList(options?: filterOptions): Promise<ModelList> {
+  modelList(options?: FilterOptions): Promise<ModelList> {
     return <Promise<ModelList>>this.resourceList('model', options);
   }
 
@@ -389,7 +389,7 @@ class DataManagerResource extends Resource {
    * @param {filterOptions | any} options The filter options
    * @returns {Promise<HistoryEvents} The filtered HistoryEvents
    */
-  getEvents(options?: filterOptions): Promise<any> {
+  getEvents(options?: FilterOptions): Promise<any> {
     return Promise.resolve()
       .then(() => this.newRequest().follow('ec:datamanager/history'))
       .then((request) => {
@@ -412,7 +412,7 @@ class DataManagerResource extends Resource {
    * @return {Promise<EventSource>} The created EventSource.
    */
   /*
-  newHistory(options?: filterOptions): Promise<any> {
+  newHistory(options?: FilterOptions): Promise<any> {
     return Promise.resolve()
       .then(() => this.newRequest().follow('ec:datamanager/dm-entryHistory'))
       .then((request) => {
@@ -433,7 +433,7 @@ class DataManagerResource extends Resource {
    * @returns {Promise<HistoryEventsResource} Event list of past events.
    */
   /*
-  getPastEvents(options?: filterOptions): Promise<any> {
+  getPastEvents(options?: FilterOptions): Promise<any> {
     return Promise.resolve()
       .then(() => this.newRequest().follow('ec:datamanager/dm-entryHistory'))
       .then((request) => {
@@ -488,7 +488,7 @@ class DataManagerResource extends Resource {
    * @param {filterOptions?} options filter options
    * @returns {Promise<RoleList>} Promise resolving to RoleList
    */
-  roleList(options: filterOptions): Promise<RoleList> {
+  roleList(options: FilterOptions): Promise<RoleList> {
     return <Promise<RoleList>>this.resourceList('role', options);
   }
 

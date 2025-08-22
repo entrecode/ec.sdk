@@ -7,7 +7,7 @@ import DataSourceList from './DataSourceList';
 import DataSourceResource from './DataSourceResource';
 import TargetList from './TargetList';
 import TargetResource from './TargetResource';
-import { filterOptions } from '../ListResource';
+import { FilterOptions } from '../ListResource';
 import { environment } from '../../Core';
 
 const relationsSymbol: any = Symbol.for('relations');
@@ -123,7 +123,7 @@ class AppResource extends Resource {
    * @param {filterOptions?} options the filter options.
    * @returns {Promise<CodeSourceList>} resolves to app list with applied filters.
    */
-  codeSourceList(options?: filterOptions | any): Promise<CodeSourceList> {
+  codeSourceList(options?: FilterOptions | any): Promise<CodeSourceList> {
     return <Promise<CodeSourceList>>this.resourceList('codeSource', options);
   }
 
@@ -254,7 +254,7 @@ class AppResource extends Resource {
    * @param {filterOptions?} options the filter options.
    * @returns {Promise<CodeSourceList>} resolves to app list with applied filters.
    */
-  dataSourceList(options?: filterOptions | any): Promise<CodeSourceList> {
+  dataSourceList(options?: FilterOptions | any): Promise<CodeSourceList> {
     return <Promise<DataSourceList>>this.resourceList('dataSource', options);
   }
 
@@ -275,7 +275,7 @@ class AppResource extends Resource {
    * @param {filterOptions?} options the filter options.
    * @returns {Promise<PlatformList>} resolves to app list with applied filters.
    */
-  platformList(options?: filterOptions | any): Promise<PlatformList> {
+  platformList(options?: FilterOptions | any): Promise<PlatformList> {
     return <Promise<PlatformList>>this.resourceList('platform', options);
   }
 
@@ -296,7 +296,7 @@ class AppResource extends Resource {
    * @param {filterOptions?} options the filter options.
    * @returns {Promise<TargetList>} resolves to app list with applied filters.
    */
-  targetList(options?: filterOptions | any): Promise<TargetList> {
+  targetList(options?: FilterOptions | any): Promise<TargetList> {
     return <Promise<TargetList>>this.resourceList('target', options);
   }
 }

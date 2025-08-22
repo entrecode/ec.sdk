@@ -1,7 +1,7 @@
 import Resource from '../Resource';
 import { environment } from '../../Core';
 import DMAssetList from '../publicAPI/DMAssetList';
-import { filterOptions } from '../ListResource';
+import { FilterOptions } from '../ListResource';
 import DMAssetResource from '../publicAPI/DMAssetResource';
 
 const relationsSymbol: any = Symbol.for('relations');
@@ -87,7 +87,7 @@ class AssetGroupResource extends Resource {
    * @param {filterOptions?} options filter options
    * @returns {Promise<DMAssetList>} Promise resolving to DMAssetList
    */
-  assetList(options: filterOptions | any = {}): Promise<DMAssetList> {
+  assetList(options: FilterOptions | any = {}): Promise<DMAssetList> {
     return <Promise<DMAssetList>>this.resourceList('dmAsset', options);
   }
 }

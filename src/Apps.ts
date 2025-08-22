@@ -4,7 +4,7 @@ import AppStatsList from './resources/apps/AppStatsList';
 import AppStatsResource from './resources/apps/AppStatsResource';
 import Core, { environment, options } from './Core';
 import TypesResource from './resources/apps/TypesResource';
-import { filterOptions } from './resources/ListResource';
+import { FilterOptions } from './resources/ListResource';
 import { get } from './helper';
 
 const environmentSymbol: any = Symbol.for('environment');
@@ -77,7 +77,7 @@ export default class Apps extends Core {
    * @param {filterOptions?} options the filter options
    * @returns {Promise<AppList>} resolves to app list with applied filters
    */
-  appList(options?: filterOptions | any): Promise<AppList> {
+  appList(options?: FilterOptions | any): Promise<AppList> {
     return <Promise<AppList>>this.resourceList('app', options);
   }
 

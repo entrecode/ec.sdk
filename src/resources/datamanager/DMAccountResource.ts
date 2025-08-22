@@ -4,7 +4,7 @@ import Resource from '../Resource';
 import { environment } from '../../Core';
 import RoleResource from './RoleResource';
 import LiteRoleResource from '../publicAPI/LiteRoleResource';
-import { filterOptions } from '../ListResource';
+import { FilterOptions } from '../ListResource';
 import { get, optionsToQuery } from '../../helper';
 import DMAuthTokenList from '../publicAPI/DMAuthTokenList';
 import DMAuthTokenResource from '../publicAPI/DMAuthTokenResource';
@@ -165,7 +165,7 @@ class DMAccountResource extends Resource {
    * @param {filterOptions?} options filter options
    * @returns {Promise<DMAuthTokenList>} Promise resolving to DMAuthTokenList
    */
-  tokenList(options?: filterOptions | any): Promise<DMAuthTokenList> {
+  tokenList(options?: FilterOptions | any): Promise<DMAuthTokenList> {
     // TODO remove any
     return Promise.resolve()
       .then(() => {
