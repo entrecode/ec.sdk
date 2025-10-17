@@ -1,3 +1,10 @@
+## <small>0.32.1 (2025-10-17)</small>
+
+* release version 0.32.1 ([d0f4b10](https://github.com/entrecode/ec.sdk/commit/d0f4b10))
+* fix: allow user-agent "node-fetch/1.0 (+https://github.com/bitinn/node-fetch)" ([6137e57](https://github.com/entrecode/ec.sdk/commit/6137e57))
+
+
+
 ## 0.32.0 (2025-08-22)
 
 * release version 0.32.0 ([1db4fd2](https://github.com/entrecode/ec.sdk/commit/1db4fd2))
