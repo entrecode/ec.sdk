@@ -230,7 +230,7 @@ export class TokenStore {
 
   /**
    * Set user agent for this {@link TokenStore}. The value must match the following regex:
-   * ^(?:\w+/[\w.+-]+(?: \([\w]+\))? ?)+$
+   * ^(?:[\w- ]+\/[\w\.+-]+(?: \([\w,;:\.\+/ ]+\))? ?)+
    *
    * @param {string} agent the user agent
    * @returns {undefined}
@@ -240,7 +240,7 @@ export class TokenStore {
       throw new Error('agent cannot be undefined');
     }
 
-    if (!/^(?:[\w ]+\/[\w\.+-]+(?: \([\w,;\./ ]+\))? ?)+/.test(agent)) {
+    if (!/^(?:[\w- ]+\/[\w.+-]+(?: \([\w,;:.+/ ]+\))? ?)+/.test(agent)) {
       throw new Error('agent is malformed');
     }
 
