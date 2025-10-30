@@ -74,7 +74,10 @@
     "webpack": "^4.43.0"
   },
   "eslintConfig": {
-    "extends": "entrecode"
+    "extends": "entrecode",
+    "rules": {
+      "no-underscore-dangle": ["error", { "allow": ["_id"] }]
+    }
   },
   "prettier": {
     "printWidth": 120,

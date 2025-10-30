@@ -691,7 +691,8 @@ class EntryResource extends LiteEntryResource {
     });
   }
 
-  toOriginal(): any {
+  toOriginal(options: { saving: boolean } = { saving: false }): any {
+    const { saving } = options;
     const out = {};
 
     Object.keys(this[resourceSymbol].original()).forEach((key) => {
@@ -703,30 +704,43 @@ class EntryResource extends LiteEntryResource {
       }
       switch (type) {
         case 'entry':
-          if (val instanceof EntryResource) {
-            out[key] = val.toOriginal();
+          if (val instanceof EntryResource && saving) {
+            out[key] = val._id || val.id;
+          } else if (val instanceof EntryResource) {
+            out[key] = val.toOriginal({ saving });
           } else if (val instanceof LiteEntryResource) {
             out[key] = val._id;
+          } else if (val?._id || val?.id) {
+            out[key] = val._id || val.id;
           } else {
             out[key] = val;
           }
           break;
         case 'entries':
           out[key] = val.map((v) => {
-            if (v instanceof EntryResource) {
-              return v.toOriginal();
-            } else if (v instanceof LiteEntryResource) {
-              return v._id;
-            } else {
-              return v;
+            if (v instanceof EntryResource && saving) {
+              return v._id || v.id;
             }
+            if (v instanceof EntryResource) {
+              return v.toOriginal({ saving });
+            }
+            if (v instanceof LiteEntryResource) {
+              return v._id || v.id;
+            }
+            if (v?._id || v?.id) {
+              return v._id || v.id;
+            }
+            return v;
           });
           break;
         case 'asset':
+          // eslint-disable-next-line no-case-declarations
           const original = this[resourceSymbol].original();
           if (typeof val === 'string') {
             out[key] = val;
           } else if (!original[key] || typeof original[key] === 'string') {
+            out[key] = val.assetID;
+          } else if (saving && val?.assetID) {
             out[key] = val.assetID;
           } else {
             out[key] = val;
@@ -734,14 +748,18 @@ class EntryResource extends LiteEntryResource {
           break;
         case 'assets':
           out[key] = val.map((v, i) => {
+            // eslint-disable-next-line @typescript-eslint/no-shadow
             const original = this[resourceSymbol].original();
             if (typeof v === 'string') {
               return v;
-            } else if (!original[key][i] || typeof original[key][i] === 'string') {
-              return v.assetID;
-            } else {
-              return v;
             }
+            if (!original[key][i] || typeof original[key][i] === 'string') {
+              return v.assetID;
+            }
+            if (saving && v?.assetID) {
+              return v.assetID;
+            }
+            return v;
           });
           break;
         case 'account':
