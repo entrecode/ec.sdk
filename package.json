@@ -1,6 +1,6 @@
 {
   "name": "ec.sdk",
-  "version": "0.32.1",
+  "version": "0.33.0",
   "description": "SDK for ec.api",
   "repository": "entrecode/ec.sdk",
   "author": "Simon Scherzinger <scherzinger@entrecode.de>",
@@ -74,7 +74,17 @@
     "webpack": "^4.43.0"
   },
   "eslintConfig": {
-    "extends": "entrecode"
+    "extends": "entrecode",
+    "rules": {
+      "no-underscore-dangle": [
+        "error",
+        {
+          "allow": [
+            "_id"
+          ]
+        }
+      ]
+    }
   },
   "prettier": {
     "printWidth": 120,

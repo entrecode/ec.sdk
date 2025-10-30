@@ -611,7 +611,7 @@ export default class PublicAPI extends Core {
         }
 
         if (entry instanceof EntryResource) {
-          e = entry.toOriginal();
+          e = entry.toOriginal({ saving: true });
         } else {
           e = entry;
         }

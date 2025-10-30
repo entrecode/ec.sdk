@@ -1,3 +1,10 @@
+## 0.33.0 (2025-10-30)
+
+* release version 0.33.0 ([b09ed85](https://github.com/entrecode/ec.sdk/commit/b09ed85))
+* feat: update toOriginal to save nested entries only with ids ([1840b50](https://github.com/entrecode/ec.sdk/commit/1840b50))
+
+
+
 ## <small>0.32.1 (2025-10-17)</small>
 
 * release version 0.32.1 ([d0f4b10](https://github.com/entrecode/ec.sdk/commit/d0f4b10))

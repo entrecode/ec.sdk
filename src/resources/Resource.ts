@@ -85,6 +85,7 @@ class Resource {
     this[relationsSymbol] = {};
     this.countProperties();
   }
+
   /**
    * Returns a collection of available relations in this Resource.
    *
@@ -527,7 +528,7 @@ class Resource {
         return this.validate(overwriteSchemaUrl);
       })
       .then(() => {
-        const out = this.toOriginal();
+        const out = this.toOriginal({ saving: true });
         const request = this.newRequest().follow('self');
 
         if (safePut) {
@@ -588,7 +589,8 @@ class Resource {
     return this;
   }
 
-  toOriginal(): any {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  toOriginal(_options?: { saving: boolean }): any {
     const out = {};
 
     Object.keys(this[originalSymbol]).forEach((key) => {
