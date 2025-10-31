@@ -29,6 +29,7 @@ const list = await api.entryList('modelTitle', {
   myproperty: 'exactValue',
   email: { search: 'andre' },
   prop: { any: ['id1', 'id2'] },
+  _search: 'full text search'
 });
 ```
 

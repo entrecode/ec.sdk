@@ -74,6 +74,22 @@ describe('Accounts class', () => {
     new Accounts()
       .accountList({ accountid: 'id' })
       .should.be.rejectedWith('Providing only an id in ResourceList filter will result in single resource response.'));
+  it('should be rejected on accountList with _search', () => {
+    const accounts = new Accounts('live');
+    const stub = sinon.stub(helper, 'get');
+    stub.returns(resolver('account-list.json'));
+
+    return accounts
+      .accountList({ _search: 'test' })
+      .should.be.rejectedWith('_search is only supported in PublicAPI.entryList')
+      .then(() => {
+        stub.restore();
+      })
+      .catch((err) => {
+        stub.restore();
+        throw err;
+      });
+  });
   it('should return resource on get', () => {
     const accounts = new Accounts('live');
     const stub = sinon.stub(helper, 'get');

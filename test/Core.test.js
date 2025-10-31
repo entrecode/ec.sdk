@@ -799,6 +799,36 @@ describe('optionsToQuery', () => {
     };
     throws.should.throw(Error);
   });
+  it('should have _search filter', () => {
+    const obj = {
+      _search: 'my search term',
+    };
+    helper.optionsToQuery(obj, null, false, false, true).should.have.property('_search', 'my search term');
+  });
+  it('should have _search filter encoded', () => {
+    const obj = {
+      _search: 'my search term',
+    };
+    helper.optionsToQuery(obj, null, true, false, true).should.have.property('_search', 'my%20search%20term');
+  });
+  it('should throw on invalid _search', () => {
+    const throws = () => {
+      helper.optionsToQuery({ _search: 123 }, null, false, false, true);
+    };
+    throws.should.throw(Error);
+  });
+  it('should throw on _search when not allowed', () => {
+    const throws = () => {
+      helper.optionsToQuery({ _search: 'test' });
+    };
+    throws.should.throw(Error, '_search is only supported in PublicAPI.entryList');
+  });
+  it('should allow _search when allowSearch is true', () => {
+    const obj = {
+      _search: 'my search term',
+    };
+    helper.optionsToQuery(obj, null, false, false, true).should.have.property('_search', 'my search term');
+  });
   it('should have exact filter on string property', () => {
     const obj = { property: 'exact' };
     helper.optionsToQuery(obj).should.have.property('property', 'exact');

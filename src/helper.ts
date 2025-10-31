@@ -577,6 +577,8 @@ const modifier = {
  * @param {filterOptions} options filter options
  * @param {string?} templateURL optional templateURL for validating inputs
  * @param {boolean?} encode if true it will encode the parameter values (eg. to support text filter with ',' or '+')
+ * @param {boolean?} retry internal retry flag
+ * @param {boolean?} allowSearch if true, allows _search parameter (only for PublicAPI.entryList)
  * @returns {object} translated querystring object
  */
 export function optionsToQuery(
@@ -584,6 +586,7 @@ export function optionsToQuery(
   templateURL?: string,
   encode: boolean = false,
   retry: boolean = false,
+  allowSearch: boolean = false,
 ): any {
   const out: any = {};
 
@@ -624,6 +627,17 @@ export function optionsToQuery(
             throw new Error('_fields array must contain only strings');
           }
           out[key] = (<Array<string>>value).join(',');
+        } else if (key === '_search') {
+          if (!allowSearch) {
+            throw new Error('_search is only supported in PublicAPI.entryList');
+          }
+          if (typeof value !== 'string') {
+            throw new Error('_search must be a string');
+          }
+          out[key] = value;
+          if (encode) {
+            out[key] = encodeURIComponent(<string>out[key]);
+          }
         } else if (typeof value === 'string') {
           out[key] = value;
           if (/[ ,]/.test(out[key])) {
@@ -726,7 +740,7 @@ export function optionsToQuery(
             lowerCaseOptions[key] = options[key];
           }
         });
-        const outLowerCase = optionsToQuery(lowerCaseOptions, templateURL, encode, true);
+        const outLowerCase = optionsToQuery(lowerCaseOptions, templateURL, encode, true, allowSearch);
         return outLowerCase;
       } catch (err) {
         // do nothing and proceed with original missing array...

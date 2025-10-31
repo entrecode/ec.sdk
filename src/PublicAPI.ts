@@ -928,6 +928,12 @@ export default class PublicAPI extends Core {
    * .then(entry => {
    *   return show(entry);
    * });
+   * 
+   * You can use filters as usual. Example with universal _search:
+   * return api.entryList('myModel', { _search: 'my search term' });
+   * .then(list => {
+   *   return list.getAllItems();
+   * })
    *
    * @param {string} model name of the model for which the list should be loaded
    * @param {filterOptions?} options filter options
@@ -955,7 +961,7 @@ export default class PublicAPI extends Core {
       })
       .then((request) => {
         request.withTemplateParameters(
-          optionsToQuery(options, this.getLink(`${this[shortIDSymbol]}:${model}`).href, true),
+          optionsToQuery(options, this.getLink(`${this[shortIDSymbol]}:${model}`).href, true, false, true),
         );
         return this.dispatch(() => get(this[environmentSymbol], request));
       })
