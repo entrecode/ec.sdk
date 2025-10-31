@@ -407,6 +407,7 @@ export type FilterOptions = {
   sort?: Array<string>;
   _levels?: number;
   _fields?: Array<string>;
+  _search?: string;
 
   [key: string]: FilterType;
 };
@@ -447,6 +448,7 @@ export type FilterType = Array<string> | number | string | Filter | object | boo
  * @property {Array<string} sort
  * @property {number} _levels
  * @property {Array<string>} _fields
+ * @property {string} _search
  * @property {filter} property This could be any field name of a model
  */
 

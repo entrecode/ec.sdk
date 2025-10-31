@@ -515,6 +515,22 @@ describe('PublicAPI', () => {
   it('should throw on undefined model', () => {
     return api.entryList().should.be.rejectedWith('model must be defined');
   });
+  it('should allow _search in entryList', () => {
+    const stub = sinon.stub(helper, 'get');
+    stub.onFirstCall().returns(resolver('public-dm-root.json'));
+    stub.onSecondCall().returns(resolver('public-entry-list.json'));
+
+    return api
+      .entryList('allFields', { _search: 'test search' })
+      .then((list) => {
+        list.should.be.instanceof(EntryList);
+        stub.restore();
+      })
+      .catch((err) => {
+        stub.restore();
+        throw err;
+      });
+  });
 
   it('should resolve on valueCount', () => {
     const stub = sinon.stub(helper, 'get');

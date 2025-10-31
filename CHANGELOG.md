@@ -1,3 +1,10 @@
+## 0.34.0 (2025-10-31)
+
+* release version 0.34.0 ([dccd3c9](https://github.com/entrecode/ec.sdk/commit/dccd3c9))
+* feat: added support for _search parameter in entryList ([f73f1a6](https://github.com/entrecode/ec.sdk/commit/f73f1a6))
+
+
+
 ## 0.33.0 (2025-10-30)
 
 * release version 0.33.0 ([b09ed85](https://github.com/entrecode/ec.sdk/commit/b09ed85))
