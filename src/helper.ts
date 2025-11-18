@@ -4,7 +4,7 @@ import * as validator from 'json-schema-remote';
 import { EventEmitterFactory } from './EventEmitter';
 import Problem from './Problem';
 import TokenStoreFactory, { TokenStore } from './TokenStore';
-import { FilterOptions } from './resources/ListResource';
+import { FilterOptions } from './resources/FilterOptions';
 
 import { environment } from './types';
 

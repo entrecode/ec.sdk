@@ -5,8 +5,8 @@ import * as traverson from 'traverson';
 import * as validator from 'json-schema-remote';
 import * as equal from 'deep-equal';
 
-// eslint-disable-next-line import/no-cycle
-import ListResource, { FilterOptions } from './ListResource';
+import type ListResource from './ListResource';
+import { FilterOptions } from './FilterOptions';
 // eslint-disable-next-line import/no-cycle
 import { del, get, optionsToQuery, post, put, locale } from '../helper';
 import Problem from '../Problem';

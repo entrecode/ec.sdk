@@ -12,7 +12,8 @@ import { EventEmitterFactory } from './EventEmitter';
 import TokenStoreFactory from './TokenStore';
 import { locale, setLocale, get, getSchema, optionsToQuery, post, enableHistoryEvents, del } from './helper';
 import Resource from './resources/Resource';
-import ListResource, { FilterOptions } from './resources/ListResource';
+import ListResource from './resources/ListResource';
+import { FilterOptions } from './resources/FilterOptions';
 import Problem from './Problem';
 import { environment, options } from './types';
 
