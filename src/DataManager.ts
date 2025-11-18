@@ -1,4 +1,5 @@
 import * as validator from 'json-schema-remote';
+import { convertValidationError } from 'ec.errors';
 
 import Core from './Core';
 import { environment, options } from './types';
@@ -12,8 +13,6 @@ import DataManagerResource from './resources/datamanager/DataManagerResource';
 import TemplateList from './resources/datamanager/TemplateList';
 import TemplateResource from './resources/datamanager/TemplateResource';
 import HistoryEvents from './resources/publicAPI/HistoryEvents';
-
-const { convertValidationError } = require('ec.errors')();
 
 validator.setLoggingFunction(() => {});
 

@@ -2,6 +2,7 @@ import * as halfred from 'halfred';
 import * as validator from 'json-schema-remote';
 import * as traverson from 'traverson';
 import * as qs from 'querystring';
+import { convertValidationError } from 'ec.errors';
 
 import LiteEntryResource from './LiteEntryResource';
 import LiteDMAccountResource from './LiteDMAccountResource';
@@ -12,8 +13,6 @@ import DMAssetResource from './DMAssetResource';
 import { FilterOptions } from '../ListResource';
 import Problem from '../../Problem';
 import HistoryEvents from './HistoryEvents';
-
-const { convertValidationError } = require('ec.errors')();
 
 const environmentSymbol: any = Symbol.for('environment');
 const resourceSymbol: any = Symbol.for('resource');

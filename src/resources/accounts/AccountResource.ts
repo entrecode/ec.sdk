@@ -2,10 +2,8 @@ import * as ShiroTrie from 'shiro-trie';
 
 import Resource from '../Resource';
 import TokenList from './TokenList';
-import { environment as e } from '../../types';
+import { environment as e, tokenResponse } from '../../types';
 import TokenResource from './TokenResource';
-// eslint-disable-next-line import/no-cycle
-import { tokenResponse } from '../../Accounts';
 import { post } from '../../helper';
 
 const relationsSymbol: any = Symbol.for('relations');

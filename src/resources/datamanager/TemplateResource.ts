@@ -1,12 +1,11 @@
 import * as halfred from 'halfred';
 import * as validator from 'json-schema-remote';
+import { convertValidationError } from 'ec.errors';
 import Resource from '../Resource';
 import DataManagerResource from './DataManagerResource';
 import { get, post, put, locale } from '../../helper';
 import { environment } from '../../types';
 import Problem from '../../Problem';
-
-const { convertValidationError } = require('ec.errors')();
 
 const environmentSymbol: any = Symbol.for('environment');
 const resourceSymbol: any = Symbol.for('resource');

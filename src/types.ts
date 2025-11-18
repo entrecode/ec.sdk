@@ -51,3 +51,13 @@ export type environment = 'live' | 'stage' | 'nightly' | 'develop';
  * @property {boolean} ecUser True if the user is a ecUser. PublicAPI API Connectors will share across all shortIDs.
  */
 export type options = { environment?: environment; noCookie?: boolean; cookieModifier?: string; ecUser?: boolean };
+
+/**
+ * Token response from account/auth endpoints
+ */
+export type tokenResponse = {
+  token: string;
+  accountID: string;
+  iat: number;
+  exp: number;
+};

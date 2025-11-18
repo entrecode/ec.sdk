@@ -1,5 +1,6 @@
 import * as superagent from 'superagent';
 import * as validator from 'json-schema-remote';
+import { newError } from 'ec.errors';
 
 import { EventEmitterFactory } from './EventEmitter';
 import Problem from './Problem';
@@ -8,9 +9,7 @@ import { FilterOptions } from './resources/FilterOptions';
 
 import { environment } from './types';
 
-const { newError } = require('ec.errors')();
-
-const packageJson: any = require('../package.json');
+import packageJson from '../package.json';
 
 const historyMap = new Map();
 

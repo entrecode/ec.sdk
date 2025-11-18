@@ -8,7 +8,9 @@
     "moduleResolution": "node",
     "removeComments": false,
     "strict": true,
-    "noImplicitAny": false
+    "noImplicitAny": false,
+    "resolveJsonModule": true,
+    "esModuleInterop": true
   },
   "include": [
     "src/**/*.ts"

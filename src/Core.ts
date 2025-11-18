@@ -5,8 +5,7 @@ import * as halfred from 'halfred';
 import * as validator from 'json-schema-remote';
 import * as shortID from 'shortid';
 import * as jwtDecode from 'jwt-decode';
-
-const { convertValidationError } = require('ec.errors')();
+import { convertValidationError } from 'ec.errors';
 
 import { EventEmitterFactory } from './EventEmitter';
 import TokenStoreFactory from './TokenStore';
