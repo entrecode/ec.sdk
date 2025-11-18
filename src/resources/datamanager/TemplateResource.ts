@@ -1,5 +1,6 @@
 import * as halfred from 'halfred';
 import * as validator from 'json-schema-remote';
+import * as traverson from 'traverson';
 import Resource from '../Resource';
 import DataManagerResource from './DataManagerResource';
 import { get, post, put, locale } from '../../helper';
@@ -96,7 +97,7 @@ class TemplateResource extends Resource {
   resolve(): Promise<TemplateResource> {
     return Promise.resolve()
       .then(() => {
-        const request = this.newRequest().follow('self');
+        const request = traverson.from(this.getLink('self').href).jsonHal();
         return get(this[environmentSymbol], request);
       })
       .then(([res, traversal]) => {

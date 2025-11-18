@@ -189,7 +189,7 @@ class Resource {
    * @returns {Promise<undefined>} Promise will resolve on success and reject otherwise.
    */
   del(): Promise<void> {
-    return del(this[environmentSymbol], this.newRequest().follow('self'));
+    return del(this[environmentSymbol], traverson.from(this.getLink('self').href).jsonHal());
   }
 
   /**
@@ -342,7 +342,7 @@ class Resource {
    * @returns {Promise<Resource>} this resource
    */
   resolve(): Promise<Resource> {
-    return get(this[environmentSymbol], this.newRequest().follow('self')).then(([res, traversal]) => {
+    return get(this[environmentSymbol], traverson.from(this.getLink('self').href).jsonHal()).then(([res, traversal]) => {
       this[resourceSymbol] = halfred.parse(res);
       this[originalSymbol] = JSON.parse(JSON.stringify(res));
       this[traversalSymbol] = traversal;
@@ -529,7 +529,7 @@ class Resource {
       })
       .then(() => {
         const out = this.toOriginal({ saving: true });
-        const request = this.newRequest().follow('self');
+        const request = traverson.from(this.getLink('self').href).jsonHal();
 
         if (safePut) {
           if (!('_modified' in out)) {
@@ -542,8 +542,6 @@ class Resource {
               'If-Unmodified-Since': date.toUTCString(),
             },
           });
-        } else if (!safePut && request.requestOptions?.headers?.['If-Unmodified-Since']) {
-          delete request.requestOptions.headers['If-Unmodified-Since'];
         }
 
         return put(this[environmentSymbol], request, out);

@@ -795,14 +795,14 @@ class EntryResource extends LiteEntryResource {
     return Promise.resolve()
       .then(() => {
         if (!levels) {
-          return get(this[environmentSymbol], this.newRequest().follow('self'));
+          return get(this[environmentSymbol], traverson.from(this.getLink('self').href).jsonHal());
         }
 
         if (levels < 1 || levels > 5) {
           throw new Error('levels must be between 1 and 5');
         }
 
-        return getUrl(this[environmentSymbol], this.newRequest().follow('self')).then((url) => {
+        return getUrl(this[environmentSymbol], traverson.from(this.getLink('self').href).jsonHal()).then((url) => {
           const queryStrings = qs.parse(url.substr(url.indexOf('?') + 1));
           Object.assign(queryStrings, { _levels: levels });
           return get(
