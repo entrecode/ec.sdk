@@ -54,8 +54,10 @@ class Resource {
     } else {
       r = resource;
     }
-    this[originalSymbol] = JSON.parse(JSON.stringify(r));
-    this[resourceSymbol] = halfred.parse(JSON.parse(JSON.stringify(r)));
+    // Optimize: Do deep clone only once instead of twice
+    const clonedResource = JSON.parse(JSON.stringify(r));
+    this[originalSymbol] = JSON.parse(JSON.stringify(clonedResource));
+    this[resourceSymbol] = halfred.parse(clonedResource);
 
     if (typeof this[environmentSymbol] !== 'string') {
       throw new Error('environment must be a string');
@@ -71,13 +73,27 @@ class Resource {
       isDirty: {
         enumerable: false,
         get: () => {
+          // Optimize: Create filtered objects without mutation instead of deleting properties
           const original = this[originalSymbol];
           const current = this.toOriginal();
-          delete original._links;
-          delete current._links;
-          delete original._embedded;
-          delete current._embedded;
-          return !equal(current, original);
+          
+          // Create shallow copies excluding _links and _embedded
+          const filteredOriginal = {};
+          const filteredCurrent = {};
+          
+          for (const key in original) {
+            if (key !== '_links' && key !== '_embedded') {
+              filteredOriginal[key] = original[key];
+            }
+          }
+          
+          for (const key in current) {
+            if (key !== '_links' && key !== '_embedded') {
+              filteredCurrent[key] = current[key];
+            }
+          }
+          
+          return !equal(filteredCurrent, filteredOriginal);
         },
       },
     });
@@ -93,12 +109,13 @@ class Resource {
    */
   getAvailableRelations(): any {
     const out = {};
-    Object.keys(this[relationsSymbol]).forEach((rel) => {
+    // Optimize: Use for...in loop instead of forEach for better performance
+    for (const rel in this[relationsSymbol]) {
       out[rel] = {
         id: this[relationsSymbol][rel].id,
         createable: !!this[relationsSymbol][rel].createRelation,
       };
-    });
+    }
     return out;
   }
 
@@ -227,9 +244,10 @@ class Resource {
       return Object.assign({}, this[resourceSymbol]);
     }
     const out = {};
-    properties.forEach((property) => {
+    // Optimize: Use for...of loop instead of forEach for better performance
+    for (const property of properties) {
       out[property] = this.getProperty(property);
-    });
+    }
     return out;
   }
 
@@ -593,11 +611,12 @@ class Resource {
   toOriginal(_options?: { saving: boolean }): any {
     const out = {};
 
-    Object.keys(this[originalSymbol]).forEach((key) => {
+    // Optimize: Use for...in loop instead of forEach for better performance
+    for (const key in this[originalSymbol]) {
       if (this[resourceSymbol][key] !== undefined) {
         out[key] = this[resourceSymbol][key];
       }
-    });
+    }
 
     return out;
   }

@@ -12,7 +12,7 @@
     "release": "./release.sh $3",
     "build": "npm run buildNode && npm run buildBrowser",
     "buildNode": "tsc",
-    "buildBrowser": "cp lib/index.js lib/browser.js && browserify lib/browser.js -o dist/ec.sdk.js -s ec --global-transform [ babelify --presets [ es2015 ] ] && uglifyjs dist/ec.sdk.js --compress --mangle  -o dist/ec.sdk.min.js",
+    "buildBrowser": "cp lib/index.js lib/browser.js && browserify lib/browser.js -o dist/ec.sdk.js -s ec --global-transform [ babelify --presets [ es2015 ] ] && terser dist/ec.sdk.js --compress --mangle --module -o dist/ec.sdk.min.js",
     "changelog": "conventional-changelog -i CHANGELOG.md -s",
     "coveralls": "npm run buildNode && istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R dot --exit --recursive && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js",
     "coverage": "npm run buildNode && istanbul cover ./node_modules/mocha/bin/_mocha -- --exit -R dot --recursive && open ./coverage/lcov-report/index.html",
@@ -68,7 +68,9 @@
     "nock": "^12.0.3",
     "sinon": "^9.0.2",
     "sinon-chai": "^3.7.0",
+    "terser": "^5.44.1",
     "ts-loader": "^7.0.5",
+    "tslib": "^2.8.1",
     "typescript": "^3.9.5",
     "uglify-js": "^3.15.4",
     "webpack": "^4.43.0"
