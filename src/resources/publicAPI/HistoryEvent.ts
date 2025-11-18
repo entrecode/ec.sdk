@@ -1,4 +1,4 @@
-import { environment } from '../../Core';
+import { environment } from '../../types';
 
 const environmentSymbol: any = Symbol.for('environment');
 const resourceSymbol: any = Symbol.for('resource');

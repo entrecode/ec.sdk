@@ -6,7 +6,7 @@ import Problem from './Problem';
 import TokenStoreFactory, { TokenStore } from './TokenStore';
 import { FilterOptions } from './resources/ListResource';
 
-import { environment } from './Core';
+import { environment } from './types';
 
 const { newError } = require('ec.errors')();
 

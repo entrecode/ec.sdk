@@ -1,5 +1,5 @@
 import Resource from '../Resource';
-import { environment } from '../../Core';
+import { environment } from '../../types';
 
 interface FederatedOIDC {
   /** The URI to the provider's OpenID Connect configuration (/.well-known/openid-configuration) */

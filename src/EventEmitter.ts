@@ -1,4 +1,4 @@
-import { environment } from './Core';
+import { environment } from './types';
 
 /**
  * Login event is emitted when a login succeeds with {@link Session#login}, {@link PublicAPI#login},

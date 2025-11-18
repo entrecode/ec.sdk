@@ -6,7 +6,8 @@ import * as shortID from 'shortid';
 import * as superagent from 'superagent';
 import * as validate from 'validator';
 
-import Core, { environment, options } from './Core';
+import Core from './Core';
+import { environment, options } from './types';
 import Problem from './Problem';
 import {
   del,

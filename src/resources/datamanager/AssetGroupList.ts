@@ -1,5 +1,5 @@
 import ListResource from '../ListResource';
-import { environment } from '../../Core';
+import { environment } from '../../types';
 import AssetGroupResource from './AssetGroupResource';
 
 /**

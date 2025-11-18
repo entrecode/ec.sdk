@@ -7,7 +7,7 @@ import LiteEntryResource from './LiteEntryResource';
 import LiteDMAccountResource from './LiteDMAccountResource';
 import LiteRoleResource from './LiteRoleResource';
 import { get, getSchema, optionsToQuery, locale, getUrl } from '../../helper';
-import { environment } from '../../Core';
+import { environment } from '../../types';
 import DMAssetResource from './DMAssetResource';
 import { FilterOptions } from '../ListResource';
 import Problem from '../../Problem';

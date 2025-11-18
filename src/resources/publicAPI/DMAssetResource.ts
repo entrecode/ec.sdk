@@ -1,5 +1,5 @@
 import Resource from '../Resource';
-import { environment } from '../../Core';
+import { environment } from '../../types';
 import { get } from '../../helper';
 
 const environmentSymbol: any = Symbol.for('environment');

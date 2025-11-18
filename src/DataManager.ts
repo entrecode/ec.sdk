@@ -1,6 +1,7 @@
 import * as validator from 'json-schema-remote';
 
-import Core, { environment, options } from './Core';
+import Core from './Core';
+import { environment, options } from './types';
 import Problem from './Problem';
 import { get, locale, optionsToQuery, post } from './helper';
 import { FilterOptions } from './resources/ListResource';

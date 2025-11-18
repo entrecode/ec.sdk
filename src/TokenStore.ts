@@ -1,6 +1,6 @@
 import * as cookie from 'browser-cookies'; // js-cookie
 import * as jwtDecode from 'jwt-decode';
-import { environment } from './Core';
+import { environment } from './types';
 
 /**
  * Map for storing all tokenStores.

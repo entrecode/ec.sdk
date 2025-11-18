@@ -1,4 +1,4 @@
-import { environment } from '../../Core';
+import { environment } from '../../types';
 import PublicAPI from '../../PublicAPI';
 import { get, optionsToQuery } from '../../helper';
 import { FilterOptions } from '../ListResource';

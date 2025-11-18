@@ -1,6 +1,6 @@
 import ListResource from '../ListResource';
 import TokenResource from './TokenResource';
-import { environment } from '../../Core';
+import { environment } from '../../types';
 
 /**
  * Token list class

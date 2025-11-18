@@ -1,6 +1,6 @@
 import ListResource from '../ListResource';
 import BuildResource from './BuildResource';
-import { environment } from '../../Core';
+import { environment } from '../../types';
 
 /**
  * CodeSource list class

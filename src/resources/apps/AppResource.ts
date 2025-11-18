@@ -8,7 +8,7 @@ import DataSourceResource from './DataSourceResource';
 import TargetList from './TargetList';
 import TargetResource from './TargetResource';
 import { FilterOptions } from '../ListResource';
-import { environment } from '../../Core';
+import { environment } from '../../types';
 
 const relationsSymbol: any = Symbol.for('relations');
 

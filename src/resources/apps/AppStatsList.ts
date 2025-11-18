@@ -1,6 +1,6 @@
 import ListResource from '../ListResource';
 import AppStatsResource from './AppStatsResource';
-import { environment } from '../../Core';
+import { environment } from '../../types';
 
 /**
  * AppStats list class

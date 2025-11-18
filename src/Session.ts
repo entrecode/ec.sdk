@@ -1,4 +1,5 @@
-import Core, { environment, options } from './Core';
+import Core from './Core';
+import { environment, options } from './types';
 import { get, post } from './helper';
 import AccountResource from './resources/accounts/AccountResource';
 

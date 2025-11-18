@@ -3,7 +3,7 @@ import * as querystring from 'querystring';
 import EntryResource, { createEntry } from './EntryResource';
 import Resource from '../Resource';
 import { superagentGet } from '../../helper';
-import { environment } from '../../Core';
+import { environment } from '../../types';
 
 const environmentSymbol: any = Symbol.for('environment');
 

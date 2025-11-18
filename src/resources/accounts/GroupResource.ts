@@ -1,7 +1,7 @@
 import * as validate from 'validator';
 
 import Resource from '../Resource';
-import { environment } from '../../Core';
+import { environment } from '../../types';
 
 const resourceSymbol: any = Symbol.for('resource');
 

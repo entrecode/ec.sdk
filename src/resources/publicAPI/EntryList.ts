@@ -3,7 +3,7 @@ import * as halfred from 'halfred';
 import EntryResource from './EntryResource';
 import ListResource from '../ListResource';
 import { getSchema } from '../../helper';
-import { environment } from '../../Core';
+import { environment } from '../../types';
 
 const resourceSymbol: any = Symbol.for('resource');
 const itemSchemaSymbol: any = Symbol.for('itemSchema');
