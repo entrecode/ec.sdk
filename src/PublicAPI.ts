@@ -1175,7 +1175,7 @@ export default class PublicAPI extends Core {
         }
 
         return this.dispatch(() =>
-          get(this[environmentSymbol], this.newRequest().follow('self')).then(([res, traversal]) => {
+          get(this[environmentSymbol], this.newRequest()).then(([res, traversal]) => {
             this[resourceSymbol] = halfred.parse(res);
             this[traversalSymbol] = traversal;
 
@@ -1634,7 +1634,7 @@ export default class PublicAPI extends Core {
     }
 
     return this.dispatch(() =>
-      get(this[environmentSymbol], this.newRequest().follow('self')).then(([res, traversal]) => {
+      get(this[environmentSymbol], this.newRequest()).then(([res, traversal]) => {
         this[resourceSymbol] = halfred.parse(res);
         this[traversalSymbol] = traversal;
 

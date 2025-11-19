@@ -189,7 +189,7 @@ class Resource {
    * @returns {Promise<undefined>} Promise will resolve on success and reject otherwise.
    */
   del(): Promise<void> {
-    return del(this[environmentSymbol], this.newRequest().follow('self'));
+    return del(this[environmentSymbol], this.newRequest());
   }
 
   /**
@@ -342,7 +342,7 @@ class Resource {
    * @returns {Promise<Resource>} this resource
    */
   resolve(): Promise<Resource> {
-    return get(this[environmentSymbol], this.newRequest().follow('self')).then(([res, traversal]) => {
+    return get(this[environmentSymbol], this.newRequest()).then(([res, traversal]) => {
       this[resourceSymbol] = halfred.parse(res);
       this[originalSymbol] = JSON.parse(JSON.stringify(res));
       this[traversalSymbol] = traversal;
@@ -529,7 +529,7 @@ class Resource {
       })
       .then(() => {
         const out = this.toOriginal({ saving: true });
-        const request = this.newRequest().follow('self');
+        const request = this.newRequest();
 
         if (safePut) {
           if (!('_modified' in out)) {
