@@ -1,4 +1,4 @@
-import { getLocalized } from 'ec.errors';
+import { getLocalised } from 'ec.errors';
 
 interface Problem extends Error {
   status: number;
