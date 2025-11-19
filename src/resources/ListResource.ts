@@ -1,7 +1,5 @@
 import Resource from './Resource';
 import { retryReq } from '../helper';
-import { FilterOptions, Filter, FilterType } from './FilterOptions';
-
 const environmentSymbol: any = Symbol.for('environment');
 const resourceSymbol: any = Symbol.for('resource');
 const itemSchemaSymbol: any = Symbol.for('itemSchema');
