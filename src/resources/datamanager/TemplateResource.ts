@@ -95,7 +95,7 @@ class TemplateResource extends Resource {
   resolve(): Promise<TemplateResource> {
     return Promise.resolve()
       .then(() => {
-        const request = this.newRequest().follow('self');
+        const request = this.newRequest();
         return get(this[environmentSymbol], request);
       })
       .then(([res, traversal]) => {
