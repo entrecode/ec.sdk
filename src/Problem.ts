@@ -40,7 +40,7 @@ class Problem extends Error {
     }
 
     if (locale !== 'en') {
-      const localised = getLocalized(Object.assign({}, this), locale);
+      const localised = getLocalised(Object.assign({}, this), locale);
       this.message = localised.message;
       this.title = localised.message;
     }
