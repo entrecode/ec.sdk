@@ -54,10 +54,9 @@ class Resource {
     } else {
       r = resource;
     }
-    // Optimize: Do deep clone only once instead of twice
-    const clonedResource = JSON.parse(JSON.stringify(r));
-    this[originalSymbol] = clonedResource;
-    this[resourceSymbol] = halfred.parse(JSON.parse(JSON.stringify(clonedResource)));
+    // Clone once to preserve original state for isDirty comparison
+    this[originalSymbol] = JSON.parse(JSON.stringify(r));
+    this[resourceSymbol] = halfred.parse(r);
 
     if (typeof this[environmentSymbol] !== 'string') {
       throw new Error('environment must be a string');
