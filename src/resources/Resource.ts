@@ -56,8 +56,8 @@ class Resource {
     }
     // Optimize: Do deep clone only once instead of twice
     const clonedResource = JSON.parse(JSON.stringify(r));
-    this[originalSymbol] = JSON.parse(JSON.stringify(clonedResource));
-    this[resourceSymbol] = halfred.parse(clonedResource);
+    this[originalSymbol] = clonedResource;
+    this[resourceSymbol] = halfred.parse(JSON.parse(JSON.stringify(clonedResource)));
 
     if (typeof this[environmentSymbol] !== 'string') {
       throw new Error('environment must be a string');
@@ -81,13 +81,13 @@ class Resource {
           const filteredOriginal = {};
           const filteredCurrent = {};
           
-          for (const key in original) {
+          for (const key of Object.keys(original)) {
             if (key !== '_links' && key !== '_embedded') {
               filteredOriginal[key] = original[key];
             }
           }
           
-          for (const key in current) {
+          for (const key of Object.keys(current)) {
             if (key !== '_links' && key !== '_embedded') {
               filteredCurrent[key] = current[key];
             }
@@ -109,8 +109,8 @@ class Resource {
    */
   getAvailableRelations(): any {
     const out = {};
-    // Optimize: Use for...in loop instead of forEach for better performance
-    for (const rel in this[relationsSymbol]) {
+    // Optimize: Use for...of loop instead of forEach for better performance
+    for (const rel of Object.keys(this[relationsSymbol])) {
       out[rel] = {
         id: this[relationsSymbol][rel].id,
         createable: !!this[relationsSymbol][rel].createRelation,
@@ -611,8 +611,8 @@ class Resource {
   toOriginal(_options?: { saving: boolean }): any {
     const out = {};
 
-    // Optimize: Use for...in loop instead of forEach for better performance
-    for (const key in this[originalSymbol]) {
+    // Optimize: Use for...of loop instead of forEach for better performance
+    for (const key of Object.keys(this[originalSymbol])) {
       if (this[resourceSymbol][key] !== undefined) {
         out[key] = this[resourceSymbol][key];
       }

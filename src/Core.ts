@@ -306,8 +306,8 @@ export default class Core {
    */
   getAvailableRelations(): any {
     const out = {};
-    // Optimize: Use for...in loop instead of forEach for better performance
-    for (const rel in this[relationsSymbol]) {
+    // Optimize: Use for...of loop instead of forEach for better performance
+    for (const rel of Object.keys(this[relationsSymbol])) {
       out[rel] = {
         id: this[relationsSymbol][rel].id,
         createable: !!this[relationsSymbol][rel].createRelation,

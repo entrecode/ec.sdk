@@ -595,8 +595,8 @@ export function optionsToQuery(
       throw new Error(`filterOptions must be an object, is: ${typeof options}`);
     }
 
-    // Optimize: Use for...in loop instead of forEach for better performance
-    for (const key in options) {
+    // Optimize: Use for...of loop instead of forEach for better performance
+    for (const key of Object.keys(options)) {
       const value = options[key];
       if (value !== undefined) {
         if (['size', 'page', '_count'].indexOf(key) !== -1) {
@@ -652,8 +652,8 @@ export function optionsToQuery(
         } else if (value instanceof Date) {
           out[key] = (<Date>value).toISOString();
         } else if (typeof value === 'object') {
-          // Optimize: Use for...in loop instead of forEach for better performance
-          for (const searchKey in value) {
+          // Optimize: Use for...of loop instead of forEach for better performance
+          for (const searchKey of Object.keys(value)) {
             switch (searchKey) {
               case 'exact':
               case 'search':
@@ -735,8 +735,8 @@ export function optionsToQuery(
       // sometimes "missing" means the template parameter is lower cased. try it that way
       try {
         const lowerCaseOptions = {};
-        // Optimize: Use for...in loop instead of forEach for better performance
-        for (const key in options) {
+        // Optimize: Use for...of loop instead of forEach for better performance
+        for (const key of Object.keys(options)) {
           if (missings.indexOf(key) !== -1) {
             lowerCaseOptions[key.toLocaleLowerCase()] = options[key];
           } else {
