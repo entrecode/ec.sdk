@@ -661,7 +661,8 @@ export default class Core {
   /**
    * If you have an existing access token you can use it by calling this function. All
    * subsequent requests will use the provided {@link https://jwt.io/ Json Web Token} with an
-   * Authorization header.
+   * Authorization header. If refreshToken is provided, it will be stored as well. If no
+   * refreshToken is provided, the existing refresh token will be deleted.
    *
    * @example
    * return accounts.me(); // will result in error
@@ -681,6 +682,8 @@ export default class Core {
 
     if (refreshToken) {
       this.setRefreshToken(refreshToken);
+    } else {
+      this.deleteRefreshToken();
     }
 
     return this;
@@ -705,6 +708,17 @@ export default class Core {
     }
 
     this[tokenStoreSymbol].setRefreshToken(token);
+    return this;
+  }
+
+  /**
+   * Deletes any refresh token stored in the token store.
+   * After calling this method, no refresh token will be used for future token refresh attempts.
+   *
+   * @returns {Core} this for chainability
+   */
+  deleteRefreshToken(): Core {
+    this[tokenStoreSymbol].deleteRefreshToken();
     return this;
   }
 

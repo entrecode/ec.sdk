@@ -928,7 +928,7 @@ export default class PublicAPI extends Core {
    * .then(entry => {
    *   return show(entry);
    * });
-   * 
+   *
    * You can use filters as usual. Example with universal _search:
    * return api.entryList('myModel', { _search: 'my search term' });
    * .then(list => {
@@ -1480,7 +1480,7 @@ export default class PublicAPI extends Core {
           return this.account;
         }
 
-        throw newError(402);
+        throw newError(402, 'No account found in root resource');
       });
     });
   }
@@ -1634,58 +1634,60 @@ export default class PublicAPI extends Core {
     }
 
     return this.dispatch(() =>
-      get(this[environmentSymbol], this.newRequest()).then(([res, traversal]) => {
-        this[resourceSymbol] = halfred.parse(res);
-        this[traversalSymbol] = traversal;
+      get(this[environmentSymbol], reload ? this.newRequest().follow('self') : this.newRequest()).then(
+        ([res, traversal]) => {
+          this[resourceSymbol] = halfred.parse(res);
+          this[traversalSymbol] = traversal;
 
-        const assetGroups = Object.keys(this[resourceSymbol].allLinks()).filter(
-          (x) => x.indexOf('ec:dm-assets/') !== -1,
-        );
+          const assetGroups = Object.keys(this[resourceSymbol].allLinks()).filter(
+            (x) => x.indexOf('ec:dm-assets/') !== -1,
+          );
 
-        const relations = {
-          tags: {
-            relation: 'ec:api/tags',
-            createRelation: false,
-            createTemplateModifier: '',
-            id: 'tag',
-            ResourceClass: PublicTagResource,
-            ListClass: PublicTagList,
-          },
-          authTokens: {
-            relation: 'ec:dm-authtokens',
-            createRelation: false,
-            createTemplateModifier: '',
-            id: 'hash',
-            ResourceClass: DMAuthTokenResource,
-            ListClass: DMAuthTokenList,
-          },
-        };
-        assetGroups.forEach((relation) => {
-          const relationName = `dmAsset.${relation.substr(13)}`;
-          relations[relationName] = {
-            relation,
-            createRelation: false,
-            createTemplateModifier: '',
-            id: 'assetID',
-            ResourceClass: DMAssetResource,
-            ListClass: DMAssetList,
+          const relations = {
+            tags: {
+              relation: 'ec:api/tags',
+              createRelation: false,
+              createTemplateModifier: '',
+              id: 'tag',
+              ResourceClass: PublicTagResource,
+              ListClass: PublicTagList,
+            },
+            authTokens: {
+              relation: 'ec:dm-authtokens',
+              createRelation: false,
+              createTemplateModifier: '',
+              id: 'hash',
+              ResourceClass: DMAuthTokenResource,
+              ListClass: DMAuthTokenList,
+            },
           };
-        });
-        this[resourceSymbol].models.forEach((model) => {
-          relations[`model.${model.title}`] = {
-            relation: `${this[shortIDSymbol]}:${model.title}`,
-            createRelation: false, // TODO
-            createTemplateModifier: '',
-            id: '_id',
-            resourceFunction: createEntry,
-            listFunction: createList,
-          };
-        });
+          assetGroups.forEach((relation) => {
+            const relationName = `dmAsset.${relation.substr(13)}`;
+            relations[relationName] = {
+              relation,
+              createRelation: false,
+              createTemplateModifier: '',
+              id: 'assetID',
+              ResourceClass: DMAssetResource,
+              ListClass: DMAssetList,
+            };
+          });
+          this[resourceSymbol].models.forEach((model) => {
+            relations[`model.${model.title}`] = {
+              relation: `${this[shortIDSymbol]}:${model.title}`,
+              createRelation: false, // TODO
+              createTemplateModifier: '',
+              id: '_id',
+              resourceFunction: createEntry,
+              listFunction: createList,
+            };
+          });
 
-        this[relationsSymbol] = relations;
+          this[relationsSymbol] = relations;
 
-        return this;
-      }),
+          return this;
+        },
+      ),
     );
   }
 

@@ -25,6 +25,16 @@
       },
       "sourceMaps": true,
       "internalConsoleOptions": "openOnSessionStart"
+    },
+    {
+      "name": "Debug runme.ts",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/ts-node",
+      "program": "${workspaceFolder}/runme.ts",
+      "cwd": "${workspaceRoot}",
+      "sourceMaps": true,
+      "internalConsoleOptions": "openOnSessionStart"
     }
   ]
 }
