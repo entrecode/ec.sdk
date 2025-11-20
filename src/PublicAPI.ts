@@ -634,11 +634,11 @@ export default class PublicAPI extends Core {
         }
         return this.dispatch(() => post(this[environmentSymbol], request, e));
       })
-      .then(([res, traversal]): any => {
+      .then(([res]): any => {
         if (!res || Object.keys(res).length === 0) {
           return undefined;
         }
-        return createEntry(res, this[environmentSymbol], traversal);
+        return createEntry(res, this[environmentSymbol]);
       });
   }
 
