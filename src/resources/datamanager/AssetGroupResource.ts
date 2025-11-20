@@ -1,5 +1,5 @@
 import Resource from '../Resource';
-import { environment } from '../../Core';
+import { environment } from '../../types';
 import DMAssetList from '../publicAPI/DMAssetList';
 import { FilterOptions } from '../ListResource';
 import DMAssetResource from '../publicAPI/DMAssetResource';

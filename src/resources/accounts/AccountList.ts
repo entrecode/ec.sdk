@@ -1,6 +1,6 @@
 import ListResource from '../ListResource';
 import AccountResource from './AccountResource';
-import { environment } from '../../Core';
+import { environment } from '../../types';
 
 /**
  * Account list resource class.

@@ -12,7 +12,7 @@ import CodeSourceResource from './CodeSourceResource';
 import DataSourceResource from './DataSourceResource';
 import TargetList from './TargetList';
 import TargetResource from './TargetResource';
-import { environment } from '../../Core';
+import { environment } from '../../types';
 import { FilterOptions } from '../ListResource';
 
 const resourceSymbol: any = Symbol.for('resource');

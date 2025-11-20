@@ -1,4 +1,4 @@
-const { getLocalised } = require('ec.errors')();
+import { getLocalised } from 'ec.errors';
 
 interface Problem extends Error {
   status: number;

@@ -1,6 +1,5 @@
 import Resource from './Resource';
 import { retryReq } from '../helper';
-
 const environmentSymbol: any = Symbol.for('environment');
 const resourceSymbol: any = Symbol.for('resource');
 const itemSchemaSymbol: any = Symbol.for('itemSchema');
@@ -401,33 +400,10 @@ class ListResource extends Resource {
  * @access private
  */
 
-export type FilterOptions = {
-  size?: number;
-  page?: number;
-  sort?: Array<string>;
-  _levels?: number;
-  _fields?: Array<string>;
-  _search?: string;
-
-  [key: string]: FilterType;
-};
-
-export type Filter = {
-  exact?: string;
-  not?: string;
-  null?: boolean;
-  notNull: boolean;
-  notAny?: Array<string>;
-  search?: string;
-  from?: any;
-  to?: any;
-  any?: Array<string>;
-  all?: Array<string>;
-};
-
 export default ListResource;
 
-export type FilterType = Array<string> | number | string | Filter | object | boolean | undefined;
+// Re-export FilterOptions types for backwards compatibility
+export { FilterOptions, Filter, FilterType } from './FilterOptions';
 
 /**
  * List filter options with pagination, sorting, and {@link filter}. This can be used to apply all

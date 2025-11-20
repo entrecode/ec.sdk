@@ -4,14 +4,13 @@ import * as halfred from 'halfred';
 import * as traverson from 'traverson';
 import * as validator from 'json-schema-remote';
 import * as equal from 'deep-equal';
+import { convertValidationError } from 'ec.errors';
 
-// eslint-disable-next-line import/no-cycle
-import ListResource, { FilterOptions } from './ListResource';
+import type ListResource from './ListResource';
+import { FilterOptions } from './FilterOptions';
 // eslint-disable-next-line import/no-cycle
 import { del, get, optionsToQuery, post, put, locale } from '../helper';
 import Problem from '../Problem';
-
-const { convertValidationError } = require('ec.errors')();
 
 const environmentSymbol: any = Symbol.for('environment');
 const resourceSymbol: any = Symbol.for('resource');

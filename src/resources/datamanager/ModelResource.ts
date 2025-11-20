@@ -1,6 +1,6 @@
 import * as validator from 'json-schema-remote';
 import Resource from '../Resource';
-import { environment } from '../../Core';
+import { environment } from '../../types';
 import { get, del, post, optionsToQuery } from '../../helper';
 import { FilterOptions } from '../ListResource';
 import HistoryEvents from '../publicAPI/HistoryEvents';

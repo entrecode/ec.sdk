@@ -1,4 +1,4 @@
-import { environment } from '../../Core';
+import { environment } from '../../types';
 import HistoryEvent from './HistoryEvent';
 import Resource from '../Resource';
 

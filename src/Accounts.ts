@@ -2,7 +2,8 @@ import AccountList from './resources/accounts/AccountList';
 import AccountResource from './resources/accounts/AccountResource';
 import ClientList from './resources/accounts/ClientList';
 import ClientResource from './resources/accounts/ClientResource';
-import Core, { environment, options } from './Core';
+import Core from './Core';
+import { environment, options, tokenResponse } from './types';
 import InvalidPermissionsResource from './resources/accounts/InvalidPermissionsResource';
 import InviteResource from './resources/accounts/InviteResource';
 import InviteList from './resources/accounts/InviteList';
@@ -511,12 +512,8 @@ export default class Accounts extends Core {
   }
 }
 
-export type tokenResponse = {
-  token: string;
-  accountID: string;
-  iat: number;
-  exp: number;
-};
+// Re-export tokenResponse for backwards compatibility with existing code
+export type { tokenResponse };
 
 export type inviteCreateObject = {
   count: number;

@@ -5,8 +5,10 @@ import * as ShiroTrie from 'shiro-trie';
 import * as shortID from 'shortid';
 import * as superagent from 'superagent';
 import * as validate from 'validator';
+import { convertValidationError, newError } from 'ec.errors';
 
-import Core, { environment, options } from './Core';
+import Core from './Core';
+import { environment, options } from './types';
 import Problem from './Problem';
 import {
   del,
@@ -32,8 +34,6 @@ import EntryResource, { createEntry } from './resources/publicAPI/EntryResource'
 import HistoryEvents from './resources/publicAPI/HistoryEvents';
 import PublicTagList from './resources/publicAPI/PublicTagList';
 import PublicTagResource from './resources/publicAPI/PublicTagResource';
-
-const { convertValidationError, newError } = require('ec.errors')();
 
 const resourceSymbol: any = Symbol.for('resource');
 const tokenStoreSymbol: any = Symbol.for('tokenStore');

@@ -1,6 +1,6 @@
 import ListResource from '../ListResource';
 import GroupResource from './GroupResource';
-import { environment } from '../../Core';
+import { environment } from '../../types';
 
 /**
  * GroupList list class

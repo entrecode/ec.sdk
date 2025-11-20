@@ -1,6 +1,6 @@
 import ListResource from '../ListResource';
 import InviteResource from './InviteResource';
-import { environment } from '../../Core';
+import { environment } from '../../types';
 
 /**
  * Invite list class

@@ -1,5 +1,5 @@
 import Resource from '../Resource';
-import { environment } from '../../Core';
+import { environment } from '../../types';
 
 export type clientConfig = {
   tokenMethod: 'query' | 'cookie' | 'body';

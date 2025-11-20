@@ -1,6 +1,6 @@
 import DataManagerResource from './DataManagerResource';
 import ListResource from '../ListResource';
-import { environment } from '../../Core';
+import { environment } from '../../types';
 
 /**
  * DataManager list resource class.

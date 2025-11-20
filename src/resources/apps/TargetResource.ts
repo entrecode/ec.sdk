@@ -1,5 +1,5 @@
 import Resource from '../Resource';
-import { environment } from '../../Core';
+import { environment } from '../../types';
 
 interface TargetResource {
   config: any;

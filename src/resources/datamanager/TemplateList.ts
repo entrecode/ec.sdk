@@ -1,6 +1,6 @@
 import TemplateResource from './TemplateResource';
 import ListResource from '../ListResource';
-import { environment } from '../../Core';
+import { environment } from '../../types';
 
 /**
  * Template list class

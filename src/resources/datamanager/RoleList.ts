@@ -1,6 +1,6 @@
 import ListResource from '../ListResource';
 import RoleResource from './RoleResource';
-import { environment } from '../../Core';
+import { environment } from '../../types';
 
 /**
  * Client list class

@@ -1,7 +1,7 @@
 import * as querystring from 'querystring';
 
 import Resource from '../Resource';
-import { environment } from '../../Core';
+import { environment } from '../../types';
 import RoleResource from './RoleResource';
 import LiteRoleResource from '../publicAPI/LiteRoleResource';
 import { FilterOptions } from '../ListResource';

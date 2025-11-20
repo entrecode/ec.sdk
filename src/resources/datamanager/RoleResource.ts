@@ -1,5 +1,5 @@
 import Resource from '../Resource';
-import { environment } from '../../Core';
+import { environment } from '../../types';
 import DMAccountResource from './DMAccountResource';
 import DMAccountList from './DMAccountList';
 import LiteDMAccountResource from '../publicAPI/LiteDMAccountResource';

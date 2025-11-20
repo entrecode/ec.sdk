@@ -1,6 +1,6 @@
 import PlatformResource from './PlatformResource';
 import ListResource from '../ListResource';
-import { environment } from '../../Core';
+import { environment } from '../../types';
 
 /**
  * Platform list class

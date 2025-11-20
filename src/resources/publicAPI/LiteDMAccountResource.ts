@@ -3,7 +3,7 @@ import * as traverson from 'traverson';
 
 import Resource from '../Resource';
 import { get } from '../../helper';
-import { environment } from '../../Core';
+import { environment } from '../../types';
 import DMAccountResource from '../datamanager/DMAccountResource';
 
 const environmentSymbol: any = Symbol.for('environment');
