@@ -15,6 +15,7 @@ import HistoryEvents from './HistoryEvents';
 
 const { convertValidationError } = require('ec.errors')();
 
+const traversalSymbol: any = Symbol.for('traversal');
 const environmentSymbol: any = Symbol.for('environment');
 const resourceSymbol: any = Symbol.for('resource');
 
@@ -811,7 +812,14 @@ class EntryResource extends LiteEntryResource {
           );
         });
       })
-      .then(([res, traversal]) => createEntry(res, this[environmentSymbol], traversal));
+      .then(async ([res, traversal]) => {
+        const schema = await loadSchemaForResource(res);
+        this[schemaSymbol] = schema;
+        this[resourceSymbol] = halfred.parse(res);
+        this[traversalSymbol] = traversal;
+        return this;
+        // return createEntry(res, this[environmentSymbol], traversal);
+      });
   }
 }
 
