@@ -1,6 +1,6 @@
 {
   "name": "ec.sdk",
-  "version": "0.35.0-beta.0",
+  "version": "0.35.0-beta.3",
   "description": "SDK for ec.api",
   "repository": {
     "url": "git+https://github.com/entrecode/ec.sdk.git"
