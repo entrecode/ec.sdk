@@ -22,6 +22,7 @@ const eventsSymbol: any = Symbol.for('events');
 const environmentSymbol: any = Symbol.for('environment');
 const relationsSymbol: any = Symbol.for('relations');
 const cookieModifierSymbol: any = Symbol.for('cookieModifier');
+const initPromiseSymbol: any = Symbol.for('initPromise');
 
 traverson['registerMediaType'](HalAdapter.mediaType, HalAdapter);
 
@@ -282,14 +283,30 @@ export default class Core {
    */
   follow(link: string): Promise<any> {
     return Promise.resolve().then(() => {
+      // If the resource and traversal are already set, return the request builder.
+      // When the cached result does not contain the link, it will be reloaded below.
       if (this[resourceSymbol] && this[traversalSymbol] && this.getLink(link) !== null) {
         return this.newRequest().follow(link);
       }
 
-      return get(this[environmentSymbol], this.newRequest().follow('self')).then(([res, traversal]) => {
-        this[resourceSymbol] = halfred.parse(res);
-        this[traversalSymbol] = traversal;
+      // Check if there's already a pending initialization promise
+      if (!this[initPromiseSymbol]) {
+        // Create and cache the initialization promise
+        this[initPromiseSymbol] = get(this[environmentSymbol], this.newRequest())
+          .then(([res, traversal]) => {
+            this[resourceSymbol] = halfred.parse(res);
+            this[traversalSymbol] = traversal;
+            // Clear the cached promise once resolved
+            this[initPromiseSymbol] = null;
+          })
+          .catch((err) => {
+            // Clear the cached promise on error so subsequent calls can retry
+            this[initPromiseSymbol] = null;
+            throw err;
+          });
+      }
 
+      return this[initPromiseSymbol].then(() => {
         if (this[resourceSymbol].link(link) === null) {
           throw new Error(`Could not follow ${link}. Link not present in root response.`);
         }
@@ -306,12 +323,13 @@ export default class Core {
    */
   getAvailableRelations(): any {
     const out = {};
-    Object.keys(this[relationsSymbol]).forEach((rel) => {
+    // Optimize: Use for...of loop instead of forEach for better performance
+    for (const rel of Object.keys(this[relationsSymbol])) {
       out[rel] = {
         id: this[relationsSymbol][rel].id,
         createable: !!this[relationsSymbol][rel].createRelation,
       };
-    });
+    }
     return out;
   }
 
@@ -643,7 +661,8 @@ export default class Core {
   /**
    * If you have an existing access token you can use it by calling this function. All
    * subsequent requests will use the provided {@link https://jwt.io/ Json Web Token} with an
-   * Authorization header.
+   * Authorization header. If refreshToken is provided, it will be stored as well. If no
+   * refreshToken is provided, the existing refresh token will be deleted.
    *
    * @example
    * return accounts.me(); // will result in error
@@ -663,6 +682,8 @@ export default class Core {
 
     if (refreshToken) {
       this.setRefreshToken(refreshToken);
+    } else {
+      this.deleteRefreshToken();
     }
 
     return this;
@@ -687,6 +708,17 @@ export default class Core {
     }
 
     this[tokenStoreSymbol].setRefreshToken(token);
+    return this;
+  }
+
+  /**
+   * Deletes any refresh token stored in the token store.
+   * After calling this method, no refresh token will be used for future token refresh attempts.
+   *
+   * @returns {Core} this for chainability
+   */
+  deleteRefreshToken(): Core {
+    this[tokenStoreSymbol].deleteRefreshToken();
     return this;
   }
 

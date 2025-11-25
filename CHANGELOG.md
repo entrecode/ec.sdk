@@ -1,3 +1,21 @@
+## 0.35.0 (2025-11-25)
+
+* Fix code review feedback: correct cloning logic and use Object.keys() for loops ([6233d4e](https://github.com/entrecode/ec.sdk/commit/6233d4e))
+* Initial plan ([2fadc22](https://github.com/entrecode/ec.sdk/commit/2fadc22))
+* Optimize core performance: reduce JSON cloning, optimize loops, add terser ([00ae120](https://github.com/entrecode/ec.sdk/commit/00ae120))
+* release version 0.35.0 ([3d7c447](https://github.com/entrecode/ec.sdk/commit/3d7c447))
+* Remove redundant cloning in Resource constructor - only clone once for originalSymbol ([dfab9ef](https://github.com/entrecode/ec.sdk/commit/dfab9ef))
+* Update terser configuration for better compression ([c2b7fe7](https://github.com/entrecode/ec.sdk/commit/c2b7fe7))
+* chore: update version to 0.35.0-beta.0 and modify repository URL format ([0271eb1](https://github.com/entrecode/ec.sdk/commit/0271eb1))
+* chore: update version to 0.35.0-beta.3 ([2dc55de](https://github.com/entrecode/ec.sdk/commit/2dc55de))
+* chore: update version to 0.35.0-beta.4 ([5a2c9c9](https://github.com/entrecode/ec.sdk/commit/5a2c9c9))
+* feat: cache root response request promise, remove redundant follow('self') calls ([f3b6359](https://github.com/entrecode/ec.sdk/commit/f3b6359))
+* feat: update EntryResource#resolve() to mutate self ([7c829bb](https://github.com/entrecode/ec.sdk/commit/7c829bb))
+* fix: handling of reload for PublicAPI#me() when newly logged in ([7983d58](https://github.com/entrecode/ec.sdk/commit/7983d58))
+* fix: self link traversal in Resources ([fa79be9](https://github.com/entrecode/ec.sdk/commit/fa79be9))
+
+
+
 ## 0.34.0 (2025-10-31)
 
 * release version 0.34.0 ([dccd3c9](https://github.com/entrecode/ec.sdk/commit/dccd3c9))

@@ -15,6 +15,7 @@ import HistoryEvents from './HistoryEvents';
 
 const { convertValidationError } = require('ec.errors')();
 
+const traversalSymbol: any = Symbol.for('traversal');
 const environmentSymbol: any = Symbol.for('environment');
 const resourceSymbol: any = Symbol.for('resource');
 
@@ -795,14 +796,14 @@ class EntryResource extends LiteEntryResource {
     return Promise.resolve()
       .then(() => {
         if (!levels) {
-          return get(this[environmentSymbol], this.newRequest().follow('self'));
+          return get(this[environmentSymbol], this.newRequest());
         }
 
         if (levels < 1 || levels > 5) {
           throw new Error('levels must be between 1 and 5');
         }
 
-        return getUrl(this[environmentSymbol], this.newRequest().follow('self')).then((url) => {
+        return getUrl(this[environmentSymbol], this.newRequest()).then((url) => {
           const queryStrings = qs.parse(url.substr(url.indexOf('?') + 1));
           Object.assign(queryStrings, { _levels: levels });
           return get(
@@ -811,7 +812,14 @@ class EntryResource extends LiteEntryResource {
           );
         });
       })
-      .then(([res, traversal]) => createEntry(res, this[environmentSymbol], traversal));
+      .then(async ([res, traversal]) => {
+        const schema = await loadSchemaForResource(res);
+        this[schemaSymbol] = schema;
+        this[resourceSymbol] = halfred.parse(res);
+        this[traversalSymbol] = traversal;
+        return this;
+        // return createEntry(res, this[environmentSymbol], traversal);
+      });
   }
 }
 
