@@ -410,7 +410,11 @@ export function superagentFormPost(environment: environment, url: string, form: 
     .catch((err) => {
       let problem;
       if (err.status && err.response && 'body' in err.response) {
-        problem = new Problem(err.response.body, locale);
+        const { body } = err.response;
+        // Only create Problem if body is a valid Problem object (has code or status)
+        if (body && typeof body === 'object' && (body.code || body.status)) {
+          problem = new Problem(body, locale);
+        }
       }
       EventEmitterFactory(environment).emit('error', problem || err);
       throw problem || err;
@@ -441,7 +445,11 @@ export function superagentGet(url: string, headers?: any, environment?: environm
     .catch((err) => {
       let problem;
       if (err.status && err.response && 'body' in err.response) {
-        problem = new Problem(err.response.body, locale);
+        const { body } = err.response;
+        // Only create Problem if body is a valid Problem object (has code or status)
+        if (body && typeof body === 'object' && (body.code || body.status)) {
+          problem = new Problem(body, locale);
+        }
       }
       EventEmitterFactory(environment).emit('error', problem || err);
       throw problem || err;
@@ -484,7 +492,11 @@ export function superagentPost(environment: environment, request: any): Promise<
     .catch((err) => {
       let problem;
       if (err.status && err.response && 'body' in err.response) {
-        (problem = new Problem(err.response.body)), locale;
+        const { body } = err.response;
+        // Only create Problem if body is a valid Problem object (has code or status)
+        if (body && typeof body === 'object' && (body.code || body.status)) {
+          problem = new Problem(body, locale);
+        }
       }
       EventEmitterFactory(environment).emit('error', problem || err);
       throw problem || err;
