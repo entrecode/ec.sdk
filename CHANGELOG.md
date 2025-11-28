@@ -1,3 +1,10 @@
+## <small>0.35.1 (2025-11-28)</small>
+
+* release version 0.35.1 ([6be022f](https://github.com/entrecode/ec.sdk/commit/6be022f))
+* refactor: optimize error handling in superagent helper functions ([c4d3c17](https://github.com/entrecode/ec.sdk/commit/c4d3c17))
+
+
+
 ## 0.35.0 (2025-11-25)
 
 * Fix code review feedback: correct cloning logic and use Object.keys() for loops ([6233d4e](https://github.com/entrecode/ec.sdk/commit/6233d4e))
