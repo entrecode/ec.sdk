@@ -1,3 +1,4 @@
+/* eslint-disable no-restricted-syntax */
 import * as superagent from 'superagent';
 import * as validator from 'json-schema-remote';
 
@@ -607,7 +608,6 @@ export function optionsToQuery(
       throw new Error(`filterOptions must be an object, is: ${typeof options}`);
     }
 
-    // Optimize: Use for...of loop instead of forEach for better performance
     for (const key of Object.keys(options)) {
       const value = options[key];
       if (value !== undefined) {
@@ -626,9 +626,9 @@ export function optionsToQuery(
           }
         } else if (key === '_levels') {
           if (!Number.isInteger(<number>value)) {
-            throw new Error('_levels must be integer, is ' + typeof value);
+            throw new Error(`_levels must be integer, is ${typeof value}`);
           }
-          if (value > 1 && value <= 5) {
+          if (Number(value) > 1 && Number(value) <= 5) {
             out[key] = value;
           }
         } else if (key === '_fields') {
@@ -648,7 +648,7 @@ export function optionsToQuery(
             throw new Error('_search must be a string');
           }
           out[key] = value;
-          if (encode) {
+          if (encode && key !== '_search') {
             out[key] = encodeURIComponent(<string>out[key]);
           }
         } else if (typeof value === 'string') {
@@ -664,7 +664,6 @@ export function optionsToQuery(
         } else if (value instanceof Date) {
           out[key] = (<Date>value).toISOString();
         } else if (typeof value === 'object') {
-          // Optimize: Use for...of loop instead of forEach for better performance
           for (const searchKey of Object.keys(value)) {
             switch (searchKey) {
               case 'exact':

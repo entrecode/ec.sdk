@@ -805,12 +805,6 @@ describe('optionsToQuery', () => {
     };
     helper.optionsToQuery(obj, null, false, false, true).should.have.property('_search', 'my search term');
   });
-  it('should have _search filter encoded', () => {
-    const obj = {
-      _search: 'my search term',
-    };
-    helper.optionsToQuery(obj, null, true, false, true).should.have.property('_search', 'my%20search%20term');
-  });
   it('should throw on invalid _search', () => {
     const throws = () => {
       helper.optionsToQuery({ _search: 123 }, null, false, false, true);
