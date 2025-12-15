@@ -1,3 +1,10 @@
+## <small>0.35.3 (2025-12-15)</small>
+
+* release version 0.35.3 ([2a5db55](https://github.com/entrecode/ec.sdk/commit/2a5db55))
+* feat: do not encode _search filter ([889586f](https://github.com/entrecode/ec.sdk/commit/889586f))
+
+
+
 ## <small>0.35.2 (2025-12-15)</small>
 
 * release version 0.35.2 ([1ab157a](https://github.com/entrecode/ec.sdk/commit/1ab157a))
