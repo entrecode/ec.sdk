@@ -1,3 +1,10 @@
+## <small>0.35.2 (2025-12-15)</small>
+
+* release version 0.35.2 ([1ab157a](https://github.com/entrecode/ec.sdk/commit/1ab157a))
+* chore: update npm-publish workflow to use latest actions and Node.js version ([4be869b](https://github.com/entrecode/ec.sdk/commit/4be869b))
+
+
+
 ## <small>0.35.1 (2025-11-28)</small>
 
 * release version 0.35.1 ([6be022f](https://github.com/entrecode/ec.sdk/commit/6be022f))
