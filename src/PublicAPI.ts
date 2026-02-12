@@ -1351,6 +1351,21 @@ export default class PublicAPI extends Core {
   }
 
   /**
+   * Remove an OIDC identity from an account
+   * When an ID token should be removed from an account, this can be used.
+   *
+   * @param {string} accountID The account ID to add the OIDC identity to
+   * @param {string} iss The issuer of the OIDC identity (URI)
+   * @returns {Promise<void>} Promise resolving on success
+   */
+  async removeOIDCIdenitityFromAccount(accountID: string, iss: string) {
+    const request = await this.follow(`${this[shortIDSymbol]}:_auth/api/oidc-identities`);
+    request.withTemplateParameters({ accountID, iss });
+    const [response] = await this.dispatch(() => del(this[environmentSymbol], request));
+    return response;
+  }
+
+  /**
    * Login with email and password. Currently only supports `rest` clientID with body post of
    * credentials and tokenMethod `body`.
    *
