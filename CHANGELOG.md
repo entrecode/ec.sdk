@@ -1,3 +1,10 @@
+## <small>0.35.4 (2026-02-12)</small>
+
+* release version 0.35.4 ([d27ae53](https://github.com/entrecode/ec.sdk/commit/d27ae53))
+* feat: add method to remove OIDC identity from account ([d05a0f3](https://github.com/entrecode/ec.sdk/commit/d05a0f3))
+
+
+
 ## <small>0.35.3 (2025-12-15)</small>
 
 * release version 0.35.3 ([2a5db55](https://github.com/entrecode/ec.sdk/commit/2a5db55))
