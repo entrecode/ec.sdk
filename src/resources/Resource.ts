@@ -75,23 +75,23 @@ class Resource {
           // Optimize: Create filtered objects without mutation instead of deleting properties
           const original = this[originalSymbol];
           const current = this.toOriginal();
-          
+
           // Create shallow copies excluding _links and _embedded
           const filteredOriginal = {};
           const filteredCurrent = {};
-          
+
           for (const key of Object.keys(original)) {
             if (key !== '_links' && key !== '_embedded') {
               filteredOriginal[key] = original[key];
             }
           }
-          
+
           for (const key of Object.keys(current)) {
             if (key !== '_links' && key !== '_embedded') {
               filteredCurrent[key] = current[key];
             }
           }
-          
+
           return !equal(filteredCurrent, filteredOriginal);
         },
       },
@@ -335,6 +335,10 @@ class Resource {
     return this[traversalSymbol].newRequest();
   }
 
+  isContinuation(): boolean {
+    return typeof this[traversalSymbol].continue === 'function';
+  }
+
   /**
    * @private
    *
@@ -359,7 +363,10 @@ class Resource {
    * @returns {Promise<Resource>} this resource
    */
   resolve(): Promise<Resource> {
-    return get(this[environmentSymbol], this.newRequest()).then(([res, traversal]) => {
+    return get(
+      this[environmentSymbol],
+      this.isContinuation() ? this.newRequest().follow('self') : this.newRequest(),
+    ).then(([res, traversal]) => {
       this[resourceSymbol] = halfred.parse(res);
       this[originalSymbol] = JSON.parse(JSON.stringify(res));
       this[traversalSymbol] = traversal;
