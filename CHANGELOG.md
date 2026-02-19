@@ -1,3 +1,10 @@
+## <small>0.35.5 (2026-02-19)</small>
+
+* release version 0.35.5 ([25fae8b](https://github.com/entrecode/ec.sdk/commit/25fae8b))
+* refactor: optimize resource handling and add continuation check ([218c146](https://github.com/entrecode/ec.sdk/commit/218c146))
+
+
+
 ## <small>0.35.4 (2026-02-12)</small>
 
 * release version 0.35.4 ([d27ae53](https://github.com/entrecode/ec.sdk/commit/d27ae53))
