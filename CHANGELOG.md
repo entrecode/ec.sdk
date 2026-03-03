@@ -1,3 +1,10 @@
+## <small>0.35.6 (2026-03-03)</small>
+
+* release version 0.35.6 ([8bebf44](https://github.com/entrecode/ec.sdk/commit/8bebf44))
+* fix: correct spelling of addOIDCIdentityToAccount and update method implementation ([9cf4377](https://github.com/entrecode/ec.sdk/commit/9cf4377))
+
+
+
 ## <small>0.35.5 (2026-02-19)</small>
 
 * release version 0.35.5 ([25fae8b](https://github.com/entrecode/ec.sdk/commit/25fae8b))
