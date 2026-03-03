@@ -1328,8 +1328,44 @@ export default class PublicAPI extends Core {
   }
 
   /**
+   * Add an OIDC identity to an account.
+   *
+   * Assign a third party OIDC ID-Token to a dm account. Either send a resolved ID-Token payload
+   * (`sub`/`iss`[/`iat`/`exp`]) or the authorization_code flow parameters (`code`/`nonce`/`clientID`/`issuer`).
+   * Exactly one of the two variants must be provided.
+   *
+   * @param {string} accountID The account ID to add the OIDC identity to
+   * @param {object} body Either the resolved ID-Token payload (`sub`/`iss`[/`iat`/`exp`]) or the authorization_code
+   *   flow parameters (`code`/`nonce`/`clientID`/`issuer`)
+   * @returns {Promise<void>} Promise resolving on success
+   */
+  async addOIDCIdentityToAccount(
+    accountID: string,
+    body:
+      | {
+          sub: string;
+          iss: string;
+          iat?: string;
+          exp?: string;
+        }
+      | {
+          code: string;
+          nonce: string;
+          clientID: string;
+          issuer: string;
+        },
+  ) {
+    const request = await this.follow(`${this[shortIDSymbol]}:_auth/api/oidc-identities`);
+    request.withTemplateParameters({ accountID });
+    const [response] = await this.dispatch(() => post(this[environmentSymbol], request, body));
+    return response;
+  }
+
+  /**
    * Add an OIDC identity to an account
    * When an ID token from another flow should be added to an account, this can be used.
+   *
+   * @deprecated Use {@link PublicAPI#addOIDCIdentityToAccount} instead.
    *
    * @param {string} accountID The account ID to add the OIDC identity to
    * @param {object} idToken The ID token from the third party
@@ -1344,10 +1380,7 @@ export default class PublicAPI extends Core {
       iat: number;
     },
   ) {
-    const request = await this.follow(`${this[shortIDSymbol]}:_auth/api/oidc-identities`);
-    request.withTemplateParameters({ accountID });
-    const [response] = await this.dispatch(() => post(this[environmentSymbol], request, { idToken }));
-    return response;
+    return this.addOIDCIdentityToAccount(accountID, idToken as any);
   }
 
   /**
