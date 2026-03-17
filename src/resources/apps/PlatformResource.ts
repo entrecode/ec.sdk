@@ -45,11 +45,11 @@ class PlatformResource extends Resource {
    * @access protected
    *
    * @param {object} resource resource loaded from the API.
-   * @param {environment} environment the environment this resource is associated to.
+   * @param {environment} env the environment this resource is associated to.
    * @param {?object} traversal traversal from which traverson can continue.
    */
-  constructor(resource: any, environment: environment, traversal?: any) {
-    super(resource, environment, traversal);
+  constructor(resource: any, env: environment, traversal?: any) {
+    super(resource, env, traversal);
 
     this[relationsSymbol] = {
       build: {
@@ -107,6 +107,7 @@ class PlatformResource extends Resource {
       link = { href: `${baseLink}target?${querystring.stringify({ targetID: target as string })}` };
     }
 
+    // eslint-disable-next-line no-underscore-dangle
     this[resourceSymbol]._links['ec:app/target'].push(link);
   }
 
@@ -151,12 +152,14 @@ class PlatformResource extends Resource {
    * @param {string|BuildResource|BuildList|Array<string|BuildResource>} buildID build which
    *   should be deployed.
    * @param {string} comment Comment to add to new Deployment.
+   * @param {any} outsideConfig Additional config to pass to the deployment.
    * @returns {Promise<DeploymentResource>} The created deployment, probably in running state.
    */
   createDeployment(
     targetIDs: string | TargetResource | TargetList | Array<string | TargetResource>,
     buildID: string | BuildResource | BuildList | Array<string | BuildResource>,
     comment?: string,
+    outsideConfig?: any,
   ): Promise<DeploymentResource> {
     return Promise.resolve()
       .then(() => {
@@ -164,17 +167,21 @@ class PlatformResource extends Resource {
           throw new Error('Must specify build to deploy');
         }
         if (buildID instanceof BuildResource) {
+          // eslint-disable-next-line no-param-reassign
           buildID = (<BuildResource>buildID).buildID;
         }
         if (!targetIDs) {
           throw new Error('Must specify targets to deploy to');
         }
         if (targetIDs instanceof TargetList) {
+          // eslint-disable-next-line no-param-reassign
           targetIDs = (<TargetList>targetIDs).getAllItems();
         } else if (!Array.isArray(targetIDs)) {
+          // eslint-disable-next-line no-param-reassign
           targetIDs = [<string>targetIDs];
         }
 
+        // eslint-disable-next-line no-param-reassign
         targetIDs = (<Array<string | TargetResource>>targetIDs).map((target) =>
           target instanceof TargetResource ? target.targetID : target,
         );
@@ -187,7 +194,7 @@ class PlatformResource extends Resource {
             targetID: (<Array<string>>targetIDs).join(','),
           });
 
-        return post(this[environmentSymbol], request, { comment });
+        return post(this[environmentSymbol], request, { comment, outsideConfig });
       })
       .then(([res, traversal]) => new DeploymentResource(res, this[environmentSymbol], traversal));
   }
@@ -197,10 +204,14 @@ class PlatformResource extends Resource {
    *
    * @param {string|TargetResource|TargetList|Array<string|TargetResource>} targetIDs targets
    *   to which the build should be deployed.
+   * @param {string} comment Comment to add to new Deployment.
+   * @param {any} outsideConfig Additional config to pass to the deployment.
    * @returns {Promise<DeploymentResource>} The created deployment, probably in running state.
    */
   deployLatestBuild(
     targetIDs: string | TargetResource | TargetList | Array<string | TargetResource>,
+    comment?: string,
+    outsideConfig?: any,
   ): Promise<DeploymentResource> {
     return Promise.resolve().then(() => {
       const link = this.getLink('ec:app/build/latest');
@@ -209,7 +220,7 @@ class PlatformResource extends Resource {
       }
       const buildID = querystring.parse(link.href.split('?')[1]).buildID as string;
 
-      return this.createDeployment(targetIDs, buildID);
+      return this.createDeployment(targetIDs, buildID, comment, outsideConfig);
     });
   }
 
@@ -359,6 +370,7 @@ class PlatformResource extends Resource {
   removeTarget(target: string | TargetResource): void {
     const targetID = target instanceof TargetResource ? target.targetID : target;
 
+    // eslint-disable-next-line no-underscore-dangle
     this[resourceSymbol]._links['ec:app/target'] = this[resourceSymbol]
       .linkArray('ec:app/target')
       .filter((link) => link.href.indexOf(targetID) === -1);
@@ -377,6 +389,7 @@ class PlatformResource extends Resource {
       link = { href: `${baseLink}codesource?${querystring.stringify({ codeSourceID: codeSource as string })}` };
     }
 
+    // eslint-disable-next-line no-underscore-dangle
     this[resourceSymbol]._links['ec:app/codesource'] = [link];
 
     return codeSource;
@@ -395,6 +408,7 @@ class PlatformResource extends Resource {
       link = { href: `${baseLink}datasource?${querystring.stringify({ dataSourceID: dataSource as string })}` };
     }
 
+    // eslint-disable-next-line no-underscore-dangle
     this[resourceSymbol]._links['ec:app/datasource'] = [link];
 
     return dataSource;
@@ -416,6 +430,7 @@ class PlatformResource extends Resource {
       return { href: `${baseLink}target?${querystring.stringify({ targetID: target as string })}` };
     });
 
+    // eslint-disable-next-line no-underscore-dangle
     this[resourceSymbol]._links['ec:app/target'] = links;
 
     return targets;

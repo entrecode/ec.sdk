@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset='utf-8'>
-  <title>ec.sdk 0.35.6 | Documentation</title>
+  <title>ec.sdk 0.36.0 | Documentation</title>
   <meta name='description' content='SDK for ec.api'>
   <meta name='viewport' content='width=device-width,initial-scale=1'>
   <link href='assets/bass.css' rel='stylesheet'>
@@ -15,7 +15,7 @@
       <div id='split-left' class='overflow-auto fs0 height-viewport-100'>
         <div class='py1 px2'>
           <h3 class='mb0 no-anchor'>ec.sdk</h3>
-          <div class='mb1'><code>0.35.6</code></div>
+          <div class='mb1'><code>0.36.0</code></div>
           <input
             placeholder='Filter'
             id='filter-input'
@@ -22767,7 +22767,7 @@ by the options parameter.</p>
 
   <p>PlatformResource class</p>
 
-    <div class='pre p1 fill-light mt0'>new PlatformResource(resource: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, environment: <a href="#environment">environment</a>, traversal: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</div>
+    <div class='pre p1 fill-light mt0'>new PlatformResource(resource: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, env: <a href="#environment">environment</a>, traversal: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</div>
   
   
     <p>
@@ -22800,7 +22800,7 @@ by the options parameter.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>environment</span> <code class='quiet'>(<a href="#environment">environment</a>)</code>
+            <span class='code bold'>env</span> <code class='quiet'>(<a href="#environment">environment</a>)</code>
 	    the environment this resource is associated to.
 
           </div>
@@ -23160,7 +23160,7 @@ by the options parameter.</p>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>createDeployment(targetIDs, buildID, comment)</span>
+            <span class='code strong strong truncate'>createDeployment(targetIDs, buildID, comment, outsideConfig)</span>
         </div>
       </div>
       <div class="clearfix display-none toggle-target">
@@ -23170,7 +23170,7 @@ by the options parameter.</p>
 
   <p>Start a new deployment for this platform.</p>
 
-    <div class='pre p1 fill-light mt0'>createDeployment(targetIDs: (<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a> | <a href="#targetresource">TargetResource</a> | <a href="#targetlist">TargetList</a> | <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a> | <a href="#targetresource">TargetResource</a>)>), buildID: (<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a> | <a href="#buildresource">BuildResource</a> | <a href="#buildlist">BuildList</a> | <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a> | <a href="#buildresource">BuildResource</a>)>), comment: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#deploymentresource">DeploymentResource</a>></div>
+    <div class='pre p1 fill-light mt0'>createDeployment(targetIDs: (<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a> | <a href="#targetresource">TargetResource</a> | <a href="#targetlist">TargetList</a> | <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a> | <a href="#targetresource">TargetResource</a>)>), buildID: (<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a> | <a href="#buildresource">BuildResource</a> | <a href="#buildlist">BuildList</a> | <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a> | <a href="#buildresource">BuildResource</a>)>), comment: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, outsideConfig: any): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#deploymentresource">DeploymentResource</a>></div>
   
   
 
@@ -23214,6 +23214,15 @@ should be deployed.
           
         </div>
       
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>outsideConfig</span> <code class='quiet'>(any)</code>
+	    Additional config to pass to the deployment.
+
+          </div>
+          
+        </div>
+      
     </div>
   
 
@@ -23251,7 +23260,7 @@ should be deployed.
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>deployLatestBuild(targetIDs)</span>
+            <span class='code strong strong truncate'>deployLatestBuild(targetIDs, comment, outsideConfig)</span>
         </div>
       </div>
       <div class="clearfix display-none toggle-target">
@@ -23261,7 +23270,7 @@ should be deployed.
 
   <p>Start a new deployment of the latest build for this platform.</p>
 
-    <div class='pre p1 fill-light mt0'>deployLatestBuild(targetIDs: (<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a> | <a href="#targetresource">TargetResource</a> | <a href="#targetlist">TargetList</a> | <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a> | <a href="#targetresource">TargetResource</a>)>)): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#deploymentresource">DeploymentResource</a>></div>
+    <div class='pre p1 fill-light mt0'>deployLatestBuild(targetIDs: (<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a> | <a href="#targetresource">TargetResource</a> | <a href="#targetlist">TargetList</a> | <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a> | <a href="#targetresource">TargetResource</a>)>), comment: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, outsideConfig: any): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#deploymentresource">DeploymentResource</a>></div>
   
   
 
@@ -23281,6 +23290,24 @@ should be deployed.
             <span class='code bold'>targetIDs</span> <code class='quiet'>((<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a> | <a href="#targetresource">TargetResource</a> | <a href="#targetlist">TargetList</a> | <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a> | <a href="#targetresource">TargetResource</a>)>))</code>
 	    targets
 to which the build should be deployed.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>comment</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    Comment to add to new Deployment.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>outsideConfig</span> <code class='quiet'>(any)</code>
+	    Additional config to pass to the deployment.
 
           </div>
           
@@ -33482,7 +33509,12 @@ be the same object but with refreshed data.
   </h2>
 
   
-    <h2>0.35.6 (2026-03-03)</h2>
+    <h2>0.36.0 (2026-03-17)</h2>
+<ul>
+<li>release version 0.36.0 (<a href="https://github.com/entrecode/ec.sdk/commit/e1373ff">e1373ff</a>)</li>
+<li>feat: support outsideConfig in deployment (<a href="https://github.com/entrecode/ec.sdk/commit/a0d82ca">a0d82ca</a>)</li>
+</ul>
+<h2>0.35.6 (2026-03-03)</h2>
 <ul>
 <li>release version 0.35.6 (<a href="https://github.com/entrecode/ec.sdk/commit/8bebf44">8bebf44</a>)</li>
 <li>fix: correct spelling of addOIDCIdentityToAccount and update method implementation (<a href="https://github.com/entrecode/ec.sdk/commit/9cf4377">9cf4377</a>)</li>
