@@ -1,3 +1,10 @@
+## 0.36.0 (2026-03-17)
+
+* release version 0.36.0 ([e1373ff](https://github.com/entrecode/ec.sdk/commit/e1373ff))
+* feat: support outsideConfig in deployment ([a0d82ca](https://github.com/entrecode/ec.sdk/commit/a0d82ca))
+
+
+
 ## <small>0.35.6 (2026-03-03)</small>
 
 * release version 0.35.6 ([8bebf44](https://github.com/entrecode/ec.sdk/commit/8bebf44))
