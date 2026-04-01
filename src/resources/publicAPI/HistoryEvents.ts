@@ -9,6 +9,10 @@ interface HistoryEvents {
   count: number;
   scannedCount: number;
   items: Array<HistoryEvent>;
+  /** Present for single-model pagination. */
+  lastEventNumber?: string;
+  /** Present for multi-model / all-models pagination. */
+  lastEventNumbers?: Record<string, unknown>;
 }
 
 /**
@@ -21,6 +25,8 @@ interface HistoryEvents {
  * @prop {number} count Event count in this list
  * @prop {number} scannedCount Count of scanned objects
  * @prop {Array<HistoryEvent>} items array of HistoryEvent objects
+ * @prop {string} [lastEventNumber] cursor for single-model pagination
+ * @prop {object} [lastEventNumbers] cursors per model for multi-model pagination
  */
 class HistoryEvents extends Resource {
   /**
@@ -55,11 +61,19 @@ class HistoryEvents extends Resource {
           return this[resourceSymbol].items;
         },
       },
+      lastEventNumber: {
+        enumerable: true,
+        get: () => this.getProperty('lastEventNumber'),
+      },
+      lastEventNumbers: {
+        enumerable: true,
+        get: () => this.getProperty('lastEventNumbers'),
+      },
     });
   }
 
   /**
-   * Load the next page.
+   * Load the next page (uses `_links.next`; for multi-model pagination the URL uses fromEventNumbers).
    *
    * @returns {Promise<HistoryEvents>} Next page of HistoryEvents
    */

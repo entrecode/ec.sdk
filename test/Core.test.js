@@ -817,6 +817,43 @@ describe('optionsToQuery', () => {
     };
     throws.should.throw(Error, '_search is only supported in PublicAPI.entryList');
   });
+  it('should encode fromEventNumbers map as Base64URL JSON', () => {
+    const map = {
+      '11111111-1111-1111-1111-111111111111': null,
+      '22222222-2222-2222-2222-222222222222': 'ts#entry#rn',
+    };
+    const out = helper.optionsToQuery({ fromEventNumbers: map });
+    out.should.have.property('fromEventNumbers');
+    const decoded = JSON.parse(Buffer.from(out.fromEventNumbers, 'base64').toString('utf8'));
+    decoded.should.deep.equal(map);
+  });
+  it('should pass through fromEventNumbers string', () => {
+    const s = 'eyJhIjoxfQ';
+    helper.optionsToQuery({ fromEventNumbers: s }).should.have.property('fromEventNumbers', s);
+  });
+  it('should throw when fromEventNumber and fromEventNumbers are combined', () => {
+    const throws = () => {
+      helper.optionsToQuery({ fromEventNumber: 'a#b#c', fromEventNumbers: '{}' });
+    };
+    throws.should.throw(Error, 'Cannot combine fromEventNumber with fromEventNumbers');
+  });
+  it('should throw when fromEventNumber is used with multiple modelIDs', () => {
+    const throws = () => {
+      helper.optionsToQuery({
+        modelID: 'a,b',
+        fromEventNumber: 'x#y#z',
+      });
+    };
+    throws.should.throw(Error, 'fromEventNumber is only valid with a single modelID');
+  });
+  it('should allow fromEventNumber with single modelID string', () => {
+    helper
+      .optionsToQuery({
+        modelID: '11111111-1111-1111-1111-111111111111',
+        fromEventNumber: 'ts#e#r',
+      })
+      .should.have.property('fromEventNumber', 'ts#e#r');
+  });
   it('should allow _search when allowSearch is true', () => {
     const obj = {
       _search: 'my search term',

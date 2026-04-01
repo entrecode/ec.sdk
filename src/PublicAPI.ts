@@ -192,7 +192,7 @@ export default class PublicAPI extends Core {
           break;
       }
 
-      id = result[2];
+      [, , id] = result;
     }
 
     if (!ecUser) {
@@ -987,8 +987,10 @@ export default class PublicAPI extends Core {
   }
 
   /**
-   * Load the HistoryEvents for this DataManager from v3 API.
-   * Note: This Request only has pagination when you load a single modelID.
+   * Load the HistoryEvents for this DataManager from v3 API (dm-history GET /entries).
+   * Single `modelID`: pagination uses `fromEventNumber` / `lastEventNumber`.
+   * Multiple models or all models: use `fromEventNumbers` (map or Base64URL string) / `lastEventNumbers`;
+   * do not send `fromEventNumber`. Prefer {@link HistoryEvents#next} for follow-up pages.
    *
    * @param {filterOptions | any} options The filter options
    * @returns {Promise<HistoryEvents} The filtered HistoryEvents

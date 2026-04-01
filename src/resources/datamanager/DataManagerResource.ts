@@ -383,8 +383,9 @@ class DataManagerResource extends Resource {
   }
 
   /**
-   * Load the HistoryEvents for this DataManager from v3 API.
-   * Note: This Request only has pagination when you load a single modelID.
+   * Load the HistoryEvents for this DataManager from v3 API (dm-history GET /entries).
+   * Single `modelID`: `fromEventNumber` / `lastEventNumber`. Multiple or all models: `fromEventNumbers` /
+   * `lastEventNumbers` only. Prefer {@link HistoryEvents#next} for paging.
    *
    * @param {filterOptions | any} options The filter options
    * @returns {Promise<HistoryEvents} The filtered HistoryEvents

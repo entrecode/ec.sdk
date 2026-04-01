@@ -401,6 +401,11 @@ class ListResource extends Resource {
  * @access private
  */
 
+/** Cursor state per model for dm-history multi-model entries pagination (API lastEventNumbers / fromEventNumbers). */
+export type HistoryPartitionCursor = string | null | { pending: unknown[]; resumeExclusive: string | null };
+
+export type HistoryEventNumbersMap = Record<string, HistoryPartitionCursor>;
+
 export type FilterOptions = {
   size?: number;
   page?: number;
@@ -408,6 +413,10 @@ export type FilterOptions = {
   _levels?: number;
   _fields?: Array<string>;
   _search?: string;
+  /** Single-model pagination cursor (sort key string). */
+  fromEventNumber?: string;
+  /** Multi-model: Base64URL string from _links.next or map (encoded by optionsToQuery). */
+  fromEventNumbers?: string | HistoryEventNumbersMap;
 
   [key: string]: FilterType;
 };
