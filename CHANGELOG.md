@@ -1,3 +1,10 @@
+## 0.37.0 (2026-04-01)
+
+* release version 0.37.0 ([f6a15aa](https://github.com/entrecode/ec.sdk/commit/f6a15aa))
+* feat: adds fromEventNumbers support in history requests ([ce2af09](https://github.com/entrecode/ec.sdk/commit/ce2af09))
+
+
+
 ## 0.36.0 (2026-03-17)
 
 * release version 0.36.0 ([e1373ff](https://github.com/entrecode/ec.sdk/commit/e1373ff))
