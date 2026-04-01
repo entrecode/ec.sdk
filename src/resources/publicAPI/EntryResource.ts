@@ -592,7 +592,7 @@ class EntryResource extends LiteEntryResource {
   }
 
   /**
-   * Load the HistoryEvents for this Entry from v3 API.
+   * Load the HistoryEvents for this Entry from v3 API (single entry / model: `fromEventNumber` / `lastEventNumber`).
    *
    * @param {FilterOptions | any} options The filter options
    * @returns {Promise<HistoryEvents} The filtered HistoryEvents

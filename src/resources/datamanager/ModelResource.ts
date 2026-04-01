@@ -121,7 +121,7 @@ class ModelResource extends Resource {
   }
 
   /**
-   * Load the HistoryEvents for this Model from v3 API.
+   * Load the HistoryEvents for this Model from v3 API (single model: `fromEventNumber` / `lastEventNumber`).
    *
    * @param {filterOptions | any} options The filter options
    * @returns {Promise<HistoryEvents} The filtered HistoryEvents

@@ -582,6 +582,59 @@ const modifier = {
 };
 
 /**
+ * True when dm-history GET /entries targets multiple models or all models
+ * (pagination must use fromEventNumbers, not fromEventNumber).
+ */
+export function isHistoryMultiModelQuery(options: FilterOptions): boolean {
+  const m = options.modelID;
+  if (m === undefined || m === null) {
+    return true;
+  }
+  if (Array.isArray(m)) {
+    return m.length !== 1;
+  }
+  if (typeof m === 'string') {
+    return /,/.test(m);
+  }
+  return true;
+}
+
+/**
+ * Validates ec.dm-history GET /entries pagination options (single-model vs batch).
+ */
+export function validateHistoryEntriesPaginationOptions(options: FilterOptions): void {
+  const hasFromEventNumber = options.fromEventNumber !== undefined;
+  const hasFromEventNumbers = options.fromEventNumbers !== undefined || options.fromeventnumbers !== undefined;
+  if (hasFromEventNumber && hasFromEventNumbers) {
+    throw new Error('Cannot combine fromEventNumber with fromEventNumbers');
+  }
+  if (hasFromEventNumber && isHistoryMultiModelQuery(options)) {
+    throw new Error(
+      'fromEventNumber is only valid with a single modelID; use fromEventNumbers for multiple models or all models',
+    );
+  }
+}
+
+/**
+ * Base64URL (no padding) encoding of the fromEventNumbers JSON map for ec.dm-history batch pagination.
+ */
+export function encodeFromEventNumbersMap(map: Record<string, unknown>): string {
+  const json = JSON.stringify(map);
+  if (typeof Buffer !== 'undefined') {
+    return Buffer.from(json, 'utf8').toString('base64').replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+  }
+  if (typeof TextEncoder !== 'undefined') {
+    const bytes = new TextEncoder().encode(json);
+    let binary = '';
+    for (let i = 0; i < bytes.length; i += 1) {
+      binary += String.fromCharCode(bytes[i]);
+    }
+    return btoa(binary).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+  }
+  throw new Error('Cannot encode fromEventNumbers: need Buffer or TextEncoder');
+}
+
+/**
  * Translates {@link filter} objects into querystring objects used by {@link
  * https://github.com/basti1302/traverson traverson}.
  *
@@ -606,6 +659,14 @@ export function optionsToQuery(
   if (options) {
     if (typeof options !== 'object') {
       throw new Error(`filterOptions must be an object, is: ${typeof options}`);
+    }
+
+    if (
+      options.fromEventNumber !== undefined ||
+      options.fromEventNumbers !== undefined ||
+      options.fromeventnumbers !== undefined
+    ) {
+      validateHistoryEntriesPaginationOptions(options);
     }
 
     for (const key of Object.keys(options)) {
@@ -650,6 +711,14 @@ export function optionsToQuery(
           out[key] = value;
           if (encode && key !== '_search') {
             out[key] = encodeURIComponent(<string>out[key]);
+          }
+        } else if (key === 'fromEventNumbers' || key === 'fromeventnumbers') {
+          if (typeof value === 'string') {
+            out[key] = value;
+          } else if (value !== null && typeof value === 'object' && !Array.isArray(value)) {
+            out[key] = encodeFromEventNumbersMap(value as Record<string, unknown>);
+          } else {
+            throw new Error(`${key} must be a string or a plain object map`);
           }
         } else if (typeof value === 'string') {
           out[key] = value;

@@ -191,7 +191,7 @@
       "templated": true
     },
     "ec:api/history": {
-      "href": "https://dm-history.entrecode.de/entries?shortID=beefbeef{&modelID,entryID,size,_list,fromEventNumber,fromDate,toDate}",
+      "href": "https://dm-history.entrecode.de/entries?shortID=beefbeef{&modelID,entryID,size,_list,fromEventNumber,fromEventNumbers,fromDate,toDate}",
       "templated": true
     },
     "beefbeef:_auth/anonymous": {
