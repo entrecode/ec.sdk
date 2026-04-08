@@ -256,20 +256,26 @@ describe('DataManager class', () => {
     nock.reset();
     const dm = new DataManager('live');
     const getStub = sinon.stub(helper, 'get');
-    getStub.onFirstCall().returns(resolver('dm-list.json'));
-    getStub.onSecondCall().returns(resolver('dm-history-response.json'));
+    const postHistoryStub = sinon.stub(helper, 'postHistoryEntriesAt');
+    getStub.onCall(0).returns(resolver('dm-list.json'));
+    getStub.onCall(1).returns(resolver('dm-history-root.json'));
+    postHistoryStub.onCall(0).returns(
+      resolver('dm-history-response.json').then(([body, t]) => [body, t, 'https://dm-history.entrecode.de/entries']),
+    );
 
     return dm
-      .getEvents()
+      .getEvents({ dataManagerID: '48e18a34-cf64-4f4a-bc47-45323a7f0e44' })
       .then((history) => {
         history.should.be.instanceOf(HistoryEvents);
         history.items.should.be.an('array');
         history.items[0].timestamp.should.be.instanceOf(Date);
         history.items[0].modelID.should.be.equal('027f0bac-771f-42f4-98ee-f30bc645f5db');
         getStub.restore();
+        postHistoryStub.restore();
       })
       .catch((e) => {
         getStub.restore();
+        postHistoryStub.restore();
         throw e;
       });
   });

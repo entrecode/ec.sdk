@@ -204,8 +204,7 @@
       "templated": true
     },
     "ec:api/history": {
-      "href": "https://dm-history.entrecode.de/entries?shortID=beefbeef{&modelID,entryID,size,_list,fromEventNumber,fromEventNumbers,fromDate,toDate}",
-      "templated": true
+      "href": "https://dm-history.entrecode.de/entries"
     },
     "ec:api/dm-entryRefCount": {
       "href": "https://datamanager.cachena.entrecode.de/api/beefbeef/{model}/refcount/{field}{?id}",

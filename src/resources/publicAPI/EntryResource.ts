@@ -6,10 +6,10 @@ import * as qs from 'querystring';
 import LiteEntryResource from './LiteEntryResource';
 import LiteDMAccountResource from './LiteDMAccountResource';
 import LiteRoleResource from './LiteRoleResource';
-import { get, getSchema, optionsToQuery, locale, getUrl } from '../../helper';
+import { get, getSchema, optionsToQuery, locale, getUrl, postHistoryEntriesAt } from '../../helper';
 import { environment } from '../../Core';
 import DMAssetResource from './DMAssetResource';
-import { FilterOptions } from '../ListResource';
+import { FilterOptions, HistoryEntriesOptions } from '../ListResource';
 import Problem from '../../Problem';
 import HistoryEvents from './HistoryEvents';
 
@@ -592,22 +592,22 @@ class EntryResource extends LiteEntryResource {
   }
 
   /**
-   * Load the HistoryEvents for this Entry from v3 API (single entry / model: `fromEventNumber` / `lastEventNumber`).
+   * Load history events for this entry via dm-history `POST /entries` (single model + `entryID`; pass `modelID` in `options` if needed).
    *
-   * @param {FilterOptions | any} options The filter options
+   * @param {HistoryEntriesOptions | any} options POST body fields
    * @returns {Promise<HistoryEvents} The filtered HistoryEvents
    */
-  getEvents(options?: FilterOptions): Promise<any> {
+  getEvents(options?: HistoryEntriesOptions): Promise<any> {
     return Promise.resolve()
       .then(() => this.newRequest().follow('ec:entry/history'))
       .then((request) => {
-        if (options) {
-          request.withTemplateParameters(optionsToQuery(options));
-        }
-
-        return get(this[environmentSymbol], request);
+        const entriesPostUrl = this.getLink('ec:entry/history').href;
+        return postHistoryEntriesAt(this[environmentSymbol], request, entriesPostUrl, options, {
+          shortID: this[shortIDSymbol],
+          entryID: this.id,
+        });
       })
-      .then(([res, traversal]) => new HistoryEvents(res, this[environmentSymbol], traversal));
+      .then(([res, traversal, url]) => new HistoryEvents(res, this[environmentSymbol], traversal, url));
   }
 
   /*

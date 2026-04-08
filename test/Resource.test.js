@@ -181,7 +181,7 @@ describe('Resource', () => {
     ]);
   });
   it('should get object with all links', () => {
-    Object.keys(resource.allLinks()).should.have.property('length', 22);
+    Object.keys(resource.allLinks()).should.have.property('length', 23);
   });
   it('should call get on followLink', () => {
     const stub = sinon.stub(helper, 'get');

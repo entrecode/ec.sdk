@@ -1,8 +1,8 @@
 import * as validator from 'json-schema-remote';
 import Resource from '../Resource';
 import { environment } from '../../Core';
-import { get, del, post, optionsToQuery } from '../../helper';
-import { FilterOptions } from '../ListResource';
+import { get, del, post, optionsToQuery, postHistoryEntriesAt } from '../../helper';
+import { FilterOptions, HistoryEntriesOptions } from '../ListResource';
 import HistoryEvents from '../publicAPI/HistoryEvents';
 
 const environmentSymbol: any = Symbol.for('environment');
@@ -121,22 +121,39 @@ class ModelResource extends Resource {
   }
 
   /**
-   * Load the HistoryEvents for this Model from v3 API (single model: `fromEventNumber` / `lastEventNumber`).
+   * Load history events for this model via dm-history `POST /entries`.
    *
-   * @param {filterOptions | any} options The filter options
+   * @param {HistoryEntriesOptions | any} options POST body fields (merged with this model’s `modelID` and `dataManagerID` from the collection link).
    * @returns {Promise<HistoryEvents} The filtered HistoryEvents
    */
-  getEvents(options?: FilterOptions): Promise<any> {
+  getEvents(options?: HistoryEntriesOptions): Promise<any> {
+    const dataManagerID = ModelResource.dataManagerIDFromCollection(this);
     return Promise.resolve()
       .then(() => this.newRequest().follow('ec:model/history'))
       .then((request) => {
-        if (options) {
-          request.withTemplateParameters(optionsToQuery(options));
-        }
-
-        return get(this[environmentSymbol], request);
+        const entriesPostUrl = this.getLink('ec:model/history').href;
+        return postHistoryEntriesAt(this[environmentSymbol], request, entriesPostUrl, options, {
+          dataManagerID,
+          modelID: this.modelID,
+        });
       })
-      .then(([res, traversal]) => new HistoryEvents(res, this[environmentSymbol], traversal));
+      .then(([res, traversal, url]) => new HistoryEvents(res, this[environmentSymbol], traversal, url));
+  }
+
+  private static dataManagerIDFromCollection(resource: Resource): string | undefined {
+    try {
+      const coll = resource.getLink('collection');
+      if (!coll || typeof coll.href !== 'string') {
+        return undefined;
+      }
+      const q = coll.href.split('?')[1];
+      if (!q) {
+        return undefined;
+      }
+      return new URLSearchParams(q).get('dataManagerID') || undefined;
+    } catch {
+      return undefined;
+    }
   }
 
   /*

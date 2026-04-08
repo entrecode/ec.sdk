@@ -67,6 +67,9 @@
       "profile": "https://entrecode.de/schema/dm-role",
       "href": "https://datamanager.entrecode.de/role?dataManagerID=48e18a34-cf64-4f4a-bc47-45323a7f0e44&roleID=3779d1ee-ce4f-4081-b2a7-6245e8540b18",
       "title": "Registered Users"
+    },
+    "ec:entry/history": {
+      "href": "https://dm-history.entrecode.de/entries"
     }
   },
   "_embedded": {

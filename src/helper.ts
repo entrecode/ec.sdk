@@ -5,7 +5,7 @@ import * as validator from 'json-schema-remote';
 import { EventEmitterFactory } from './EventEmitter';
 import Problem from './Problem';
 import TokenStoreFactory, { TokenStore } from './TokenStore';
-import { FilterOptions } from './resources/ListResource';
+import { FilterOptions, HistoryEntriesOptions } from './resources/ListResource';
 
 import { environment } from './Core';
 
@@ -581,12 +581,9 @@ const modifier = {
   all: ' ',
 };
 
-/**
- * True when dm-history GET /entries targets multiple models or all models
- * (pagination must use fromEventNumbers, not fromEventNumber).
- */
-export function isHistoryMultiModelQuery(options: FilterOptions): boolean {
-  const m = options.modelID;
+/** True when dm-history POST /entries body targets multiple models or all models. */
+export function isHistoryMultiModelBody(body: { modelID?: string | string[] | null }): boolean {
+  const m = body.modelID;
   if (m === undefined || m === null) {
     return true;
   }
@@ -600,18 +597,54 @@ export function isHistoryMultiModelQuery(options: FilterOptions): boolean {
 }
 
 /**
- * Validates ec.dm-history GET /entries pagination options (single-model vs batch).
+ * @deprecated Use {@link isHistoryMultiModelBody} with a POST request body.
  */
-export function validateHistoryEntriesPaginationOptions(options: FilterOptions): void {
-  const hasFromEventNumber = options.fromEventNumber !== undefined;
-  const hasFromEventNumbers = options.fromEventNumbers !== undefined || options.fromeventnumbers !== undefined;
+export function isHistoryMultiModelQuery(options: HistoryEntriesOptions | Record<string, unknown>): boolean {
+  return isHistoryMultiModelBody(options as { modelID?: string | string[] | null });
+}
+
+/**
+ * Validates ec.dm-history POST /entries JSON body (cursor and model rules).
+ */
+export function validateHistoryEntriesRequestBody(body: Record<string, unknown>): void {
+  if (!body.dataManagerID && !body.shortID) {
+    throw new Error('entries request must include dataManagerID or shortID');
+  }
+
+  const hasFromEventNumber = body.fromEventNumber !== undefined;
+  const { fromEventNumbers, lastEventNumbers } = body;
+  const hasFromEventNumbers =
+    fromEventNumbers !== undefined &&
+    fromEventNumbers !== null &&
+    (typeof fromEventNumbers === 'string'
+      ? (<string>fromEventNumbers).length > 0
+      : typeof fromEventNumbers === 'object' && Object.keys(fromEventNumbers as object).length > 0);
+  const hasLastEventNumbers =
+    lastEventNumbers !== null &&
+    typeof lastEventNumbers === 'object' &&
+    Object.keys(lastEventNumbers as object).length > 0;
+
   if (hasFromEventNumber && hasFromEventNumbers) {
     throw new Error('Cannot combine fromEventNumber with fromEventNumbers');
   }
-  if (hasFromEventNumber && isHistoryMultiModelQuery(options)) {
+  if (hasFromEventNumber && hasLastEventNumbers) {
+    throw new Error('Cannot combine fromEventNumber with lastEventNumbers');
+  }
+  if (hasFromEventNumbers && hasLastEventNumbers) {
+    throw new Error('Cannot send both fromEventNumbers and a non-empty lastEventNumbers object');
+  }
+  if (hasFromEventNumber && isHistoryMultiModelBody(body as { modelID?: string | string[] | null })) {
     throw new Error(
-      'fromEventNumber is only valid with a single modelID; use fromEventNumbers for multiple models or all models',
+      'fromEventNumber is only valid with a single modelID; use lastEventNumbers or fromEventNumbers for batch',
     );
+  }
+  if (
+    body.entryID !== undefined &&
+    body.entryID !== null &&
+    body.entryID !== '' &&
+    isHistoryMultiModelBody(body as { modelID?: string | string[] | null })
+  ) {
+    throw new Error('entryID is only allowed with a single modelID');
   }
 }
 
@@ -632,6 +665,107 @@ export function encodeFromEventNumbersMap(map: Record<string, unknown>): string 
     return btoa(binary).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
   }
   throw new Error('Cannot encode fromEventNumbers: need Buffer or TextEncoder');
+}
+
+export type EntriesRequestDefaults = {
+  shortID?: string;
+  dataManagerID?: string;
+  modelID?: string;
+  entryID?: string;
+};
+
+/**
+ * Builds ec.dm-history POST /entries JSON body from filter-style options and defaults.
+ */
+export function buildEntriesRequestBody(
+  options?: HistoryEntriesOptions | Record<string, unknown> | null,
+  defaults?: EntriesRequestDefaults,
+): Record<string, unknown> {
+  const body: Record<string, unknown> = {};
+  if (defaults?.shortID !== undefined) {
+    body.shortID = defaults.shortID;
+  }
+  if (defaults?.dataManagerID !== undefined) {
+    body.dataManagerID = defaults.dataManagerID;
+  }
+  if (defaults?.modelID !== undefined) {
+    body.modelID = defaults.modelID;
+  }
+  if (defaults?.entryID !== undefined) {
+    body.entryID = defaults.entryID;
+  }
+
+  if (!options || typeof options !== 'object') {
+    validateHistoryEntriesRequestBody(body);
+    return body;
+  }
+
+  const opt = options as Record<string, unknown>;
+  const assignKeys = [
+    'dataManagerID',
+    'shortID',
+    'modelID',
+    'entryID',
+    'size',
+    'fromEventNumber',
+    'lastEventNumbers',
+    'fromEventNumbers',
+  ];
+  for (const key of assignKeys) {
+    if (opt[key] !== undefined) {
+      body[key] = opt[key];
+    }
+  }
+  if (opt.fromDate !== undefined) {
+    body.fromDate = opt.fromDate instanceof Date ? (opt.fromDate as Date).toISOString() : opt.fromDate;
+  }
+  if (opt.toDate !== undefined) {
+    body.toDate = opt.toDate instanceof Date ? (opt.toDate as Date).toISOString() : opt.toDate;
+  }
+
+  const fe = body.fromEventNumbers;
+  if (fe !== undefined && fe !== null && typeof fe === 'object' && !Array.isArray(fe)) {
+    body.fromEventNumbers = encodeFromEventNumbersMap(fe as Record<string, unknown>);
+  }
+
+  validateHistoryEntriesRequestBody(body);
+  return body;
+}
+
+/**
+ * dm-history service root (e.g. from `ec:history`) → POST `/entries` URL.
+ */
+export function entriesPostUrlFromHistoryBridge(historyBridgeHref: string): string {
+  const base = historyBridgeHref.replace(/\/$/, '');
+  return `${base}/entries`;
+}
+
+/**
+ * POST dm-history /entries at `entriesPostUrl` (from HAL); returns [res, traversal, postUrl].
+ */
+export function postHistoryEntriesAt(
+  env: environment,
+  requestBuilder: any,
+  entriesPostUrl: string,
+  options?: HistoryEntriesOptions | Record<string, unknown> | null,
+  defaults?: EntriesRequestDefaults,
+): Promise<[any, any, string]> {
+  const body = buildEntriesRequestBody(options, defaults);
+  // Call traversonWrapper directly so tests can stub `exports.post` without affecting this path.
+  return traversonWrapper('post', env, requestBuilder, body).then(([res, traversal]: [any, any]) => [
+    res,
+    traversal,
+    entriesPostUrl,
+  ]);
+}
+
+/**
+ * @deprecated Use {@link validateHistoryEntriesRequestBody} on a built POST body.
+ */
+export function validateHistoryEntriesPaginationOptions(options: HistoryEntriesOptions | Record<string, unknown>): void {
+  validateHistoryEntriesRequestBody(
+    buildEntriesRequestBody(options, { dataManagerID: '00000000-0000-0000-0000-000000000001' }),
+  );
 }
 
 /**
@@ -659,14 +793,6 @@ export function optionsToQuery(
   if (options) {
     if (typeof options !== 'object') {
       throw new Error(`filterOptions must be an object, is: ${typeof options}`);
-    }
-
-    if (
-      options.fromEventNumber !== undefined ||
-      options.fromEventNumbers !== undefined ||
-      options.fromeventnumbers !== undefined
-    ) {
-      validateHistoryEntriesPaginationOptions(options);
     }
 
     for (const key of Object.keys(options)) {
@@ -711,14 +837,6 @@ export function optionsToQuery(
           out[key] = value;
           if (encode && key !== '_search') {
             out[key] = encodeURIComponent(<string>out[key]);
-          }
-        } else if (key === 'fromEventNumbers' || key === 'fromeventnumbers') {
-          if (typeof value === 'string') {
-            out[key] = value;
-          } else if (value !== null && typeof value === 'object' && !Array.isArray(value)) {
-            out[key] = encodeFromEventNumbersMap(value as Record<string, unknown>);
-          } else {
-            throw new Error(`${key} must be a string or a plain object map`);
           }
         } else if (typeof value === 'string') {
           out[key] = value;
