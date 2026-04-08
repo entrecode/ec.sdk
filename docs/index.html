@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset='utf-8'>
-  <title>ec.sdk 0.37.0 | Documentation</title>
+  <title>ec.sdk 0.38.0 | Documentation</title>
   <meta name='description' content='SDK for ec.api'>
   <meta name='viewport' content='width=device-width,initial-scale=1'>
   <link href='assets/bass.css' rel='stylesheet'>
@@ -15,7 +15,7 @@
       <div id='split-left' class='overflow-auto fs0 height-viewport-100'>
         <div class='py1 px2'>
           <h3 class='mb0 no-anchor'>ec.sdk</h3>
-          <div class='mb1'><code>0.37.0</code></div>
+          <div class='mb1'><code>0.38.0</code></div>
           <input
             placeholder='Filter'
             id='filter-input'
@@ -3048,6 +3048,16 @@
               
                 
                 <li><a
+                  href='#ishistorymultimodelbody'
+                  class="">
+                  isHistoryMultiModelBody
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
                   href='#ishistorymultimodelquery'
                   class="">
                   isHistoryMultiModelQuery
@@ -3058,9 +3068,9 @@
               
                 
                 <li><a
-                  href='#validatehistoryentriespaginationoptions'
+                  href='#validatehistoryentriesrequestbody'
                   class="">
-                  validateHistoryEntriesPaginationOptions
+                  validateHistoryEntriesRequestBody
                   
                 </a>
                 
@@ -3071,6 +3081,46 @@
                   href='#encodefromeventnumbersmap'
                   class="">
                   encodeFromEventNumbersMap
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#buildentriesrequestbody'
+                  class="">
+                  buildEntriesRequestBody
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#entriesposturlfromhistorybridge'
+                  class="">
+                  entriesPostUrlFromHistoryBridge
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#posthistoryentriesat'
+                  class="">
+                  postHistoryEntriesAt
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#validatehistoryentriespaginationoptions'
+                  class="">
+                  validateHistoryEntriesPaginationOptions
                   
                 </a>
                 
@@ -8191,11 +8241,9 @@ by the options parameter.</p>
 
   
 
-  <p>Load the HistoryEvents for this DataManager from v3 API (dm-history GET /entries).
-Single <code>modelID</code>: <code>fromEventNumber</code> / <code>lastEventNumber</code>. Multiple or all models: <code>fromEventNumbers</code> /
-<code>lastEventNumbers</code> only (never <code>fromEventNumber</code>). Use <a href="#historyeventsnext">HistoryEvents#next</a> when possible.</p>
+  <p>Load history events via dm-history <code>POST /entries</code>. Include <code>dataManagerID</code> or <code>shortID</code> in <code>options</code> if not implied by context.</p>
 
-    <div class='pre p1 fill-light mt0'>getEvents(options: (<a href="#filteroptions">filterOptions</a> | any))</div>
+    <div class='pre p1 fill-light mt0'>getEvents(options: (HistoryEntriesOptions | any))</div>
   
   
 
@@ -8212,8 +8260,10 @@ Single <code>modelID</code>: <code>fromEventNumber</code> / <code>lastEventNumbe
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>options</span> <code class='quiet'>((<a href="#filteroptions">filterOptions</a> | any))</code>
-	    The filter options
+            <span class='code bold'>options</span> <code class='quiet'>((HistoryEntriesOptions | any))</code>
+	    POST body fields for 
+<code>/entries</code>
+.
 
           </div>
           
@@ -10200,12 +10250,10 @@ You can use filters <span class="hljs-keyword">as</span> usual. Example <span cl
 
   
 
-  <p>Load the HistoryEvents for this DataManager from v3 API (dm-history GET /entries).
-Single <code>modelID</code>: pagination uses <code>fromEventNumber</code> / <code>lastEventNumber</code>.
-Multiple models or all models: use <code>fromEventNumbers</code> (map or Base64URL string) / <code>lastEventNumbers</code>;
-do not send <code>fromEventNumber</code>. Prefer <a href="#historyeventsnext">HistoryEvents#next</a> for follow-up pages.</p>
+  <p>Load history events via dm-history <code>POST /entries</code> (JSON body).
+Use <a href="#historyeventsnext">HistoryEvents#next</a> with <code>nextRequestBody</code> from the response for pagination.</p>
 
-    <div class='pre p1 fill-light mt0'>getEvents(options: (<a href="#filteroptions">filterOptions</a> | any))</div>
+    <div class='pre p1 fill-light mt0'>getEvents(options: (HistoryEntriesOptions | any))</div>
   
   
 
@@ -10222,8 +10270,20 @@ do not send <code>fromEventNumber</code>. Prefer <a href="#historyeventsnext">Hi
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>options</span> <code class='quiet'>((<a href="#filteroptions">filterOptions</a> | any))</code>
-	    The filter options
+            <span class='code bold'>options</span> <code class='quiet'>((HistoryEntriesOptions | any))</code>
+	    Request fields: 
+<code>modelID</code>
+ (omit | string | string[]), 
+<code>entryID</code>
+, 
+<code>size</code>
+, dates, cursors (
+<code>fromEventNumber</code>
+ single-model; 
+<code>lastEventNumbers</code>
+ / 
+<code>fromEventNumbers</code>
+ batch).
 
           </div>
           
@@ -16923,7 +16983,7 @@ object will be applied when loading a <a href="#listresource">ListResource</a>.<
   <p>HistoryEvents resource class</p>
 <p><a href="https://github.com/entrecode/ec.dm-history/blob/develop/data-transform.js#L35">https://github.com/entrecode/ec.dm-history/blob/develop/data-transform.js#L35</a></p>
 
-    <div class='pre p1 fill-light mt0'>new HistoryEvents(resource: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, environment: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, traversal: any)</div>
+    <div class='pre p1 fill-light mt0'>new HistoryEvents(resource: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, environment: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, traversal: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?, entriesPostUrl: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?)</div>
   
   
     <p>
@@ -16965,8 +17025,18 @@ object will be applied when loading a <a href="#listresource">ListResource</a>.<
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>traversal</span> <code class='quiet'>(any)</code>
-	    
+            <span class='code bold'>traversal</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</code>
+	    traversal from which traverson can continue.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>entriesPostUrl</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?)</code>
+	    resolved POST URL for /entries (pagination).
+
           </div>
           
         </div>
@@ -17001,7 +17071,7 @@ object will be applied when loading a <a href="#listresource">ListResource</a>.<
       
         <div class='space-bottom0'>
           <span class='code bold'>lastEventNumber</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?)</code>
-          : cursor for single-model pagination
+          : cursor for single-model pagination (POST /entries)
 
           
         </div>
@@ -17009,6 +17079,15 @@ object will be applied when loading a <a href="#listresource">ListResource</a>.<
         <div class='space-bottom0'>
           <span class='code bold'>lastEventNumbers</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</code>
           : cursors per model for multi-model pagination
+
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <span class='code bold'>nextRequestBody</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>?)</code>
+          : next POST body from API (use for 
+<a href="#historyeventsnext">HistoryEvents#next</a>
+)
 
           
         </div>
@@ -17042,7 +17121,7 @@ object will be applied when loading a <a href="#listresource">ListResource</a>.<
 
   
 
-  <p>Load the next page (uses <code>_links.next</code>; for multi-model pagination the URL uses fromEventNumbers).</p>
+  <p>Load the next page via POST /entries using <code>nextRequestBody</code> from the API.</p>
 
     <div class='pre p1 fill-light mt0'>next(): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#historyevents">HistoryEvents</a>></div>
   
@@ -17099,7 +17178,7 @@ object will be applied when loading a <a href="#listresource">ListResource</a>.<
 
   
 
-  <p>Check if there are more events available</p>
+  <p>Whether another page exists (<code>nextRequestBody</code> or <code>_links.next</code>).</p>
 
     <div class='pre p1 fill-light mt0'>hasNextLink(): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></div>
   
@@ -17120,7 +17199,7 @@ object will be applied when loading a <a href="#listresource">ListResource</a>.<
     
       <div class='py1 quiet mt1 prose-big'>Returns</div>
       <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code>:
-        True if there are more links available.
+        True if more pages may exist.
 
       
     
@@ -26686,11 +26765,9 @@ filter options.
 
   
 
-  <p>Load the HistoryEvents for this DataManager from v3 API (dm-history GET /entries).
-Single <code>modelID</code>: <code>fromEventNumber</code> / <code>lastEventNumber</code>. Multiple or all models: <code>fromEventNumbers</code> /
-<code>lastEventNumbers</code> only. Prefer <a href="#historyeventsnext">HistoryEvents#next</a> for paging.</p>
+  <p>Load history events via dm-history <code>POST /entries</code>.</p>
 
-    <div class='pre p1 fill-light mt0'>getEvents(options: (<a href="#filteroptions">filterOptions</a> | any))</div>
+    <div class='pre p1 fill-light mt0'>getEvents(options: (HistoryEntriesOptions | any))</div>
   
   
 
@@ -26707,8 +26784,12 @@ Single <code>modelID</code>: <code>fromEventNumber</code> / <code>lastEventNumbe
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>options</span> <code class='quiet'>((<a href="#filteroptions">filterOptions</a> | any))</code>
-	    The filter options
+            <span class='code bold'>options</span> <code class='quiet'>((HistoryEntriesOptions | any))</code>
+	    POST body fields (merged with this DM’s 
+<code>dataManagerID</code>
+ / 
+<code>shortID</code>
+).
 
           </div>
           
@@ -27327,9 +27408,9 @@ Single <code>modelID</code>: <code>fromEventNumber</code> / <code>lastEventNumbe
 
   
 
-  <p>Load the HistoryEvents for this Model from v3 API (single model: <code>fromEventNumber</code> / <code>lastEventNumber</code>).</p>
+  <p>Load history events for this model via dm-history <code>POST /entries</code>.</p>
 
-    <div class='pre p1 fill-light mt0'>getEvents(options: (<a href="#filteroptions">filterOptions</a> | any))</div>
+    <div class='pre p1 fill-light mt0'>getEvents(options: (HistoryEntriesOptions | any))</div>
   
   
 
@@ -27346,8 +27427,12 @@ Single <code>modelID</code>: <code>fromEventNumber</code> / <code>lastEventNumbe
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>options</span> <code class='quiet'>((<a href="#filteroptions">filterOptions</a> | any))</code>
-	    The filter options
+            <span class='code bold'>options</span> <code class='quiet'>((HistoryEntriesOptions | any))</code>
+	    POST body fields (merged with this model’s 
+<code>modelID</code>
+ and 
+<code>dataManagerID</code>
+ from the collection link).
 
           </div>
           
@@ -31537,9 +31622,9 @@ the entry title.
 
   
 
-  <p>Load the HistoryEvents for this Entry from v3 API (single entry / model: <code>fromEventNumber</code> / <code>lastEventNumber</code>).</p>
+  <p>Load history events for this entry via dm-history <code>POST /entries</code> (single model + <code>entryID</code>; pass <code>modelID</code> in <code>options</code> if needed).</p>
 
-    <div class='pre p1 fill-light mt0'>getEvents(options: (FilterOptions | any))</div>
+    <div class='pre p1 fill-light mt0'>getEvents(options: (HistoryEntriesOptions | any))</div>
   
   
 
@@ -31556,8 +31641,8 @@ the entry title.
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>options</span> <code class='quiet'>((FilterOptions | any))</code>
-	    The filter options
+            <span class='code bold'>options</span> <code class='quiet'>((HistoryEntriesOptions | any))</code>
+	    POST body fields
 
           </div>
           
@@ -35772,6 +35857,69 @@ PublicAPI#deleteAsset</p>
   
   <div class='clearfix'>
     
+    <h3 class='fl m0' id='ishistorymultimodelbody'>
+      isHistoryMultiModelBody
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>True when dm-history POST /entries body targets multiple models or all models.</p>
+
+    <div class='pre p1 fill-light mt0'>isHistoryMultiModelBody(body: any)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>body</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
     <h3 class='fl m0' id='ishistorymultimodelquery'>
       isHistoryMultiModelQuery
     </h3>
@@ -35780,14 +35928,15 @@ PublicAPI#deleteAsset</p>
   </div>
   
 
-  <p>True when dm-history GET /entries targets multiple models or all models
-(pagination must use fromEventNumbers, not fromEventNumber).</p>
-
+  
     <div class='pre p1 fill-light mt0'>isHistoryMultiModelQuery(options: any)</div>
   
   
 
-  
+  <div>Deprecated: Use 
+<a href="#ishistorymultimodelbody">isHistoryMultiModelBody</a>
+ with a POST request body.
+</div>
   
   
   
@@ -35836,17 +35985,17 @@ PublicAPI#deleteAsset</p>
   
   <div class='clearfix'>
     
-    <h3 class='fl m0' id='validatehistoryentriespaginationoptions'>
-      validateHistoryEntriesPaginationOptions
+    <h3 class='fl m0' id='validatehistoryentriesrequestbody'>
+      validateHistoryEntriesRequestBody
     </h3>
     
     
   </div>
   
 
-  <p>Validates ec.dm-history GET /entries pagination options (single-model vs batch).</p>
+  <p>Validates ec.dm-history POST /entries JSON body (cursor and model rules).</p>
 
-    <div class='pre p1 fill-light mt0'>validateHistoryEntriesPaginationOptions(options: any)</div>
+    <div class='pre p1 fill-light mt0'>validateHistoryEntriesRequestBody(body: any)</div>
   
   
 
@@ -35863,7 +36012,7 @@ PublicAPI#deleteAsset</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>options</span> <code class='quiet'>(any)</code>
+            <span class='code bold'>body</span> <code class='quiet'>(any)</code>
 	    
           </div>
           
@@ -35927,6 +36076,300 @@ PublicAPI#deleteAsset</p>
         <div class='space-bottom0'>
           <div>
             <span class='code bold'>map</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='buildentriesrequestbody'>
+      buildEntriesRequestBody
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Builds ec.dm-history POST /entries JSON body from filter-style options and defaults.</p>
+
+    <div class='pre p1 fill-light mt0'>buildEntriesRequestBody(options: any, defaults: any)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>options</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>defaults</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='entriesposturlfromhistorybridge'>
+      entriesPostUrlFromHistoryBridge
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>dm-history service root (e.g. from <code>ec:history</code>) → POST <code>/entries</code> URL.</p>
+
+    <div class='pre p1 fill-light mt0'>entriesPostUrlFromHistoryBridge(historyBridgeHref: any)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>historyBridgeHref</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='posthistoryentriesat'>
+      postHistoryEntriesAt
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>POST dm-history /entries at <code>entriesPostUrl</code> (from HAL); returns [res, traversal, postUrl].</p>
+
+    <div class='pre p1 fill-light mt0'>postHistoryEntriesAt(env: any, requestBuilder: any, entriesPostUrl: any, options: any, defaults: any)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>env</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>requestBuilder</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>entriesPostUrl</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>options</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>defaults</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='validatehistoryentriespaginationoptions'>
+      validateHistoryEntriesPaginationOptions
+    </h3>
+    
+    
+  </div>
+  
+
+  
+    <div class='pre p1 fill-light mt0'>validateHistoryEntriesPaginationOptions(options: any)</div>
+  
+  
+
+  <div>Deprecated: Use 
+<a href="#validatehistoryentriesrequestbody">validateHistoryEntriesRequestBody</a>
+ on a built POST body.
+</div>
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>options</span> <code class='quiet'>(any)</code>
 	    
           </div>
           
