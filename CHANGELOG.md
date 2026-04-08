@@ -1,3 +1,10 @@
+## 0.38.0 (2026-04-08)
+
+* release version 0.38.0 ([afd804f](https://github.com/entrecode/ec.sdk/commit/afd804f))
+* refactor: migrate history events loading to POST /entries ([76335b6](https://github.com/entrecode/ec.sdk/commit/76335b6))
+
+
+
 ## 0.37.0 (2026-04-01)
 
 * release version 0.37.0 ([f6a15aa](https://github.com/entrecode/ec.sdk/commit/f6a15aa))
