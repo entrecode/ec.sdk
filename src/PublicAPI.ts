@@ -17,12 +17,13 @@ import {
   locale,
   optionsToQuery,
   post,
+  postHistoryEntriesAt,
   postEmpty,
   put,
   shortenUUID,
   superagentPost,
 } from './helper';
-import { FilterOptions } from './resources/ListResource';
+import { FilterOptions, HistoryEntriesOptions } from './resources/ListResource';
 import DMAssetList from './resources/publicAPI/DMAssetList';
 import DMAssetResource from './resources/publicAPI/DMAssetResource';
 import DMAuthTokenList from './resources/publicAPI/DMAuthTokenList';
@@ -987,25 +988,24 @@ export default class PublicAPI extends Core {
   }
 
   /**
-   * Load the HistoryEvents for this DataManager from v3 API (dm-history GET /entries).
-   * Single `modelID`: pagination uses `fromEventNumber` / `lastEventNumber`.
-   * Multiple models or all models: use `fromEventNumbers` (map or Base64URL string) / `lastEventNumbers`;
-   * do not send `fromEventNumber`. Prefer {@link HistoryEvents#next} for follow-up pages.
+   * Load history events via dm-history `POST /entries` (JSON body).
+   * Use {@link HistoryEvents#next} with `nextRequestBody` from the response for pagination.
    *
-   * @param {filterOptions | any} options The filter options
+   * @param {HistoryEntriesOptions | any} options Request fields: `modelID` (omit | string | string[]), `entryID`, `size`, dates, cursors (`fromEventNumber` single-model; `lastEventNumbers` / `fromEventNumbers` batch).
    * @returns {Promise<HistoryEvents} The filtered HistoryEvents
    */
-  getEvents(options?: FilterOptions): Promise<any> {
+  getEvents(options?: HistoryEntriesOptions): Promise<any> {
     return Promise.resolve()
       .then(() => this.follow('ec:api/history'))
       .then((request) => {
-        if (options) {
-          request.withTemplateParameters(optionsToQuery(options));
-        }
-
-        return this.dispatch(() => get(this[environmentSymbol], request));
+        const entriesPostUrl = this.getLink('ec:api/history').href;
+        return this.dispatch(() =>
+          postHistoryEntriesAt(this[environmentSymbol], request, entriesPostUrl, options, {
+            shortID: this.shortID,
+          }),
+        );
       })
-      .then(([res, traversal]) => new HistoryEvents(res, this[environmentSymbol], traversal));
+      .then(([res, traversal, url]) => new HistoryEvents(res, this[environmentSymbol], traversal, url));
   }
 
   /**

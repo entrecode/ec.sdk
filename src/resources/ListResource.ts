@@ -401,10 +401,31 @@ class ListResource extends Resource {
  * @access private
  */
 
-/** Cursor state per model for dm-history multi-model entries pagination (API lastEventNumbers / fromEventNumbers). */
-export type HistoryPartitionCursor = string | null | { pending: unknown[]; resumeExclusive: string | null };
+/** Per-model cursor for dm-history POST /entries (`lastEventNumbers`); `!` prefix = inclusive (echo verbatim). */
+export type HistoryPartitionCursor = string | null;
 
 export type HistoryEventNumbersMap = Record<string, HistoryPartitionCursor>;
+
+/**
+ * Options for dm-history `POST /entries` (used by {@link PublicAPI#getEvents} and related `getEvents` methods only).
+ * Not used for list/filter APIs — use {@link FilterOptions} there.
+ */
+export type HistoryEntriesOptions = {
+  dataManagerID?: string;
+  shortID?: string;
+  /** Omit = all models; string = one model; string[] = listed models. */
+  modelID?: string | string[];
+  entryID?: string;
+  size?: number;
+  fromDate?: string | Date;
+  toDate?: string | Date;
+  /** Single-model pagination cursor. */
+  fromEventNumber?: string;
+  /** Multi-model cursor map (POST body). */
+  lastEventNumbers?: HistoryEventNumbersMap;
+  /** Multi-model: Base64URL string or map (object is encoded by `buildEntriesRequestBody`). */
+  fromEventNumbers?: string | HistoryEventNumbersMap;
+};
 
 export type FilterOptions = {
   size?: number;
@@ -413,10 +434,6 @@ export type FilterOptions = {
   _levels?: number;
   _fields?: Array<string>;
   _search?: string;
-  /** Single-model pagination cursor (sort key string). */
-  fromEventNumber?: string;
-  /** Multi-model: Base64URL string from _links.next or map (encoded by optionsToQuery). */
-  fromEventNumbers?: string | HistoryEventNumbersMap;
 
   [key: string]: FilterType;
 };

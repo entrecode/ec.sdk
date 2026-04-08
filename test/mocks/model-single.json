@@ -146,6 +146,9 @@
     "ec:model/entryHistory": {
       "href": "https://dm-history.buffalo.entrecode.de/api/model?dataManagerID=cce541dc-cdd8-4f34-b6e4-20f15d3b8314&modelID=48e4749d-f44f-499f-87c7-1d73583723f3{&_size}",
       "templated": true
+    },
+    "ec:model/history": {
+      "href": "https://dm-history.buffalo.entrecode.de/entries"
     }
   }
 }

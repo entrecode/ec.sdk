@@ -1,7 +1,7 @@
 import { environment } from '../../Core';
 import PublicAPI from '../../PublicAPI';
-import { get, optionsToQuery } from '../../helper';
-import { FilterOptions } from '../ListResource';
+import { entriesPostUrlFromHistoryBridge, get, postHistoryEntriesAt } from '../../helper';
+import { FilterOptions, HistoryEntriesOptions } from '../ListResource';
 import Resource from '../Resource';
 import HistoryEvents from '../publicAPI/HistoryEvents';
 import AssetGroupList from './AssetGroupList';
@@ -383,24 +383,23 @@ class DataManagerResource extends Resource {
   }
 
   /**
-   * Load the HistoryEvents for this DataManager from v3 API (dm-history GET /entries).
-   * Single `modelID`: `fromEventNumber` / `lastEventNumber`. Multiple or all models: `fromEventNumbers` /
-   * `lastEventNumbers` only. Prefer {@link HistoryEvents#next} for paging.
+   * Load history events via dm-history `POST /entries`.
    *
-   * @param {filterOptions | any} options The filter options
+   * @param {HistoryEntriesOptions | any} options POST body fields (merged with this DM’s `dataManagerID` / `shortID`).
    * @returns {Promise<HistoryEvents} The filtered HistoryEvents
    */
-  getEvents(options?: FilterOptions): Promise<any> {
+  getEvents(options?: HistoryEntriesOptions): Promise<any> {
     return Promise.resolve()
       .then(() => this.newRequest().follow('ec:datamanager/history'))
       .then((request) => {
-        if (options) {
-          request.withTemplateParameters(optionsToQuery(options));
-        }
-
-        return get(this[environmentSymbol], request);
+        request.follow('ec:entries-history');
+        const entriesPostUrl = entriesPostUrlFromHistoryBridge(this.getLink('ec:datamanager/history').href);
+        return postHistoryEntriesAt(this[environmentSymbol], request, entriesPostUrl, options, {
+          dataManagerID: this.dataManagerID,
+          shortID: this.shortID,
+        });
       })
-      .then(([res, traversal]) => new HistoryEvents(res, this[environmentSymbol], traversal));
+      .then(([res, traversal, url]) => new HistoryEvents(res, this[environmentSymbol], traversal, url));
   }
 
   /*
