@@ -1,3 +1,10 @@
+## 0.39.0 (2026-06-12)
+
+* release version 0.39.0 ([cb7214a](https://github.com/entrecode/ec.sdk/commit/cb7214a))
+* feat: add OIDC identity management to PublicAPI with new interface and endpoint ([ccc9634](https://github.com/entrecode/ec.sdk/commit/ccc9634))
+
+
+
 ## 0.38.0 (2026-04-08)
 
 * release version 0.38.0 ([afd804f](https://github.com/entrecode/ec.sdk/commit/afd804f))
