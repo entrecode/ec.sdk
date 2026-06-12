@@ -271,6 +271,11 @@
       "name": "Get an Auth Token for a validation token",
       "href": "https://datamanager.entrecode.de/api/beefbeef/_auth/api/login-token?validationToken={validationToken}{&_token}",
       "templated": true
+    },
+    "beefbeef:_auth/api/oidc-identities": {
+      "name": "Get, add or remove OIDC identities for an account",
+      "href": "https://datamanager.entrecode.de/api/beefbeef/_auth/api/oidc-identities{?accountID,iss,_token}",
+      "templated": true
     }
   }
 }

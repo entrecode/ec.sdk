@@ -367,6 +367,34 @@ describe('PublicAPI', () => {
       .should.be.rejectedWith('clientID must be set with PublicAPI#setClientID');
   });
 
+  it('should get OIDC identities of account', async () => {
+    const identities = [
+      {
+        iss: 'https://accounts.google.com',
+        extEmail: 'user@gmail.com',
+        extName: null,
+        iat: '2026-06-12T09:00:00.000Z',
+      },
+    ];
+    const request = {
+      withTemplateParameters: sinon.stub(),
+    };
+    const follow = sinon.stub(api, 'follow').resolves(request);
+    const stub = sinon.stub(helper, 'get').returns(Promise.resolve([identities]));
+
+    try {
+      const res = await api.getOIDCIdentitiesOfAccount('account-id');
+
+      res.should.deep.equal(identities);
+      follow.should.have.been.calledOnceWith('beefbeef:_auth/api/oidc-identities');
+      request.withTemplateParameters.should.have.been.calledOnceWith({ accountID: 'account-id' });
+      stub.should.have.been.calledOnceWith(api[environmentSymbol], request);
+    } finally {
+      follow.restore();
+      stub.restore();
+    }
+  });
+
   it('should create anonymous', () => {
     const stub = sinon.stub(helper, 'post');
     stub.returns(resolver('public-create-anon.json'));
