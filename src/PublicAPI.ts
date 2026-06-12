@@ -76,6 +76,13 @@ export type OIDCConfig = Array<{
   button: string;
 }>;
 
+export interface OIDCIdentity {
+  iss: string;
+  extEmail: string | null;
+  extName: string | null;
+  iat: string;
+}
+
 /**
  * API connector for public APIs. This is the successor of
  * [ec.datamanager.js](https://github.com/entrecode/ec.datamanager.js).
@@ -1360,6 +1367,19 @@ export default class PublicAPI extends Core {
     const request = await this.follow(`${this[shortIDSymbol]}:_auth/api/oidc-identities`);
     request.withTemplateParameters({ accountID });
     const [response] = await this.dispatch(() => post(this[environmentSymbol], request, body));
+    return response;
+  }
+
+  /**
+   * Get all OIDC identities linked to an account.
+   *
+   * @param {string} accountID The account ID to load the OIDC identities for
+   * @returns {Promise<Array<OIDCIdentity>>} Promise resolving to the linked OIDC identities
+   */
+  async getOIDCIdentitiesOfAccount(accountID: string): Promise<Array<OIDCIdentity>> {
+    const request = await this.follow(`${this[shortIDSymbol]}:_auth/api/oidc-identities`);
+    request.withTemplateParameters({ accountID });
+    const [response] = await this.dispatch(() => get(this[environmentSymbol], request));
     return response;
   }
 
