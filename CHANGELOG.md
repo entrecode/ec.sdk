@@ -1,3 +1,10 @@
+## 0.40.0 (2026-07-22)
+
+* release version 0.40.0 ([d469690](https://github.com/entrecode/ec.sdk/commit/d469690))
+* feat: client-side expansion of template based permissions (ONE-9308) ([9306341](https://github.com/entrecode/ec.sdk/commit/9306341))
+
+
+
 ## 0.39.0 (2026-06-12)
 
 * release version 0.39.0 ([cb7214a](https://github.com/entrecode/ec.sdk/commit/cb7214a))

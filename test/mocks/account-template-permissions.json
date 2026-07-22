@@ -1,0 +1,38 @@
+{
+  "accountID": "0a23eb0f-b50b-49a3-b428-ea690a8bbf9a",
+  "name": "template@entrecode.de",
+  "created": "2015-03-11T09:46:49.907Z",
+  "email": "template@entrecode.de",
+  "hasPassword": true,
+  "hasPendingEmail": false,
+  "language": "en",
+  "openID": [],
+  "state": "active",
+  "permissions": [
+    "dm:template-a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d:model:*:entry:read",
+    "dm-stats,app-stats",
+    "mail"
+  ],
+  "nativePermissions": [
+    "dm:template-a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d:model:*:entry:read"
+  ],
+  "groups": [],
+  "_links": {
+    "self": {
+      "profile": "https://entrecode.de/schema/account",
+      "href": "https://accounts.entrecode.de/account?accountID=0a23eb0f-b50b-49a3-b428-ea690a8bbf9a"
+    },
+    "curies": {
+      "href": "https://doc.entrecode.de/account_server/#relation-{rel}",
+      "templated": true
+    },
+    "ec:account/tokens/options": {
+      "profile": "https://entrecode.de/schema/account-tokens",
+      "href": "https://accounts.entrecode.de/account/tokens{?accesstokenid,accountid,page,size,_list,sort}"
+    },
+    "collection": {
+      "profile": "https://entrecode.de/schema/accounts",
+      "href": "https://accounts.entrecode.de/accounts"
+    }
+  }
+}
