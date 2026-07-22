@@ -25,6 +25,9 @@
     "testTravis": "mocha -R dot --recursive --exit",
     "webpack": "webpack --config webpack.config.js"
   },
+  "overrides": {
+    "tv4": "https://codeload.github.com/entrecode/tv4/tar.gz/264379bd5d8ea18c9666570f12d32791d864104a"
+  },
   "dependencies": {
     "@types/halfred": "^2.0.1",
     "@types/jwt-decode": "^3.1.0",
