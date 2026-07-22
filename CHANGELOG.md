@@ -1,3 +1,10 @@
+## <small>0.40.1 (2026-07-22)</small>
+
+* release version 0.40.1 ([08c3ce1](https://github.com/entrecode/ec.sdk/commit/08c3ce1))
+* fix: override tv4 to github tarball so npm ci works in CI ([a1328c1](https://github.com/entrecode/ec.sdk/commit/a1328c1))
+
+
+
 ## 0.40.0 (2026-07-22)
 
 * release version 0.40.0 ([d469690](https://github.com/entrecode/ec.sdk/commit/d469690))
