@@ -7,9 +7,11 @@ import TokenResource from './TokenResource';
 // eslint-disable-next-line import/no-cycle
 import { tokenResponse } from '../../Accounts';
 import { post } from '../../helper';
+import { expandPermissions, hasTemplatePermissions, resolveTemplateMappings } from '../../helper/templatePermissions';
 
 const relationsSymbol: any = Symbol.for('relations');
 const environmentSymbol: any = Symbol.for('environment');
+const expandedPermissionsSymbol: any = Symbol('expandedPermissions');
 
 export type AccountType = 'Person' | 'Client' | 'API Key';
 
@@ -419,7 +421,12 @@ class AccountResource extends Resource {
   }
 
   /**
-   * Check if this Account has a given permission
+   * Check if this Account has a given permission.
+   *
+   * Template based permissions (`dm:template-<uuid>:…`) are only taken into account if
+   * {@link AccountResource#resolveTemplatePermissions} has been awaited before. Without that
+   * call the check runs against the raw (compact) granted permissions as before (no breaking
+   * change, opt-in).
    *
    * @param {string} permission the permission to check
    * @returns {boolean} true if the Account has this permission, false otherwise
@@ -435,13 +442,51 @@ class AccountResource extends Resource {
 
     // eslint-disable-next-line @typescript-eslint/dot-notation
     const trie = ShiroTrie['new']();
-    trie.add(this.permissions);
+    trie.add(this[expandedPermissionsSymbol] || this.permissions);
 
     return trie.check(permission);
   }
 
   /**
+   * Resolves template based permissions (`dm:template-<uuid>:…`) into concrete
+   * `dm:<dataManagerID>:…` permissions and memoizes the expanded list on this resource
+   * instance. After awaiting this method {@link AccountResource#checkPermission} and
+   * {@link AccountResource#queryPermissions} take template permissions into account.
+   *
+   * The mapping is fetched once per template from the DataManager service (with a module
+   * level cache, ~5 minute TTL). This method never throws for a failing route: unresolvable
+   * templates are left untouched (fail-closed). The {@link AccountResource#permissions} and
+   * {@link AccountResource#getAllPermissions} properties keep returning the compact granted
+   * permissions - the expansion is a check detail only.
+   *
+   * @returns {Promise<void>} resolves once the expanded permission list is available
+   */
+  async resolveTemplatePermissions(): Promise<void> {
+    if (!this.nativePermissions) {
+      throw new Error('AccountResource loaded from AccountList, please call `await AccountResource#resolve()`.');
+    }
+
+    if (this[expandedPermissionsSymbol]) {
+      // memoized per resource instance
+      return;
+    }
+
+    const permissions = this.permissions as Array<string>;
+    if (!hasTemplatePermissions(permissions)) {
+      // no template grants -> null overhead, no route call
+      this[expandedPermissionsSymbol] = permissions;
+      return;
+    }
+
+    const mappings = await resolveTemplateMappings(permissions, this[environmentSymbol]);
+    this[expandedPermissionsSymbol] = expandPermissions(permissions, mappings);
+  }
+
+  /**
    * Queries the Accounts permissions. See [shiro-trie](https://www.npmjs.com/package/shiro-trie).
+   *
+   * Template based permissions (`dm:template-<uuid>:…`) are only taken into account if
+   * {@link AccountResource#resolveTemplatePermissions} has been awaited before.
    *
    * @param {string} query the permission string to be queried
    * @returns {Array<string>} an array of available permissions
@@ -457,7 +502,7 @@ class AccountResource extends Resource {
 
     // eslint-disable-next-line @typescript-eslint/dot-notation
     const trie = ShiroTrie['new']();
-    trie.add(this.permissions);
+    trie.add(this[expandedPermissionsSymbol] || this.permissions);
 
     return trie.permissions(query);
   }

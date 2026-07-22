@@ -42,6 +42,13 @@ export default class Session extends Core {
   /**
    * Checks if the currently logged in user has a given permission.
    *
+   * Template based permissions (`dm:template-<uuid>:…`) are resolved transparently: after the
+   * current account is loaded (5 minute cache) its template permissions are expanded into the
+   * concrete `dm:<dataManagerID>:…` permissions via
+   * {@link AccountResource#resolveTemplatePermissions}. Accounts without template grants cause
+   * no additional request (null overhead). Resolution is fail-closed - a failing route never
+   * throws, the check then simply behaves as if there were no template grants.
+   *
    * @param {string} permission the permission to check
    * @returns {Promise<boolean>} true if user has permission, false otherwise
    */
@@ -70,6 +77,7 @@ export default class Session extends Core {
 
         return this[requestCacheSymbol];
       })
+      .then(() => this[meSymbol].resolveTemplatePermissions())
       .then(() => this[meSymbol].checkPermission(permission));
   }
 
@@ -97,6 +105,8 @@ export default class Session extends Core {
       }
       await this[requestCacheSymbol];
     }
+
+    await this[meSymbol].resolveTemplatePermissions();
 
     return this[meSymbol].queryPermissions(query);
   }
