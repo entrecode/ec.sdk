@@ -1,6 +1,6 @@
 {
   "name": "ec.sdk",
-  "version": "0.40.0",
+  "version": "0.40.1",
   "description": "SDK for ec.api",
   "repository": {
     "url": "git+https://github.com/entrecode/ec.sdk.git"
@@ -24,6 +24,9 @@
     "pretestTravis": "npm run build",
     "testTravis": "mocha -R dot --recursive --exit",
     "webpack": "webpack --config webpack.config.js"
+  },
+  "overrides": {
+    "tv4": "https://codeload.github.com/entrecode/tv4/tar.gz/264379bd5d8ea18c9666570f12d32791d864104a"
   },
   "dependencies": {
     "@types/halfred": "^2.0.1",
