@@ -1,3 +1,10 @@
+## <small>0.40.2 (2026-07-22)</small>
+
+* release version 0.40.2 ([0875811](https://github.com/entrecode/ec.sdk/commit/0875811))
+* fix: allow git/remote dependency fetches via .npmrc for CI ([1d649ce](https://github.com/entrecode/ec.sdk/commit/1d649ce))
+
+
+
 ## <small>0.40.1 (2026-07-22)</small>
 
 * release version 0.40.1 ([08c3ce1](https://github.com/entrecode/ec.sdk/commit/08c3ce1))
