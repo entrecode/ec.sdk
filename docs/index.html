@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset='utf-8'>
-  <title>ec.sdk 0.40.2 | Documentation</title>
+  <title>ec.sdk 0.41.0 | Documentation</title>
   <meta name='description' content='SDK for ec.api'>
   <meta name='viewport' content='width=device-width,initial-scale=1'>
   <link href='assets/bass.css' rel='stylesheet'>
@@ -15,7 +15,7 @@
       <div id='split-left' class='overflow-auto fs0 height-viewport-100'>
         <div class='py1 px2'>
           <h3 class='mb0 no-anchor'>ec.sdk</h3>
-          <div class='mb1'><code>0.40.2</code></div>
+          <div class='mb1'><code>0.41.0</code></div>
           <input
             placeholder='Filter'
             id='filter-input'
@@ -10896,7 +10896,7 @@ load.</p>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>getValidationToken(email, type?)</span>
+            <span class='code strong strong truncate'>getValidationToken(emailOrOptions, type?)</span>
         </div>
       </div>
       <div class="clearfix display-none toggle-target">
@@ -10905,8 +10905,10 @@ load.</p>
   
 
   <p>Create a single-use validation token for a user. The token should then be send to the user via mail and MUST NOT be displayed to her.</p>
+<p>For accounts without an email address (e.g. anonymous accounts) pass an object with <code>accountID</code>
+instead of an email (requires datamanager with ec.passport >= 3.13).</p>
 
-    <div class='pre p1 fill-light mt0'>getValidationToken(email: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, type: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?)</div>
+    <div class='pre p1 fill-light mt0'>getValidationToken(emailOrOptions: any, type: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?)</div>
   
   
 
@@ -10923,9 +10925,8 @@ load.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>email</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
-	    The users email.
-
+            <span class='code bold'>emailOrOptions</span> <code class='quiet'>(any)</code>
+	    
           </div>
           
         </div>
@@ -33870,7 +33871,12 @@ be the same object but with refreshed data.
   </h2>
 
   
-    <h2>0.40.2 (2026-07-22)</h2>
+    <h2>0.41.0 (2026-08-20)</h2>
+<ul>
+<li>release version 0.41.0 (<a href="https://github.com/entrecode/ec.sdk/commit/119e6df">119e6df</a>)</li>
+<li>feat: support getValidationToken without email (<a href="https://github.com/entrecode/ec.sdk/commit/dd3e2be">dd3e2be</a>)</li>
+</ul>
+<h2>0.40.2 (2026-07-22)</h2>
 <ul>
 <li>release version 0.40.2 (<a href="https://github.com/entrecode/ec.sdk/commit/0875811">0875811</a>)</li>
 <li>fix: allow git/remote dependency fetches via .npmrc for CI (<a href="https://github.com/entrecode/ec.sdk/commit/1d649ce">1d649ce</a>)</li>

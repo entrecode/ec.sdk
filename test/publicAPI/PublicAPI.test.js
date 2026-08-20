@@ -1227,7 +1227,10 @@ describe('PublicAPI', () => {
     });
 
     it('should be rejected on getValidationToken no email', () => {
-      return api.getValidationToken().should.be.rejectedWith('email must be defined');
+      return api.getValidationToken().should.be.rejectedWith('email or accountID must be defined');
+    });
+    it('should be rejected on getValidationToken empty options', () => {
+      return api.getValidationToken({}).should.be.rejectedWith('email or accountID must be defined');
     });
     it('should be rejected on getValidationToken illegal type', () => {
       return api
@@ -1242,6 +1245,24 @@ describe('PublicAPI', () => {
       return api
         .getValidationToken({
           email: 'andre@entrecode.de',
+        })
+        .then((res) => {
+          res.should.be.equal('validationToken');
+          stub.restore();
+        })
+        .catch((err) => {
+          stub.restore();
+          throw err;
+        });
+    });
+    it('should call getValidationToken with accountID', () => {
+      const stub = sinon.stub(helper, 'get');
+      stub.onFirstCall().returns(resolver('public-dm-root.json'));
+      stub.onSecondCall().returns(resolver('get-validation-token.json'));
+
+      return api
+        .getValidationToken({
+          accountID: '49518e7d-a8b0-444a-b829-7fe3c86810ab',
         })
         .then((res) => {
           res.should.be.equal('validationToken');

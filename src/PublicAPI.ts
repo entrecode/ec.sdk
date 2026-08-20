@@ -1218,12 +1218,22 @@ export default class PublicAPI extends Core {
   /**
    * Create a single-use validation token for a user. The token should then be send to the user via mail and MUST NOT be displayed to her.
    *
-   * @param {string} email The users email.
+   * For accounts without an email address (e.g. anonymous accounts) pass an object with `accountID`
+   * instead of an email (requires datamanager with ec.passport >= 3.13).
+   *
+   * @param {string | {email?: string, accountID?: string}} emailOrOptions The users email, or an object with either email or accountID.
    * @param {string} [type] The type of token to create, like 'genericValidationToken' - optional
    */
-  async getValidationToken(email: string, type?: string): Promise<string> {
-    if (!email) {
-      throw new Error('email must be defined');
+  async getValidationToken(
+    emailOrOptions: string | { email?: string; accountID?: string },
+    type?: string,
+  ): Promise<string> {
+    const { email, accountID } =
+      typeof emailOrOptions === 'string' || !emailOrOptions
+        ? { email: emailOrOptions as string, accountID: undefined }
+        : emailOrOptions;
+    if (!email && !accountID) {
+      throw new Error('email or accountID must be defined');
     }
 
     if (type && !/^[a-zA-Z0-9]{1,64}$/.test(type)) {
@@ -1231,7 +1241,7 @@ export default class PublicAPI extends Core {
     }
 
     const request = await this.follow(`${this[shortIDSymbol]}:_auth/api/validation-token`);
-    request.withTemplateParameters({ email, type });
+    request.withTemplateParameters({ email, accountID, type });
     const [response] = await this.dispatch(() => get(this[environmentSymbol], request));
     return response.validationToken;
   }
