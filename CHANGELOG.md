@@ -1,3 +1,10 @@
+## 0.41.0 (2026-08-20)
+
+* release version 0.41.0 ([119e6df](https://github.com/entrecode/ec.sdk/commit/119e6df))
+* feat: support getValidationToken without email ([dd3e2be](https://github.com/entrecode/ec.sdk/commit/dd3e2be))
+
+
+
 ## <small>0.40.2 (2026-07-22)</small>
 
 * release version 0.40.2 ([0875811](https://github.com/entrecode/ec.sdk/commit/0875811))
