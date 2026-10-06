@@ -1221,16 +1221,22 @@ export default class PublicAPI extends Core {
    * For accounts without an email address (e.g. anonymous accounts) pass an object with `accountID`
    * instead of an email (requires datamanager with ec.passport >= 3.13).
    *
-   * @param {string | {email?: string, accountID?: string}} emailOrOptions The users email, or an object with either email or accountID.
+   * The validity defaults to the one configured in the datamanager (24h unless configured otherwise).
+   * Pass `validityInMinutes` to override it for this token, e.g. for printed access codes
+   * (requires datamanager with ec.passport >= 3.15).
+   *
+   * @param {string | {email?: string, accountID?: string, validityInMinutes?: number}} emailOrOptions The users email, or an object with either email or accountID.
    * @param {string} [type] The type of token to create, like 'genericValidationToken' - optional
+   * @param {number} [validityInMinutes] Validity of the token in minutes, overrides the configured validity - optional
    */
   async getValidationToken(
-    emailOrOptions: string | { email?: string; accountID?: string },
+    emailOrOptions: string | { email?: string; accountID?: string; validityInMinutes?: number },
     type?: string,
+    validityInMinutes?: number,
   ): Promise<string> {
-    const { email, accountID } =
+    const { email, accountID, validityInMinutes: validityOption } =
       typeof emailOrOptions === 'string' || !emailOrOptions
-        ? { email: emailOrOptions as string, accountID: undefined }
+        ? { email: emailOrOptions as string, accountID: undefined, validityInMinutes: undefined }
         : emailOrOptions;
     if (!email && !accountID) {
       throw new Error('email or accountID must be defined');
@@ -1240,8 +1246,13 @@ export default class PublicAPI extends Core {
       throw new Error('validation token type invalid, must match /^[a-zA-Z0-9]{1,64}$/');
     }
 
+    const validity = validityInMinutes ?? validityOption;
+    if (validity !== undefined && (!Number.isInteger(validity) || validity < 1)) {
+      throw new Error('validityInMinutes must be a positive integer');
+    }
+
     const request = await this.follow(`${this[shortIDSymbol]}:_auth/api/validation-token`);
-    request.withTemplateParameters({ email, accountID, type });
+    request.withTemplateParameters({ email, accountID, type, validityInMinutes: validity });
     const [response] = await this.dispatch(() => get(this[environmentSymbol], request));
     return response.validationToken;
   }
