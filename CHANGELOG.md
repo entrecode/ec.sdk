@@ -1,3 +1,10 @@
+## 0.42.0 (2026-10-06)
+
+* release version 0.42.0 ([e9b94ef](https://github.com/entrecode/ec.sdk/commit/e9b94ef))
+* feat: getValidationToken accepts validityInMinutes ([2435d7e](https://github.com/entrecode/ec.sdk/commit/2435d7e))
+
+
+
 ## 0.41.0 (2026-08-20)
 
 * release version 0.41.0 ([119e6df](https://github.com/entrecode/ec.sdk/commit/119e6df))
