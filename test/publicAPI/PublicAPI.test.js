@@ -1255,6 +1255,61 @@ describe('PublicAPI', () => {
           throw err;
         });
     });
+    ['0', 0, -5, 1.5].forEach((validity) => {
+      it(`should be rejected on getValidationToken invalid validityInMinutes ${JSON.stringify(validity)}`, () => {
+        return api
+          .getValidationToken('andre@entrecode.de', undefined, validity)
+          .should.be.rejectedWith('validityInMinutes must be a positive integer');
+      });
+    });
+    it('should call getValidationToken with validityInMinutes', async () => {
+      const request = {
+        withTemplateParameters: sinon.stub(),
+      };
+      const follow = sinon.stub(api, 'follow').resolves(request);
+      const stub = sinon.stub(helper, 'get').returns(Promise.resolve([{ validationToken: 'validationToken' }]));
+
+      try {
+        const res = await api.getValidationToken('andre@entrecode.de', undefined, 10080);
+
+        res.should.be.equal('validationToken');
+        follow.should.have.been.calledOnceWith('beefbeef:_auth/api/validation-token');
+        request.withTemplateParameters.should.have.been.calledOnceWith({
+          email: 'andre@entrecode.de',
+          accountID: undefined,
+          type: undefined,
+          validityInMinutes: 10080,
+        });
+      } finally {
+        follow.restore();
+        stub.restore();
+      }
+    });
+    it('should call getValidationToken with validityInMinutes in options', async () => {
+      const request = {
+        withTemplateParameters: sinon.stub(),
+      };
+      const follow = sinon.stub(api, 'follow').resolves(request);
+      const stub = sinon.stub(helper, 'get').returns(Promise.resolve([{ validationToken: 'validationToken' }]));
+
+      try {
+        const res = await api.getValidationToken({
+          accountID: '49518e7d-a8b0-444a-b829-7fe3c86810ab',
+          validityInMinutes: 10080,
+        });
+
+        res.should.be.equal('validationToken');
+        request.withTemplateParameters.should.have.been.calledOnceWith({
+          email: undefined,
+          accountID: '49518e7d-a8b0-444a-b829-7fe3c86810ab',
+          type: undefined,
+          validityInMinutes: 10080,
+        });
+      } finally {
+        follow.restore();
+        stub.restore();
+      }
+    });
     it('should call getValidationToken with accountID', () => {
       const stub = sinon.stub(helper, 'get');
       stub.onFirstCall().returns(resolver('public-dm-root.json'));

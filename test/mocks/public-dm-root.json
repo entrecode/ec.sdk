@@ -259,7 +259,7 @@
     },
     "beefbeef:_auth/api/validation-token": {
       "name": "Get a validation token for a given email address or accountID (for accounts without email)",
-      "href": "https://datamanager.entrecode.de/api/beefbeef/_auth/api/validation-token{?email,accountID,_token,type}",
+      "href": "https://datamanager.entrecode.de/api/beefbeef/_auth/api/validation-token{?email,accountID,_token,type,validityInMinutes}",
       "templated": true
     },
     "beefbeef:_auth/api/validate-token": {
