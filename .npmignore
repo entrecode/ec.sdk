@@ -8,3 +8,4 @@ documentation.yml
 release.sh
 tsconfig.json
 webpack.config.js
+babel.config.json
