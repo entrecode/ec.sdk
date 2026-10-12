@@ -1,3 +1,11 @@
+## <small>0.42.1 (2026-10-12)</small>
+
+* release version 0.42.1 ([20e9ecf](https://github.com/entrecode/ec.sdk/commit/20e9ecf))
+* fix(deps): update json-schema-remote to 1.7.0, drop tv4 override ([961afda](https://github.com/entrecode/ec.sdk/commit/961afda))
+* build: browser bundle with Babel 7 instead of Babel 6 ([1288873](https://github.com/entrecode/ec.sdk/commit/1288873))
+
+
+
 ## 0.42.0 (2026-10-06)
 
 * release version 0.42.0 ([e9b94ef](https://github.com/entrecode/ec.sdk/commit/e9b94ef))
